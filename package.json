@@ -10,7 +10,8 @@
     "test": "playwright test",
     "test:all": "playwright test --reporter=html",
     "test:headed": "playwright test --headed",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "import-data": "node --import tsx scripts/import-to-sanity.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
