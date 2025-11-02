@@ -1,0 +1,86 @@
+{
+  "_type": "homepage",
+  "_id": "homepage",
+  "globalType": "homepage",
+  "hero": {
+    "badges": [
+      {
+        "badge": "Advanced CNC Machining",
+        "id": "6905e9ec01c92016864b1886"
+      },
+      {
+        "badge": "Precision Metrology",
+        "id": "6905e9ec01c92016864b1887"
+      },
+      {
+        "badge": "Engineering Excellence",
+        "id": "6905e9ec01c92016864b1888"
+      },
+      {
+        "badge": "3 Sigma Yield",
+        "id": "6905e9ec01c92016864b1889"
+      }
+    ]
+  },
+  "stats": [
+    {
+      "id": "69077deca6dbdcfea3f81b9d"
+    }
+  ],
+  "cta": {
+    "title": "Start Your Precision Manufacturing Project",
+    "subtitle": "From prototype to production, we deliver AS9100D-certified precision components with tolerances to ±0.0001\" for aerospace, defense, and medical applications."
+  },
+  "technicalSpecs": [
+    {
+      "id": "69077deca6dbdcfea3f81b9e"
+    }
+  ],
+  "imageShowcase": [
+    null
+  ],
+  "heroEnhanced": {
+    "mainTitle": "PRECISION MANUFACTURING",
+    "subtitle": "SERVICES",
+    "tagline": "Engineering, Metrology, Machining & Database Services since 1995",
+    "slides": [],
+    "badges": [
+      {
+        "text": "AS9100D Certified",
+        "id": "6905e9ec01c92016864b1898"
+      },
+      {
+        "text": "ISO 9001:2015",
+        "id": "6905e9ec01c92016864b1899"
+      },
+      {
+        "text": "ITAR Registered",
+        "id": "6905e9ec01c92016864b189a"
+      },
+      {
+        "text": "24/7 Production",
+        "id": "6905e9ec01c92016864b189b"
+      }
+    ]
+  },
+  "seo": {
+    "ogImageGroup": {
+      "ogImageSource": "upload"
+    },
+    "twitterCard": "summary_large_image",
+    "noindex": false,
+    "keywords": []
+  },
+  "updatedAt": "2025-11-01T11:07:24.927Z",
+  "id": "69030c062ce6c0c350e97d04",
+  "servicesSection": {},
+  "industriesSection": {},
+  "resourcesSection": {
+    "header": {},
+    "featuredSeries": [],
+    "benefits": [],
+    "cta": {
+      "buttons": []
+    }
+  }
+}

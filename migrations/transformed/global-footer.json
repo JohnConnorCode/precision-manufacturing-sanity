@@ -1,0 +1,104 @@
+{
+  "_type": "footer",
+  "_id": "footer",
+  "globalType": "footer",
+  "company": {
+    "description": "Precision manufacturing and metrology solutions for aerospace, defense, and advanced industries.",
+    "foundedYear": "1995",
+    "certifications": "ISO 9001:2015 • AS9100D • ITAR Registered"
+  },
+  "social": {
+    "linkedin": "#",
+    "twitter": "#",
+    "facebook": "#"
+  },
+  "servicesLinks": [
+    {
+      "label": "Machining",
+      "href": "/services",
+      "id": "69077deca6dbdcfea3f81b9f"
+    },
+    {
+      "label": "Inspection",
+      "href": "/services",
+      "id": "69077deca6dbdcfea3f81ba0"
+    },
+    {
+      "label": "Fixture Design",
+      "href": "/services",
+      "id": "69077deca6dbdcfea3f81ba1"
+    },
+    {
+      "label": "Metrology",
+      "href": "/services",
+      "id": "69077deca6dbdcfea3f81ba2"
+    },
+    {
+      "label": "Metbase®",
+      "href": "/services",
+      "id": "69077deca6dbdcfea3f81ba3"
+    }
+  ],
+  "resourcesLinks": [
+    {
+      "label": "All Resources",
+      "href": "/resources",
+      "id": "69077deca6dbdcfea3f81ba4"
+    },
+    {
+      "label": "Manufacturing Processes",
+      "href": "/resources/manufacturing-processes",
+      "id": "69077deca6dbdcfea3f81ba5"
+    },
+    {
+      "label": "Quality & Compliance",
+      "href": "/resources/quality-compliance",
+      "id": "69077deca6dbdcfea3f81ba6"
+    },
+    {
+      "label": "Material Science",
+      "href": "/resources/material-science",
+      "id": "69077deca6dbdcfea3f81ba7"
+    }
+  ],
+  "quickLinks": [
+    {
+      "label": "About Us",
+      "href": "/about",
+      "id": "69077deca6dbdcfea3f81ba8"
+    },
+    {
+      "label": "Careers",
+      "href": "/careers",
+      "id": "69077deca6dbdcfea3f81ba9"
+    },
+    {
+      "label": "Industries",
+      "href": "/industries",
+      "id": "69077deca6dbdcfea3f81baa"
+    },
+    {
+      "label": "Terms & Conditions",
+      "href": "/compliance/terms",
+      "id": "69077deca6dbdcfea3f81bab"
+    },
+    {
+      "label": "Supplier Requirements",
+      "href": "/compliance/supplier-requirements",
+      "id": "69077deca6dbdcfea3f81bac"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact",
+      "id": "69077deca6dbdcfea3f81bad"
+    }
+  ],
+  "contact": {
+    "email": "officemgr@iismet.com",
+    "phone": "+1 (503) 231-9093",
+    "phoneLink": "tel:+15032319093",
+    "address": "14310 SE Industrial Way\nClackamas, OR 97015\nUnited States"
+  },
+  "copyright": "© {year} Integrated Inspection Systems, Inc. All rights reserved.",
+  "id": "69030f15222203f69a69af53"
+}

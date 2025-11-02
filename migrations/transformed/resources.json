@@ -1,0 +1,2640 @@
+[
+  {
+    "_type": "resource",
+    "_id": "resource-1",
+    "title": "Wire EDM and Sinker EDM: Precision Machining Complete Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "wire-edm-precision-machining"
+    },
+    "excerpt": "Comprehensive guide to Wire EDM and Sinker EDM machining for precision manufacturing. Learn processes, tolerances, surface finishes, and applications for aerospace and medical components.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Advanced",
+    "readTime": "17 min read",
+    "publishDate": "2024-01-30T00:00:00.000Z",
+    "author": "IIS Advanced Manufacturing Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Wire EDM",
+        "id": "69077deca6dbdcfea3f81a5f"
+      },
+      {
+        "tag": "Sinker EDM",
+        "id": "69077deca6dbdcfea3f81a60"
+      },
+      {
+        "tag": "Precision",
+        "id": "69077deca6dbdcfea3f81a61"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81a62"
+      },
+      {
+        "tag": "Aerospace",
+        "id": "69077deca6dbdcfea3f81a63"
+      },
+      {
+        "tag": "Medical",
+        "id": "69077deca6dbdcfea3f81a64"
+      },
+      {
+        "tag": "Surface Finish",
+        "id": "69077deca6dbdcfea3f81a65"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Wire EDM & Sinker EDM Precision Machining Guide | Complete Overview",
+      "metaDescription": "Master Wire EDM and Sinker EDM with our comprehensive guide. Learn tolerances, surface finishes, materials, and applications for precision aerospace and medical manufacturing.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-2",
+    "title": "Welding and Joining for Precision Fabrication Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "welding-joining-precision-fabrication"
+    },
+    "excerpt": "Comprehensive guide to welding and joining processes for precision manufacturing: TIG, MIG, laser, electron beam, brazing. Achieve aerospace-grade weld quality to AWS D17.1.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Advanced",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-27T00:00:00.000Z",
+    "author": "IIS Manufacturing Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Welding",
+        "id": "69077deca6dbdcfea3f81a66"
+      },
+      {
+        "tag": "TIG Welding",
+        "id": "69077deca6dbdcfea3f81a67"
+      },
+      {
+        "tag": "Laser Welding",
+        "id": "69077deca6dbdcfea3f81a68"
+      },
+      {
+        "tag": "Brazing",
+        "id": "69077deca6dbdcfea3f81a69"
+      },
+      {
+        "tag": "Fabrication",
+        "id": "69077deca6dbdcfea3f81a6a"
+      },
+      {
+        "tag": "AWS D17.1",
+        "id": "69077deca6dbdcfea3f81a6b"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Precision Welding Guide | TIG, MIG, Laser & Electron Beam Welding",
+      "metaDescription": "Complete precision welding and joining guide. Learn TIG, MIG, laser, electron beam welding processes, weld quality standards, NDT, and material compatibility.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-3",
+    "title": "Ultrasonic Machining (USM) & Rotary Ultrasonic Machining (RUM) Complete Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "ultrasonic-machining-guide"
+    },
+    "excerpt": "Master ultrasonic machining for ceramics, composites, glass, and hard materials. Learn USM and RUM processes, material removal rates, abrasive selection, and micro-machining applications for precision manufacturing.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Advanced",
+    "readTime": "17 min read",
+    "publishDate": "2024-01-31T00:00:00.000Z",
+    "author": "IIS Advanced Manufacturing Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Ultrasonic Machining",
+        "id": "69077deca6dbdcfea3f81a6c"
+      },
+      {
+        "tag": "USM",
+        "id": "69077deca6dbdcfea3f81a6d"
+      },
+      {
+        "tag": "RUM",
+        "id": "69077deca6dbdcfea3f81a6e"
+      },
+      {
+        "tag": "Ceramics",
+        "id": "69077deca6dbdcfea3f81a6f"
+      },
+      {
+        "tag": "Composites",
+        "id": "69077deca6dbdcfea3f81a70"
+      },
+      {
+        "tag": "Micro-Machining",
+        "id": "69077deca6dbdcfea3f81a71"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81a72"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Ultrasonic Machining Guide | USM & RUM for Ceramics, Glass, Composites",
+      "metaDescription": "Complete ultrasonic machining guide covering USM and RUM processes. Material removal rates, frequency specs, abrasive slurry selection, and applications for ceramics, glass, and advanced materials.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-4",
+    "title": "CNC Turning & Milling Fundamentals: Complete Guide to Precision Machining",
+    "slug": {
+      "_type": "slug",
+      "current": "turning-milling-fundamentals-guide"
+    },
+    "excerpt": "Master the fundamentals of CNC turning and milling operations. Learn tooling selection, speeds & feeds calculations, fixturing, and quality control for precision manufacturing.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Beginner",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-20T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "CNC",
+        "id": "69077deca6dbdcfea3f81a73"
+      },
+      {
+        "tag": "Turning",
+        "id": "69077deca6dbdcfea3f81a74"
+      },
+      {
+        "tag": "Milling",
+        "id": "69077deca6dbdcfea3f81a75"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81a76"
+      },
+      {
+        "tag": "Fundamentals",
+        "id": "69077deca6dbdcfea3f81a77"
+      }
+    ],
+    "seo": {
+      "metaTitle": "CNC Turning & Milling Fundamentals Guide | Precision Machining Basics",
+      "metaDescription": "Complete guide to CNC turning and milling fundamentals. Learn tooling, speeds & feeds, fixturing, and quality control for precision manufacturing success.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-5",
+    "title": "Tool and Die Making for Precision Manufacturing Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "tool-die-making-precision-guide"
+    },
+    "excerpt": "Complete guide to tool and die making: injection mold dies, stamping dies, jigs, fixtures, gauges. Learn hardened steel machining, EDM for die cavities, and surface finish requirements.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Advanced",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-31T00:00:00.000Z",
+    "author": "IIS Tool & Die Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Tool and Die",
+        "id": "69077deca6dbdcfea3f81a78"
+      },
+      {
+        "tag": "Injection Molding",
+        "id": "69077deca6dbdcfea3f81a79"
+      },
+      {
+        "tag": "Stamping Dies",
+        "id": "69077deca6dbdcfea3f81a7a"
+      },
+      {
+        "tag": "EDM",
+        "id": "69077deca6dbdcfea3f81a7b"
+      },
+      {
+        "tag": "Hardened Steel",
+        "id": "69077deca6dbdcfea3f81a7c"
+      },
+      {
+        "tag": "Precision Tooling",
+        "id": "69077deca6dbdcfea3f81a7d"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Tool & Die Making Guide | Mold Dies, Stamping Dies, Jigs & Fixtures",
+      "metaDescription": "Expert tool and die making guide. Learn injection mold dies, stamping dies, jigs, fixtures, gauges, hardened steel machining, EDM, heat treatment, and surface finish requirements.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-6",
+    "title": "Swiss CNC Turning and Screw Machining: Complete Precision Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "swiss-cnc-turning-precision-guide"
+    },
+    "excerpt": "Comprehensive guide to Swiss-type CNC turning and screw machining for precision manufacturing. Learn advantages, capabilities, tolerances, and applications for aerospace and medical components.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Advanced",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-28T00:00:00.000Z",
+    "author": "IIS Manufacturing Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Swiss Machining",
+        "id": "69077deca6dbdcfea3f81a7e"
+      },
+      {
+        "tag": "CNC Turning",
+        "id": "69077deca6dbdcfea3f81a7f"
+      },
+      {
+        "tag": "Precision",
+        "id": "69077deca6dbdcfea3f81a80"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81a81"
+      },
+      {
+        "tag": "Aerospace",
+        "id": "69077deca6dbdcfea3f81a82"
+      },
+      {
+        "tag": "Medical",
+        "id": "69077deca6dbdcfea3f81a83"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Swiss CNC Turning & Screw Machining Guide | Precision Manufacturing",
+      "metaDescription": "Master Swiss-type CNC turning with our comprehensive guide. Learn capabilities, tolerances, applications, and best practices for precision aerospace and medical components.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-7",
+    "title": "Surface Finishing and Treatments for Aerospace Components Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "surface-finishing-treatments-guide"
+    },
+    "excerpt": "Comprehensive guide to surface finishing processes including anodizing, passivation, electropolishing, and protective coatings. Learn specifications, testing methods, costs, and applications.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Advanced",
+    "readTime": "18 min read",
+    "publishDate": "2024-02-05T00:00:00.000Z",
+    "author": "IIS Surface Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Surface Finishing",
+        "id": "69077deca6dbdcfea3f81a84"
+      },
+      {
+        "tag": "Anodizing",
+        "id": "69077deca6dbdcfea3f81a85"
+      },
+      {
+        "tag": "Passivation",
+        "id": "69077deca6dbdcfea3f81a86"
+      },
+      {
+        "tag": "Coating",
+        "id": "69077deca6dbdcfea3f81a87"
+      },
+      {
+        "tag": "Aerospace",
+        "id": "69077deca6dbdcfea3f81a88"
+      },
+      {
+        "tag": "Corrosion Protection",
+        "id": "69077deca6dbdcfea3f81a89"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Aerospace Surface Finishing Guide | Anodizing, Passivation, Coatings",
+      "metaDescription": "Master aerospace surface finishing with our complete guide. Learn anodizing, passivation, electropolishing, and protective coatings with specifications, testing, and cost data.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-8",
+    "title": "Laser Cutting Precision Guide: CO2 vs. Fiber Lasers, Capabilities & Optimization",
+    "slug": {
+      "_type": "slug",
+      "current": "laser-cutting-precision-guide"
+    },
+    "excerpt": "Comprehensive laser cutting technology guide covering CO2 and fiber lasers, sheet metal cutting, tube processing, cut quality analysis, material compatibility, and process optimization for precision manufacturing.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Intermediate",
+    "readTime": "19 min read",
+    "publishDate": "2024-01-24T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Laser Cutting",
+        "id": "69077deca6dbdcfea3f81a8a"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81a8b"
+      },
+      {
+        "tag": "Sheet Metal",
+        "id": "69077deca6dbdcfea3f81a8c"
+      },
+      {
+        "tag": "Fabrication",
+        "id": "69077deca6dbdcfea3f81a8d"
+      },
+      {
+        "tag": "Process",
+        "id": "69077deca6dbdcfea3f81a8e"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Laser Cutting Guide | CO2 vs Fiber Lasers, Capabilities & Cut Quality",
+      "metaDescription": "Complete laser cutting precision guide with CO2 vs fiber laser comparison, cutting speeds by material, kerf width analysis, edge quality, and assist gas specifications.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-9",
+    "title": "Precision Grinding and Finishing Guide for Manufacturing",
+    "slug": {
+      "_type": "slug",
+      "current": "grinding-precision-finishing-guide"
+    },
+    "excerpt": "Comprehensive guide to precision grinding operations: surface, cylindrical, centerless, and jig grinding. Achieve tolerances to ±0.00005\" and surface finishes to 2 Ra.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Advanced",
+    "readTime": "17 min read",
+    "publishDate": "2024-01-24T00:00:00.000Z",
+    "author": "IIS Manufacturing Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Grinding",
+        "id": "69077deca6dbdcfea3f81a8f"
+      },
+      {
+        "tag": "Surface Finishing",
+        "id": "69077deca6dbdcfea3f81a90"
+      },
+      {
+        "tag": "Precision Machining",
+        "id": "69077deca6dbdcfea3f81a91"
+      },
+      {
+        "tag": "Tolerances",
+        "id": "69077deca6dbdcfea3f81a92"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81a93"
+      },
+      {
+        "tag": "Quality",
+        "id": "69077deca6dbdcfea3f81a94"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Precision Grinding Guide | Surface, Cylindrical & Centerless Grinding",
+      "metaDescription": "Complete precision grinding guide for manufacturers. Learn grinding processes, tolerances, surface finishes, wheel selection, and parameters for optimal results.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-10",
+    "title": "Fixture & Workholding Design Guide: 3-2-1 Locating, Clamping Force & Best Practices",
+    "slug": {
+      "_type": "slug",
+      "current": "fixture-workholding-design-guide"
+    },
+    "excerpt": "Comprehensive fixture and workholding design guide for precision manufacturing. Learn 3-2-1 locating principles, clamping force calculations, modular fixtures, soft jaws, repeatability requirements, quick-change systems, and cost analysis.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Advanced",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-28T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Fixtures",
+        "id": "69077deca6dbdcfea3f81a95"
+      },
+      {
+        "tag": "Workholding",
+        "id": "69077deca6dbdcfea3f81a96"
+      },
+      {
+        "tag": "Tooling",
+        "id": "69077deca6dbdcfea3f81a97"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81a98"
+      },
+      {
+        "tag": "Precision",
+        "id": "69077deca6dbdcfea3f81a99"
+      },
+      {
+        "tag": "Design",
+        "id": "69077deca6dbdcfea3f81a9a"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Fixture & Workholding Design Guide | 3-2-1 Locating, Clamping Force, Modular Fixtures",
+      "metaDescription": "Complete fixture and workholding design best practices guide. 3-2-1 locating principles, clamping force formulas, location repeatability ±0.0002\", modular fixtures, soft jaws, quick-change systems, and cost analysis.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-11",
+    "title": "Electrochemical Machining (ECM) Complete Guide: Process, Applications & Benefits",
+    "slug": {
+      "_type": "slug",
+      "current": "electrochemical-machining-guide"
+    },
+    "excerpt": "Comprehensive guide to electrochemical machining (ECM), electrochemical grinding (ECG), and PECM processes. Learn burr-free machining, complex geometry production, and applications for difficult materials.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Advanced",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-28T00:00:00.000Z",
+    "author": "IIS Advanced Manufacturing Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "ECM",
+        "id": "69077deca6dbdcfea3f81a9b"
+      },
+      {
+        "tag": "Electrochemical",
+        "id": "69077deca6dbdcfea3f81a9c"
+      },
+      {
+        "tag": "Machining",
+        "id": "69077deca6dbdcfea3f81a9d"
+      },
+      {
+        "tag": "Grinding",
+        "id": "69077deca6dbdcfea3f81a9e"
+      },
+      {
+        "tag": "Non-Traditional",
+        "id": "69077deca6dbdcfea3f81a9f"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81aa0"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Electrochemical Machining Guide | ECM, ECG & PECM Processes",
+      "metaDescription": "Master electrochemical machining with our complete ECM guide. Learn material removal rates, surface finishes, and applications for aerospace, medical, and precision manufacturing.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-12",
+    "title": "Deburring & Finishing Operations: Comprehensive Manufacturing Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "deburring-finishing-operations"
+    },
+    "excerpt": "Complete guide to deburring and finishing operations for precision manufacturing. Manual deburring, vibratory finishing, tumbling, thermal deburring, edge break specifications, and automation strategies.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Intermediate",
+    "readTime": "16 min read",
+    "publishDate": "2024-01-30T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Deburring",
+        "id": "69077deca6dbdcfea3f81aa1"
+      },
+      {
+        "tag": "Finishing",
+        "id": "69077deca6dbdcfea3f81aa2"
+      },
+      {
+        "tag": "Surface Treatment",
+        "id": "69077deca6dbdcfea3f81aa3"
+      },
+      {
+        "tag": "Quality",
+        "id": "69077deca6dbdcfea3f81aa4"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81aa5"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Deburring & Finishing Operations Guide | Vibratory, Tumbling, Thermal, Manual",
+      "metaDescription": "Comprehensive deburring and finishing guide for precision manufacturing. Process comparison, edge break specs, cycle times, costs, and quality standards.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-13",
+    "title": "CNC Programming and Optimization Best Practices: CAM Software, Toolpaths & Simulation",
+    "slug": {
+      "_type": "slug",
+      "current": "cnc-programming-optimization-guide"
+    },
+    "excerpt": "Comprehensive CNC programming optimization guide covering CAM software selection, advanced toolpath strategies, post-processor optimization, simulation and verification, common errors prevention, and cost analysis with programming rates.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Advanced",
+    "readTime": "19 min read",
+    "publishDate": "2024-01-28T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "CNC Programming",
+        "id": "69077deca6dbdcfea3f81aa6"
+      },
+      {
+        "tag": "CAM",
+        "id": "69077deca6dbdcfea3f81aa7"
+      },
+      {
+        "tag": "Optimization",
+        "id": "69077deca6dbdcfea3f81aa8"
+      },
+      {
+        "tag": "Toolpath",
+        "id": "69077deca6dbdcfea3f81aa9"
+      },
+      {
+        "tag": "Simulation",
+        "id": "69077deca6dbdcfea3f81aaa"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81aab"
+      }
+    ],
+    "seo": {
+      "metaTitle": "CNC Programming Optimization | CAM Software, Toolpaths, Simulation Best Practices",
+      "metaDescription": "Complete CNC programming guide with CAM software comparison, toolpath optimization, post-processor setup, simulation ROI, programming costs ($50-150/hr), and cycle time improvements (20-40%).",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-14",
+    "title": "Additive Manufacturing for Precision Components: DMLS, SLM & Metal 3D Printing Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "additive-manufacturing-precision-guide"
+    },
+    "excerpt": "Comprehensive guide to metal additive manufacturing for precision parts. Learn DMLS, SLM, binder jetting processes, achievable tolerances, surface finishes, post-processing, and hybrid manufacturing workflows.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Advanced",
+    "readTime": "19 min read",
+    "publishDate": "2024-01-24T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Additive Manufacturing",
+        "id": "69077deca6dbdcfea3f81aac"
+      },
+      {
+        "tag": "DMLS",
+        "id": "69077deca6dbdcfea3f81aad"
+      },
+      {
+        "tag": "SLM",
+        "id": "69077deca6dbdcfea3f81aae"
+      },
+      {
+        "tag": "3D Printing",
+        "id": "69077deca6dbdcfea3f81aaf"
+      },
+      {
+        "tag": "Metal Printing",
+        "id": "69077deca6dbdcfea3f81ab0"
+      },
+      {
+        "tag": "Hybrid Manufacturing",
+        "id": "69077deca6dbdcfea3f81ab1"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Metal Additive Manufacturing Guide | DMLS, SLM Tolerances & Post-Processing",
+      "metaDescription": "Complete metal additive manufacturing guide for precision components. DMLS, SLM, binder jetting tolerances, Ti64, 316L, Inconel, AlSi10Mg materials, and hybrid machining workflows.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-15",
+    "title": "Adaptive Machining Technology: The Future of Precision Manufacturing",
+    "slug": {
+      "_type": "slug",
+      "current": "adaptive-machining-technology-guide"
+    },
+    "excerpt": "Discover how adaptive machining revolutionizes precision manufacturing through real-time process optimization, in-process measurement, and intelligent control systems for zero-defect production.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Advanced",
+    "readTime": "16 min read",
+    "publishDate": "2024-02-01T00:00:00.000Z",
+    "author": "IIS Technology Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Adaptive Machining",
+        "id": "69077deca6dbdcfea3f81ab2"
+      },
+      {
+        "tag": "Industry 4.0",
+        "id": "69077deca6dbdcfea3f81ab3"
+      },
+      {
+        "tag": "Smart Manufacturing",
+        "id": "69077deca6dbdcfea3f81ab4"
+      },
+      {
+        "tag": "Process Control",
+        "id": "69077deca6dbdcfea3f81ab5"
+      },
+      {
+        "tag": "Automation",
+        "id": "69077deca6dbdcfea3f81ab6"
+      },
+      {
+        "tag": "Quality",
+        "id": "69077deca6dbdcfea3f81ab7"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Adaptive Machining Technology | Smart Manufacturing Solutions",
+      "metaDescription": "Learn how adaptive machining technology enables real-time process optimization, reduces scrap, and ensures consistent quality in precision manufacturing.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-16",
+    "title": "Complete Guide to 5-Axis CNC Machining for Aerospace",
+    "slug": {
+      "_type": "slug",
+      "current": "5-axis-cnc-machining-aerospace-guide"
+    },
+    "excerpt": "Learn the fundamentals of 5-axis CNC machining for aerospace components, including setup, programming, and quality considerations for precision manufacturing.",
+    "content": [],
+    "category": "manufacturing-processes",
+    "difficulty": "Intermediate",
+    "readTime": "12 min read",
+    "publishDate": "2024-01-15T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "CNC",
+        "id": "69077deca6dbdcfea3f81ab8"
+      },
+      {
+        "tag": "Aerospace",
+        "id": "69077deca6dbdcfea3f81ab9"
+      },
+      {
+        "tag": "5-Axis",
+        "id": "69077deca6dbdcfea3f81aba"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81abb"
+      },
+      {
+        "tag": "Precision",
+        "id": "69077deca6dbdcfea3f81abc"
+      }
+    ],
+    "seo": {
+      "metaTitle": "5-Axis CNC Machining for Aerospace Components | Complete Guide",
+      "metaDescription": "Master 5-axis CNC machining for aerospace manufacturing. Learn setup, programming, and quality control for precision aerospace components.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-17",
+    "title": "Tolerance Stack-Up Analysis Guide: Worst-Case, RSS, Monte Carlo & GD&T Methods",
+    "slug": {
+      "_type": "slug",
+      "current": "tolerance-stack-up-analysis-guide"
+    },
+    "excerpt": "Comprehensive tolerance stack-up analysis guide for precision manufacturing. Learn worst-case, RSS statistical, Monte Carlo simulation, GD&T stack-ups, dimensional chains, clearance/interference analysis, and tolerance allocation strategies.",
+    "content": [],
+    "category": "calculators-tools",
+    "difficulty": "Advanced",
+    "readTime": "19 min read",
+    "publishDate": "2024-01-27T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Tolerances",
+        "id": "69077deca6dbdcfea3f81abd"
+      },
+      {
+        "tag": "GD&T",
+        "id": "69077deca6dbdcfea3f81abe"
+      },
+      {
+        "tag": "Stack-Up",
+        "id": "69077deca6dbdcfea3f81abf"
+      },
+      {
+        "tag": "Design",
+        "id": "69077deca6dbdcfea3f81ac0"
+      },
+      {
+        "tag": "Quality",
+        "id": "69077deca6dbdcfea3f81ac1"
+      },
+      {
+        "tag": "Statistical Analysis",
+        "id": "69077deca6dbdcfea3f81ac2"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Tolerance Stack-Up Analysis Guide | Worst-Case, RSS, Monte Carlo, GD&T",
+      "metaDescription": "Complete tolerance stack-up analysis methods guide. Worst-case calculations, RSS statistical method, Monte Carlo simulation, GD&T dimensional chains, Cp/Cpk impact, and tolerance allocation strategies with examples.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-18",
+    "title": "Precision Tolerance Calculator",
+    "slug": {
+      "_type": "slug",
+      "current": "tolerance-calculator"
+    },
+    "excerpt": "Interactive ISO 286 tolerance calculator for precision manufacturing applications. Calculate upper and lower limits, tolerance zones, and fit types for aerospace components.",
+    "content": [],
+    "category": "calculators-tools",
+    "difficulty": "Intermediate",
+    "readTime": "5 min read",
+    "publishDate": "2024-01-20T00:00:00.000Z",
+    "author": "IIS Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Calculator",
+        "id": "69077deca6dbdcfea3f81ac3"
+      },
+      {
+        "tag": "Tolerances",
+        "id": "69077deca6dbdcfea3f81ac4"
+      },
+      {
+        "tag": "ISO 286",
+        "id": "69077deca6dbdcfea3f81ac5"
+      },
+      {
+        "tag": "Precision",
+        "id": "69077deca6dbdcfea3f81ac6"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81ac7"
+      }
+    ],
+    "seo": {
+      "metaTitle": "ISO 286 Tolerance Calculator | Precision Manufacturing Tool",
+      "metaDescription": "Free online tolerance calculator for ISO 286 standards. Calculate precision tolerances, fits, and limits for aerospace manufacturing applications.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-19",
+    "title": "Material Removal Rate (MRR) Optimization Guide: Formulas, High-Efficiency Machining & Cycle Time Reduction",
+    "slug": {
+      "_type": "slug",
+      "current": "material-removal-rate-optimization"
+    },
+    "excerpt": "Comprehensive MRR optimization guide with material removal rate formulas, cycle time reduction strategies, trochoidal milling, high-feed machining, adaptive clearing, and cost per cubic inch calculations for precision manufacturing.",
+    "content": [],
+    "category": "calculators-tools",
+    "difficulty": "Intermediate",
+    "readTime": "17 min read",
+    "publishDate": "2024-01-27T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "MRR",
+        "id": "69077deca6dbdcfea3f81ac8"
+      },
+      {
+        "tag": "Machining",
+        "id": "69077deca6dbdcfea3f81ac9"
+      },
+      {
+        "tag": "Optimization",
+        "id": "69077deca6dbdcfea3f81aca"
+      },
+      {
+        "tag": "Efficiency",
+        "id": "69077deca6dbdcfea3f81acb"
+      },
+      {
+        "tag": "Productivity",
+        "id": "69077deca6dbdcfea3f81acc"
+      },
+      {
+        "tag": "CNC",
+        "id": "69077deca6dbdcfea3f81acd"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Material Removal Rate Optimization | MRR Formulas, High-Efficiency Machining",
+      "metaDescription": "Complete MRR optimization guide with calculation formulas, trochoidal milling strategies, high-feed machining, cycle time examples, and cost per cubic inch analysis.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-20",
+    "title": "Manufacturing Cost Optimization Guide for Precision Components",
+    "slug": {
+      "_type": "slug",
+      "current": "manufacturing-cost-optimization-guide"
+    },
+    "excerpt": "Comprehensive guide to reducing manufacturing costs through material selection, tolerance optimization, volume analysis, and process improvements. Includes cost breakdowns, ROI calculations, and real case studies.",
+    "content": [],
+    "category": "calculators-tools",
+    "difficulty": "Intermediate",
+    "readTime": "19 min read",
+    "publishDate": "2024-02-10T00:00:00.000Z",
+    "author": "IIS Operations Excellence Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Cost Reduction",
+        "id": "69077deca6dbdcfea3f81ace"
+      },
+      {
+        "tag": "Optimization",
+        "id": "69077deca6dbdcfea3f81acf"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81ad0"
+      },
+      {
+        "tag": "ROI",
+        "id": "69077deca6dbdcfea3f81ad1"
+      },
+      {
+        "tag": "Efficiency",
+        "id": "69077deca6dbdcfea3f81ad2"
+      },
+      {
+        "tag": "Value Engineering",
+        "id": "69077deca6dbdcfea3f81ad3"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Manufacturing Cost Optimization Guide | Reduce Costs 25-40%",
+      "metaDescription": "Reduce precision manufacturing costs by 25-40% with our comprehensive optimization guide. Learn material selection, tolerance optimization, volume strategies, and process improvements with real cost data.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-21",
+    "title": "Machining Speeds & Feeds Calculator Guide: Complete Technical Reference",
+    "slug": {
+      "_type": "slug",
+      "current": "machining-speeds-feeds-calculator-guide"
+    },
+    "excerpt": "Comprehensive guide to calculating and optimizing machining speeds and feeds. Formulas, material-specific recommendations, chip load tables, and tool life optimization for CNC machining.",
+    "content": [],
+    "category": "calculators-tools",
+    "difficulty": "Intermediate",
+    "readTime": "19 min read",
+    "publishDate": "2024-01-28T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Speeds",
+        "id": "69077deca6dbdcfea3f81ad4"
+      },
+      {
+        "tag": "Feeds",
+        "id": "69077deca6dbdcfea3f81ad5"
+      },
+      {
+        "tag": "Machining",
+        "id": "69077deca6dbdcfea3f81ad6"
+      },
+      {
+        "tag": "CNC",
+        "id": "69077deca6dbdcfea3f81ad7"
+      },
+      {
+        "tag": "Optimization",
+        "id": "69077deca6dbdcfea3f81ad8"
+      },
+      {
+        "tag": "Tool Life",
+        "id": "69077deca6dbdcfea3f81ad9"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Machining Speeds & Feeds Calculator Guide | RPM, Feed Rate, Chip Load Formulas",
+      "metaDescription": "Complete speeds and feeds calculation guide for CNC machining. RPM/SFM/IPM formulas, chip load tables, material-specific parameters, and optimization strategies.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-22",
+    "title": "Manufacturing Lead Time Estimation and Reduction Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "lead-time-estimation-guide"
+    },
+    "excerpt": "Complete guide to estimating and reducing manufacturing lead times. Learn typical timelines by process, bottleneck identification, expedite options, and proven strategies for faster delivery.",
+    "content": [],
+    "category": "calculators-tools",
+    "difficulty": "Intermediate",
+    "readTime": "15 min read",
+    "publishDate": "2024-01-27T00:00:00.000Z",
+    "author": "IIS Operations Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Lead Time",
+        "id": "69077deca6dbdcfea3f81ada"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81adb"
+      },
+      {
+        "tag": "Scheduling",
+        "id": "69077deca6dbdcfea3f81adc"
+      },
+      {
+        "tag": "Operations",
+        "id": "69077deca6dbdcfea3f81add"
+      },
+      {
+        "tag": "Efficiency",
+        "id": "69077deca6dbdcfea3f81ade"
+      },
+      {
+        "tag": "Production Planning",
+        "id": "69077deca6dbdcfea3f81adf"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Manufacturing Lead Time Guide | Estimation, Reduction & Expedite Options",
+      "metaDescription": "Expert guide to manufacturing lead times. Calculate timelines by process, identify bottlenecks, learn expedite strategies, and reduce delivery times 30-50%.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-23",
+    "title": "Design for Manufacturability (DFM) Guide for Precision Components",
+    "slug": {
+      "_type": "slug",
+      "current": "design-for-manufacturability-guide"
+    },
+    "excerpt": "Comprehensive guide to Design for Manufacturability principles and best practices. Learn tolerance recommendations, feature design optimization, material selection, and cost reduction strategies.",
+    "content": [],
+    "category": "calculators-tools",
+    "difficulty": "Intermediate",
+    "readTime": "17 min read",
+    "publishDate": "2024-02-08T00:00:00.000Z",
+    "author": "IIS Design Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "DFM",
+        "id": "69077deca6dbdcfea3f81ae0"
+      },
+      {
+        "tag": "Design",
+        "id": "69077deca6dbdcfea3f81ae1"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81ae2"
+      },
+      {
+        "tag": "Cost Reduction",
+        "id": "69077deca6dbdcfea3f81ae3"
+      },
+      {
+        "tag": "Tolerances",
+        "id": "69077deca6dbdcfea3f81ae4"
+      },
+      {
+        "tag": "Optimization",
+        "id": "69077deca6dbdcfea3f81ae5"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Design for Manufacturability (DFM) Guide | Cost Optimization & Best Practices",
+      "metaDescription": "Master Design for Manufacturability with our complete guide. Learn tolerance optimization, feature design, material selection, and cost reduction strategies for aerospace and precision manufacturing.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-24",
+    "title": "Manufacturing Cost Estimating & Quoting Guide: Accurate Pricing Strategies",
+    "slug": {
+      "_type": "slug",
+      "current": "cost-estimating-quoting-guide"
+    },
+    "excerpt": "Master manufacturing cost estimating and quoting with our comprehensive guide. Learn material costs, setup time, cycle time, tooling, overhead allocation, margin strategy, and learning curves for competitive pricing.",
+    "content": [],
+    "category": "calculators-tools",
+    "difficulty": "Intermediate",
+    "readTime": "16 min read",
+    "publishDate": "2024-01-30T00:00:00.000Z",
+    "author": "IIS Business Development Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Cost Estimating",
+        "id": "69077deca6dbdcfea3f81ae6"
+      },
+      {
+        "tag": "Quoting",
+        "id": "69077deca6dbdcfea3f81ae7"
+      },
+      {
+        "tag": "Pricing",
+        "id": "69077deca6dbdcfea3f81ae8"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81ae9"
+      },
+      {
+        "tag": "Business",
+        "id": "69077deca6dbdcfea3f81aea"
+      },
+      {
+        "tag": "Profitability",
+        "id": "69077deca6dbdcfea3f81aeb"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Manufacturing Cost Estimating & Quoting Guide | Pricing Best Practices",
+      "metaDescription": "Complete manufacturing cost estimating guide with formulas, overhead rates, margin strategies, and learning curves. Accurate quoting for CNC machining, assembly, and precision manufacturing.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-25",
+    "title": "Complete Tool Steel Grades Selection Guide: A2, D2, M2, H13, S7, O1 Comparison",
+    "slug": {
+      "_type": "slug",
+      "current": "tool-steel-grades-selection-guide"
+    },
+    "excerpt": "Comprehensive tool steel selection guide covering A2, D2, M2, H13, S7, and O1 grades. Learn hardness values, heat treatment cycles, machinability ratings, cost data, and application-specific recommendations for precision manufacturing.",
+    "content": [],
+    "category": "material-science",
+    "difficulty": "Advanced",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-23T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Tool Steel",
+        "id": "69077deca6dbdcfea3f81aec"
+      },
+      {
+        "tag": "Materials",
+        "id": "69077deca6dbdcfea3f81aed"
+      },
+      {
+        "tag": "Heat Treatment",
+        "id": "69077deca6dbdcfea3f81aee"
+      },
+      {
+        "tag": "Tooling",
+        "id": "69077deca6dbdcfea3f81aef"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81af0"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Tool Steel Selection Guide | A2, D2, M2, H13, S7, O1 Grades Comparison",
+      "metaDescription": "Complete tool steel grades selection guide with hardness values, heat treatment cycles, machinability data, and cost analysis for A2, D2, M2, H13, S7, O1 steels.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-26",
+    "title": "Titanium Machining Complete Guide for Manufacturing",
+    "slug": {
+      "_type": "slug",
+      "current": "titanium-machining-complete-guide"
+    },
+    "excerpt": "Complete guide to machining titanium alloys: Ti-6Al-4V, commercially pure grades, beta alloys. Learn cutting parameters, tool life, coolant requirements, and fire safety protocols.",
+    "content": [],
+    "category": "material-science",
+    "difficulty": "Advanced",
+    "readTime": "19 min read",
+    "publishDate": "2024-01-28T00:00:00.000Z",
+    "author": "IIS Materials Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Titanium",
+        "id": "69077deca6dbdcfea3f81af1"
+      },
+      {
+        "tag": "Machining",
+        "id": "69077deca6dbdcfea3f81af2"
+      },
+      {
+        "tag": "Ti-6Al-4V",
+        "id": "69077deca6dbdcfea3f81af3"
+      },
+      {
+        "tag": "Aerospace",
+        "id": "69077deca6dbdcfea3f81af4"
+      },
+      {
+        "tag": "Medical Devices",
+        "id": "69077deca6dbdcfea3f81af5"
+      },
+      {
+        "tag": "Tool Life",
+        "id": "69077deca6dbdcfea3f81af6"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Titanium Machining Guide | Ti-6Al-4V Speeds, Feeds & Safety Protocols",
+      "metaDescription": "Expert titanium machining guide. Learn Ti-6Al-4V parameters, tool selection, coolant strategies, fire prevention, and cost optimization for aerospace and medical applications.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-27",
+    "title": "Superalloys Machining Complete Guide: Inconel, Hastelloy, Waspaloy",
+    "slug": {
+      "_type": "slug",
+      "current": "superalloys-machining-guide"
+    },
+    "excerpt": "Master superalloy machining with our comprehensive guide covering Inconel 718, Hastelloy X, Waspaloy, and René alloys. Expert insights on work hardening, cutting parameters, tool selection, and cost optimization.",
+    "content": [],
+    "category": "material-science",
+    "difficulty": "Advanced",
+    "readTime": "19 min read",
+    "publishDate": "2024-01-27T00:00:00.000Z",
+    "author": "IIS Advanced Materials Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Superalloys",
+        "id": "69077deca6dbdcfea3f81af7"
+      },
+      {
+        "tag": "Inconel",
+        "id": "69077deca6dbdcfea3f81af8"
+      },
+      {
+        "tag": "Hastelloy",
+        "id": "69077deca6dbdcfea3f81af9"
+      },
+      {
+        "tag": "Machining",
+        "id": "69077deca6dbdcfea3f81afa"
+      },
+      {
+        "tag": "Aerospace",
+        "id": "69077deca6dbdcfea3f81afb"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81afc"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Superalloys Machining Guide | Inconel 718, Hastelloy X, Waspaloy Processing",
+      "metaDescription": "Complete superalloy machining guide with specific speeds, feeds, and tool selection for Inconel, Hastelloy, Waspaloy, and René alloys. Expert strategies for work hardening and tool life optimization.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-28",
+    "title": "Stainless Steel Selection and Machining Guide for Manufacturing",
+    "slug": {
+      "_type": "slug",
+      "current": "stainless-steel-selection-machining-guide"
+    },
+    "excerpt": "Complete guide to stainless steel grades, selection criteria, and machining parameters. Learn about 300 series, 400 series, and precipitation hardening grades for optimal manufacturing.",
+    "content": [],
+    "category": "material-science",
+    "difficulty": "Intermediate",
+    "readTime": "16 min read",
+    "publishDate": "2024-01-26T00:00:00.000Z",
+    "author": "IIS Materials Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Stainless Steel",
+        "id": "69077deca6dbdcfea3f81afd"
+      },
+      {
+        "tag": "Materials",
+        "id": "69077deca6dbdcfea3f81afe"
+      },
+      {
+        "tag": "Machining",
+        "id": "69077deca6dbdcfea3f81aff"
+      },
+      {
+        "tag": "Alloy Selection",
+        "id": "69077deca6dbdcfea3f81b00"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81b01"
+      },
+      {
+        "tag": "Corrosion Resistance",
+        "id": "69077deca6dbdcfea3f81b02"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Stainless Steel Selection & Machining Guide | 300, 400 Series & PH Grades",
+      "metaDescription": "Expert guide to stainless steel selection and machining. Compare 304, 316, 17-4 PH grades. Learn machining parameters, work hardening, tool life, and costs.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-29",
+    "title": "Heat Treatment of Aerospace Metals: Complete Technical Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "heat-treatment-aerospace-metals"
+    },
+    "excerpt": "Comprehensive guide to heat treatment processes for aerospace alloys. Learn solution treating, aging, stress relief, and annealing procedures with specific temperatures, times, and equipment requirements.",
+    "content": [],
+    "category": "material-science",
+    "difficulty": "Advanced",
+    "readTime": "19 min read",
+    "publishDate": "2024-02-02T00:00:00.000Z",
+    "author": "IIS Materials Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Heat Treatment",
+        "id": "69077deca6dbdcfea3f81b03"
+      },
+      {
+        "tag": "Aerospace",
+        "id": "69077deca6dbdcfea3f81b04"
+      },
+      {
+        "tag": "Materials",
+        "id": "69077deca6dbdcfea3f81b05"
+      },
+      {
+        "tag": "Metallurgy",
+        "id": "69077deca6dbdcfea3f81b06"
+      },
+      {
+        "tag": "AMS Specs",
+        "id": "69077deca6dbdcfea3f81b07"
+      },
+      {
+        "tag": "Quality",
+        "id": "69077deca6dbdcfea3f81b08"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Aerospace Metal Heat Treatment Guide | AMS Specifications & Procedures",
+      "metaDescription": "Master aerospace heat treatment with our complete guide. Learn solution treating, aging, stress relief, and annealing for aluminum, titanium, and superalloys with AMS specifications.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-30",
+    "title": "Complete Copper Alloys Machining Guide: Pure Copper, Brass, Bronze & Beryllium Copper",
+    "slug": {
+      "_type": "slug",
+      "current": "copper-alloys-machining-guide"
+    },
+    "excerpt": "Comprehensive guide to copper and copper alloy machining. Learn material properties, cutting parameters, electrical conductivity retention, and machinability optimization for C101, C110, brass, bronze, and beryllium copper.",
+    "content": [],
+    "category": "material-science",
+    "difficulty": "Intermediate",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-23T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Copper",
+        "id": "69077deca6dbdcfea3f81b09"
+      },
+      {
+        "tag": "Brass",
+        "id": "69077deca6dbdcfea3f81b0a"
+      },
+      {
+        "tag": "Bronze",
+        "id": "69077deca6dbdcfea3f81b0b"
+      },
+      {
+        "tag": "Materials",
+        "id": "69077deca6dbdcfea3f81b0c"
+      },
+      {
+        "tag": "Machining",
+        "id": "69077deca6dbdcfea3f81b0d"
+      },
+      {
+        "tag": "Electrical",
+        "id": "69077deca6dbdcfea3f81b0e"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Copper Alloys Machining Guide | Brass, Bronze, Beryllium Copper Parameters",
+      "metaDescription": "Complete copper alloy selection and machining guide. Material properties, cutting parameters, annealing specs, and machinability ratings for C101, C110, C260, C360, C932, C954 alloys.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-31",
+    "title": "Complete Aluminum Alloys Machining Guide: Selection, Parameters & Optimization",
+    "slug": {
+      "_type": "slug",
+      "current": "aluminum-alloys-machining-guide"
+    },
+    "excerpt": "Comprehensive guide to aluminum alloy selection and machining. Learn material properties, machining parameters, surface treatments, and cost optimization for aerospace and precision manufacturing.",
+    "content": [],
+    "category": "material-science",
+    "difficulty": "Intermediate",
+    "readTime": "17 min read",
+    "publishDate": "2024-01-22T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Aluminum",
+        "id": "69077deca6dbdcfea3f81b0f"
+      },
+      {
+        "tag": "Materials",
+        "id": "69077deca6dbdcfea3f81b10"
+      },
+      {
+        "tag": "Machining",
+        "id": "69077deca6dbdcfea3f81b11"
+      },
+      {
+        "tag": "Aerospace",
+        "id": "69077deca6dbdcfea3f81b12"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81b13"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Aluminum Alloys Machining Guide | 6061, 7075, 2024 Selection & Parameters",
+      "metaDescription": "Complete aluminum alloy selection and machining guide. Material properties, machining parameters, anodizing, and cost data for 2xxx, 6xxx, 7xxx series alloys.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-32",
+    "title": "Aerospace Alloy Selection Guide for Precision Manufacturing",
+    "slug": {
+      "_type": "slug",
+      "current": "aerospace-alloy-selection-guide"
+    },
+    "excerpt": "Comprehensive guide to selecting optimal aerospace alloys with interactive material selection tool. Compare properties, applications, and processing requirements.",
+    "content": [],
+    "category": "material-science",
+    "difficulty": "Intermediate",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-25T00:00:00.000Z",
+    "author": "IIS Materials Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Materials",
+        "id": "69077deca6dbdcfea3f81b14"
+      },
+      {
+        "tag": "Aerospace",
+        "id": "69077deca6dbdcfea3f81b15"
+      },
+      {
+        "tag": "Alloys",
+        "id": "69077deca6dbdcfea3f81b16"
+      },
+      {
+        "tag": "Selection",
+        "id": "69077deca6dbdcfea3f81b17"
+      },
+      {
+        "tag": "Properties",
+        "id": "69077deca6dbdcfea3f81b18"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81b19"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Aerospace Alloy Selection Guide | Material Properties & Applications",
+      "metaDescription": "Master aerospace alloy selection with our comprehensive guide. Interactive tool for comparing aluminum, titanium, steel, and superalloys for precision manufacturing.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-33",
+    "title": "Manufacturing Traceability & Documentation Systems: Complete Compliance Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "traceability-documentation-systems"
+    },
+    "excerpt": "Comprehensive guide to manufacturing traceability systems, documentation requirements, and lot tracking for AS9100D, ISO 13485, and ITAR compliance in precision manufacturing.",
+    "content": [],
+    "category": "quality-compliance",
+    "difficulty": "Intermediate",
+    "readTime": "16 min read",
+    "publishDate": "2024-01-24T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Quality",
+        "id": "69077deca6dbdcfea3f81b1a"
+      },
+      {
+        "tag": "Traceability",
+        "id": "69077deca6dbdcfea3f81b1b"
+      },
+      {
+        "tag": "Compliance",
+        "id": "69077deca6dbdcfea3f81b1c"
+      },
+      {
+        "tag": "Documentation",
+        "id": "69077deca6dbdcfea3f81b1d"
+      },
+      {
+        "tag": "AS9100",
+        "id": "69077deca6dbdcfea3f81b1e"
+      },
+      {
+        "tag": "ISO",
+        "id": "69077deca6dbdcfea3f81b1f"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Manufacturing Traceability Systems Guide | AS9100D, ISO 13485, ITAR Compliance",
+      "metaDescription": "Complete guide to traceability and documentation systems for precision manufacturing. Material certs, lot tracking, DHR/DMR, digital records, and audit trails.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-34",
+    "title": "Supplier Quality Management & Development Guide for Manufacturing",
+    "slug": {
+      "_type": "slug",
+      "current": "supplier-quality-management-guide"
+    },
+    "excerpt": "Comprehensive guide to supplier quality management including supplier selection, auditing, scorecards, PPAP, and corrective action. Build a world-class supply chain with measurable performance metrics.",
+    "content": [],
+    "category": "quality-compliance",
+    "difficulty": "Intermediate",
+    "readTime": "17 min read",
+    "publishDate": "2024-01-29T00:00:00.000Z",
+    "author": "IIS Quality Management Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Supplier Quality",
+        "id": "69077deca6dbdcfea3f81b20"
+      },
+      {
+        "tag": "Supply Chain",
+        "id": "69077deca6dbdcfea3f81b21"
+      },
+      {
+        "tag": "PPAP",
+        "id": "69077deca6dbdcfea3f81b22"
+      },
+      {
+        "tag": "Auditing",
+        "id": "69077deca6dbdcfea3f81b23"
+      },
+      {
+        "tag": "Quality Management",
+        "id": "69077deca6dbdcfea3f81b24"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81b25"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Supplier Quality Management Guide | PPAP, Audits, Scorecards & Development",
+      "metaDescription": "Master supplier quality management with our complete guide. Supplier selection, auditing checklists, performance scorecards, PPAP requirements, and corrective action processes for manufacturing excellence.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-35",
+    "title": "ISO 9001:2015 Quality Management System Implementation Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "iso-9001-quality-management-guide"
+    },
+    "excerpt": "Complete guide to implementing ISO 9001:2015 quality management systems for manufacturing. Learn the 7 principles, PDCA cycle, risk-based thinking, and certification process.",
+    "content": [],
+    "category": "quality-compliance",
+    "difficulty": "Intermediate",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-23T00:00:00.000Z",
+    "author": "IIS Quality Management Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "ISO 9001",
+        "id": "69077deca6dbdcfea3f81b26"
+      },
+      {
+        "tag": "Quality Management",
+        "id": "69077deca6dbdcfea3f81b27"
+      },
+      {
+        "tag": "QMS",
+        "id": "69077deca6dbdcfea3f81b28"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81b29"
+      },
+      {
+        "tag": "Certification",
+        "id": "69077deca6dbdcfea3f81b2a"
+      },
+      {
+        "tag": "Process Improvement",
+        "id": "69077deca6dbdcfea3f81b2b"
+      }
+    ],
+    "seo": {
+      "metaTitle": "ISO 9001:2015 Implementation Guide | Quality Management System",
+      "metaDescription": "Comprehensive ISO 9001:2015 implementation guide for manufacturers. Learn quality management principles, process approach, certification requirements, and ROI.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-36",
+    "title": "Inspection Planning and Quality Control Strategy Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "inspection-planning-quality-control"
+    },
+    "excerpt": "Complete inspection planning and quality control guide: control plans, sampling strategies, inspection frequency, measurement systems analysis. Learn PPAP, first article inspection, in-process inspection, and Cpk requirements.",
+    "content": [],
+    "category": "quality-compliance",
+    "difficulty": "Advanced",
+    "readTime": "19 min read",
+    "publishDate": "2024-02-01T00:00:00.000Z",
+    "author": "IIS Quality Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Inspection Planning",
+        "id": "69077deca6dbdcfea3f81b2c"
+      },
+      {
+        "tag": "Quality Control",
+        "id": "69077deca6dbdcfea3f81b2d"
+      },
+      {
+        "tag": "Control Plans",
+        "id": "69077deca6dbdcfea3f81b2e"
+      },
+      {
+        "tag": "MSA",
+        "id": "69077deca6dbdcfea3f81b2f"
+      },
+      {
+        "tag": "Cpk",
+        "id": "69077deca6dbdcfea3f81b30"
+      },
+      {
+        "tag": "First Article Inspection",
+        "id": "69077deca6dbdcfea3f81b31"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Inspection Planning & Quality Control Guide | Control Plans, MSA & Cpk",
+      "metaDescription": "Expert inspection planning and quality control guide. Learn control plans, sampling strategies, inspection frequency, MSA, Gage R&R, first article inspection, and Cpk requirements by industry.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-37",
+    "title": "GD&T Geometric Tolerancing Complete Guide - ASME Y14.5-2018",
+    "slug": {
+      "_type": "slug",
+      "current": "gdt-geometric-tolerancing-guide"
+    },
+    "excerpt": "Complete GD&T guide per ASME Y14.5-2018: all 14 geometric tolerances, datum reference frames, material condition modifiers. Learn tolerance stack-up, CMM inspection, and common mistakes.",
+    "content": [],
+    "category": "quality-compliance",
+    "difficulty": "Advanced",
+    "readTime": "20 min read",
+    "publishDate": "2024-01-29T00:00:00.000Z",
+    "author": "IIS Quality Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "GD&T",
+        "id": "69077deca6dbdcfea3f81b32"
+      },
+      {
+        "tag": "ASME Y14.5",
+        "id": "69077deca6dbdcfea3f81b33"
+      },
+      {
+        "tag": "Geometric Tolerancing",
+        "id": "69077deca6dbdcfea3f81b34"
+      },
+      {
+        "tag": "Inspection",
+        "id": "69077deca6dbdcfea3f81b35"
+      },
+      {
+        "tag": "CMM",
+        "id": "69077deca6dbdcfea3f81b36"
+      },
+      {
+        "tag": "Quality",
+        "id": "69077deca6dbdcfea3f81b37"
+      }
+    ],
+    "seo": {
+      "metaTitle": "GD&T Guide ASME Y14.5-2018 | Geometric Tolerancing & Inspection",
+      "metaDescription": "Complete GD&T guide per ASME Y14.5-2018. Learn all 14 geometric tolerances, datum reference frames, material condition modifiers, tolerance stack-up, and CMM inspection methods.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-38",
+    "title": "FMEA Guide: Failure Mode and Effects Analysis for Manufacturing Quality",
+    "slug": {
+      "_type": "slug",
+      "current": "failure-mode-effects-analysis-guide"
+    },
+    "excerpt": "Comprehensive FMEA implementation guide for precision manufacturing. Learn Process FMEA, Design FMEA, RPN calculations, AIAG-VDA methodology, risk reduction strategies, and real-world examples for quality improvement.",
+    "content": [],
+    "category": "quality-compliance",
+    "difficulty": "Intermediate",
+    "readTime": "17 min read",
+    "publishDate": "2024-01-25T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "FMEA",
+        "id": "69077deca6dbdcfea3f81b38"
+      },
+      {
+        "tag": "Quality",
+        "id": "69077deca6dbdcfea3f81b39"
+      },
+      {
+        "tag": "Risk Management",
+        "id": "69077deca6dbdcfea3f81b3a"
+      },
+      {
+        "tag": "Process Improvement",
+        "id": "69077deca6dbdcfea3f81b3b"
+      },
+      {
+        "tag": "ISO 9001",
+        "id": "69077deca6dbdcfea3f81b3c"
+      },
+      {
+        "tag": "AS9100",
+        "id": "69077deca6dbdcfea3f81b3d"
+      }
+    ],
+    "seo": {
+      "metaTitle": "FMEA Guide | Process & Design FMEA, RPN Calculations & Risk Reduction",
+      "metaDescription": "Complete FMEA implementation guide for manufacturing. AIAG-VDA methodology, RPN thresholds, severity/occurrence/detection ratings, real examples, and action priority for quality improvement.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-39",
+    "title": "Calibration and Measurement Equipment Management: ISO/IEC 17025, NIST Traceability & Gage R&R",
+    "slug": {
+      "_type": "slug",
+      "current": "calibration-management-systems"
+    },
+    "excerpt": "Comprehensive calibration management guide covering ISO/IEC 17025 requirements, calibration intervals, NIST traceability, Gage R&R studies, measurement uncertainty analysis, and calibration cost optimization for precision manufacturing.",
+    "content": [],
+    "category": "quality-compliance",
+    "difficulty": "Advanced",
+    "readTime": "20 min read",
+    "publishDate": "2024-01-25T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Calibration",
+        "id": "69077deca6dbdcfea3f81b3e"
+      },
+      {
+        "tag": "Metrology",
+        "id": "69077deca6dbdcfea3f81b3f"
+      },
+      {
+        "tag": "Quality",
+        "id": "69077deca6dbdcfea3f81b40"
+      },
+      {
+        "tag": "ISO 17025",
+        "id": "69077deca6dbdcfea3f81b41"
+      },
+      {
+        "tag": "Standards",
+        "id": "69077deca6dbdcfea3f81b42"
+      },
+      {
+        "tag": "Compliance",
+        "id": "69077deca6dbdcfea3f81b43"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Calibration Management Systems | ISO 17025, NIST Traceability, Gage R&R",
+      "metaDescription": "Complete calibration management guide with ISO/IEC 17025 requirements, calibration interval formulas, measurement uncertainty budgets, Gage R&R analysis, and recall systems.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-40",
+    "title": "AS9100D Compliance Checklist for Aerospace Manufacturing",
+    "slug": {
+      "_type": "slug",
+      "current": "as9100d-compliance-checklist"
+    },
+    "excerpt": "Comprehensive AS9100D compliance checklist with interactive tracking tools. Ensure your aerospace manufacturing operations meet quality management system requirements.",
+    "content": [],
+    "category": "quality-compliance",
+    "difficulty": "Intermediate",
+    "readTime": "15 min read",
+    "publishDate": "2024-01-22T00:00:00.000Z",
+    "author": "IIS Quality Assurance Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "AS9100D",
+        "id": "69077deca6dbdcfea3f81b44"
+      },
+      {
+        "tag": "Quality",
+        "id": "69077deca6dbdcfea3f81b45"
+      },
+      {
+        "tag": "Compliance",
+        "id": "69077deca6dbdcfea3f81b46"
+      },
+      {
+        "tag": "Aerospace",
+        "id": "69077deca6dbdcfea3f81b47"
+      },
+      {
+        "tag": "Certification",
+        "id": "69077deca6dbdcfea3f81b48"
+      },
+      {
+        "tag": "QMS",
+        "id": "69077deca6dbdcfea3f81b49"
+      }
+    ],
+    "seo": {
+      "metaTitle": "AS9100D Compliance Checklist | Aerospace Quality Requirements",
+      "metaDescription": "Complete AS9100D compliance checklist for aerospace manufacturers. Interactive tool to track quality management system requirements and certification readiness.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-41",
+    "title": "Advanced Metrology and Inspection Services Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "advanced-metrology-inspection-services"
+    },
+    "excerpt": "Comprehensive guide to precision measurement and inspection services. Learn about CMM programming, GD&T implementation, optical measurement, and how IIS ensures zero-defect quality for critical components.",
+    "content": [],
+    "category": "quality-compliance",
+    "difficulty": "Advanced",
+    "readTime": "20 min read",
+    "publishDate": "2024-01-31T00:00:00.000Z",
+    "author": "IIS Metrology Department",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Metrology",
+        "id": "69077deca6dbdcfea3f81b4a"
+      },
+      {
+        "tag": "CMM",
+        "id": "69077deca6dbdcfea3f81b4b"
+      },
+      {
+        "tag": "Inspection",
+        "id": "69077deca6dbdcfea3f81b4c"
+      },
+      {
+        "tag": "GD&T",
+        "id": "69077deca6dbdcfea3f81b4d"
+      },
+      {
+        "tag": "Quality Control",
+        "id": "69077deca6dbdcfea3f81b4e"
+      },
+      {
+        "tag": "Measurement",
+        "id": "69077deca6dbdcfea3f81b4f"
+      },
+      {
+        "tag": "Calibration",
+        "id": "69077deca6dbdcfea3f81b50"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Precision Metrology & Inspection Services | Complete Guide",
+      "metaDescription": "Master advanced metrology and inspection techniques. Expert guide covering CMM, optical measurement, surface analysis, and quality assurance for precision manufacturing.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-42",
+    "title": "Semiconductor Equipment Precision Component Manufacturing",
+    "slug": {
+      "_type": "slug",
+      "current": "semiconductor-precision-manufacturing"
+    },
+    "excerpt": "Complete guide to manufacturing ultra-precision components for semiconductor equipment: vacuum chambers, wafer handling systems, and process tool components with cleanliness Class 1-10.",
+    "content": [],
+    "category": "industry-applications",
+    "difficulty": "Advanced",
+    "readTime": "19 min read",
+    "publishDate": "2024-01-25T00:00:00.000Z",
+    "author": "IIS Advanced Manufacturing Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Semiconductor",
+        "id": "69077deca6dbdcfea3f81b51"
+      },
+      {
+        "tag": "Ultra-Precision",
+        "id": "69077deca6dbdcfea3f81b52"
+      },
+      {
+        "tag": "Vacuum Chambers",
+        "id": "69077deca6dbdcfea3f81b53"
+      },
+      {
+        "tag": "Cleanroom",
+        "id": "69077deca6dbdcfea3f81b54"
+      },
+      {
+        "tag": "Advanced Manufacturing",
+        "id": "69077deca6dbdcfea3f81b55"
+      },
+      {
+        "tag": "High-Tech",
+        "id": "69077deca6dbdcfea3f81b56"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Semiconductor Equipment Manufacturing | Ultra-Precision Components",
+      "metaDescription": "Expert guide to semiconductor equipment component manufacturing. Learn cleanliness requirements, ultra-precision tolerances, material specifications, and testing protocols.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-43",
+    "title": "Robotics and Automation Component Manufacturing: Precision Gears, Actuators & End Effectors",
+    "slug": {
+      "_type": "slug",
+      "current": "robotics-automation-components"
+    },
+    "excerpt": "Comprehensive guide to precision component manufacturing for robotics and automation. Learn gear accuracy standards (DIN 5-8), backlash specifications, bearing preload, actuator tolerances, and assembly requirements for high-performance robotic systems.",
+    "content": [],
+    "category": "industry-applications",
+    "difficulty": "Advanced",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-26T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Robotics",
+        "id": "69077deca6dbdcfea3f81b57"
+      },
+      {
+        "tag": "Automation",
+        "id": "69077deca6dbdcfea3f81b58"
+      },
+      {
+        "tag": "Gears",
+        "id": "69077deca6dbdcfea3f81b59"
+      },
+      {
+        "tag": "Precision",
+        "id": "69077deca6dbdcfea3f81b5a"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81b5b"
+      },
+      {
+        "tag": "Assembly",
+        "id": "69077deca6dbdcfea3f81b5c"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Robotics Component Manufacturing | Precision Gears, Actuators, End Effectors",
+      "metaDescription": "Complete robotics and automation component manufacturing guide with gear tolerances (DIN 5-8), backlash <0.002\", positioning accuracy, and precision assembly specifications.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-44",
+    "title": "Oil & Gas Precision Components Manufacturing: Complete Technical Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "oil-gas-precision-components"
+    },
+    "excerpt": "Comprehensive guide to manufacturing precision components for oil and gas applications. Downhole tools, valves, high-pressure fittings, material selection, and NACE MR0175 compliance.",
+    "content": [],
+    "category": "industry-applications",
+    "difficulty": "Advanced",
+    "readTime": "17 min read",
+    "publishDate": "2024-01-26T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Oil & Gas",
+        "id": "69077deca6dbdcfea3f81b5d"
+      },
+      {
+        "tag": "Downhole",
+        "id": "69077deca6dbdcfea3f81b5e"
+      },
+      {
+        "tag": "Valves",
+        "id": "69077deca6dbdcfea3f81b5f"
+      },
+      {
+        "tag": "High-Pressure",
+        "id": "69077deca6dbdcfea3f81b60"
+      },
+      {
+        "tag": "NACE",
+        "id": "69077deca6dbdcfea3f81b61"
+      },
+      {
+        "tag": "Corrosion",
+        "id": "69077deca6dbdcfea3f81b62"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Oil & Gas Precision Components Guide | Downhole Tools, Valves, NACE Compliance",
+      "metaDescription": "Complete guide to precision manufacturing for oil and gas. Downhole tools, high-pressure components, NACE MR0175 compliance, and corrosive environment materials.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-45",
+    "title": "Medical Device Precision Manufacturing Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "medical-device-precision-manufacturing"
+    },
+    "excerpt": "Complete guide to manufacturing medical devices and implants. Learn about FDA compliance, biocompatible materials, clean room requirements, and the precision needed for life-critical components.",
+    "content": [],
+    "category": "industry-applications",
+    "difficulty": "Advanced",
+    "readTime": "22 min read",
+    "publishDate": "2024-01-30T00:00:00.000Z",
+    "author": "IIS Medical Division",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Medical Devices",
+        "id": "69077deca6dbdcfea3f81b63"
+      },
+      {
+        "tag": "FDA",
+        "id": "69077deca6dbdcfea3f81b64"
+      },
+      {
+        "tag": "ISO 13485",
+        "id": "69077deca6dbdcfea3f81b65"
+      },
+      {
+        "tag": "Biocompatibility",
+        "id": "69077deca6dbdcfea3f81b66"
+      },
+      {
+        "tag": "Clean Room",
+        "id": "69077deca6dbdcfea3f81b67"
+      },
+      {
+        "tag": "Implants",
+        "id": "69077deca6dbdcfea3f81b68"
+      },
+      {
+        "tag": "Surgical Instruments",
+        "id": "69077deca6dbdcfea3f81b69"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Medical Device Manufacturing | FDA Compliant Precision Machining",
+      "metaDescription": "Expert guide to medical device manufacturing covering FDA regulations, ISO 13485, biocompatible materials, and precision machining for implants and surgical instruments.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-46",
+    "title": "Marine & Naval Precision Manufacturing: Corrosion-Resistant Components Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "marine-naval-precision-manufacturing"
+    },
+    "excerpt": "Comprehensive guide to precision manufacturing for marine and naval applications. Learn material selection for seawater corrosion resistance, MIL-DTL-16232 and NAVSEA requirements, propeller shafts, valve bodies, and galvanic compatibility.",
+    "content": [],
+    "category": "industry-applications",
+    "difficulty": "Advanced",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-26T00:00:00.000Z",
+    "author": "IIS Technical Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Marine",
+        "id": "69077deca6dbdcfea3f81b6a"
+      },
+      {
+        "tag": "Naval",
+        "id": "69077deca6dbdcfea3f81b6b"
+      },
+      {
+        "tag": "Corrosion Resistance",
+        "id": "69077deca6dbdcfea3f81b6c"
+      },
+      {
+        "tag": "Stainless Steel",
+        "id": "69077deca6dbdcfea3f81b6d"
+      },
+      {
+        "tag": "Bronze",
+        "id": "69077deca6dbdcfea3f81b6e"
+      },
+      {
+        "tag": "Titanium",
+        "id": "69077deca6dbdcfea3f81b6f"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Marine & Naval Manufacturing Guide | Seawater Corrosion, MIL-DTL-16232, Materials",
+      "metaDescription": "Complete marine and naval component manufacturing guide. Material selection for saltwater corrosion, nickel-aluminum bronze, super duplex stainless, MIL-DTL-16232, NAVSEA specs, and galvanic compatibility.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-47",
+    "title": "Precision Manufacturing for Energy Turbine Components",
+    "slug": {
+      "_type": "slug",
+      "current": "energy-turbine-components-manufacturing"
+    },
+    "excerpt": "Comprehensive guide to manufacturing critical turbine components for power generation. Learn about blade manufacturing, rotor assemblies, and the precision requirements for reliable energy production.",
+    "content": [],
+    "category": "industry-applications",
+    "difficulty": "Advanced",
+    "readTime": "18 min read",
+    "publishDate": "2024-01-29T00:00:00.000Z",
+    "author": "IIS Energy Division",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Turbines",
+        "id": "69077deca6dbdcfea3f81b70"
+      },
+      {
+        "tag": "Energy",
+        "id": "69077deca6dbdcfea3f81b71"
+      },
+      {
+        "tag": "Power Generation",
+        "id": "69077deca6dbdcfea3f81b72"
+      },
+      {
+        "tag": "Blade Manufacturing",
+        "id": "69077deca6dbdcfea3f81b73"
+      },
+      {
+        "tag": "Precision Machining",
+        "id": "69077deca6dbdcfea3f81b74"
+      },
+      {
+        "tag": "Quality Control",
+        "id": "69077deca6dbdcfea3f81b75"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Turbine Component Manufacturing for Energy | Complete Guide",
+      "metaDescription": "Master turbine component manufacturing for power generation. Expert guide covering blade aerodynamics, material selection, and precision manufacturing techniques.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-48",
+    "title": "ITAR Compliance Guide for Defense Manufacturing",
+    "slug": {
+      "_type": "slug",
+      "current": "defense-itar-manufacturing-guide"
+    },
+    "excerpt": "Complete guide to ITAR (International Traffic in Arms Regulations) compliance for defense contractors. Learn requirements, best practices, and how IIS supports secure defense manufacturing.",
+    "content": [],
+    "category": "industry-applications",
+    "difficulty": "Advanced",
+    "readTime": "20 min read",
+    "publishDate": "2024-01-28T00:00:00.000Z",
+    "author": "IIS Compliance Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "ITAR",
+        "id": "69077deca6dbdcfea3f81b76"
+      },
+      {
+        "tag": "Defense",
+        "id": "69077deca6dbdcfea3f81b77"
+      },
+      {
+        "tag": "Compliance",
+        "id": "69077deca6dbdcfea3f81b78"
+      },
+      {
+        "tag": "Security",
+        "id": "69077deca6dbdcfea3f81b79"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81b7a"
+      },
+      {
+        "tag": "Government",
+        "id": "69077deca6dbdcfea3f81b7b"
+      }
+    ],
+    "seo": {
+      "metaTitle": "ITAR Compliance for Defense Manufacturing | Complete Guide",
+      "metaDescription": "Master ITAR compliance for defense manufacturing. Comprehensive guide covering registration, technical data control, and secure manufacturing practices.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-49",
+    "title": "Automotive Precision Manufacturing and Component Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "automotive-precision-manufacturing"
+    },
+    "excerpt": "Complete guide to automotive component precision manufacturing: engine components, transmission parts, chassis systems. IATF 16949 requirements, PPAP, APQP, and production volumes.",
+    "content": [],
+    "category": "industry-applications",
+    "difficulty": "Advanced",
+    "readTime": "17 min read",
+    "publishDate": "2024-01-30T00:00:00.000Z",
+    "author": "IIS Manufacturing Engineering Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Automotive",
+        "id": "69077deca6dbdcfea3f81b7c"
+      },
+      {
+        "tag": "IATF 16949",
+        "id": "69077deca6dbdcfea3f81b7d"
+      },
+      {
+        "tag": "PPAP",
+        "id": "69077deca6dbdcfea3f81b7e"
+      },
+      {
+        "tag": "Engine Components",
+        "id": "69077deca6dbdcfea3f81b7f"
+      },
+      {
+        "tag": "Transmission",
+        "id": "69077deca6dbdcfea3f81b80"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81b81"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Automotive Precision Manufacturing Guide | IATF 16949, PPAP & APQP",
+      "metaDescription": "Expert automotive manufacturing guide. Learn IATF 16949 requirements, PPAP documentation, APQP phases, engine and transmission component tolerances, and production rates.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  },
+  {
+    "_type": "resource",
+    "_id": "resource-50",
+    "title": "Aerospace Engine Components Precision Manufacturing Guide",
+    "slug": {
+      "_type": "slug",
+      "current": "aerospace-engine-components-manufacturing"
+    },
+    "excerpt": "Comprehensive guide to jet engine component manufacturing including turbine blades, vanes, combustor liners, and casings. Expert insights on superalloys, coatings, and precision tolerances.",
+    "content": [],
+    "category": "industry-applications",
+    "difficulty": "Advanced",
+    "readTime": "20 min read",
+    "publishDate": "2024-01-26T00:00:00.000Z",
+    "author": "IIS Aerospace Manufacturing Team",
+    "featured": true,
+    "tags": [
+      {
+        "tag": "Aerospace",
+        "id": "69077deca6dbdcfea3f81b82"
+      },
+      {
+        "tag": "Jet Engines",
+        "id": "69077deca6dbdcfea3f81b83"
+      },
+      {
+        "tag": "Turbine",
+        "id": "69077deca6dbdcfea3f81b84"
+      },
+      {
+        "tag": "Superalloys",
+        "id": "69077deca6dbdcfea3f81b85"
+      },
+      {
+        "tag": "Precision",
+        "id": "69077deca6dbdcfea3f81b86"
+      },
+      {
+        "tag": "Manufacturing",
+        "id": "69077deca6dbdcfea3f81b87"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Aerospace Engine Components Manufacturing | Turbine Blades & Hot Section Parts",
+      "metaDescription": "Master jet engine component manufacturing with our complete guide. Turbine blades, combustor liners, casings, and critical hot section parts with tolerances to ±0.0005 inches.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    }
+  }
+]

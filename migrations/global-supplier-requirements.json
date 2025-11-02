@@ -1,0 +1,131 @@
+{
+  "globalType": "supplier-requirements",
+  "hero": {
+    "title": "SUPPLIER QUALITY",
+    "description": "Comprehensive standards ensuring excellence in aerospace and precision manufacturing supply chain"
+  },
+  "sections": [
+    {
+      "id": "purpose",
+      "title": "PURPOSE",
+      "content": "The purpose of this document is to establish a uniform process for supplier quality requirements."
+    },
+    {
+      "id": "scope",
+      "title": "SCOPE",
+      "content": "This Standard Operating Procedure applies to the process of supplier quality requirements."
+    }
+  ],
+  "requirements": [
+    {
+      "title": "Supplier Responsibility",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81bff"
+    },
+    {
+      "title": "Non-Conformity Reporting",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c00"
+    },
+    {
+      "title": "Right to Monitor",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c01"
+    },
+    {
+      "title": "Personnel Qualifications",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c02"
+    },
+    {
+      "title": "Quality System Requirements",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c03"
+    },
+    {
+      "title": "Change Notification",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c04"
+    },
+    {
+      "title": "Supply Chain Requirements",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c05"
+    },
+    {
+      "title": "Record Retention",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c06"
+    },
+    {
+      "title": "Test Specimens",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c07"
+    },
+    {
+      "title": "Technical Documentation",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c08"
+    },
+    {
+      "title": "Certificate of Compliance",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c09"
+    },
+    {
+      "title": "Packaging Requirements",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c0a"
+    },
+    {
+      "title": "First Article Evaluation",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c0b"
+    },
+    {
+      "title": "Calibration Requirements",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c0c"
+    },
+    {
+      "title": "Test Data",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c0d"
+    },
+    {
+      "title": "ITAR Compliance",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c0e"
+    },
+    {
+      "title": "Counterfeit Work/Parts",
+      "items": [],
+      "id": "69077deca6dbdcfea3f81c0f"
+    }
+  ],
+  "additionalSections": [
+    {
+      "title": "Record Retention",
+      "content": "Suppliers with direct impact on product quality (i.e. calibration labs) must keep records on file for at least five (5) years for each product service when applicable.",
+      "id": "69077deca6dbdcfea3f81c10"
+    },
+    {
+      "title": "Supplier Contributions to Quality",
+      "id": "69077deca6dbdcfea3f81c11"
+    }
+  ],
+  "footerNote": {
+    "iconName": "Shield",
+    "heading": "Compliance Commitment",
+    "content": "By accepting purchase orders from Integrated Inspection Systems, Inc., suppliers acknowledge and agree to comply with all requirements stated in this document. Continuous improvement and commitment to quality excellence are fundamental expectations of our supply chain partners."
+  },
+  "id": "6903339c064e752c39563f4b",
+  "seo": {
+    "ogImageGroup": {
+      "ogImageSource": "upload"
+    },
+    "keywords": [],
+    "twitterCard": "summary_large_image",
+    "noindex": false
+  }
+}

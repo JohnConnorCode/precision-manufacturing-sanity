@@ -1,0 +1,285 @@
+{
+  "_type": "about",
+  "_id": "about",
+  "globalType": "about",
+  "hero": {
+    "imageAlt": "Precision manufacturing facility - 30 years of excellence",
+    "badge": "PRECISION MANUFACTURING SINCE 1995",
+    "badgeIconName": "Factory",
+    "title": "About",
+    "titleHighlight": "Our Company",
+    "description": "From basement startup to industry leader. Three decades of precision manufacturing excellence serving aerospace, defense, and advanced industries with ISO 9001, AS9100, and ITAR certification.",
+    "buttons": [
+      {
+        "label": "Our Capabilities",
+        "href": "#capabilities",
+        "variant": "primary",
+        "id": "69077deca6dbdcfea3f81bae"
+      },
+      {
+        "label": "Contact Our Team",
+        "href": "/contact",
+        "variant": "secondary",
+        "id": "69077deca6dbdcfea3f81baf"
+      }
+    ],
+    "backgroundImageSource": "upload"
+  },
+  "companyStats": [
+    {
+      "label": "Years in Business",
+      "value": "30+",
+      "description": "Decades of experience",
+      "id": "69077deca6dbdcfea3f81bb0"
+    },
+    {
+      "label": "Team Members",
+      "value": "150+",
+      "description": "Skilled professionals",
+      "id": "69077deca6dbdcfea3f81bb1"
+    },
+    {
+      "label": "Annual Revenue",
+      "value": "$25M+",
+      "description": "Consistent growth",
+      "id": "69077deca6dbdcfea3f81bb2"
+    },
+    {
+      "label": "Facility Size",
+      "value": "45,000",
+      "description": "Square feet",
+      "id": "69077deca6dbdcfea3f81bb3"
+    }
+  ],
+  "story": {
+    "title": "Our Story",
+    "paragraph1": "Integrated Inspection Systems was founded in 1995, starting in a residential basement with a desk, computer, and a pair of calipers. Our founders came from Precision Castparts Inc, bringing aerospace expertise and a commitment to quality. From 1995-1996, we established cash flow through small business networking while developing a comprehensive quality manual. We then leased our first Zeiss CMM from Hanard Machine in Salem, Oregon, and began serving the plastics industry with a focus on precision metrology.",
+    "paragraph2": "Our breakthrough came when we applied aerospace GD&T principles to high-volume metrology, a capability few suppliers could match. This led us to purchase our own Zeiss CMM in late 1998 and move to Beaverton, Oregon. We developed proprietary software, MetBase, which revolutionized our ability to integrate CMM data, CNC machines, and vision systems into a closed-loop manufacturing system. By 2001, we had developed a 3-sigma machining system and relocated to our current 20,000 square foot facility in Clackamas, Oregon.",
+    "paragraph3": "Today, we're an ISO 9001 and AS9100 certified, ITAR-registered provider of engineering, metrology, machining, and database services. Our 3-sigma manufacturing system and proprietary MetBase software enable us to deliver industry-leading precision components for aerospace, defense, and advanced industries.",
+    "imageAlt": "IIS manufacturing facility in Clackamas, Oregon - 20,000 square feet with advanced machining and metrology equipment",
+    "imageSource": "upload"
+  },
+  "timeline": {
+    "title": "Our Journey",
+    "description": "Three decades of growth, innovation, and excellence in precision manufacturing.",
+    "milestones": [
+      {
+        "year": "1995",
+        "title": "IIS Founded",
+        "description": "Started in a residential basement with founders from Precision Castparts Inc. Initial focus on small business networking and quality manual development.",
+        "id": "69077deca6dbdcfea3f81bb4"
+      },
+      {
+        "year": "1998",
+        "title": "First CMM Purchased",
+        "description": "Purchased our own Zeiss CMM and established facility in Beaverton, Oregon. Began high-volume metrology for Hewlett Packard and plastics industry.",
+        "id": "69077deca6dbdcfea3f81bb5"
+      },
+      {
+        "year": "1999-2001",
+        "title": "MetBase Software Development",
+        "description": "Developed proprietary MetBase software to integrate CMM data, CNC machines, and vision systems. Established 3-sigma closed-loop manufacturing system.",
+        "id": "69077deca6dbdcfea3f81bb6"
+      },
+      {
+        "year": "2001",
+        "title": "Aerospace Transition",
+        "description": "Pivoted to aerospace inspection and machining after dot-com bubble. Relocated to SE Portland 5,000 sq ft facility. Added second Sheffield CMM.",
+        "id": "69077deca6dbdcfea3f81bb7"
+      },
+      {
+        "year": "2001-2008",
+        "title": "4-Sigma System Development",
+        "description": "Invented 4-sigma targeting system using MetBase on GE, Siemens, and Alstom IGT castings. Expanded to current 20,000 sq ft facility in Clackamas, Oregon.",
+        "id": "69077deca6dbdcfea3f81bb8"
+      },
+      {
+        "year": "Present",
+        "title": "Industry Leader",
+        "description": "ISO 9001 and AS9100 certified, ITAR registered provider of engineering, metrology, machining, and database services for aerospace and defense.",
+        "id": "69077deca6dbdcfea3f81bb9"
+      }
+    ]
+  },
+  "values": {
+    "title": "Our Values",
+    "description": "The principles that guide our decisions, shape our culture, and drive our commitment to excellence.",
+    "items": [
+      {
+        "title": "Quality Excellence",
+        "description": "Unwavering commitment to delivering components that exceed specifications and customer expectations.",
+        "iconName": "Award",
+        "bullets": [],
+        "id": "69077deca6dbdcfea3f81bba"
+      },
+      {
+        "title": "Innovation Leadership",
+        "description": "Pioneering advanced manufacturing technologies and processes to stay ahead of industry demands.",
+        "iconName": "Zap",
+        "bullets": [],
+        "id": "69077deca6dbdcfea3f81bbb"
+      },
+      {
+        "title": "Reliability & Trust",
+        "description": "Building long-term partnerships through consistent performance and transparent communication.",
+        "iconName": "Target",
+        "bullets": [],
+        "id": "69077deca6dbdcfea3f81bbc"
+      },
+      {
+        "title": "Team Excellence",
+        "description": "Investing in our people through training, development, and creating a culture of excellence.",
+        "iconName": "Users",
+        "bullets": [],
+        "id": "69077deca6dbdcfea3f81bbd"
+      }
+    ]
+  },
+  "capabilities": {
+    "title": "Core Capabilities",
+    "categories": [
+      {
+        "category": "Manufacturing",
+        "items": [
+          {
+            "item": "5-axis CNC machining",
+            "id": "69077deca6dbdcfea3f81bbe"
+          },
+          {
+            "item": "Adaptive manufacturing",
+            "id": "69077deca6dbdcfea3f81bbf"
+          },
+          {
+            "item": "Precision metrology",
+            "id": "69077deca6dbdcfea3f81bc0"
+          },
+          {
+            "item": "Surface treatments",
+            "id": "69077deca6dbdcfea3f81bc1"
+          }
+        ],
+        "id": "69077deca6dbdcfea3f81bc2"
+      },
+      {
+        "category": "Engineering",
+        "items": [
+          {
+            "item": "First article inspection",
+            "id": "69077deca6dbdcfea3f81bc3"
+          },
+          {
+            "item": "Process planning",
+            "id": "69077deca6dbdcfea3f81bc4"
+          },
+          {
+            "item": "CAD/CAM programming",
+            "id": "69077deca6dbdcfea3f81bc5"
+          },
+          {
+            "item": "Process development",
+            "id": "69077deca6dbdcfea3f81bc6"
+          }
+        ],
+        "id": "69077deca6dbdcfea3f81bc7"
+      },
+      {
+        "category": "Quality",
+        "items": [
+          {
+            "item": "First article inspection",
+            "id": "69077deca6dbdcfea3f81bc8"
+          },
+          {
+            "item": "Statistical process control",
+            "id": "69077deca6dbdcfea3f81bc9"
+          },
+          {
+            "item": "Material traceability",
+            "id": "69077deca6dbdcfea3f81bca"
+          },
+          {
+            "item": "Certification support",
+            "id": "69077deca6dbdcfea3f81bcb"
+          }
+        ],
+        "id": "69077deca6dbdcfea3f81bcc"
+      },
+      {
+        "category": "Industries",
+        "items": [
+          {
+            "item": "Aerospace systems",
+            "id": "69077deca6dbdcfea3f81bcd"
+          },
+          {
+            "item": "Defense platforms",
+            "id": "69077deca6dbdcfea3f81bce"
+          },
+          {
+            "item": "Energy infrastructure",
+            "id": "69077deca6dbdcfea3f81bcf"
+          },
+          {
+            "item": "Medical devices",
+            "id": "69077deca6dbdcfea3f81bd0"
+          }
+        ],
+        "id": "69077deca6dbdcfea3f81bd1"
+      }
+    ]
+  },
+  "certifications": {
+    "title": "Certifications & Standards",
+    "items": [
+      {
+        "certification": "AS9100D Aerospace Quality Management",
+        "id": "69077deca6dbdcfea3f81bd2"
+      },
+      {
+        "certification": "ISO 9001:2015 Quality Management",
+        "id": "69077deca6dbdcfea3f81bd3"
+      },
+      {
+        "certification": "ITAR International Traffic in Arms",
+        "id": "69077deca6dbdcfea3f81bd4"
+      },
+      {
+        "certification": "CMMC Cybersecurity Maturity Model Certification",
+        "id": "69077deca6dbdcfea3f81bd5"
+      },
+      {
+        "certification": "OSHA Safety Management System",
+        "id": "69077deca6dbdcfea3f81bd6"
+      }
+    ],
+    "commitmentTitle": "Commitment to Excellence",
+    "commitmentDescription": "Our certifications represent more than compliance—they reflect our unwavering commitment to quality, safety, and continual improvement in everything we do."
+  },
+  "cta": {
+    "title": "Partner with Us",
+    "description": "Experience the difference that three decades of precision manufacturing excellence can make for your critical components.",
+    "buttons": [
+      {
+        "label": "Start Your Project",
+        "href": "/contact",
+        "variant": "primary",
+        "id": "69077deca6dbdcfea3f81bd7"
+      },
+      {
+        "label": "Explore Our Services",
+        "href": "/services",
+        "variant": "secondary",
+        "id": "69077deca6dbdcfea3f81bd8"
+      }
+    ]
+  },
+  "id": "69031774504382bc5a751e12",
+  "seo": {
+    "ogImageGroup": {
+      "ogImageSource": "upload"
+    },
+    "keywords": [],
+    "twitterCard": "summary_large_image",
+    "noindex": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "_type": "pagecontent",
+  "_id": "pagecontent",
+  "capabilities": [],
+  "qualityAssurance": [],
+  "hero": {
+    "buttons": [],
+    "backgroundImageSource": "upload"
+  },
+  "sections": [],
+  "seo": {
+    "ogImageGroup": {
+      "ogImageSource": "upload"
+    },
+    "keywords": [],
+    "twitterCard": "summary_large_image",
+    "noindex": false
+  }
+}

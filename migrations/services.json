@@ -1,0 +1,840 @@
+[
+  {
+    "title": "Engineering Services",
+    "slug": "engineering",
+    "description": {
+      "root": {
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "Expert design, analysis, and manufacturing engineering support for complex precision components",
+                "type": "text"
+              }
+            ]
+          }
+        ],
+        "direction": null,
+        "format": "",
+        "indent": 0,
+        "type": "root",
+        "version": 1
+      }
+    },
+    "shortDescription": "Design optimization and manufacturing consultation",
+    "specs": [
+      {
+        "spec": "DFM analysis",
+        "id": "69077deba6dbdcfea3f8199a"
+      },
+      {
+        "spec": "Process planning",
+        "id": "69077deba6dbdcfea3f8199b"
+      },
+      {
+        "spec": "Cost optimization",
+        "id": "69077deba6dbdcfea3f8199c"
+      }
+    ],
+    "highlight": false,
+    "order": 4,
+    "createdAt": "2025-10-30T06:18:55.891Z",
+    "updatedAt": "2025-10-30T06:18:55.891Z",
+    "capabilities": [
+      {
+        "label": "CAD Design",
+        "value": "NX/Fusion",
+        "description": "Advanced 3D modeling and parametric design",
+        "id": "69077deba6dbdcfea3f8198d"
+      },
+      {
+        "label": "FEA Analysis",
+        "value": "ANSYS",
+        "description": "Structural, thermal, and fatigue analysis",
+        "id": "69077deba6dbdcfea3f8198e"
+      },
+      {
+        "label": "Manufacturing Support",
+        "value": "Full Support",
+        "description": "Process selection and optimization",
+        "id": "69077deba6dbdcfea3f8198f"
+      },
+      {
+        "label": "Design Review",
+        "value": "Expert Review",
+        "description": "Independent design validation and optimization",
+        "id": "69077deba6dbdcfea3f81990"
+      }
+    ],
+    "equipment": [
+      {
+        "name": "CAD Workstation",
+        "id": "69077deba6dbdcfea3f81998"
+      },
+      {
+        "name": "FEA Analysis Software",
+        "id": "69077deba6dbdcfea3f81999"
+      }
+    ],
+    "hero": {
+      "subtitle": "Design Excellence Through Expertise",
+      "badge": "ADVANCED ENGINEERING SERVICES",
+      "backgroundImageSource": "upload"
+    },
+    "overview": {
+      "description": "Comprehensive engineering services combining cutting-edge design tools, analysis capabilities, and manufacturing expertise to optimize your components for performance and manufacturability."
+    },
+    "process": [
+      {
+        "title": "Design Requirements Analysis",
+        "description": "Understand application needs and constraints",
+        "features": [],
+        "id": "69077deba6dbdcfea3f81994"
+      },
+      {
+        "title": "Preliminary Design",
+        "description": "Create initial design concepts with analysis",
+        "features": [],
+        "id": "69077deba6dbdcfea3f81995"
+      },
+      {
+        "title": "Detailed Design & Analysis",
+        "description": "Optimize design with FEA and manufacturing input",
+        "features": [],
+        "id": "69077deba6dbdcfea3f81996"
+      },
+      {
+        "title": "Design Documentation",
+        "description": "Complete design package for manufacturing",
+        "features": [],
+        "id": "69077deba6dbdcfea3f81997"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Engineering Design & Analysis Services | Manufacturing Expertise",
+      "metaDescription": "CAD/CAM design, FEA analysis, and DFM support. Design optimization for performance and manufacturability.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    },
+    "technicalSpecs": {
+      "tolerances": {
+        "dimensional": "Design per specification",
+        "geometric": "GD&T analysis and optimization",
+        "repeatability": "Design verification and validation"
+      },
+      "materials": [
+        {
+          "material": "Analysis Support",
+          "grade": "All materials",
+          "id": "69077deba6dbdcfea3f81991"
+        },
+        {
+          "material": "Design Services",
+          "grade": "All industries",
+          "id": "69077deba6dbdcfea3f81992"
+        },
+        {
+          "material": "Consulting",
+          "grade": "Expert support",
+          "id": "69077deba6dbdcfea3f81993"
+        }
+      ]
+    },
+    "id": "69030353f0d205b6f5595aed",
+    "services": [],
+    "materials": [],
+    "processes": [],
+    "imageSource": "upload"
+  },
+  {
+    "title": "Metrology Services",
+    "slug": "metrology",
+    "description": {
+      "root": {
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "Precision measurement and dimensional inspection services for critical manufacturing components",
+                "type": "text"
+              }
+            ]
+          }
+        ],
+        "direction": null,
+        "format": "",
+        "indent": 0,
+        "type": "root",
+        "version": 1
+      }
+    },
+    "shortDescription": "Complete dimensional verification with CMM and laser scanning",
+    "specs": [
+      {
+        "spec": "0.00005\" accuracy",
+        "id": "69077deba6dbdcfea3f819ab"
+      },
+      {
+        "spec": "GD&T analysis",
+        "id": "69077deba6dbdcfea3f819ac"
+      },
+      {
+        "spec": "AS9102 certified",
+        "id": "69077deba6dbdcfea3f819ad"
+      }
+    ],
+    "highlight": false,
+    "order": 3,
+    "createdAt": "2025-10-30T06:18:55.891Z",
+    "updatedAt": "2025-10-30T06:18:55.891Z",
+    "capabilities": [
+      {
+        "label": "Measurement Accuracy",
+        "value": "±0.0001\"",
+        "description": "Ultra-precision measurement capability",
+        "id": "69077deba6dbdcfea3f8199d"
+      },
+      {
+        "label": "CMM Probing",
+        "value": "Multi-Sensor",
+        "description": "Optical and contact probing for complex geometries",
+        "id": "69077deba6dbdcfea3f8199e"
+      },
+      {
+        "label": "SPC Analysis",
+        "value": "Real-Time",
+        "description": "Statistical process control with immediate feedback",
+        "id": "69077deba6dbdcfea3f8199f"
+      },
+      {
+        "label": "Documentation",
+        "value": "Full Traceability",
+        "description": "Complete measurement records and certifications",
+        "id": "69077deba6dbdcfea3f819a0"
+      }
+    ],
+    "equipment": [
+      {
+        "name": "Coordinate Measuring Machine (CMM)",
+        "id": "69077deba6dbdcfea3f819a9"
+      },
+      {
+        "name": "Vision Inspection System",
+        "id": "69077deba6dbdcfea3f819aa"
+      }
+    ],
+    "hero": {
+      "subtitle": "Precision Measurement Excellence",
+      "badge": "ADVANCED METROLOGY SERVICES",
+      "backgroundImageSource": "upload"
+    },
+    "overview": {
+      "description": "Comprehensive metrology services delivering precise dimensional verification, statistical analysis, and quality assurance documentation for all manufacturing applications."
+    },
+    "process": [
+      {
+        "title": "Measurement Planning",
+        "description": "Develop inspection protocol based on print requirements",
+        "features": [],
+        "id": "69077deba6dbdcfea3f819a5"
+      },
+      {
+        "title": "CMM Inspection",
+        "description": "Automated or manual coordinate measurement",
+        "features": [],
+        "id": "69077deba6dbdcfea3f819a6"
+      },
+      {
+        "title": "Statistical Analysis",
+        "description": "SPC analysis and trend evaluation",
+        "features": [],
+        "id": "69077deba6dbdcfea3f819a7"
+      },
+      {
+        "title": "Reporting & Documentation",
+        "description": "Comprehensive quality reports with traceability",
+        "features": [],
+        "id": "69077deba6dbdcfea3f819a8"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Precision Metrology & Dimensional Inspection | Quality Assurance",
+      "metaDescription": "CMM inspection, SPC analysis, and full traceability. ±0.00005\" accuracy. NIST-traceable measurements.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    },
+    "technicalSpecs": {
+      "tolerances": {
+        "dimensional": "±0.00005\" (±0.00127mm)",
+        "geometric": "0.0001\" (0.0025mm)",
+        "repeatability": "±0.000025\" (±0.0006mm)"
+      },
+      "materials": [
+        {
+          "material": "All Metals",
+          "grade": "Ferrous and non-ferrous",
+          "id": "69077deba6dbdcfea3f819a1"
+        },
+        {
+          "material": "Composites",
+          "grade": "Carbon fiber, aramid reinforced",
+          "id": "69077deba6dbdcfea3f819a2"
+        },
+        {
+          "material": "Ceramics",
+          "grade": "Technical ceramics",
+          "id": "69077deba6dbdcfea3f819a3"
+        },
+        {
+          "material": "Plastics",
+          "grade": "Engineering polymers",
+          "id": "69077deba6dbdcfea3f819a4"
+        }
+      ]
+    },
+    "id": "69030353f0d205b6f5595aec",
+    "services": [],
+    "materials": [],
+    "processes": [],
+    "imageSource": "upload"
+  },
+  {
+    "title": "Adaptive Machining",
+    "slug": "adaptive-machining",
+    "description": {
+      "root": {
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "Real-time adaptive machining technology that optimizes tool paths and parameters for superior surface finish and tool life",
+                "type": "text"
+              }
+            ]
+          }
+        ],
+        "direction": null,
+        "format": "",
+        "indent": 0,
+        "type": "root",
+        "version": 1
+      }
+    },
+    "shortDescription": "Real-time adjustments based on in-process measurements",
+    "specs": [
+      {
+        "spec": "In-process verification",
+        "id": "69077deba6dbdcfea3f819bc"
+      },
+      {
+        "spec": "Automated compensation",
+        "id": "69077deba6dbdcfea3f819bd"
+      },
+      {
+        "spec": "Zero defect goal",
+        "id": "69077deba6dbdcfea3f819be"
+      }
+    ],
+    "highlight": false,
+    "order": 2,
+    "createdAt": "2025-10-30T06:18:55.891Z",
+    "updatedAt": "2025-10-30T06:18:55.891Z",
+    "capabilities": [
+      {
+        "label": "Tool Life Extension",
+        "value": "40%",
+        "description": "Extended tool utilization through adaptive control",
+        "id": "69077deba6dbdcfea3f819ae"
+      },
+      {
+        "label": "Surface Finish",
+        "value": "Ra 8-32",
+        "description": "Optimized finish with reduced secondary operations",
+        "id": "69077deba6dbdcfea3f819af"
+      },
+      {
+        "label": "Feed Rate Optimization",
+        "value": "Dynamic",
+        "description": "Real-time adjustment for maximum efficiency",
+        "id": "69077deba6dbdcfea3f819b0"
+      },
+      {
+        "label": "Material Compatibility",
+        "value": "Universal",
+        "description": "Works with all machineable materials",
+        "id": "69077deba6dbdcfea3f819b1"
+      }
+    ],
+    "equipment": [
+      {
+        "name": "Milling Machine with Adaptive Control",
+        "id": "69077deba6dbdcfea3f819ba"
+      },
+      {
+        "name": "Tool Condition Monitoring System",
+        "id": "69077deba6dbdcfea3f819bb"
+      }
+    ],
+    "hero": {
+      "subtitle": "Intelligent Manufacturing Technology",
+      "badge": "ADVANCED ADAPTIVE CONTROL",
+      "backgroundImageSource": "upload"
+    },
+    "overview": {
+      "description": "Next-generation adaptive machining technology that monitors and adjusts cutting parameters in real-time for optimized tool life, surface finish, and productivity."
+    },
+    "process": [
+      {
+        "title": "Material & Setup Analysis",
+        "description": "Analyze material properties and optimize initial parameters",
+        "features": [],
+        "id": "69077deba6dbdcfea3f819b6"
+      },
+      {
+        "title": "Adaptive Machining Cycle",
+        "description": "Real-time monitoring and automatic parameter adjustment",
+        "features": [],
+        "id": "69077deba6dbdcfea3f819b7"
+      },
+      {
+        "title": "Predictive Maintenance",
+        "description": "Monitor tool wear and predict tool change points",
+        "features": [],
+        "id": "69077deba6dbdcfea3f819b8"
+      },
+      {
+        "title": "Quality Inspection",
+        "description": "Final verification of all surfaces and dimensions",
+        "features": [],
+        "id": "69077deba6dbdcfea3f819b9"
+      }
+    ],
+    "seo": {
+      "metaTitle": "Adaptive Machining & Smart Manufacturing | Precision Tooling",
+      "metaDescription": "Next-generation adaptive machining with real-time optimization. 40% tool life extension. Superior surface finish. Lower costs.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    },
+    "technicalSpecs": {
+      "tolerances": {
+        "dimensional": "±0.0005\" (±0.012mm)",
+        "geometric": "0.0005\" (0.012mm)",
+        "repeatability": "±0.0002\" (±0.005mm)"
+      },
+      "materials": [
+        {
+          "material": "Aluminum Alloys",
+          "grade": "All common grades",
+          "id": "69077deba6dbdcfea3f819b2"
+        },
+        {
+          "material": "Titanium Alloys",
+          "grade": "All grades including difficult-to-machine types",
+          "id": "69077deba6dbdcfea3f819b3"
+        },
+        {
+          "material": "Stainless Steel",
+          "grade": "All grades",
+          "id": "69077deba6dbdcfea3f819b4"
+        },
+        {
+          "material": "Cast Iron",
+          "grade": "All types",
+          "id": "69077deba6dbdcfea3f819b5"
+        }
+      ]
+    },
+    "id": "69030353f0d205b6f5595aeb",
+    "services": [],
+    "materials": [],
+    "processes": [],
+    "imageSource": "upload"
+  },
+  {
+    "title": "5-Axis Machining",
+    "slug": "5-axis-machining",
+    "description": {
+      "root": {
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "Advanced 5-axis simultaneous machining capabilities for the most complex aerospace and defense components",
+                "type": "text"
+              }
+            ]
+          }
+        ],
+        "direction": null,
+        "format": "",
+        "indent": 0,
+        "type": "root",
+        "version": 1
+      }
+    },
+    "shortDescription": "Complex geometries with unmatched precision for aerospace components",
+    "specs": [
+      {
+        "spec": "±0.0001\" tolerance",
+        "id": "69077deba6dbdcfea3f819f8"
+      },
+      {
+        "spec": "Titanium & super alloys",
+        "id": "69077deba6dbdcfea3f819f9"
+      },
+      {
+        "spec": "Up to 60\" parts",
+        "id": "69077deba6dbdcfea3f819fa"
+      }
+    ],
+    "highlight": true,
+    "order": 1,
+    "createdAt": "2025-10-30T06:18:55.891Z",
+    "updatedAt": "2025-10-30T06:18:55.891Z",
+    "capabilities": [
+      {
+        "label": "Simultaneous Axes",
+        "value": "5-Axis",
+        "description": "Full simultaneous multi-axis control",
+        "id": "69077deba6dbdcfea3f819bf"
+      },
+      {
+        "label": "Machining Accuracy",
+        "value": "±0.0001\"",
+        "description": "Precision tolerance capability",
+        "id": "69077deba6dbdcfea3f819c0"
+      },
+      {
+        "label": "Work Envelope",
+        "value": "48\" x 26\" x 20\"",
+        "description": "Maximum capacity",
+        "id": "69077deba6dbdcfea3f819c1"
+      },
+      {
+        "label": "Spindle Speed",
+        "value": "12,000 RPM",
+        "description": "High-speed capability",
+        "id": "69077deba6dbdcfea3f819c2"
+      }
+    ],
+    "equipment": [
+      {
+        "name": "5-Axis CNC Milling Machine",
+        "id": "69077deba6dbdcfea3f819cf"
+      },
+      {
+        "name": "CMM Coordinate Measuring Machine",
+        "id": "69077deba6dbdcfea3f819d0"
+      }
+    ],
+    "hero": {
+      "subtitle": "Precision Manufacturing Excellence",
+      "badge": "ADVANCED MACHINING SERVICES",
+      "backgroundImageSource": "upload"
+    },
+    "materials": [
+      {
+        "category": "Aluminum Alloys",
+        "types": [
+          {
+            "type": "6061-T6",
+            "id": "69077deba6dbdcfea3f819d1"
+          },
+          {
+            "type": "7075-T6",
+            "id": "69077deba6dbdcfea3f819d2"
+          },
+          {
+            "type": "2024-T3",
+            "id": "69077deba6dbdcfea3f819d3"
+          },
+          {
+            "type": "Mic-6 tooling plate",
+            "id": "69077deba6dbdcfea3f819d4"
+          }
+        ],
+        "applications": "Aerospace structures, defense components, tooling",
+        "id": "69077deba6dbdcfea3f819d5"
+      },
+      {
+        "category": "Titanium Alloys",
+        "types": [
+          {
+            "type": "Ti-6Al-4V",
+            "id": "69077deba6dbdcfea3f819d6"
+          },
+          {
+            "type": "Ti-6Al-2Sn-4Zr-2Mo",
+            "id": "69077deba6dbdcfea3f819d7"
+          },
+          {
+            "type": "Commercial pure titanium",
+            "id": "69077deba6dbdcfea3f819d8"
+          }
+        ],
+        "applications": "Aerospace engines, medical implants, defense",
+        "id": "69077deba6dbdcfea3f819d9"
+      },
+      {
+        "category": "Stainless Steel",
+        "types": [
+          {
+            "type": "316L",
+            "id": "69077deba6dbdcfea3f819da"
+          },
+          {
+            "type": "17-4 PH",
+            "id": "69077deba6dbdcfea3f819db"
+          },
+          {
+            "type": "15-5 PH",
+            "id": "69077deba6dbdcfea3f819dc"
+          },
+          {
+            "type": "304/304L",
+            "id": "69077deba6dbdcfea3f819dd"
+          }
+        ],
+        "applications": "Food processing, medical, marine applications",
+        "id": "69077deba6dbdcfea3f819de"
+      },
+      {
+        "category": "Superalloys",
+        "types": [
+          {
+            "type": "Inconel 718",
+            "id": "69077deba6dbdcfea3f819df"
+          },
+          {
+            "type": "Inconel 625",
+            "id": "69077deba6dbdcfea3f819e0"
+          },
+          {
+            "type": "Hastelloy X",
+            "id": "69077deba6dbdcfea3f819e1"
+          },
+          {
+            "type": "Waspaloy",
+            "id": "69077deba6dbdcfea3f819e2"
+          }
+        ],
+        "applications": "High-temperature aerospace, power generation",
+        "id": "69077deba6dbdcfea3f819e3"
+      }
+    ],
+    "overview": {
+      "description": "Advanced 5-axis simultaneous machining capabilities for the most complex aerospace and defense components. Uncompromising quality and precision for mission-critical applications."
+    },
+    "process": [
+      {
+        "title": "Programming & Setup",
+        "description": "Advanced CAD/CAM programming with collision detection",
+        "features": [],
+        "id": "69077deba6dbdcfea3f819cb"
+      },
+      {
+        "title": "Fixturing & Workholding",
+        "description": "Custom fixture design and precision workholding",
+        "features": [],
+        "id": "69077deba6dbdcfea3f819cc"
+      },
+      {
+        "title": "Precision Machining",
+        "description": "5-axis simultaneous contouring with real-time monitoring",
+        "features": [],
+        "id": "69077deba6dbdcfea3f819cd"
+      },
+      {
+        "title": "Inspection & Quality Verification",
+        "description": "Comprehensive measurement and quality documentation",
+        "features": [],
+        "id": "69077deba6dbdcfea3f819ce"
+      }
+    ],
+    "processes": [
+      {
+        "title": "Programming & Setup",
+        "description": "Advanced CAD/CAM programming with collision detection and optimization for complex 5-axis toolpaths.",
+        "features": [
+          {
+            "feature": "Mastercam programming",
+            "id": "69077deba6dbdcfea3f819e4"
+          },
+          {
+            "feature": "Tool path optimization",
+            "id": "69077deba6dbdcfea3f819e5"
+          },
+          {
+            "feature": "Collision avoidance",
+            "id": "69077deba6dbdcfea3f819e6"
+          },
+          {
+            "feature": "Simulation verification",
+            "id": "69077deba6dbdcfea3f819e7"
+          }
+        ],
+        "id": "69077deba6dbdcfea3f819e8"
+      },
+      {
+        "title": "Fixturing & Workholding",
+        "description": "Custom fixture design and precision workholding solutions for complex part geometries.",
+        "features": [
+          {
+            "feature": "Custom fixture design",
+            "id": "69077deba6dbdcfea3f819e9"
+          },
+          {
+            "feature": "Modular workholding",
+            "id": "69077deba6dbdcfea3f819ea"
+          },
+          {
+            "feature": "Part accessibility optimization",
+            "id": "69077deba6dbdcfea3f819eb"
+          },
+          {
+            "feature": "Vibration dampening",
+            "id": "69077deba6dbdcfea3f819ec"
+          }
+        ],
+        "id": "69077deba6dbdcfea3f819ed"
+      },
+      {
+        "title": "Quality Assurance",
+        "description": "In-process monitoring and final inspection ensuring dimensional accuracy and surface finish requirements.",
+        "features": [
+          {
+            "feature": "CMM inspection",
+            "id": "69077deba6dbdcfea3f819ee"
+          },
+          {
+            "feature": "Surface finish measurement",
+            "id": "69077deba6dbdcfea3f819ef"
+          },
+          {
+            "feature": "GD&T verification",
+            "id": "69077deba6dbdcfea3f819f0"
+          },
+          {
+            "feature": "Statistical analysis",
+            "id": "69077deba6dbdcfea3f819f1"
+          }
+        ],
+        "id": "69077deba6dbdcfea3f819f2"
+      },
+      {
+        "title": "Finishing Operations",
+        "description": "Secondary operations including deburring, surface treatments, and assembly preparation.",
+        "features": [
+          {
+            "feature": "Precision deburring",
+            "id": "69077deba6dbdcfea3f819f3"
+          },
+          {
+            "feature": "Surface treatments",
+            "id": "69077deba6dbdcfea3f819f4"
+          },
+          {
+            "feature": "Assembly preparation",
+            "id": "69077deba6dbdcfea3f819f5"
+          },
+          {
+            "feature": "Packaging coordination",
+            "id": "69077deba6dbdcfea3f819f6"
+          }
+        ],
+        "id": "69077deba6dbdcfea3f819f7"
+      }
+    ],
+    "seo": {
+      "metaTitle": "5-Axis CNC Machining Services | Precision Manufacturing",
+      "metaDescription": "Advanced 5-axis simultaneous machining for aerospace and defense. ±0.0001\" tolerances. ISO 9001 & AS9100D certified.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    },
+    "services": [
+      {
+        "title": "Complex Aerospace Components",
+        "description": "Advanced 5-axis machining for turbine blades, impellers, and complex geometries requiring continuous contouring.",
+        "iconName": "Settings",
+        "bullets": [],
+        "imageSource": "upload",
+        "id": "69077deba6dbdcfea3f819c3"
+      },
+      {
+        "title": "Precision Defense Parts",
+        "description": "High-precision machining of defense components with complex angles and tight tolerances for critical applications.",
+        "iconName": "Shield",
+        "bullets": [],
+        "imageSource": "upload",
+        "id": "69077deba6dbdcfea3f819c4"
+      },
+      {
+        "title": "Prototype Development",
+        "description": "Rapid prototyping and low-volume production using advanced 5-axis capabilities for complex part geometries.",
+        "iconName": "Zap",
+        "bullets": [],
+        "imageSource": "upload",
+        "id": "69077deba6dbdcfea3f819c5"
+      },
+      {
+        "title": "Production Machining",
+        "description": "High-volume production capabilities with consistent quality and repeatability for complex manufactured parts.",
+        "iconName": "Cog",
+        "bullets": [],
+        "imageSource": "upload",
+        "id": "69077deba6dbdcfea3f819c6"
+      }
+    ],
+    "technicalSpecs": {
+      "tolerances": {
+        "dimensional": "±0.0001\" (±0.0025mm)",
+        "geometric": "0.0002\" (0.005mm)",
+        "repeatability": "±0.000050\" (±0.00127mm)"
+      },
+      "materials": [
+        {
+          "material": "Aluminum Alloys",
+          "grade": "6061-T6, 7075-T6, 2024-T3",
+          "id": "69077deba6dbdcfea3f819c7"
+        },
+        {
+          "material": "Titanium Alloys",
+          "grade": "Ti-6Al-4V, Ti-6Al-2Sn-4Zr-2Mo",
+          "id": "69077deba6dbdcfea3f819c8"
+        },
+        {
+          "material": "Stainless Steel",
+          "grade": "316L, 17-4 PH, 15-5 PH",
+          "id": "69077deba6dbdcfea3f819c9"
+        },
+        {
+          "material": "Superalloys",
+          "grade": "Inconel 718, Inconel 625, Hastelloy X",
+          "id": "69077deba6dbdcfea3f819ca"
+        }
+      ]
+    },
+    "id": "69030353f0d205b6f5595aea",
+    "imageSource": "upload"
+  }
+]

@@ -1,6 +1,5 @@
 import type { NextConfig } from "next";
 import createMDX from '@next/mdx';
-import { withPayload } from '@payloadcms/next/withPayload';
 
 const nextConfig: NextConfig = {
   /* MDX Support */
@@ -124,8 +123,5 @@ const withMDX = createMDX({
   },
 });
 
-// Wrap with Payload and MDX, with serverless optimization for Vercel
-export default withPayload(withMDX(nextConfig), {
-  // Disable bundling of server packages for serverless deployment
-  devBundleServerPackages: false,
-});
+// Export with MDX support for Sanity CMS
+export default withMDX(nextConfig);

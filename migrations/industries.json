@@ -1,0 +1,625 @@
+[
+  {
+    "title": "Aerospace Manufacturing",
+    "slug": "aerospace",
+    "description": {
+      "root": {
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "Mission-critical precision components for commercial and defense aerospace applications",
+                "type": "text"
+              }
+            ]
+          }
+        ],
+        "direction": null,
+        "format": "",
+        "indent": 0,
+        "type": "root",
+        "version": 1
+      }
+    },
+    "shortDescription": "Precision components for commercial and military aircraft",
+    "features": [
+      {
+        "feature": "AS9100D certified",
+        "id": "69077deba6dbdcfea3f81a33"
+      },
+      {
+        "feature": "NADCAP accredited",
+        "id": "69077deba6dbdcfea3f81a34"
+      },
+      {
+        "feature": "Zero defect delivery",
+        "id": "69077deba6dbdcfea3f81a35"
+      }
+    ],
+    "order": 3,
+    "createdAt": "2025-10-30T06:18:55.891Z",
+    "updatedAt": "2025-10-30T06:18:55.891Z",
+    "applications": [
+      "Engine components",
+      "Landing gear",
+      "Structural parts",
+      "Avionics housings"
+    ],
+    "capabilities": [
+      {
+        "description": "Complex aerospace component manufacturing with ±0.0001\" tolerances",
+        "id": "69077deba6dbdcfea3f81a03"
+      },
+      {
+        "description": "Advanced titanium and superalloy machining for engines",
+        "id": "69077deba6dbdcfea3f81a04"
+      },
+      {
+        "description": "Sub-assembly fabrication and integration",
+        "id": "69077deba6dbdcfea3f81a05"
+      }
+    ],
+    "components": [
+      {
+        "category": "Engine Components",
+        "description": "Critical turbine and engine parts requiring extreme precision and material expertise",
+        "parts": [
+          {
+            "part": "Turbine blades and vanes",
+            "id": "69077deba6dbdcfea3f81a10"
+          },
+          {
+            "part": "Combustor liners",
+            "id": "69077deba6dbdcfea3f81a11"
+          },
+          {
+            "part": "Compressor components",
+            "id": "69077deba6dbdcfea3f81a12"
+          },
+          {
+            "part": "Engine mounts and brackets",
+            "id": "69077deba6dbdcfea3f81a13"
+          }
+        ],
+        "materials": [
+          {
+            "material": "Inconel 718/625",
+            "id": "69077deba6dbdcfea3f81a14"
+          },
+          {
+            "material": "Titanium Ti-6Al-4V",
+            "id": "69077deba6dbdcfea3f81a15"
+          },
+          {
+            "material": "Hastelloy X",
+            "id": "69077deba6dbdcfea3f81a16"
+          }
+        ],
+        "requirements": [
+          {
+            "requirement": "High temperature resistance",
+            "id": "69077deba6dbdcfea3f81a17"
+          },
+          {
+            "requirement": "Fatigue resistance",
+            "id": "69077deba6dbdcfea3f81a18"
+          },
+          {
+            "requirement": "Precise airfoil geometry",
+            "id": "69077deba6dbdcfea3f81a19"
+          }
+        ],
+        "imageSource": "upload",
+        "id": "69077deba6dbdcfea3f81a1a"
+      },
+      {
+        "category": "Structural Components",
+        "description": "Airframe and structural parts demanding exceptional strength and weight optimization",
+        "parts": [
+          {
+            "part": "Wing brackets and fittings",
+            "id": "69077deba6dbdcfea3f81a1b"
+          },
+          {
+            "part": "Landing gear components",
+            "id": "69077deba6dbdcfea3f81a1c"
+          },
+          {
+            "part": "Fuselage frames",
+            "id": "69077deba6dbdcfea3f81a1d"
+          }
+        ],
+        "materials": [
+          {
+            "material": "Aluminum 7075-T6",
+            "id": "69077deba6dbdcfea3f81a1e"
+          },
+          {
+            "material": "Titanium Ti-6Al-4V",
+            "id": "69077deba6dbdcfea3f81a1f"
+          },
+          {
+            "material": "Steel 15-5 PH",
+            "id": "69077deba6dbdcfea3f81a20"
+          }
+        ],
+        "requirements": [
+          {
+            "requirement": "High strength-to-weight ratio",
+            "id": "69077deba6dbdcfea3f81a21"
+          },
+          {
+            "requirement": "Corrosion resistance",
+            "id": "69077deba6dbdcfea3f81a22"
+          },
+          {
+            "requirement": "Fatigue life",
+            "id": "69077deba6dbdcfea3f81a23"
+          }
+        ],
+        "imageSource": "upload",
+        "id": "69077deba6dbdcfea3f81a24"
+      }
+    ],
+    "hero": {
+      "subtitle": "Excellence in Flight-Critical Manufacturing",
+      "badge": "AEROSPACE & DEFENSE",
+      "backgroundImageSource": "upload"
+    },
+    "overview": {
+      "description": "Delivering precision aerospace components that meet the most stringent quality and reliability requirements for commercial and defense aircraft systems.",
+      "marketSize": "Global aerospace manufacturing market exceeds $500 billion annually",
+      "keyDrivers": [
+        {
+          "driver": "Growing commercial air travel demand",
+          "id": "69077deba6dbdcfea3f819fb"
+        },
+        {
+          "driver": "Advanced aircraft development programs",
+          "id": "69077deba6dbdcfea3f819fc"
+        },
+        {
+          "driver": "Modernization of existing fleets",
+          "id": "69077deba6dbdcfea3f819fd"
+        },
+        {
+          "driver": "Increased drone and UAV adoption",
+          "id": "69077deba6dbdcfea3f819fe"
+        }
+      ],
+      "challenges": [
+        {
+          "challenge": "Extreme precision tolerance requirements",
+          "id": "69077deba6dbdcfea3f819ff"
+        },
+        {
+          "challenge": "Complex material specifications",
+          "id": "69077deba6dbdcfea3f81a00"
+        },
+        {
+          "challenge": "Rigorous certification processes",
+          "id": "69077deba6dbdcfea3f81a01"
+        },
+        {
+          "challenge": "Supply chain compliance demands",
+          "id": "69077deba6dbdcfea3f81a02"
+        }
+      ]
+    },
+    "processBenefits": [
+      {
+        "title": "Advanced Manufacturing",
+        "features": [
+          {
+            "feature": "Simultaneous 5-axis contouring",
+            "id": "69077deba6dbdcfea3f81a2b"
+          },
+          {
+            "feature": "±0.0001\" tolerance capability",
+            "id": "69077deba6dbdcfea3f81a2c"
+          },
+          {
+            "feature": "Automated tool changing",
+            "id": "69077deba6dbdcfea3f81a2d"
+          }
+        ],
+        "id": "69077deba6dbdcfea3f81a2e"
+      },
+      {
+        "title": "Material Expertise",
+        "features": [
+          {
+            "feature": "High-temperature material capability",
+            "id": "69077deba6dbdcfea3f81a2f"
+          },
+          {
+            "feature": "Stress relief processing",
+            "id": "69077deba6dbdcfea3f81a30"
+          },
+          {
+            "feature": "Surface finish optimization",
+            "id": "69077deba6dbdcfea3f81a31"
+          }
+        ],
+        "id": "69077deba6dbdcfea3f81a32"
+      }
+    ],
+    "qualityStandards": [
+      {
+        "details": [],
+        "id": "69077deba6dbdcfea3f81a25"
+      },
+      {
+        "details": [],
+        "id": "69077deba6dbdcfea3f81a26"
+      },
+      {
+        "details": [],
+        "id": "69077deba6dbdcfea3f81a27"
+      },
+      {
+        "details": [],
+        "id": "69077deba6dbdcfea3f81a28"
+      },
+      {
+        "details": [],
+        "id": "69077deba6dbdcfea3f81a29"
+      },
+      {
+        "details": [],
+        "id": "69077deba6dbdcfea3f81a2a"
+      }
+    ],
+    "regulatory": {
+      "certifications": [
+        {
+          "name": "AS9100D",
+          "description": "Aerospace Quality Management System",
+          "scope": "Covers all aspects of aerospace component manufacturing",
+          "details": [],
+          "id": "69077deba6dbdcfea3f81a06"
+        },
+        {
+          "name": "NADCAP",
+          "description": "National Aerospace and Defense Contractors Accreditation Program",
+          "scope": "Advanced processes including welding, heat treating, and testing",
+          "details": [],
+          "id": "69077deba6dbdcfea3f81a07"
+        },
+        {
+          "name": "ITAR",
+          "description": "International Traffic in Arms Regulations",
+          "scope": "Export control compliance for defense components",
+          "details": [],
+          "id": "69077deba6dbdcfea3f81a08"
+        }
+      ],
+      "standards": [
+        {
+          "name": "FAA Part 21",
+          "description": "Federal Aviation Administration certification requirements",
+          "details": [],
+          "id": "69077deba6dbdcfea3f81a09"
+        },
+        {
+          "name": "AS/EN 9100",
+          "description": "Quality management system for aerospace",
+          "details": [],
+          "id": "69077deba6dbdcfea3f81a0a"
+        },
+        {
+          "name": "ISO 9001",
+          "description": "General quality management system",
+          "details": [],
+          "id": "69077deba6dbdcfea3f81a0b"
+        }
+      ]
+    },
+    "seo": {
+      "metaTitle": "Aerospace Manufacturing Services | Precision Aerospace Components",
+      "metaDescription": "Mission-critical aerospace components with AS9100D, NADCAP, and ITAR certifications. ±0.0001\" tolerances for commercial and defense aircraft.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    },
+    "id": "69030354f0d205b6f5595af0",
+    "imageSource": "upload"
+  },
+  {
+    "title": "Energy Manufacturing",
+    "slug": "energy",
+    "description": {
+      "root": {
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "High-performance components for power generation and energy systems",
+                "type": "text"
+              }
+            ]
+          }
+        ],
+        "direction": null,
+        "format": "",
+        "indent": 0,
+        "type": "root",
+        "version": 1
+      }
+    },
+    "shortDescription": "Critical components for power generation and renewable energy",
+    "features": [
+      {
+        "feature": "Superalloy expertise",
+        "id": "69077deba6dbdcfea3f81a46"
+      },
+      {
+        "feature": "Large part capability",
+        "id": "69077deba6dbdcfea3f81a47"
+      },
+      {
+        "feature": "Field service support",
+        "id": "69077deba6dbdcfea3f81a48"
+      }
+    ],
+    "order": 2,
+    "createdAt": "2025-10-30T06:18:55.891Z",
+    "updatedAt": "2025-10-30T06:18:55.891Z",
+    "applications": [
+      "Turbine parts",
+      "Valve components",
+      "Pump housings",
+      "Generator parts"
+    ],
+    "capabilities": [
+      {
+        "description": "High-temperature turbine blades and housings",
+        "id": "69077deba6dbdcfea3f81a3c"
+      }
+    ],
+    "components": [],
+    "hero": {
+      "subtitle": "Powering the Future of Energy",
+      "badge": "ENERGY & POWER GENERATION",
+      "backgroundImageSource": "upload"
+    },
+    "overview": {
+      "description": "Precision manufacturing for power generation, renewable energy, and traditional energy systems requiring extreme reliability.",
+      "marketSize": "Global energy equipment market exceeds $300 billion annually",
+      "keyDrivers": [
+        {
+          "driver": "Renewable energy expansion",
+          "id": "69077deba6dbdcfea3f81a36"
+        },
+        {
+          "driver": "Grid modernization",
+          "id": "69077deba6dbdcfea3f81a37"
+        },
+        {
+          "driver": "Power plant efficiency upgrades",
+          "id": "69077deba6dbdcfea3f81a38"
+        }
+      ],
+      "challenges": [
+        {
+          "challenge": "High-temperature operation",
+          "id": "69077deba6dbdcfea3f81a39"
+        },
+        {
+          "challenge": "Corrosion resistance requirements",
+          "id": "69077deba6dbdcfea3f81a3a"
+        },
+        {
+          "challenge": "Long service life demands",
+          "id": "69077deba6dbdcfea3f81a3b"
+        }
+      ]
+    },
+    "processBenefits": [],
+    "qualityStandards": [
+      {
+        "details": [],
+        "id": "69077deba6dbdcfea3f81a43"
+      },
+      {
+        "details": [],
+        "id": "69077deba6dbdcfea3f81a44"
+      },
+      {
+        "details": [],
+        "id": "69077deba6dbdcfea3f81a45"
+      }
+    ],
+    "regulatory": {
+      "certifications": [
+        {
+          "name": "ISO 9001",
+          "description": "Quality Management System",
+          "scope": "Energy component manufacturing",
+          "details": [],
+          "id": "69077deba6dbdcfea3f81a3d"
+        }
+      ],
+      "standards": [
+        {
+          "name": "ASME",
+          "description": "American Society of Mechanical Engineers standards",
+          "details": [],
+          "id": "69077deba6dbdcfea3f81a3e"
+        }
+      ]
+    },
+    "seo": {
+      "metaTitle": "Energy Manufacturing Services | Power Generation Components",
+      "metaDescription": "High-performance energy components for power generation and renewable energy systems. Extreme reliability and long service life.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    },
+    "id": "69030354f0d205b6f5595aef",
+    "imageSource": "upload"
+  },
+  {
+    "title": "Defense Manufacturing",
+    "slug": "defense",
+    "description": {
+      "root": {
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "Security-cleared manufacturing for defense and military applications",
+                "type": "text"
+              }
+            ]
+          }
+        ],
+        "direction": null,
+        "format": "",
+        "indent": 0,
+        "type": "root",
+        "version": 1
+      }
+    },
+    "shortDescription": "ITAR-compliant manufacturing for defense contractors and government agencies",
+    "features": [
+      {
+        "feature": "ITAR registered",
+        "id": "69077deba6dbdcfea3f81a5c"
+      },
+      {
+        "feature": "Secure facility",
+        "id": "69077deba6dbdcfea3f81a5d"
+      },
+      {
+        "feature": "Rapid prototyping",
+        "id": "69077deba6dbdcfea3f81a5e"
+      }
+    ],
+    "order": 1,
+    "createdAt": "2025-10-30T06:18:55.891Z",
+    "updatedAt": "2025-10-30T06:18:55.891Z",
+    "applications": [
+      "Weapon systems",
+      "Radar components",
+      "Vehicle parts",
+      "Electronics"
+    ],
+    "capabilities": [
+      {
+        "description": "Fully registered and compliant with International Traffic in Arms Regulations",
+        "id": "69077deba6dbdcfea3f81a4f"
+      },
+      {
+        "description": "High-precision components for weapons systems and defense platforms",
+        "id": "69077deba6dbdcfea3f81a50"
+      }
+    ],
+    "components": [],
+    "hero": {
+      "subtitle": "Trusted Defense Manufacturing Partner",
+      "badge": "DEFENSE & SECURITY",
+      "backgroundImageSource": "upload"
+    },
+    "overview": {
+      "description": "ITAR-registered facility delivering mission-critical components for defense and security applications with complete traceability.",
+      "marketSize": "Global defense manufacturing exceeds $400 billion annually",
+      "keyDrivers": [
+        {
+          "driver": "Military modernization programs",
+          "id": "69077deba6dbdcfea3f81a49"
+        },
+        {
+          "driver": "Increased defense spending",
+          "id": "69077deba6dbdcfea3f81a4a"
+        },
+        {
+          "driver": "Advanced weapons systems development",
+          "id": "69077deba6dbdcfea3f81a4b"
+        }
+      ],
+      "challenges": [
+        {
+          "challenge": "Stringent security requirements",
+          "id": "69077deba6dbdcfea3f81a4c"
+        },
+        {
+          "challenge": "Export control compliance",
+          "id": "69077deba6dbdcfea3f81a4d"
+        },
+        {
+          "challenge": "Rapid technology evolution",
+          "id": "69077deba6dbdcfea3f81a4e"
+        }
+      ]
+    },
+    "processBenefits": [],
+    "qualityStandards": [
+      {
+        "details": [],
+        "id": "69077deba6dbdcfea3f81a59"
+      },
+      {
+        "details": [],
+        "id": "69077deba6dbdcfea3f81a5a"
+      },
+      {
+        "details": [],
+        "id": "69077deba6dbdcfea3f81a5b"
+      }
+    ],
+    "regulatory": {
+      "certifications": [
+        {
+          "name": "ITAR",
+          "description": "International Traffic in Arms Regulations",
+          "scope": "Defense article manufacturing and handling",
+          "details": [],
+          "id": "69077deba6dbdcfea3f81a51"
+        },
+        {
+          "name": "AS9100D",
+          "description": "Aerospace Quality Management",
+          "scope": "Defense component manufacturing",
+          "details": [],
+          "id": "69077deba6dbdcfea3f81a52"
+        }
+      ],
+      "standards": [
+        {
+          "name": "DFARS",
+          "description": "Defense Federal Acquisition Regulation Supplement",
+          "details": [],
+          "id": "69077deba6dbdcfea3f81a53"
+        },
+        {
+          "name": "MIL-STD-45662",
+          "description": "Calibration System Requirements",
+          "details": [],
+          "id": "69077deba6dbdcfea3f81a54"
+        }
+      ]
+    },
+    "seo": {
+      "metaTitle": "Defense Manufacturing Services | ITAR Registered Facility",
+      "metaDescription": "Security-cleared defense manufacturing with ITAR compliance. Mission-critical components for defense and military applications.",
+      "ogImageGroup": {
+        "ogImageSource": "upload"
+      },
+      "keywords": [],
+      "twitterCard": "summary_large_image",
+      "noindex": false
+    },
+    "id": "69030354f0d205b6f5595aee",
+    "imageSource": "upload"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "_type": "uitext",
+  "_id": "uitext",
+  "createdAt": "2025-11-01T11:07:24.418Z",
+  "updatedAt": "2025-11-01T11:07:24.418Z",
+  "globalType": "ui-text",
+  "buttons": {
+    "getQuote": "Get Quote",
+    "contactUs": "Contact Us Today",
+    "viewServices": "View Our Services",
+    "viewIndustries": "Explore Industries",
+    "learnMore": "Learn More"
+  },
+  "sections": {
+    "ctaHeading": "Ready to Get Started?",
+    "ctaDescription": "From prototype to production, we deliver AS9100D-certified precision components with tolerances to ±0.0001\" for aerospace, defense, and medical applications.",
+    "serviceOfferings": "Our Service Offerings",
+    "ourCapabilities": "Technical Capabilities"
+  },
+  "id": "6905e9ec05cf6ea9af71b4c8"
+}

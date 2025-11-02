@@ -1,0 +1,46 @@
+[
+  {
+    "createdAt": "2025-11-01T11:07:24.756Z",
+    "updatedAt": "2025-11-01T11:07:24.756Z",
+    "name": "Emily Rodriguez",
+    "title": "Operations Manager",
+    "bio": "Emily manages day-to-day operations at IIS, ensuring seamless coordination between machining, inspection, and customer service teams. With a background in lean manufacturing and process improvement, she has implemented systems that enhance efficiency while maintaining our rigorous quality standards.",
+    "order": 4,
+    "linkedin": "https://www.linkedin.com/in/emilyrodriguez",
+    "email": "erodriguez@iismet.com",
+    "id": "6905e9ec05cf6ea9af71b4d2"
+  },
+  {
+    "createdAt": "2025-11-01T11:07:24.667Z",
+    "updatedAt": "2025-11-01T11:07:24.667Z",
+    "name": "Michael Chen",
+    "title": "Director of Metrology",
+    "bio": "Michael is a certified metrology professional with extensive experience in CMM inspection and dimensional analysis. He oversees our state-of-the-art metrology lab and leads the development of our proprietary MetBase® software that integrates inspection data with manufacturing processes.",
+    "order": 3,
+    "linkedin": "https://www.linkedin.com/in/michaelchen",
+    "email": "mchen@iismet.com",
+    "id": "6905e9ec05cf6ea9af71b4d0"
+  },
+  {
+    "createdAt": "2025-11-01T11:07:24.584Z",
+    "updatedAt": "2025-11-01T11:07:24.584Z",
+    "name": "Sarah Johnson",
+    "title": "VP of Engineering",
+    "bio": "Sarah brings 20+ years of aerospace engineering expertise to IIS. She leads our engineering team in developing innovative manufacturing solutions and overseeing quality assurance programs. Her expertise in GD&T and process optimization has been instrumental in achieving our AS9100 certification.",
+    "order": 2,
+    "linkedin": "https://www.linkedin.com/in/sarahjohnson",
+    "email": "sjohnson@iismet.com",
+    "id": "6905e9ec05cf6ea9af71b4ce"
+  },
+  {
+    "createdAt": "2025-11-01T11:07:24.501Z",
+    "updatedAt": "2025-11-01T11:07:24.501Z",
+    "name": "John Smith",
+    "title": "President & CEO",
+    "bio": "With over 30 years of experience in precision manufacturing and metrology, John founded IIS in 1995 with a vision to revolutionize data-driven manufacturing. Under his leadership, IIS has grown from a basement startup to an industry leader serving aerospace, defense, and advanced manufacturing sectors.",
+    "order": 1,
+    "linkedin": "https://www.linkedin.com/in/johnsmith",
+    "email": "jsmith@iismet.com",
+    "id": "6905e9ec05cf6ea9af71b4cc"
+  }
+]

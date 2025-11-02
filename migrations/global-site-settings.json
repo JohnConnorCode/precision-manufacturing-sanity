@@ -1,0 +1,35 @@
+{
+  "createdAt": "2025-11-01T11:07:24.190Z",
+  "updatedAt": "2025-11-01T11:07:24.191Z",
+  "globalType": "site-settings",
+  "company": {
+    "name": "IIS - Integrated Inspection Systems",
+    "legalName": "Integrated Inspection Systems, Inc.",
+    "tagline": "Engineering, Metrology, Machining & Database Services",
+    "description": "Founded in 1995, IIS has grown from a basement startup to an industry-leading provider of precision manufacturing, metrology, and engineering services. We specialize in data-driven manufacturing with our proprietary MetBase® software that creates closed-loop systems linking CMM inspection data to CNC machining.",
+    "foundingYear": "1995"
+  },
+  "contact": {
+    "phone": "503-231-9093",
+    "email": "officemgr@iismet.com",
+    "address": "14310 SE Industrial Way\nClackamas, OR 97015",
+    "city": "Clackamas",
+    "state": "Oregon",
+    "zip": "97015",
+    "country": "United States"
+  },
+  "social": {
+    "linkedin": "https://www.linkedin.com/company/integrated-inspection-systems",
+    "twitter": "https://twitter.com/iismet",
+    "facebook": "https://www.facebook.com/iisprecision",
+    "twitterHandle": "@iisprecision"
+  },
+  "seo": {
+    "defaultTitle": "IIS - Integrated Inspection Systems | Precision Manufacturing & Metrology",
+    "defaultDescription": "AS9100 & ISO 9001 certified precision machining, CMM inspection, and first article inspection services. Proprietary MetBase® software for closed-loop data integration. ITAR registered. Serving aerospace, defense & manufacturing since 1995.",
+    "defaultKeywords": "CMM inspection services, AS9100 certified, ISO 9001, ITAR registered, first article inspection, precision machining Oregon, dimensional inspection, coordinate measuring, MetBase software, aerospace machining, defense manufacturing",
+    "googleAnalyticsId": "",
+    "googleVerificationCode": ""
+  },
+  "id": "6905e9ec05cf6ea9af71b4ba"
+}

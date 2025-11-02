@@ -1,0 +1,79 @@
+{
+  "globalType": "contact",
+  "hero": {
+    "imageAlt": "Contact our precision manufacturing team",
+    "badge": "GET STARTED",
+    "badgeIconName": "Activity",
+    "title": "Contact",
+    "titleHighlight": "Our Team",
+    "description": "Connect with Integrated Inspection Systems for precision manufacturing solutions, technical consultations, and project quotes.",
+    "buttonLabel": "Start Your Project",
+    "buttonHref": "#contact-form",
+    "backgroundImageSource": "upload"
+  },
+  "contactInfo": {
+    "heading": "Get in Touch",
+    "description": "Our engineering team is ready to discuss your precision manufacturing needs.",
+    "addressLine1": "Integrated Inspection Systems, Inc.",
+    "addressLine2": "12345 Precision Way",
+    "addressLine3": "Torrance, CA 90501",
+    "phone": "(503) 231-9093",
+    "phoneLink": "tel:+15032319093",
+    "email": "officemgr@iismet.com",
+    "hoursLine1": "Monday - Friday: 7:00 AM - 5:00 PM PST",
+    "hoursLine2": "24/7 Production Facility"
+  },
+  "certifications": [
+    {
+      "certification": "AS9100D",
+      "id": "69077deca6dbdcfea3f81bd9"
+    },
+    {
+      "certification": "ISO 9001:2015",
+      "id": "69077deca6dbdcfea3f81bda"
+    },
+    {
+      "certification": "ITAR Registered",
+      "id": "69077deca6dbdcfea3f81bdb"
+    },
+    {
+      "certification": "CMMC Compliant",
+      "id": "69077deca6dbdcfea3f81bdc"
+    }
+  ],
+  "bottomStats": [
+    {
+      "iconName": "pulse",
+      "text": "Quote Response in 24 Hours",
+      "animated": true,
+      "id": "69077deca6dbdcfea3f81bdd"
+    },
+    {
+      "iconName": "Award",
+      "text": "30+ Years | 1000+ Projects",
+      "animated": false,
+      "id": "69077deca6dbdcfea3f81bde"
+    },
+    {
+      "iconName": "Shield",
+      "text": "99.8% First-Pass Yield",
+      "animated": false,
+      "id": "69077deca6dbdcfea3f81bdf"
+    },
+    {
+      "iconName": "CheckCircle",
+      "text": "AS9100D | ITAR Certified",
+      "animated": false,
+      "id": "69077deca6dbdcfea3f81be0"
+    }
+  ],
+  "id": "690329bcc45f28c3cbf455db",
+  "seo": {
+    "ogImageGroup": {
+      "ogImageSource": "upload"
+    },
+    "keywords": [],
+    "twitterCard": "summary_large_image",
+    "noindex": false
+  }
+}

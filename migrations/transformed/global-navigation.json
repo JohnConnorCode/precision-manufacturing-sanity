@@ -1,0 +1,149 @@
+{
+  "_type": "navigation",
+  "_id": "navigation",
+  "globalType": "navigation",
+  "topBar": {
+    "phone": "503-231-9093",
+    "phoneLink": "tel:+15032319093",
+    "email": "officemgr@iismet.com",
+    "emailLink": "mailto:officemgr@iismet.com",
+    "certifications": "ISO 9001 • AS9100D • ITAR REGISTERED"
+  },
+  "menuItems": [
+    {
+      "name": "Services",
+      "href": "/services",
+      "children": [
+        {
+          "name": "5-Axis Machining",
+          "href": "/services/5-axis-machining",
+          "description": "Complex geometries with precision",
+          "id": "69077deca6dbdcfea3f81b88"
+        },
+        {
+          "name": "Adaptive Machining",
+          "href": "/services/adaptive-machining",
+          "description": "Real-time process adjustments",
+          "id": "69077deca6dbdcfea3f81b89"
+        },
+        {
+          "name": "Metrology & Inspection",
+          "href": "/services/metrology",
+          "description": "Complete dimensional verification",
+          "id": "69077deca6dbdcfea3f81b8a"
+        },
+        {
+          "name": "Engineering Support",
+          "href": "/services/engineering",
+          "description": "Design for manufacturability",
+          "id": "69077deca6dbdcfea3f81b8b"
+        }
+      ],
+      "id": "69077deca6dbdcfea3f81b8c"
+    },
+    {
+      "name": "Industries",
+      "href": "/industries",
+      "children": [
+        {
+          "name": "Aerospace",
+          "href": "/industries/aerospace",
+          "description": "Critical aerospace components",
+          "id": "69077deca6dbdcfea3f81b8d"
+        },
+        {
+          "name": "Energy & Turbines",
+          "href": "/industries/energy",
+          "description": "Power generation solutions",
+          "id": "69077deca6dbdcfea3f81b8e"
+        },
+        {
+          "name": "Defense",
+          "href": "/industries/defense",
+          "description": "ITAR compliant manufacturing",
+          "id": "69077deca6dbdcfea3f81b8f"
+        }
+      ],
+      "id": "69077deca6dbdcfea3f81b90"
+    },
+    {
+      "name": "Resources",
+      "href": "/resources",
+      "children": [
+        {
+          "name": "Manufacturing Processes",
+          "href": "/resources/manufacturing-processes",
+          "description": "CNC machining guides and techniques",
+          "id": "69077deca6dbdcfea3f81b91"
+        },
+        {
+          "name": "Material Science",
+          "href": "/resources/material-science",
+          "description": "Aerospace alloys and properties",
+          "id": "69077deca6dbdcfea3f81b92"
+        },
+        {
+          "name": "Quality & Compliance",
+          "href": "/resources/quality-compliance",
+          "description": "AS9100D and ITAR guidance",
+          "id": "69077deca6dbdcfea3f81b93"
+        },
+        {
+          "name": "Industry Applications",
+          "href": "/resources/industry-applications",
+          "description": "Real-world case studies",
+          "id": "69077deca6dbdcfea3f81b94"
+        },
+        {
+          "name": "Calculators & Tools",
+          "href": "/resources/calculators-tools",
+          "description": "Interactive calculators",
+          "id": "69077deca6dbdcfea3f81b95"
+        }
+      ],
+      "id": "69077deca6dbdcfea3f81b96"
+    },
+    {
+      "name": "About",
+      "href": "/about",
+      "children": [],
+      "id": "69077deca6dbdcfea3f81b97"
+    },
+    {
+      "name": "Careers",
+      "href": "/careers",
+      "children": [],
+      "id": "69077deca6dbdcfea3f81b98"
+    },
+    {
+      "name": "Compliance",
+      "href": "#",
+      "children": [
+        {
+          "name": "Terms & Conditions",
+          "href": "/compliance/terms",
+          "description": "Purchase order terms",
+          "id": "69077deca6dbdcfea3f81b99"
+        },
+        {
+          "name": "Supplier Requirements",
+          "href": "/compliance/supplier-requirements",
+          "description": "Supplier guidelines",
+          "id": "69077deca6dbdcfea3f81b9a"
+        }
+      ],
+      "id": "69077deca6dbdcfea3f81b9b"
+    },
+    {
+      "name": "Contact",
+      "href": "/contact",
+      "children": [],
+      "id": "69077deca6dbdcfea3f81b9c"
+    }
+  ],
+  "cta": {
+    "text": "REQUEST QUOTE",
+    "href": "/contact"
+  },
+  "id": "69030f021e00f0e6c9c6264e"
+}
