@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Clock, ArrowRight, Lightbulb } from 'lucide-react';
 import HeroSection from '@/components/ui/hero-section';
-import { getAllResourcesFromCMS } from '@/lib/get-cms-data-direct';
+import { getAllResources } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
 
@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const pageUrl = `${baseUrl}/resources`;
   const ogImage = `${baseUrl}/og-image-resources.jpg`;
 
-  const resources = await getAllResourcesFromCMS() || [];
+  const resources = await getAllResources() || [];
 
   return {
     title: 'Technical Resources & Manufacturing Guides | CNC, Metrology & Quality | IIS',
@@ -64,7 +64,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ResourcesPage() {
-  const resources = await getAllResourcesFromCMS() || [];
+  const resources = await getAllResources() || [];
+
+  // Map Sanity slug structure (slug.current) to simple slug
+  const formattedResources = resources.map((resource: any) => ({
+    ...resource,
+    slug: resource.slug?.current || resource.slug,
+  }));
 
   return (
     <div className="min-h-screen bg-background">
@@ -82,7 +88,7 @@ export default async function ResourcesPage() {
             </span>
           </>
         }
-        description={`Expert guides, technical specifications, and tools to help you make informed decisions about precision manufacturing for aerospace, defense, medical, and energy applications. ${resources.length} technical articles available.`}
+        description={`Expert guides, technical specifications, and tools to help you make informed decisions about precision manufacturing for aerospace, defense, medical, and energy applications. ${formattedResources.length} technical articles available.`}
       />
 
       {/* Articles Grid */}
@@ -104,7 +110,7 @@ export default async function ResourcesPage() {
           </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {resources.map((resource: any, index: number) => (
+            {formattedResources.map((resource: any, index: number) => (
               <AnimatedSection key={resource._id} delay={index * 0.1}>
                 <Link
                   href={`/resources/${resource.category}/${resource.slug}`}

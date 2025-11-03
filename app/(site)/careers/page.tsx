@@ -1,12 +1,12 @@
 import CareersPageClient from './page-client';
-import { getCareersFromCMS } from '@/lib/get-cms-data-direct';
+import { getCareers } from '@/sanity/lib/queries';
 
 // Force static generation with long revalidation
 export const revalidate = 3600;
 
 export default async function CareersPage() {
   // Fetch data from CMS
-  const careersData = await getCareersFromCMS();
+  const careersData = await getCareers();
 
   return <CareersPageClient data={careersData as any} />;
 }

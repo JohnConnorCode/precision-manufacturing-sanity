@@ -51,20 +51,20 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         {/* Section Header */}
         <AnimatedSection className={`text-center ${spacing.headingBottom}`}>
           <p className={`${typography.eyebrow} ${colors.textMedium} mb-4`}>
-            {showcaseData.header.eyebrow}
+            {showcaseData?.header?.eyebrow}
           </p>
           <h2 className={`${typography.sectionHeading} mb-6`}>
-            <span className={colors.textDark}>{showcaseData.header.title}</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"> {showcaseData.header.titleHighlight}</span>
+            <span className={colors.textDark}>{showcaseData?.header?.title}</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"> {showcaseData?.header?.titleHighlight}</span>
           </h2>
           <p className={`${typography.descriptionMuted} max-w-3xl mx-auto`}>
-            {showcaseData.header.description}
+            {showcaseData?.header?.description}
           </p>
         </AnimatedSection>
 
         {/* Large Feature Images */}
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid}`}>
-          {showcaseData.showcaseImages.map((item, index) => (
+          {(showcaseData?.showcaseImages || []).map((item, index) => (
             <AnimatedSection
               key={item.title}
               delay={index * 0.1}

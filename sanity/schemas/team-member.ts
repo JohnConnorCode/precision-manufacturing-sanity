@@ -2,44 +2,81 @@ export default {
   name: 'teamMember',
   type: 'document',
   title: 'Team Members',
+  orderings: [
+    {
+      title: 'Name A-Z',
+      name: 'nameAsc',
+      by: [{field: 'name', direction: 'asc'}]
+    },
+    {
+      title: 'Display Order',
+      name: 'orderAsc',
+      by: [{field: 'order', direction: 'asc'}]
+    }
+  ],
+  preview: {
+    select: {
+      title: 'name',
+      subtitle: 'title',
+      media: 'photo'
+    },
+    prepare(selection: any) {
+      const {title, subtitle, media} = selection
+      return {
+        title: title,
+        subtitle: subtitle,
+        media: media
+      }
+    }
+  },
   fields: [
     {
       name: 'name',
       type: 'string',
       title: 'Name',
       description: 'Full name of the team member',
-      validation: (Rule: any) => Rule.required(),
+      validation: (Rule: any) => Rule.required().error('Name is required'),
     },
     {
       name: 'title',
       type: 'string',
       title: 'Title',
       description: 'Job title or position',
-      validation: (Rule: any) => Rule.required(),
+      validation: (Rule: any) => Rule.required().error('Job title is required'),
     },
     {
       name: 'bio',
       type: 'text',
       title: 'Biography',
-      description: 'Short biography or description',
+      description: 'Short biography or description (200-300 characters recommended)',
       rows: 4,
-      validation: (Rule: any) => Rule.required(),
+      validation: (Rule: any) => Rule.required().min(50).max(500).error('Bio is required and should be 50-500 characters'),
     },
     {
       name: 'photo',
       type: 'image',
       title: 'Photo',
-      description: 'Team member photo',
+      description: 'Team member photo (recommended: 400x400px, square aspect ratio)',
       options: {
         hotspot: true,
+        metadata: ['blurhash', 'lqip', 'palette'],
       },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative Text',
+          description: 'Describe the photo for accessibility (e.g., "Photo of John Smith")',
+          validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
+        }
+      ]
     },
     {
       name: 'order',
       type: 'number',
       title: 'Display Order',
       description: 'Controls the order in which team members appear (lower numbers first)',
-      validation: (Rule: any) => Rule.required(),
+      validation: (Rule: any) => Rule.required().min(0).error('Display order is required'),
       initialValue: 0,
     },
     {
@@ -47,6 +84,9 @@ export default {
       type: 'url',
       title: 'LinkedIn URL',
       description: 'LinkedIn profile URL',
+      validation: (Rule: any) => Rule.uri({
+        scheme: ['http', 'https']
+      }).warning('Must be a valid URL starting with http:// or https://'),
     },
     {
       name: 'email',

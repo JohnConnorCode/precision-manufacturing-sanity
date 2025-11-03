@@ -1,5 +1,5 @@
 import ContactPageClient from './page-client';
-import { getContactFromCMS } from '@/lib/get-cms-data-direct';
+import { getContact } from '@/sanity/lib/queries';
 
 // Force static generation for INSTANT routing (no server delays)
 export const dynamic = 'force-static';
@@ -7,7 +7,7 @@ export const revalidate = false; // Fully static, rebuild on deploy
 
 export default async function ContactPage() {
   // Fetch data from CMS
-  const contactData = await getContactFromCMS();
+  const contactData = await getContact();
 
   return <ContactPageClient data={contactData as any} />;
 }

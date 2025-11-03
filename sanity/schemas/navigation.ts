@@ -3,6 +3,17 @@ export default {
   type: 'document',
   title: 'Navigation',
   __experimental_singleton: true,
+  preview: {
+    select: {
+      title: 'topBar.phone'
+    },
+    prepare(selection: any) {
+      return {
+        title: 'Site Navigation',
+        subtitle: `Contact: ${selection.title || 'Not set'}`
+      }
+    }
+  },
   fields: [
     {
       name: 'topBar',
@@ -58,13 +69,15 @@ export default {
               name: 'name',
               type: 'string',
               title: 'Name',
-              validation: (Rule: any) => Rule.required(),
+              description: 'Menu item text displayed to users',
+              validation: (Rule: any) => Rule.required().error('Menu item name is required'),
             },
             {
               name: 'href',
               type: 'string',
               title: 'URL',
-              validation: (Rule: any) => Rule.required(),
+              description: 'Link URL (e.g., "/services" or "https://example.com")',
+              validation: (Rule: any) => Rule.required().error('URL is required'),
             },
             {
               name: 'children',

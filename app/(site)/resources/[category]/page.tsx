@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Clock, ArrowRight } from 'lucide-react';
-import { getResourcesByCategoryFromCMS } from '@/lib/get-cms-data-direct';
+import { getResourcesByCategory } from '@/sanity/lib/queries';
 
 // Enable ISR with 1 hour revalidation
 export const revalidate = 3600;
@@ -64,7 +64,13 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
     notFound();
   }
 
-  const resources = await getResourcesByCategoryFromCMS(category) || [];
+  const resources = await getResourcesByCategory(category) || [];
+
+  // Map Sanity slug structure (slug.current) to simple slug
+  const formattedResources = resources.map((resource: any) => ({
+    ...resource,
+    slug: resource.slug?.current || resource.slug,
+  }));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
@@ -85,7 +91,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
 
           <div className="flex flex-wrap gap-4">
             <span className="bg-slate-800 text-slate-300 px-4 py-2 rounded-full text-sm">
-              {resources.length} Articles
+              {formattedResources.length} Articles
             </span>
           </div>
         </div>
@@ -94,7 +100,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
       {/* Resources Grid */}
       <section className="relative py-12 px-4">
         <div className="max-w-6xl mx-auto">
-          {resources.length === 0 ? (
+          {formattedResources.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-slate-400 text-lg">No resources found in this category yet.</p>
               <Link
@@ -107,7 +113,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {resources.map((resource: any) => (
+              {formattedResources.map((resource: any) => (
                 <Link
                   key={resource._id}
                   href={`/resources/${category}/${resource.slug}`}

@@ -1,12 +1,12 @@
 import TermsPageClient from './page-client';
-import { getTermsFromCMS } from '@/lib/get-cms-data-direct';
+import { getTerms } from '@/sanity/lib/queries';
 
 // Force static generation with long revalidation
 export const revalidate = 3600;
 
 export default async function TermsPage() {
   // Fetch data from CMS
-  const termsData = await getTermsFromCMS();
+  const termsData = await getTerms();
 
   return <TermsPageClient data={termsData as any} />;
 }

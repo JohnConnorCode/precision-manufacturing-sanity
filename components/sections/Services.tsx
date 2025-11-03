@@ -58,7 +58,7 @@ interface ServicesProps {
 
 export default function Services({ data }: ServicesProps) {
   // Use CMS data if available, otherwise use hardcoded data
-  const servicesData = data || services;
+  const servicesData = Array.isArray(data) ? data : (data ? [data] : services);
 
   return (
     <section className={`relative ${spacing.section} overflow-hidden ${colors.bgLight}`}>
@@ -93,7 +93,7 @@ export default function Services({ data }: ServicesProps) {
         <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ${spacing.grid}`}>
           {servicesData.map((service: any, index: number) => {
             // Handle both CMS data (iconName) and hardcoded data (icon)
-            const Icon = service.iconName ? iconMap[service.iconName] || Cog : service.icon;
+            const Icon = service.iconName ? (iconMap[service.iconName] || Cog) : (service.icon || Cog);
             return (
               <AnimatedSection
                 key={service.title}
@@ -145,7 +145,7 @@ export default function Services({ data }: ServicesProps) {
                       </p>
 
                       <ul className="space-y-2 mb-5">
-                        {service.specs.map((spec: any, index: number) => {
+                        {(service.specs || []).map((spec: any, index: number) => {
                           // Handle both string and object formats
                           const specText = typeof spec === 'string' ? spec : spec.spec;
                           return (

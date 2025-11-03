@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
-import { getNavigationFromCMS } from '@/lib/get-cms-data-direct'
+import { getNavigation } from '@/sanity/lib/queries'
 
 export async function GET() {
   const started = Date.now()
   try {
-    const nav = await getNavigationFromCMS()
+    const nav = await getNavigation()
     const duration = Date.now() - started
     return NextResponse.json({
       ok: true,

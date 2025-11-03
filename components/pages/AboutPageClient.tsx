@@ -159,27 +159,27 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
   const aboutData = data || defaultData;
 
   // Get the badge icon
-  const BadgeIcon = iconMap[aboutData.hero.badgeIconName] || Factory;
+  const BadgeIcon = iconMap[aboutData?.hero?.badgeIconName || ''] || Factory;
 
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={aboutData.hero.backgroundImage}
-        imageAlt={aboutData.hero.imageAlt}
+        backgroundImage={aboutData?.hero?.backgroundImage}
+        imageAlt={aboutData?.hero?.imageAlt}
         badge={{
-          text: aboutData.hero.badge,
+          text: aboutData?.hero?.badge || '',
           icon: BadgeIcon
         }}
         title={
           <span className="text-white">
-            {aboutData.hero.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">{aboutData.hero.titleHighlight}</span>
+            {aboutData?.hero?.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">{aboutData?.hero?.titleHighlight}</span>
           </span>
         }
-        description={aboutData.hero.description}
-        buttons={aboutData.hero.buttons.map(btn => ({
-          label: btn.label,
-          href: btn.href,
-          variant: btn.variant as 'primary' | 'secondary'
+        description={aboutData?.hero?.description}
+        buttons={(aboutData?.hero?.buttons || []).map(btn => ({
+          label: btn?.label || '',
+          href: btn?.href || '#',
+          variant: (btn?.variant as 'primary' | 'secondary') || 'primary'
         }))}
         height="large"
         alignment="center"
@@ -195,9 +195,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
             viewport={{ once: true }}
             className="grid grid-cols-2 md:grid-cols-4 gap-8"
           >
-            {aboutData.companyStats.map((stat, index) => (
+            {(aboutData?.companyStats || []).map((stat, index) => (
               <motion.div
-                key={stat.label}
+                key={stat?.label}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
@@ -205,13 +205,13 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 className="text-center"
               >
                 <div className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
-                  {stat.value}
+                  {stat?.value}
                 </div>
                 <div className="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-2">
-                  {stat.label}
+                  {stat?.label}
                 </div>
                 <div className="text-sm text-slate-600">
-                  {stat.description}
+                  {stat?.description}
                 </div>
               </motion.div>
             ))}
@@ -229,11 +229,11 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl font-bold mb-6">{aboutData.story.title}</h2>
+              <h2 className="text-4xl font-bold mb-6">{aboutData?.story?.title}</h2>
               <div className="space-y-4 text-lg text-slate-600">
-                <p>{aboutData.story.paragraph1}</p>
-                <p>{aboutData.story.paragraph2}</p>
-                <p>{aboutData.story.paragraph3}</p>
+                <p>{aboutData?.story?.paragraph1}</p>
+                <p>{aboutData?.story?.paragraph2}</p>
+                <p>{aboutData?.story?.paragraph3}</p>
               </div>
             </motion.div>
 
@@ -245,8 +245,8 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="relative"
             >
               <ParallaxImage
-                src={aboutData.story.image}
-                alt={aboutData.story.imageAlt}
+                src={aboutData?.story?.image || ''}
+                alt={aboutData?.story?.imageAlt || ''}
                 className="w-full h-96 rounded-lg"
                 speed={0.2}
               />
@@ -261,18 +261,18 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-6">{aboutData.timeline.title}</h2>
+            <h2 className="text-4xl font-bold mb-6">{aboutData?.timeline?.title}</h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              {aboutData.timeline.description}
+              {aboutData?.timeline?.description}
             </p>
           </motion.div>
 
           <div className="relative">
             <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-slate-300 h-full"></div>
             <div className="space-y-12">
-              {aboutData.timeline.milestones.map((item, index) => (
+              {(aboutData?.timeline?.milestones || []).map((item, index) => (
                 <motion.div
-                  key={item.year}
+                  key={item?.year}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
@@ -281,9 +281,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 >
                   <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}`}>
                     <Card className="p-6 border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-lg">
-                      <div className="text-2xl font-bold text-slate-900 mb-2">{item.year}</div>
-                      <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
-                      <p className="text-slate-600">{item.description}</p>
+                      <div className="text-2xl font-bold text-slate-900 mb-2">{item?.year}</div>
+                      <h3 className="text-xl font-semibold mb-3">{item?.title}</h3>
+                      <p className="text-slate-600">{item?.description}</p>
                     </Card>
                   </div>
                   <div className="w-4 h-4 bg-slate-900 rounded-full border-4 border-white shadow-lg relative z-10"></div>
@@ -305,18 +305,18 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-6">{aboutData.values.title}</h2>
+            <h2 className="text-4xl font-bold mb-6">{aboutData?.values?.title}</h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              {aboutData.values.description}
+              {aboutData?.values?.description}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {aboutData.values.items.map((value, index) => {
-              const Icon = iconMap[value.iconName] || Award;
+            {(aboutData?.values?.items || []).map((value, index) => {
+              const Icon = iconMap[value?.iconName || ''] || Award;
               return (
                 <motion.div
-                  key={value.title}
+                  key={value?.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
@@ -327,14 +327,14 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                       <Icon className="w-6 h-6 text-slate-700" />
                     </div>
 
-                    <h3 className="text-2xl font-bold mb-4">{value.title}</h3>
-                    <p className="text-slate-600 mb-6">{value.description}</p>
+                    <h3 className="text-2xl font-bold mb-4">{value?.title}</h3>
+                    <p className="text-slate-600 mb-6">{value?.description}</p>
 
                     <div className="space-y-3">
-                      {value.principles.map((p) => (
-                        <div key={p.principle} className="flex items-center text-sm text-slate-600">
+                      {(value?.principles || []).map((p) => (
+                        <div key={p?.principle} className="flex items-center text-sm text-slate-600">
                           <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                          {p.principle}
+                          {p?.principle}
                         </div>
                       ))}
                     </div>
@@ -356,16 +356,16 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-6">{aboutData.leadership.title}</h2>
+            <h2 className="text-4xl font-bold mb-6">{aboutData?.leadership?.title}</h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              {aboutData.leadership.description}
+              {aboutData?.leadership?.description}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {aboutData.leadership.team.map((leader, index) => (
+            {(aboutData?.leadership?.team || []).map((leader, index) => (
               <motion.div
-                key={leader.name}
+                key={leader?.name}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
@@ -373,16 +373,16 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               >
                 <Card className="p-8 border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-lg">
                   <div className="mb-6">
-                    <h3 className="text-2xl font-bold mb-2">{leader.name}</h3>
-                    <div className="text-lg font-semibold text-slate-700 mb-1">{leader.title}</div>
-                    <div className="text-sm text-slate-500">{leader.experience}</div>
+                    <h3 className="text-2xl font-bold mb-2">{leader?.name}</h3>
+                    <div className="text-lg font-semibold text-slate-700 mb-1">{leader?.title}</div>
+                    <div className="text-sm text-slate-500">{leader?.experience}</div>
                   </div>
 
-                  <p className="text-slate-600 mb-4">{leader.background}</p>
+                  <p className="text-slate-600 mb-4">{leader?.background}</p>
 
                   <div className="border-l-4 border-slate-300 pl-4">
                     <div className="text-sm font-semibold text-slate-800 mb-1">Focus Area</div>
-                    <div className="text-sm text-slate-600">{leader.focus}</div>
+                    <div className="text-sm text-slate-600">{leader?.focus}</div>
                   </div>
                 </Card>
               </motion.div>
@@ -402,23 +402,23 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl font-bold mb-8">{aboutData.capabilities.title}</h2>
+              <h2 className="text-4xl font-bold mb-8">{aboutData?.capabilities?.title}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {aboutData.capabilities.categories.map((capability, index) => (
+                {(aboutData?.capabilities?.categories || []).map((capability, index) => (
                   <motion.div
-                    key={capability.category}
+                    key={capability?.category}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1, duration: 0.6 }}
                     viewport={{ once: true }}
                   >
                     <Card className="p-6 border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-lg">
-                      <h3 className="text-lg font-bold mb-4">{capability.category}</h3>
+                      <h3 className="text-lg font-bold mb-4">{capability?.category}</h3>
                       <div className="space-y-2">
-                        {capability.items.map((i) => (
-                          <div key={i.item} className="flex items-center text-sm text-slate-600">
+                        {(capability?.items || []).map((i) => (
+                          <div key={i?.item} className="flex items-center text-sm text-slate-600">
                             <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mr-2" />
-                            {i.item}
+                            {i?.item}
                           </div>
                         ))}
                       </div>
@@ -435,11 +435,11 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl font-bold mb-8">{aboutData.certifications.title}</h2>
+              <h2 className="text-4xl font-bold mb-8">{aboutData?.certifications?.title}</h2>
               <div className="space-y-4">
-                {aboutData.certifications.items.map((cert, index) => (
+                {(aboutData?.certifications?.items || []).map((cert, index) => (
                   <motion.div
-                    key={cert.certification}
+                    key={cert?.certification}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1, duration: 0.6 }}
@@ -447,15 +447,15 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                     className="flex items-center p-4 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors"
                   >
                     <Award className="w-6 h-6 text-green-500 mr-4 flex-shrink-0" />
-                    <span className="font-medium text-slate-700">{cert.certification}</span>
+                    <span className="font-medium text-slate-700">{cert?.certification}</span>
                   </motion.div>
                 ))}
               </div>
 
               <div className="mt-8 p-6 bg-white rounded-lg border border-slate-200">
-                <h3 className="text-xl font-bold mb-4">{aboutData.certifications.commitmentTitle}</h3>
+                <h3 className="text-xl font-bold mb-4">{aboutData?.certifications?.commitmentTitle}</h3>
                 <p className="text-slate-600">
-                  {aboutData.certifications.commitmentDescription}
+                  {aboutData?.certifications?.commitmentDescription}
                 </p>
               </div>
             </motion.div>
@@ -473,23 +473,23 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
             viewport={{ once: true }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">{aboutData.cta.title}</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">{aboutData?.cta?.title}</h2>
             <p className="text-xl text-slate-600 mb-8">
-              {aboutData.cta.description}
+              {aboutData?.cta?.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {aboutData.cta.buttons.map((button, index) => {
-                if (index === 0 && button.variant === 'primary') {
+              {(aboutData?.cta?.buttons || []).map((button, index) => {
+                if (index === 0 && button?.variant === 'primary') {
                   return (
-                    <Button key={button.label} size="lg" className="px-8 py-6 bg-slate-900 hover:bg-slate-800 text-white font-semibold">
-                      {button.label}
+                    <Button key={button?.label} size="lg" className="px-8 py-6 bg-slate-900 hover:bg-slate-800 text-white font-semibold">
+                      {button?.label}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   );
                 }
                 return (
-                  <Button key={button.label} size="lg" variant="outline" asChild className="px-8 py-6 font-semibold">
-                    <Link href={button.href}>{button.label}</Link>
+                  <Button key={button?.label} size="lg" variant="outline" asChild className="px-8 py-6 font-semibold">
+                    <Link href={button?.href || '#'}>{button?.label}</Link>
                   </Button>
                 );
               })}

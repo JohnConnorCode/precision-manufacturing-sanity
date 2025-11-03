@@ -5,9 +5,23 @@ import { theme, styles, cn } from '@/lib/theme';
 import { ArrowRight, Shield, Award } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImagePro from '@/components/ui/parallax-image-pro';
-import { getServicesFromDB, getPageContentFromDB } from '@/lib/direct-cms-access';
+import { getAllServices, getPageContent } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
+
+// Helper function to convert Portable Text to plain text
+function portableTextToPlainText(blocks: any): string {
+  if (!blocks) return '';
+  if (typeof blocks === 'string') return blocks;
+  if (!Array.isArray(blocks)) return '';
+
+  return blocks
+    .map((block: any) => {
+      if (block._type !== 'block' || !block.children) return '';
+      return block.children.map((child: any) => child.text).join('');
+    })
+    .join(' ');
+}
 
 // Force static generation for INSTANT routing (no server delays)
 export const dynamic = 'force-static';
@@ -68,9 +82,17 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ServicesPage() {
   // Parallel data fetching - 2x faster than sequential
   const [services, pageContent] = await Promise.all([
-    getServicesFromDB(),
-    getPageContentFromDB('services')
+    getAllServices(),
+    getPageContent()
   ]);
+
+  // Format services with slug and plain text description
+  const formattedServices = services?.map((service: any) => ({
+    ...service,
+    slug: service.slug?.current || service.slug,
+    description: service.shortDescription || portableTextToPlainText(service.description),
+    href: `/services/${service.slug?.current || service.slug}`,
+  })) || [];
 
   // Use CMS data or fallback to defaults
   const capabilities = pageContent?.capabilities || [
@@ -156,7 +178,7 @@ export default async function ServicesPage() {
           </AnimatedSection>
 
           <div className={styles.grid2Col}>
-            {(services || []).map((service: any, index: number) => (
+            {formattedServices.map((service: any, index: number) => (
               <AnimatedSection key={service.title} delay={index * 0.1}>
                 <Card className={cn(styles.featureCard, "group h-full overflow-hidden")}>
                   <div className="relative h-64 overflow-hidden">

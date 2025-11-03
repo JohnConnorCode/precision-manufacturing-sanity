@@ -2,13 +2,45 @@ export default {
   name: 'service',
   type: 'document',
   title: 'Services',
+  orderings: [
+    {
+      title: 'Title A-Z',
+      name: 'titleAsc',
+      by: [{field: 'title', direction: 'asc'}]
+    },
+    {
+      title: 'Title Z-A',
+      name: 'titleDesc',
+      by: [{field: 'title', direction: 'desc'}]
+    },
+    {
+      title: 'Display Order',
+      name: 'orderAsc',
+      by: [{field: 'order', direction: 'asc'}]
+    }
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'shortDescription',
+      media: 'image'
+    },
+    prepare(selection: any) {
+      const {title, subtitle, media} = selection
+      return {
+        title: title,
+        subtitle: subtitle,
+        media: media
+      }
+    }
+  },
   fields: [
     {
       name: 'title',
       type: 'string',
       title: 'Title',
       description: 'Service title (e.g., "5-Axis Machining")',
-      validation: (Rule: any) => Rule.required(),
+      validation: (Rule: any) => Rule.required().error('Title is required'),
     },
     {
       name: 'slug',
@@ -19,7 +51,7 @@ export default {
         source: 'title',
         maxLength: 96,
       },
-      validation: (Rule: any) => Rule.required(),
+      validation: (Rule: any) => Rule.required().error('Slug is required - click "Generate" to create from title'),
     },
     {
       name: 'shortDescription',
@@ -27,6 +59,7 @@ export default {
       title: 'Short Description',
       description: 'Brief description for cards and previews (150-200 characters)',
       rows: 3,
+      validation: (Rule: any) => Rule.min(100).max(200).warning('Should be between 100-200 characters for optimal display'),
     },
     {
       name: 'description',
@@ -44,10 +77,25 @@ export default {
           name: 'backgroundImage',
           type: 'image',
           title: 'Background Image',
-          description: 'Hero background image',
+          description: 'Hero background image (recommended: 1920x1080px)',
           options: {
             hotspot: true,
+            metadata: ['blurhash', 'lqip', 'palette'],
           },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              description: 'Describe the image for accessibility and SEO',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
+            },
+            {
+              name: 'caption',
+              type: 'string',
+              title: 'Caption'
+            }
+          ]
         },
         {
           name: 'badge',
@@ -104,7 +152,24 @@ export default {
               name: 'image',
               type: 'image',
               title: 'Service Image',
-              options: {hotspot: true},
+              description: 'Image for this service offering',
+              options: {
+                hotspot: true,
+                metadata: ['blurhash', 'lqip', 'palette'],
+              },
+              fields: [
+                {
+                  name: 'alt',
+                  type: 'string',
+                  title: 'Alternative Text',
+                  validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
+                },
+                {
+                  name: 'caption',
+                  type: 'string',
+                  title: 'Caption'
+                }
+              ]
             },
             {
               name: 'bullets',
@@ -252,7 +317,18 @@ export default {
           type: 'image',
           title: 'Social Share Image',
           description: 'Image shown when shared on social media (1200x630px recommended)',
-          options: {hotspot: true},
+          options: {
+            hotspot: true,
+            metadata: ['blurhash', 'lqip', 'palette'],
+          },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for social sharing')
+            }
+          ]
         },
         {
           name: 'noindex',
@@ -284,10 +360,30 @@ export default {
       name: 'image',
       type: 'image',
       title: 'Service Card Image',
-      description: 'Image displayed on service cards',
+      description: 'Image displayed on service cards (recommended: 800x600px)',
       options: {
         hotspot: true,
+        metadata: ['blurhash', 'lqip', 'palette'],
       },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative Text',
+          description: 'Describe the image for accessibility and SEO',
+          validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
+        },
+        {
+          name: 'caption',
+          type: 'string',
+          title: 'Caption'
+        },
+        {
+          name: 'attribution',
+          type: 'string',
+          title: 'Attribution/Credit'
+        }
+      ]
     },
     {
       name: 'highlight',

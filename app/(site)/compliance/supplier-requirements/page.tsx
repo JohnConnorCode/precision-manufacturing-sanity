@@ -1,12 +1,12 @@
 import SupplierRequirementsPageClient from './page-client';
-import { getSupplierRequirementsFromCMS } from '@/lib/get-cms-data-direct';
+import { getSupplierRequirements } from '@/sanity/lib/queries';
 
 // Force static generation with long revalidation
 export const revalidate = 3600;
 
 export default async function SupplierRequirementsPage() {
   // Fetch data from CMS
-  const supplierRequirementsData = await getSupplierRequirementsFromCMS();
+  const supplierRequirementsData = await getSupplierRequirements();
 
   return <SupplierRequirementsPageClient data={supplierRequirementsData as any} />;
 }

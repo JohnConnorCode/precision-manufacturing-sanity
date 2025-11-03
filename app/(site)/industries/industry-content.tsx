@@ -84,7 +84,9 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
                       {industry.overview.keyDrivers.map((item: any, index: number) => (
                         <div key={index} className="flex items-start">
                           <CheckCircle className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0 mt-0.5" />
-                          <span className={cn(theme.typography.body)}>{item.driver || item}</span>
+                          <span className={cn(theme.typography.body)}>
+                            {typeof item === 'string' ? item : (item.driver || '')}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -107,7 +109,9 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
                           <span className="text-red-600 font-bold text-sm">{index + 1}</span>
                         </div>
-                        <span className={cn(theme.typography.body)}>{item.challenge || item}</span>
+                        <span className={cn(theme.typography.body)}>
+                          {typeof item === 'string' ? item : (item.challenge || '')}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -152,10 +156,10 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
                       <div>
                         <h4 className={cn(theme.typography.label, 'mb-3')}>Technical Details</h4>
                         <div className="space-y-2">
-                          {capability.technicalDetails.map((detail: any) => (
-                            <div key={detail.detail} className="flex items-center text-sm text-slate-600">
+                          {capability.technicalDetails.map((detail: any, idx: number) => (
+                            <div key={detail.detail || idx} className="flex items-center text-sm text-slate-600">
                               <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
-                              {detail.detail}
+                              {typeof detail === 'string' ? detail : (detail.detail || '')}
                             </div>
                           ))}
                         </div>
@@ -220,10 +224,10 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
                         <div className="mb-6">
                           <h4 className={cn(theme.typography.label, 'mb-3')}>Component Parts</h4>
                           <div className="grid grid-cols-1 gap-2">
-                            {component.parts.map((part: any) => (
-                              <div key={part.part} className="flex items-center text-sm text-slate-600">
+                            {component.parts.map((part: any, idx: number) => (
+                              <div key={part.part || idx} className="flex items-center text-sm text-slate-600">
                                 <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2" />
-                                {part.part}
+                                {typeof part === 'string' ? part : (part.part || '')}
                               </div>
                             ))}
                           </div>
@@ -234,10 +238,10 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
                         <div className="mb-6">
                           <h4 className={cn(theme.typography.label, 'mb-3')}>Materials</h4>
                           <div className="space-y-1">
-                            {component.materials.map((material: any) => (
-                              <div key={material.material} className="flex items-center text-sm text-slate-600">
+                            {component.materials.map((material: any, idx: number) => (
+                              <div key={material.material || idx} className="flex items-center text-sm text-slate-600">
                                 <Shield className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
-                                {material.material}
+                                {typeof material === 'string' ? material : (material.material || '')}
                               </div>
                             ))}
                           </div>
@@ -248,10 +252,10 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
                         <div>
                           <h4 className={cn(theme.typography.label, 'mb-3')}>Requirements</h4>
                           <div className="space-y-1">
-                            {component.requirements.map((requirement: any) => (
-                              <div key={requirement.requirement} className="flex items-center text-sm text-slate-600">
+                            {component.requirements.map((requirement: any, idx: number) => (
+                              <div key={requirement.requirement || idx} className="flex items-center text-sm text-slate-600">
                                 <Target className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
-                                {requirement.requirement}
+                                {typeof requirement === 'string' ? requirement : (requirement.requirement || '')}
                               </div>
                             ))}
                           </div>
@@ -372,10 +376,10 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
                       <div>
                         <h4 className={cn(theme.typography.label, 'mb-2 text-sm')}>Requirements</h4>
                         <div className="space-y-1">
-                          {application.requirements.map((req: any) => (
-                            <div key={req.requirement} className="flex items-center text-xs text-slate-600">
+                          {application.requirements.map((req: any, idx: number) => (
+                            <div key={req.requirement || idx} className="flex items-center text-xs text-slate-600">
                               <CheckCircle className="w-3 h-3 text-blue-600 mr-2 flex-shrink-0" />
-                              {req.requirement}
+                              {typeof req === 'string' ? req : (req.requirement || '')}
                             </div>
                           ))}
                         </div>
@@ -409,7 +413,7 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
             <div className={styles.grid4Col}>
               {industry.qualityStandards.map((item: any, index: number) => (
                 <motion.div
-                  key={item.standard || item}
+                  key={item.standard || index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05, duration: 0.6 }}
@@ -418,7 +422,7 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
                   <Card className={cn(styles.featureCard, 'h-full text-center')}>
                     <CheckCircle className="w-8 h-8 text-blue-600 mx-auto mb-3" />
                     <p className={cn(theme.typography.small, 'font-medium')}>
-                      {item.standard || item}
+                      {typeof item === 'string' ? item : (item.standard || '')}
                     </p>
                   </Card>
                 </motion.div>
@@ -463,10 +467,10 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
                       <div>
                         <h4 className={cn(theme.typography.label, 'mb-3')}>Key Features</h4>
                         <div className="space-y-2">
-                          {benefit.features.map((feature: any) => (
-                            <div key={feature.feature} className="flex items-center text-sm text-slate-600">
+                          {benefit.features.map((feature: any, idx: number) => (
+                            <div key={feature.feature || idx} className="flex items-center text-sm text-slate-600">
                               <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
-                              {feature.feature}
+                              {typeof feature === 'string' ? feature : (feature.feature || '')}
                             </div>
                           ))}
                         </div>

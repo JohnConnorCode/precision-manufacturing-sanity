@@ -1,12 +1,12 @@
 import ContactPageClient from './page-client';
-import { getContactFromCMS } from '@/lib/get-cms-data-direct';
+import { getContact } from '@/sanity/lib/queries';
 
 // Force static generation with long revalidation
 export const revalidate = 3600;
 
 export default async function ContactPageWrapper() {
   // Fetch data from CMS
-  const contactData = await getContactFromCMS();
+  const contactData = await getContact();
 
   return <ContactPageClient data={contactData as any} />;
 }

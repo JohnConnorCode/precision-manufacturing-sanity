@@ -3,6 +3,17 @@ export default {
   type: 'document',
   title: 'Footer',
   __experimental_singleton: true,
+  preview: {
+    select: {
+      company: 'company.description'
+    },
+    prepare(selection: any) {
+      return {
+        title: 'Site Footer',
+        subtitle: selection.company ? selection.company.substring(0, 50) + '...' : 'Not set'
+      }
+    }
+  },
   fields: [
     {
       name: 'company',
@@ -36,16 +47,28 @@ export default {
           name: 'linkedin',
           type: 'url',
           title: 'LinkedIn URL',
+          description: 'Company LinkedIn page URL',
+          validation: (Rule: any) => Rule.uri({
+            scheme: ['http', 'https']
+          }).warning('Must be a valid URL starting with http:// or https://'),
         },
         {
           name: 'twitter',
           type: 'url',
           title: 'Twitter URL',
+          description: 'Company Twitter/X profile URL',
+          validation: (Rule: any) => Rule.uri({
+            scheme: ['http', 'https']
+          }).warning('Must be a valid URL starting with http:// or https://'),
         },
         {
           name: 'facebook',
           type: 'url',
           title: 'Facebook URL',
+          description: 'Company Facebook page URL',
+          validation: (Rule: any) => Rule.uri({
+            scheme: ['http', 'https']
+          }).warning('Must be a valid URL starting with http:// or https://'),
         },
       ],
     },

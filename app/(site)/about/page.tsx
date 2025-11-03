@@ -1,5 +1,5 @@
 import AboutPageClient from '@/components/pages/AboutPageClient';
-import { getAboutFromCMS } from '@/lib/get-cms-data-direct';
+import { getAbout, getAllTeamMembers } from '@/sanity/lib/queries';
 
 // Force static generation for INSTANT routing (no server delays)
 export const dynamic = 'force-static';
@@ -7,9 +7,12 @@ export const revalidate = false; // Fully static, rebuild on deploy
 
 export default async function AboutPage() {
   // Fetch data from CMS
-  const aboutData = await getAboutFromCMS();
+  const [aboutData, teamMembers] = await Promise.all([
+    getAbout(),
+    getAllTeamMembers()
+  ]);
 
-  return <AboutPageClient data={aboutData as any} />;
+  return <AboutPageClient data={{ ...aboutData, teamMembers } as any} />;
 }
 
 // Generate metadata for SEO

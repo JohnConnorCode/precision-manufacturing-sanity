@@ -62,7 +62,7 @@ export default {
             Rule.required().regex(
               /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
               {name: 'email'}
-            ),
+            ).error('A valid email address is required'),
         },
         {
           name: 'address',
@@ -103,16 +103,28 @@ export default {
           name: 'linkedin',
           type: 'url',
           title: 'LinkedIn URL',
+          description: 'Company LinkedIn page URL',
+          validation: (Rule: any) => Rule.uri({
+            scheme: ['http', 'https']
+          }).warning('Must be a valid URL starting with http:// or https://'),
         },
         {
           name: 'twitter',
           type: 'url',
           title: 'Twitter URL',
+          description: 'Company Twitter/X profile URL',
+          validation: (Rule: any) => Rule.uri({
+            scheme: ['http', 'https']
+          }).warning('Must be a valid URL starting with http:// or https://'),
         },
         {
           name: 'facebook',
           type: 'url',
           title: 'Facebook URL',
+          description: 'Company Facebook page URL',
+          validation: (Rule: any) => Rule.uri({
+            scheme: ['http', 'https']
+          }).warning('Must be a valid URL starting with http:// or https://'),
         },
         {
           name: 'twitterHandle',
@@ -148,7 +160,20 @@ export default {
           name: 'defaultOgImage',
           type: 'image',
           title: 'Default Social Share Image',
-          options: {hotspot: true},
+          description: 'Default image for social sharing (1200x630px recommended)',
+          options: {
+            hotspot: true,
+            metadata: ['blurhash', 'lqip', 'palette'],
+          },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              description: 'Describe the image for social sharing',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
+            }
+          ]
         },
         {
           name: 'googleAnalyticsId',

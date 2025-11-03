@@ -131,24 +131,24 @@ interface CareersPageClientProps {
 
 export default function CareersPageClient({ data }: CareersPageClientProps) {
   const careersData = data || defaultCareersData;
-  const BadgeIcon = iconMap[careersData.hero.badgeIconName] || Users;
+  const BadgeIcon = iconMap[careersData?.hero?.badgeIconName] || Users;
 
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={careersData.hero.backgroundImage}
-        imageAlt={careersData.hero.imageAlt}
+        backgroundImage={careersData?.hero?.backgroundImage || defaultCareersData.hero.backgroundImage}
+        imageAlt={careersData?.hero?.imageAlt || defaultCareersData.hero.imageAlt}
         badge={{
-          text: careersData.hero.badge,
+          text: careersData?.hero?.badge || defaultCareersData.hero.badge,
           icon: BadgeIcon
         }}
         title={
           <span className="text-white">
-            {careersData.hero.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">{careersData.hero.titleHighlight}</span>
+            {careersData?.hero?.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">{careersData?.hero?.titleHighlight}</span>
           </span>
         }
-        description={careersData.hero.description}
-        buttons={careersData.hero.buttons.map(btn => ({
+        description={careersData?.hero?.description}
+        buttons={(careersData?.hero?.buttons || []).map(btn => ({
           label: btn.label,
           href: btn.href,
           variant: btn.variant as 'primary' | 'secondary'
@@ -167,15 +167,15 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className={cn(theme.typography.h2, "mb-6")}>{careersData.whyWorkHere.heading}</h2>
+              <h2 className={cn(theme.typography.h2, "mb-6")}>{careersData?.whyWorkHere?.heading}</h2>
               <p className={cn(theme.typography.lead, "mb-6")}>
-                {careersData.whyWorkHere.paragraph1}
+                {careersData?.whyWorkHere?.paragraph1}
               </p>
               <p className={cn(theme.typography.body, "text-slate-600 mb-8")}>
-                {careersData.whyWorkHere.paragraph2}
+                {careersData?.whyWorkHere?.paragraph2}
               </p>
               <p className={cn(theme.typography.body, "text-slate-600")}>
-                {careersData.whyWorkHere.paragraph3}
+                {careersData?.whyWorkHere?.paragraph3}
               </p>
             </motion.div>
 
@@ -187,8 +187,8 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
               className="relative"
             >
               <img
-                src={careersData.whyWorkHere.image}
-                alt={careersData.whyWorkHere.imageAlt}
+                src={careersData?.whyWorkHere?.image || defaultCareersData.whyWorkHere.image}
+                alt={careersData?.whyWorkHere?.imageAlt || defaultCareersData.whyWorkHere.imageAlt}
                 className="w-full h-96 rounded-lg object-cover shadow-lg"
               />
             </motion.div>
@@ -206,14 +206,14 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className={cn(theme.typography.h2, "mb-6")}>{careersData.benefits.heading}</h2>
+            <h2 className={cn(theme.typography.h2, "mb-6")}>{careersData?.benefits?.heading}</h2>
             <p className={cn(theme.typography.lead, "max-w-3xl mx-auto")}>
-              {careersData.benefits.description}
+              {careersData?.benefits?.description}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {careersData.benefits.items.map((benefit, index) => {
+            {(careersData?.benefits?.items || []).map((benefit, index) => {
               const Icon = iconMap[benefit.iconName] || Users;
               return (
                 <motion.div
@@ -253,14 +253,14 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className={cn(theme.typography.h2, "mb-6")}>{careersData.values.heading}</h2>
+            <h2 className={cn(theme.typography.h2, "mb-6")}>{careersData?.values?.heading}</h2>
             <p className={cn(theme.typography.lead, "max-w-3xl mx-auto")}>
-              {careersData.values.description}
+              {careersData?.values?.description}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {careersData.values.items.map((value, index) => (
+            {(careersData?.values?.items || []).map((value, index) => (
               <motion.div
                 key={value.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -288,14 +288,14 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className={cn(theme.typography.h2, "mb-6")}>{careersData.opportunities.heading}</h2>
+            <h2 className={cn(theme.typography.h2, "mb-6")}>{careersData?.opportunities?.heading}</h2>
             <p className={cn(theme.typography.lead, "max-w-3xl mx-auto")}>
-              {careersData.opportunities.description}
+              {careersData?.opportunities?.description}
             </p>
           </motion.div>
 
           <div className="space-y-6">
-            {careersData.opportunities.positions.map((position, index) => (
+            {(careersData?.opportunities?.positions || []).map((position, index) => (
               <motion.div
                 key={position.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -338,12 +338,12 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
             viewport={{ once: true }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h2 className={cn(theme.typography.h2, "mb-6")}>{careersData.cta.heading}</h2>
+            <h2 className={cn(theme.typography.h2, "mb-6")}>{careersData?.cta?.heading}</h2>
             <p className={cn(theme.typography.lead, "mb-8")}>
-              {careersData.cta.description}
+              {careersData?.cta?.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {careersData.cta.buttons.map((button, index) => (
+              {(careersData?.cta?.buttons || []).map((button, index) => (
                 <Button
                   key={index}
                   size="lg"

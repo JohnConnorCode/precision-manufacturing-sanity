@@ -120,7 +120,7 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
         {/* Metrics Grid - Clean Professional Design */}
         <div className={`grid grid-cols-2 md:grid-cols-4 ${spacing.grid}`}>
           {metrics.map((metric, index) => {
-            const Icon = metric.icon;
+            const Icon = metric.icon || Gauge;
             return (
               <AnimatedSection
                 key={metric.label}

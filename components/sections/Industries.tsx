@@ -72,7 +72,7 @@ export default function Industries({ data }: IndustriesProps) {
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid}`}>
           {industriesData.map((industry: any, index: number) => {
             // Handle both CMS data (iconName) and hardcoded data (icon)
-            const Icon = industry.iconName ? iconMap[industry.iconName] || Plane : industry.icon;
+            const Icon = industry.iconName ? (iconMap[industry.iconName] || Plane) : (industry.icon || Plane);
             return (
               <AnimatedSection key={industry.title} delay={index * 0.1} className="group">
                 <Link href={industry.href} className="block">

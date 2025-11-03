@@ -2,9 +2,23 @@ import { Button } from '@/components/ui/button';
 import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { getIndustriesFromDB } from '@/lib/direct-cms-access';
+import { getAllIndustries } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
+
+// Helper function to convert Portable Text to plain text
+function portableTextToPlainText(blocks: any): string {
+  if (!blocks) return '';
+  if (typeof blocks === 'string') return blocks;
+  if (!Array.isArray(blocks)) return '';
+
+  return blocks
+    .map((block: any) => {
+      if (block._type !== 'block' || !block.children) return '';
+      return block.children.map((child: any) => child.text).join('');
+    })
+    .join(' ');
+}
 
 // Force static generation for INSTANT routing (no server delays)
 export const dynamic = 'force-static';
@@ -63,7 +77,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function IndustriesPage() {
-  const industries = (await getIndustriesFromDB()) || [] as any[];
+  const industries = (await getAllIndustries()) || [] as any[];
+
+  // Format industries with slug and plain text description
+  const formattedIndustries = industries.map((industry: any) => ({
+    ...industry,
+    slug: industry.slug?.current || industry.slug,
+    description: industry.shortDescription || portableTextToPlainText(industry.description),
+  }));
 
   return (
     <div className="min-h-screen bg-background">
@@ -105,7 +126,7 @@ export default async function IndustriesPage() {
           </AnimatedSection>
 
           <div className="space-y-8">
-            {industries.map((industry: any, index: number) => (
+            {formattedIndustries.map((industry: any, index: number) => (
               <AnimatedSection key={industry.title} delay={index * 0.15}>
                 <div className="bg-white border border-slate-200 rounded-lg p-8">
                   <h3 className="text-3xl font-bold mb-4">{industry.title}</h3>

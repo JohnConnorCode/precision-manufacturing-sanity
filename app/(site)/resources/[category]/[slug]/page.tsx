@@ -1,17 +1,23 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Clock, ArrowLeft, Calendar, Tag } from 'lucide-react';
-import { getResourceBySlugFromCMS } from '@/lib/get-cms-data-direct';
-import { SlateRenderer } from '@/components/slate-renderer';
-import { draftMode } from 'next/headers';
+import { getResourceBySlug, getAllResources } from '@/sanity/lib/queries';
+import { PortableTextContent } from '@/components/portable-text-components';
 
 // Enable ISR with 1 hour revalidation
 export const revalidate = 3600;
 
+export async function generateStaticParams() {
+  const resources = await getAllResources();
+  return resources.map((resource: any) => ({
+    category: resource.category,
+    slug: resource.slug?.current || resource.slug,
+  }));
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ category: string; slug: string }> }) {
-  const { category, slug } = await params;
-  const { isEnabled: isDraft } = await draftMode();
-  const resource = await getResourceBySlugFromCMS(slug, isDraft);
+  const { slug } = await params;
+  const resource = await getResourceBySlug(slug);
 
   if (!resource) {
     return {
@@ -32,8 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
 
 export default async function ResourcePage({ params }: { params: Promise<{ category: string; slug: string }> }) {
   const { category, slug } = await params;
-  const { isEnabled: isDraft } = await draftMode();
-  const resource = await getResourceBySlugFromCMS(slug, isDraft);
+  const resource = await getResourceBySlug(slug);
 
   if (!resource) {
     notFound();
@@ -131,10 +136,10 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
         <section className="py-8 px-4 opacity-0 animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
           <div className="max-w-4xl mx-auto">
             <div className="bg-card border border-border rounded-2xl p-8 md:p-12 shadow-sm">
-              {resource.content && Array.isArray(resource.content) ? (
-                <SlateRenderer content={resource.content} />
+              {resource.content ? (
+                <PortableTextContent value={resource.content} />
               ) : (
-                <p className="text-slate-500 text-center">Content format not supported. Please view this resource in the admin panel.</p>
+                <p className="text-slate-500 text-center">No content available for this resource.</p>
               )}
             </div>
           </div>

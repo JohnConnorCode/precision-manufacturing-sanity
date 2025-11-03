@@ -13,23 +13,60 @@ import {
   generateProductCatalogSchema,
   generateFAQSchema
 } from '@/lib/structured-data';
-import { getServicesFromCMS, getIndustriesFromCMS, getHomepageFromCMS } from '@/lib/get-cms-data-direct';
-import { draftMode } from 'next/headers';
+import { getAllServices, getAllIndustries, getHomepage } from '@/sanity/lib/queries';
+
+// Helper function to convert Portable Text to plain text
+function portableTextToPlainText(blocks: any): string {
+  if (!blocks) return '';
+  if (typeof blocks === 'string') return blocks;
+  if (!Array.isArray(blocks)) return '';
+
+  return blocks
+    .map((block: any) => {
+      if (block._type !== 'block' || !block.children) return '';
+      return block.children.map((child: any) => child.text).join('');
+    })
+    .join(' ');
+}
 
 // Force static generation for INSTANT routing (no server delays)
 export const dynamic = 'force-static';
 export const revalidate = false; // Fully static, rebuild on deploy
 
 export default async function Home() {
-  // Check if in draft mode for previewing unpublished content
-  const { isEnabled: isDraft } = await draftMode();
-
   // Parallel data fetching - 3x faster than sequential
   const [servicesData, industriesData, homepageData] = await Promise.all([
-    getServicesFromCMS(isDraft),
-    getIndustriesFromCMS(isDraft),
-    getHomepageFromCMS()
+    getAllServices(),
+    getAllIndustries(),
+    getHomepage()
   ]);
+
+  // Format data for display
+  const formattedServices = servicesData?.map((service: any) => ({
+    ...service,
+    description: service.shortDescription || portableTextToPlainText(service.description),
+    href: `/services/${service.slug?.current || service.slug}`,
+  }));
+
+  const formattedIndustries = industriesData?.map((industry: any) => ({
+    ...industry,
+    description: industry.shortDescription || portableTextToPlainText(industry.description),
+    href: `/industries/${industry.slug?.current || industry.slug}`,
+  }));
+
+  // Transform homepage data for component compatibility
+  const transformedHomepage = homepageData ? {
+    ...homepageData,
+    hero: homepageData.hero ? {
+      ...homepageData.hero,
+      // Transform badges from objects to strings if needed
+      badges: Array.isArray(homepageData.hero.badges)
+        ? homepageData.hero.badges.map((badge: any) =>
+            typeof badge === 'string' ? badge : badge.badge || badge.text || ''
+          )
+        : homepageData.hero.badges
+    } : undefined
+  } : undefined;
 
   // Organization data for structured markup
   const organizationData = {
@@ -75,13 +112,13 @@ export default async function Home() {
         faqSchema
       ]} />
 
-      <Hero data={homepageData?.hero || undefined} />
-      <Services data={servicesData || undefined} />
-      <TechnicalSpecs data={homepageData?.technicalSpecs || undefined} />
-      <Industries data={industriesData || undefined} />
-      <ImageShowcase data={homepageData?.imageShowcase || undefined} />
-      <Resources data={homepageData?.resources || undefined} />
-      <CTA data={homepageData?.cta || undefined} />
+      <Hero data={transformedHomepage?.hero || undefined} />
+      <Services data={formattedServices || undefined} />
+      <TechnicalSpecs data={transformedHomepage?.technicalSpecs || undefined} />
+      <Industries data={formattedIndustries || undefined} />
+      <ImageShowcase data={transformedHomepage?.imageShowcase || undefined} />
+      <Resources data={transformedHomepage?.resources || undefined} />
+      <CTA data={transformedHomepage?.cta || undefined} />
     </>
   );
 }

@@ -1,10 +1,9 @@
-import { getServiceBySlugFromCMS } from '@/lib/get-cms-data-direct';
+import { getServiceBySlug, getAllServices } from '@/sanity/lib/queries';
 import { ServiceContent } from '../service-content';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/theme';
 import { theme } from '@/lib/theme';
 import Link from 'next/link';
-import { draftMode } from 'next/headers';
 
 interface ServicePageProps {
   params: Promise<{
@@ -17,8 +16,7 @@ export const revalidate = 3600;
 
 export async function generateMetadata({ params }: ServicePageProps) {
   const { slug } = await params;
-  const { isEnabled: isDraft } = await draftMode();
-  const serviceData = await getServiceBySlugFromCMS(slug, isDraft);
+  const serviceData = await getServiceBySlug(slug);
 
   if (!serviceData) {
     return {
@@ -39,10 +37,16 @@ export async function generateMetadata({ params }: ServicePageProps) {
 
 // No build-time path generation; resolve at request time
 
+export async function generateStaticParams() {
+  const services = await getAllServices();
+  return services.map((service: any) => ({
+    slug: service.slug?.current || service.slug,
+  }));
+}
+
 export default async function ServicePage({ params }: ServicePageProps) {
   const { slug } = await params;
-  const { isEnabled: isDraft } = await draftMode();
-  const serviceData = await getServiceBySlugFromCMS(slug, isDraft);
+  const serviceData = await getServiceBySlug(slug);
 
   if (!serviceData) {
     return (

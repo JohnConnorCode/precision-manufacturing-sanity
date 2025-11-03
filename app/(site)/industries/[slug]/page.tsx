@@ -1,10 +1,9 @@
-import { getIndustryBySlugFromCMS } from '@/lib/get-cms-data-direct';
+import { getIndustryBySlug, getAllIndustries } from '@/sanity/lib/queries';
 import { IndustryContent } from '../industry-content';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/theme';
 import { theme } from '@/lib/theme';
 import Link from 'next/link';
-import { draftMode } from 'next/headers';
 
 interface IndustryPageProps {
   params: Promise<{
@@ -17,8 +16,7 @@ export const revalidate = 3600;
 
 export async function generateMetadata({ params }: IndustryPageProps) {
   const { slug } = await params;
-  const { isEnabled: isDraft } = await draftMode();
-  const industryData = await getIndustryBySlugFromCMS(slug, isDraft);
+  const industryData = await getIndustryBySlug(slug);
 
   if (!industryData) {
     return {
@@ -37,12 +35,16 @@ export async function generateMetadata({ params }: IndustryPageProps) {
   };
 }
 
-// No build-time path generation; resolve at request time
+export async function generateStaticParams() {
+  const industries = await getAllIndustries();
+  return industries.map((industry: any) => ({
+    slug: industry.slug?.current || industry.slug,
+  }));
+}
 
 export default async function IndustryPage({ params }: IndustryPageProps) {
   const { slug } = await params;
-  const { isEnabled: isDraft } = await draftMode();
-  const industryData = await getIndustryBySlugFromCMS(slug, isDraft);
+  const industryData = await getIndustryBySlug(slug);
 
   if (!industryData) {
     return (

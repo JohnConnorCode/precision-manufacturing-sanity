@@ -13,7 +13,20 @@ export default {
           name: 'backgroundImage',
           type: 'image',
           title: 'Background Image',
-          options: {hotspot: true},
+          description: 'Hero background image (recommended: 1920x1080px)',
+          options: {
+            hotspot: true,
+            metadata: ['blurhash', 'lqip', 'palette'],
+          },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              description: 'Describe the image for accessibility',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
+            }
+          ]
         },
         {
           name: 'badge',
@@ -146,7 +159,18 @@ export default {
           type: 'image',
           title: 'Social Share Image',
           description: 'Image shown when shared on social media (1200x630px recommended)',
-          options: {hotspot: true},
+          options: {
+            hotspot: true,
+            metadata: ['blurhash', 'lqip', 'palette'],
+          },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for social sharing')
+            }
+          ]
         },
       ],
     },

@@ -67,14 +67,26 @@ export default {
                 {
                   name: 'image',
                   type: 'image',
-                  title: 'Image',
-                  options: {hotspot: true},
-                },
-                {
-                  name: 'alt',
-                  type: 'string',
-                  title: 'Alt Text',
-                  validation: (Rule: any) => Rule.required(),
+                  title: 'Slide Image',
+                  description: 'Hero carousel slide image (recommended: 1920x1080px)',
+                  options: {
+                    hotspot: true,
+                    metadata: ['blurhash', 'lqip', 'palette'],
+                  },
+                  fields: [
+                    {
+                      name: 'alt',
+                      type: 'string',
+                      title: 'Alternative Text',
+                      description: 'Describe the image for accessibility',
+                      validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
+                    },
+                    {
+                      name: 'caption',
+                      type: 'string',
+                      title: 'Caption'
+                    }
+                  ]
                 },
               ],
             },
@@ -249,10 +261,21 @@ export default {
                 {
                   name: 'image',
                   type: 'image',
-                  title: 'Image',
-                  options: {hotspot: true},
+                  title: 'Showcase Image',
+                  description: 'Image for showcase grid (recommended: 800x600px)',
+                  options: {
+                    hotspot: true,
+                    metadata: ['blurhash', 'lqip', 'palette'],
+                  },
+                  fields: [
+                    {
+                      name: 'alt',
+                      type: 'string',
+                      title: 'Alternative Text',
+                      validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
+                    }
+                  ]
                 },
-                {name: 'alt', type: 'string', title: 'Alt Text'},
                 {
                   name: 'title',
                   type: 'string',
@@ -511,7 +534,18 @@ export default {
           type: 'image',
           title: 'Social Share Image',
           description: 'Image shown when shared on social media (1200x630px recommended)',
-          options: {hotspot: true},
+          options: {
+            hotspot: true,
+            metadata: ['blurhash', 'lqip', 'palette'],
+          },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for social sharing')
+            }
+          ]
         },
       ],
     },
