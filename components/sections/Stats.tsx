@@ -73,6 +73,35 @@ export default function Stats({ data }: StatsProps) {
           </h2>
         </motion.div>
 
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {stats.map((stat, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="text-center"
+            >
+              <div className="relative inline-block mb-3">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur-xl opacity-20" />
+                <div className="relative bg-white rounded-2xl p-6 shadow-lg">
+                  <AnimatedCounter
+                    value={stat.value}
+                    decimals={stat.decimals}
+                    prefix={stat.prefix}
+                    suffix={stat.suffix}
+                    className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"
+                  />
+                </div>
+              </div>
+              <p className="text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                {stat.label}
+              </p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );

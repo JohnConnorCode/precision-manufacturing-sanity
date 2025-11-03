@@ -4,6 +4,7 @@ import Services from '@/components/sections/Services';
 import Industries from '@/components/sections/Industries';
 import ImageShowcase from '@/components/sections/ImageShowcase';
 import Resources from '@/components/sections/Resources';
+import Stats from '@/components/sections/Stats';
 import CTA from '@/components/sections/CTA';
 import StructuredData from '@/components/seo/StructuredData';
 import {
@@ -118,6 +119,7 @@ export default async function Home() {
       <Industries data={formattedIndustries || undefined} />
       <ImageShowcase data={transformedHomepage?.imageShowcase || undefined} />
       <Resources data={transformedHomepage?.resources || undefined} />
+      <Stats data={transformedHomepage?.stats || undefined} />
       <CTA data={transformedHomepage?.cta || undefined} />
     </>
   );

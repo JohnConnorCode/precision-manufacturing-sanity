@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const PROD_URL = 'https://precision-manufacturing-sanity-n8r6xw4n4.vercel.app';
+const PROD_URL = 'https://precision-manufacturing-sanity-cyczlx7be.vercel.app';
 const screenshotDir = '/tmp/production-verification';
 
 // Create screenshot directory
