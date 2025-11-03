@@ -72,8 +72,16 @@ export default {
       name: 'content',
       type: 'array',
       title: 'Content',
-      description: 'Main article content in rich text format',
-      of: [{type: 'block'}],
+      description: 'Main article content in rich text format with custom blocks',
+      of: [
+        {type: 'block'},
+        {type: 'calloutBox'},
+        {type: 'toleranceTable'},
+        {type: 'processFlow'},
+        {type: 'materialData'},
+        {type: 'equipmentSpec'},
+        {type: 'ctaButton'},
+      ],
     },
     {
       name: 'category',

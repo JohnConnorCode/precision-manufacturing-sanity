@@ -17,6 +17,14 @@ import supplierRequirements from './supplier-requirements'
 import uiText from './ui-text'
 import pageContent from './page-content'
 
+// Custom Blocks
+import calloutBox from './blocks/calloutBox'
+import toleranceTable from './blocks/toleranceTable'
+import processFlow from './blocks/processFlow'
+import materialData from './blocks/materialData'
+import equipmentSpec from './blocks/equipmentSpec'
+import ctaButton from './blocks/ctaButton'
+
 export const schemaTypes = [
   // Collections
   service,
@@ -36,4 +44,12 @@ export const schemaTypes = [
   supplierRequirements,
   uiText,
   pageContent,
+
+  // Custom Blocks
+  calloutBox,
+  toleranceTable,
+  processFlow,
+  materialData,
+  equipmentSpec,
+  ctaButton,
 ]
