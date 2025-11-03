@@ -85,3 +85,4 @@ vercel --prod
 ---
 
 Built for aerospace precision. ITAR compliant. AS9100D certified.
+// Force rebuild
