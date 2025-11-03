@@ -55,7 +55,16 @@ interface FooterProps {
 
 const Footer = ({ data }: FooterProps) => {
   // Use CMS data if available, otherwise fall back to hardcoded defaults
-  const footerData = data || defaultFooterData;
+  // Properly merge each property to handle empty objects
+  const footerData = {
+    company: data?.company || defaultFooterData.company,
+    social: data?.social || defaultFooterData.social,
+    servicesLinks: data?.servicesLinks || defaultFooterData.servicesLinks,
+    resourcesLinks: data?.resourcesLinks || defaultFooterData.resourcesLinks,
+    quickLinks: data?.quickLinks || defaultFooterData.quickLinks,
+    contact: data?.contact || defaultFooterData.contact,
+    copyright: data?.copyright || defaultFooterData.copyright
+  };
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
