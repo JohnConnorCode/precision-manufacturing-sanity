@@ -4,6 +4,10 @@ import { PortableText } from '@portabletext/react'
 import { CalloutBox } from '@/components/ui/callout-box'
 import { TechnicalSpecs } from '@/components/ui/technical-specs'
 import { CTAButton } from '@/components/ui/cta-button'
+import { ToleranceTable } from '@/components/ui/tolerance-table'
+import { ProcessFlow } from '@/components/ui/process-flow'
+import { MaterialData } from '@/components/ui/material-data'
+import { EquipmentSpec } from '@/components/ui/equipment-spec'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import Image from 'next/image'
@@ -96,6 +100,66 @@ export const portableTextComponents = {
             {value.text}
           </CTAButton>
         </div>
+      )
+    },
+
+    // Tolerance Table component
+    toleranceTable: ({ value }: any) => {
+      if (!value?.title || !value?.headers || !value?.rows) return null
+
+      return (
+        <ToleranceTable
+          title={value.title}
+          description={value.description}
+          headers={value.headers}
+          rows={value.rows}
+        />
+      )
+    },
+
+    // Process Flow component
+    processFlow: ({ value }: any) => {
+      if (!value?.title || !value?.steps) return null
+
+      return (
+        <ProcessFlow
+          title={value.title}
+          description={value.description}
+          steps={value.steps}
+        />
+      )
+    },
+
+    // Material Data component
+    materialData: ({ value }: any) => {
+      if (!value?.materialName || !value?.description || !value?.properties) return null
+
+      return (
+        <MaterialData
+          materialName={value.materialName}
+          grade={value.grade}
+          description={value.description}
+          properties={value.properties}
+          applications={value.applications}
+          machiningConsiderations={value.machiningConsiderations}
+        />
+      )
+    },
+
+    // Equipment Spec component
+    equipmentSpec: ({ value }: any) => {
+      if (!value?.equipmentName || !value?.specifications) return null
+
+      return (
+        <EquipmentSpec
+          equipmentName={value.equipmentName}
+          manufacturer={value.manufacturer}
+          model={value.model}
+          image={value.image}
+          specifications={value.specifications}
+          applications={value.applications}
+          advantages={value.advantages}
+        />
       )
     },
   },
