@@ -98,12 +98,22 @@ export default function Services({ data }: ServicesProps) {
               <AnimatedSection
                 key={service.title}
                 delay={index * 0.1}
-                className="group"
+                className="group perspective-1000"
               >
                 <Link href={service.href} className="block h-full">
                   <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    whileHover={{
+                      y: -8,
+                      rotateX: 5,
+                      rotateY: 5,
+                      transition: {
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 25
+                      }
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                    style={{ transformStyle: "preserve-3d" }}
                   >
                     <Card className={`h-full overflow-hidden transition-all duration-300 hover:shadow-xl border-slate-200 bg-white relative ${
                       service.highlight ? 'ring-2 ring-blue-600/20' : ''
