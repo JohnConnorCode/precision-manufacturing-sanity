@@ -1,11 +1,16 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
+import { media } from 'sanity-plugin-media'
 import { schemaTypes } from './sanity/schemas'
 import { structure } from './sanity/structure'
 import { resolveDocumentActions } from './sanity/actions'
 import { resolveBadges } from './sanity/badges'
 import { previewPane } from './sanity/plugins/previewPane'
+import { assetManager } from './sanity/plugins/assetManager'
+import { contentRelationships } from './sanity/plugins/contentRelationships'
+import { collaboration } from './sanity/plugins/collaboration'
+import { analytics } from './sanity/plugins/analytics'
 
 export default defineConfig({
   name: 'default',
@@ -21,7 +26,12 @@ export default defineConfig({
       structure,
     }),
     visionTool(),
+    media(),
     previewPane(),
+    assetManager(),
+    contentRelationships(),
+    collaboration(),
+    analytics(),
   ],
 
   schema: {
