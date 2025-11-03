@@ -56,10 +56,6 @@ const defaultNavigation = [
     href: '/about',
   },
   {
-    name: 'Careers',
-    href: '/careers',
-  },
-  {
     name: 'Compliance',
     href: '#',
     children: [
@@ -152,65 +148,64 @@ export default function Header({ data }: HeaderProps) {
           <NavigationMenu className="hidden lg:flex">
             <NavigationMenuList>
               {navigation.map((item) => (
-                <NavigationMenuItem key={item.name}>
-                  {item.children ? (
-                    <>
-                      <NavigationMenuTrigger
-                        className="bg-transparent hover:bg-slate-50 data-[state=open]:bg-slate-50 text-slate-700 font-medium"
-                        aria-label={`${item.name} menu`}
-                        aria-expanded="false"
-                        aria-haspopup="true"
-                      >
-                        {item.name}
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <motion.ul
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="grid w-[500px] gap-2 p-4 bg-white/95 backdrop-blur-xl border border-slate-200/50 rounded-xl shadow-xl"
-                        >
-                          {item.children.map((child) => (
-                            <li key={child.name}>
-                              <NavigationMenuLink asChild>
-                                <Link
-                                  href={child.href}
-                                  className={cn(
-                                    'block select-none rounded-lg p-4 no-underline outline-none transition-all',
-                                    'hover:bg-slate-100/80 hover:shadow-sm',
-                                    'focus:bg-slate-100 focus:outline-2 focus:outline-blue-600',
-                                    'group'
-                                  )}
-                                  aria-label={`${child.name} - ${child.description || ''}`}
-                                >
-                                  <div className="text-sm font-semibold text-slate-900 group-hover:text-slate-700">
-                                    {child.name}
-                                  </div>
-                                  {child.description && (
-                                    <p className="text-xs text-slate-500 mt-1">
-                                      {child.description}
-                                    </p>
-                                  )}
-                                </Link>
-                              </NavigationMenuLink>
-                            </li>
-                          ))}
-                        </motion.ul>
-                      </NavigationMenuContent>
-                    </>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2',
-                        'text-sm font-medium transition-all',
-                        'hover:bg-slate-50 text-slate-700 font-medium',
-                        pathname === item.href && 'bg-slate-100/50'
-                      )}
+                item.children ? (
+                  <NavigationMenuItem key={item.name}>
+                    <NavigationMenuTrigger
+                      className="bg-transparent hover:bg-slate-50 data-[state=open]:bg-slate-50 text-slate-700 font-medium"
+                      aria-label={`${item.name} menu`}
+                      aria-expanded="false"
+                      aria-haspopup="true"
                     >
                       {item.name}
-                    </Link>
-                  )}
-                </NavigationMenuItem>
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <motion.ul
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="grid w-[500px] gap-2 p-4 bg-white/95 backdrop-blur-xl border border-slate-200/50 rounded-xl shadow-xl"
+                      >
+                        {item.children.map((child) => (
+                          <li key={child.name}>
+                            <NavigationMenuLink asChild>
+                              <Link
+                                href={child.href}
+                                className={cn(
+                                  'block select-none rounded-lg p-4 no-underline outline-none transition-all',
+                                  'hover:bg-slate-100/80 hover:shadow-sm',
+                                  'focus:bg-slate-100 focus:outline-2 focus:outline-blue-600',
+                                  'group'
+                                )}
+                                aria-label={`${child.name} - ${child.description || ''}`}
+                              >
+                                <div className="text-sm font-semibold text-slate-900 group-hover:text-slate-700">
+                                  {child.name}
+                                </div>
+                                {child.description && (
+                                  <p className="text-xs text-slate-500 mt-1">
+                                    {child.description}
+                                  </p>
+                                )}
+                              </Link>
+                            </NavigationMenuLink>
+                          </li>
+                        ))}
+                      </motion.ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                ) : (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={cn(
+                      'inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2',
+                      'text-sm font-medium transition-all',
+                      'hover:bg-slate-50 text-slate-700 font-medium',
+                      pathname === item.href && 'bg-slate-100/50'
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                )
               ))}
             </NavigationMenuList>
           </NavigationMenu>
