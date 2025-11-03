@@ -1,11 +1,20 @@
 "use client";
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Award, Shield, Clock, Target } from 'lucide-react';
 import Link from 'next/link';
+import { useRef } from 'react';
 import AnimatedSection from '@/components/ui/animated-section';
 import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
+
+// Icon mapping for stats
+const iconMap: Record<string, any> = {
+  Award,
+  Shield,
+  Clock,
+  Target,
+};
 
 // Hardcoded fallback data
 const defaultImageShowcaseData = {
@@ -34,7 +43,21 @@ const defaultImageShowcaseData = {
       category: 'Quality Control',
       href: '/services/metrology'
     }
-  ]
+  ],
+  stats: [
+    { iconName: 'Award', value: 'AS9100D', label: 'Certified Quality', color: 'text-blue-600' },
+    { iconName: 'Shield', value: 'ITAR', label: 'Registered', color: 'text-blue-600' },
+    { iconName: 'Clock', value: '24/7', label: 'Production', color: 'text-indigo-600' },
+    { iconName: 'Target', value: '±0.0001"', label: 'Tolerance', color: 'text-blue-600' }
+  ],
+  cta: {
+    title: 'Get Started Today',
+    description: 'Let\'s discuss how we can deliver precision manufacturing solutions for your needs',
+    buttons: [
+      { text: 'Request Quote', href: '/contact', variant: 'primary' },
+      { text: 'Learn More', href: '/about', variant: 'secondary' }
+    ]
+  }
 };
 
 interface ImageShowcaseProps {
@@ -44,10 +67,20 @@ interface ImageShowcaseProps {
 export default function ImageShowcase({ data }: ImageShowcaseProps) {
   // Use CMS data if available, otherwise fall back to hardcoded defaults
   const showcaseData = data || defaultImageShowcaseData;
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.5, 1, 1, 0.5]);
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.95, 1, 1, 0.95]);
 
   return (
-    <section className={`relative ${spacing.section} ${colors.bgLight} overflow-hidden`}>
-      <div className={`${spacing.containerWide} relative z-10`}>
+    <section ref={containerRef} className={`relative ${spacing.section} ${colors.bgLight} overflow-hidden`}>
+      <motion.div
+        style={{ opacity, scale }}
+        className={`${spacing.containerWide} relative z-10`}>
         {/* Section Header */}
         <AnimatedSection className={`text-center ${spacing.headingBottom}`}>
           <p className={`${typography.eyebrow} ${colors.textMedium} mb-4`}>
@@ -108,7 +141,76 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
             </AnimatedSection>
           ))}
         </div>
-      </div>
+
+        {/* Stats Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20"
+        >
+          {(showcaseData.stats || defaultImageShowcaseData.stats).map((stat, index) => {
+            const Icon = iconMap[stat.iconName] || Award;
+            return (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{
+                  delay: 0.3 + index * 0.1,
+                  duration: 0.6,
+                  ease: [0.25, 0.1, 0.25, 1]
+                }}
+                className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <Icon className={`h-8 w-8 ${stat.color} mx-auto mb-3`} />
+                <div className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-slate-600 font-medium">
+                  {stat.label}
+                </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+
+        {/* Call to Action */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+          className="text-center"
+        >
+          <div className="inline-flex flex-col items-center p-8 md:p-12 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-2xl">
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              {(showcaseData.cta || defaultImageShowcaseData.cta).title}
+            </h3>
+            <p className="text-lg text-slate-300 mb-8 max-w-md">
+              {(showcaseData.cta || defaultImageShowcaseData.cta).description}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              {((showcaseData.cta || defaultImageShowcaseData.cta).buttons).map((button, index) => (
+                <Link
+                  key={button.text}
+                  href={button.href}
+                  className={`inline-flex items-center px-8 py-4 font-semibold rounded-lg transition-all duration-300 ${
+                    button.variant === 'primary'
+                      ? 'bg-blue-600 hover:bg-indigo-600 text-white shadow-xl hover:shadow-2xl'
+                      : 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm'
+                  }`}
+                >
+                  {button.text}
+                  {index === 0 && <ArrowRight className="ml-2 h-5 w-5" />}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
