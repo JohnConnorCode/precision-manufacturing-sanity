@@ -1,292 +1,734 @@
-# Claude Code Guidelines for This Project
+# Claude Code Guidelines for Precision Manufacturing Site
 
 ## CRITICAL: NO SHORTCUTS - BEST PRACTICES ALWAYS
 
-**ABSOLUTE RULES - NO EXCEPTIONS:**
+**This is a production marketing website for a precision manufacturing company. Every detail matters.**
 
-### 1. Payload CMS Data Management
-- **NEVER write directly to MongoDB** - ALWAYS use Payload's Local API
-- **NEVER bypass Payload's validation, hooks, or access control**
-- Direct database writes cause data inconsistencies and break admin panel
+---
+
+## 1. SANITY CMS - EVERYTHING MUST BE EDITABLE
+
+### Golden Rule: NO HARDCODED CONTENT
+
+**EVERY piece of visible content MUST be editable in Sanity Studio:**
+- ✅ All text (headings, paragraphs, button labels, badges, stats)
+- ✅ All images (with hotspot/crop controls)
+- ✅ All icons (stored as icon names, rendered from library)
+- ✅ All URLs (links, CTAs, navigation)
+- ✅ All colors (when configurable)
+- ✅ All metadata (SEO, OG images, alt text)
 
 ❌ **WRONG:**
-```javascript
-// Direct MongoDB write - breaks Payload
-await db.collection('globals').updateOne(...)
-await db.collection('team-members').insertMany(...)
+```typescript
+// Hardcoded text - NOT editable in CMS
+<h1>Precision Manufacturing Services</h1>
+<p>We deliver excellence since 1995</p>
+<Button href="/contact">Contact Us</Button>
 ```
 
 ✅ **CORRECT:**
-```javascript
-// Use Payload Local API
-import { getPayloadHMR } from '@payloadcms/next/utilities'
-const payload = await getPayloadHMR({ config })
-await payload.updateGlobal({ slug: 'site-settings', data: {...} })
-await payload.create({ collection: 'team-members', data: {...} })
+```typescript
+// All content from Sanity with fallbacks
+<h1>{data?.heading || 'Precision Manufacturing Services'}</h1>
+<p>{data?.description || 'We deliver excellence since 1995'}</p>
+<Button href={data?.ctaHref || '/contact'}>
+  {data?.ctaText || 'Contact Us'}
+</Button>
 ```
 
-### 2. TypeScript & Type Safety
-- **NEVER use `any` types** - always define proper interfaces
+### Image Best Practices
+
+**ALWAYS enable hotspot and metadata:**
+```typescript
+// In Sanity schema
+{
+  name: 'heroImage',
+  type: 'image',
+  title: 'Hero Image',
+  options: {
+    hotspot: true,  // REQUIRED - enables drag-to-reposition
+    metadata: ['blurhash', 'lqip', 'palette'],  // REQUIRED
+  },
+  fields: [
+    {
+      name: 'alt',
+      type: 'string',
+      title: 'Alternative Text',
+      validation: (Rule) => Rule.required().error('Alt text is required')
+    }
+  ]
+}
+```
+
+**In components:**
+```typescript
+import imageUrlBuilder from '@sanity/image-url'
+import { client } from '@/sanity/lib/client'
+
+const builder = imageUrlBuilder(client)
+
+function urlFor(source: any) {
+  return builder.image(source)
+}
+
+// Use with automatic hotspot support
+<Image
+  src={urlFor(data.heroImage).width(1920).height(1080).url()}
+  alt={data.heroImage?.alt || 'Hero image'}
+  width={1920}
+  height={1080}
+/>
+```
+
+### Icon Best Practices
+
+**Store icon names, not components:**
+```typescript
+// In Sanity schema
+{
+  name: 'iconName',
+  type: 'string',
+  title: 'Icon Name',
+  description: 'Lucide icon name (e.g., "Check", "ArrowRight", "Cog")'
+}
+
+// In component - map string to icon component
+import * as Icons from 'lucide-react'
+
+function DynamicIcon({ name, ...props }: { name: string }) {
+  const Icon = (Icons as any)[name] || Icons.Circle
+  return <Icon {...props} />
+}
+
+// Usage
+<DynamicIcon name={data.iconName || 'Circle'} className="w-6 h-6" />
+```
+
+### Validation Rules
+
+**ALL schemas MUST have:**
+```typescript
+{
+  name: 'title',
+  type: 'string',
+  validation: (Rule) => Rule.required().error('Title is required')
+}
+
+{
+  name: 'metaDescription',
+  type: 'text',
+  validation: (Rule) => Rule.max(160).warning('Should be 160 chars or less')
+}
+
+{
+  name: 'slug',
+  type: 'slug',
+  options: { source: 'title' },
+  validation: (Rule) => Rule.required().error('Click Generate to create slug')
+}
+```
+
+---
+
+## 2. ANIMATIONS - CONSISTENCY GUIDELINES
+
+### Standard Animation Patterns
+
+**Use these EXACT Framer Motion patterns for consistency:**
+
+#### Page Entry Animations
+```typescript
+'use client'
+import { motion } from 'framer-motion'
+
+// Section fade-in on scroll (STANDARD PATTERN)
+<motion.section
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-100px" }}
+  transition={{ duration: 0.6, ease: "easeOut" }}
+>
+  {children}
+</motion.section>
+```
+
+#### Stagger Children
+```typescript
+// Parent container
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+}
+
+// Child items
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
+}
+
+<motion.div
+  variants={containerVariants}
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true }}
+>
+  {items.map((item) => (
+    <motion.div key={item.id} variants={itemVariants}>
+      {item.content}
+    </motion.div>
+  ))}
+</motion.div>
+```
+
+#### Hover Effects (Cards)
+```typescript
+// Standard card hover (KEEP CONSISTENT)
+<motion.div
+  whileHover={{
+    scale: 1.02,
+    boxShadow: "0 20px 40px rgba(0,0,0,0.15)"
+  }}
+  transition={{ duration: 0.3, ease: "easeOut" }}
+>
+  <Card />
+</motion.div>
+```
+
+#### Button Hover Effects
+```typescript
+// Standard button hover (KEEP CONSISTENT)
+<motion.button
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.98 }}
+  transition={{ duration: 0.2 }}
+>
+  {label}
+</motion.button>
+```
+
+### Animation Rules
+
+1. **ALWAYS use `whileInView` instead of `animate`** for scroll-triggered animations
+2. **ALWAYS use `viewport={{ once: true }}`** to prevent re-triggering on scroll
+3. **ALWAYS use `margin: "-100px"`** to trigger animations slightly before viewport
+4. **Duration:** 0.6s for sections, 0.3s for hover, 0.2s for buttons
+5. **Easing:** `"easeOut"` for entries, `"easeInOut"` for complex animations
+6. **Stagger:** 0.1s between children, 0.2s initial delay
+
+### Animation Performance
+
+**DO NOT animate these properties (causes reflow):**
+- ❌ width, height, top, left, margin, padding
+
+**ONLY animate these properties (GPU accelerated):**
+- ✅ opacity, transform (scale, translateX, translateY, rotate)
+
+---
+
+## 3. STYLING - CONSISTENCY GUIDELINES
+
+### Color System (Tailwind)
+
+**Use ONLY these colors from the design system:**
+```typescript
+// Primary (Blue)
+'bg-blue-600'     // Primary buttons, accents
+'bg-blue-700'     // Hover states
+'text-blue-600'   // Links, highlights
+
+// Neutral (Gray)
+'bg-zinc-900'     // Dark backgrounds
+'bg-zinc-800'     // Cards on dark
+'bg-zinc-50'      // Light backgrounds
+'text-zinc-400'   // Muted text
+'text-zinc-900'   // Headings
+
+// Borders
+'border-zinc-200' // Light mode
+'border-zinc-800' // Dark mode
+```
+
+### Typography Scale
+
+**Use ONLY these text sizes:**
+```typescript
+// Headings
+'text-5xl md:text-6xl'  // H1 - Page hero
+'text-4xl md:text-5xl'  // H2 - Section headers
+'text-3xl md:text-4xl'  // H3 - Subsections
+'text-2xl md:text-3xl'  // H4 - Card titles
+
+// Body
+'text-lg'               // Large body (intros)
+'text-base'             // Standard body
+'text-sm'               // Small text (captions)
+'text-xs'               // Tiny text (labels)
+```
+
+### Spacing System
+
+**Use ONLY these spacing values:**
+```typescript
+// Section padding
+'py-24 md:py-32'        // Standard section spacing
+
+// Container
+'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'  // Standard container
+
+// Grid gaps
+'gap-8'                 // Card grids
+'gap-4'                 // Compact grids
+'gap-2'                 // Dense layouts
+```
+
+### Component Consistency
+
+**Section Header Pattern (STANDARD):**
+```typescript
+<div className="text-center mb-16">
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
+  >
+    <p className="text-blue-600 font-semibold tracking-wide uppercase text-sm mb-2">
+      {data?.eyebrow || 'SECTION EYEBROW'}
+    </p>
+    <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4">
+      {data?.heading || 'Section Heading'}
+    </h2>
+    <p className="text-lg text-zinc-600 max-w-3xl mx-auto">
+      {data?.description || 'Section description'}
+    </p>
+  </motion.div>
+</div>
+```
+
+**Card Pattern (STANDARD):**
+```typescript
+<motion.div
+  whileHover={{ scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.15)" }}
+  transition={{ duration: 0.3 }}
+  className="bg-white rounded-xl shadow-lg overflow-hidden"
+>
+  <div className="relative h-48">
+    <Image src={image} alt={alt} fill className="object-cover" />
+  </div>
+  <div className="p-6">
+    <h3 className="text-2xl font-bold text-zinc-900 mb-2">{title}</h3>
+    <p className="text-zinc-600 mb-4">{description}</p>
+    <Link
+      href={href}
+      className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center gap-2"
+    >
+      {label} <ArrowRight className="w-4 h-4" />
+    </Link>
+  </div>
+</motion.div>
+```
+
+---
+
+## 4. TYPESCRIPT & TYPE SAFETY
+
+### Rules
+
+- **NEVER use `any` types** - define proper interfaces
 - **NEVER skip type checking** - run `npx tsc --noEmit` before commits
-- Type errors are bugs waiting to happen
+- **ALWAYS define component props interfaces**
 
-### 3. Environment Variables
-- **NEVER hardcode credentials** - always use env variables
-- **NEVER commit .env files** - use .env.example for reference
-- **ALWAYS validate env vars** at startup
+```typescript
+// ✅ CORRECT
+interface ServiceCardProps {
+  title: string
+  description: string
+  image?: {
+    asset: { url: string }
+    alt: string
+  }
+  href: string
+}
 
-### 4. Error Handling
-- **NEVER swallow errors silently** - always log and handle
-- **NEVER assume operations succeed** - check responses
-- **ALWAYS provide meaningful error messages**
+export default function ServiceCard({ title, description, image, href }: ServiceCardProps) {
+  return (...)
+}
+```
 
-### 5. Testing
-- **NEVER skip tests** - write tests for all features
-- **NEVER commit broken code** - verify build passes
-- **ALWAYS test actual functionality**, not just HTTP status codes
+---
 
-**This is a simple app. Everything must work correctly. No shortcuts. Ever.**
+## 5. TESTING REQUIREMENTS
 
-## CRITICAL: Testing Requirements - NEVER Test Status Codes Alone
-
-**NEVER test by only checking HTTP status codes.** A 200 status does NOT mean the page works.
+### NEVER Test Status Codes Alone
 
 ❌ **WRONG:**
 ```bash
 curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/resources
-# Returns 200 - but page might show "0 articles" or errors!
+# Returns 200 - but might show "0 articles"!
 ```
 
 ✅ **CORRECT:**
 ```bash
-# Check actual content to verify it works
-curl -s http://localhost:3000/resources | grep -o "article\|resource" | wc -l
-# Verify data is actually displaying, not just that the route exists
+# Verify actual content exists
+curl -s http://localhost:3000/resources | grep -o "article" | wc -l
+# Should return > 0
 ```
 
-**Before claiming something works, you MUST:**
-1. Check the actual page content (article count, titles, data)
-2. Verify no errors showing in browser or console
-3. Confirm data is loading from the source (Sanity/API/database/etc)
-4. Test the user-facing functionality, not just that the route returns 200
+### Before Claiming Something Works
 
-**Status code 200 only means the route exists - NOT that it works!**
+1. ✅ Check actual page content (text, images, data)
+2. ✅ Verify no JavaScript errors in console
+3. ✅ Confirm data loads from Sanity
+4. ✅ Test user-facing functionality
 
-## Testing Setup and Port Management
+**Status 200 ≠ Working. Test actual content!**
 
-### Critical: Always Verify Dev Server Before Testing
+---
 
-**Problem:** Next.js automatically assigns available ports when the default port (3000) is in use. This can lead to tests running against the wrong server or a non-existent server, causing false 404 errors.
-
-### Pre-Test Checklist
-
-1. **Check which ports are in use:**
-   ```bash
-   lsof -ti:3000
-   lsof -ti:3001
-   lsof -ti:3004
-   lsof -ti:3005
-   ```
-
-2. **Start dev server and note the port:**
-   ```bash
-   npm run dev > /tmp/dev-current.log 2>&1 &
-   sleep 5
-   grep "Local:" /tmp/dev-current.log
-   ```
-
-3. **Use the correct port for testing:**
-   ```bash
-   # If server is on port 3005
-   PLAYWRIGHT_BASE_URL=http://localhost:3005 SKIP_WEBSERVER=true npx playwright test
-   ```
-
-### When Tests Fail with 404s
-
-**First check:** Is the dev server actually running?
-```bash
-curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3000/
-curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3005/
-```
-
-**Second check:** Are tests pointing to the right port?
-- Look for `PLAYWRIGHT_BASE_URL` in test commands
-- Check `playwright.config.ts` for baseURL setting
-- Verify server port in logs
-
-### Test Organization
-
-**Current Test Structure:**
-- `e2e/navigation.spec.ts` - **Primary DRY test suite** (21 tests per browser = 105 total)
-- `e2e/routes.spec.ts.bak` - Backed up (redundant)
-- `e2e/all-routes-comprehensive.spec.ts.bak` - Backed up (redundant)
-- `e2e/debug-nav.spec.ts.bak` - Backed up (debugging only)
-- `e2e/navigation-dropdowns.spec.ts` - Navigation menu behavior
-- `e2e/footer-links.spec.ts` - Footer link validation
-- `e2e/animations.spec.ts` - Animation timing tests
-- `e2e/critical-paths.spec.ts` - Critical user journeys
-- `e2e/basic-ux.spec.ts` - Basic UX checks
-- `e2e/verify-fixes.spec.ts` - Fix verification tests
-
-**Principle:** Keep tests DRY - avoid duplicate route testing across multiple files.
-
-### Route Testing Best Practices
-
-**All verified working routes:**
-```
-Main:
-  / (homepage)
-  /about
-  /contact
-
-Services:
-  /services
-  /services/5-axis-machining
-  /services/adaptive-machining
-  /services/metrology
-  /services/engineering
-
-Industries:
-  /industries
-  /industries/aerospace
-  /industries/defense
-  /industries/energy
-
-Resources:
-  /resources
-  /resources/manufacturing-processes
-  /resources/material-science
-  /resources/quality-compliance
-  /resources/industry-applications
-  /resources/manufacturing-processes/5-axis-cnc-machining-aerospace-guide
-
-Compliance:
-  /compliance/terms
-  /compliance/supplier-requirements
-```
-
-## Project Architecture
-
-### Key Technologies
-- **Next.js 15.5.3** with App Router
-- **Webpack** (Turbopack disabled due to CSS panic bug)
-- **React Server Components** (default)
-- **Client Components** (`'use client'`) for:
-  - Framer Motion animations
-  - Interactive UI elements
-  - Form handling
-
-### Important Constraints
-
-**1. Async Client Components Are Invalid**
-```typescript
-// ❌ WRONG - Cannot mix 'use client' with async
-'use client';
-export default async function Page() { ... }
-
-// ✅ CORRECT - Server component (no 'use client')
-export default async function Page() { ... }
-
-// ✅ CORRECT - Client component (no async)
-'use client';
-export default function Page() { ... }
-```
-
-**2. Analytics Integration**
-- Do not use placeholder IDs like `"XXXXXXX"` or `"G-XXXXXXXXXX"`
-- Either pass real IDs or omit the props entirely
-- Placeholder IDs cause JavaScript runtime errors
-
-**3. Turbopack Known Issues**
-- CSS panic errors in Next.js 15.5.3
-- Use webpack instead: `"dev": "next dev"` (no --turbopack flag)
-
-## Known Issues & Workarounds
-
-### 1. Webpack Cache Errors
-```
-<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack
-```
-**Solution:** This is a non-critical warning. Cache will rebuild on next compile.
-
-### 2. Image Quality Warnings
-```
-Image with src "..." is using quality "100" which is not configured
-```
-**Solution:** Add to `next.config.js`:
-```javascript
-images: {
-  qualities: [30, 50, 75, 90, 95, 100]
-}
-```
-
-### 3. Deprecated onLoadingComplete
-```
-Image is using deprecated "onLoadingComplete" property
-```
-**Solution:** Replace with `onLoad` event handler
-
-### 4. Upstream Image 404s
-Some Unsplash images return 404. This doesn't break the app but shows in logs.
-
-## Development Workflow
+## 6. DEVELOPMENT WORKFLOW
 
 ### Starting Development
 ```bash
-# Clean start
 pkill -f "next dev"
 rm -rf .next
 npm run dev
 ```
 
-### Running Tests
+### Before Committing
 ```bash
-# Start server first
-npm run dev > /tmp/dev.log 2>&1 &
-sleep 5
+# 1. Type check
+npx tsc --noEmit
 
-# Note the port from logs
-PORT=$(grep -oP 'localhost:\K[0-9]+' /tmp/dev.log | head -1)
+# 2. Build
+npm run build
 
-# Run tests
-PLAYWRIGHT_BASE_URL=http://localhost:$PORT SKIP_WEBSERVER=true npm test
+# 3. Test
+npm test
+
+# 4. Verify no errors
 ```
 
-### Before Committing
-1. Run focused test suite: `npx playwright test e2e/navigation.spec.ts`
-2. Verify build: `npm run build`
-3. Check for TypeScript errors: `npx tsc --noEmit`
+---
 
-## Routes & Navigation Status
+## 7. PROJECT ARCHITECTURE
 
-✅ **All routes working** (verified 2025-10-01)
-✅ **Navigation links functional** (all dropdowns, footer links)
-✅ **Client-side routing operational** (Next.js Link components)
-✅ **404 handling working** (custom 404 page)
-✅ **Animations smooth** (Framer Motion properly configured)
+### Tech Stack
+- **Next.js 15.5.3** with App Router
+- **Sanity CMS v3** for all content
+- **Framer Motion** for animations
+- **Tailwind CSS** for styling
+- **TypeScript** for type safety
+- **Webpack** (Turbopack disabled - has CSS bugs)
 
-## Performance Notes
+### Important Constraints
 
-- Initial compilation: ~10s (acceptable for Next.js 15)
-- Subsequent hot reloads: 1-5s
-- Page load times: < 3s for all routes
-- Image optimization: Working (some 404s on external images)
+**Async Client Components Are Invalid:**
+```typescript
+// ❌ WRONG
+'use client'
+export default async function Page() { ... }
 
-## Common Pitfalls to Avoid
+// ✅ CORRECT - Pick one:
+// Option 1: Server component (async allowed)
+export default async function Page() { ... }
 
-1. **Don't assume port 3000 is available** - always check logs
-2. **Don't mix async + 'use client'** - pick one pattern
-3. **Don't use Turbopack** - known to crash on this project
-4. **Don't duplicate test coverage** - keep tests DRY
-5. **Don't commit with placeholder analytics IDs** - causes runtime errors
-6. **Don't skip port verification** - tests will fail mysteriously
+// Option 2: Client component (no async)
+'use client'
+export default function Page() { ... }
+```
 
-## Success Criteria
+**Framer Motion Requires 'use client':**
+```typescript
+'use client'
+import { motion } from 'framer-motion'
 
-When making changes, verify:
-- [ ] Dev server starts without errors
-- [ ] All routes return 200 (not 404)
-- [ ] Navigation tests pass (e2e/navigation.spec.ts)
-- [ ] No TypeScript errors
-- [ ] No runtime JavaScript errors in browser console
-- [ ] Build completes successfully (`npm run build`)
+export default function AnimatedSection() {
+  return <motion.div>...</motion.div>
+}
+```
+
+---
+
+## 8. SANITY SCHEMA BEST PRACTICES
+
+### Every Schema Must Have:
+
+```typescript
+export default {
+  name: 'example',
+  type: 'document',
+  title: 'Example',
+
+  // 1. Ordering options
+  orderings: [
+    {
+      title: 'Title A-Z',
+      name: 'titleAsc',
+      by: [{field: 'title', direction: 'asc'}]
+    }
+  ],
+
+  // 2. Preview configuration
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'description',
+      media: 'image'
+    }
+  },
+
+  fields: [
+    // 3. Required validation
+    {
+      name: 'title',
+      type: 'string',
+      validation: (Rule) => Rule.required().error('Required')
+    },
+
+    // 4. Slug with source
+    {
+      name: 'slug',
+      type: 'slug',
+      options: { source: 'title' },
+      validation: (Rule) => Rule.required()
+    },
+
+    // 5. Images with hotspot
+    {
+      name: 'image',
+      type: 'image',
+      options: {
+        hotspot: true,
+        metadata: ['blurhash', 'lqip', 'palette']
+      },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          validation: (Rule) => Rule.required()
+        }
+      ]
+    },
+
+    // 6. SEO fields
+    {
+      name: 'seo',
+      type: 'object',
+      fields: [
+        { name: 'metaTitle', type: 'string' },
+        { name: 'metaDescription', type: 'text' },
+        {
+          name: 'ogImage',
+          type: 'image',
+          options: { hotspot: true }
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## 9. CONTENT VISIBILITY TOGGLES
+
+### Hiding Content Without Deletion
+
+**Use Case:** Allow content editors to temporarily hide content (services, industries, resources, buttons, benefits) without deleting it from Sanity.
+
+### Pattern: `published` Field for Collections
+
+**For Service, Industry, and Resource schemas:**
+
+```typescript
+{
+  name: 'published',
+  type: 'boolean',
+  title: 'Published',
+  description: 'Controls whether this item appears on the website. Uncheck to hide without deleting.',
+  initialValue: true,
+}
+```
+
+**Add visual indicator in preview:**
+
+```typescript
+preview: {
+  select: {
+    title: 'title',
+    subtitle: 'shortDescription',
+    media: 'image',
+    published: 'published'
+  },
+  prepare(selection: any) {
+    const {title, subtitle, media, published} = selection
+    const status = published === false ? ' (HIDDEN)' : ''
+    return {
+      title: `${title}${status}`,
+      subtitle: subtitle,
+      media: media
+    }
+  }
+}
+```
+
+**Filter in GROQ queries:**
+
+```typescript
+// Always filter collections by published status
+export async function getAllServices() {
+  const query = `*[_type == "service" && published == true] | order(order asc) {
+    // ... fields
+  }`
+  return await client.fetch(query)
+}
+
+// Also filter by-slug queries for security
+export async function getServiceBySlug(slug: string) {
+  const query = `*[_type == "service" && slug.current == $slug && published == true][0] {
+    // ... fields
+  }`
+  return await client.fetch(query, { slug })
+}
+```
+
+### Pattern: `enabled` Field for Array Items
+
+**For homepage sections with arrays (buttons, benefits):**
+
+```typescript
+{
+  name: 'buttons',
+  type: 'array',
+  title: 'Buttons',
+  of: [
+    {
+      type: 'object',
+      fields: [
+        {
+          name: 'enabled',
+          type: 'boolean',
+          title: 'Enabled',
+          description: 'Uncheck to hide this button without deleting it',
+          initialValue: true,
+        },
+        {name: 'text', type: 'string', title: 'Text'},
+        {name: 'href', type: 'string', title: 'URL'},
+        {name: 'variant', type: 'string', title: 'Variant'},
+      ],
+    },
+  ],
+}
+```
+
+**Filter in components:**
+
+```typescript
+// CTA Component
+export default function CTA({ data }: CTAProps) {
+  const buttons = (data?.buttons || defaultButtons)
+    .filter(button => button.enabled !== false)
+
+  return (
+    <div>
+      {buttons.map((button) => (
+        <Button key={button.text} href={button.href}>
+          {button.text}
+        </Button>
+      ))}
+    </div>
+  )
+}
+
+// Resources Component - Benefits
+{resourcesData.benefits
+  .filter((benefit: any) => benefit.enabled !== false)
+  .map((benefit: any, index: number) => (
+    <BenefitCard key={index} {...benefit} />
+  ))}
+```
+
+### Where to Apply Visibility Toggles
+
+**Collections (use `published` field):**
+- ✅ Services
+- ✅ Industries
+- ✅ Resources
+- ✅ Team Members
+- ❌ Global singletons (use different pattern)
+
+**Array Items (use `enabled` field):**
+- ✅ Homepage CTA buttons (`homepage.cta.buttons`)
+- ✅ Resources section benefits (`homepage.resourcesSection.benefits`)
+- ✅ Resources section CTA buttons (`homepage.resourcesSection.cta.buttons`)
+- ✅ Image Showcase CTA buttons (`homepage.imageShowcase.cta.buttons`)
+
+### Complete Implementation Checklist
+
+When adding visibility toggles:
+- [ ] Add `published` or `enabled` field to schema with `initialValue: true`
+- [ ] Add visual indicator in preview (for collections)
+- [ ] Update all GROQ queries to filter by status
+- [ ] Update all components to filter arrays
+- [ ] Test hiding content in Sanity Studio
+- [ ] Verify hidden content doesn't appear on frontend
+- [ ] Verify hidden content still appears in Studio
+
+### Why This Pattern?
+
+✅ **Non-destructive** - Content preserved, easy to re-enable
+✅ **Clear intent** - `published`/`enabled` names are self-documenting
+✅ **Secure** - Filters at query level prevent URL access
+✅ **Flexible** - Can schedule content by combining with date fields
+
+---
+
+## 10. SUCCESS CRITERIA
+
+When making ANY change, verify:
+- [ ] All content is editable in Sanity (NO hardcoded text/images)
+- [ ] All images have hotspot enabled
+- [ ] All animations use standard patterns
+- [ ] TypeScript has no errors (`npx tsc --noEmit`)
+- [ ] Build completes (`npm run build`)
+- [ ] Tests pass (`npm test`)
+- [ ] Dev server runs without errors
+- [ ] No JavaScript console errors
+- [ ] Actual content displays (not just 200 status)
+
+---
+
+## 11. COMMON PITFALLS TO AVOID
+
+1. ❌ Hardcoding content instead of using Sanity
+2. ❌ Forgetting `hotspot: true` on images
+3. ❌ Using `animate` instead of `whileInView` for scroll animations
+4. ❌ Mixing `'use client'` with `async` functions
+5. ❌ Testing only HTTP status codes
+6. ❌ Using inconsistent spacing/colors/typography
+7. ❌ Skipping alt text validation
+8. ❌ Not validating required fields in schemas
+
+---
+
+## REMEMBER
+
+**This is a production marketing site. Quality matters.**
+- Every text string → Sanity
+- Every image → Sanity with hotspot
+- Every icon → Sanity as icon name
+- Every animation → Standard pattern
+- Every style → Design system
+- Every change → Tested thoroughly
+
+**No shortcuts. No exceptions. Ever.**

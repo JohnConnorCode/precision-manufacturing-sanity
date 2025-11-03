@@ -408,6 +408,13 @@ export default {
                 {
                   type: 'object',
                   fields: [
+                    {
+                      name: 'enabled',
+                      type: 'boolean',
+                      title: 'Enabled',
+                      description: 'Uncheck to hide this button without deleting it',
+                      initialValue: true,
+                    },
                     {name: 'text', type: 'string', title: 'Text'},
                     {name: 'href', type: 'string', title: 'URL'},
                     {
@@ -521,6 +528,13 @@ export default {
               type: 'object',
               fields: [
                 {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this benefit without deleting it',
+                  initialValue: true,
+                },
+                {
                   name: 'iconName',
                   type: 'string',
                   title: 'Icon Name',
@@ -547,6 +561,13 @@ export default {
                 {
                   type: 'object',
                   fields: [
+                    {
+                      name: 'enabled',
+                      type: 'boolean',
+                      title: 'Enabled',
+                      description: 'Uncheck to hide this button without deleting it',
+                      initialValue: true,
+                    },
                     {name: 'text', type: 'string', title: 'Text'},
                     {name: 'href', type: 'string', title: 'URL'},
                     {
@@ -583,6 +604,13 @@ export default {
             {
               type: 'object',
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this button without deleting it',
+                  initialValue: true,
+                },
                 {
                   name: 'text',
                   type: 'string',

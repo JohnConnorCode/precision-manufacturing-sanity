@@ -188,7 +188,7 @@ export default function Resources({ data }: ResourcesProps) {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
-                {resourcesData.cta.buttons.map((button, index) => (
+                {resourcesData.cta.buttons.filter((button: any) => button.enabled !== false).map((button, index) => (
                   <Link key={button.text} href={button.href}>
                     <PremiumButton size="lg" variant={button.variant === 'primary' ? 'default' : 'secondary'}>
                       {index === 0 && <BookOpen className="w-5 h-5" />}
@@ -203,7 +203,7 @@ export default function Resources({ data }: ResourcesProps) {
         {/* Benefits Grid */}
         {resourcesData.benefits && resourcesData.benefits.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-            {resourcesData.benefits.map((benefit: any, index: number) => {
+            {resourcesData.benefits.filter((benefit: any) => benefit.enabled !== false).map((benefit: any, index: number) => {
               // Icon mapping for CMS data
               const IconComponent = benefit.iconName === 'BookOpen' ? BookOpen :
                                    benefit.iconName === 'GraduationCap' ? GraduationCap :

@@ -193,7 +193,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
               {(showcaseData.cta || defaultImageShowcaseData.cta).description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              {((showcaseData.cta || defaultImageShowcaseData.cta).buttons).map((button, index) => (
+              {((showcaseData.cta || defaultImageShowcaseData.cta).buttons).filter((button: any) => button.enabled !== false).map((button, index) => (
                 <Link
                   key={button.text}
                   href={button.href}

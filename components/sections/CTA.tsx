@@ -12,6 +12,7 @@ interface CTAData {
     text: string;
     href: string;
     variant: 'default' | 'secondary';
+    enabled?: boolean;
   }>;
 }
 
@@ -22,10 +23,10 @@ interface CTAProps {
 export default function CTA({ data }: CTAProps) {
   const title = data?.title || 'Start Your Precision Manufacturing Project';
   const subtitle = data?.subtitle || 'From prototype to production, we deliver AS9100D-certified precision components with tolerances to ±0.0001" for aerospace, defense, and medical applications.';
-  const buttons = data?.buttons || [
+  const buttons = (data?.buttons || [
     { text: 'Get Quote', href: '/contact', variant: 'default' as const },
     { text: 'Technical Specifications', href: '/compliance/supplier-requirements', variant: 'secondary' as const }
-  ];
+  ]).filter(button => button.enabled !== false);
 
   return (
     <section className="relative py-24 overflow-hidden bg-slate-950">

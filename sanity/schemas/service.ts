@@ -23,12 +23,14 @@ export default {
     select: {
       title: 'title',
       subtitle: 'shortDescription',
-      media: 'image'
+      media: 'image',
+      published: 'published'
     },
     prepare(selection: any) {
-      const {title, subtitle, media} = selection
+      const {title, subtitle, media, published} = selection
+      const status = published === false ? ' (HIDDEN)' : ''
       return {
-        title: title,
+        title: `${title}${status}`,
         subtitle: subtitle,
         media: media
       }
@@ -52,6 +54,13 @@ export default {
         maxLength: 96,
       },
       validation: (Rule: any) => Rule.required().error('Slug is required - click "Generate" to create from title'),
+    },
+    {
+      name: 'published',
+      type: 'boolean',
+      title: 'Published',
+      description: 'Controls whether this service appears on the website. Uncheck to hide without deleting.',
+      initialValue: true,
     },
     {
       name: 'shortDescription',

@@ -10,7 +10,7 @@ import { client } from './client'
 // ============================================================================
 
 export async function getAllServices() {
-  const query = `*[_type == "service"] | order(order asc) {
+  const query = `*[_type == "service" && published == true] | order(order asc) {
     _id,
     title,
     slug,
@@ -37,7 +37,7 @@ export async function getAllServices() {
 }
 
 export async function getServiceBySlug(slug: string) {
-  const query = `*[_type == "service" && slug.current == $slug][0] {
+  const query = `*[_type == "service" && slug.current == $slug && published == true][0] {
     _id,
     title,
     slug,
@@ -66,7 +66,7 @@ export async function getServiceBySlug(slug: string) {
 // ============================================================================
 
 export async function getAllIndustries() {
-  const query = `*[_type == "industry"] | order(order asc) {
+  const query = `*[_type == "industry" && published == true] | order(order asc) {
     _id,
     title,
     slug,
@@ -90,7 +90,7 @@ export async function getAllIndustries() {
 }
 
 export async function getIndustryBySlug(slug: string) {
-  const query = `*[_type == "industry" && slug.current == $slug][0] {
+  const query = `*[_type == "industry" && slug.current == $slug && published == true][0] {
     _id,
     title,
     slug,
@@ -118,7 +118,7 @@ export async function getIndustryBySlug(slug: string) {
 // ============================================================================
 
 export async function getAllResources() {
-  const query = `*[_type == "resource"] | order(publishDate desc) {
+  const query = `*[_type == "resource" && published == true] | order(publishDate desc) {
     _id,
     title,
     slug,
@@ -138,7 +138,7 @@ export async function getAllResources() {
 }
 
 export async function getResourceBySlug(slug: string) {
-  const query = `*[_type == "resource" && slug.current == $slug][0] {
+  const query = `*[_type == "resource" && slug.current == $slug && published == true][0] {
     _id,
     title,
     slug,
@@ -158,7 +158,7 @@ export async function getResourceBySlug(slug: string) {
 }
 
 export async function getResourcesByCategory(category: string) {
-  const query = `*[_type == "resource" && category == $category] | order(publishDate desc) {
+  const query = `*[_type == "resource" && category == $category && published == true] | order(publishDate desc) {
     _id,
     title,
     slug,
@@ -176,7 +176,7 @@ export async function getResourcesByCategory(category: string) {
 }
 
 export async function getFeaturedResources() {
-  const query = `*[_type == "resource" && featured == true] | order(publishDate desc) [0...6] {
+  const query = `*[_type == "resource" && featured == true && published == true] | order(publishDate desc) [0...6] {
     _id,
     title,
     slug,
