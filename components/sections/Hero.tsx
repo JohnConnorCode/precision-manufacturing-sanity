@@ -26,56 +26,30 @@ interface HeroProps {
 }
 
 export default function Hero({ data }: HeroProps) {
+  // Don't render if no data from CMS or no slides (Hero requires slides for background)
+  if (!data || !data.tagline || !data.slides || data.slides.length === 0) {
+    return null;
+  }
+
   const { scrollY } = useScroll();
   const prefersReducedMotion = usePrefersReducedMotion();
 
   const textY = useTransform(scrollY, [0, 500], prefersReducedMotion ? [0, 0] : [0, 50]);
   const textOpacity = useTransform(scrollY, [0, 300], prefersReducedMotion ? [1, 1] : [1, 0]);
 
-  // Use CMS data or fallback to defaults
-  const heroSlides = data?.slides?.map(slide => ({
+  // Use CMS data only
+  const heroSlides = data.slides.map(slide => ({
     src: slide.image,
     alt: slide.alt,
     focal: slide.focal
-  })) || [
-    {
-      src: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=2400&q=95',
-      alt: 'Advanced 5-axis CNC machining center',
-      focal: 'center' as const
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=2400&q=95',
-      alt: 'Precision metrology and inspection',
-      focal: 'center' as const
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2400&q=95',
-      alt: 'Automated manufacturing systems',
-      focal: 'center' as const
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=2400&q=95',
-      alt: 'Industrial engineering and process development',
-      focal: 'center' as const
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1581092335397-9583eb92d232?auto=format&fit=crop&w=2400&q=95',
-      alt: 'Defense and aerospace components manufacturing',
-      focal: 'center' as const
-    }
-  ];
+  }));
 
-  const mainTitle = data?.mainTitle || 'PRECISION MANUFACTURING';
-  const subTitle = data?.subTitle || 'SERVICES';
-  const tagline = data?.tagline || 'Innovative Precision Machining & Manufacturing Excellence Since 1995';
-  const badges = data?.badges || [
-    'Advanced CNC Machining',
-    'Precision Metrology',
-    'Engineering Excellence',
-    '3 Sigma Yield'
-  ];
-  const ctaPrimary = data?.ctaPrimary || { text: 'Get Quote', href: '/contact?interest=quote' };
-  const ctaSecondary = data?.ctaSecondary || { text: 'View Capabilities', href: '/services' };
+  const mainTitle = data.mainTitle;
+  const subTitle = data.subTitle;
+  const tagline = data.tagline;
+  const badges = data.badges || [];
+  const ctaPrimary = data.ctaPrimary || { text: 'Get Quote', href: '/contact?interest=quote' };
+  const ctaSecondary = data.ctaSecondary || { text: 'View Capabilities', href: '/services' };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -95,12 +69,31 @@ export default function Hero({ data }: HeroProps) {
             className="text-center"
           >
 
-            {/* Main Headline */}
+            {/* Main Title & Subtitle */}
+            {mainTitle && (
+              <motion.div
+                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: prefersReducedMotion ? 0 : 0.6 }}
+                className="mb-4"
+              >
+                <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white/90 tracking-wider">
+                  {mainTitle}
+                </div>
+                {subTitle && (
+                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-400 tracking-wider mt-2">
+                    {subTitle}
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {/* Tagline */}
             <motion.h1
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: prefersReducedMotion ? 0 : 0.4, duration: prefersReducedMotion ? 0 : 0.8 }}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.1] tracking-tight mb-8"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white/95 leading-[1.3] tracking-normal mb-8"
             >
               {tagline}
             </motion.h1>
