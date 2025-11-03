@@ -243,6 +243,23 @@ export async function getNavigation() {
 export async function getHomepage() {
   const query = `*[_type == "homepage"][0] {
     hero,
+    heroEnhanced {
+      mainTitle,
+      subtitle,
+      tagline,
+      badges,
+      ctaPrimary,
+      ctaSecondary,
+      slides[] {
+        image {
+          asset->{
+            _id,
+            url
+          },
+          alt
+        }
+      }
+    },
     stats,
     servicesSection,
     industriesSection,

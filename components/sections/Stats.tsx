@@ -27,7 +27,9 @@ const defaultStats = [
 
 export default function Stats({ data }: StatsProps) {
   // Use CMS data or fallback to defaults
-  const stats = data?.stats ? data.stats.map(stat => {
+  // Handle both old format (data.stats as array) and new format (data.items as array)
+  const statsArray = (data as any)?.items || data?.stats;
+  const stats = statsArray ? statsArray.map((stat: any) => {
     // Parse numeric value from string for animation
     const numValue = parseFloat(stat.value.replace(/[^0-9.-]/g, ''));
     const suffix = stat.value.replace(/[0-9.-]/g, '');

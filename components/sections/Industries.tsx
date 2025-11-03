@@ -44,11 +44,22 @@ const industries = [
 
 interface IndustriesProps {
   data?: any;
+  sectionData?: {
+    eyebrow?: string;
+    heading?: string;
+    description?: string;
+    subdescription?: string;
+  };
 }
 
-export default function Industries({ data }: IndustriesProps) {
+export default function Industries({ data, sectionData }: IndustriesProps) {
   // Use CMS data if available, otherwise use hardcoded data
   const industriesData = data || industries;
+
+  // Use section data from CMS or fallback to hardcoded
+  const eyebrow = sectionData?.eyebrow || 'SPECIALIZED SECTOR EXPERTISE';
+  const heading = sectionData?.heading || 'INDUSTRY LEADERS';
+  const description = sectionData?.description || 'Three decades of trusted partnerships in mission-critical sectors where precision and reliability are non-negotiable';
 
   return (
     <section className={`${spacing.section} ${colors.bgLight}`}>
@@ -56,16 +67,15 @@ export default function Industries({ data }: IndustriesProps) {
         <AnimatedSection className={`text-center ${spacing.headingBottom}`}>
           {/* Clear Section Purpose */}
           <p className={`${typography.eyebrow} ${colors.textMedium} mb-4`}>
-            SPECIALIZED SECTOR EXPERTISE
+            {eyebrow}
           </p>
 
           <h2 className={`${typography.sectionHeading} mb-6`}>
-            <span className={colors.textDark}>INDUSTRY</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"> LEADERS</span>
+            {heading}
           </h2>
 
           <p className={`${typography.descriptionMuted} max-w-3xl mx-auto`}>
-            Three decades of trusted partnerships in mission-critical sectors where precision and reliability are non-negotiable
+            {description}
           </p>
         </AnimatedSection>
 

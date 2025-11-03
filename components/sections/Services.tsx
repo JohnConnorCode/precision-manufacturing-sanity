@@ -54,11 +54,22 @@ const services = [
 
 interface ServicesProps {
   data?: any;
+  sectionData?: {
+    eyebrow?: string;
+    heading?: string;
+    description?: string;
+    subdescription?: string;
+  };
 }
 
-export default function Services({ data }: ServicesProps) {
+export default function Services({ data, sectionData }: ServicesProps) {
   // Use CMS data if available, otherwise use hardcoded data
   const servicesData = Array.isArray(data) ? data : (data ? [data] : services);
+
+  // Use section data from CMS or fallback to hardcoded
+  const eyebrow = sectionData?.eyebrow || 'COMPREHENSIVE MANUFACTURING SOLUTIONS';
+  const heading = sectionData?.heading || 'PRECISION SERVICES';
+  const description = sectionData?.description || 'Four core service pillars delivering unmatched precision and reliability for aerospace and defense applications';
 
   return (
     <section className={`relative ${spacing.section} overflow-hidden ${colors.bgLight}`}>
@@ -77,16 +88,15 @@ export default function Services({ data }: ServicesProps) {
         <AnimatedSection className={`text-center ${spacing.headingBottom}`}>
           {/* Section Context */}
           <p className={`${typography.eyebrow} ${colors.textMedium} mb-4`}>
-            COMPREHENSIVE MANUFACTURING SOLUTIONS
+            {eyebrow}
           </p>
 
           <h2 className={`${typography.sectionHeading} mb-6`}>
-            <span className={colors.textDark}>PRECISION</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"> SERVICES</span>
+            {heading}
           </h2>
 
           <p className={`${typography.descriptionMuted} max-w-3xl mx-auto`}>
-            Four core service pillars delivering unmatched precision and reliability for aerospace and defense applications
+            {description}
           </p>
         </AnimatedSection>
 

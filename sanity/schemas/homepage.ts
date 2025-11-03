@@ -110,18 +110,88 @@ export default {
             },
           ],
         },
+        {
+          name: 'ctaPrimary',
+          type: 'object',
+          title: 'Primary CTA Button',
+          fields: [
+            {
+              name: 'text',
+              type: 'string',
+              title: 'Button Text',
+              initialValue: 'Get Quote',
+            },
+            {
+              name: 'href',
+              type: 'string',
+              title: 'Button Link',
+              initialValue: '/contact?interest=quote',
+            },
+          ],
+        },
+        {
+          name: 'ctaSecondary',
+          type: 'object',
+          title: 'Secondary CTA Button',
+          fields: [
+            {
+              name: 'text',
+              type: 'string',
+              title: 'Button Text',
+              initialValue: 'View Capabilities',
+            },
+            {
+              name: 'href',
+              type: 'string',
+              title: 'Button Link',
+              initialValue: '/services',
+            },
+          ],
+        },
       ],
     },
     {
       name: 'stats',
-      type: 'array',
-      title: 'Statistics',
-      of: [
+      type: 'object',
+      title: 'Statistics Section',
+      fields: [
         {
-          type: 'object',
-          fields: [
-            {name: 'number', type: 'string', title: 'Number'},
-            {name: 'label', type: 'string', title: 'Label'},
+          name: 'title',
+          type: 'string',
+          title: 'Section Title',
+          initialValue: 'Manufacturing Excellence',
+        },
+        {
+          name: 'subtitle',
+          type: 'string',
+          title: 'Section Subtitle',
+          initialValue: 'Performance Metrics',
+        },
+        {
+          name: 'items',
+          type: 'array',
+          title: 'Statistics',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {
+                  name: 'value',
+                  type: 'string',
+                  title: 'Stat Value',
+                },
+                {
+                  name: 'label',
+                  type: 'string',
+                  title: 'Stat Label',
+                },
+                {
+                  name: 'description',
+                  type: 'string',
+                  title: 'Description',
+                },
+              ],
+            },
           ],
         },
       ],
@@ -505,6 +575,44 @@ export default {
       fields: [
         {name: 'title', type: 'string', title: 'Title'},
         {name: 'subtitle', type: 'text', title: 'Subtitle', rows: 2},
+        {
+          name: 'buttons',
+          type: 'array',
+          title: 'CTA Buttons',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {
+                  name: 'text',
+                  type: 'string',
+                  title: 'Button Text',
+                },
+                {
+                  name: 'href',
+                  type: 'string',
+                  title: 'Button Link',
+                },
+                {
+                  name: 'variant',
+                  type: 'string',
+                  title: 'Button Variant',
+                  options: {
+                    list: [
+                      {title: 'Primary', value: 'default'},
+                      {title: 'Secondary', value: 'secondary'},
+                    ],
+                  },
+                  initialValue: 'default',
+                },
+              ],
+            },
+          ],
+          initialValue: [
+            { text: 'Get Quote', href: '/contact', variant: 'default' },
+            { text: 'Technical Specifications', href: '/compliance/supplier-requirements', variant: 'secondary' },
+          ],
+        },
       ],
     },
     {

@@ -201,40 +201,34 @@ export default function Resources({ data }: ResourcesProps) {
           </motion.div>
 
         {/* Benefits Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-          {[
-            {
-              icon: <BookOpen className="w-6 h-6" />,
-              title: 'Structured Learning',
-              description: 'Progressive curriculum from fundamentals to advanced topics'
-            },
-            {
-              icon: <GraduationCap className="w-6 h-6" />,
-              title: 'Industry Standards',
-              description: 'Aligned with AS9100, ISO, and aerospace best practices'
-            },
-            {
-              icon: <TrendingUp className="w-6 h-6" />,
-              title: 'Practical Application',
-              description: 'Real-world examples and implementation strategies'
-            },
-          ].map((benefit, index) => (
-            <motion.div
-              key={benefit.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="text-center p-6 bg-slate-900/30 rounded-xl border border-slate-800/50"
-            >
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600/20 to-indigo-600/20 border border-blue-600/30 text-blue-400 mb-4">
-                  {benefit.icon}
-                </div>
-                <h4 className="text-lg font-bold text-white mb-2">{benefit.title}</h4>
-                <p className="text-slate-400 text-sm">{benefit.description}</p>
-            </motion.div>
-          ))}
-        </div>
+        {resourcesData.benefits && resourcesData.benefits.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            {resourcesData.benefits.map((benefit: any, index: number) => {
+              // Icon mapping for CMS data
+              const IconComponent = benefit.iconName === 'BookOpen' ? BookOpen :
+                                   benefit.iconName === 'GraduationCap' ? GraduationCap :
+                                   benefit.iconName === 'TrendingUp' ? TrendingUp :
+                                   BookOpen;
+
+              return (
+                <motion.div
+                  key={benefit.title || index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="text-center p-6 bg-slate-900/30 rounded-xl border border-slate-800/50"
+                >
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600/20 to-indigo-600/20 border border-blue-600/30 text-blue-400 mb-4">
+                    <IconComponent className="w-6 h-6" />
+                  </div>
+                  <h4 className="text-lg font-bold text-white mb-2">{benefit.title}</h4>
+                  <p className="text-slate-400 text-sm">{benefit.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );
