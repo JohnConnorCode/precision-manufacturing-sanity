@@ -7,62 +7,17 @@ import AnimatedSection from '@/components/ui/animated-section';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
 
-// Hardcoded fallback data
-const defaultResourcesData = {
-  header: {
-    badge: 'Technical Resources & Knowledge Base',
-    title: 'Master Precision Manufacturing',
-    description: 'Comprehensive technical article series covering CMM inspection, FAI procedures, GD&T fundamentals, CNC manufacturing, AS9100 quality management, and MetBase quality systems.'
-  },
-  featuredSeries: [
-    {
-      title: 'CMM Inspection Mastery',
-      slug: 'cmm-inspection-mastery',
-      description: 'Master coordinate measuring machine setup, programming, and measurement strategies for precision inspection.',
-      articleCount: 4,
-      readTime: '34 min',
-      difficulty: 'Intermediate',
-      icon: '📐',
-      gradient: 'from-blue-600 via-blue-500 to-indigo-600',
-    },
-    {
-      title: 'First Article Inspection Excellence',
-      slug: 'first-article-inspection-fai-excellence',
-      description: 'Complete AS9102 FAI requirements, documentation, and approval processes for aerospace manufacturing.',
-      articleCount: 3,
-      readTime: '26 min',
-      difficulty: 'Advanced',
-      icon: '✓',
-      gradient: 'from-blue-600 via-blue-500 to-indigo-600',
-    },
-    {
-      title: 'GD&T Fundamentals',
-      slug: 'gdt-fundamentals-and-application',
-      description: 'Comprehensive Geometric Dimensioning and Tolerancing training for precision manufacturing applications.',
-      articleCount: 4,
-      readTime: '35 min',
-      difficulty: 'Beginner',
-      icon: '⊕',
-      gradient: 'from-blue-600 via-blue-500 to-indigo-600',
-    },
-  ],
-  cta: {
-    title: 'Explore Our Complete Knowledge Base',
-    description: 'CNC Manufacturing Precision, AS9100 Quality Management, MetBase Quality Systems, and more.',
-    buttons: [
-      { text: 'View All Series', href: '/resources/series', variant: 'primary' },
-      { text: 'Browse Resources', href: '/resources', variant: 'secondary' }
-    ]
-  }
-};
-
 interface ResourcesProps {
-  data?: typeof defaultResourcesData | null;
+  data?: any;
 }
 
 export default function Resources({ data }: ResourcesProps) {
-  // Use CMS data if available, otherwise fall back to hardcoded defaults
-  const resourcesData = data || defaultResourcesData;
+  // ALL content must come from Sanity CMS
+  if (!data || !data.header || !data.featuredSeries) {
+    return null;
+  }
+
+  const resourcesData = data;
   return (
     <section className="relative py-24 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 overflow-hidden">
       {/* Background Pattern */}
@@ -112,7 +67,7 @@ export default function Resources({ data }: ResourcesProps) {
         {/* Featured Series Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {resourcesData.featuredSeries.map((series, index) => (
-            <div key={series.slug}>
+            <div key={`${series.slug}-${index}`}>
               <Link href={`/resources/series/${series.slug}`}>
                 <motion.article
                   initial={{ opacity: 0, y: 20 }}

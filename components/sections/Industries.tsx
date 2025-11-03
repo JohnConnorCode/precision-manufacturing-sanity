@@ -15,33 +15,6 @@ const iconMap: Record<string, LucideIcon> = {
   'Plane': Plane,
 };
 
-const industries = [
-  {
-    title: 'Defense & Government',
-    description: 'ITAR-compliant manufacturing for defense contractors and government agencies. Secure, certified production.',
-    icon: Shield,
-    image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122',
-    href: '/industries/defense',
-    features: ['ITAR registered', 'Secure facility', 'Rapid prototyping'],
-  },
-  {
-    title: 'Energy & Power',
-    description: 'Critical components for power generation and renewable energy. High-temperature alloys and superalloy expertise.',
-    icon: Zap,
-    image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e',
-    href: '/industries/energy',
-    features: ['Superalloy expertise', 'Large part capability', 'Field service support'],
-  },
-  {
-    title: 'Aerospace & Aviation',
-    description: 'Precision components for commercial and military aircraft. AS9100D certified production.',
-    icon: Plane,
-    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1',
-    href: '/industries/aerospace',
-    features: ['AS9100D certified', 'NADCAP accredited', 'Zero defect delivery'],
-  },
-];
-
 interface IndustriesProps {
   data?: any;
   sectionData?: {
@@ -53,13 +26,18 @@ interface IndustriesProps {
 }
 
 export default function Industries({ data, sectionData }: IndustriesProps) {
-  // Use CMS data if available, otherwise use hardcoded data
-  const industriesData = data || industries;
+  // Use CMS data only
+  const industriesData = data;
 
-  // Use section data from CMS or fallback to hardcoded
-  const eyebrow = sectionData?.eyebrow || 'SPECIALIZED SECTOR EXPERTISE';
-  const heading = sectionData?.heading || 'INDUSTRY LEADERS';
-  const description = sectionData?.description || 'Three decades of trusted partnerships in mission-critical sectors where precision and reliability are non-negotiable';
+  // Use section data from CMS only
+  const eyebrow = sectionData?.eyebrow;
+  const heading = sectionData?.heading;
+  const description = sectionData?.description;
+
+  // Don't render if no data from CMS
+  if (!industriesData || industriesData.length === 0) {
+    return null;
+  }
 
   return (
     <section className={`${spacing.section} ${colors.bgLight}`}>
@@ -91,14 +69,18 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                   >
                     <Card className={`overflow-hidden hover:shadow-xl transition-all duration-300 ${colors.borderLight} hover:border-blue-600/50`}>
-                    <div className="relative h-56 overflow-hidden">
-                      <ParallaxImage
-                        src={industry.image}
-                        alt={industry.title}
-                        className="w-full h-full group-hover:scale-110 transition-transform duration-700"
-                        speed={0.2}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/50 to-transparent" />
+                    <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
+                      {industry.image && (
+                        <>
+                          <ParallaxImage
+                            src={industry.image}
+                            alt={industry.title}
+                            className="w-full h-full group-hover:scale-110 transition-transform duration-700"
+                            speed={0.2}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/50 to-transparent" />
+                        </>
+                      )}
 
                       {/* Icon and title overlay on image */}
                       <div className="absolute bottom-0 left-0 right-0 p-6">

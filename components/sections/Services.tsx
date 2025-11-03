@@ -16,42 +16,6 @@ const iconMap: Record<string, LucideIcon> = {
   'Users': Users,
 };
 
-const services = [
-  {
-    title: '5-Axis CNC Machining',
-    description: 'Complex geometries with unmatched precision for aerospace components',
-    icon: Cog,
-    href: '/services/5-axis-machining',
-    specs: ['±0.0001" tolerance', 'Titanium & super alloys', 'Up to 60" parts'],
-    image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=90',
-    highlight: true
-  },
-  {
-    title: 'Adaptive Machining',
-    description: 'Real-time adjustments based on in-process measurements',
-    icon: Cpu,
-    href: '/services/adaptive-machining',
-    specs: ['In-process verification', 'Automated compensation', 'Zero defect goal'],
-    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=90'
-  },
-  {
-    title: 'Metrology & Inspection',
-    description: 'Complete dimensional verification with CMM and laser scanning',
-    icon: Gauge,
-    href: '/services/metrology',
-    specs: ['0.00005" accuracy', 'GD&T analysis', 'AS9102 certified'],
-    image: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=90'
-  },
-  {
-    title: 'Engineering Support',
-    description: 'Design optimization and manufacturing consultation',
-    icon: Users,
-    href: '/services/engineering',
-    specs: ['DFM analysis', 'Process planning', 'Cost optimization'],
-    image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&q=90'
-  },
-];
-
 interface ServicesProps {
   data?: any;
   sectionData?: {
@@ -63,13 +27,18 @@ interface ServicesProps {
 }
 
 export default function Services({ data, sectionData }: ServicesProps) {
-  // Use CMS data if available, otherwise use hardcoded data
-  const servicesData = Array.isArray(data) ? data : (data ? [data] : services);
+  // Use CMS data - ALL content must come from Sanity
+  const servicesData = Array.isArray(data) ? data : (data ? [data] : []);
 
-  // Use section data from CMS or fallback to hardcoded
-  const eyebrow = sectionData?.eyebrow || 'COMPREHENSIVE MANUFACTURING SOLUTIONS';
-  const heading = sectionData?.heading || 'PRECISION SERVICES';
-  const description = sectionData?.description || 'Four core service pillars delivering unmatched precision and reliability for aerospace and defense applications';
+  // Section data from CMS (required)
+  const eyebrow = sectionData?.eyebrow;
+  const heading = sectionData?.heading;
+  const description = sectionData?.description;
+
+  // Don't render if no data from CMS
+  if (!servicesData || servicesData.length === 0) {
+    return null;
+  }
 
   return (
     <section className={`relative ${spacing.section} overflow-hidden ${colors.bgLight}`}>
@@ -130,14 +99,18 @@ export default function Services({ data, sectionData }: ServicesProps) {
                     }`}>
                     {/* Image Header */}
                     <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
-                      <Image
-                        src={service.image}
-                        alt={service.title}
-                        fill
-                        className="object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 ease-out"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                      {service.image && (
+                        <>
+                          <Image
+                            src={service.image}
+                            alt={service.title}
+                            fill
+                            className="object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 ease-out"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                        </>
+                      )}
 
                       {/* Floating Icon with Premium Effect */}
                       <div className="absolute bottom-4 left-4">
@@ -167,7 +140,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
                       <ul className="space-y-2 mb-5">
                         {(service.specs || []).map((spec: any, index: number) => {
                           // Handle both string and object formats
-                          const specText = typeof spec === 'string' ? spec : spec.spec;
+                          const specText = typeof spec === 'string' ? spec : (spec.text || spec.spec);
                           return (
                             <li key={index} className="flex items-start text-xs text-slate-800">
                               <CheckCircle className="h-3 w-3 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />

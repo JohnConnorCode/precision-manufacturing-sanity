@@ -47,12 +47,14 @@ export default async function Home() {
     ...service,
     description: service.shortDescription || portableTextToPlainText(service.description),
     href: `/services/${service.slug?.current || service.slug}`,
+    image: service.image?.asset?.url || '', // Extract URL from Sanity image object
   }));
 
   const formattedIndustries = industriesData?.map((industry: any) => ({
     ...industry,
     description: industry.shortDescription || portableTextToPlainText(industry.description),
     href: `/industries/${industry.slug?.current || industry.slug}`,
+    image: industry.image?.asset?.url || '', // Extract URL from Sanity image object
   }));
 
   // Transform homepage data for component compatibility
@@ -72,8 +74,8 @@ export default async function Home() {
       ctaSecondary: homepageData.heroEnhanced.ctaSecondary,
       slides: homepageData.heroEnhanced.slides?.length > 0
         ? homepageData.heroEnhanced.slides.map((slide: any) => ({
-            image: slide.image?.asset?.url || '',
-            alt: slide.image?.alt || '',
+            image: slide.imageUrl || slide.image?.asset?.url || '',
+            alt: slide.imageAlt || slide.image?.alt || '',
             focal: 'center' as const
           })).filter((slide: any) => slide.image) // Only include slides with valid images
         : undefined
