@@ -3,7 +3,7 @@
 # Production Testing Script
 # Tests all routes and verifies Sanity content is rendering
 
-PROD_URL="https://precision-manufacturing-sanity-kjb3xxv03.vercel.app"
+PROD_URL="https://precision-manufacturing-sanity-8wmhquwbd.vercel.app"
 
 echo "🧪 Testing Production Deployment: $PROD_URL"
 echo "================================================"
