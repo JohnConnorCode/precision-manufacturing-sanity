@@ -18,6 +18,8 @@ export async function getAllServices() {
     description,
     order,
     highlight,
+    iconName,
+    specs,
     image,
     hero,
     overview,
