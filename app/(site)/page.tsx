@@ -29,9 +29,9 @@ function portableTextToPlainText(blocks: any): string {
     .join(' ');
 }
 
-// Force static generation for INSTANT routing (no server delays)
+// Use ISR for automatic updates when Sanity content changes
 export const dynamic = 'force-static';
-export const revalidate = false; // Fully static, rebuild on deploy
+export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function Home() {
   // Parallel data fetching - 3x faster than sequential

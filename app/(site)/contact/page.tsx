@@ -3,7 +3,7 @@ import { getContact } from '@/sanity/lib/queries';
 
 // Force static generation for INSTANT routing (no server delays)
 export const dynamic = 'force-static';
-export const revalidate = false; // Fully static, rebuild on deploy
+export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function ContactPage() {
   // Fetch data from CMS
