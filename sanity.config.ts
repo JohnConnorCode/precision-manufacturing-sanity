@@ -11,7 +11,8 @@ import { assetManager } from './sanity/plugins/assetManager'
 import { contentRelationships } from './sanity/plugins/contentRelationships'
 import { collaboration } from './sanity/plugins/collaboration'
 import { analytics } from './sanity/plugins/analytics'
-// Presentation tool (single instance)
+import { presentationTool } from '@sanity/presentation'
+import { locate } from './sanity/presentation'
 
 export default defineConfig({
   name: 'default',
@@ -24,7 +25,32 @@ export default defineConfig({
 
   plugins: [
     presentationTool({
-      previewUrl: async (prev, { document }) => {
+      previewUrl: {
+        origin: process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
+      },
+      locate,
+    } as any),
+    structureTool({
+      structure,
+    }),
+    visionTool(),
+    media(),
+    previewPane(),
+    assetManager(),
+    contentRelationships(),
+    collaboration(),
+    analytics(),
+  ],
+
+  schema: {
+    types: schemaTypes,
+  },
+
+  document: {
+    actions: resolveDocumentActions,
+    badges: resolveBadges,
+  },
+})
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
         const doc: any = document
         const slug = doc?.slug?.current
