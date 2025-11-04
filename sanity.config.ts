@@ -11,8 +11,8 @@ import { assetManager } from './sanity/plugins/assetManager'
 import { contentRelationships } from './sanity/plugins/contentRelationships'
 import { collaboration } from './sanity/plugins/collaboration'
 import { analytics } from './sanity/plugins/analytics'
-import { presentationTool } from '@sanity/presentation'
-import { locate } from './sanity/presentation'
+import { presentationTool } from 'sanity/presentation'
+import { locate } from './sanity/locate'
 
 export default defineConfig({
   name: 'default',

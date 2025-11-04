@@ -24,24 +24,36 @@ export default {
       type: 'object',
       title: 'Top Bar',
       group: 'content',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fieldsets: [
+        {name: 'phoneInfo', title: 'Phone Information', options: {columns: 2}},
+        {name: 'emailInfo', title: 'Email Information', options: {columns: 2}},
+        {name: 'certifications', title: 'Certifications'},
+      ],
       fields: [
         {
           name: 'phone',
           type: 'string',
           title: 'Phone Number',
           description: 'Phone number displayed in top bar',
+          fieldset: 'phoneInfo',
         },
         {
           name: 'phoneLink',
           type: 'string',
           title: 'Phone Link',
           description: 'tel: link for phone number',
+          fieldset: 'phoneInfo',
         },
         {
           name: 'email',
           type: 'string',
           title: 'Email Address',
           description: 'Email address displayed in top bar',
+          fieldset: 'emailInfo',
           validation: (Rule: any) =>
             Rule.regex(
               /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
@@ -53,12 +65,14 @@ export default {
           type: 'string',
           title: 'Email Link',
           description: 'mailto: link for email',
+          fieldset: 'emailInfo',
         },
         {
           name: 'certifications',
           type: 'string',
           title: 'Certifications',
           description: 'Certifications text to display',
+          fieldset: 'certifications',
         },
       ],
     },
@@ -90,16 +104,25 @@ export default {
       type: 'object',
       title: 'Call to Action Button',
       group: 'content',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      fieldsets: [
+        {name: 'buttonDetails', title: 'Button Details', options: {columns: 2}},
+      ],
       fields: [
         {
           name: 'text',
           type: 'string',
           title: 'Button Text',
+          fieldset: 'buttonDetails',
         },
         {
           name: 'href',
           type: 'string',
           title: 'Button URL',
+          fieldset: 'buttonDetails',
         },
       ],
     },

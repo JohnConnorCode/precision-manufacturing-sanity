@@ -36,12 +36,21 @@ export default {
       }
     }
   },
+  groups: [
+    {name: 'general', title: 'General Info', default: true},
+    {name: 'hero', title: 'Hero Section'},
+    {name: 'overview', title: 'Overview'},
+    {name: 'details', title: 'Service Details'},
+    {name: 'seo', title: 'SEO & Sharing'},
+    {name: 'display', title: 'Display Options'},
+  ],
   fields: [
     {
       name: 'title',
       type: 'string',
       title: 'Title',
       description: 'Service title (e.g., "5-Axis Machining")',
+      group: 'general',
       validation: (Rule: any) => Rule.required().error('Title is required'),
     },
     {
@@ -49,6 +58,7 @@ export default {
       type: 'slug',
       title: 'Slug',
       description: 'URL-friendly identifier (auto-generated from title)',
+      group: 'general',
       options: {
         source: 'title',
         maxLength: 96,
@@ -60,6 +70,7 @@ export default {
       type: 'boolean',
       title: 'Published',
       description: 'Controls whether this service appears on the website. Uncheck to hide without deleting.',
+      group: 'general',
       initialValue: true,
     },
     {
@@ -67,6 +78,7 @@ export default {
       type: 'text',
       title: 'Short Description',
       description: 'Brief description for cards and previews (150-200 characters)',
+      group: 'general',
       rows: 3,
       validation: (Rule: any) => Rule.min(100).max(200).warning('Should be between 100-200 characters for optimal display'),
     },
@@ -75,18 +87,31 @@ export default {
       type: 'array',
       title: 'Description',
       description: 'Full rich text description',
+      group: 'general',
       of: [{type: 'block'}],
     },
     {
       name: 'hero',
       type: 'object',
       title: 'Hero Section',
+      group: 'hero',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fieldsets: [
+        {name: 'background', title: 'Background Image', options: {collapsible: true, collapsed: false}},
+        {name: 'titles', title: 'Titles', options: {columns: 2}},
+        {name: 'description', title: 'Description'},
+        {name: 'sizing', title: 'Text Sizing', options: {columns: 2}},
+      ],
       fields: [
         {
           name: 'backgroundImage',
           type: 'image',
           title: 'Background Image',
           description: 'Hero background image (recommended: 1920x1080px)',
+          fieldset: 'background',
           options: {
             hotspot: true,
             metadata: ['blurhash', 'lqip', 'palette'],
@@ -110,22 +135,26 @@ export default {
           name: 'badge',
           type: 'string',
           title: 'Badge',
+          fieldset: 'titles',
         },
         {
           name: 'subtitle',
           type: 'string',
           title: 'Subtitle',
+          fieldset: 'titles',
         },
         {
           name: 'descriptionRich',
           type: 'array',
           title: 'Description (Rich Text)',
+          fieldset: 'description',
           of: [{ type: 'block' }],
         },
         {
           name: 'titleSize',
           type: 'string',
           title: 'Title Size',
+          fieldset: 'sizing',
           options: { list: [
             { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' },
             { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }, { title: '2XL', value: '2xl' }, { title: '3XL', value: '3xl' }
@@ -135,6 +164,7 @@ export default {
           name: 'descriptionSize',
           type: 'string',
           title: 'Description Size',
+          fieldset: 'sizing',
           options: { list: [
             { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' }, { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }
           ] },
@@ -145,17 +175,27 @@ export default {
       name: 'overview',
       type: 'object',
       title: 'Overview',
+      group: 'overview',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fieldsets: [
+        {name: 'descriptionContent', title: 'Description'},
+      ],
       fields: [
         {
           name: 'description',
           type: 'text',
           title: 'Description',
           rows: 4,
+          fieldset: 'descriptionContent',
         },
         {
           name: 'descriptionRich',
           type: 'array',
           title: 'Description (Rich Text)',
+          fieldset: 'descriptionContent',
           of: [{ type: 'block' }],
         },
       ],
@@ -164,6 +204,11 @@ export default {
       name: 'capabilities',
       type: 'array',
       title: 'Capabilities',
+      group: 'details',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -179,6 +224,11 @@ export default {
       name: 'services',
       type: 'array',
       title: 'Service Offerings',
+      group: 'details',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -229,6 +279,11 @@ export default {
       name: 'technicalSpecs',
       type: 'array',
       title: 'Technical Specifications',
+      group: 'details',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -244,6 +299,11 @@ export default {
       name: 'process',
       type: 'array',
       title: 'Process',
+      group: 'details',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -270,6 +330,11 @@ export default {
       name: 'equipment',
       type: 'array',
       title: 'Equipment',
+      group: 'details',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -284,6 +349,11 @@ export default {
       name: 'materials',
       type: 'array',
       title: 'Materials',
+      group: 'details',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -309,6 +379,11 @@ export default {
       name: 'processes',
       type: 'array',
       title: 'Processes',
+      group: 'details',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -334,12 +409,24 @@ export default {
       name: 'seo',
       type: 'object',
       title: 'SEO',
+      group: 'seo',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      fieldsets: [
+        {name: 'meta', title: 'Meta Tags', options: {collapsible: true, collapsed: false}},
+        {name: 'social', title: 'Social Sharing', options: {collapsible: true, collapsed: false}},
+        {name: 'indexing', title: 'Indexing', options: {columns: 2}},
+        {name: 'keywords', title: 'Keywords'},
+      ],
       fields: [
         {
           name: 'metaTitle',
           type: 'string',
           title: 'Meta Title',
           description: 'Title shown in search results (50-60 characters recommended)',
+          fieldset: 'meta',
           validation: (Rule: any) =>
             Rule.max(60).warning('Meta title should be 60 characters or less'),
         },
@@ -349,6 +436,7 @@ export default {
           title: 'Meta Description',
           description: 'Description shown in search results (150-160 characters recommended)',
           rows: 3,
+          fieldset: 'meta',
           validation: (Rule: any) =>
             Rule.max(160).warning('Meta description should be 160 characters or less'),
         },
@@ -357,6 +445,7 @@ export default {
           type: 'image',
           title: 'Social Share Image',
           description: 'Image shown when shared on social media (1200x630px recommended)',
+          fieldset: 'social',
           options: {
             hotspot: true,
             metadata: ['blurhash', 'lqip', 'palette'],
@@ -375,12 +464,14 @@ export default {
           type: 'boolean',
           title: 'Prevent Indexing',
           description: 'Prevent search engines from indexing this page',
+          fieldset: 'indexing',
           initialValue: false,
         },
         {
           name: 'keywords',
           type: 'array',
           title: 'Focus Keywords',
+          fieldset: 'keywords',
           of: [
             {
               type: 'object',
@@ -395,12 +486,14 @@ export default {
       type: 'number',
       title: 'Display Order',
       description: 'Controls the order in which services appear (lower numbers first)',
+      group: 'display',
     },
     {
       name: 'image',
       type: 'image',
       title: 'Service Card Image',
       description: 'Image displayed on service cards (recommended: 800x600px)',
+      group: 'display',
       options: {
         hotspot: true,
         metadata: ['blurhash', 'lqip', 'palette'],
@@ -430,12 +523,14 @@ export default {
       type: 'boolean',
       title: 'Highlight',
       description: 'Highlight this service on listing pages',
+      group: 'display',
       initialValue: false,
     },
     {
       name: 'specs',
       type: 'array',
       title: 'Specifications',
+      group: 'display',
       of: [
         {
           type: 'object',

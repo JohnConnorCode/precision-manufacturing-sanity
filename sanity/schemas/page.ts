@@ -26,10 +26,18 @@ export default {
       type: 'object',
       title: 'SEO',
       group: 'seo',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      fieldsets: [
+        {name: 'meta', title: 'Meta Tags', options: {collapsible: true, collapsed: false}},
+        {name: 'social', title: 'Social Sharing', options: {collapsible: true, collapsed: false}},
+      ],
       fields: [
-        { name: 'metaTitle', type: 'string', title: 'Meta Title' },
-        { name: 'metaDescription', type: 'text', rows: 3, title: 'Meta Description' },
-        { name: 'ogImage', type: 'image', title: 'OpenGraph Image', options: { hotspot: true } },
+        { name: 'metaTitle', type: 'string', title: 'Meta Title', fieldset: 'meta' },
+        { name: 'metaDescription', type: 'text', rows: 3, title: 'Meta Description', fieldset: 'meta' },
+        { name: 'ogImage', type: 'image', title: 'OpenGraph Image', fieldset: 'social', options: { hotspot: true } },
       ]
     }
   ],

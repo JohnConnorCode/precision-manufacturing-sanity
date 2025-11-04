@@ -3,11 +3,16 @@ export default {
   type: 'document',
   title: 'UI Text',
   __experimental_singleton: true,
+  groups: [
+    {name: 'buttons', title: 'Button Text', default: true},
+    {name: 'sections', title: 'Section Text'},
+  ],
   fields: [
     {
       name: 'buttons',
       type: 'object',
       title: 'Button Text',
+      group: 'buttons',
       fields: [
         {
           name: 'getQuote',
@@ -45,6 +50,7 @@ export default {
       name: 'sections',
       type: 'object',
       title: 'Section Text',
+      group: 'sections',
       fields: [
         {
           name: 'ctaHeading',

@@ -14,11 +14,18 @@ export default {
       }
     }
   },
+  groups: [
+    {name: 'company', title: 'Company Info', default: true},
+    {name: 'links', title: 'Navigation Links'},
+    {name: 'contact', title: 'Contact Info'},
+    {name: 'legal', title: 'Legal & Copyright'},
+  ],
   fields: [
     {
       name: 'company',
       type: 'object',
       title: 'Company Information',
+      group: 'company',
       fields: [
         {
           name: 'description',
@@ -42,6 +49,7 @@ export default {
       name: 'social',
       type: 'object',
       title: 'Social Media Links',
+      group: 'company',
       fields: [
         {
           name: 'linkedin',
@@ -76,6 +84,11 @@ export default {
       name: 'servicesLinks',
       type: 'array',
       title: 'Services Links',
+      group: 'links',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -90,6 +103,11 @@ export default {
       name: 'resourcesLinks',
       type: 'array',
       title: 'Resources Links',
+      group: 'links',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -104,6 +122,11 @@ export default {
       name: 'quickLinks',
       type: 'array',
       title: 'Quick Links',
+      group: 'links',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -118,11 +141,22 @@ export default {
       name: 'contact',
       type: 'object',
       title: 'Contact Information',
+      group: 'contact',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fieldsets: [
+        {name: 'emailInfo', title: 'Email'},
+        {name: 'phoneInfo', title: 'Phone'},
+        {name: 'addressInfo', title: 'Address'},
+      ],
       fields: [
         {
           name: 'email',
           type: 'string',
           title: 'Email Address',
+          fieldset: 'emailInfo',
           validation: (Rule: any) =>
             Rule.regex(
               /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
@@ -133,18 +167,21 @@ export default {
           name: 'phone',
           type: 'string',
           title: 'Phone Number',
+          fieldset: 'phoneInfo',
         },
         {
           name: 'phoneLink',
           type: 'string',
           title: 'Phone Link',
           description: 'tel: link for phone number',
+          fieldset: 'phoneInfo',
         },
         {
           name: 'address',
           type: 'text',
           title: 'Address',
           rows: 3,
+          fieldset: 'addressInfo',
         },
       ],
     },
@@ -152,6 +189,7 @@ export default {
       name: 'copyright',
       type: 'string',
       title: 'Copyright Text',
+      group: 'legal',
     },
   ],
 }

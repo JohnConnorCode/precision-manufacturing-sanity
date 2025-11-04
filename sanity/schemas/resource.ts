@@ -43,12 +43,18 @@ export default {
       }
     }
   },
+  groups: [
+    {name: 'general', title: 'General Info', default: true},
+    {name: 'metadata', title: 'Resource Metadata'},
+    {name: 'seo', title: 'SEO & Sharing'},
+  ],
   fields: [
     {
       name: 'title',
       type: 'string',
       title: 'Title',
       description: 'Resource title (e.g., "Understanding 5-Axis CNC Machining")',
+      group: 'general',
       validation: (Rule: any) => Rule.required().error('Title is required'),
     },
     {
@@ -56,6 +62,7 @@ export default {
       type: 'slug',
       title: 'Slug',
       description: 'URL-friendly identifier (auto-generated from title)',
+      group: 'general',
       options: {
         source: 'title',
         maxLength: 96,
@@ -67,6 +74,7 @@ export default {
       type: 'boolean',
       title: 'Published',
       description: 'Controls whether this resource appears on the website. Uncheck to hide without deleting.',
+      group: 'general',
       initialValue: true,
     },
     {
@@ -74,6 +82,7 @@ export default {
       type: 'text',
       title: 'Excerpt',
       description: 'Brief excerpt for cards and previews (150-200 characters)',
+      group: 'general',
       rows: 3,
       validation: (Rule: any) => Rule.min(100).max(200).warning('Should be between 100-200 characters for optimal display'),
     },
@@ -82,6 +91,7 @@ export default {
       type: 'array',
       title: 'Content',
       description: 'Main article content in rich text format with custom blocks',
+      group: 'general',
       of: [
         {type: 'block'},
         {type: 'calloutBox'},
@@ -97,6 +107,8 @@ export default {
       type: 'string',
       title: 'Category',
       description: 'Resource category for organization (e.g., "manufacturing-processes", "material-science")',
+      group: 'metadata',
+      fieldset: 'categoryInfo',
       validation: (Rule: any) => Rule.required().error('Category is required for organization'),
       options: {
         list: [
@@ -112,6 +124,8 @@ export default {
       type: 'string',
       title: 'Difficulty Level',
       description: 'Technical difficulty level of the content',
+      group: 'metadata',
+      fieldset: 'categoryInfo',
       options: {
         list: [
           {title: 'Beginner', value: 'beginner'},
@@ -126,6 +140,8 @@ export default {
       type: 'string',
       title: 'Read Time',
       description: 'Estimated reading time (e.g., "5 min read")',
+      group: 'metadata',
+      fieldset: 'publishInfo',
       validation: (Rule: any) => Rule.regex(/^\d+\s*min\s*read$/).warning('Should be in format "5 min read"'),
     },
     {
@@ -133,6 +149,8 @@ export default {
       type: 'date',
       title: 'Publish Date',
       description: 'Date the resource was published',
+      group: 'metadata',
+      fieldset: 'publishInfo',
       options: {
         dateFormat: 'YYYY-MM-DD',
       },
@@ -143,6 +161,8 @@ export default {
       type: 'string',
       title: 'Author',
       description: 'Author name',
+      group: 'metadata',
+      fieldset: 'publishInfo',
       validation: (Rule: any) => Rule.required().error('Author name is required'),
     },
     {
@@ -150,6 +170,8 @@ export default {
       type: 'image',
       title: 'Featured Image',
       description: 'Main image for the resource (recommended: 1200x800px)',
+      group: 'metadata',
+      fieldset: 'featuredImageInfo',
       options: {
         hotspot: true,
         metadata: ['blurhash', 'lqip', 'palette'],
@@ -179,6 +201,8 @@ export default {
       type: 'boolean',
       title: 'Featured',
       description: 'Mark as featured to highlight on resource pages',
+      group: 'metadata',
+      fieldset: 'featuredImageInfo',
       initialValue: false,
     },
     {
@@ -186,6 +210,8 @@ export default {
       type: 'array',
       title: 'Tags',
       description: 'Tags for filtering and search',
+      group: 'metadata',
+      fieldset: 'tagsInfo',
       of: [
         {
           type: 'object',
@@ -203,12 +229,24 @@ export default {
       type: 'object',
       title: 'SEO',
       description: 'Search engine optimization settings for this resource',
+      group: 'seo',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      fieldsets: [
+        {name: 'meta', title: 'Meta Tags', options: {collapsible: true, collapsed: false}},
+        {name: 'social', title: 'Social Sharing', options: {collapsible: true, collapsed: false}},
+        {name: 'indexing', title: 'Indexing', options: {columns: 2}},
+        {name: 'keywords', title: 'Keywords'},
+      ],
       fields: [
         {
           name: 'metaTitle',
           type: 'string',
           title: 'Meta Title',
           description: 'Title shown in search results (50-60 characters recommended)',
+          fieldset: 'meta',
           validation: (Rule: any) =>
             Rule.max(60).warning('Meta title should be 60 characters or less'),
         },
@@ -218,6 +256,7 @@ export default {
           title: 'Meta Description',
           description: 'Description shown in search results (150-160 characters recommended)',
           rows: 3,
+          fieldset: 'meta',
           validation: (Rule: any) =>
             Rule.max(160).warning('Meta description should be 160 characters or less'),
         },
@@ -226,6 +265,7 @@ export default {
           type: 'image',
           title: 'Social Share Image',
           description: 'Image shown when shared on social media (1200x630px recommended)',
+          fieldset: 'social',
           options: {
             hotspot: true,
             metadata: ['blurhash', 'lqip', 'palette'],
@@ -244,6 +284,7 @@ export default {
           type: 'boolean',
           title: 'Prevent Indexing',
           description: 'Prevent search engines from indexing this page',
+          fieldset: 'indexing',
           initialValue: false,
         },
         {
@@ -251,6 +292,7 @@ export default {
           type: 'array',
           title: 'Focus Keywords',
           description: 'Keywords to target for SEO (3-5 recommended)',
+          fieldset: 'keywords',
           of: [
             {
               type: 'object',

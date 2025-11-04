@@ -57,38 +57,7 @@ export default async function Home() {
     image: industry.image?.asset?.url || '', // Extract URL from Sanity image object
   }));
 
-  // Transform homepage data for component compatibility
-  const transformedHomepage = homepageData ? {
-    ...homepageData,
-    hero: homepageData.heroEnhanced ? {
-      mainTitle: homepageData.heroEnhanced.mainTitle,
-      subTitle: homepageData.heroEnhanced.subtitle,
-      tagline: homepageData.heroEnhanced.tagline,
-      // Transform badges from objects to strings if needed
-      badges: Array.isArray(homepageData.heroEnhanced.badges)
-        ? homepageData.heroEnhanced.badges.map((badge: any) =>
-            typeof badge === 'string' ? badge : badge.text || ''
-          )
-        : [],
-      ctaPrimary: homepageData.heroEnhanced.ctaPrimary,
-      ctaSecondary: homepageData.heroEnhanced.ctaSecondary,
-      slides: homepageData.heroEnhanced.slides?.length > 0
-        ? homepageData.heroEnhanced.slides.map((slide: any) => ({
-            image: slide.imageUrl || slide.image?.asset?.url || '',
-            alt: slide.imageAlt || slide.image?.alt || '',
-            focal: 'center' as const
-          })).filter((slide: any) => slide.image) // Only include slides with valid images
-        : undefined
-    } : homepageData.hero ? {
-      ...homepageData.hero,
-      // Transform badges from objects to strings if needed
-      badges: Array.isArray(homepageData.hero.badges)
-        ? homepageData.hero.badges.map((badge: any) =>
-            typeof badge === 'string' ? badge : badge.badge || badge.text || ''
-          )
-        : homepageData.hero.badges
-    } : undefined
-  } : undefined;
+  const heroData = homepageData?.heroEnhanced || homepageData?.hero || undefined;
 
   // Organization data for structured markup
   const organizationData = {
@@ -134,7 +103,7 @@ export default async function Home() {
         faqSchema
       ]} />
 
-      <Hero data={transformedHomepage?.hero || undefined} />
+      <Hero data={heroData} />
       <Services data={formattedServices || undefined} sectionData={transformedHomepage?.servicesSection || undefined} />
       <TechnicalSpecs data={transformedHomepage?.technicalSpecs || undefined} />
       <Industries data={formattedIndustries || undefined} sectionData={transformedHomepage?.industriesSection || undefined} />
