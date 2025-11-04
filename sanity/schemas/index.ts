@@ -54,7 +54,6 @@ export const schemaTypes = [
   heroSection,
   richTextSection,
   ctaSection,
-  navItem,
 
   // Custom Blocks
   calloutBox,

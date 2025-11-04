@@ -55,7 +55,7 @@ npm run dev
 # Visit a service page
 http://localhost:3000/services/5-axis-machining
 
-# Test preview mode (you'll need to set PREVIEW_SECRET_TOKEN in .env.local)
+# Test preview mode (you'll need to set NEXT_PUBLIC_PREVIEW_SECRET_TOKEN in .env.local)
 http://localhost:3000/api/preview?secret=YOUR_SECRET&slug=5-axis-machining&type=service
 ```
 

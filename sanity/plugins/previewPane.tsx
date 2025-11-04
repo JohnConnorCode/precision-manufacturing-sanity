@@ -10,7 +10,7 @@ export const previewPane = definePlugin({
         process.env.NEXT_PUBLIC_SERVER_URL ||
         'http://localhost:3000';
       const slug = (document as any).slug?.current;
-      const secret = process.env.PREVIEW_SECRET_TOKEN;
+      const secret = process.env.NEXT_PUBLIC_PREVIEW_SECRET_TOKEN;
 
       // If no secret configured, fall back to default behavior
       if (!secret) return prev;

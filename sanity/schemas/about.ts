@@ -3,6 +3,16 @@ export default {
   type: 'document',
   title: 'About Page',
   __experimental_singleton: true,
+  groups: [
+    {name: 'hero', title: 'Hero', default: true},
+    {name: 'statsStory', title: 'Story & Stats'},
+    {name: 'timeline', title: 'Timeline'},
+    {name: 'values', title: 'Values & Culture'},
+    {name: 'capabilities', title: 'Capabilities'},
+    {name: 'certifications', title: 'Certifications'},
+    {name: 'cta', title: 'CTA'},
+    {name: 'seo', title: 'SEO & Sharing'},
+  ],
   fields: [
     {
       name: 'hero',

@@ -3,11 +3,26 @@ export default {
   type: 'document',
   title: 'Homepage',
   __experimental_singleton: true,
+  groups: [
+    {name: 'hero', title: 'Hero', default: true},
+    {name: 'services', title: 'Services & Industries'},
+    {name: 'metrics', title: 'Stats & Specs'},
+    {name: 'showcase', title: 'Image Showcase'},
+    {name: 'resources', title: 'Resources'},
+    {name: 'cta', title: 'Final CTA'},
+    {name: 'seo', title: 'SEO & Sharing'},
+  ],
   fields: [
     {
       name: 'hero',
       type: 'object',
-      title: 'Hero Section',
+      title: 'Hero Section (Legacy)',
+      description: 'Legacy hero content retained for older layouts. Keep populated for safe fallback content.',
+      group: 'hero',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       fields: [
         {
           name: 'headline',
@@ -37,32 +52,63 @@ export default {
       name: 'heroEnhanced',
       type: 'object',
       title: 'Enhanced Hero Section',
+      description: 'Primary hero experience with carousel, badges, and call-to-actions.',
+      group: 'hero',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fieldsets: [
+        {name: 'copy', title: 'Primary Copy', options: {columns: 2}},
+        {name: 'slides', title: 'Hero Slides', options: {collapsible: true, collapsed: false}},
+        {name: 'badges', title: 'Badges Strip', options: {collapsible: true, collapsed: true}},
+        {name: 'primaryCta', title: 'Primary CTA', options: {columns: 2}},
+        {name: 'secondaryCta', title: 'Secondary CTA', options: {columns: 2}},
+      ],
       fields: [
         {
           name: 'mainTitle',
           type: 'string',
           title: 'Main Title',
           initialValue: 'PRECISION MANUFACTURING',
+          fieldset: 'copy',
         },
         {
           name: 'subtitle',
           type: 'string',
           title: 'Subtitle',
           initialValue: 'SERVICES',
+          fieldset: 'copy',
         },
         {
           name: 'tagline',
           type: 'text',
           title: 'Tagline',
           rows: 2,
+          fieldset: 'copy',
         },
         {
           name: 'slides',
           type: 'array',
           title: 'Hero Slides',
+          fieldset: 'slides',
           of: [
             {
               type: 'object',
+              preview: {
+                select: {
+                  title: 'caption',
+                  subtitle: 'image.alt',
+                  media: 'image',
+                },
+                prepare({title, subtitle, media}: any) {
+                  return {
+                    title: title || subtitle || 'Hero Slide',
+                    subtitle: subtitle ? `Alt: ${subtitle}` : undefined,
+                    media,
+                  }
+                },
+              },
               fields: [
                 {
                   name: 'image',
@@ -96,9 +142,20 @@ export default {
           name: 'badges',
           type: 'array',
           title: 'Badges',
+          fieldset: 'badges',
           of: [
             {
               type: 'object',
+              preview: {
+                select: {
+                  title: 'text',
+                },
+                prepare({title}: any) {
+                  return {
+                    title: title || 'Badge',
+                  }
+                },
+              },
               fields: [
                 {
                   name: 'text',
@@ -114,6 +171,7 @@ export default {
           name: 'ctaPrimary',
           type: 'object',
           title: 'Primary CTA Button',
+          fieldset: 'primaryCta',
           fields: [
             {
               name: 'text',
@@ -133,6 +191,7 @@ export default {
           name: 'ctaSecondary',
           type: 'object',
           title: 'Secondary CTA Button',
+          fieldset: 'secondaryCta',
           fields: [
             {
               name: 'text',
@@ -154,6 +213,12 @@ export default {
       name: 'stats',
       type: 'object',
       title: 'Statistics Section',
+      description: 'Headline metrics that reinforce credibility.',
+      group: 'metrics',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
       fields: [
         {
           name: 'title',
@@ -174,6 +239,22 @@ export default {
           of: [
             {
               type: 'object',
+              preview: {
+                select: {
+                  title: 'label',
+                  subtitle: 'description',
+                  value: 'value',
+                },
+                prepare({title, subtitle, value}: any) {
+                  const label = title;
+                  const description = subtitle;
+                  const details = [value, description].filter(Boolean).join(' • ');
+                  return {
+                    title: label || value || 'Statistic',
+                    subtitle: details || undefined,
+                  }
+                },
+              },
               fields: [
                 {
                   name: 'value',
@@ -201,6 +282,11 @@ export default {
       type: 'object',
       title: 'Services Section',
       description: 'Content for the services section on the homepage',
+      group: 'services',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
       fields: [
         {
           name: 'eyebrow',
@@ -232,6 +318,11 @@ export default {
       type: 'object',
       title: 'Industries Section',
       description: 'Content for the industries section on the homepage',
+      group: 'services',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       fields: [
         {
           name: 'eyebrow',
@@ -261,9 +352,28 @@ export default {
       name: 'technicalSpecs',
       type: 'array',
       title: 'Technical Specifications',
+      description: 'Tile-based overview of capabilities, certifications, and differentiators.',
+      group: 'metrics',
+      options: {
+        layout: 'grid',
+      },
       of: [
         {
           type: 'object',
+          preview: {
+            select: {
+              title: 'label',
+              subtitle: 'description',
+              value: 'value',
+            },
+            prepare({title, subtitle, value}: any) {
+              const details = [value, subtitle].filter(Boolean).join(' • ');
+              return {
+                title: title || value || 'Technical specification',
+                subtitle: details || undefined,
+              }
+            },
+          },
           fields: [
             {name: 'label', type: 'string', title: 'Label'},
             {name: 'value', type: 'string', title: 'Value'},
@@ -289,11 +399,23 @@ export default {
       type: 'object',
       title: 'Image Showcase Section',
       description: 'Complete image showcase section with header, images, stats, and CTA',
+      group: 'showcase',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fieldsets: [
+        {name: 'header', title: 'Section Header', options: {columns: 2}},
+        {name: 'gallery', title: 'Showcase Gallery', options: {collapsible: true, collapsed: false}},
+        {name: 'statTiles', title: 'Stat Tiles', options: {collapsible: true, collapsed: true}},
+        {name: 'cta', title: 'Inline CTA', options: {columns: 2}},
+      ],
       fields: [
         {
           name: 'header',
           type: 'object',
           title: 'Header',
+          fieldset: 'header',
           fields: [
             {
               name: 'eyebrow',
@@ -324,9 +446,27 @@ export default {
           name: 'showcaseImages',
           type: 'array',
           title: 'Showcase Images',
+          fieldset: 'gallery',
+          options: {
+            layout: 'grid',
+          },
           of: [
             {
               type: 'object',
+              preview: {
+                select: {
+                  title: 'title',
+                  subtitle: 'category',
+                  media: 'image',
+                },
+                prepare({title, subtitle, media}: any) {
+                  return {
+                    title: title || 'Showcase image',
+                    subtitle,
+                    media,
+                  }
+                },
+              },
               fields: [
                 {
                   name: 'image',
@@ -372,9 +512,23 @@ export default {
           name: 'stats',
           type: 'array',
           title: 'Stats',
+          fieldset: 'statTiles',
           of: [
             {
               type: 'object',
+              preview: {
+                select: {
+                  title: 'value',
+                  subtitle: 'label',
+                  media: 'iconName',
+                },
+                prepare({title, subtitle}: any) {
+                  return {
+                    title: title || 'Stat',
+                    subtitle,
+                  }
+                },
+              },
               fields: [
                 {
                   name: 'iconName',
@@ -397,6 +551,7 @@ export default {
           name: 'cta',
           type: 'object',
           title: 'Call to Action',
+          fieldset: 'cta',
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 2},
@@ -407,6 +562,19 @@ export default {
               of: [
                 {
                   type: 'object',
+                  preview: {
+                    select: {
+                      title: 'text',
+                      subtitle: 'href',
+                      enabled: 'enabled',
+                    },
+                    prepare({title, subtitle, enabled}: any) {
+                      return {
+                        title: title || 'CTA Button',
+                        subtitle: `${enabled === false ? 'Disabled • ' : ''}${subtitle || 'No link'}`,
+                      }
+                    },
+                  },
                   fields: [
                     {
                       name: 'enabled',
@@ -441,11 +609,23 @@ export default {
       type: 'object',
       title: 'Resources Section',
       description: 'Complete resources section with header, featured series, benefits, and CTA',
+      group: 'resources',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      fieldsets: [
+        {name: 'header', title: 'Section Header', options: {columns: 2}},
+        {name: 'featured', title: 'Featured Series', options: {collapsible: true, collapsed: false}},
+        {name: 'benefits', title: 'Benefits Grid', options: {collapsible: true, collapsed: true}},
+        {name: 'cta', title: 'Resources CTA', options: {columns: 2}},
+      ],
       fields: [
         {
           name: 'header',
           type: 'object',
           title: 'Header',
+          fieldset: 'header',
           fields: [
             {
               name: 'badge',
@@ -461,9 +641,26 @@ export default {
           name: 'featuredSeries',
           type: 'array',
           title: 'Featured Series',
+          fieldset: 'featured',
+          options: {
+            layout: 'grid',
+          },
           of: [
             {
               type: 'object',
+              preview: {
+                select: {
+                  title: 'title',
+                  subtitle: 'difficulty',
+                  media: 'icon',
+                },
+                prepare({title, subtitle}: any) {
+                  return {
+                    title: title || 'Series',
+                    subtitle: subtitle || 'Difficulty not set',
+                  }
+                },
+              },
               fields: [
                 {
                   name: 'title',
@@ -523,9 +720,26 @@ export default {
           name: 'benefits',
           type: 'array',
           title: 'Benefits Grid',
+          fieldset: 'benefits',
+          options: {
+            layout: 'grid',
+          },
           of: [
             {
               type: 'object',
+              preview: {
+                select: {
+                  title: 'title',
+                  subtitle: 'description',
+                  enabled: 'enabled',
+                },
+                prepare({title, subtitle, enabled}: any) {
+                  return {
+                    title: title || 'Benefit',
+                    subtitle: `${enabled === false ? 'Disabled • ' : ''}${subtitle || 'No description'}`,
+                  }
+                },
+              },
               fields: [
                 {
                   name: 'enabled',
@@ -550,6 +764,7 @@ export default {
           name: 'cta',
           type: 'object',
           title: 'Call to Action',
+          fieldset: 'cta',
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'string', title: 'Description'},
@@ -560,6 +775,19 @@ export default {
               of: [
                 {
                   type: 'object',
+                  preview: {
+                    select: {
+                      title: 'text',
+                      subtitle: 'href',
+                      enabled: 'enabled',
+                    },
+                    prepare({title, subtitle, enabled}: any) {
+                      return {
+                        title: title || 'CTA Button',
+                        subtitle: `${enabled === false ? 'Disabled • ' : ''}${subtitle || 'No link'}`,
+                      }
+                    },
+                  },
                   fields: [
                     {
                       name: 'enabled',
@@ -593,6 +821,12 @@ export default {
       name: 'cta',
       type: 'object',
       title: 'Final Call to Action',
+      description: 'Closing call-to-action band at the bottom of the page.',
+      group: 'cta',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
       fields: [
         {name: 'title', type: 'string', title: 'Title'},
         {name: 'subtitle', type: 'text', title: 'Subtitle', rows: 2},
@@ -603,6 +837,22 @@ export default {
           of: [
             {
               type: 'object',
+              preview: {
+                select: {
+                  title: 'text',
+                  subtitle: 'href',
+                  enabled: 'enabled',
+                  variant: 'variant',
+                },
+                prepare({title, subtitle, enabled, variant}: any) {
+                  const variantLabel = variant === 'secondary' ? 'Secondary' : 'Primary';
+                  const status = enabled === false ? 'Disabled • ' : '';
+                  return {
+                    title: title || `${variantLabel} CTA`,
+                    subtitle: `${status}${subtitle || 'No link'}`,
+                  }
+                },
+              },
               fields: [
                 {
                   name: 'enabled',
@@ -647,6 +897,12 @@ export default {
       name: 'seo',
       type: 'object',
       title: 'SEO',
+      description: 'Search engine metadata and social sharing defaults for the homepage.',
+      group: 'seo',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       fields: [
         {
           name: 'metaTitle',

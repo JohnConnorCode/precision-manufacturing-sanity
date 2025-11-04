@@ -227,7 +227,7 @@ Once created, services will use these IDs for easy reference:
 ### Services created but not showing
 - Verify `contentStatus` is set to `published`
 - Check ISR revalidation is working (60s cache for published)
-- Try preview mode with `PREVIEW_SECRET_TOKEN`
+- Try preview mode with `NEXT_PUBLIC_PREVIEW_SECRET_TOKEN`
 
 ### GraphQL mutation failed
 - Standard REST API is more reliable

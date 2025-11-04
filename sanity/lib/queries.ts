@@ -27,7 +27,6 @@ export async function getAllServices(preview = false) {
     },
     hero{
       backgroundImage{asset->{url,_id}},
-      backgroundImageUrl,
       badge, subtitle
     },
     overview,
@@ -54,10 +53,9 @@ export async function getServiceBySlug(slug: string, preview = false) {
     description,
     order,
     highlight,
-    image,
+    image{asset->{url,_id}, alt},
     hero{
       backgroundImage{asset->{url,_id}},
-      backgroundImageUrl,
       badge, subtitle
     },
     overview,
@@ -89,7 +87,7 @@ export async function getAllIndustries(preview = false) {
     order,
     image{asset->{url,_id}, alt},
     features,
-    hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, subtitle },
+    hero{ backgroundImage{asset->{url,_id}}, badge, subtitle },
     overview,
     capabilities,
     regulatory,
@@ -114,7 +112,7 @@ export async function getIndustryBySlug(slug: string, preview = false) {
     order,
     image{asset->{url,_id}, alt},
     features,
-    hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, subtitle },
+    hero{ backgroundImage{asset->{url,_id}}, badge, subtitle },
     overview,
     capabilities,
     regulatory,
@@ -216,7 +214,8 @@ export async function getFeaturedResources(preview = false) {
 // ============================================================================
 
 export async function getAllTeamMembers(preview = false) {
-  const query = `*[_type == "teamMember"] | order(order asc) {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "teamMember"${pub}] | order(order asc) {
     _id,
     name,
     title,
@@ -308,9 +307,9 @@ export async function getFooter(preview = false) {
 
 export async function getAbout(preview = false) {
   const query = `*[_type == "about"][0] {
-    hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, badgeIconName, title, titleHighlight, description, buttons },
+    hero{ backgroundImage{asset->{url,_id}}, badge, badgeIconName, title, titleHighlight, description, buttons },
     companyStats,
-    story{ title, paragraph1, paragraph2, paragraph3, image{asset->{url,_id}, alt}, imageUrl },
+    story{ title, paragraph1, paragraph2, paragraph3, image{asset->{url,_id}, alt} },
     timeline,
     values,
     capabilities,
@@ -323,7 +322,7 @@ export async function getAbout(preview = false) {
 
 export async function getContact(preview = false) {
   const query = `*[_type == "contact"][0] {
-    hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, badgeIconName, title, titleHighlight, description, buttonLabel, buttonHref },
+    hero{ backgroundImage{asset->{url,_id}}, badge, badgeIconName, title, titleHighlight, description, buttonLabel, buttonHref },
     contactInfo,
     certifications,
     bottomStats
@@ -334,8 +333,8 @@ export async function getContact(preview = false) {
 
 export async function getCareers(preview = false) {
   const query = `*[_type == "careers"][0] {
-    hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, badgeIconName, title, titleHighlight, description, buttons },
-    whyWorkHere{ heading, paragraph1, paragraph2, paragraph3, image{asset->{url,_id}}, imageUrl, imageAlt },
+    hero{ backgroundImage{asset->{url,_id}}, badge, badgeIconName, title, titleHighlight, description, buttons },
+    whyWorkHere{ heading, paragraph1, paragraph2, paragraph3, image{asset->{url,_id}}, imageAlt },
     benefits{ heading, description, items },
     values{ heading, description, items },
     opportunities{ heading, description, positions },
@@ -382,13 +381,11 @@ export async function getPageContent(preview = false) {
     qualityAssurance,
     hero{
       backgroundImage{asset->{url,_id}},
-      backgroundImageUrl,
       badge, title, subtitle, description, buttons
     },
     servicesPage{
       hero{
         backgroundImage{asset->{url,_id}},
-        backgroundImageUrl,
         badge, title, subtitle, description, buttons
       },
       qualityIntro,
@@ -397,12 +394,12 @@ export async function getPageContent(preview = false) {
       cta{heading, description, primaryButton, secondaryButton}
     },
     industriesPage{
-      hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, title, subtitle, description, buttons },
+      hero{ backgroundImage{asset->{url,_id}}, badge, title, subtitle, description, buttons },
       header{ title, description },
       cta{ heading, description, primaryButton, secondaryButton }
     },
     resourcesPage{
-      hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, title, subtitle, description, buttons },
+      hero{ backgroundImage{asset->{url,_id}}, badge, title, subtitle, description, buttons },
       header{ title, description, eyebrow }
     },
     sections

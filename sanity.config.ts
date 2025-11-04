@@ -29,55 +29,6 @@ export default defineConfig({
         origin: process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
       },
       locate,
-    } as any),
-    structureTool({
-      structure,
-    }),
-    visionTool(),
-    media(),
-    previewPane(),
-    assetManager(),
-    contentRelationships(),
-    collaboration(),
-    analytics(),
-  ],
-
-  schema: {
-    types: schemaTypes,
-  },
-
-  document: {
-    actions: resolveDocumentActions,
-    badges: resolveBadges,
-  },
-})
-        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
-        const doc: any = document
-        const slug = doc?.slug?.current
-        if (!doc) return prev
-        switch (doc?._type) {
-          case 'service':
-            return slug ? `${baseUrl}/services/${slug}` : baseUrl
-          case 'industry':
-            return slug ? `${baseUrl}/industries/${slug}` : baseUrl
-          case 'resource':
-            return slug ? `${baseUrl}/resources/${doc?.category}/${slug}` : `${baseUrl}/resources`
-          case 'homepage':
-            return baseUrl
-          case 'about':
-            return `${baseUrl}/about`
-          case 'contact':
-            return `${baseUrl}/contact`
-          case 'careers':
-            return `${baseUrl}/careers`
-          case 'terms':
-            return `${baseUrl}/compliance/terms`
-          case 'supplierRequirements':
-            return `${baseUrl}/compliance/supplier-requirements`
-          default:
-            return prev
-        }
-      },
     }),
     structureTool({
       structure,

@@ -120,7 +120,7 @@ http://localhost:3000/services/adaptive-machining
 http://localhost:3000/services/metrology
 http://localhost:3000/services/engineering
 
-# 3. Test preview mode (optional, requires PREVIEW_SECRET_TOKEN)
+# 3. Test preview mode (optional, requires NEXT_PUBLIC_PREVIEW_SECRET_TOKEN)
 http://localhost:3000/api/preview?secret=YOUR_SECRET&slug=5-axis-machining&type=service
 
 # 4. Verify functionality

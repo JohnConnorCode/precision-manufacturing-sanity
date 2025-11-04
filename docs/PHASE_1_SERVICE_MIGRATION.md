@@ -371,9 +371,9 @@ http://localhost:3000/api/preview?secret=YOUR_SECRET&slug=5-axis-machining&type=
 ```
 
 ### Preview Secret
-Set `PREVIEW_SECRET_TOKEN` environment variable in `.env.local`:
+Set `NEXT_PUBLIC_PREVIEW_SECRET_TOKEN` environment variable in `.env.local`:
 ```
-PREVIEW_SECRET_TOKEN=your-secure-random-token
+NEXT_PUBLIC_PREVIEW_SECRET_TOKEN=your-secure-random-token
 ```
 
 ### URL Structure
@@ -457,7 +457,7 @@ Once Sanity documents are published, you can either:
 - Verify image format is supported
 
 **Preview mode not working**
-- Verify PREVIEW_SECRET_TOKEN is set correctly
+- Verify NEXT_PUBLIC_PREVIEW_SECRET_TOKEN is set correctly
 - Check SANITY_READ_TOKEN is configured
 - Verify draftClient has perspective: 'previewDrafts'
 
