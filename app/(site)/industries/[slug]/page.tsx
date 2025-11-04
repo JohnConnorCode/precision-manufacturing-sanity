@@ -1,4 +1,5 @@
 import { getIndustryBySlug, getAllIndustries } from '@/sanity/lib/queries';
+import { draftMode } from 'next/headers';
 import { IndustryContent } from '../industry-content';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/theme';
@@ -16,7 +17,8 @@ export const revalidate = 3600;
 
 export async function generateMetadata({ params }: IndustryPageProps) {
   const { slug } = await params;
-  const industryData = await getIndustryBySlug(slug);
+  const { isEnabled } = await draftMode();
+  const industryData = await getIndustryBySlug(slug, isEnabled);
 
   if (!industryData) {
     return {
@@ -44,7 +46,8 @@ export async function generateStaticParams() {
 
 export default async function IndustryPage({ params }: IndustryPageProps) {
   const { slug } = await params;
-  const industryData = await getIndustryBySlug(slug);
+  const { isEnabled } = await draftMode();
+  const industryData = await getIndustryBySlug(slug, isEnabled);
 
   if (!industryData) {
     return (

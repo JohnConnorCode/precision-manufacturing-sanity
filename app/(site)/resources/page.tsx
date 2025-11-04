@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Clock, ArrowRight, Lightbulb } from 'lucide-react';
 import HeroSection from '@/components/ui/hero-section';
-import { getAllResources } from '@/sanity/lib/queries';
+import { getAllResources, getPageContent } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
 
@@ -64,7 +64,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ResourcesPage() {
-  const resources = await getAllResources() || [];
+  const [resources, pageContent] = await Promise.all([
+    getAllResources(),
+    getPageContent(),
+  ]);
 
   // Map Sanity slug structure (slug.current) to simple slug
   const formattedResources = resources.map((resource: any) => ({
@@ -75,20 +78,26 @@ export default async function ResourcesPage() {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=2400&q=90"
+        backgroundImage={pageContent?.resourcesPage?.hero?.backgroundImageUrl || pageContent?.resourcesPage?.hero?.backgroundImage?.asset?.url || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=2400&q=90'}
         imageAlt="Technical resources and manufacturing knowledge"
-        badge={{
-          text: "TECHNICAL KNOWLEDGE CENTER"
-        }}
+        badge={pageContent?.resourcesPage?.hero?.badge ? { text: pageContent.resourcesPage.hero.badge } : undefined}
         title={
-          <>
-            <span className="text-white">Master</span>{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
-              Precision Manufacturing
-            </span>
-          </>
+          pageContent?.resourcesPage?.hero?.title ? (
+            <span className="text-white">{pageContent.resourcesPage.hero.title}</span>
+          ) : (
+            <>
+              <span className="text-white">Master</span>{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">Precision Manufacturing</span>
+            </>
+          )
         }
-        description={`Expert guides, technical specifications, and tools to help you make informed decisions about precision manufacturing for aerospace, defense, medical, and energy applications. ${formattedResources.length} technical articles available.`}
+        description={pageContent?.resourcesPage?.hero?.descriptionRich ? (
+          <PortableTextContent value={pageContent.resourcesPage.hero.descriptionRich} />
+        ) : (
+          pageContent?.resourcesPage?.hero?.description || `Expert guides, technical specifications, and tools to help you make informed decisions about precision manufacturing for aerospace, defense, medical, and energy applications. ${formattedResources.length} technical articles available.`
+        )}
+        titleSize={pageContent?.resourcesPage?.hero?.titleSize}
+        descriptionSize={pageContent?.resourcesPage?.hero?.descriptionSize}
       />
 
       {/* Articles Grid */}
@@ -98,13 +107,15 @@ export default async function ResourcesPage() {
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600/10 border border-blue-600/20 mb-6">
                 <Lightbulb className="h-4 w-4 text-blue-400" />
-                <span className="text-sm font-medium text-blue-400">Browse Knowledge Base</span>
+                <span className="text-sm font-medium text-blue-400">{pageContent?.resourcesPage?.header?.eyebrow || 'Browse Knowledge Base'}</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Technical <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">Resources</span>
+                {pageContent?.resourcesPage?.header?.title || (<>
+                  Technical <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">Resources</span>
+                </>)}
               </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                In-depth guides and technical documentation for precision manufacturing excellence
+                {pageContent?.resourcesPage?.header?.description || 'In-depth guides and technical documentation for precision manufacturing excellence'}
               </p>
             </div>
           </AnimatedSection>

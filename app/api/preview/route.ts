@@ -5,14 +5,14 @@ import { NextRequest } from 'next/server'
 /**
  * Draft Preview API Route
  *
- * Enables Next.js Draft Mode for previewing unpublished Payload CMS content.
+ * Enables Next.js Draft Mode for previewing unpublished Sanity content.
  *
  * Usage:
  * /api/preview?secret=YOUR_SECRET&collection=services&slug=my-service
  * /api/preview?secret=YOUR_SECRET&global=homepage
  *
  * Security:
- * - Requires PAYLOAD_PREVIEW_SECRET environment variable
+ * - Requires PREVIEW_SECRET_TOKEN environment variable
  * - Validates secret token before enabling preview
  */
 export async function GET(request: NextRequest) {
@@ -25,10 +25,10 @@ export async function GET(request: NextRequest) {
   const globalSlug = searchParams.get('global')
 
   // Verify the secret token
-  const validSecret = process.env.PAYLOAD_PREVIEW_SECRET
+  const validSecret = process.env.PREVIEW_SECRET_TOKEN
 
   if (!validSecret) {
-    return new Response('Preview mode not configured. Set PAYLOAD_PREVIEW_SECRET.', {
+    return new Response('Preview mode not configured. Set PREVIEW_SECRET_TOKEN.', {
       status: 500,
     })
   }

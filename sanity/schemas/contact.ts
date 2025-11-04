@@ -28,6 +28,7 @@ export default {
             }
           ]
         },
+        { name: 'backgroundImageUrl', type: 'url', title: 'Background Image URL (optional)' },
         {
           name: 'badge',
           type: 'string',

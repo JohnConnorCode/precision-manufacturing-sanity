@@ -3,14 +3,15 @@
  * Documentation: https://www.sanity.io/docs/groq
  */
 
-import { client } from './client'
+import { getClient } from './client'
 
 // ============================================================================
 // SERVICES
 // ============================================================================
 
-export async function getAllServices() {
-  const query = `*[_type == "service" && published == true] | order(order asc) {
+export async function getAllServices(preview = false) {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "service"${pub}] | order(order asc) {
     _id,
     title,
     slug,
@@ -20,8 +21,15 @@ export async function getAllServices() {
     highlight,
     iconName,
     specs,
-    image,
-    hero,
+    image{
+      asset->{url,_id},
+      alt
+    },
+    hero{
+      backgroundImage{asset->{url,_id}},
+      backgroundImageUrl,
+      badge, subtitle
+    },
     overview,
     capabilities,
     services,
@@ -33,11 +41,12 @@ export async function getAllServices() {
     seo
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getServiceBySlug(slug: string) {
-  const query = `*[_type == "service" && slug.current == $slug && published == true][0] {
+export async function getServiceBySlug(slug: string, preview = false) {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "service" && slug.current == $slug${pub}][0] {
     _id,
     title,
     slug,
@@ -46,7 +55,11 @@ export async function getServiceBySlug(slug: string) {
     order,
     highlight,
     image,
-    hero,
+    hero{
+      backgroundImage{asset->{url,_id}},
+      backgroundImageUrl,
+      badge, subtitle
+    },
     overview,
     capabilities,
     services,
@@ -58,24 +71,25 @@ export async function getServiceBySlug(slug: string) {
     seo
   }`
 
-  return await client.fetch(query, { slug })
+  return await getClient(preview).fetch(query, { slug })
 }
 
 // ============================================================================
 // INDUSTRIES
 // ============================================================================
 
-export async function getAllIndustries() {
-  const query = `*[_type == "industry" && published == true] | order(order asc) {
+export async function getAllIndustries(preview = false) {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "industry"${pub}] | order(order asc) {
     _id,
     title,
     slug,
     shortDescription,
     description,
     order,
-    image,
+    image{asset->{url,_id}, alt},
     features,
-    hero,
+    hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, subtitle },
     overview,
     capabilities,
     regulatory,
@@ -86,20 +100,21 @@ export async function getAllIndustries() {
     seo
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getIndustryBySlug(slug: string) {
-  const query = `*[_type == "industry" && slug.current == $slug && published == true][0] {
+export async function getIndustryBySlug(slug: string, preview = false) {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "industry" && slug.current == $slug${pub}][0] {
     _id,
     title,
     slug,
     shortDescription,
     description,
     order,
-    image,
+    image{asset->{url,_id}, alt},
     features,
-    hero,
+    hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, subtitle },
     overview,
     capabilities,
     regulatory,
@@ -110,15 +125,16 @@ export async function getIndustryBySlug(slug: string) {
     seo
   }`
 
-  return await client.fetch(query, { slug })
+  return await getClient(preview).fetch(query, { slug })
 }
 
 // ============================================================================
 // RESOURCES
 // ============================================================================
 
-export async function getAllResources() {
-  const query = `*[_type == "resource" && published == true] | order(publishDate desc) {
+export async function getAllResources(preview = false) {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "resource"${pub}] | order(publishDate desc) {
     _id,
     title,
     slug,
@@ -134,11 +150,12 @@ export async function getAllResources() {
     seo
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getResourceBySlug(slug: string) {
-  const query = `*[_type == "resource" && slug.current == $slug && published == true][0] {
+export async function getResourceBySlug(slug: string, preview = false) {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "resource" && slug.current == $slug${pub}][0] {
     _id,
     title,
     slug,
@@ -154,11 +171,12 @@ export async function getResourceBySlug(slug: string) {
     seo
   }`
 
-  return await client.fetch(query, { slug })
+  return await getClient(preview).fetch(query, { slug })
 }
 
-export async function getResourcesByCategory(category: string) {
-  const query = `*[_type == "resource" && category == $category && published == true] | order(publishDate desc) {
+export async function getResourcesByCategory(category: string, preview = false) {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "resource" && category == $category${pub}] | order(publishDate desc) {
     _id,
     title,
     slug,
@@ -172,11 +190,12 @@ export async function getResourcesByCategory(category: string) {
     tags
   }`
 
-  return await client.fetch(query, { category })
+  return await getClient(preview).fetch(query, { category })
 }
 
-export async function getFeaturedResources() {
-  const query = `*[_type == "resource" && featured == true && published == true] | order(publishDate desc) [0...6] {
+export async function getFeaturedResources(preview = false) {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "resource" && featured == true${pub}] | order(publishDate desc) [0...6] {
     _id,
     title,
     slug,
@@ -189,14 +208,14 @@ export async function getFeaturedResources() {
     featured
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
 // ============================================================================
 // TEAM MEMBERS
 // ============================================================================
 
-export async function getAllTeamMembers() {
+export async function getAllTeamMembers(preview = false) {
   const query = `*[_type == "teamMember"] | order(order asc) {
     _id,
     name,
@@ -208,14 +227,14 @@ export async function getAllTeamMembers() {
     email
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
 // ============================================================================
 // GLOBALS
 // ============================================================================
 
-export async function getSiteSettings() {
+export async function getSiteSettings(preview = false) {
   const query = `*[_type == "siteSettings"][0] {
     companyName,
     tagline,
@@ -227,20 +246,21 @@ export async function getSiteSettings() {
     defaultSEO
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getNavigation() {
+export async function getNavigation(preview = false) {
   const query = `*[_type == "navigation"][0] {
     topBar,
+    styles,
     menuItems,
     cta
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getHomepage() {
+export async function getHomepage(preview = false) {
   const query = `*[_type == "homepage"][0] {
     hero,
     heroEnhanced {
@@ -251,6 +271,8 @@ export async function getHomepage() {
       ctaPrimary,
       ctaSecondary,
       slides[] {
+        imageUrl,
+        imageAlt,
         image {
           asset->{
             _id,
@@ -269,10 +291,10 @@ export async function getHomepage() {
     cta
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getFooter() {
+export async function getFooter(preview = false) {
   const query = `*[_type == "footer"][0] {
     companyDescription,
     socialLinks,
@@ -281,14 +303,14 @@ export async function getFooter() {
     copyright
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getAbout() {
+export async function getAbout(preview = false) {
   const query = `*[_type == "about"][0] {
-    hero,
+    hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, badgeIconName, title, titleHighlight, description, buttons },
     companyStats,
-    story,
+    story{ title, paragraph1, paragraph2, paragraph3, image{asset->{url,_id}, alt}, imageUrl },
     timeline,
     values,
     capabilities,
@@ -296,44 +318,44 @@ export async function getAbout() {
     cta
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getContact() {
+export async function getContact(preview = false) {
   const query = `*[_type == "contact"][0] {
-    hero,
+    hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, badgeIconName, title, titleHighlight, description, buttonLabel, buttonHref },
     contactInfo,
     certifications,
     bottomStats
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getCareers() {
+export async function getCareers(preview = false) {
   const query = `*[_type == "careers"][0] {
-    hero,
-    whyWorkHere,
-    benefits,
-    values,
-    opportunities,
-    cta
+    hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, badgeIconName, title, titleHighlight, description, buttons },
+    whyWorkHere{ heading, paragraph1, paragraph2, paragraph3, image{asset->{url,_id}}, imageUrl, imageAlt },
+    benefits{ heading, description, items },
+    values{ heading, description, items },
+    opportunities{ heading, description, positions },
+    cta{ heading, description, buttons }
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getTerms() {
+export async function getTerms(preview = false) {
   const query = `*[_type == "terms"][0] {
     header,
     sections,
     contact
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getSupplierRequirements() {
+export async function getSupplierRequirements(preview = false) {
   const query = `*[_type == "supplierRequirements"][0] {
     hero,
     sections,
@@ -342,25 +364,73 @@ export async function getSupplierRequirements() {
     footerNote
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getUIText() {
+export async function getUIText(preview = false) {
   const query = `*[_type == "uiText"][0] {
     buttons,
     headings
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
 }
 
-export async function getPageContent() {
+export async function getPageContent(preview = false) {
   const query = `*[_type == "pageContent"][0] {
     capabilities,
     qualityAssurance,
-    hero,
+    hero{
+      backgroundImage{asset->{url,_id}},
+      backgroundImageUrl,
+      badge, title, subtitle, description, buttons
+    },
+    servicesPage{
+      hero{
+        backgroundImage{asset->{url,_id}},
+        backgroundImageUrl,
+        badge, title, subtitle, description, buttons
+      },
+      qualityIntro,
+      qualityImage{asset->{url,_id}},
+      qualityImageUrl,
+      cta{heading, description, primaryButton, secondaryButton}
+    },
+    industriesPage{
+      hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, title, subtitle, description, buttons },
+      header{ title, description },
+      cta{ heading, description, primaryButton, secondaryButton }
+    },
+    resourcesPage{
+      hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, title, subtitle, description, buttons },
+      header{ title, description, eyebrow }
+    },
     sections
   }`
 
-  return await client.fetch(query)
+  return await getClient(preview).fetch(query)
+}
+
+// ============================================================================
+// PAGE BUILDER
+// ============================================================================
+
+export async function getPageBySlug(slug: string, preview = false) {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "page" && slug.current == $slug${pub}][0]{
+    _id,
+    title,
+    slug,
+    sections[],
+    seo
+  }`
+  return await getClient(preview).fetch(query, { slug })
+}
+
+export async function getAllPageSlugs(preview = false) {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "page"${pub}]{
+    'slug': slug.current
+  }`
+  return await getClient(preview).fetch(query)
 }

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Clock, ArrowLeft, Calendar, Tag } from 'lucide-react';
 import { getResourceBySlug, getAllResources } from '@/sanity/lib/queries';
+import { draftMode } from 'next/headers';
 import { PortableTextContent } from '@/components/portable-text-components';
 
 // Enable ISR with 1 hour revalidation
@@ -17,7 +18,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ category: string; slug: string }> }) {
   const { slug } = await params;
-  const resource = await getResourceBySlug(slug);
+  const { isEnabled } = await draftMode();
+  const resource = await getResourceBySlug(slug, isEnabled);
 
   if (!resource) {
     return {
@@ -38,7 +40,8 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
 
 export default async function ResourcePage({ params }: { params: Promise<{ category: string; slug: string }> }) {
   const { category, slug } = await params;
-  const resource = await getResourceBySlug(slug);
+  const { isEnabled } = await draftMode();
+  const resource = await getResourceBySlug(slug, isEnabled);
 
   if (!resource) {
     notFound();

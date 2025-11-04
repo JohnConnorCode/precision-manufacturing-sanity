@@ -1,10 +1,10 @@
 import { createClient } from '@sanity/client';
 
 const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'ept6x5im',
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2025-01-01',
-  token: process.env.SANITY_WRITE_TOKEN,
+  token: process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_WRITE_TOKEN,
   useCdn: false,
 });
 
@@ -43,7 +43,7 @@ async function verifyTokenPermissions() {
       console.log('   Error:', error.message);
       console.log('\n⚠️  TOKEN FIX REQUIRED:\n');
       console.log('1. Go to: https://manage.sanity.io');
-      console.log('2. Select project "ept6x5im"');
+      console.log('2. Select your Sanity project');
       console.log('3. Go to Settings → API & Webhooks → Tokens');
       console.log('4. Find your token (starts with "skqGXNV9...")');
       console.log('5. Click the three-dot menu → Edit');

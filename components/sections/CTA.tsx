@@ -11,7 +11,7 @@ interface CTAData {
   buttons?: Array<{
     text: string;
     href: string;
-    variant: 'default' | 'secondary';
+    variant: 'default' | 'secondary' | 'primary' | 'outline';
     enabled?: boolean;
   }>;
 }
@@ -71,16 +71,21 @@ export default function CTA({ data }: CTAProps) {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            {buttons.map((button, index) => (
+            {buttons.map((button, index) => {
+              const mappedVariant: 'default' | 'secondary' =
+                button.variant === 'primary' ? 'default'
+                : button.variant === 'outline' ? 'secondary'
+                : (button.variant as 'default' | 'secondary')
+              return (
               <Link key={index} href={button.href}>
-                <PremiumButton size="lg" variant={button.variant}>
+                <PremiumButton size="lg" variant={mappedVariant}>
                   {index === 0 && <ArrowRight className="mr-2 h-5 w-5 transition-transform group-hover:translate-x-1" />}
                   {index === 1 && <FileText className="mr-2 h-5 w-5" />}
                   {button.text}
                   {index === 0 && <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />}
                 </PremiumButton>
               </Link>
-            ))}
+            )})}
           </div>
 
           {/* Certification badges with subtle animation */}

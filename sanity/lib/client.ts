@@ -15,9 +15,19 @@ export const previewClient = createClient({
   useCdn: false,
   token: process.env.SANITY_API_READ_TOKEN,
   perspective: 'previewDrafts',
+  stega: {
+    enabled: true,
+    studioUrl:
+      process.env.NEXT_PUBLIC_STUDIO_URL ||
+      (process.env.NEXT_PUBLIC_SITE_URL
+        ? new URL('/studio', process.env.NEXT_PUBLIC_SITE_URL).toString()
+        : 'http://localhost:3000/studio'),
+  },
 })
 
 // Helper to get client based on draft mode
 export function getClient(preview = false) {
-  return preview ? previewClient : client
+  // Enable stega annotations when in preview to power Visual Editing overlays
+  const base = preview ? previewClient : client
+  return base.withConfig({ stega: preview })
 }

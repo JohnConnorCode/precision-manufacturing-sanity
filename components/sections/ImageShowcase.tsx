@@ -16,57 +16,19 @@ const iconMap: Record<string, any> = {
   Target,
 };
 
-// Hardcoded fallback data
-const defaultImageShowcaseData = {
-  header: {
-    eyebrow: 'Manufacturing Excellence',
-    title: 'Precision',
-    titleHighlight: 'Delivered',
-    description: 'From concept to completion, we deliver aerospace-grade components with uncompromising precision'
-  },
-  showcaseImages: [
-    {
-      src: 'https://images.unsplash.com/photo-1581092335397-9583eb92d232?w=1200&q=90',
-      title: 'Aerospace Components',
-      category: 'Turbine Blades',
-      href: '/services/5-axis-machining'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1609139003551-ee40f5f73ec0?w=1200&q=90',
-      title: 'Defense Systems',
-      category: 'ITAR Certified',
-      href: '/services/adaptive-machining'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1200&q=90',
-      title: 'Precision Metrology',
-      category: 'Quality Control',
-      href: '/services/metrology'
-    }
-  ],
-  stats: [
-    { iconName: 'Award', value: 'AS9100D', label: 'Certified Quality', color: 'text-blue-600' },
-    { iconName: 'Shield', value: 'ITAR', label: 'Registered', color: 'text-blue-600' },
-    { iconName: 'Clock', value: '24/7', label: 'Production', color: 'text-indigo-600' },
-    { iconName: 'Target', value: '±0.0001"', label: 'Tolerance', color: 'text-blue-600' }
-  ],
-  cta: {
-    title: 'Get Started Today',
-    description: 'Let\'s discuss how we can deliver precision manufacturing solutions for your needs',
-    buttons: [
-      { text: 'Request Quote', href: '/contact', variant: 'primary' },
-      { text: 'Learn More', href: '/about', variant: 'secondary' }
-    ]
-  }
-};
-
 interface ImageShowcaseProps {
-  data?: typeof defaultImageShowcaseData | null;
+  data?: any;
 }
 
 export default function ImageShowcase({ data }: ImageShowcaseProps) {
-  // Use CMS data if available, otherwise fall back to hardcoded defaults
-  const showcaseData = data || defaultImageShowcaseData;
+  // Use CMS data only
+  const showcaseData = data;
+
+  // Don't render if no data from CMS
+  if (!showcaseData || !showcaseData.header || !showcaseData.showcaseImages) {
+    return null;
+  }
+
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -150,7 +112,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
           transition={{ delay: 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
           className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20"
         >
-          {(showcaseData.stats || defaultImageShowcaseData.stats).map((stat, index) => {
+          {(showcaseData.stats || []).map((stat, index) => {
             const Icon = iconMap[stat.iconName] || Award;
             return (
               <motion.div
@@ -178,22 +140,23 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         </motion.div>
 
         {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          className="text-center"
-        >
-          <div className="inline-flex flex-col items-center p-8 md:p-12 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-2xl">
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              {(showcaseData.cta || defaultImageShowcaseData.cta).title}
-            </h3>
-            <p className="text-lg text-slate-300 mb-8 max-w-md">
-              {(showcaseData.cta || defaultImageShowcaseData.cta).description}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              {((showcaseData.cta || defaultImageShowcaseData.cta).buttons).filter((button: any) => button.enabled !== false).map((button, index) => (
+        {showcaseData.cta && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            className="text-center"
+          >
+            <div className="inline-flex flex-col items-center p-8 md:p-12 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-2xl">
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                {showcaseData.cta.title}
+              </h3>
+              <p className="text-lg text-slate-300 mb-8 max-w-md">
+                {showcaseData.cta.description}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                {(showcaseData.cta.buttons || []).filter((button: any) => button.enabled !== false).map((button, index) => (
                 <Link
                   key={button.text}
                   href={button.href}
@@ -206,10 +169,11 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                   {button.text}
                   {index === 0 && <ArrowRight className="ml-2 h-5 w-5" />}
                 </Link>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        )}
       </motion.div>
     </section>
   );

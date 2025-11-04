@@ -164,7 +164,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={aboutData?.hero?.backgroundImage}
+        backgroundImage={(aboutData as any)?.hero?.backgroundImageUrl || (aboutData as any)?.hero?.backgroundImage}
         imageAlt={aboutData?.hero?.imageAlt}
         badge={{
           text: aboutData?.hero?.badge || '',
@@ -245,7 +245,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="relative"
             >
               <ParallaxImage
-                src={aboutData?.story?.image || ''}
+                src={(aboutData as any)?.story?.imageUrl || aboutData?.story?.image || defaultData.story.image}
                 alt={aboutData?.story?.imageAlt || ''}
                 className="w-full h-96 rounded-lg"
                 speed={0.2}

@@ -28,6 +28,7 @@ export default {
             }
           ]
         },
+        { name: 'backgroundImageUrl', type: 'url', title: 'Background Image URL (optional)' },
         {
           name: 'badge',
           type: 'string',
@@ -64,7 +65,10 @@ export default {
               fields: [
                 {name: 'label', type: 'string', title: 'Label'},
                 {name: 'href', type: 'string', title: 'URL'},
-                {name: 'variant', type: 'string', title: 'Variant'},
+                {name: 'variant', type: 'string', title: 'Variant', options: { list: [
+                  { title: 'Primary', value: 'primary' },
+                  { title: 'Secondary', value: 'secondary' },
+                ]}},
               ],
             },
           ],
@@ -137,6 +141,7 @@ export default {
             }
           ]
         },
+        { name: 'imageUrl', type: 'url', title: 'Story Image URL (optional)' },
       ],
     },
     {
@@ -276,7 +281,10 @@ export default {
               fields: [
                 {name: 'label', type: 'string', title: 'Label'},
                 {name: 'href', type: 'string', title: 'URL'},
-                {name: 'variant', type: 'string', title: 'Variant'},
+                {name: 'variant', type: 'string', title: 'Variant', options: { list: [
+                  { title: 'Primary', value: 'primary' },
+                  { title: 'Secondary', value: 'secondary' },
+                ]}},
               ],
             },
           ],

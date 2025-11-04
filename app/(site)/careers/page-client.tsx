@@ -136,7 +136,7 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={careersData?.hero?.backgroundImage || defaultCareersData.hero.backgroundImage}
+        backgroundImage={(careersData as any)?.hero?.backgroundImageUrl || careersData?.hero?.backgroundImage || defaultCareersData.hero.backgroundImage}
         imageAlt={careersData?.hero?.imageAlt || defaultCareersData.hero.imageAlt}
         badge={{
           text: careersData?.hero?.badge || defaultCareersData.hero.badge,
@@ -187,7 +187,7 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
               className="relative"
             >
               <img
-                src={careersData?.whyWorkHere?.image || defaultCareersData.whyWorkHere.image}
+                src={(careersData as any)?.whyWorkHere?.imageUrl || careersData?.whyWorkHere?.image || defaultCareersData.whyWorkHere.image}
                 alt={careersData?.whyWorkHere?.imageAlt || defaultCareersData.whyWorkHere.imageAlt}
                 className="w-full h-96 rounded-lg object-cover shadow-lg"
               />

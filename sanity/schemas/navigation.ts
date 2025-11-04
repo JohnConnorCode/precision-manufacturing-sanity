@@ -3,6 +3,10 @@ export default {
   type: 'document',
   title: 'Navigation',
   __experimental_singleton: true,
+  groups: [
+    { name: 'content', title: 'Content' },
+    { name: 'styles', title: 'Styles' },
+  ],
   preview: {
     select: {
       title: 'topBar.phone'
@@ -19,6 +23,7 @@ export default {
       name: 'topBar',
       type: 'object',
       title: 'Top Bar',
+      group: 'content',
       fields: [
         {
           name: 'phone',
@@ -61,38 +66,20 @@ export default {
       name: 'menuItems',
       type: 'array',
       title: 'Menu Items',
+      group: 'content',
       of: [
+        { type: 'navItem' },
         {
+          // Backward-compatible fallback for existing plain objects
           type: 'object',
           fields: [
-            {
-              name: 'name',
-              type: 'string',
-              title: 'Name',
-              description: 'Menu item text displayed to users',
-              validation: (Rule: any) => Rule.required().error('Menu item name is required'),
-            },
-            {
-              name: 'href',
-              type: 'string',
-              title: 'URL',
-              description: 'Link URL (e.g., "/services" or "https://example.com")',
-              validation: (Rule: any) => Rule.required().error('URL is required'),
-            },
+            { name: 'name', type: 'string', title: 'Label' },
+            { name: 'href', type: 'string', title: 'URL' },
             {
               name: 'children',
               type: 'array',
-              title: 'Dropdown Items',
-              of: [
-                {
-                  type: 'object',
-                  fields: [
-                    {name: 'name', type: 'string', title: 'Name'},
-                    {name: 'href', type: 'string', title: 'URL'},
-                    {name: 'description', type: 'string', title: 'Description'},
-                  ],
-                },
-              ],
+              title: 'Submenu Items',
+              of: [{ type: 'navItem' }],
             },
           ],
         },
@@ -102,6 +89,7 @@ export default {
       name: 'cta',
       type: 'object',
       title: 'Call to Action Button',
+      group: 'content',
       fields: [
         {
           name: 'text',
@@ -113,6 +101,32 @@ export default {
           type: 'string',
           title: 'Button URL',
         },
+      ],
+    },
+    {
+      name: 'styles',
+      type: 'object',
+      title: 'Navigation Styles',
+      group: 'styles',
+      fields: [
+        { name: 'theme', type: 'string', title: 'Theme', options: { list: [
+          { title: 'Auto', value: 'auto' },
+          { title: 'Light', value: 'light' },
+          { title: 'Dark', value: 'dark' },
+        ] }, initialValue: 'auto' },
+        { name: 'alignment', type: 'string', title: 'Alignment', options: { list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Center', value: 'center' },
+          { title: 'Right', value: 'right' },
+        ] }, initialValue: 'left' },
+        { name: 'dropdownStyle', type: 'string', title: 'Dropdown Style', options: { list: [
+          { title: 'Card', value: 'card' },
+          { title: 'Columns', value: 'columns' },
+        ] }, initialValue: 'card' },
+        { name: 'density', type: 'string', title: 'Item Density', options: { list: [
+          { title: 'Comfortable', value: 'comfortable' },
+          { title: 'Compact', value: 'compact' },
+        ] }, initialValue: 'comfortable' },
       ],
     },
   ],

@@ -27,8 +27,9 @@ export default function AnimatedSection({
   disabled = false,
   ...motionProps
 }: AnimatedSectionProps) {
+  const LEGACY_PARITY = process.env.NEXT_PUBLIC_PARITY_MODE === 'legacy'
   // If animations are disabled, return a regular div
-  if (disabled) {
+  if (disabled || LEGACY_PARITY) {
     return <div className={className}>{children}</div>;
   }
 

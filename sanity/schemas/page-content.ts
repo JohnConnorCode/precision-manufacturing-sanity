@@ -12,6 +12,87 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: 'industriesPage',
+      type: 'object',
+      title: 'Industries Page Content',
+      fields: [
+        {
+          name: 'hero',
+          type: 'object',
+          title: 'Hero',
+          fields: [
+            { name: 'badge', type: 'string', title: 'Badge' },
+            { name: 'title', type: 'string', title: 'Title' },
+            { name: 'subtitle', type: 'string', title: 'Subtitle' },
+            { name: 'description', type: 'text', title: 'Description', rows: 3 },
+            { name: 'descriptionRich', type: 'array', of: [{ type: 'block' }], title: 'Description (Rich Text)' },
+            { name: 'titleSize', type: 'string', title: 'Title Size', options: { list: [
+              { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' },
+              { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }, { title: '2XL', value: '2xl' }, { title: '3XL', value: '3xl' }
+            ] } },
+            { name: 'descriptionSize', type: 'string', title: 'Description Size', options: { list: [
+              { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' }, { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }
+            ] } },
+            { name: 'backgroundImage', type: 'image', title: 'Background Image', options: { hotspot: true } },
+            { name: 'backgroundImageUrl', type: 'url', title: 'Background Image URL (optional)' },
+            { name: 'buttons', type: 'array', title: 'Buttons', of: [{ type: 'object', fields: [
+              { name: 'label', type: 'string' },
+              { name: 'href', type: 'string' },
+              { name: 'variant', type: 'string' },
+            ]}] },
+          ],
+        },
+        {
+          name: 'header',
+          type: 'object',
+          title: 'Header Section',
+          fields: [
+            { name: 'title', type: 'string', title: 'Title' },
+            { name: 'description', type: 'text', title: 'Description', rows: 3 },
+          ],
+        },
+        { name: 'cta', type: 'object', title: 'Call To Action', fields: [
+          { name: 'heading', type: 'string' },
+          { name: 'description', type: 'text', rows: 3 },
+          { name: 'primaryButton', type: 'object', fields: [{ name: 'label', type: 'string' }, { name: 'href', type: 'string' }] },
+          { name: 'secondaryButton', type: 'object', fields: [{ name: 'label', type: 'string' }, { name: 'href', type: 'string' }] }
+        ]}
+      ],
+    },
+    {
+      name: 'resourcesPage',
+      type: 'object',
+      title: 'Resources Page Content',
+      fields: [
+        { name: 'hero', type: 'object', title: 'Hero', fields: [
+          { name: 'badge', type: 'string' },
+          { name: 'title', type: 'string' },
+          { name: 'subtitle', type: 'string' },
+          { name: 'description', type: 'text', rows: 3 },
+          { name: 'descriptionRich', type: 'array', of: [{ type: 'block' }], title: 'Description (Rich Text)' },
+          { name: 'titleSize', type: 'string', title: 'Title Size', options: { list: [
+            { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' },
+            { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }, { title: '2XL', value: '2xl' }, { title: '3XL', value: '3xl' }
+          ] } },
+          { name: 'descriptionSize', type: 'string', title: 'Description Size', options: { list: [
+            { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' }, { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }
+          ] } },
+          { name: 'backgroundImage', type: 'image', options: { hotspot: true } },
+          { name: 'backgroundImageUrl', type: 'url', title: 'Background Image URL (optional)' },
+          { name: 'buttons', type: 'array', of: [{ type: 'object', fields: [
+            { name: 'label', type: 'string' },
+            { name: 'href', type: 'string' },
+            { name: 'variant', type: 'string' }
+          ]}] }
+        ]},
+        { name: 'header', type: 'object', title: 'Header Section', fields: [
+          { name: 'title', type: 'string' },
+          { name: 'description', type: 'text', rows: 3 },
+          { name: 'eyebrow', type: 'string' }
+        ]}
+      ]
+    },
+    {
       name: 'capabilities',
       type: 'array',
       title: 'Capabilities/Stats',
@@ -79,6 +160,11 @@ export default {
           options: {hotspot: true},
         },
         {
+          name: 'backgroundImageUrl',
+          type: 'url',
+          title: 'Background Image URL (optional)'
+        },
+        {
           name: 'badge',
           type: 'string',
           title: 'Badge',
@@ -88,17 +174,16 @@ export default {
           type: 'string',
           title: 'Title',
         },
-        {
-          name: 'subtitle',
-          type: 'string',
-          title: 'Subtitle',
-        },
-        {
-          name: 'description',
-          type: 'text',
-          title: 'Description',
-          rows: 3,
-        },
+        { name: 'subtitle', type: 'string', title: 'Subtitle' },
+        { name: 'description', type: 'text', title: 'Description', rows: 3 },
+        { name: 'descriptionRich', type: 'array', of: [{ type: 'block' }], title: 'Description (Rich Text)' },
+        { name: 'titleSize', type: 'string', title: 'Title Size', options: { list: [
+          { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' },
+          { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }, { title: '2XL', value: '2xl' }, { title: '3XL', value: '3xl' }
+        ] } },
+        { name: 'descriptionSize', type: 'string', title: 'Description Size', options: { list: [
+          { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' }, { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }
+        ] } },
         {
           name: 'buttons',
           type: 'array',
@@ -120,6 +205,90 @@ export default {
                     ],
                   },
                 },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'servicesPage',
+      type: 'object',
+      title: 'Services Page Content',
+      fields: [
+        {
+          name: 'hero',
+          type: 'object',
+          title: 'Hero',
+          fields: [
+            { name: 'badge', type: 'string', title: 'Badge' },
+            { name: 'title', type: 'string', title: 'Title' },
+            { name: 'subtitle', type: 'string', title: 'Subtitle' },
+            { name: 'description', type: 'text', title: 'Description', rows: 3 },
+            {
+              name: 'backgroundImage',
+              type: 'image',
+              title: 'Background Image',
+              options: { hotspot: true },
+            },
+            {
+              name: 'backgroundImageUrl',
+              type: 'url',
+              title: 'Background Image URL (optional)'
+            },
+            {
+              name: 'buttons',
+              type: 'array',
+              title: 'Buttons',
+              of: [
+                {
+                  type: 'object',
+                  fields: [
+                    { name: 'label', type: 'string', title: 'Label' },
+                    { name: 'href', type: 'string', title: 'URL' },
+                    {
+                      name: 'variant',
+                      type: 'string',
+                      title: 'Variant',
+                      options: {
+                        list: [
+                          { title: 'Primary', value: 'primary' },
+                          { title: 'Secondary', value: 'secondary' },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        { name: 'qualityIntro', type: 'text', title: 'Quality Intro', rows: 3 },
+        { name: 'qualityImage', type: 'image', title: 'Quality Image', options: { hotspot: true } },
+        { name: 'qualityImageUrl', type: 'url', title: 'Quality Image URL (optional)' },
+        {
+          name: 'cta',
+          type: 'object',
+          title: 'Call To Action',
+          fields: [
+            { name: 'heading', type: 'string', title: 'Heading' },
+            { name: 'description', type: 'text', title: 'Description', rows: 3 },
+            {
+              name: 'primaryButton',
+              type: 'object',
+              title: 'Primary Button',
+              fields: [
+                { name: 'label', type: 'string', title: 'Label' },
+                { name: 'href', type: 'string', title: 'URL' },
+              ],
+            },
+            {
+              name: 'secondaryButton',
+              type: 'object',
+              title: 'Secondary Button',
+              fields: [
+                { name: 'label', type: 'string', title: 'Label' },
+                { name: 'href', type: 'string', title: 'URL' },
               ],
             },
           ],

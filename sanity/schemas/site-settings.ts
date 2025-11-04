@@ -5,6 +5,25 @@ export default {
   __experimental_singleton: true,
   fields: [
     {
+      name: 'announcement',
+      type: 'object',
+      title: 'Announcement Bar',
+      fields: [
+        { name: 'enabled', type: 'boolean', title: 'Enabled', initialValue: false },
+        { name: 'message', type: 'string', title: 'Message' },
+        { name: 'href', type: 'string', title: 'Link URL', description: 'Optional link for the announcement' },
+        { name: 'linkText', type: 'string', title: 'Link Text', description: 'Text for the link button' },
+        { name: 'variant', type: 'string', title: 'Style', options: { list: [
+          { title: 'Info (Blue)', value: 'info' },
+          { title: 'Success (Green)', value: 'success' },
+          { title: 'Warning (Amber)', value: 'warning' },
+          { title: 'Alert (Red)', value: 'alert' },
+        ] }, initialValue: 'info' },
+        { name: 'startAt', type: 'datetime', title: 'Start At' },
+        { name: 'endAt', type: 'datetime', title: 'End At' },
+      ],
+    },
+    {
       name: 'company',
       type: 'object',
       title: 'Company Information',

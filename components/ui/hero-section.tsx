@@ -37,6 +37,10 @@ interface HeroSectionProps {
   alignment?: 'left' | 'center' | 'right';
   showScrollIndicator?: boolean;
 
+  // Typography overrides
+  titleSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl';
+  descriptionSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl';
+
   // Additional classes
   className?: string;
 }
@@ -52,15 +56,18 @@ export default function HeroSection({
   height = 'large',
   alignment = 'center',
   showScrollIndicator = false,
+  titleSize,
+  descriptionSize,
   className = ''
 }: HeroSectionProps) {
+  const LEGACY_PARITY = process.env.NEXT_PUBLIC_PARITY_MODE === 'legacy'
   const { scrollY } = useScroll();
 
   // Parallax effects
-  const imageY = useTransform(scrollY, [0, 1000], [0, -200]);
-  const imageScale = useTransform(scrollY, [0, 1000], [1, 1.2]);
-  const contentY = useTransform(scrollY, [0, 500], [0, 50]);
-  const contentOpacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const imageY = LEGACY_PARITY ? (0 as any) : useTransform(scrollY, [0, 1000], [0, -200]);
+  const imageScale = LEGACY_PARITY ? (1 as any) : useTransform(scrollY, [0, 1000], [1, 1.2]);
+  const contentY = LEGACY_PARITY ? (0 as any) : useTransform(scrollY, [0, 500], [0, 50]);
+  const contentOpacity = LEGACY_PARITY ? (1 as any) : useTransform(scrollY, [0, 300], [1, 0]);
 
   const heightClasses = {
     full: 'min-h-screen',
@@ -74,6 +81,23 @@ export default function HeroSection({
     right: 'text-right items-end'
   };
 
+  const titleSizeClasses: Record<string, string> = {
+    xs: 'text-xl sm:text-2xl md:text-3xl lg:text-4xl',
+    sm: 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl',
+    base: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
+    lg: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl',
+    xl: 'text-5xl sm:text-6xl md:text-7xl',
+    '2xl': 'text-6xl sm:text-7xl',
+    '3xl': 'text-7xl',
+  };
+  const descSizeClasses: Record<string, string> = {
+    xs: 'text-sm',
+    sm: 'text-sm md:text-base',
+    base: 'text-base md:text-lg',
+    lg: 'text-lg md:text-xl',
+    xl: 'text-xl',
+  };
+
   const BadgeIcon = badge?.icon;
 
   return (
@@ -85,7 +109,7 @@ export default function HeroSection({
       {/* Parallax Background Image */}
       <motion.div
         className="absolute inset-0 w-full h-[120%] -top-[10%]"
-        style={{ y: imageY, scale: imageScale }}
+        style={LEGACY_PARITY ? undefined : { y: imageY, scale: imageScale }}
       >
         <Image
           src={backgroundImage}
@@ -106,7 +130,7 @@ export default function HeroSection({
       {/* Content Container */}
       <motion.div
         className="container relative z-10 px-4 md:px-8"
-        style={{ y: contentY, opacity: contentOpacity }}
+        style={LEGACY_PARITY ? undefined : { y: contentY, opacity: contentOpacity }}
       >
         <div className={cn(
           'max-w-5xl mx-auto flex flex-col',
@@ -132,7 +156,10 @@ export default function HeroSection({
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tight"
+            className={cn(
+              titleSize ? titleSizeClasses[titleSize] : 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
+              'font-extrabold mb-6 tracking-tight'
+            )}
           >
             {typeof title === 'string' ? (
               <span className="text-white">{title}</span>
@@ -159,7 +186,10 @@ export default function HeroSection({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
-              className="text-base sm:text-lg md:text-xl text-white/70 mb-10 max-w-3xl"
+              className={cn(
+                descriptionSize ? descSizeClasses[descriptionSize] : 'text-base md:text-lg',
+                'text-white/80 mb-10 max-w-3xl'
+              )}
             >
               {description}
             </motion.p>

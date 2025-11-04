@@ -1,12 +1,14 @@
 import CareersPageClient from './page-client';
 import { getCareers } from '@/sanity/lib/queries';
+import { draftMode } from 'next/headers';
 
 // Force static generation with long revalidation
 export const revalidate = 3600;
 
 export default async function CareersPage() {
+  const { isEnabled } = await draftMode();
   // Fetch data from CMS
-  const careersData = await getCareers();
+  const careersData = await getCareers(isEnabled);
 
   return <CareersPageClient data={careersData as any} />;
 }

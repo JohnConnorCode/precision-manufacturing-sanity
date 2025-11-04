@@ -9,128 +9,96 @@ export default {
       type: 'object',
       title: 'Hero Section',
       fields: [
-        {
-          name: 'backgroundImage',
-          type: 'image',
-          title: 'Background Image',
-          description: 'Hero background image (recommended: 1920x1080px)',
-          options: {
-            hotspot: true,
-            metadata: ['blurhash', 'lqip', 'palette'],
-          },
-          fields: [
-            {
-              name: 'alt',
-              type: 'string',
-              title: 'Alternative Text',
-              description: 'Describe the image for accessibility',
-              validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
-            }
-          ]
-        },
-        {
-          name: 'badge',
-          type: 'string',
-          title: 'Badge',
-        },
-        {
-          name: 'title',
-          type: 'string',
-          title: 'Title',
-        },
-        {
-          name: 'description',
-          type: 'text',
-          title: 'Description',
-          rows: 3,
-        },
+        { name: 'backgroundImage', type: 'image', title: 'Background Image', options: { hotspot: true } },
+        { name: 'backgroundImageUrl', type: 'url', title: 'Background Image URL (optional)' },
+        { name: 'badge', type: 'string', title: 'Badge' },
+        { name: 'badgeIconName', type: 'string', title: 'Badge Icon Name' },
+        { name: 'title', type: 'string', title: 'Title' },
+        { name: 'titleHighlight', type: 'string', title: 'Title Highlight' },
+        { name: 'description', type: 'text', title: 'Description', rows: 3 },
+        { name: 'buttons', type: 'array', of: [{ type: 'object', fields: [
+          { name: 'label', type: 'string' },
+          { name: 'href', type: 'string' },
+          { name: 'variant', type: 'string', options: { list: [
+            { title: 'Primary', value: 'primary' },
+            { title: 'Secondary', value: 'secondary' },
+          ]}},
+        ]}]}
       ],
     },
     {
       name: 'whyWorkHere',
-      type: 'array',
+      type: 'object',
       title: 'Why Work Here',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {name: 'title', type: 'string', title: 'Title'},
-            {name: 'description', type: 'text', title: 'Description', rows: 3},
-          ],
-        },
-      ],
+      fields: [
+        { name: 'heading', type: 'string' },
+        { name: 'paragraph1', type: 'text', rows: 3 },
+        { name: 'paragraph2', type: 'text', rows: 3 },
+        { name: 'paragraph3', type: 'text', rows: 3 },
+        { name: 'image', type: 'image', options: { hotspot: true } },
+        { name: 'imageUrl', type: 'url', title: 'Image URL (optional)' },
+        { name: 'imageAlt', type: 'string' },
+      ]
     },
     {
       name: 'benefits',
-      type: 'array',
+      type: 'object',
       title: 'Benefits',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {name: 'title', type: 'string', title: 'Title'},
-            {name: 'description', type: 'text', title: 'Description', rows: 3},
-          ],
-        },
-      ],
+      fields: [
+        { name: 'heading', type: 'string' },
+        { name: 'description', type: 'text', rows: 3 },
+        { name: 'items', type: 'array', of: [{ type: 'object', fields: [
+          { name: 'iconName', type: 'string' },
+          { name: 'title', type: 'string' },
+          { name: 'description', type: 'text', rows: 3 },
+        ]}]}
+      ]
     },
     {
       name: 'values',
-      type: 'array',
+      type: 'object',
       title: 'Company Values',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {name: 'title', type: 'string', title: 'Title'},
-            {name: 'description', type: 'text', title: 'Description', rows: 3},
-          ],
-        },
-      ],
+      fields: [
+        { name: 'heading', type: 'string' },
+        { name: 'description', type: 'text', rows: 3 },
+        { name: 'items', type: 'array', of: [{ type: 'object', fields: [
+          { name: 'title', type: 'string' },
+          { name: 'description', type: 'text', rows: 3 },
+        ]}]}
+      ]
     },
     {
       name: 'opportunities',
-      type: 'array',
+      type: 'object',
       title: 'Job Opportunities',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {name: 'title', type: 'string', title: 'Job Title'},
-            {name: 'location', type: 'string', title: 'Location'},
-            {name: 'type', type: 'string', title: 'Job Type'},
-            {name: 'description', type: 'text', title: 'Description', rows: 4},
-          ],
-        },
-      ],
+      fields: [
+        { name: 'heading', type: 'string' },
+        { name: 'description', type: 'text', rows: 3 },
+        { name: 'positions', type: 'array', of: [{ type: 'object', fields: [
+          { name: 'title', type: 'string' },
+          { name: 'description', type: 'text', rows: 4 },
+          { name: 'type', type: 'string' },
+          { name: 'location', type: 'string' },
+          { name: 'link', type: 'string' },
+        ]}]}
+      ]
     },
     {
       name: 'cta',
       type: 'object',
-      title: 'Call to Action',
+      title: 'Call To Action',
       fields: [
-        {
-          name: 'title',
-          type: 'string',
-          title: 'Title',
-        },
-        {
-          name: 'description',
-          type: 'text',
-          title: 'Description',
-          rows: 2,
-        },
-        {
-          name: 'primaryText',
-          type: 'string',
-          title: 'Primary Button Text',
-        },
-        {
-          name: 'primaryHref',
-          type: 'string',
-          title: 'Primary Button URL',
-        },
-      ],
+        { name: 'heading', type: 'string' },
+        { name: 'description', type: 'text', rows: 3 },
+        { name: 'buttons', type: 'array', of: [{ type: 'object', fields: [
+          { name: 'label', type: 'string' },
+          { name: 'href', type: 'string' },
+          { name: 'variant', type: 'string', options: { list: [
+            { title: 'Primary', value: 'primary' },
+            { title: 'Secondary', value: 'secondary' },
+          ]}},
+        ]}]}
+      ]
     },
     {
       name: 'seo',

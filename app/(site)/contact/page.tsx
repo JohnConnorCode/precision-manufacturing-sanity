@@ -1,13 +1,15 @@
 import ContactPageClient from './page-client';
 import { getContact } from '@/sanity/lib/queries';
+import { draftMode } from 'next/headers';
 
 // Force static generation for INSTANT routing (no server delays)
 export const dynamic = 'force-static';
 export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function ContactPage() {
+  const { isEnabled } = await draftMode();
   // Fetch data from CMS
-  const contactData = await getContact();
+  const contactData = await getContact(isEnabled);
 
   return <ContactPageClient data={contactData as any} />;
 }

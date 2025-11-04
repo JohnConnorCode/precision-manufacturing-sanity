@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Framer Motion Client Rendering</title>
+  <script>
+    // Open http://localhost:3000 and paste this in browser console:
+    console.log('=== FRAMER MOTION TEST ===');
+    console.log('Checking for elements with opacity:0...');
+
+    const invisibleElements = document.querySelectorAll('[style*="opacity:0"], [style*="opacity: 0"]');
+    console.log(`Found ${invisibleElements.length} invisible elements`);
+
+    invisibleElements.forEach((el, i) => {
+      console.log(`${i + 1}.`, el.tagName, el.className.substring(0, 50), el.style.cssText.substring(0, 100));
+    });
+
+    console.log('\nChecking if Framer Motion is loaded...');
+    console.log('React:', typeof window.React);
+    console.log('Next.js:', typeof window.next);
+
+    // Check for hydration errors
+    console.log('\nChecking for hydration errors in console...');
+  </script>
+</head>
+<body>
+  <h1>Open browser console at localhost:3000 and run the script above</h1>
+</body>
+</html>

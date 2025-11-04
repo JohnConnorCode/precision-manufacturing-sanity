@@ -231,7 +231,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={contactData.hero.backgroundImage}
+        backgroundImage={(contactData as any)?.hero?.backgroundImageUrl || contactData.hero.backgroundImage}
         imageAlt={contactData.hero.imageAlt}
         badge={{
           text: contactData.hero.badge,

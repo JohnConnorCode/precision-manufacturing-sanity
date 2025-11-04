@@ -1,4 +1,5 @@
 import { getServiceBySlug, getAllServices } from '@/sanity/lib/queries';
+import { draftMode } from 'next/headers';
 import { ServiceContent } from '../service-content';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/theme';
@@ -16,7 +17,8 @@ export const revalidate = 3600;
 
 export async function generateMetadata({ params }: ServicePageProps) {
   const { slug } = await params;
-  const serviceData = await getServiceBySlug(slug);
+  const { isEnabled } = await draftMode();
+  const serviceData = await getServiceBySlug(slug, isEnabled);
 
   if (!serviceData) {
     return {
@@ -46,7 +48,8 @@ export async function generateStaticParams() {
 
 export default async function ServicePage({ params }: ServicePageProps) {
   const { slug } = await params;
-  const serviceData = await getServiceBySlug(slug);
+  const { isEnabled } = await draftMode();
+  const serviceData = await getServiceBySlug(slug, isEnabled);
 
   if (!serviceData) {
     return (

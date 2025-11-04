@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button';
 import HeroSection from '@/components/ui/hero-section';
+import { PortableTextContent } from '@/components/portable-text-components';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { getAllIndustries } from '@/sanity/lib/queries';
+import { getAllIndustries, getPageContent } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
 
@@ -77,7 +78,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function IndustriesPage() {
-  const industries = (await getAllIndustries()) || [] as any[];
+  const [industries, pageContent] = await Promise.all([
+    getAllIndustries(),
+    getPageContent(),
+  ]);
 
   // Format industries with slug and plain text description
   const formattedIndustries = industries.map((industry: any) => ({
@@ -89,25 +93,27 @@ export default async function IndustriesPage() {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=2400&q=90"
+        backgroundImage={pageContent?.industriesPage?.hero?.backgroundImageUrl || pageContent?.industriesPage?.hero?.backgroundImage?.asset?.url || 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=2400&q=90'}
         imageAlt="Industrial manufacturing - precision components for critical industries"
         title={
-          <span className="text-white">
-            Industries <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">We Serve</span>
-          </span>
+          pageContent?.industriesPage?.hero?.title ? (
+            <span className="text-white">{pageContent.industriesPage.hero.title}</span>
+          ) : (
+            <span className="text-white">
+              Industries <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">We Serve</span>
+            </span>
+          )
         }
-        description="Trusted partner for aerospace, defense, and energy sectors, delivering mission-critical components with uncompromising quality and precision."
-        buttons={[
-          {
-            label: "Explore Industries",
-            href: "#industries",
-            variant: "primary"
-          },
-          {
-            label: "Industry Consultation",
-            href: "/contact",
-            variant: "secondary"
-          }
+        description={pageContent?.industriesPage?.hero?.descriptionRich ? (
+          <PortableTextContent value={pageContent.industriesPage.hero.descriptionRich} />
+        ) : (
+          pageContent?.industriesPage?.hero?.description || 'Trusted partner for aerospace, defense, and energy sectors, delivering mission-critical components with uncompromising quality and precision.'
+        )}
+        titleSize={pageContent?.industriesPage?.hero?.titleSize}
+        descriptionSize={pageContent?.industriesPage?.hero?.descriptionSize}
+        buttons={pageContent?.industriesPage?.hero?.buttons || [
+          { label: 'Explore Industries', href: '#industries', variant: 'primary' },
+          { label: 'Industry Consultation', href: '/contact', variant: 'secondary' },
         ]}
         height="large"
         alignment="center"
@@ -118,9 +124,9 @@ export default async function IndustriesPage() {
         <div className="container">
           <AnimatedSection>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">Core Industries</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">{pageContent?.industriesPage?.header?.title || 'Core Industries'}</h2>
               <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Specialized manufacturing solutions for the most demanding industries, backed by decades of experience and industry-leading certifications.
+                {pageContent?.industriesPage?.header?.description || 'Specialized manufacturing solutions for the most demanding industries, backed by decades of experience and industry-leading certifications.'}
               </p>
             </div>
           </AnimatedSection>
@@ -151,17 +157,21 @@ export default async function IndustriesPage() {
         <div className="container">
           <AnimatedSection>
             <div className="text-center max-w-4xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">Partner with Industry Experts</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">{pageContent?.industriesPage?.cta?.heading || 'Partner with Industry Experts'}</h2>
               <p className="text-xl text-slate-600 mb-8">
-                Join the industry leaders who trust us with their most critical manufacturing requirements. Let&apos;s discuss your specific needs.
+                {pageContent?.industriesPage?.cta?.description || "Join the industry leaders who trust us with their most critical manufacturing requirements. Let's discuss your specific needs."}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="px-8 py-6 bg-slate-900 hover:bg-slate-800 text-white font-semibold">
-                  Schedule Consultation
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                <Button size="lg" className="px-8 py-6 bg-slate-900 hover:bg-slate-800 text-white font-semibold" asChild>
+                  <Link href={pageContent?.industriesPage?.cta?.primaryButton?.href || '/contact'}>
+                    {pageContent?.industriesPage?.cta?.primaryButton?.label || 'Schedule Consultation'}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild className="px-8 py-6 font-semibold">
-                  <Link href="/services">View Our Services</Link>
+                  <Link href={pageContent?.industriesPage?.cta?.secondaryButton?.href || '/services'}>
+                    {pageContent?.industriesPage?.cta?.secondaryButton?.label || 'View Our Services'}
+                  </Link>
                 </Button>
               </div>
             </div>

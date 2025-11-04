@@ -16,6 +16,12 @@ import terms from './terms'
 import supplierRequirements from './supplier-requirements'
 import uiText from './ui-text'
 import pageContent from './page-content'
+import page from './page'
+import heroSection from './sections/heroSection'
+import richTextSection from './sections/richTextSection'
+import ctaSection from './sections/ctaSection'
+import navItem from './objects/navItem'
+import navGroup from './objects/navGroup'
 
 // Custom Blocks
 import calloutBox from './blocks/calloutBox'
@@ -44,6 +50,11 @@ export const schemaTypes = [
   supplierRequirements,
   uiText,
   pageContent,
+  page,
+  heroSection,
+  richTextSection,
+  ctaSection,
+  navItem,
 
   // Custom Blocks
   calloutBox,
@@ -52,4 +63,6 @@ export const schemaTypes = [
   materialData,
   equipmentSpec,
   ctaButton,
+  navItem,
+  navGroup,
 ]

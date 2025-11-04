@@ -116,6 +116,29 @@ export default {
           type: 'string',
           title: 'Subtitle',
         },
+        {
+          name: 'descriptionRich',
+          type: 'array',
+          title: 'Description (Rich Text)',
+          of: [{ type: 'block' }],
+        },
+        {
+          name: 'titleSize',
+          type: 'string',
+          title: 'Title Size',
+          options: { list: [
+            { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' },
+            { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }, { title: '2XL', value: '2xl' }, { title: '3XL', value: '3xl' }
+          ] },
+        },
+        {
+          name: 'descriptionSize',
+          type: 'string',
+          title: 'Description Size',
+          options: { list: [
+            { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' }, { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }
+          ] },
+        },
       ],
     },
     {
@@ -128,6 +151,12 @@ export default {
           type: 'text',
           title: 'Description',
           rows: 4,
+        },
+        {
+          name: 'descriptionRich',
+          type: 'array',
+          title: 'Description (Rich Text)',
+          of: [{ type: 'block' }],
         },
       ],
     },
@@ -156,6 +185,7 @@ export default {
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
+            {name: 'descriptionRich', type: 'array', title: 'Description (Rich Text)', of: [{ type: 'block' }]},
             {name: 'iconName', type: 'string', title: 'Icon Name'},
             {
               name: 'image',
@@ -220,6 +250,7 @@ export default {
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
+            {name: 'descriptionRich', type: 'array', title: 'Description (Rich Text)', of: [{ type: 'block' }]},
             {
               name: 'features',
               type: 'array',

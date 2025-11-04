@@ -7,6 +7,7 @@ import { ArrowRight, CheckCircle, Zap, Award, TrendingUp, Shield, Target } from 
 import Link from 'next/link';
 import ParallaxImagePro from '@/components/ui/parallax-image-pro';
 import { theme, styles, cn } from '@/lib/theme';
+import { PortableTextContent } from '@/components/portable-text-components';
 import HeroSection from '@/components/ui/hero-section';
 import React from 'react';
 
@@ -18,8 +19,8 @@ interface IndustryContentProps {
 export function IndustryContent({ industryData, slug }: IndustryContentProps) {
   const industry = industryData as any;
 
-  const heroImage = industry.hero?.backgroundImage
-    ? industry.hero.backgroundImage
+  const heroImage = industry.hero?.backgroundImage?.asset?.url || industry.hero?.backgroundImage
+    ? (industry.hero?.backgroundImage?.asset?.url || industry.hero.backgroundImage)
     : 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=2400&q=90';
 
   return (
@@ -37,7 +38,13 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
         }}
         title={<span className="text-white">{industry.title}</span>}
         subtitle={industry.hero?.subtitle}
-        description={industry.overview?.description}
+        description={industry.hero?.descriptionRich ? (
+          <PortableTextContent value={industry.hero.descriptionRich} />
+        ) : (
+          industry.overview?.description
+        )}
+        titleSize={industry.hero?.titleSize}
+        descriptionSize={industry.hero?.descriptionSize}
         buttons={[
           {
             label: 'Get Consultation',
@@ -64,9 +71,15 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
                 viewport={{ once: true }}
               >
                 <h2 className={cn(theme.typography.h2, 'mb-6')}>Market Overview</h2>
-                <p className={cn(theme.typography.lead, 'mb-6')}>
-                  {industry.overview.description}
-                </p>
+                {industry.overview?.descriptionRich ? (
+                  <div className={cn(theme.typography.lead, 'mb-6')}>
+                    <PortableTextContent value={industry.overview.descriptionRich} />
+                  </div>
+                ) : (
+                  <p className={cn(theme.typography.lead, 'mb-6')}>
+                    {industry.overview.description}
+                  </p>
+                )}
 
                 {industry.overview.marketSize && (
                   <div className="mb-6">

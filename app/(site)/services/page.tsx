@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
+import { PortableTextContent } from '@/components/portable-text-components';
 import { theme, styles, cn } from '@/lib/theme';
 import { ArrowRight, Shield, Award } from 'lucide-react';
 import Link from 'next/link';
@@ -21,6 +22,18 @@ function portableTextToPlainText(blocks: any): string {
       return block.children.map((child: any) => child.text).join('');
     })
     .join(' ');
+}
+
+// Defensive converter: accepts strings, PT arrays, or simple objects
+function toPlainText(value: any): string {
+  if (!value) return '';
+  if (typeof value === 'string') return value;
+  if (Array.isArray(value)) return portableTextToPlainText(value);
+  if (typeof value === 'object') {
+    // Common patterns: {text}, {spec}, {label}
+    return value.text || value.spec || value.label || '';
+  }
+  return String(value ?? '');
 }
 
 // Force static generation for INSTANT routing (no server delays)
@@ -90,7 +103,7 @@ export default async function ServicesPage() {
   const formattedServices = services?.map((service: any) => ({
     ...service,
     slug: service.slug?.current || service.slug,
-    description: service.shortDescription || portableTextToPlainText(service.description),
+    description: toPlainText(service.shortDescription) || portableTextToPlainText(service.description),
     href: `/services/${service.slug?.current || service.slug}`,
   })) || [];
 
@@ -112,27 +125,36 @@ export default async function ServicesPage() {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=2400&q=90"
+        backgroundImage={pageContent?.servicesPage?.hero?.backgroundImageUrl || pageContent?.servicesPage?.hero?.backgroundImage?.asset?.url || pageContent?.hero?.backgroundImageUrl || pageContent?.hero?.backgroundImage?.asset?.url ||
+          'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=2400&q=90'}
         imageAlt="Advanced manufacturing services - precision CNC machining and quality control"
-        badge={{
-          text: "PRECISION MANUFACTURING SERVICES"
-        }}
+        badge={pageContent?.servicesPage?.hero?.badge ? { text: pageContent.servicesPage.hero.badge } : undefined}
         title={
-          <>
-            <span className="text-white">Our</span> <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">Services</span>
-          </>
+          pageContent?.servicesPage?.hero?.title ? (
+            <span className="text-white">{pageContent.servicesPage.hero.title}</span>
+          ) : (
+            <>
+              <span className="text-white">Our</span> <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">Services</span>
+            </>
+          )
         }
-        description="Advanced manufacturing capabilities delivering precision components for aerospace, defense, and energy sectors with industry-leading quality standards."
-        buttons={[
+        description={pageContent?.servicesPage?.hero?.descriptionRich ? (
+          <PortableTextContent value={pageContent.servicesPage.hero.descriptionRich} />
+        ) : (
+          pageContent?.servicesPage?.hero?.description || 'Advanced manufacturing capabilities delivering precision components for aerospace, defense, and energy sectors with industry-leading quality standards.'
+        )}
+        titleSize={pageContent?.servicesPage?.hero?.titleSize || pageContent?.hero?.titleSize}
+        descriptionSize={pageContent?.servicesPage?.hero?.descriptionSize || pageContent?.hero?.descriptionSize}
+        buttons={pageContent?.servicesPage?.hero?.buttons || [
           {
-            label: "Request Quote",
-            href: "/contact",
-            variant: "primary"
+            label: 'Request Quote',
+            href: '/contact',
+            variant: 'primary'
           },
           {
-            label: "View Core Competencies",
-            href: "#capabilities",
-            variant: "secondary"
+            label: 'View Core Competencies',
+            href: '#capabilities',
+            variant: 'secondary'
           }
         ]}
         height="large"
@@ -183,7 +205,7 @@ export default async function ServicesPage() {
                 <Card className={cn(styles.featureCard, "group h-full overflow-hidden")}>
                   <div className="relative h-64 overflow-hidden">
                     <ParallaxImagePro
-                      src={service.image || 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1600&q=90'}
+                      src={(service.image && service.image.asset && service.image.asset.url) || service.image || 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1600&q=90'}
                       alt={service.title}
                       className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                       speed={0.2}
@@ -205,7 +227,7 @@ export default async function ServicesPage() {
                         {service.specs.slice(0,4).map((spec: any, idx: number) => (
                           <div key={idx} className={cn("flex items-center", theme.typography.small)}>
                             <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2" />
-                            {spec?.spec || spec?.label || spec}
+                            {toPlainText(spec)}
                           </div>
                         ))}
                       </div>
@@ -237,7 +259,8 @@ export default async function ServicesPage() {
               <div>
                 <h2 className={cn(theme.typography.h2, "mb-6")}>Quality Assurance</h2>
                 <p className={cn(theme.typography.lead, "mb-8")}>
-                  Our comprehensive quality management system ensures every component meets or exceeds specifications with full traceability and documentation.
+                  {pageContent?.servicesPage?.qualityIntro ||
+                    'Our comprehensive quality management system ensures every component meets or exceeds specifications with full traceability and documentation.'}
                 </p>
 
                 <div className="space-y-4">
@@ -257,7 +280,7 @@ export default async function ServicesPage() {
             <AnimatedSection delay={0.2}>
               <div className="relative">
                 <ParallaxImagePro
-                  src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1600&q=90"
+                  src={pageContent?.servicesPage?.qualityImageUrl || pageContent?.servicesPage?.qualityImage?.asset?.url || 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1600&q=90'}
                   alt="Quality assurance"
                   className="w-full h-96 rounded-lg"
                   speed={0.2}
@@ -273,17 +296,21 @@ export default async function ServicesPage() {
         <div className={theme.spacing.container}>
           <AnimatedSection>
             <div className="text-center max-w-4xl mx-auto">
-              <h2 className={cn(theme.typography.h2, "mb-6")}>Ready to Start Your Project?</h2>
+              <h2 className={cn(theme.typography.h2, "mb-6")}>{pageContent?.servicesPage?.cta?.heading || 'Ready to Start Your Project?'}</h2>
               <p className={cn(theme.typography.lead, "mb-8")}>
-                Partner with us for precision manufacturing solutions that meet the highest industry standards.
+                {pageContent?.servicesPage?.cta?.description || 'Partner with us for precision manufacturing solutions that meet the highest industry standards.'}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className={styles.ctaPrimary}>
-                  Get Quote
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                <Button size="lg" className={styles.ctaPrimary} asChild>
+                  <Link href={pageContent?.servicesPage?.cta?.primaryButton?.href || '/contact?interest=quote'}>
+                    {pageContent?.servicesPage?.cta?.primaryButton?.label || 'Get Quote'}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild className={styles.ctaSecondary}>
-                  <Link href="/contact">Contact Us</Link>
+                  <Link href={pageContent?.servicesPage?.cta?.secondaryButton?.href || '/contact'}>
+                    {pageContent?.servicesPage?.cta?.secondaryButton?.label || 'Contact Us'}
+                  </Link>
                 </Button>
               </div>
             </div>

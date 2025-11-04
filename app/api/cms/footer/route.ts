@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server'
+import { draftMode } from 'next/headers'
 import { getFooter } from '@/sanity/lib/queries'
 
 export async function GET() {
   try {
-    const data = await getFooter()
-    return NextResponse.json(data || null)
-  } catch (e) {
-    return NextResponse.json(null, { status: 200 })
+    const { isEnabled } = await draftMode()
+    const footer = await getFooter(isEnabled)
+    return NextResponse.json(footer ?? {}, { status: 200 })
+  } catch (err) {
+    return NextResponse.json({ error: 'Failed to load footer' }, { status: 500 })
   }
 }
 

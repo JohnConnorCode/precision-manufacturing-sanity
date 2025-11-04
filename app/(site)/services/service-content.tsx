@@ -7,6 +7,7 @@ import { ArrowRight, CheckCircle, Settings, Shield, Zap, Cog, Target } from 'luc
 import Link from 'next/link';
 import ParallaxImagePro from '@/components/ui/parallax-image-pro';
 import { theme, styles, cn } from '@/lib/theme';
+import { PortableTextContent } from '@/components/portable-text-components';
 import HeroSection from '@/components/ui/hero-section';
 import React from 'react';
 
@@ -26,8 +27,8 @@ interface ServiceContentProps {
 
 export function ServiceContent({ serviceData, slug }: ServiceContentProps) {
   const service = serviceData as any;
-  const heroImage = service.hero?.backgroundImage
-    ? service.hero.backgroundImage
+  const heroImage = service.hero?.backgroundImage?.asset?.url || service.hero?.backgroundImage
+    ? (service.hero?.backgroundImage?.asset?.url || service.hero.backgroundImage)
     : 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=2400&q=90';
 
   return (
@@ -45,7 +46,13 @@ export function ServiceContent({ serviceData, slug }: ServiceContentProps) {
         }}
         title={<span className="text-white">{service.title}</span>}
         subtitle={service.hero?.subtitle}
-        description={service.overview?.description}
+        description={service.hero?.descriptionRich ? (
+          <PortableTextContent value={service.hero.descriptionRich} />
+        ) : (
+          service.overview?.description
+        )}
+        titleSize={service.hero?.titleSize}
+        descriptionSize={service.hero?.descriptionSize}
         buttons={[
           {
             label: 'Get Quote',
@@ -104,9 +111,15 @@ export function ServiceContent({ serviceData, slug }: ServiceContentProps) {
               className="text-center mb-16"
             >
               <h2 className={cn(theme.typography.h2, 'mb-6')}>{service.title} Services</h2>
-              <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
-                Comprehensive capabilities for complex components requiring precision and reliability.
-              </p>
+              {service.overview?.descriptionRich ? (
+                <div className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
+                  <PortableTextContent value={service.overview.descriptionRich} />
+                </div>
+              ) : (
+                <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
+                  Comprehensive capabilities for complex components requiring precision and reliability.
+                </p>
+              )}
             </motion.div>
 
             <div className={styles.grid2Col}>
@@ -140,9 +153,15 @@ export function ServiceContent({ serviceData, slug }: ServiceContentProps) {
                         <h3 className={cn(theme.typography.h4, 'mb-4 group-hover:text-blue-600 transition-colors')}>
                           {offering.title}
                         </h3>
-                        <p className={cn(theme.typography.body, 'mb-6')}>
-                          {offering.description}
-                        </p>
+                        {offering.descriptionRich ? (
+                          <div className={cn(theme.typography.body, 'mb-6')}>
+                            <PortableTextContent value={offering.descriptionRich} />
+                          </div>
+                        ) : (
+                          <p className={cn(theme.typography.body, 'mb-6')}>
+                            {offering.description}
+                          </p>
+                        )}
 
                         {offering.features && offering.features.length > 0 && (
                           <div className="mb-6">
@@ -269,7 +288,13 @@ export function ServiceContent({ serviceData, slug }: ServiceContentProps) {
                       {String(index + 1).padStart(2, '0')}
                     </div>
                     <h3 className={cn(theme.typography.h5, 'mb-3')}>{process.title}</h3>
-                    <p className={cn(theme.typography.small, 'mb-4')}>{process.description}</p>
+                    {process.descriptionRich ? (
+                      <div className={cn(theme.typography.small, 'mb-4')}>
+                        <PortableTextContent value={process.descriptionRich} />
+                      </div>
+                    ) : (
+                      <p className={cn(theme.typography.small, 'mb-4')}>{process.description}</p>
+                    )}
 
                     {process.features && process.features.length > 0 && (
                       <div>

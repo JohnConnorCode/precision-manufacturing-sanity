@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
+import { draftMode } from 'next/headers'
 import { Inter } from 'next/font/google';
 import "../globals.css";
 import SiteChrome from "@/components/layout/SiteChrome";
+import VisualEditingClient from '@/components/VisualEditingClient'
 import { AdminToolbar } from "@/components/admin-toolbar";
 import { Analytics } from "@vercel/analytics/react";
+import PreviewBanner from "@/components/preview-banner";
 
 // Optimize font loading - zero layout shift, instant display
 const inter = Inter({
@@ -81,6 +84,7 @@ export default async function SiteLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { isEnabled: isDraft } = await draftMode()
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -224,6 +228,8 @@ export default async function SiteLayout({
         </SiteChrome>
         <AdminToolbar />
         <Analytics />
+        {isDraft && process.env.NEXT_PUBLIC_ENABLE_VISUAL_EDITING === 'true' ? <VisualEditingClient /> : null}
+        {isDraft ? <PreviewBanner /> : null}
       </body>
     </html>
   );
