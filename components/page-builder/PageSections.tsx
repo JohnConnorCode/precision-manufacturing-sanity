@@ -1,9 +1,10 @@
 "use client";
 
 import HeroSection from '@/components/ui/hero-section'
-import { portableTextComponents } from '@/components/portable-text-components'
+import { createPortableTextComponents } from '@/components/portable-text-components'
 import { PortableText } from '@portabletext/react'
 import CTA from '@/components/sections/CTA'
+import { getBackgroundColor, paddingToClass } from '@/lib/sanity-styles'
 
 export default function PageSections({ sections }: { sections: any[] }) {
   if (!Array.isArray(sections) || sections.length === 0) return null
@@ -14,7 +15,7 @@ export default function PageSections({ sections }: { sections: any[] }) {
         switch (section?._type) {
           case 'heroSection': {
             const badgeIconName = section?.badgeIconName
-            // HeroSection already styles match current design
+            // Pass ALL data from Sanity including style fields
             return (
               <HeroSection
                 key={idx}
@@ -22,10 +23,12 @@ export default function PageSections({ sections }: { sections: any[] }) {
                 imageAlt={section?.imageAlt || ''}
                 badge={{ text: section?.badge || '', icon: undefined as any }}
                 title={
-                  <span className="text-white">
+                  <span style={{ color: section?.titleColor?.color?.hex || '#ffffff' }}>
                     {section?.title}{' '}
                     {section?.titleHighlight && (
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">{section?.titleHighlight}</span>
+                      <span style={{ color: section?.titleHighlightColor?.color?.hex || '#60a5fa' }}>
+                        {section?.titleHighlight}
+                      </span>
                     )}
                   </span>
                 }
@@ -37,16 +40,39 @@ export default function PageSections({ sections }: { sections: any[] }) {
                 }))}
                 height={section?.height || 'large'}
                 alignment={section?.alignment || 'center'}
+                // Pass style data
+                titleColor={section?.titleColor}
+                titleHighlightColor={section?.titleHighlightColor}
+                descriptionColor={section?.descriptionColor}
+                badgeStyle={section?.badgeStyle}
+                overlay={section?.overlay}
+                buttonStyles={section?.buttonStyles}
               />
             )
           }
           case 'richTextSection': {
             const container = section?.container || 'default'
-            const containerClass = container === 'narrow' ? 'max-w-2xl' : container === 'wide' ? 'max-w-6xl' : 'max-w-4xl'
+            const containerClass = container === 'narrow' ? 'max-w-2xl' : container === 'wide' ? 'max-w-6xl' : container === 'full' ? 'max-w-full' : 'max-w-4xl'
+            const paddingClass = paddingToClass(section?.padding)
+            const backgroundStyle = getBackgroundColor(section?.theme)
+
+            // Create custom components with section styles
+            const customComponents = createPortableTextComponents({
+              headingStyles: section?.headingStyles,
+              bodyTextStyle: section?.bodyTextStyle,
+              linkStyle: section?.linkStyle,
+              blockquoteStyle: section?.blockquoteStyle,
+              codeStyle: section?.codeStyle,
+            })
+
             return (
-              <section key={idx} className="py-12">
-                <div className={`container ${containerClass} mx-auto`}> 
-                  <PortableText value={section?.content || []} components={portableTextComponents as any} />
+              <section
+                key={idx}
+                className={`${paddingClass}`}
+                style={backgroundStyle}
+              >
+                <div className={`container ${containerClass} mx-auto`}>
+                  <PortableText value={section?.content || []} components={customComponents as any} />
                 </div>
               </section>
             )
@@ -55,7 +81,17 @@ export default function PageSections({ sections }: { sections: any[] }) {
             return (
               <CTA
                 key={idx}
-                data={{ title: section?.title, subtitle: section?.subtitle, buttons: section?.buttons }}
+                data={{
+                  title: section?.title,
+                  subtitle: section?.subtitle,
+                  buttons: section?.buttons,
+                  // Pass ALL style fields
+                  theme: section?.theme,
+                  titleColor: section?.titleColor,
+                  subtitleColor: section?.subtitleColor,
+                  buttonStyles: section?.buttonStyles,
+                  padding: section?.padding,
+                }}
               />
             )
           }

@@ -6,6 +6,7 @@ import { ArrowRight, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import HeroSliderFixed from '@/components/ui/hero-slider-fixed';
 import { usePrefersReducedMotion, getMotionVariants } from '@/lib/motion';
+import { colorStyleToCSS, getOverlayStyles, getButtonStyles, ColorStyle } from '@/lib/sanity-styles';
 
 interface HeroData {
   mainTitle?: string;
@@ -19,6 +20,31 @@ interface HeroData {
     alt: string;
     focal: 'center' | 'top' | 'bottom';
   }>;
+  // Style fields from Sanity
+  titleColor?: ColorStyle;
+  titleHighlightColor?: ColorStyle;
+  descriptionColor?: ColorStyle;
+  badgeStyle?: {
+    textColor?: ColorStyle;
+    backgroundColor?: ColorStyle;
+    borderColor?: ColorStyle;
+  };
+  overlay?: {
+    enabled?: boolean;
+    color?: ColorStyle;
+  };
+  buttonStyles?: {
+    primaryButton?: {
+      textColor?: ColorStyle;
+      backgroundColor?: ColorStyle;
+      borderColor?: ColorStyle;
+    };
+    secondaryButton?: {
+      textColor?: ColorStyle;
+      backgroundColor?: ColorStyle;
+      borderColor?: ColorStyle;
+    };
+  };
 }
 
 interface HeroProps {
@@ -51,10 +77,26 @@ export default function Hero({ data }: HeroProps) {
   const ctaPrimary = data.ctaPrimary || { text: 'Get Quote', href: '/contact?interest=quote' };
   const ctaSecondary = data.ctaSecondary || { text: 'View Capabilities', href: '/services' };
 
+  // Extract styles from Sanity data
+  const titleColor = colorStyleToCSS(data.titleColor) || 'rgba(255, 255, 255, 0.9)';
+  const titleHighlightColor = colorStyleToCSS(data.titleHighlightColor) || '#60a5fa'; // blue-400
+  const descriptionColor = colorStyleToCSS(data.descriptionColor) || 'rgba(255, 255, 255, 0.95)';
+
+  const badgeTextColor = colorStyleToCSS(data.badgeStyle?.textColor) || '#ffffff';
+  const badgeBgColor = colorStyleToCSS(data.badgeStyle?.backgroundColor);
+  const badgeBorderColor = colorStyleToCSS(data.badgeStyle?.borderColor) || 'rgba(96, 165, 250, 0.3)';
+
+  const overlayStyle = getOverlayStyles(data.overlay);
+  const primaryButtonStyles = getButtonStyles(data.buttonStyles?.primaryButton);
+  const secondaryButtonStyles = getButtonStyles(data.buttonStyles?.secondaryButton);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Premium Background Slider */}
       <HeroSliderFixed slides={heroSlides} />
+
+      {/* Overlay if enabled */}
+      {overlayStyle && <div style={overlayStyle} />}
 
       {/* Content Container */}
       <motion.div
@@ -77,11 +119,17 @@ export default function Hero({ data }: HeroProps) {
                 transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: prefersReducedMotion ? 0 : 0.6 }}
                 className="mb-4"
               >
-                <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white/90 tracking-wider">
+                <div
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-wider"
+                  style={{ color: titleColor }}
+                >
                   {mainTitle}
                 </div>
                 {subTitle && (
-                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-400 tracking-wider mt-2">
+                  <div
+                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-wider mt-2"
+                    style={{ color: titleHighlightColor }}
+                  >
                     {subTitle}
                   </div>
                 )}
@@ -93,7 +141,8 @@ export default function Hero({ data }: HeroProps) {
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: prefersReducedMotion ? 0 : 0.4, duration: prefersReducedMotion ? 0 : 0.8 }}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white/95 leading-[1.3] tracking-normal mb-8"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold leading-[1.3] tracking-normal mb-8"
+              style={{ color: descriptionColor }}
             >
               {tagline}
             </motion.h1>
@@ -105,17 +154,31 @@ export default function Hero({ data }: HeroProps) {
               transition={{ delay: prefersReducedMotion ? 0 : 0.7, duration: prefersReducedMotion ? 0 : 0.8 }}
               className="flex flex-wrap justify-center gap-3 mb-12 max-w-3xl mx-auto"
             >
-              {badges.map((badge, index) => (
-                <motion.span
-                  key={badge}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: prefersReducedMotion ? 0 : (0.9 + index * 0.08), duration: prefersReducedMotion ? 0 : 0.5 }}
-                  className="px-5 py-2.5 rounded-sm text-sm font-semibold bg-gradient-to-r from-blue-600/20 to-indigo-600/20 text-white border border-blue-400/30 backdrop-blur-md hover:from-blue-500/30 hover:to-indigo-500/30 hover:border-blue-300/50 transition-all duration-300"
-                >
-                  {badge}
-                </motion.span>
-              ))}
+              {badges.map((badge, index) => {
+                const badgeStyle: React.CSSProperties = {
+                  color: badgeTextColor,
+                  borderColor: badgeBorderColor,
+                };
+                if (badgeBgColor) {
+                  badgeStyle.backgroundColor = badgeBgColor;
+                } else {
+                  // Default gradient if no custom bg color
+                  badgeStyle.backgroundImage = 'linear-gradient(to right, rgba(37, 99, 235, 0.2), rgba(79, 70, 229, 0.2))';
+                }
+
+                return (
+                  <motion.span
+                    key={badge}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: prefersReducedMotion ? 0 : (0.9 + index * 0.08), duration: prefersReducedMotion ? 0 : 0.5 }}
+                    className="px-5 py-2.5 rounded-sm text-sm font-semibold border backdrop-blur-md hover:opacity-80 transition-all duration-300"
+                    style={badgeStyle}
+                  >
+                    {badge}
+                  </motion.span>
+                );
+              })}
             </motion.div>
 
             {/* CTA */}
@@ -127,7 +190,15 @@ export default function Hero({ data }: HeroProps) {
             >
               <Button
                 size="lg"
-                className="group bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold shadow-xl shadow-blue-600/25 hover:shadow-2xl hover:shadow-blue-500/40 transition-all duration-300 px-10 h-14 text-lg rounded-md"
+                className="group font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 px-10 h-14 text-lg rounded-md"
+                style={
+                  Object.keys(primaryButtonStyles.style).length > 0
+                    ? primaryButtonStyles.style
+                    : {
+                        backgroundImage: 'linear-gradient(to right, #2563eb, #4f46e5)',
+                        color: '#ffffff',
+                      }
+                }
                 asChild
               >
                 <Link href={ctaPrimary.href}>
@@ -138,7 +209,17 @@ export default function Hero({ data }: HeroProps) {
               <Button
                 size="lg"
                 variant="outline"
-                className="group border-2 border-white/80 bg-white/10 text-white hover:bg-white hover:text-slate-900 backdrop-blur-sm font-semibold transition-all duration-300 px-10 h-14 text-lg rounded-md"
+                className="group backdrop-blur-sm font-semibold transition-all duration-300 px-10 h-14 text-lg rounded-md"
+                style={
+                  Object.keys(secondaryButtonStyles.style).length > 0
+                    ? secondaryButtonStyles.style
+                    : {
+                        borderWidth: '2px',
+                        borderColor: 'rgba(255, 255, 255, 0.8)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        color: '#ffffff',
+                      }
+                }
                 asChild
               >
                 <Link href={ctaSecondary.href}>

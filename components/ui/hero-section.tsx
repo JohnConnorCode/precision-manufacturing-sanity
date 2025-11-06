@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
+import { colorStyleToCSS, getOverlayStyles, ColorStyle } from '@/lib/sanity-styles';
 
 interface HeroButton {
   label: string;
@@ -37,9 +38,35 @@ interface HeroSectionProps {
   alignment?: 'left' | 'center' | 'right';
   showScrollIndicator?: boolean;
 
-  // Typography overrides
+  // Typography overrides (from existing schema)
   titleSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl';
   descriptionSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl';
+
+  // Style props from Sanity
+  titleColor?: ColorStyle;
+  titleHighlightColor?: ColorStyle;
+  descriptionColor?: ColorStyle;
+  badgeStyle?: {
+    textColor?: ColorStyle;
+    backgroundColor?: ColorStyle;
+    borderColor?: ColorStyle;
+  };
+  overlay?: {
+    enabled?: boolean;
+    color?: ColorStyle;
+  };
+  buttonStyles?: {
+    primaryButton?: {
+      textColor?: ColorStyle;
+      backgroundColor?: ColorStyle;
+      borderColor?: ColorStyle;
+    };
+    secondaryButton?: {
+      textColor?: ColorStyle;
+      backgroundColor?: ColorStyle;
+      borderColor?: ColorStyle;
+    };
+  };
 
   // Additional classes
   className?: string;
@@ -58,6 +85,12 @@ export default function HeroSection({
   showScrollIndicator = false,
   titleSize,
   descriptionSize,
+  titleColor,
+  titleHighlightColor,
+  descriptionColor,
+  badgeStyle,
+  overlay,
+  buttonStyles,
   className = ''
 }: HeroSectionProps) {
   const LEGACY_PARITY = process.env.NEXT_PUBLIC_PARITY_MODE === 'legacy'
@@ -98,6 +131,25 @@ export default function HeroSection({
     xl: 'text-xl',
   };
 
+  // Extract colors from Sanity style props
+  const defaultTitleColor = colorStyleToCSS(titleColor) || '#ffffff';
+  const defaultSubtitleColor = colorStyleToCSS(titleHighlightColor) || 'rgba(255, 255, 255, 0.9)';
+  const defaultDescColor = colorStyleToCSS(descriptionColor) || 'rgba(255, 255, 255, 0.8)';
+
+  const badgeTextColor = colorStyleToCSS(badgeStyle?.textColor) || '#cbd5e1'; // slate-300
+  const badgeBgColor = colorStyleToCSS(badgeStyle?.backgroundColor) || 'rgba(30, 41, 59, 0.5)'; // slate-800/50
+  const badgeBorderColor = colorStyleToCSS(badgeStyle?.borderColor) || 'rgba(51, 65, 85, 0.5)'; // slate-700/50
+
+  const primaryBtnTextColor = colorStyleToCSS(buttonStyles?.primaryButton?.textColor) || '#ffffff';
+  const primaryBtnBgColor = colorStyleToCSS(buttonStyles?.primaryButton?.backgroundColor) || '#2563eb'; // blue-600
+  const primaryBtnBorderColor = colorStyleToCSS(buttonStyles?.primaryButton?.borderColor);
+
+  const secondaryBtnTextColor = colorStyleToCSS(buttonStyles?.secondaryButton?.textColor) || '#ffffff';
+  const secondaryBtnBgColor = colorStyleToCSS(buttonStyles?.secondaryButton?.backgroundColor) || 'rgba(255, 255, 255, 0.05)';
+  const secondaryBtnBorderColor = colorStyleToCSS(buttonStyles?.secondaryButton?.borderColor) || 'rgba(255, 255, 255, 0.2)';
+
+  const overlayStyle = getOverlayStyles(overlay);
+
   const BadgeIcon = badge?.icon;
 
   return (
@@ -122,9 +174,15 @@ export default function HeroSection({
           sizes="100vw"
         />
 
-        {/* Gradient Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/80 to-slate-950/95" />
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-950/30 via-transparent to-blue-950/30" />
+        {/* Gradient Overlays - use Sanity overlay if provided */}
+        {overlayStyle ? (
+          <div style={overlayStyle} />
+        ) : (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/80 to-slate-950/95" />
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-950/30 via-transparent to-blue-950/30" />
+          </>
+        )}
       </motion.div>
 
       {/* Content Container */}
@@ -144,7 +202,16 @@ export default function HeroSection({
               transition={{ delay: 0.2, duration: 0.6 }}
               className="mb-8"
             >
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium bg-slate-800/50 text-slate-300 border border-slate-700/50 backdrop-blur-sm">
+              <span
+                className="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium backdrop-blur-sm"
+                style={{
+                  backgroundColor: badgeBgColor,
+                  color: badgeTextColor,
+                  borderWidth: '1px',
+                  borderStyle: 'solid',
+                  borderColor: badgeBorderColor,
+                }}
+              >
                 {BadgeIcon && <BadgeIcon className="w-3 h-3 mr-2" />}
                 {badge.text}
               </span>
@@ -160,9 +227,10 @@ export default function HeroSection({
               titleSize ? titleSizeClasses[titleSize] : 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
               'font-extrabold mb-6 tracking-tight'
             )}
+            style={{ color: defaultTitleColor }}
           >
             {typeof title === 'string' ? (
-              <span className="text-white">{title}</span>
+              <span>{title}</span>
             ) : (
               title
             )}
@@ -174,7 +242,8 @@ export default function HeroSection({
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
-              className="text-xl sm:text-2xl md:text-3xl text-white/90 mb-4 font-light"
+              className="text-xl sm:text-2xl md:text-3xl mb-4 font-light"
+              style={{ color: defaultSubtitleColor }}
             >
               {subtitle}
             </motion.div>
@@ -188,8 +257,9 @@ export default function HeroSection({
               transition={{ delay: 0.8, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
               className={cn(
                 descriptionSize ? descSizeClasses[descriptionSize] : 'text-base md:text-lg',
-                'text-white/80 mb-10 max-w-3xl'
+                'mb-10 max-w-3xl'
               )}
+              style={{ color: defaultDescColor }}
             >
               {description}
             </motion.p>
@@ -212,17 +282,32 @@ export default function HeroSection({
                 const ButtonIcon = button.icon || ArrowRight;
                 const isPrimary = button.variant === 'primary' || index === 0;
 
+                const buttonStyle = isPrimary ? {
+                  backgroundColor: primaryBtnBgColor,
+                  color: primaryBtnTextColor,
+                  ...(primaryBtnBorderColor && {
+                    borderWidth: '1px',
+                    borderStyle: 'solid' as const,
+                    borderColor: primaryBtnBorderColor,
+                  }),
+                } : {
+                  backgroundColor: secondaryBtnBgColor,
+                  color: secondaryBtnTextColor,
+                  borderWidth: '1px',
+                  borderStyle: 'solid' as const,
+                  borderColor: secondaryBtnBorderColor,
+                };
+
                 return (
                   <Button
                     key={button.href}
                     size="lg"
                     variant={isPrimary ? 'default' : 'outline'}
                     className={cn(
-                      'group h-12 md:h-14 px-8 md:px-10 text-base font-semibold',
-                      isPrimary
-                        ? 'bg-blue-600 hover:bg-blue-600 text-white shadow-2xl shadow-blue-600/20 hover:shadow-blue-600/30'
-                        : 'border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/30 backdrop-blur-sm'
+                      'group h-12 md:h-14 px-8 md:px-10 text-base font-semibold shadow-lg transition-all',
+                      isPrimary ? 'hover:shadow-xl' : 'backdrop-blur-sm hover:opacity-90'
                     )}
+                    style={buttonStyle}
                     asChild
                   >
                     <Link href={button.href}>
