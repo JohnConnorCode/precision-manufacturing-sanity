@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { draftMode } from 'next/headers'
-import { Inter } from 'next/font/google';
 import "../globals.css";
 import SiteChrome from "@/components/layout/SiteChrome";
 import VisualEditingClient from '@/components/VisualEditingClient'
@@ -8,14 +7,8 @@ import { AdminToolbar } from "@/components/admin-toolbar";
 import { Analytics } from "@vercel/analytics/react";
 import PreviewBanner from "@/components/preview-banner";
 
-// Optimize font loading - zero layout shift, instant display
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  preload: true,
-  variable: '--font-inter',
-  fallback: ['system-ui', '-apple-system', 'sans-serif']
-});
+// Use system font stack instead of Google Fonts for build reliability
+const fontClass = 'font-sans';
 
 export const metadata: Metadata = {
   title: "IIS - Precision Machining & CMM Inspection Services | AS9100 Certified | Oregon",
@@ -215,14 +208,14 @@ export default async function SiteLayout({
   };
 
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${fontClass} antialiased`}>
         <SiteChrome>
           {children}
         </SiteChrome>

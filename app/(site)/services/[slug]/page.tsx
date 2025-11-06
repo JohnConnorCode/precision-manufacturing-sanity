@@ -14,6 +14,7 @@ interface ServicePageProps {
 
 // Enable ISR with 1 hour revalidation
 export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: ServicePageProps) {
   const { slug } = await params;
@@ -40,10 +41,16 @@ export async function generateMetadata({ params }: ServicePageProps) {
 // No build-time path generation; resolve at request time
 
 export async function generateStaticParams() {
-  const services = await getAllServices();
-  return services.map((service: any) => ({
-    slug: service.slug?.current || service.slug,
-  }));
+  try {
+    const services = await getAllServices();
+    if (!services || services.length === 0) return [];
+    return services.map((service: any) => ({
+      slug: service.slug?.current || service.slug,
+    }));
+  } catch (error) {
+    console.warn('Failed to generate static params for services:', error);
+    return [];
+  }
 }
 
 export default async function ServicePage({ params }: ServicePageProps) {

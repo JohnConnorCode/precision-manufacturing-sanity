@@ -7,13 +7,20 @@ import { PortableTextContent } from '@/components/portable-text-components';
 
 // Enable ISR with 1 hour revalidation
 export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
-  const resources = await getAllResources();
-  return resources.map((resource: any) => ({
-    category: resource.category,
-    slug: resource.slug?.current || resource.slug,
-  }));
+  try {
+    const resources = await getAllResources();
+    if (!resources || resources.length === 0) return [];
+    return resources.map((resource: any) => ({
+      category: resource.category,
+      slug: resource.slug?.current || resource.slug,
+    }));
+  } catch (error) {
+    console.warn('Failed to generate static params for resources:', error);
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ category: string; slug: string }> }) {
