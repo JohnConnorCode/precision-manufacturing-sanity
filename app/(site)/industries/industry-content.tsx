@@ -15,9 +15,11 @@ import React from 'react';
 interface IndustryContentProps {
   industryData: any;
   slug: string;
+  allServices?: any[];
+  allIndustries?: any[];
 }
 
-export function IndustryContent({ industryData, slug }: IndustryContentProps) {
+export function IndustryContent({ industryData, slug: _slug, allServices, allIndustries }: IndustryContentProps) {
   const industry = industryData as any;
 
   // Check if industry uses new page builder (sections array)
@@ -27,7 +29,13 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
   if (useSectionsBuilder) {
     return (
       <div className="min-h-screen bg-background">
-        <PageSections sections={industry.sections} />
+        <PageSections
+          sections={industry.sections}
+          globalData={{
+            services: allServices || [],
+            industries: allIndustries || [],
+          }}
+        />
       </div>
     );
   }

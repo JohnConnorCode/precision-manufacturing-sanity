@@ -4,24 +4,37 @@ export default {
   title: 'About Page',
   __experimental_singleton: true,
   groups: [
-    {name: 'hero', title: 'Hero', default: true},
-    {name: 'statsStory', title: 'Story & Stats'},
-    {name: 'timeline', title: 'Timeline'},
-    {name: 'values', title: 'Values & Culture'},
-    {name: 'capabilities', title: 'Capabilities'},
-    {name: 'certifications', title: 'Certifications'},
-    {name: 'cta', title: 'CTA'},
+    {name: 'builder', title: '🎨 Page Builder', default: true},
+    {name: 'legacy', title: '📦 Legacy Fields'},
     {name: 'seo', title: 'SEO & Sharing'},
   ],
   fields: [
     {
+      name: 'sections',
+      type: 'array',
+      title: 'Page Sections',
+      description: 'Build your about page using the page builder. Drag to reorder sections. Leave empty to use legacy layout.',
+      group: 'builder',
+      of: [
+        { type: 'heroSection' },
+        { type: 'statsSection' },
+        { type: 'servicesSection' },
+        { type: 'industriesSection' },
+        { type: 'techSpecsSection' },
+        { type: 'showcaseSection' },
+        { type: 'resourcesSection' },
+        { type: 'ctaSection' },
+        { type: 'richTextSection' },
+      ],
+    },
+    {
       name: 'hero',
       type: 'object',
       title: 'Hero Section',
-      group: 'hero',
+      group: 'legacy',
       options: {
         collapsible: true,
-        collapsed: false,
+        collapsed: true,
       },
       fieldsets: [
         {name: 'background', title: 'Background Image', options: {collapsible: true, collapsed: false}},
@@ -108,6 +121,11 @@ export default {
       name: 'companyStats',
       type: 'array',
       title: 'Company Statistics',
+      group: 'legacy',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -123,10 +141,10 @@ export default {
       name: 'story',
       type: 'object',
       title: 'Company Story',
-      group: 'statsStory',
+      group: 'legacy',
       options: {
         collapsible: true,
-        collapsed: false,
+        collapsed: true,
       },
       fieldsets: [
         {name: 'text', title: 'Story Text'},
@@ -190,6 +208,11 @@ export default {
       name: 'timeline',
       type: 'object',
       title: 'Company Timeline',
+      group: 'legacy',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       fields: [
         {
           name: 'title',
@@ -222,6 +245,11 @@ export default {
       name: 'values',
       type: 'object',
       title: 'Company Values',
+      group: 'legacy',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       fields: [
         {
           name: 'title',
@@ -265,6 +293,11 @@ export default {
       name: 'capabilities',
       type: 'array',
       title: 'Capabilities',
+      group: 'legacy',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -290,6 +323,11 @@ export default {
       name: 'certifications',
       type: 'array',
       title: 'Certifications',
+      group: 'legacy',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -301,10 +339,10 @@ export default {
       name: 'cta',
       type: 'object',
       title: 'Call to Action',
-      group: 'cta',
+      group: 'legacy',
       options: {
         collapsible: true,
-        collapsed: false,
+        collapsed: true,
       },
       fieldsets: [
         {name: 'content', title: 'Content', options: {columns: 2}},

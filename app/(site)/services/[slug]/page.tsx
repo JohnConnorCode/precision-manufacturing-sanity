@@ -1,4 +1,4 @@
-import { getServiceBySlug, getAllServices } from '@/sanity/lib/queries';
+import { getServiceBySlug, getAllServices, getAllIndustries } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 import { ServiceContent } from '../service-content';
 import { Button } from '@/components/ui/button';
@@ -56,7 +56,13 @@ export async function generateStaticParams() {
 export default async function ServicePage({ params }: ServicePageProps) {
   const { slug } = await params;
   const { isEnabled } = await draftMode();
-  const serviceData = await getServiceBySlug(slug, isEnabled);
+
+  // Fetch service data and global data for page builder
+  const [serviceData, allServices, allIndustries] = await Promise.all([
+    getServiceBySlug(slug, isEnabled),
+    getAllServices(isEnabled),
+    getAllIndustries(isEnabled),
+  ]);
 
   if (!serviceData) {
     return (
@@ -74,5 +80,12 @@ export default async function ServicePage({ params }: ServicePageProps) {
     );
   }
 
-  return <ServiceContent serviceData={serviceData} slug={slug} />;
+  return (
+    <ServiceContent
+      serviceData={serviceData}
+      slug={slug}
+      allServices={allServices}
+      allIndustries={allIndustries}
+    />
+  );
 }

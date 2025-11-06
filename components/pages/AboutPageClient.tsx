@@ -8,6 +8,7 @@ import { ArrowRight, Users, Factory, Award, CheckCircle, Target, Zap } from 'luc
 import Link from 'next/link';
 import ParallaxImage from '@/components/ui/parallax-image';
 import { theme, styles } from '@/lib/theme';
+import PageSections from '@/components/page-builder/PageSections';
 
 // Icon mapping for values section
 const iconMap: Record<string, any> = {
@@ -152,15 +153,36 @@ const defaultData = {
 
 interface AboutPageClientProps {
   data?: typeof defaultData | null;
+  allServices?: any[];
+  allIndustries?: any[];
 }
 
-export default function AboutPageClient({ data }: AboutPageClientProps) {
+export default function AboutPageClient({ data, allServices, allIndustries }: AboutPageClientProps) {
   // Use CMS data if available, otherwise fall back to defaults
   const aboutData = data || defaultData;
 
-  // Get the badge icon
+  // Check if using page builder (sections array)
+  const useSectionsBuilder = (data as any)?.sections && (data as any).sections.length > 0;
+
+  // If using page builder, render sections
+  if (useSectionsBuilder) {
+    return (
+      <div className="min-h-screen bg-background">
+        <PageSections
+          sections={(data as any).sections}
+          globalData={{
+            services: allServices || [],
+            industries: allIndustries || [],
+          }}
+        />
+      </div>
+    );
+  }
+
+  // Get the badge icon for legacy layout
   const BadgeIcon = iconMap[aboutData?.hero?.badgeIconName || ''] || Factory;
 
+  // Legacy layout
   return (
     <div className="min-h-screen bg-background">
       <HeroSection

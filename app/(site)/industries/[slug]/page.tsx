@@ -1,4 +1,4 @@
-import { getIndustryBySlug, getAllIndustries } from '@/sanity/lib/queries';
+import { getIndustryBySlug, getAllIndustries, getAllServices } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 import { IndustryContent } from '../industry-content';
 import { Button } from '@/components/ui/button';
@@ -55,7 +55,13 @@ export async function generateStaticParams() {
 export default async function IndustryPage({ params }: IndustryPageProps) {
   const { slug } = await params;
   const { isEnabled } = await draftMode();
-  const industryData = await getIndustryBySlug(slug, isEnabled);
+
+  // Fetch industry data and global data for page builder
+  const [industryData, allServices, allIndustries] = await Promise.all([
+    getIndustryBySlug(slug, isEnabled),
+    getAllServices(isEnabled),
+    getAllIndustries(isEnabled),
+  ]);
 
   if (!industryData) {
     return (
@@ -63,7 +69,7 @@ export default async function IndustryPage({ params }: IndustryPageProps) {
         <div className="text-center">
           <h1 className={cn(theme.typography.h1, 'mb-4')}>Industry Not Found</h1>
           <p className={cn(theme.typography.body, 'text-slate-600 mb-8')}>
-            The industry you're looking for could not be found.
+            The industry you&apos;re looking for could not be found.
           </p>
           <Button asChild>
             <Link href="/industries">View All Industries</Link>
@@ -73,5 +79,12 @@ export default async function IndustryPage({ params }: IndustryPageProps) {
     );
   }
 
-  return <IndustryContent industryData={industryData} slug={slug} />;
+  return (
+    <IndustryContent
+      industryData={industryData}
+      slug={slug}
+      allServices={allServices}
+      allIndustries={allIndustries}
+    />
+  );
 }

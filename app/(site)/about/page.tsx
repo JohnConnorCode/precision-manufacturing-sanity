@@ -1,5 +1,5 @@
 import AboutPageClient from '@/components/pages/AboutPageClient';
-import { getAbout, getAllTeamMembers } from '@/sanity/lib/queries';
+import { getAbout, getAllTeamMembers, getAllServices, getAllIndustries } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 
 // Use ISR for automatic updates when Sanity content changes
@@ -9,12 +9,20 @@ export const revalidate = 60; // Revalidate every 60 seconds
 export default async function AboutPage() {
   // Fetch data from CMS
   const { isEnabled } = await draftMode();
-  const [aboutData, teamMembers] = await Promise.all([
+  const [aboutData, teamMembers, allServices, allIndustries] = await Promise.all([
     getAbout(isEnabled),
-    getAllTeamMembers(isEnabled)
+    getAllTeamMembers(isEnabled),
+    getAllServices(isEnabled),
+    getAllIndustries(isEnabled),
   ]);
 
-  return <AboutPageClient data={{ ...aboutData, teamMembers } as any} />;
+  return (
+    <AboutPageClient
+      data={{ ...aboutData, teamMembers } as any}
+      allServices={allServices}
+      allIndustries={allIndustries}
+    />
+  );
 }
 
 // Generate metadata for SEO

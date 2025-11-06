@@ -24,9 +24,11 @@ const iconMap: Record<string, any> = {
 interface ServiceContentProps {
   serviceData: any;
   slug: string;
+  allServices?: any[];
+  allIndustries?: any[];
 }
 
-export function ServiceContent({ serviceData, slug }: ServiceContentProps) {
+export function ServiceContent({ serviceData, slug, allServices, allIndustries }: ServiceContentProps) {
   const service = serviceData as any;
 
   // Check if service uses new page builder (sections array)
@@ -36,7 +38,13 @@ export function ServiceContent({ serviceData, slug }: ServiceContentProps) {
   if (useSectionsBuilder) {
     return (
       <div className="min-h-screen bg-background">
-        <PageSections sections={service.sections} />
+        <PageSections
+          sections={service.sections}
+          globalData={{
+            services: allServices || [],
+            industries: allIndustries || [],
+          }}
+        />
       </div>
     );
   }
