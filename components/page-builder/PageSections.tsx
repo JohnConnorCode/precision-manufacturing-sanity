@@ -115,7 +115,7 @@ export default function PageSections({ sections }: { sections: any[] }) {
             return (
               <TechnicalSpecs
                 key={idx}
-                data={section?.specs}
+                data={section}
               />
             )
           }
