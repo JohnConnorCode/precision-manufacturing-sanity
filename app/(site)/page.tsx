@@ -6,6 +6,7 @@ import ImageShowcase from '@/components/sections/ImageShowcase';
 import Resources from '@/components/sections/Resources';
 import Stats from '@/components/sections/Stats';
 import CTA from '@/components/sections/CTA';
+import PageSections from '@/components/page-builder/PageSections';
 import StructuredData from '@/components/seo/StructuredData';
 import {
   generateOrganizationSchema,
@@ -92,6 +93,9 @@ export default async function Home() {
   const productCatalogSchema = generateProductCatalogSchema();
   const faqSchema = generateFAQSchema();
 
+  // Check if homepage uses new sections array (page builder) or legacy fields
+  const useSectionsBuilder = homepageData?.sections && homepageData.sections.length > 0;
+
   return (
     <>
       {/* Comprehensive Structured Data for World-Class SEO */}
@@ -103,14 +107,28 @@ export default async function Home() {
         faqSchema
       ]} />
 
-      <Hero data={heroData} />
-      <Services data={formattedServices || undefined} sectionData={homepageData?.servicesSection || undefined} />
-      <TechnicalSpecs data={homepageData?.technicalSpecs || undefined} />
-      <Industries data={formattedIndustries || undefined} sectionData={homepageData?.industriesSection || undefined} />
-      <ImageShowcase data={homepageData?.imageShowcase || undefined} />
-      <Resources data={homepageData?.resourcesSection || undefined} />
-      <Stats data={homepageData?.stats || undefined} />
-      <CTA data={homepageData?.cta || undefined} />
+      {useSectionsBuilder ? (
+        // New: Page Builder Layout - fully controllable from Sanity
+        <PageSections
+          sections={homepageData.sections}
+          globalData={{
+            services: formattedServices,
+            industries: formattedIndustries,
+          }}
+        />
+      ) : (
+        // Legacy: Hardcoded Layout - kept for backward compatibility
+        <>
+          <Hero data={heroData} />
+          <Services data={formattedServices || undefined} sectionData={homepageData?.servicesSection || undefined} />
+          <TechnicalSpecs data={homepageData?.technicalSpecs || undefined} />
+          <Industries data={formattedIndustries || undefined} sectionData={homepageData?.industriesSection || undefined} />
+          <ImageShowcase data={homepageData?.imageShowcase || undefined} />
+          <Resources data={homepageData?.resourcesSection || undefined} />
+          <Stats data={homepageData?.stats || undefined} />
+          <CTA data={homepageData?.cta || undefined} />
+        </>
+      )}
     </>
   );
 }

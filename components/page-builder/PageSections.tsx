@@ -12,7 +12,15 @@ import Resources from '@/components/sections/Resources'
 import Stats from '@/components/sections/Stats'
 import { getBackgroundColor, paddingToClass } from '@/lib/sanity-styles'
 
-export default function PageSections({ sections }: { sections: any[] }) {
+interface PageSectionsProps {
+  sections: any[]
+  globalData?: {
+    services?: any[]
+    industries?: any[]
+  }
+}
+
+export default function PageSections({ sections, globalData }: PageSectionsProps) {
   if (!Array.isArray(sections) || sections.length === 0) return null
 
   return (
@@ -84,10 +92,15 @@ export default function PageSections({ sections }: { sections: any[] }) {
             )
           }
           case 'servicesSection': {
+            // Use section-specific services if selected, otherwise use all global services
+            const servicesData = section?.services && section.services.length > 0
+              ? section.services
+              : globalData?.services || []
+
             return (
               <Services
                 key={idx}
-                data={section?.services}
+                data={servicesData}
                 sectionData={{
                   eyebrow: section?.eyebrow,
                   heading: section?.heading,
@@ -98,10 +111,15 @@ export default function PageSections({ sections }: { sections: any[] }) {
             )
           }
           case 'industriesSection': {
+            // Use section-specific industries if selected, otherwise use all global industries
+            const industriesData = section?.industries && section.industries.length > 0
+              ? section.industries
+              : globalData?.industries || []
+
             return (
               <Industries
                 key={idx}
-                data={section?.industries}
+                data={industriesData}
                 sectionData={{
                   eyebrow: section?.eyebrow,
                   heading: section?.heading,

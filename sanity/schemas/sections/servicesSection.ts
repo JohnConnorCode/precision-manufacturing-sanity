@@ -30,6 +30,18 @@ export default defineType({
       type: 'string',
       title: 'Subdescription',
     },
+    {
+      name: 'services',
+      type: 'array',
+      title: 'Services to Display',
+      description: 'Leave empty to show all published services, or select specific ones to display',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'service' }],
+        },
+      ],
+    },
   ],
   preview: {
     select: {

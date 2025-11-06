@@ -29,6 +29,18 @@ export default defineType({
       type: 'string',
       title: 'Subdescription',
     },
+    {
+      name: 'industries',
+      type: 'array',
+      title: 'Industries to Display',
+      description: 'Leave empty to show all published industries, or select specific ones to display',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'industry' }],
+        },
+      ],
+    },
   ],
   preview: {
     select: {

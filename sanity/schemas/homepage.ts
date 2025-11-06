@@ -4,21 +4,35 @@ export default {
   title: 'Homepage',
   __experimental_singleton: true,
   groups: [
-    {name: 'hero', title: 'Hero', default: true},
-    {name: 'services', title: 'Services & Industries'},
-    {name: 'metrics', title: 'Stats & Specs'},
-    {name: 'showcase', title: 'Image Showcase'},
-    {name: 'resources', title: 'Resources'},
-    {name: 'cta', title: 'Final CTA'},
+    {name: 'builder', title: '🎨 Page Builder', default: true},
+    {name: 'legacy', title: '📦 Legacy Fields'},
     {name: 'seo', title: 'SEO & Sharing'},
   ],
   fields: [
+    {
+      name: 'sections',
+      type: 'array',
+      title: 'Page Sections',
+      description: 'Build your homepage by adding and arranging sections. Drag to reorder. Uses modern page builder.',
+      group: 'builder',
+      of: [
+        { type: 'heroSection' },
+        { type: 'statsSection' },
+        { type: 'servicesSection' },
+        { type: 'industriesSection' },
+        { type: 'techSpecsSection' },
+        { type: 'showcaseSection' },
+        { type: 'resourcesSection' },
+        { type: 'ctaSection' },
+        { type: 'richTextSection' },
+      ],
+    },
     {
       name: 'hero',
       type: 'object',
       title: 'Hero Section (Legacy)',
       description: 'Legacy hero content retained for older layouts. Keep populated for safe fallback content.',
-      group: 'hero',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -51,9 +65,9 @@ export default {
     {
       name: 'heroEnhanced',
       type: 'object',
-      title: 'Enhanced Hero Section',
-      description: 'Primary hero experience with carousel, badges, and call-to-actions.',
-      group: 'hero',
+      title: 'Enhanced Hero Section (Legacy)',
+      description: 'Legacy: Primary hero experience with carousel, badges, and call-to-actions. Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: false,
@@ -212,9 +226,9 @@ export default {
     {
       name: 'stats',
       type: 'object',
-      title: 'Statistics Section',
-      description: 'Headline metrics that reinforce credibility.',
-      group: 'metrics',
+      title: 'Statistics Section (Legacy)',
+      description: 'Legacy: Headline metrics that reinforce credibility. Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: false,
@@ -280,9 +294,9 @@ export default {
     {
       name: 'servicesSection',
       type: 'object',
-      title: 'Services Section',
-      description: 'Content for the services section on the homepage',
-      group: 'services',
+      title: 'Services Section (Legacy)',
+      description: 'Legacy: Content for the services section. Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: false,
@@ -316,9 +330,9 @@ export default {
     {
       name: 'industriesSection',
       type: 'object',
-      title: 'Industries Section',
-      description: 'Content for the industries section on the homepage',
-      group: 'services',
+      title: 'Industries Section (Legacy)',
+      description: 'Legacy: Content for the industries section. Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -351,9 +365,9 @@ export default {
     {
       name: 'technicalSpecs',
       type: 'array',
-      title: 'Technical Specifications',
-      description: 'Tile-based overview of capabilities, certifications, and differentiators.',
-      group: 'metrics',
+      title: 'Technical Specifications (Legacy)',
+      description: 'Legacy: Tile-based overview of capabilities. Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         layout: 'grid',
       },
@@ -397,9 +411,9 @@ export default {
     {
       name: 'imageShowcase',
       type: 'object',
-      title: 'Image Showcase Section',
-      description: 'Complete image showcase section with header, images, stats, and CTA',
-      group: 'showcase',
+      title: 'Image Showcase Section (Legacy)',
+      description: 'Legacy: Image showcase section with header, images, stats, and CTA. Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: false,
@@ -607,9 +621,9 @@ export default {
     {
       name: 'resourcesSection',
       type: 'object',
-      title: 'Resources Section',
-      description: 'Complete resources section with header, featured series, benefits, and CTA',
-      group: 'resources',
+      title: 'Resources Section (Legacy)',
+      description: 'Legacy: Resources section with header, featured series, benefits, and CTA. Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -820,9 +834,9 @@ export default {
     {
       name: 'cta',
       type: 'object',
-      title: 'Final Call to Action',
-      description: 'Closing call-to-action band at the bottom of the page.',
-      group: 'cta',
+      title: 'Final Call to Action (Legacy)',
+      description: 'Legacy: Closing call-to-action band at the bottom of the page. Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: false,
