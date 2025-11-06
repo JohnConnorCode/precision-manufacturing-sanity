@@ -22,6 +22,9 @@ import richTextSection from './sections/richTextSection'
 import ctaSection from './sections/ctaSection'
 import navItem from './objects/navItem'
 import navGroup from './objects/navGroup'
+import colorStyle from './objects/colorStyle'
+import typographyStyle from './objects/typographyStyle'
+import sectionTheme from './objects/sectionTheme'
 
 // Custom Blocks
 import calloutBox from './blocks/calloutBox'
@@ -64,4 +67,9 @@ export const schemaTypes = [
   ctaButton,
   navItem,
   navGroup,
+
+  // Style Objects
+  colorStyle,
+  typographyStyle,
+  sectionTheme,
 ]

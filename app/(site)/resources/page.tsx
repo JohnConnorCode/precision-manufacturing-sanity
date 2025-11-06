@@ -2,11 +2,12 @@ import Link from 'next/link';
 import { Clock, ArrowRight, Lightbulb } from 'lucide-react';
 import HeroSection from '@/components/ui/hero-section';
 import { getAllResources, getPageContent } from '@/sanity/lib/queries';
+import { PortableTextContent } from '@/components/portable-text-components';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
 
-// Force static generation for INSTANT routing (no server delays)
-export const dynamic = 'force-static';
+// Use dynamic rendering with ISR for reliable builds
+export const dynamic = 'force-dynamic';
 export const revalidate = 60; // Revalidate every 60 seconds
 
 // Comprehensive SEO metadata with social sharing optimization
@@ -15,7 +16,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const pageUrl = `${baseUrl}/resources`;
   const ogImage = `${baseUrl}/og-image-resources.jpg`;
 
-  const resources = await getAllResources() || [];
+  let resources = [];
+  try {
+    resources = await getAllResources() || [];
+  } catch (error) {
+    console.warn('Failed to fetch resources for metadata:', error);
+  }
 
   return {
     title: 'Technical Resources & Manufacturing Guides | CNC, Metrology & Quality | IIS',

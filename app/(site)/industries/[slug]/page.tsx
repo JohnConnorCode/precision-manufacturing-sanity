@@ -14,6 +14,8 @@ interface IndustryPageProps {
 
 // Enable ISR with 1 hour revalidation
 export const revalidate = 3600;
+// Use dynamic rendering for build without Sanity connection
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: IndustryPageProps) {
   const { slug } = await params;
@@ -38,10 +40,16 @@ export async function generateMetadata({ params }: IndustryPageProps) {
 }
 
 export async function generateStaticParams() {
-  const industries = await getAllIndustries();
-  return industries.map((industry: any) => ({
-    slug: industry.slug?.current || industry.slug,
-  }));
+  try {
+    const industries = await getAllIndustries();
+    if (!industries || industries.length === 0) return [];
+    return industries.map((industry: any) => ({
+      slug: industry.slug?.current || industry.slug,
+    }));
+  } catch (error) {
+    console.warn('Failed to generate static params for industries:', error);
+    return [];
+  }
 }
 
 export default async function IndustryPage({ params }: IndustryPageProps) {

@@ -104,13 +104,13 @@ export default async function Home() {
       ]} />
 
       <Hero data={heroData} />
-      <Services data={formattedServices || undefined} sectionData={transformedHomepage?.servicesSection || undefined} />
-      <TechnicalSpecs data={transformedHomepage?.technicalSpecs || undefined} />
-      <Industries data={formattedIndustries || undefined} sectionData={transformedHomepage?.industriesSection || undefined} />
-      <ImageShowcase data={transformedHomepage?.imageShowcase || undefined} />
-      <Resources data={transformedHomepage?.resourcesSection || undefined} />
-      <Stats data={transformedHomepage?.stats || undefined} />
-      <CTA data={transformedHomepage?.cta || undefined} />
+      <Services data={formattedServices || undefined} sectionData={homepageData?.servicesSection || undefined} />
+      <TechnicalSpecs data={homepageData?.technicalSpecs || undefined} />
+      <Industries data={formattedIndustries || undefined} sectionData={homepageData?.industriesSection || undefined} />
+      <ImageShowcase data={homepageData?.imageShowcase || undefined} />
+      <Resources data={homepageData?.resourcesSection || undefined} />
+      <Stats data={homepageData?.stats || undefined} />
+      <CTA data={homepageData?.cta || undefined} />
     </>
   );
 }

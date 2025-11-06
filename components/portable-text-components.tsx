@@ -12,11 +12,56 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import Image from 'next/image'
 import Link from 'next/link'
-// TODO: Migrate to non-Sanity image handling
-// import { urlFor } from '@/lib/sanity-resources'
+import { colorStyleToCSS, typographyStyleToCSS, typographyStyleToClasses, fontSizeToClass, fontWeightToClass } from '@/lib/sanity-styles'
 
-// Custom components for Portable Text
-export const portableTextComponents = {
+// Define style interface for rich text
+export interface RichTextStyles {
+  headingStyles?: {
+    h1?: any;
+    h2?: any;
+    h3?: any;
+    h4?: any;
+  };
+  bodyTextStyle?: any;
+  linkStyle?: {
+    color?: any;
+    hoverColor?: any;
+    underline?: boolean;
+  };
+  blockquoteStyle?: {
+    textColor?: any;
+    borderColor?: any;
+    backgroundColor?: any;
+  };
+  codeStyle?: {
+    textColor?: any;
+    backgroundColor?: any;
+  };
+}
+
+// Factory function to create Portable Text components with custom styles
+export function createPortableTextComponents(styles?: RichTextStyles) {
+  // Extract colors from styles or use defaults
+  const h1Color = colorStyleToCSS(styles?.headingStyles?.h1?.textColor) || '#ffffff';
+  const h2Color = colorStyleToCSS(styles?.headingStyles?.h2?.textColor) || '#ffffff';
+  const h3Color = colorStyleToCSS(styles?.headingStyles?.h3?.textColor) || '#ffffff';
+  const h4Color = colorStyleToCSS(styles?.headingStyles?.h4?.textColor) || '#ffffff';
+  const bodyColor = colorStyleToCSS(styles?.bodyTextStyle?.textColor) || '#cbd5e1'; // slate-300
+  const linkColor = colorStyleToCSS(styles?.linkStyle?.color) || '#60a5fa'; // blue-400
+  const linkHoverColor = colorStyleToCSS(styles?.linkStyle?.hoverColor) || '#93c5fd'; // blue-300
+  const blockquoteTextColor = colorStyleToCSS(styles?.blockquoteStyle?.textColor) || '#94a3b8'; // slate-400
+  const blockquoteBorderColor = colorStyleToCSS(styles?.blockquoteStyle?.borderColor) || '#2563eb'; // blue-600
+  const codeTextColor = colorStyleToCSS(styles?.codeStyle?.textColor) || '#60a5fa'; // blue-400
+  const codeBgColor = colorStyleToCSS(styles?.codeStyle?.backgroundColor) || '#1e293b'; // slate-800
+
+  // Get typography classes
+  const h1Classes = styles?.headingStyles?.h1 ? typographyStyleToClasses(styles.headingStyles.h1) : '';
+  const h2Classes = styles?.headingStyles?.h2 ? typographyStyleToClasses(styles.headingStyles.h2) : '';
+  const h3Classes = styles?.headingStyles?.h3 ? typographyStyleToClasses(styles.headingStyles.h3) : '';
+  const h4Classes = styles?.headingStyles?.h4 ? typographyStyleToClasses(styles.headingStyles.h4) : '';
+  const bodyClasses = styles?.bodyTextStyle ? typographyStyleToClasses(styles.bodyTextStyle) : '';
+
+  return {
   types: {
     // Image component
     image: ({ value }: any) => {
@@ -167,22 +212,53 @@ export const portableTextComponents = {
   block: {
     // Custom styles for block elements
     h1: ({ children }: any) => (
-      <h1 className="text-4xl font-bold text-white mt-8 mb-4">{children}</h1>
+      <h1
+        className={`text-4xl font-bold mt-8 mb-4 ${h1Classes}`}
+        style={{ color: h1Color }}
+      >
+        {children}
+      </h1>
     ),
     h2: ({ children }: any) => (
-      <h2 className="text-3xl font-bold text-white mt-8 mb-4">{children}</h2>
+      <h2
+        className={`text-3xl font-bold mt-8 mb-4 ${h2Classes}`}
+        style={{ color: h2Color }}
+      >
+        {children}
+      </h2>
     ),
     h3: ({ children }: any) => (
-      <h3 className="text-2xl font-bold text-white mt-6 mb-3">{children}</h3>
+      <h3
+        className={`text-2xl font-bold mt-6 mb-3 ${h3Classes}`}
+        style={{ color: h3Color }}
+      >
+        {children}
+      </h3>
     ),
     h4: ({ children }: any) => (
-      <h4 className="text-xl font-bold text-white mt-6 mb-3">{children}</h4>
+      <h4
+        className={`text-xl font-bold mt-6 mb-3 ${h4Classes}`}
+        style={{ color: h4Color }}
+      >
+        {children}
+      </h4>
     ),
     normal: ({ children }: any) => (
-      <p className="text-slate-300 leading-relaxed mb-4">{children}</p>
+      <p
+        className={`leading-relaxed mb-4 ${bodyClasses}`}
+        style={{ color: bodyColor }}
+      >
+        {children}
+      </p>
     ),
     blockquote: ({ children }: any) => (
-      <blockquote className="border-l-4 border-blue-600 pl-4 my-4 italic text-slate-400">
+      <blockquote
+        className="border-l-4 pl-4 my-4 italic"
+        style={{
+          borderColor: blockquoteBorderColor,
+          color: blockquoteTextColor,
+        }}
+      >
         {children}
       </blockquote>
     ),
@@ -191,26 +267,40 @@ export const portableTextComponents = {
   marks: {
     // Custom styles for inline elements
     strong: ({ children }: any) => (
-      <strong className="font-bold text-white">{children}</strong>
+      <strong className="font-bold">{children}</strong>
     ),
     em: ({ children }: any) => (
       <em className="italic">{children}</em>
     ),
     code: ({ children }: any) => (
-      <code className="bg-slate-800 text-blue-400 px-1 py-0.5 rounded text-sm">
+      <code
+        className="px-1 py-0.5 rounded text-sm"
+        style={{
+          backgroundColor: codeBgColor,
+          color: codeTextColor,
+        }}
+      >
         {children}
       </code>
     ),
     link: ({ value, children }: any) => {
       const target = value?.href?.startsWith('http') ? '_blank' : undefined
       const rel = target === '_blank' ? 'noopener noreferrer' : undefined
+      const underlineClass = styles?.linkStyle?.underline !== false ? 'underline' : '';
 
       return (
         <Link
           href={value?.href || '#'}
           target={target}
           rel={rel}
-          className="text-blue-400 hover:text-blue-300 underline"
+          className={`transition-colors ${underlineClass}`}
+          style={{ color: linkColor }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = linkHoverColor;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = linkColor;
+          }}
         >
           {children}
         </Link>
@@ -220,12 +310,12 @@ export const portableTextComponents = {
 
   list: {
     bullet: ({ children }: any) => (
-      <ul className="list-disc list-inside space-y-2 mb-4 text-slate-300">
+      <ul className="list-disc list-inside space-y-2 mb-4" style={{ color: bodyColor }}>
         {children}
       </ul>
     ),
     number: ({ children }: any) => (
-      <ol className="list-decimal list-inside space-y-2 mb-4 text-slate-300">
+      <ol className="list-decimal list-inside space-y-2 mb-4" style={{ color: bodyColor }}>
         {children}
       </ol>
     ),
@@ -239,15 +329,21 @@ export const portableTextComponents = {
       <li className="ml-4">{children}</li>
     ),
   },
+  };
 }
 
+// Default components (backward compatibility)
+export const portableTextComponents = createPortableTextComponents();
+
 // Component to render Portable Text content
-export function PortableTextContent({ value }: { value: any }) {
+export function PortableTextContent({ value, styles }: { value: any; styles?: RichTextStyles }) {
+  const components = styles ? createPortableTextComponents(styles) : portableTextComponents;
+
   return (
     <div className="prose prose-lg prose-invert max-w-none">
       <PortableText
         value={value}
-        components={portableTextComponents}
+        components={components}
       />
     </div>
   )

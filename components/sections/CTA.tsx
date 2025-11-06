@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { ArrowRight, FileText, Shield, Award, Activity } from 'lucide-react';
 import Link from 'next/link';
+import { colorStyleToCSS, getBackgroundColor, getButtonStyles, paddingToClass, ColorStyle } from '@/lib/sanity-styles';
 
 interface CTAData {
   title?: string;
@@ -14,6 +15,35 @@ interface CTAData {
     variant: 'default' | 'secondary' | 'primary' | 'outline';
     enabled?: boolean;
   }>;
+  // Style fields from Sanity
+  theme?: {
+    backgroundColor?: ColorStyle;
+    backgroundGradient?: {
+      enabled?: boolean;
+      fromColor?: ColorStyle;
+      toColor?: ColorStyle;
+      direction?: string;
+    };
+    textColor?: ColorStyle;
+    accentColor?: ColorStyle;
+  };
+  titleColor?: ColorStyle;
+  subtitleColor?: ColorStyle;
+  buttonStyles?: {
+    primaryButton?: {
+      textColor?: ColorStyle;
+      backgroundColor?: ColorStyle;
+      borderColor?: ColorStyle;
+      hoverBackgroundColor?: ColorStyle;
+    };
+    secondaryButton?: {
+      textColor?: ColorStyle;
+      backgroundColor?: ColorStyle;
+      borderColor?: ColorStyle;
+      hoverBackgroundColor?: ColorStyle;
+    };
+  };
+  padding?: string;
 }
 
 interface CTAProps {
@@ -28,8 +58,22 @@ export default function CTA({ data }: CTAProps) {
     { text: 'Technical Specifications', href: '/compliance/supplier-requirements', variant: 'secondary' as const }
   ]).filter(button => button.enabled !== false);
 
+  // Extract styles from Sanity data
+  const backgroundStyle = getBackgroundColor(data?.theme);
+  const defaultBgColor = backgroundStyle.backgroundColor || backgroundStyle.backgroundImage ? '' : '#020617'; // slate-950
+  const paddingClass = paddingToClass(data?.padding) || 'py-24';
+
+  const titleColor = colorStyleToCSS(data?.titleColor) || '#ffffff';
+  const subtitleColor = colorStyleToCSS(data?.subtitleColor) || '#94a3b8'; // slate-400
+
   return (
-    <section className="relative py-24 overflow-hidden bg-slate-950">
+    <section
+      className={`relative ${paddingClass} overflow-hidden`}
+      style={{
+        ...backgroundStyle,
+        ...(defaultBgColor && { backgroundColor: defaultBgColor }),
+      }}
+    >
       {/* Simplified background - subtle grid + accent */}
       <div className="absolute inset-0">
         {/* Subtle static grid */}
@@ -62,11 +106,11 @@ export default function CTA({ data }: CTAProps) {
             <span className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">30 Years of Aerospace Excellence</span>
           </motion.div>
 
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: titleColor }}>
             {title}
           </h2>
 
-          <p className="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">
+          <p className="text-lg mb-10 max-w-2xl mx-auto" style={{ color: subtitleColor }}>
             {subtitle}
           </p>
 
