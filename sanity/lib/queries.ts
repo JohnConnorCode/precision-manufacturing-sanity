@@ -312,6 +312,194 @@ export async function getNavigation(preview = false) {
 export async function getHomepage(preview = false) {
   try {
   const query = `*[_type == "homepage"][0] {
+    sections[] {
+      _type,
+      _key,
+      // Hero Section fields
+      _type == "heroSection" => {
+        badge,
+        badgeIconName,
+        title,
+        titleHighlight,
+        description,
+        buttons[] {
+          label,
+          href,
+          variant
+        },
+        backgroundImageUrl,
+        imageAlt,
+        height,
+        alignment,
+        titleColor,
+        titleHighlightColor,
+        descriptionColor,
+        badgeStyle,
+        overlay,
+        buttonStyles
+      },
+      // Stats Section fields
+      _type == "statsSection" => {
+        title,
+        subtitle,
+        items[] {
+          value,
+          label,
+          description
+        }
+      },
+      // Services Section fields
+      _type == "servicesSection" => {
+        eyebrow,
+        heading,
+        description,
+        subdescription,
+        services[]-> {
+          _id,
+          title,
+          slug,
+          shortDescription,
+          icon,
+          image {
+            asset->{
+              _id,
+              url
+            },
+            alt
+          }
+        }
+      },
+      // Industries Section fields
+      _type == "industriesSection" => {
+        eyebrow,
+        heading,
+        description,
+        subdescription,
+        industries[]-> {
+          _id,
+          title,
+          slug,
+          shortDescription,
+          icon,
+          image {
+            asset->{
+              _id,
+              url
+            },
+            alt
+          }
+        }
+      },
+      // Tech Specs Section fields
+      _type == "techSpecsSection" => {
+        specs[] {
+          label,
+          value,
+          description,
+          iconName,
+          gradient
+        }
+      },
+      // Showcase Section fields
+      _type == "showcaseSection" => {
+        header {
+          eyebrow,
+          title,
+          titleHighlight,
+          description
+        },
+        showcaseImages[] {
+          image {
+            asset->{
+              _id,
+              url
+            },
+            alt
+          },
+          title,
+          category,
+          href
+        },
+        stats[] {
+          iconName,
+          value,
+          label
+        },
+        cta {
+          title,
+          description,
+          buttons[] {
+            enabled,
+            text,
+            href,
+            variant
+          }
+        }
+      },
+      // Resources Section fields
+      _type == "resourcesSection" => {
+        header {
+          badge,
+          title,
+          description
+        },
+        featuredSeries[] {
+          title,
+          slug,
+          description,
+          articleCount,
+          readTime,
+          difficulty,
+          icon,
+          gradient
+        },
+        benefits[] {
+          enabled,
+          iconName,
+          title,
+          description
+        },
+        cta {
+          title,
+          description,
+          buttons[] {
+            enabled,
+            text,
+            href,
+            variant
+          }
+        }
+      },
+      // CTA Section fields
+      _type == "ctaSection" => {
+        title,
+        subtitle,
+        buttons[] {
+          enabled,
+          text,
+          href,
+          variant
+        },
+        theme,
+        titleColor,
+        subtitleColor,
+        buttonStyles,
+        padding
+      },
+      // Rich Text Section fields
+      _type == "richTextSection" => {
+        content,
+        container,
+        padding,
+        theme,
+        headingStyles,
+        bodyTextStyle,
+        linkStyle,
+        blockquoteStyle,
+        codeStyle
+      }
+    },
+    // Legacy fields for backward compatibility
     hero,
     heroEnhanced {
       mainTitle,
@@ -514,7 +702,193 @@ export async function getPageBySlug(slug: string, preview = false) {
     _id,
     title,
     slug,
-    sections[],
+    sections[] {
+      _type,
+      _key,
+      // Hero Section fields
+      _type == "heroSection" => {
+        badge,
+        badgeIconName,
+        title,
+        titleHighlight,
+        description,
+        buttons[] {
+          label,
+          href,
+          variant
+        },
+        backgroundImageUrl,
+        imageAlt,
+        height,
+        alignment,
+        titleColor,
+        titleHighlightColor,
+        descriptionColor,
+        badgeStyle,
+        overlay,
+        buttonStyles
+      },
+      // Stats Section fields
+      _type == "statsSection" => {
+        title,
+        subtitle,
+        items[] {
+          value,
+          label,
+          description
+        }
+      },
+      // Services Section fields
+      _type == "servicesSection" => {
+        eyebrow,
+        heading,
+        description,
+        subdescription,
+        services[]-> {
+          _id,
+          title,
+          slug,
+          shortDescription,
+          icon,
+          image {
+            asset->{
+              _id,
+              url
+            },
+            alt
+          }
+        }
+      },
+      // Industries Section fields
+      _type == "industriesSection" => {
+        eyebrow,
+        heading,
+        description,
+        subdescription,
+        industries[]-> {
+          _id,
+          title,
+          slug,
+          shortDescription,
+          icon,
+          image {
+            asset->{
+              _id,
+              url
+            },
+            alt
+          }
+        }
+      },
+      // Tech Specs Section fields
+      _type == "techSpecsSection" => {
+        specs[] {
+          label,
+          value,
+          description,
+          iconName,
+          gradient
+        }
+      },
+      // Showcase Section fields
+      _type == "showcaseSection" => {
+        header {
+          eyebrow,
+          title,
+          titleHighlight,
+          description
+        },
+        showcaseImages[] {
+          image {
+            asset->{
+              _id,
+              url
+            },
+            alt
+          },
+          title,
+          category,
+          href
+        },
+        stats[] {
+          iconName,
+          value,
+          label
+        },
+        cta {
+          title,
+          description,
+          buttons[] {
+            enabled,
+            text,
+            href,
+            variant
+          }
+        }
+      },
+      // Resources Section fields
+      _type == "resourcesSection" => {
+        header {
+          badge,
+          title,
+          description
+        },
+        featuredSeries[] {
+          title,
+          slug,
+          description,
+          articleCount,
+          readTime,
+          difficulty,
+          icon,
+          gradient
+        },
+        benefits[] {
+          enabled,
+          iconName,
+          title,
+          description
+        },
+        cta {
+          title,
+          description,
+          buttons[] {
+            enabled,
+            text,
+            href,
+            variant
+          }
+        }
+      },
+      // CTA Section fields
+      _type == "ctaSection" => {
+        title,
+        subtitle,
+        buttons[] {
+          enabled,
+          text,
+          href,
+          variant
+        },
+        theme,
+        titleColor,
+        subtitleColor,
+        buttonStyles,
+        padding
+      },
+      // Rich Text Section fields
+      _type == "richTextSection" => {
+        content,
+        container,
+        padding,
+        theme,
+        headingStyles,
+        bodyTextStyle,
+        linkStyle,
+        blockquoteStyle,
+        codeStyle
+      }
+    },
     seo
   }`
   return await getClient(preview).fetch(query, { slug })
