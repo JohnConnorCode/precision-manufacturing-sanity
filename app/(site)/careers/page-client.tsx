@@ -7,6 +7,7 @@ import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight, Users, Briefcase, Award, Heart, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { theme, styles, cn } from '@/lib/theme';
+import PageSections from '@/components/page-builder/PageSections';
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -127,12 +128,34 @@ const defaultCareersData = {
 
 interface CareersPageClientProps {
   data?: typeof defaultCareersData | null;
+  allServices?: any[];
+  allIndustries?: any[];
 }
 
-export default function CareersPageClient({ data }: CareersPageClientProps) {
+export default function CareersPageClient({ data, allServices, allIndustries }: CareersPageClientProps) {
   const careersData = data || defaultCareersData;
+
+  // Check if using page builder (sections array)
+  const useSectionsBuilder = (data as any)?.sections && (data as any).sections.length > 0;
+
+  // If using page builder, render sections
+  if (useSectionsBuilder) {
+    return (
+      <div className="min-h-screen bg-background">
+        <PageSections
+          sections={(data as any).sections}
+          globalData={{
+            services: allServices || [],
+            industries: allIndustries || [],
+          }}
+        />
+      </div>
+    );
+  }
+
   const BadgeIcon = iconMap[careersData?.hero?.badgeIconName] || Users;
 
+  // Legacy layout
   return (
     <div className="min-h-screen bg-background">
       <HeroSection

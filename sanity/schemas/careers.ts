@@ -4,20 +4,37 @@ export default {
   title: 'Careers Page',
   __experimental_singleton: true,
   groups: [
-    {name: 'hero', title: 'Hero', default: true},
-    {name: 'content', title: 'Page Content'},
-    {name: 'cta', title: 'Call to Action'},
+    {name: 'builder', title: '🎨 Page Builder', default: true},
+    {name: 'legacy', title: '📦 Legacy Fields'},
     {name: 'seo', title: 'SEO & Sharing'},
   ],
   fields: [
     {
+      name: 'sections',
+      type: 'array',
+      title: 'Page Sections',
+      description: 'Build your careers page using the page builder. Drag to reorder sections. Leave empty to use legacy layout.',
+      group: 'builder',
+      of: [
+        { type: 'heroSection' },
+        { type: 'statsSection' },
+        { type: 'servicesSection' },
+        { type: 'industriesSection' },
+        { type: 'techSpecsSection' },
+        { type: 'showcaseSection' },
+        { type: 'resourcesSection' },
+        { type: 'ctaSection' },
+        { type: 'richTextSection' },
+      ],
+    },
+    {
       name: 'hero',
       type: 'object',
       title: 'Hero Section',
-      group: 'hero',
+      group: 'legacy',
       options: {
         collapsible: true,
-        collapsed: false,
+        collapsed: true,
       },
       fieldsets: [
         {name: 'background', title: 'Background Image', options: {collapsible: true, collapsed: false}},
@@ -104,10 +121,10 @@ export default {
       name: 'whyWorkHere',
       type: 'object',
       title: 'Why Work Here',
-      group: 'content',
+      group: 'legacy',
       options: {
         collapsible: true,
-        collapsed: false,
+        collapsed: true,
       },
       fieldsets: [
         {name: 'text', title: 'Text Content'},
@@ -127,7 +144,7 @@ export default {
       name: 'benefits',
       type: 'object',
       title: 'Benefits',
-      group: 'content',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -146,7 +163,7 @@ export default {
       name: 'values',
       type: 'object',
       title: 'Company Values',
-      group: 'content',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -164,7 +181,7 @@ export default {
       name: 'opportunities',
       type: 'object',
       title: 'Job Opportunities',
-      group: 'content',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -185,10 +202,10 @@ export default {
       name: 'cta',
       type: 'object',
       title: 'Call To Action',
-      group: 'cta',
+      group: 'legacy',
       options: {
         collapsible: true,
-        collapsed: false,
+        collapsed: true,
       },
       fieldsets: [
         {name: 'content', title: 'Content', options: {columns: 2}},
