@@ -73,7 +73,10 @@ export default function Hero({ data }: HeroProps) {
   const mainTitle = data.mainTitle;
   const subTitle = data.subTitle;
   const tagline = data.tagline;
-  const badges = data.badges || [];
+  // Handle both string badges and object badges from Sanity
+  const badges = (data.badges || []).map((badge: any) =>
+    typeof badge === 'string' ? badge : badge.text || badge.id || badge
+  );
   const ctaPrimary = data.ctaPrimary || { text: 'Get Quote', href: '/contact?interest=quote' };
   const ctaSecondary = data.ctaSecondary || { text: 'View Capabilities', href: '/services' };
 
