@@ -157,7 +157,7 @@ export default function Hero({ data }: HeroProps) {
               transition={{ delay: prefersReducedMotion ? 0 : 0.7, duration: prefersReducedMotion ? 0 : 0.8 }}
               className="flex flex-wrap justify-center gap-3 mb-12 max-w-3xl mx-auto"
             >
-              {badges.map((badge, index) => {
+              {badges.map((badge) => {
                 const badgeStyle: React.CSSProperties = {
                   color: badgeTextColor,
                   borderColor: badgeBorderColor,
@@ -170,16 +170,13 @@ export default function Hero({ data }: HeroProps) {
                 }
 
                 return (
-                  <motion.span
+                  <span
                     key={badge}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: prefersReducedMotion ? 0 : (0.9 + index * 0.08), duration: prefersReducedMotion ? 0 : 0.5 }}
                     className="px-5 py-2.5 rounded-sm text-sm font-semibold border backdrop-blur-md hover:opacity-80 transition-all duration-300"
                     style={badgeStyle}
                   >
                     {badge}
-                  </motion.span>
+                  </span>
                 );
               })}
             </motion.div>

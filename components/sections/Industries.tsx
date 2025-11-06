@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Plane, Zap, Shield, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -64,11 +63,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
             return (
               <AnimatedSection key={industry.title} delay={index * 0.1} className="group">
                 <Link href={industry.href} className="block">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                  >
-                    <Card className={`overflow-hidden hover:shadow-xl transition-all duration-300 ${colors.borderLight} hover:border-blue-600/50`}>
+                    <Card className={`overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ${colors.borderLight} hover:border-blue-600/50`}>
                     <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
                       {industry.image && (
                         <>
@@ -117,7 +112,6 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                       </p>
                     </div>
                   </Card>
-                  </motion.div>
                 </Link>
               </AnimatedSection>
             );
