@@ -1,14 +1,24 @@
 import TermsPageClient from './page-client';
-import { getTerms } from '@/sanity/lib/queries';
+import { getTerms, getAllServices, getAllIndustries } from '@/sanity/lib/queries';
 
 // Force static generation with long revalidation
 export const revalidate = 3600;
 
 export default async function TermsPage() {
   // Fetch data from CMS
-  const termsData = await getTerms();
+  const [termsData, allServices, allIndustries] = await Promise.all([
+    getTerms(),
+    getAllServices(),
+    getAllIndustries(),
+  ]);
 
-  return <TermsPageClient data={termsData as any} />;
+  return (
+    <TermsPageClient
+      data={termsData as any}
+      allServices={allServices}
+      allIndustries={allIndustries}
+    />
+  );
 }
 
 // Generate metadata for SEO

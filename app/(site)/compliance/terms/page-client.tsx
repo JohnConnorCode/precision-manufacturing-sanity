@@ -8,6 +8,7 @@ import {
   Zap, Info, Phone, Mail, MapPin,
   Wrench, Award, BookOpen, Users
 } from 'lucide-react';
+import PageSections from '@/components/page-builder/PageSections';
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -148,10 +149,31 @@ const defaultTermsData = {
 
 interface TermsPageClientProps {
   data?: typeof defaultTermsData | null;
+  allServices?: any[];
+  allIndustries?: any[];
 }
 
-export default function TermsPageClient({ data }: TermsPageClientProps) {
+export default function TermsPageClient({ data, allServices, allIndustries }: TermsPageClientProps) {
   const termsData = data || defaultTermsData;
+
+  // Check if using page builder (sections array with builder sections)
+  const useSectionsBuilder = (data as any)?.sections && (data as any).sections.length > 0 && (data as any).sections[0]?._type;
+
+  // If using page builder, render sections
+  if (useSectionsBuilder) {
+    return (
+      <div className="min-h-screen bg-background">
+        <PageSections
+          sections={(data as any).sections}
+          globalData={{
+            services: allServices || [],
+            industries: allIndustries || [],
+          }}
+        />
+      </div>
+    );
+  }
+
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -159,6 +181,7 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
   });
   const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
+  // Legacy layout
   return (
     <div ref={containerRef} className="relative min-h-screen bg-slate-50">
       {/* Subtle Parallax Background */}

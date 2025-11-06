@@ -885,8 +885,69 @@ export async function getCareers(preview = false) {
 export async function getTerms(preview = false) {
   try {
   const query = `*[_type == "terms"][0] {
+    sections[] {
+      _type,
+      _key,
+      _type == "heroSection" => {
+        eyebrow, heading, subheading, description,
+        backgroundImage {asset->{_id, url}, alt},
+        buttons[] {label, href, variant}
+      },
+      _type == "statsSection" => {
+        eyebrow, heading, description,
+        stats[] {label, value, description}
+      },
+      _type == "servicesSection" => {
+        eyebrow, heading, description, subdescription,
+        services[]-> {
+          _id, title, slug, shortDescription, icon,
+          image {asset->{_id, url}, alt}
+        }
+      },
+      _type == "industriesSection" => {
+        eyebrow, heading, description, subdescription,
+        industries[]-> {
+          _id, title, slug, shortDescription, icon,
+          image {asset->{_id, url}, alt}
+        }
+      },
+      _type == "techSpecsSection" => {
+        eyebrow, heading, description,
+        specs[] {label, value, description}
+      },
+      _type == "showcaseSection" => {
+        eyebrow, heading, description,
+        items[] {
+          title, description,
+          image {asset->{_id, url}, alt}
+        }
+      },
+      _type == "resourcesSection" => {
+        eyebrow, heading, description,
+        resources[] {
+          title, description, href, iconName
+        }
+      },
+      _type == "ctaSection" => {
+        eyebrow, heading, description,
+        buttons[] {label, href, variant}
+      },
+      _type == "richTextSection" => {
+        content[] {
+          _type,
+          _key,
+          style,
+          children[] {
+            _type,
+            _key,
+            text,
+            marks
+          }
+        }
+      }
+    },
     header,
-    sections,
+    legacyContentSections,
     contact
   }`
 

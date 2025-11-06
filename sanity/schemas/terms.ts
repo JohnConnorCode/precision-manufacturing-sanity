@@ -4,20 +4,37 @@ export default {
   title: 'Terms & Conditions',
   __experimental_singleton: true,
   groups: [
-    {name: 'header', title: 'Header', default: true},
-    {name: 'content', title: 'Page Content'},
-    {name: 'contact', title: 'Contact Information'},
+    {name: 'builder', title: '🎨 Page Builder', default: true},
+    {name: 'legacy', title: '📦 Legacy Fields'},
     {name: 'seo', title: 'SEO & Sharing'},
   ],
   fields: [
     {
+      name: 'sections',
+      type: 'array',
+      title: 'Page Sections',
+      description: 'Build your terms page using the page builder. Drag to reorder sections. Leave empty to use legacy layout.',
+      group: 'builder',
+      of: [
+        { type: 'heroSection' },
+        { type: 'statsSection' },
+        { type: 'servicesSection' },
+        { type: 'industriesSection' },
+        { type: 'techSpecsSection' },
+        { type: 'showcaseSection' },
+        { type: 'resourcesSection' },
+        { type: 'ctaSection' },
+        { type: 'richTextSection' },
+      ],
+    },
+    {
       name: 'header',
       type: 'object',
       title: 'Header',
-      group: 'header',
+      group: 'legacy',
       options: {
         collapsible: true,
-        collapsed: false,
+        collapsed: true,
       },
       fieldsets: [
         {name: 'headerContent', title: 'Header Content', options: {columns: 2}},
@@ -39,10 +56,14 @@ export default {
       ],
     },
     {
-      name: 'sections',
+      name: 'legacyContentSections',
       type: 'array',
-      title: 'Content Sections',
-      group: 'content',
+      title: 'Legacy Content Sections',
+      group: 'legacy',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -62,7 +83,7 @@ export default {
       name: 'contact',
       type: 'object',
       title: 'Contact Information',
-      group: 'contact',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
