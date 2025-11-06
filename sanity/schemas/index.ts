@@ -18,6 +18,12 @@ import uiText from './ui-text'
 import pageContent from './page-content'
 import page from './page'
 import heroSection from './sections/heroSection'
+import servicesSection from './sections/servicesSection'
+import industriesSection from './sections/industriesSection'
+import techSpecsSection from './sections/techSpecsSection'
+import showcaseSection from './sections/showcaseSection'
+import resourcesSection from './sections/resourcesSection'
+import statsSection from './sections/statsSection'
 import richTextSection from './sections/richTextSection'
 import ctaSection from './sections/ctaSection'
 import navItem from './objects/navItem'
@@ -52,6 +58,12 @@ export const schemaTypes = [
 
   // Section schemas
   heroSection,
+  servicesSection,
+  industriesSection,
+  techSpecsSection,
+  showcaseSection,
+  resourcesSection,
+  statsSection,
   richTextSection,
   ctaSection,
 

@@ -64,6 +64,12 @@ export default {
       group: 'content',
       of: [
         { type: 'heroSection' },
+        { type: 'servicesSection' },
+        { type: 'industriesSection' },
+        { type: 'techSpecsSection' },
+        { type: 'showcaseSection' },
+        { type: 'resourcesSection' },
+        { type: 'statsSection' },
         { type: 'richTextSection' },
         { type: 'ctaSection' },
       ],

@@ -4,6 +4,12 @@ import HeroSection from '@/components/ui/hero-section'
 import { createPortableTextComponents } from '@/components/portable-text-components'
 import { PortableText } from '@portabletext/react'
 import CTA from '@/components/sections/CTA'
+import Services from '@/components/sections/Services'
+import Industries from '@/components/sections/Industries'
+import TechnicalSpecs from '@/components/sections/TechnicalSpecs'
+import ImageShowcase from '@/components/sections/ImageShowcase'
+import Resources from '@/components/sections/Resources'
+import Stats from '@/components/sections/Stats'
 import { getBackgroundColor, paddingToClass } from '@/lib/sanity-styles'
 
 export default function PageSections({ sections }: { sections: any[] }) {
@@ -75,6 +81,66 @@ export default function PageSections({ sections }: { sections: any[] }) {
                   <PortableText value={section?.content || []} components={customComponents as any} />
                 </div>
               </section>
+            )
+          }
+          case 'servicesSection': {
+            return (
+              <Services
+                key={idx}
+                data={section?.services}
+                sectionData={{
+                  eyebrow: section?.eyebrow,
+                  heading: section?.heading,
+                  description: section?.description,
+                  subdescription: section?.subdescription,
+                }}
+              />
+            )
+          }
+          case 'industriesSection': {
+            return (
+              <Industries
+                key={idx}
+                data={section?.industries}
+                sectionData={{
+                  eyebrow: section?.eyebrow,
+                  heading: section?.heading,
+                  description: section?.description,
+                  subdescription: section?.subdescription,
+                }}
+              />
+            )
+          }
+          case 'techSpecsSection': {
+            return (
+              <TechnicalSpecs
+                key={idx}
+                data={section?.specs}
+              />
+            )
+          }
+          case 'showcaseSection': {
+            return (
+              <ImageShowcase
+                key={idx}
+                data={section}
+              />
+            )
+          }
+          case 'resourcesSection': {
+            return (
+              <Resources
+                key={idx}
+                data={section}
+              />
+            )
+          }
+          case 'statsSection': {
+            return (
+              <Stats
+                key={idx}
+                data={section}
+              />
             )
           }
           case 'ctaSection': {
