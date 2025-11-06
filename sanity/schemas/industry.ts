@@ -38,9 +38,8 @@ export default {
   },
   groups: [
     {name: 'general', title: 'General Info', default: true},
-    {name: 'hero', title: 'Hero Section'},
-    {name: 'overview', title: 'Overview'},
-    {name: 'details', title: 'Industry Details'},
+    {name: 'builder', title: '🎨 Page Builder'},
+    {name: 'legacy', title: '📦 Legacy Sections'},
     {name: 'seo', title: 'SEO & Sharing'},
     {name: 'display', title: 'Display Options'},
   ],
@@ -91,10 +90,29 @@ export default {
       of: [{type: 'block'}],
     },
     {
+      name: 'sections',
+      type: 'array',
+      title: 'Page Sections',
+      description: 'Build your industry page by adding and arranging sections. Drag to reorder. Leave empty to use legacy layout.',
+      group: 'builder',
+      of: [
+        { type: 'heroSection' },
+        { type: 'statsSection' },
+        { type: 'servicesSection' },
+        { type: 'industriesSection' },
+        { type: 'techSpecsSection' },
+        { type: 'showcaseSection' },
+        { type: 'resourcesSection' },
+        { type: 'ctaSection' },
+        { type: 'richTextSection' },
+      ],
+    },
+    {
       name: 'hero',
       type: 'object',
-      title: 'Hero Section',
-      group: 'hero',
+      title: 'Hero Section (Legacy)',
+      description: 'Legacy: Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: false,
@@ -157,8 +175,9 @@ export default {
     {
       name: 'overview',
       type: 'object',
-      title: 'Overview',
-      group: 'overview',
+      title: 'Overview (Legacy)',
+      description: 'Legacy: Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: false,
@@ -214,7 +233,7 @@ export default {
       name: 'capabilities',
       type: 'array',
       title: 'Capabilities',
-      group: 'details',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -234,7 +253,7 @@ export default {
       name: 'regulatory',
       type: 'array',
       title: 'Regulatory Standards',
-      group: 'details',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -264,7 +283,7 @@ export default {
       name: 'applications',
       type: 'array',
       title: 'Applications',
-      group: 'details',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -293,7 +312,7 @@ export default {
       name: 'components',
       type: 'array',
       title: 'Components',
-      group: 'details',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -368,7 +387,7 @@ export default {
       name: 'qualityStandards',
       type: 'array',
       title: 'Quality Standards',
-      group: 'details',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -398,7 +417,7 @@ export default {
       name: 'processBenefits',
       type: 'array',
       title: 'Process Benefits',
-      group: 'details',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,

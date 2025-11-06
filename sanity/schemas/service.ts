@@ -38,9 +38,8 @@ export default {
   },
   groups: [
     {name: 'general', title: 'General Info', default: true},
-    {name: 'hero', title: 'Hero Section'},
-    {name: 'overview', title: 'Overview'},
-    {name: 'details', title: 'Service Details'},
+    {name: 'builder', title: '🎨 Page Builder'},
+    {name: 'legacy', title: '📦 Legacy Sections'},
     {name: 'seo', title: 'SEO & Sharing'},
     {name: 'display', title: 'Display Options'},
   ],
@@ -91,10 +90,29 @@ export default {
       of: [{type: 'block'}],
     },
     {
+      name: 'sections',
+      type: 'array',
+      title: 'Page Sections',
+      description: 'Build your service page by adding and arranging sections. Drag to reorder. Leave empty to use legacy layout.',
+      group: 'builder',
+      of: [
+        { type: 'heroSection' },
+        { type: 'statsSection' },
+        { type: 'servicesSection' },
+        { type: 'industriesSection' },
+        { type: 'techSpecsSection' },
+        { type: 'showcaseSection' },
+        { type: 'resourcesSection' },
+        { type: 'ctaSection' },
+        { type: 'richTextSection' },
+      ],
+    },
+    {
       name: 'hero',
       type: 'object',
-      title: 'Hero Section',
-      group: 'hero',
+      title: 'Hero Section (Legacy)',
+      description: 'Legacy: Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: false,
@@ -174,8 +192,9 @@ export default {
     {
       name: 'overview',
       type: 'object',
-      title: 'Overview',
-      group: 'overview',
+      title: 'Overview (Legacy)',
+      description: 'Legacy: Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: false,
@@ -203,8 +222,9 @@ export default {
     {
       name: 'capabilities',
       type: 'array',
-      title: 'Capabilities',
-      group: 'details',
+      title: 'Capabilities (Legacy)',
+      description: 'Legacy: Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -223,8 +243,9 @@ export default {
     {
       name: 'services',
       type: 'array',
-      title: 'Service Offerings',
-      group: 'details',
+      title: 'Service Offerings (Legacy)',
+      description: 'Legacy: Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -278,8 +299,9 @@ export default {
     {
       name: 'technicalSpecs',
       type: 'array',
-      title: 'Technical Specifications',
-      group: 'details',
+      title: 'Technical Specifications (Legacy)',
+      description: 'Legacy: Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -298,8 +320,9 @@ export default {
     {
       name: 'process',
       type: 'array',
-      title: 'Process',
-      group: 'details',
+      title: 'Process (Legacy)',
+      description: 'Legacy: Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -329,8 +352,9 @@ export default {
     {
       name: 'equipment',
       type: 'array',
-      title: 'Equipment',
-      group: 'details',
+      title: 'Equipment (Legacy)',
+      description: 'Legacy: Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -348,8 +372,9 @@ export default {
     {
       name: 'materials',
       type: 'array',
-      title: 'Materials',
-      group: 'details',
+      title: 'Materials (Legacy)',
+      description: 'Legacy: Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
@@ -378,8 +403,9 @@ export default {
     {
       name: 'processes',
       type: 'array',
-      title: 'Processes',
-      group: 'details',
+      title: 'Processes (Legacy)',
+      description: 'Legacy: Use Page Builder for new layouts.',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
