@@ -1,5 +1,5 @@
 import ContactPageClient from './page-client';
-import { getContact } from '@/sanity/lib/queries';
+import { getContact, getAllServices, getAllIndustries } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 
 // Force static generation for INSTANT routing (no server delays)
@@ -9,9 +9,19 @@ export const revalidate = 60; // Revalidate every 60 seconds
 export default async function ContactPage() {
   const { isEnabled } = await draftMode();
   // Fetch data from CMS
-  const contactData = await getContact(isEnabled);
+  const [contactData, allServices, allIndustries] = await Promise.all([
+    getContact(isEnabled),
+    getAllServices(isEnabled),
+    getAllIndustries(isEnabled),
+  ]);
 
-  return <ContactPageClient data={contactData as any} />;
+  return (
+    <ContactPageClient
+      data={contactData as any}
+      allServices={allServices}
+      allIndustries={allIndustries}
+    />
+  );
 }
 
 // Generate metadata for SEO

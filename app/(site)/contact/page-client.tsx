@@ -35,6 +35,7 @@ import {
   FileText,
   Check
 } from 'lucide-react';
+import PageSections from '@/components/page-builder/PageSections';
 
 // Icon mapping for bottom stats
 const iconMap: Record<string, any> = {
@@ -86,6 +87,8 @@ const defaultContactData = {
 
 interface ContactPageClientProps {
   data?: typeof defaultContactData | null;
+  allServices?: any[];
+  allIndustries?: any[];
 }
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -114,8 +117,26 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
-export default function ContactPageClient({ data }: ContactPageClientProps) {
+export default function ContactPageClient({ data, allServices, allIndustries }: ContactPageClientProps) {
   const contactData = data || defaultContactData;
+
+  // Check if using page builder (sections array)
+  const useSectionsBuilder = (data as any)?.sections && (data as any).sections.length > 0;
+
+  // If using page builder, render sections
+  if (useSectionsBuilder) {
+    return (
+      <div className="min-h-screen bg-background">
+        <PageSections
+          sections={(data as any).sections}
+          globalData={{
+            services: allServices || [],
+            industries: allIndustries || [],
+          }}
+        />
+      </div>
+    );
+  }
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState<{
     success: boolean;

@@ -4,20 +4,37 @@ export default {
   title: 'Contact Page',
   __experimental_singleton: true,
   groups: [
-    {name: 'hero', title: 'Hero', default: true},
-    {name: 'contactDetails', title: 'Contact Details'},
-    {name: 'additionalSections', title: 'Additional Sections'},
+    {name: 'builder', title: '🎨 Page Builder', default: true},
+    {name: 'legacy', title: '📦 Legacy Fields'},
     {name: 'seo', title: 'SEO & Sharing'},
   ],
   fields: [
     {
+      name: 'sections',
+      type: 'array',
+      title: 'Page Sections',
+      description: 'Build your contact page using the page builder. Drag to reorder sections. Leave empty to use legacy layout.',
+      group: 'builder',
+      of: [
+        { type: 'heroSection' },
+        { type: 'statsSection' },
+        { type: 'servicesSection' },
+        { type: 'industriesSection' },
+        { type: 'techSpecsSection' },
+        { type: 'showcaseSection' },
+        { type: 'resourcesSection' },
+        { type: 'ctaSection' },
+        { type: 'richTextSection' },
+      ],
+    },
+    {
       name: 'hero',
       type: 'object',
       title: 'Hero Section',
-      group: 'hero',
+      group: 'legacy',
       options: {
         collapsible: true,
-        collapsed: false,
+        collapsed: true,
       },
       fieldsets: [
         {name: 'background', title: 'Background Image', options: {collapsible: true, collapsed: false}},
@@ -97,10 +114,10 @@ export default {
       name: 'contactInfo',
       type: 'object',
       title: 'Contact Information',
-      group: 'contactDetails',
+      group: 'legacy',
       options: {
         collapsible: true,
-        collapsed: false,
+        collapsed: true,
       },
       fieldsets: [
         {name: 'header', title: 'Header', options: {columns: 2}},
@@ -183,7 +200,11 @@ export default {
       name: 'certifications',
       type: 'array',
       title: 'Certifications',
-      group: 'additionalSections',
+      group: 'legacy',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       of: [
         {
           type: 'object',
@@ -195,7 +216,7 @@ export default {
       name: 'bottomStats',
       type: 'array',
       title: 'Bottom Statistics',
-      group: 'additionalSections',
+      group: 'legacy',
       options: {
         collapsible: true,
         collapsed: true,
