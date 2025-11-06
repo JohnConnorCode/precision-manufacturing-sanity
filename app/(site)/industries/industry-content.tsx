@@ -9,6 +9,7 @@ import ParallaxImagePro from '@/components/ui/parallax-image-pro';
 import { theme, styles, cn } from '@/lib/theme';
 import { PortableTextContent } from '@/components/portable-text-components';
 import HeroSection from '@/components/ui/hero-section';
+import PageSections from '@/components/page-builder/PageSections';
 import React from 'react';
 
 interface IndustryContentProps {
@@ -19,6 +20,19 @@ interface IndustryContentProps {
 export function IndustryContent({ industryData, slug }: IndustryContentProps) {
   const industry = industryData as any;
 
+  // Check if industry uses new page builder (sections array)
+  const useSectionsBuilder = industry?.sections && industry.sections.length > 0;
+
+  // If using page builder, render with PageSections component
+  if (useSectionsBuilder) {
+    return (
+      <div className="min-h-screen bg-background">
+        <PageSections sections={industry.sections} />
+      </div>
+    );
+  }
+
+  // Legacy layout - render hardcoded sections
   const heroImage = industry.hero?.backgroundImage?.asset?.url || industry.hero?.backgroundImage
     ? (industry.hero?.backgroundImage?.asset?.url || industry.hero.backgroundImage)
     : 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=2400&q=90';

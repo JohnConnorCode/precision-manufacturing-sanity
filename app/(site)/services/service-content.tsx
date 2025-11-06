@@ -9,6 +9,7 @@ import ParallaxImagePro from '@/components/ui/parallax-image-pro';
 import { theme, styles, cn } from '@/lib/theme';
 import { PortableTextContent } from '@/components/portable-text-components';
 import HeroSection from '@/components/ui/hero-section';
+import PageSections from '@/components/page-builder/PageSections';
 import React from 'react';
 
 // Icon mapping for service offerings
@@ -27,6 +28,20 @@ interface ServiceContentProps {
 
 export function ServiceContent({ serviceData, slug }: ServiceContentProps) {
   const service = serviceData as any;
+
+  // Check if service uses new page builder (sections array)
+  const useSectionsBuilder = service?.sections && service.sections.length > 0;
+
+  // If using page builder, render with PageSections component
+  if (useSectionsBuilder) {
+    return (
+      <div className="min-h-screen bg-background">
+        <PageSections sections={service.sections} />
+      </div>
+    );
+  }
+
+  // Legacy layout - render hardcoded sections
   const heroImage = service.hero?.backgroundImage?.asset?.url || service.hero?.backgroundImage
     ? (service.hero?.backgroundImage?.asset?.url || service.hero.backgroundImage)
     : 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=2400&q=90';

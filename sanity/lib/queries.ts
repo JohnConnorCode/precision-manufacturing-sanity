@@ -60,6 +60,52 @@ export async function getServiceBySlug(slug: string, preview = false) {
       order,
       highlight,
       image{asset->{url,_id}, alt},
+      sections[] {
+        _type,
+        _key,
+        _type == "heroSection" => {
+          badge, badgeIconName, title, titleHighlight, description,
+          buttons[] { label, href, variant },
+          backgroundImageUrl, imageAlt, height, alignment,
+          titleColor, titleHighlightColor, descriptionColor, badgeStyle, overlay, buttonStyles
+        },
+        _type == "statsSection" => {
+          title, subtitle,
+          items[] { value, label, description }
+        },
+        _type == "servicesSection" => {
+          eyebrow, heading, description, subdescription,
+          services[]-> { _id, title, slug, shortDescription, icon, image {asset->{_id, url}, alt} }
+        },
+        _type == "industriesSection" => {
+          eyebrow, heading, description, subdescription,
+          industries[]-> { _id, title, slug, shortDescription, icon, image {asset->{_id, url}, alt} }
+        },
+        _type == "techSpecsSection" => {
+          specs[] { label, value, description, iconName, gradient }
+        },
+        _type == "showcaseSection" => {
+          header { eyebrow, title, titleHighlight, description },
+          showcaseImages[] { image {asset->{_id, url}, alt}, title, category, href },
+          stats[] { iconName, value, label },
+          cta { title, description, buttons[] { enabled, text, href, variant } }
+        },
+        _type == "resourcesSection" => {
+          header { badge, title, description },
+          featuredSeries[] { title, slug, description, articleCount, readTime, difficulty, icon, gradient },
+          benefits[] { enabled, iconName, title, description },
+          cta { title, description, buttons[] { enabled, text, href, variant } }
+        },
+        _type == "ctaSection" => {
+          title, subtitle,
+          buttons[] { enabled, text, href, variant },
+          theme, titleColor, subtitleColor, buttonStyles, padding
+        },
+        _type == "richTextSection" => {
+          content, container, padding, theme,
+          headingStyles, bodyTextStyle, linkStyle, blockquoteStyle, codeStyle
+        }
+      },
       hero{
         backgroundImage{asset->{url,_id}},
         badge, subtitle
@@ -128,6 +174,52 @@ export async function getIndustryBySlug(slug: string, preview = false) {
       order,
       image{asset->{url,_id}, alt},
       features,
+      sections[] {
+        _type,
+        _key,
+        _type == "heroSection" => {
+          badge, badgeIconName, title, titleHighlight, description,
+          buttons[] { label, href, variant },
+          backgroundImageUrl, imageAlt, height, alignment,
+          titleColor, titleHighlightColor, descriptionColor, badgeStyle, overlay, buttonStyles
+        },
+        _type == "statsSection" => {
+          title, subtitle,
+          items[] { value, label, description }
+        },
+        _type == "servicesSection" => {
+          eyebrow, heading, description, subdescription,
+          services[]-> { _id, title, slug, shortDescription, icon, image {asset->{_id, url}, alt} }
+        },
+        _type == "industriesSection" => {
+          eyebrow, heading, description, subdescription,
+          industries[]-> { _id, title, slug, shortDescription, icon, image {asset->{_id, url}, alt} }
+        },
+        _type == "techSpecsSection" => {
+          specs[] { label, value, description, iconName, gradient }
+        },
+        _type == "showcaseSection" => {
+          header { eyebrow, title, titleHighlight, description },
+          showcaseImages[] { image {asset->{_id, url}, alt}, title, category, href },
+          stats[] { iconName, value, label },
+          cta { title, description, buttons[] { enabled, text, href, variant } }
+        },
+        _type == "resourcesSection" => {
+          header { badge, title, description },
+          featuredSeries[] { title, slug, description, articleCount, readTime, difficulty, icon, gradient },
+          benefits[] { enabled, iconName, title, description },
+          cta { title, description, buttons[] { enabled, text, href, variant } }
+        },
+        _type == "ctaSection" => {
+          title, subtitle,
+          buttons[] { enabled, text, href, variant },
+          theme, titleColor, subtitleColor, buttonStyles, padding
+        },
+        _type == "richTextSection" => {
+          content, container, padding, theme,
+          headingStyles, bodyTextStyle, linkStyle, blockquoteStyle, codeStyle
+        }
+      },
       hero{ backgroundImage{asset->{url,_id}}, badge, subtitle },
       overview,
       capabilities,
