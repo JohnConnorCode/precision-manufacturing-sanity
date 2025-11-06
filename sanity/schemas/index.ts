@@ -35,6 +35,26 @@ import equipmentSpec from './blocks/equipmentSpec'
 import ctaButton from './blocks/ctaButton'
 
 export const schemaTypes = [
+  // Style Objects (must be first - used by other schemas)
+  colorStyle,
+  typographyStyle,
+  sectionTheme,
+
+  // Custom Blocks and Objects
+  calloutBox,
+  toleranceTable,
+  processFlow,
+  materialData,
+  equipmentSpec,
+  ctaButton,
+  navItem,
+  navGroup,
+
+  // Section schemas
+  heroSection,
+  richTextSection,
+  ctaSection,
+
   // Collections
   service,
   industry,
@@ -54,22 +74,4 @@ export const schemaTypes = [
   uiText,
   pageContent,
   page,
-  heroSection,
-  richTextSection,
-  ctaSection,
-
-  // Custom Blocks
-  calloutBox,
-  toleranceTable,
-  processFlow,
-  materialData,
-  equipmentSpec,
-  ctaButton,
-  navItem,
-  navGroup,
-
-  // Style Objects
-  colorStyle,
-  typographyStyle,
-  sectionTheme,
 ]
