@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Clock, ArrowRight, Lightbulb } from 'lucide-react';
 import HeroSection from '@/components/ui/hero-section';
 import { getAllResources, getPageContent } from '@/sanity/lib/queries';
+import { PortableTextContent } from '@/components/portable-text-components';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
 
