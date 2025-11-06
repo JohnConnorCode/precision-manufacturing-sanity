@@ -3,15 +3,5 @@
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "outputDirectory": ".next",
-  "functions": {
-    "app/(payload)/admin/[[...segments]]/page": {
-      "maxDuration": 60,
-      "memory": 2048
-    },
-    "app/(payload)/api/[...slug]/route": {
-      "maxDuration": 60,
-      "memory": 2048
-    }
-  }
+  "outputDirectory": ".next"
 }
