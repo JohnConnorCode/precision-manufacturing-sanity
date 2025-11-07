@@ -329,23 +329,28 @@ export async function getNavigation(preview = false) {
 export async function getHomepage(preview = false) {
   try {
   const query = `*[_type == "homepage"][0] {
-    hero,
-    heroEnhanced {
-      mainTitle,
-      subtitle,
+    hero {
+      backgroundGradient,
+      headingTextColor,
+      taglineTextColor,
+      heroVerticalPadding,
+      word1,
+      word2,
+      word3,
+      heroFontSize,
       tagline,
       badges,
       ctaPrimary,
       ctaSecondary,
+      ctaTertiary,
       slides[] {
-        imageUrl,
-        imageAlt,
         image {
           asset->{
             _id,
             url
           },
-          alt
+          alt,
+          caption
         }
       }
     },

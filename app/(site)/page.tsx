@@ -41,7 +41,7 @@ export default async function Home() {
     ...industry,
     description: industry.shortDescription || portableTextToPlainText(industry.description),
     href: `/industries/${industry.slug?.current || industry.slug}`,
-    image: industry.image?.asset?.url || '', // Extract URL from Sanity image object
+    image: industry.image?.asset?.url || industry.imageUrl || '', // Extract URL from Sanity image object or imageUrl field
   }));
 
   const heroData = homepageData?.heroEnhanced || homepageData?.hero || undefined;

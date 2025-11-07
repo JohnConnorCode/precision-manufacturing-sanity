@@ -117,7 +117,7 @@ export default function Hero({ data }: HeroProps) {
     // word3 stays as is if data.word3 not provided
   }
 
-  const heroFontSize = data?.heroFontSize || 'text-5xl md:text-7xl';
+  const heroFontSize = data?.heroFontSize || 'text-4xl md:text-5xl lg:text-6xl';
   const tagline = data?.tagline || 'Innovative Precision Machining & Manufacturing Excellence Since 1995';
 
   // Handle both string badges and object badges from Sanity, with fallbacks
@@ -129,13 +129,14 @@ export default function Hero({ data }: HeroProps) {
   ];
   const badges = (data?.badges && data.badges.length > 0)
     ? (data.badges || []).map((badge: any) =>
-        typeof badge === 'string' ? badge : badge.text || badge.id || badge
+        typeof badge === 'string' ? badge : (badge.text || badge.badge || badge.id || '')
       )
     : defaultBadges;
 
-  const ctaPrimary = data?.ctaPrimary || { text: 'Get Quote', href: '/contact?interest=quote' };
-  const ctaSecondary = data?.ctaSecondary || { text: 'View Capabilities', href: '/services' };
-  const ctaTertiary = data?.ctaTertiary || { text: 'Learn More', href: '/about' };
+  // Reference site shows ONLY ONE button: "View Capabilities"
+  const ctaPrimary = data?.ctaPrimary?.text ? data.ctaPrimary : { text: 'View Capabilities', href: '/services' };
+  const ctaSecondary = null; // Hidden - reference site shows only 1 button
+  const ctaTertiary = null; // Hidden - reference site shows only 1 button
 
   // Extract styles from Sanity data
   const titleColor = colorStyleToCSS(data?.titleColor) || 'rgba(255, 255, 255, 0.9)';
@@ -212,7 +213,7 @@ export default function Hero({ data }: HeroProps) {
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: prefersReducedMotion ? 0 : 0.4, duration: prefersReducedMotion ? 0 : 0.8 }}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold leading-[1.3] tracking-normal mb-8"
+              className="text-lg sm:text-xl md:text-2xl font-semibold leading-[1.3] tracking-normal mb-8"
               style={{ color: descriptionColor }}
             >
               {tagline}
@@ -259,66 +260,72 @@ export default function Hero({ data }: HeroProps) {
               transition={{ delay: prefersReducedMotion ? 0 : 1.2, duration: prefersReducedMotion ? 0 : 0.8 }}
               className="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap"
             >
-              <Button
-                size="lg"
-                className="group font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 px-10 h-14 text-lg rounded-md"
-                style={
-                  Object.keys(primaryButtonStyles.style).length > 0
-                    ? primaryButtonStyles.style
-                    : {
-                        backgroundImage: 'linear-gradient(to right, #2563eb, #4f46e5)',
-                        color: '#ffffff',
-                      }
-                }
-                asChild
-              >
-                <Link href={ctaPrimary.href}>
-                  {ctaPrimary.text}
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="group backdrop-blur-sm font-semibold transition-all duration-300 px-10 h-14 text-lg rounded-md"
-                style={
-                  Object.keys(secondaryButtonStyles.style).length > 0
-                    ? secondaryButtonStyles.style
-                    : {
-                        borderWidth: '2px',
-                        borderColor: 'rgba(255, 255, 255, 0.8)',
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        color: '#ffffff',
-                      }
-                }
-                asChild
-              >
-                <Link href={ctaSecondary.href}>
-                  {ctaSecondary.text}
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="group backdrop-blur-sm font-semibold transition-all duration-300 px-10 h-14 text-lg rounded-md"
-                style={
-                  Object.keys(secondaryButtonStyles.style).length > 0
-                    ? secondaryButtonStyles.style
-                    : {
-                        borderWidth: '2px',
-                        borderColor: 'rgba(255, 255, 255, 0.8)',
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        color: '#ffffff',
-                      }
-                }
-                asChild
-              >
-                <Link href={ctaTertiary.href}>
-                  {ctaTertiary.text}
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-              </Button>
+              {ctaPrimary && ctaPrimary.text && (
+                <Button
+                  size="lg"
+                  className="group font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 px-10 h-14 text-lg rounded-md"
+                  style={
+                    Object.keys(primaryButtonStyles.style).length > 0
+                      ? primaryButtonStyles.style
+                      : {
+                          backgroundImage: 'linear-gradient(to right, #2563eb, #4f46e5)',
+                          color: '#ffffff',
+                        }
+                  }
+                  asChild
+                >
+                  <Link href={ctaPrimary.href}>
+                    {ctaPrimary.text}
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+              )}
+              {ctaSecondary && ctaSecondary.text && (
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="group backdrop-blur-sm font-semibold transition-all duration-300 px-10 h-14 text-lg rounded-md"
+                  style={
+                    Object.keys(secondaryButtonStyles.style).length > 0
+                      ? secondaryButtonStyles.style
+                      : {
+                          borderWidth: '2px',
+                          borderColor: 'rgba(255, 255, 255, 0.8)',
+                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                          color: '#ffffff',
+                        }
+                  }
+                  asChild
+                >
+                  <Link href={ctaSecondary.href}>
+                    {ctaSecondary.text}
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+              )}
+              {ctaTertiary && ctaTertiary.text && (
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="group backdrop-blur-sm font-semibold transition-all duration-300 px-10 h-14 text-lg rounded-md"
+                  style={
+                    Object.keys(secondaryButtonStyles.style).length > 0
+                      ? secondaryButtonStyles.style
+                      : {
+                          borderWidth: '2px',
+                          borderColor: 'rgba(255, 255, 255, 0.8)',
+                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                          color: '#ffffff',
+                        }
+                  }
+                  asChild
+                >
+                  <Link href={ctaTertiary.href}>
+                    {ctaTertiary.text}
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+              )}
             </motion.div>
 
           </motion.div>

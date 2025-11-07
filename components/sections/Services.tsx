@@ -21,7 +21,7 @@ const iconMap: Record<string, LucideIcon> = {
 const fallbackServices = [
   {
     title: '5-Axis CNC Machining',
-    description: 'Advanced multi-axis CNC capabilities for complex aerospace and defense components',
+    description: 'Complex geometries with unmatched precision for aerospace components',
     iconName: 'Cog',
     href: '/services/5-axis-machining',
     specs: ['±0.0001" tolerance', 'Titanium & super alloys', 'Up to 60" parts'],
@@ -30,7 +30,7 @@ const fallbackServices = [
   },
   {
     title: 'Adaptive Machining',
-    description: 'Intelligent material removal strategies for optimal efficiency',
+    description: 'Real-time adjustments based on in-process measurements',
     iconName: 'Cpu',
     href: '/services/adaptive-machining',
     specs: ['In-process verification', 'Automated compensation', 'Zero defect goal'],
@@ -39,7 +39,7 @@ const fallbackServices = [
   },
   {
     title: 'Metrology & Inspection',
-    description: 'Comprehensive measurement and inspection services',
+    description: 'Complete dimensional verification with CMM and laser scanning',
     iconName: 'Gauge',
     href: '/services/metrology',
     specs: ['0.00005" accuracy', 'GD&T analysis', 'AS9102 certified'],
@@ -47,8 +47,8 @@ const fallbackServices = [
     highlight: false
   },
   {
-    title: 'Engineering Support',
-    description: 'Design, analysis, and optimization expertise',
+    title: 'Engineering Services',
+    description: 'Design optimization and manufacturing consultation',
     iconName: 'Users',
     href: '/services/engineering',
     specs: ['DFM analysis', 'Process planning', 'Cost optimization'],
@@ -75,7 +75,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
   // Section data from CMS (required) - with fallbacks
   const eyebrow = sectionData?.eyebrow || 'COMPREHENSIVE MANUFACTURING SOLUTIONS';
   const heading = sectionData?.heading || 'PRECISION SERVICES';
-  const description = sectionData?.description || 'Four core service pillars deliver comprehensive manufacturing excellence';
+  const description = sectionData?.description || 'Four core service pillars delivering unmatched precision and reliability';
 
   return (
     <section className={`relative ${spacing.section} overflow-hidden ${colors.bgLight}`}>

@@ -17,42 +17,7 @@ export default {
     {
       name: 'hero',
       type: 'object',
-      title: 'Hero Section (Legacy)',
-      description: 'Legacy hero content retained for older layouts. Keep populated for safe fallback content.',
-      group: 'hero',
-      options: {
-        collapsible: true,
-        collapsed: true,
-      },
-      fields: [
-        {
-          name: 'headline',
-          type: 'string',
-          title: 'Headline',
-        },
-        {
-          name: 'subheadline',
-          type: 'text',
-          title: 'Subheadline',
-          rows: 3,
-        },
-        {
-          name: 'badges',
-          type: 'array',
-          title: 'Badges',
-          of: [
-            {
-              type: 'object',
-              fields: [{name: 'badge', type: 'string', title: 'Badge'}],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'heroEnhanced',
-      type: 'object',
-      title: 'Enhanced Hero Section',
+      title: 'Hero Section',
       description: 'Primary hero experience with carousel, badges, and call-to-actions.',
       group: 'hero',
       options: {
@@ -64,9 +29,9 @@ export default {
         {name: 'styling', title: 'Styling & Colors'},
         {name: 'slides', title: 'Hero Slides', options: {collapsible: true, collapsed: false}},
         {name: 'badges', title: 'Badges Strip', options: {collapsible: true, collapsed: true}},
-        {name: 'primaryCta', title: 'Primary CTA', options: {columns: 2}},
-        {name: 'secondaryCta', title: 'Secondary CTA', options: {columns: 2}},
-        {name: 'tertiaryCta', title: 'Tertiary CTA', options: {columns: 2}},
+        {name: 'primaryCta', title: 'Primary CTA Button', options: {columns: 2}},
+        {name: 'secondaryCta', title: 'Secondary CTA (Hidden by default)', options: {columns: 2, collapsible: true, collapsed: true}},
+        {name: 'tertiaryCta', title: 'Tertiary CTA (Hidden by default)', options: {columns: 2, collapsible: true, collapsed: true}},
       ],
       fields: [
         {
@@ -129,8 +94,8 @@ export default {
           name: 'heroFontSize',
           type: 'string',
           title: 'Hero Font Size (Tailwind)',
-          description: 'Font size class for all three heading words (e.g., "text-5xl md:text-7xl")',
-          initialValue: 'text-5xl md:text-7xl',
+          description: 'Font size class for all three heading words (e.g., "text-4xl md:text-5xl lg:text-6xl")',
+          initialValue: 'text-4xl md:text-5xl lg:text-6xl',
           fieldset: 'copy',
         },
         {
@@ -244,6 +209,7 @@ export default {
             { text: 'Engineering Excellence' },
             { text: '3 Sigma Yield' },
           ],
+          description: 'Capability badges shown below tagline (reference site shows 4 badges)',
         },
         {
           name: 'ctaPrimary',
@@ -269,19 +235,18 @@ export default {
           name: 'ctaSecondary',
           type: 'object',
           title: 'Secondary CTA Button',
+          description: 'Optional second button (hidden by default to match reference site)',
           fieldset: 'secondaryCta',
           fields: [
             {
               name: 'text',
               type: 'string',
               title: 'Button Text',
-              initialValue: 'Get Quote',
             },
             {
               name: 'href',
               type: 'string',
               title: 'Button Link',
-              initialValue: '/contact?interest=quote',
             },
           ],
         },
@@ -289,19 +254,18 @@ export default {
           name: 'ctaTertiary',
           type: 'object',
           title: 'Tertiary CTA Button',
+          description: 'Optional third button (hidden by default to match reference site)',
           fieldset: 'tertiaryCta',
           fields: [
             {
               name: 'text',
               type: 'string',
               title: 'Button Text',
-              initialValue: 'Learn More',
             },
             {
               name: 'href',
               type: 'string',
               title: 'Button Link',
-              initialValue: '/about',
             },
           ],
         },
@@ -426,6 +390,7 @@ export default {
           title: 'Eyebrow',
           description: 'Small text above the heading (e.g., "Our Services")',
           fieldset: 'content',
+          initialValue: 'COMPREHENSIVE MANUFACTURING SOLUTIONS',
         },
         {
           name: 'heading',
@@ -433,6 +398,7 @@ export default {
           title: 'Heading',
           description: 'Main section heading',
           fieldset: 'content',
+          initialValue: 'PRECISION SERVICES',
         },
         {
           name: 'description',
@@ -440,12 +406,14 @@ export default {
           title: 'Description',
           rows: 3,
           fieldset: 'content',
+          initialValue: 'Four core service pillars delivering unmatched precision and reliability',
         },
         {
           name: 'subdescription',
           type: 'string',
           title: 'Subdescription',
           fieldset: 'content',
+          initialValue: 'From complex 5-axis machining to advanced metrology, our integrated services ensure your most critical components meet the strictest aerospace and defense standards',
         },
         {
           name: 'headingColor',
