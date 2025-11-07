@@ -618,7 +618,17 @@ export async function getHomepage(preview = false) {
     technicalSpecs,
     imageShowcase,
     resourcesSection,
-    cta
+    cta,
+    // SEO fields
+    metaTitle,
+    metaDescription,
+    ogImage {
+      asset->{
+        _id,
+        url
+      },
+      alt
+    }
   }`
 
   return await getClient(preview).fetch(query)

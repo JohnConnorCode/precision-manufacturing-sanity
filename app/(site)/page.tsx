@@ -3,7 +3,6 @@ import TechnicalSpecs from '@/components/sections/TechnicalSpecs';
 import Services from '@/components/sections/Services';
 import Industries from '@/components/sections/Industries';
 import ImageShowcase from '@/components/sections/ImageShowcase';
-import Resources from '@/components/sections/Resources';
 import Stats from '@/components/sections/Stats';
 import CTA from '@/components/sections/CTA';
 import PageSections from '@/components/page-builder/PageSections';
@@ -124,7 +123,6 @@ export default async function Home() {
           <TechnicalSpecs data={homepageData?.technicalSpecs || undefined} />
           <Industries data={formattedIndustries || undefined} sectionData={homepageData?.industriesSection || undefined} />
           <ImageShowcase data={homepageData?.imageShowcase || undefined} />
-          <Resources data={homepageData?.resourcesSection || undefined} />
           <Stats data={homepageData?.stats || undefined} />
           <CTA data={homepageData?.cta || undefined} />
         </>
@@ -133,15 +131,18 @@ export default async function Home() {
   );
 }
 
-// Generate metadata for SEO
+// Generate metadata for SEO - pulls from Sanity CMS
 export async function generateMetadata() {
   const baseUrl = 'https://iismet.com';
+  const homepageData = await getHomepage();
 
+  // Use Sanity data if available, otherwise use defaults
   const metadata = {
-    title: 'IIS - Integrated Inspection Systems | Engineering, Metrology, Machining & Database Services',
-    description: 'Integrated Inspection Systems (IIS): Engineering, Metrology, Machining & Database Services since 1995. Proprietary MetBase® software links CMM, CNC & vision systems. AS9100, ISO 9001 certified, ITAR registered. Serving aerospace, manufacturing & government.',
+    title: homepageData?.metaTitle || 'IIS - Integrated Inspection Systems | Engineering, Metrology, Machining & Database Services',
+    description: homepageData?.metaDescription || 'Integrated Inspection Systems (IIS): Engineering, Metrology, Machining & Database Services since 1995. Proprietary MetBase® software links CMM, CNC & vision systems. AS9100, ISO 9001 certified, ITAR registered. Serving aerospace, manufacturing & government.',
     keywords: 'IIS, Integrated Inspection Systems, engineering services, metrology, machining, database services, MetBase software, CMM inspection, CNC machining, AS9100, ISO 9001, ITAR, aerospace, precision manufacturing, Oregon',
-    ogImage: `${baseUrl}/og-image-home.jpg`
+    ogImage: homepageData?.ogImage?.asset?.url || `${baseUrl}/og-image-home.jpg`,
+    ogImageAlt: homepageData?.ogImage?.alt || 'IIS Precision Manufacturing - Advanced CNC Machining Services'
   };
 
   return {
@@ -177,7 +178,7 @@ export async function generateMetadata() {
           url: metadata.ogImage,
           width: 1200,
           height: 630,
-          alt: 'IIS Precision Manufacturing - Advanced CNC Machining Services',
+          alt: metadata.ogImageAlt,
           type: 'image/jpeg',
         }
       ],
@@ -190,21 +191,13 @@ export async function generateMetadata() {
       description: metadata.description,
       images: [metadata.ogImage],
     },
-    verification: {
-      google: 'google-verification-code', // Add actual verification code
-      yandex: 'yandex-verification-code',
-      yahoo: 'yahoo-verification-code',
-      other: {
-        'msvalidate.01': 'bing-verification-code',
-      },
-    },
     category: 'Business',
     classification: 'Manufacturing',
     other: {
-      'business:contact_data:street_address': '123 Manufacturing Drive',
-      'business:contact_data:locality': 'Precision City',
+      'business:contact_data:street_address': '14310 SE Industrial Way',
+      'business:contact_data:locality': 'Clackamas',
       'business:contact_data:region': 'Oregon',
-      'business:contact_data:postal_code': '97201',
+      'business:contact_data:postal_code': '97015',
       'business:contact_data:country_name': 'United States',
       'business:contact_data:phone_number': '+1-503-231-9093',
       'business:contact_data:website': baseUrl,

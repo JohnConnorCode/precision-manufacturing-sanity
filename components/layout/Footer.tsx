@@ -38,7 +38,8 @@ const defaultFooterData = {
     { label: 'Industries', href: '/industries' },
     { label: 'Terms & Conditions', href: '/compliance/terms' },
     { label: 'Supplier Requirements', href: '/compliance/supplier-requirements' },
-    { label: 'Contact', href: '/contact' }
+    { label: 'Contact', href: '/contact' },
+    { label: 'Sitemap', href: '/sitemap.xml' }
   ],
   contact: {
     email: 'officemgr@iismet.com',
