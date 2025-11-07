@@ -3,26 +3,13 @@ import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
 import { PortableTextContent } from '@/components/portable-text-components';
 import { theme, styles, cn } from '@/lib/theme';
-import { ArrowRight, Shield, Award } from 'lucide-react';
+import { ArrowRight, Award } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImagePro from '@/components/ui/parallax-image-pro';
 import { getAllServices, getPageContent } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
-
-// Helper function to convert Portable Text to plain text
-function portableTextToPlainText(blocks: any): string {
-  if (!blocks) return '';
-  if (typeof blocks === 'string') return blocks;
-  if (!Array.isArray(blocks)) return '';
-
-  return blocks
-    .map((block: any) => {
-      if (block._type !== 'block' || !block.children) return '';
-      return block.children.map((child: any) => child.text).join('');
-    })
-    .join(' ');
-}
+import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 
 // Defensive converter: accepts strings, PT arrays, or simple objects
 function toPlainText(value: any): string {
@@ -100,7 +87,7 @@ export default async function ServicesPage() {
   ]);
 
   // Format services with slug and plain text description
-  const formattedServices = services?.map((service: any) => ({
+  const formattedServices = services?.map((service: any, _slug: number) => ({
     ...service,
     slug: service.slug?.current || service.slug,
     description: toPlainText(service.shortDescription) || portableTextToPlainText(service.description),

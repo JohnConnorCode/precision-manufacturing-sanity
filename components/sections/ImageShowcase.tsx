@@ -7,20 +7,7 @@ import Link from 'next/link';
 import { useRef } from 'react';
 import AnimatedSection from '@/components/ui/animated-section';
 import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
-
-// Helper function to convert Portable Text to plain text
-function portableTextToPlainText(blocks: any): string {
-  if (!blocks) return '';
-  if (typeof blocks === 'string') return blocks;
-  if (!Array.isArray(blocks)) return '';
-
-  return blocks
-    .map((block: any) => {
-      if (block._type !== 'block' || !block.children) return '';
-      return block.children.map((child: any) => child.text).join('');
-    })
-    .join(' ');
-}
+import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 
 // Icon mapping for stats
 const iconMap: Record<string, any> = {
@@ -35,14 +22,7 @@ interface ImageShowcaseProps {
 }
 
 export default function ImageShowcase({ data }: ImageShowcaseProps) {
-  // Use CMS data only
-  const showcaseData = data;
-
-  // Don't render if no data from CMS
-  if (!showcaseData || !showcaseData.header || !showcaseData.showcaseImages) {
-    return null;
-  }
-
+  // Hooks must be called before early return
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -51,6 +31,14 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
 
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.5, 1, 1, 0.5]);
   const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.95, 1, 1, 0.95]);
+
+  // Use CMS data only
+  const showcaseData = data;
+
+  // Don't render if no data from CMS
+  if (!showcaseData || !showcaseData.header || !showcaseData.showcaseImages) {
+    return null;
+  }
 
   return (
     <section ref={containerRef} className={`relative ${spacing.section} ${colors.bgLight} overflow-hidden`}>
@@ -73,7 +61,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
 
         {/* Large Feature Images */}
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid}`}>
-          {(showcaseData?.showcaseImages || []).map((item, index) => (
+          {(showcaseData?.showcaseImages || []).map((item: any, index: number) => (
             <AnimatedSection
               key={item.title}
               delay={index * 0.1}
@@ -126,7 +114,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
           transition={{ delay: 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
           className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20"
         >
-          {(showcaseData.stats || []).map((stat, index) => {
+          {(showcaseData.stats || []).map((stat: any, index: number) => {
             const Icon = iconMap[stat.iconName] || Award;
             return (
               <motion.div
@@ -170,7 +158,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                 {showcaseData.cta.description}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                {(showcaseData.cta.buttons || []).filter((button: any) => button.enabled !== false).map((button, index) => (
+                {(showcaseData.cta.buttons || []).filter((button: any) => button.enabled !== false).map((button: any, index: number) => (
                 <Link
                   key={button.text}
                   href={button.href}

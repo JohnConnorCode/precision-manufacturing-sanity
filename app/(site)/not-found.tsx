@@ -61,8 +61,8 @@ export default function NotFound() {
               Page Not Found
             </h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-              The precision you're looking for seems to be off by a few thousandths.
-              This page doesn't exist, but our manufacturing excellence does.
+              The precision you&apos;re looking for seems to be off by a few thousandths.
+              This page doesn&apos;t exist, but our manufacturing excellence does.
             </p>
           </motion.div>
 

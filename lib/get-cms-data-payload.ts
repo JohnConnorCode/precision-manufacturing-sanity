@@ -25,7 +25,6 @@
 import { getPayloadHMR } from '@payloadcms/next/utilities';
 import configPromise from '@/payload.config';
 import { lexicalToText } from './lexical-to-text';
-import type { Service, Industry } from '@/payload-types';
 
 // Icon name mapping for services and industries (reused from original)
 const iconNameMap: Record<string, string> = {

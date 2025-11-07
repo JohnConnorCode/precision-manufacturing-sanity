@@ -77,7 +77,7 @@ export default function Stats({ data }: StatsProps) {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((stat, index) => (
+          {stats.map((stat: any, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, scale: 0.8 }}

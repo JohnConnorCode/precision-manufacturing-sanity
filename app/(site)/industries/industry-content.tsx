@@ -16,7 +16,7 @@ interface IndustryContentProps {
   slug: string;
 }
 
-export function IndustryContent({ industryData, slug }: IndustryContentProps) {
+export function IndustryContent({ industryData, slug: _slug }: IndustryContentProps) {
   const industry = industryData as any;
 
   const heroImage = industry.hero?.backgroundImage?.asset?.url || industry.hero?.backgroundImage

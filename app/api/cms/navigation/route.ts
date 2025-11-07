@@ -56,7 +56,7 @@ export async function GET() {
     }
 
     return NextResponse.json(safe, { status: 200 })
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: 'Failed to load navigation' }, { status: 500 })
   }
 }

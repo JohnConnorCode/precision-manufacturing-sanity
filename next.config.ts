@@ -8,14 +8,14 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
 
-  /* Disable ESLint during build temporarily */
+  /* Enable ESLint during build for production quality */
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
 
-  /* Disable TypeScript errors during build temporarily */
+  /* Enable TypeScript error checking for production quality */
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
 
   /* Image optimization */

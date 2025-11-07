@@ -4,21 +4,8 @@ import { motion } from 'framer-motion';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { ArrowRight, FileText, Shield, Award, Activity } from 'lucide-react';
 import Link from 'next/link';
-import { colorStyleToCSS, getBackgroundColor, getButtonStyles, paddingToClass, ColorStyle } from '@/lib/sanity-styles';
-
-// Helper function to convert Portable Text to plain text
-function portableTextToPlainText(blocks: any): string {
-  if (!blocks) return '';
-  if (typeof blocks === 'string') return blocks;
-  if (!Array.isArray(blocks)) return '';
-
-  return blocks
-    .map((block: any) => {
-      if (block._type !== 'block' || !block.children) return '';
-      return block.children.map((child: any) => child.text).join('');
-    })
-    .join(' ');
-}
+import { colorStyleToCSS, getBackgroundColor, paddingToClass, ColorStyle } from '@/lib/sanity-styles';
+import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 
 interface CTAData {
   title?: string;

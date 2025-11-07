@@ -68,7 +68,7 @@ export function getArticle(category: string, slug: string): Article | null {
       metadata: data as ArticleMetadata,
       content,
     };
-  } catch (error) {
+  } catch {
     return null;
   }
 }

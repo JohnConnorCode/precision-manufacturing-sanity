@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import HeroSliderFixed from '@/components/ui/hero-slider-fixed';
-import { usePrefersReducedMotion, getMotionVariants } from '@/lib/motion';
+import { usePrefersReducedMotion } from '@/lib/motion';
 import { colorStyleToCSS, getOverlayStyles, getButtonStyles, ColorStyle } from '@/lib/sanity-styles';
 
 interface HeroData {
@@ -52,16 +52,17 @@ interface HeroProps {
 }
 
 export default function Hero({ data }: HeroProps) {
-  // Don't render if no data from CMS or no slides (Hero requires slides for background)
-  if (!data || !data.tagline || !data.slides || data.slides.length === 0) {
-    return null;
-  }
-
+  // Hooks must be called before early return
   const { scrollY } = useScroll();
   const prefersReducedMotion = usePrefersReducedMotion();
 
   const textY = useTransform(scrollY, [0, 500], prefersReducedMotion ? [0, 0] : [0, 50]);
   const textOpacity = useTransform(scrollY, [0, 300], prefersReducedMotion ? [1, 1] : [1, 0]);
+
+  // Don't render if no data from CMS or no slides (Hero requires slides for background)
+  if (!data || !data.tagline || !data.slides || data.slides.length === 0) {
+    return null;
+  }
 
   // Use CMS data only
   const heroSlides = data.slides.map(slide => ({

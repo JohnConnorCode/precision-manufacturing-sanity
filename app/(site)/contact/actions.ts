@@ -40,12 +40,14 @@ export async function submitContactForm(formData: FormData) {
       // await saveToDatabase(validatedData);
     }
 
-    // Log submission for analytics
-    console.log('Contact form submission:', {
-      timestamp: new Date().toISOString(),
-      company: validatedData.company,
-      interest: validatedData.interest,
-    });
+    // Log submission for analytics (only in development)
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Contact form submission:', {
+        timestamp: new Date().toISOString(),
+        company: validatedData.company,
+        interest: validatedData.interest,
+      });
+    }
 
     return {
       success: true,

@@ -24,5 +24,14 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "cleanup-untitled-industry.ts",
+    "seed-site-globals.ts",
+    "payload.config.minimal.ts",
+    "lib/direct-cms-access.ts",
+    "lib/get-cms-data-direct.ts",
+    "lib/get-cms-data-payload.ts",
+    "scripts/cms-health.ts"
+  ]
 }

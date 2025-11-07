@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Thermometer, Zap, Weight, Shield, ChevronDown, CheckCircle } from 'lucide-react';
+import { Search, Thermometer, Zap, Weight, Shield, CheckCircle } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
 import AnimatedSection from '@/components/ui/animated-section';
 
@@ -185,9 +185,10 @@ export default function MaterialSelector() {
             return b.properties.tensileStrength - a.properties.tensileStrength;
           case 'weight':
             return a.properties.density - b.properties.density;
-          case 'cost':
+          case 'cost': {
             const costOrder = { 'Low': 1, 'Medium': 2, 'High': 3, 'Very High': 4 };
             return costOrder[a.properties.cost] - costOrder[b.properties.cost];
+          }
           default:
             return a.name.localeCompare(b.name);
         }

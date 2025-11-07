@@ -14,7 +14,7 @@ export default function PageSections({ sections }: { sections: any[] }) {
       {sections.map((section, idx) => {
         switch (section?._type) {
           case 'heroSection': {
-            const badgeIconName = section?.badgeIconName
+            const _badgeIconName = section?.badgeIconName
             // Pass ALL data from Sanity including style fields
             return (
               <HeroSection

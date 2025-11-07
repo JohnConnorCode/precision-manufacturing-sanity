@@ -5,9 +5,10 @@ import PageSections from '@/components/page-builder/PageSections'
 
 export const dynamic = 'force-dynamic'
 
-export default async function DynamicPage({ params }: { params: { slug: string } }) {
+export default async function DynamicPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const { isEnabled } = await draftMode()
-  const page = await getPageBySlug(params.slug, isEnabled)
+  const page = await getPageBySlug(slug, isEnabled)
   if (!page) return notFound()
   return <PageSections sections={page.sections || []} />
 }

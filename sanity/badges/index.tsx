@@ -17,7 +17,7 @@ export const PublishedBadge: DocumentBadgeComponent = (props) => {
     return {
       label: 'Edited',
       title: 'Published with unpublished edits',
-      color: 'caution',
+      color: 'warning',
       icon: ClockIcon,
     };
   }

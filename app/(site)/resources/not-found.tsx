@@ -8,7 +8,7 @@ export default function NotFound() {
         <h2 className="text-6xl font-bold text-white mb-4">404</h2>
         <h3 className="text-2xl font-bold text-white mb-4">Resource Not Found</h3>
         <p className="text-slate-400 mb-8">
-          The technical article you're looking for doesn't exist.
+          The technical article you&apos;re looking for doesn&apos;t exist.
         </p>
         <Link href="/resources">
           <Button className="bg-blue-600 hover:bg-blue-700">

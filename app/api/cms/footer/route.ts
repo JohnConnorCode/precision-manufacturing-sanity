@@ -7,7 +7,7 @@ export async function GET() {
     const { isEnabled } = await draftMode()
     const footer = await getFooter(isEnabled)
     return NextResponse.json(footer ?? {}, { status: 200 })
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: 'Failed to load footer' }, { status: 500 })
   }
 }

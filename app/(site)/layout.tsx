@@ -6,6 +6,7 @@ import VisualEditingClient from '@/components/VisualEditingClient'
 import { AdminToolbar } from "@/components/admin-toolbar";
 import { Analytics } from "@vercel/analytics/react";
 import PreviewBanner from "@/components/preview-banner";
+import { Toaster } from 'sonner';
 
 // Use system font stack instead of Google Fonts for build reliability
 const fontClass = 'font-sans';
@@ -221,6 +222,12 @@ export default async function SiteLayout({
         </SiteChrome>
         <AdminToolbar />
         <Analytics />
+        <Toaster
+          position="top-right"
+          richColors
+          closeButton
+          theme="dark"
+        />
         {isDraft && process.env.NEXT_PUBLIC_ENABLE_VISUAL_EDITING === 'true' ? <VisualEditingClient /> : null}
         {isDraft ? <PreviewBanner /> : null}
       </body>

@@ -17,7 +17,7 @@ export default function Logo({
   variant = 'default',
   size = 'md'
 }: LogoProps) {
-  const [isHovered, setIsHovered] = useState(false);
+  const _isHovered = useState(false);
 
   const textColorClass = variant === 'light'
     ? 'text-white'
@@ -52,8 +52,6 @@ export default function Logo({
   return (
     <div
       className={`flex items-center ${logoTextGap}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Logo - Animates in first */}
       <motion.div

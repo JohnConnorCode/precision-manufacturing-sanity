@@ -64,7 +64,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
         <div className="text-center">
           <h1 className={cn(theme.typography.h1, 'mb-4')}>Service Not Found</h1>
           <p className={cn(theme.typography.body, 'text-slate-600 mb-8')}>
-            The service you're looking for could not be found.
+            The service you&apos;re looking for could not be found.
           </p>
           <Button asChild>
             <Link href="/services">View All Services</Link>

@@ -1,11 +1,9 @@
-import { DashboardWidget } from 'sanity';
-
 /**
  * Custom Dashboard Configuration
  * Provides at-a-glance content overview and quick actions
  */
 
-export const dashboardConfig: DashboardWidget[] = [
+export const dashboardConfig: any[] = [
   {
     name: 'project-info',
     layout: { width: 'medium' },

@@ -2,7 +2,7 @@
 
 import { motion, MotionProps } from 'framer-motion';
 import { ReactNode } from 'react';
-import { fadeInUp, scrollAnimation } from '@/lib/animations';
+import { fadeInUp } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 
 interface AnimatedSectionProps extends MotionProps {
@@ -33,7 +33,7 @@ export default function AnimatedSection({
     return <div className={className}>{children}</div>;
   }
 
-  const animationVariants = {
+  const _animationVariants = {
     ...fadeInUp,
     animate: {
       ...(typeof fadeInUp.animate === 'object' && fadeInUp.animate !== null ? fadeInUp.animate : {}),

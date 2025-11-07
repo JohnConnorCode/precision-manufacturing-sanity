@@ -13,7 +13,7 @@ export default {
       slug: 'slug.current',
       published: 'published',
     },
-    prepare({ title, slug, published }) {
+    prepare({ title, slug, published }: any) {
       const status = published === false ? ' (UNPUBLISHED)' : ''
       return {
         title: `${title}${status}`,

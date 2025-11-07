@@ -7,7 +7,7 @@ export async function GET() {
     const { isEnabled } = await draftMode()
     const settings = await getSiteSettings(isEnabled)
     return NextResponse.json(settings ?? {}, { status: 200 })
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: 'Failed to load site settings' }, { status: 500 })
   }
 }
