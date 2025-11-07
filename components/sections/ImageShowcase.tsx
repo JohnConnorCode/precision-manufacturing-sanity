@@ -17,6 +17,44 @@ const iconMap: Record<string, any> = {
   Target,
 };
 
+// Fallback data for showcase images
+const fallbackShowcaseImages = [
+  {
+    src: 'https://images.unsplash.com/photo-1581092335397-9583eb92d232?w=1200&q=90',
+    title: 'Aerospace Components',
+    category: 'Turbine Blades',
+    href: '/services/5-axis-machining'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1609139003551-ee40f5f73ec0?w=1200&q=90',
+    title: 'Defense Systems',
+    category: 'ITAR Certified',
+    href: '/services/adaptive-machining'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1200&q=90',
+    title: 'Precision Metrology',
+    category: 'Quality Control',
+    href: '/services/metrology'
+  }
+];
+
+// Fallback stats
+const fallbackStats = [
+  { iconName: 'Award', value: 'AS9100D', label: 'Certified Quality', color: 'text-blue-600' },
+  { iconName: 'Shield', value: 'ITAR', label: 'Registered', color: 'text-blue-600' },
+  { iconName: 'Clock', value: '24/7', label: 'Production', color: 'text-indigo-600' },
+  { iconName: 'Target', value: '±0.0001"', label: 'Tolerance', color: 'text-blue-600' }
+];
+
+// Fallback header
+const fallbackHeader = {
+  eyebrow: 'Manufacturing Excellence',
+  title: 'Precision',
+  titleHighlight: 'Delivered',
+  description: 'From concept to completion, we deliver aerospace-grade components with uncompromising precision'
+};
+
 interface ImageShowcaseProps {
   data?: any;
 }
@@ -32,13 +70,15 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.5, 1, 1, 0.5]);
   const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.95, 1, 1, 0.95]);
 
-  // Use CMS data only
-  const showcaseData = data;
-
-  // Don't render if no data from CMS
-  if (!showcaseData || !showcaseData.header || !showcaseData.showcaseImages) {
-    return null;
-  }
+  // Use CMS data or fallback
+  const showcaseData = data || {};
+  const header = showcaseData?.header || fallbackHeader;
+  const showcaseImages = (showcaseData?.showcaseImages && showcaseData.showcaseImages.length > 0)
+    ? showcaseData.showcaseImages
+    : fallbackShowcaseImages;
+  const stats = (showcaseData?.stats && showcaseData.stats.length > 0)
+    ? showcaseData.stats
+    : fallbackStats;
 
   return (
     <section ref={containerRef} className={`relative ${spacing.section} ${colors.bgLight} overflow-hidden`}>
@@ -48,20 +88,20 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         {/* Section Header */}
         <AnimatedSection className={`text-center ${spacing.headingBottom}`}>
           <p className={`${typography.eyebrow} ${colors.textMedium} mb-4`}>
-            {showcaseData?.header?.eyebrow}
+            {header.eyebrow}
           </p>
           <h2 className={`${typography.sectionHeading} mb-6`}>
-            <span className={colors.textDark}>{showcaseData?.header?.title}</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"> {showcaseData?.header?.titleHighlight}</span>
+            <span className={colors.textDark}>{header.title}</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"> {header.titleHighlight}</span>
           </h2>
           <p className={`${typography.descriptionMuted} max-w-3xl mx-auto`}>
-            {portableTextToPlainText(showcaseData?.header?.description) || showcaseData?.header?.description}
+            {portableTextToPlainText(header.description) || header.description}
           </p>
         </AnimatedSection>
 
         {/* Large Feature Images */}
-        <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid}`}>
-          {(showcaseData?.showcaseImages || []).map((item: any, index: number) => (
+        <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} mb-20`}>
+          {showcaseImages.map((item: any, index: number) => (
             <AnimatedSection
               key={item.title}
               delay={index * 0.1}
@@ -114,7 +154,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
           transition={{ delay: 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
           className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20"
         >
-          {(showcaseData.stats || []).map((stat: any, index: number) => {
+          {stats.map((stat: any, index: number) => {
             const Icon = iconMap[stat.iconName] || Award;
             return (
               <motion.div
@@ -142,7 +182,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         </motion.div>
 
         {/* Call to Action */}
-        {showcaseData.cta && (
+        {showcaseData?.cta && (
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

@@ -16,6 +16,34 @@ const iconMap: Record<string, LucideIcon> = {
   'Plane': Plane,
 };
 
+// Fallback industries data
+const fallbackIndustries = [
+  {
+    title: 'Defense & Government',
+    description: 'ITAR registered with rapid prototyping and secure facility capabilities',
+    iconName: 'Shield',
+    href: '/industries/defense',
+    image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=90',
+    features: ['ITAR registered', 'Secure facility', 'Rapid prototyping']
+  },
+  {
+    title: 'Energy & Power',
+    description: 'Superalloy expertise with large part capability and field service support',
+    iconName: 'Zap',
+    href: '/industries/energy',
+    image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=90',
+    features: ['Superalloy expertise', 'Large part capability', 'Field service support']
+  },
+  {
+    title: 'Aerospace & Aviation',
+    description: 'AS9100D certified with NADCAP accreditation and zero defect delivery',
+    iconName: 'Plane',
+    href: '/industries/aerospace',
+    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=90',
+    features: ['AS9100D certified', 'NADCAP accredited', 'Zero defect delivery']
+  }
+];
+
 interface IndustriesProps {
   data?: any;
   sectionData?: {
@@ -27,18 +55,14 @@ interface IndustriesProps {
 }
 
 export default function Industries({ data, sectionData }: IndustriesProps) {
-  // Use CMS data only
-  const industriesData = data;
+  // Use CMS data with fallback
+  const industriesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
+  const displayIndustries = (industriesData && industriesData.length > 0) ? industriesData : fallbackIndustries;
 
-  // Use section data from CMS only
-  const eyebrow = sectionData?.eyebrow;
-  const heading = sectionData?.heading;
-  const description = sectionData?.description;
-
-  // Don't render if no data from CMS
-  if (!industriesData || industriesData.length === 0) {
-    return null;
-  }
+  // Use section data from CMS with fallbacks
+  const eyebrow = sectionData?.eyebrow || 'SPECIALIZED SECTOR EXPERTISE';
+  const heading = sectionData?.heading || 'INDUSTRY LEADERS';
+  const description = sectionData?.description || 'Three decades of trusted precision manufacturing across critical sectors';
 
   return (
     <section className={`${spacing.section} ${colors.bgLight}`}>
@@ -59,7 +83,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
         </AnimatedSection>
 
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid}`}>
-          {industriesData.map((industry: any, index: number) => {
+          {displayIndustries.map((industry: any, index: number) => {
             // Handle both CMS data (iconName) and hardcoded data (icon)
             const Icon = industry.iconName ? (iconMap[industry.iconName] || Plane) : (industry.icon || Plane);
             return (

@@ -59,40 +59,75 @@ export default function Hero({ data }: HeroProps) {
   const textY = useTransform(scrollY, [0, 500], prefersReducedMotion ? [0, 0] : [0, 50]);
   const textOpacity = useTransform(scrollY, [0, 300], prefersReducedMotion ? [1, 1] : [1, 0]);
 
-  // Don't render if no data from CMS or no slides (Hero requires slides for background)
-  if (!data || !data.tagline || !data.slides || data.slides.length === 0) {
-    return null;
-  }
+  // Fallback images - 5 slides with Unsplash images
+  const fallbackSlides = [
+    {
+      src: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=2400&q=95',
+      alt: 'Advanced 5-axis CNC machining center',
+      focal: 'center' as const
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=2400&q=95',
+      alt: 'Precision metrology and inspection',
+      focal: 'center' as const
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2400&q=95',
+      alt: 'Automated manufacturing systems',
+      focal: 'center' as const
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=2400&q=95',
+      alt: 'Industrial engineering and process development',
+      focal: 'center' as const
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1581092335397-9583eb92d232?auto=format&fit=crop&w=2400&q=95',
+      alt: 'Defense and aerospace components manufacturing',
+      focal: 'center' as const
+    }
+  ];
 
-  // Use CMS data only
-  const heroSlides = data.slides.map(slide => ({
-    src: slide.image,
-    alt: slide.alt,
-    focal: slide.focal
-  }));
+  // Use CMS data or fallback
+  const heroSlides = (data?.slides && data.slides.length > 0)
+    ? data.slides.map(slide => ({
+        src: slide.image,
+        alt: slide.alt,
+        focal: slide.focal
+      }))
+    : fallbackSlides;
 
-  const mainTitle = data.mainTitle;
-  const subTitle = data.subTitle;
-  const tagline = data.tagline;
-  // Handle both string badges and object badges from Sanity
-  const badges = (data.badges || []).map((badge: any) =>
-    typeof badge === 'string' ? badge : badge.text || badge.id || badge
-  );
-  const ctaPrimary = data.ctaPrimary || { text: 'Get Quote', href: '/contact?interest=quote' };
-  const ctaSecondary = data.ctaSecondary || { text: 'View Capabilities', href: '/services' };
+  const mainTitle = data?.mainTitle || 'PRECISION MANUFACTURING';
+  const subTitle = data?.subTitle || 'SERVICES';
+  const tagline = data?.tagline || 'Innovative Precision Machining & Manufacturing Excellence Since 1995';
+  // Handle both string badges and object badges from Sanity, with fallbacks
+  const defaultBadges = [
+    'Advanced CNC Machining',
+    'Precision Metrology',
+    'Engineering Excellence',
+    '3 Sigma Yield'
+  ];
+  const badges = (data?.badges && data.badges.length > 0)
+    ? (data.badges || []).map((badge: any) =>
+        typeof badge === 'string' ? badge : badge.text || badge.id || badge
+      )
+    : defaultBadges;
+
+  const ctaPrimary = data?.ctaPrimary || { text: 'Get Quote', href: '/contact?interest=quote' };
+  const ctaSecondary = data?.ctaSecondary || { text: 'View Capabilities', href: '/services' };
 
   // Extract styles from Sanity data
-  const titleColor = colorStyleToCSS(data.titleColor) || 'rgba(255, 255, 255, 0.9)';
-  const titleHighlightColor = colorStyleToCSS(data.titleHighlightColor) || '#60a5fa'; // blue-400
-  const descriptionColor = colorStyleToCSS(data.descriptionColor) || 'rgba(255, 255, 255, 0.95)';
+  const titleColor = colorStyleToCSS(data?.titleColor) || 'rgba(255, 255, 255, 0.9)';
+  const titleHighlightColor = colorStyleToCSS(data?.titleHighlightColor) || '#60a5fa'; // blue-400
+  const descriptionColor = colorStyleToCSS(data?.descriptionColor) || 'rgba(255, 255, 255, 0.95)';
 
-  const badgeTextColor = colorStyleToCSS(data.badgeStyle?.textColor) || '#ffffff';
-  const badgeBgColor = colorStyleToCSS(data.badgeStyle?.backgroundColor);
-  const badgeBorderColor = colorStyleToCSS(data.badgeStyle?.borderColor) || 'rgba(96, 165, 250, 0.3)';
+  const badgeTextColor = colorStyleToCSS(data?.badgeStyle?.textColor) || '#ffffff';
+  const badgeBgColor = colorStyleToCSS(data?.badgeStyle?.backgroundColor);
+  const badgeBorderColor = colorStyleToCSS(data?.badgeStyle?.borderColor) || 'rgba(96, 165, 250, 0.3)';
 
-  const overlayStyle = getOverlayStyles(data.overlay);
-  const primaryButtonStyles = getButtonStyles(data.buttonStyles?.primaryButton);
-  const secondaryButtonStyles = getButtonStyles(data.buttonStyles?.secondaryButton);
+  const overlayStyle = getOverlayStyles(data?.overlay);
+  const primaryButtonStyles = getButtonStyles(data?.buttonStyles?.primaryButton);
+  const secondaryButtonStyles = getButtonStyles(data?.buttonStyles?.secondaryButton);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">

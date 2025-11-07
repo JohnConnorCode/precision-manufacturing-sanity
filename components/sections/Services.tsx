@@ -17,6 +17,46 @@ const iconMap: Record<string, LucideIcon> = {
   'Users': Users,
 };
 
+// Fallback services data
+const fallbackServices = [
+  {
+    title: '5-Axis CNC Machining',
+    description: 'Advanced multi-axis CNC capabilities for complex aerospace and defense components',
+    iconName: 'Cog',
+    href: '/services/5-axis-machining',
+    specs: ['±0.0001" tolerance', 'Titanium & super alloys', 'Up to 60" parts'],
+    image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=90',
+    highlight: true
+  },
+  {
+    title: 'Adaptive Machining',
+    description: 'Intelligent material removal strategies for optimal efficiency',
+    iconName: 'Cpu',
+    href: '/services/adaptive-machining',
+    specs: ['In-process verification', 'Automated compensation', 'Zero defect goal'],
+    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=90',
+    highlight: false
+  },
+  {
+    title: 'Metrology & Inspection',
+    description: 'Comprehensive measurement and inspection services',
+    iconName: 'Gauge',
+    href: '/services/metrology',
+    specs: ['0.00005" accuracy', 'GD&T analysis', 'AS9102 certified'],
+    image: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=90',
+    highlight: false
+  },
+  {
+    title: 'Engineering Support',
+    description: 'Design, analysis, and optimization expertise',
+    iconName: 'Users',
+    href: '/services/engineering',
+    specs: ['DFM analysis', 'Process planning', 'Cost optimization'],
+    image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&q=90',
+    highlight: false
+  }
+];
+
 interface ServicesProps {
   data?: any;
   sectionData?: {
@@ -28,18 +68,14 @@ interface ServicesProps {
 }
 
 export default function Services({ data, sectionData }: ServicesProps) {
-  // Use CMS data - ALL content must come from Sanity
-  const servicesData = Array.isArray(data) ? data : (data ? [data] : []);
+  // Use CMS data with fallback
+  const servicesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
+  const displayServices = (servicesData && servicesData.length > 0) ? servicesData : fallbackServices;
 
-  // Section data from CMS (required)
-  const eyebrow = sectionData?.eyebrow;
-  const heading = sectionData?.heading;
-  const description = sectionData?.description;
-
-  // Don't render if no data from CMS
-  if (!servicesData || servicesData.length === 0) {
-    return null;
-  }
+  // Section data from CMS (required) - with fallbacks
+  const eyebrow = sectionData?.eyebrow || 'COMPREHENSIVE MANUFACTURING SOLUTIONS';
+  const heading = sectionData?.heading || 'PRECISION SERVICES';
+  const description = sectionData?.description || 'Four core service pillars deliver comprehensive manufacturing excellence';
 
   return (
     <section className={`relative ${spacing.section} overflow-hidden ${colors.bgLight}`}>
@@ -71,7 +107,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
         </AnimatedSection>
 
         <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ${spacing.grid}`}>
-          {servicesData.map((service: any, index: number) => {
+          {displayServices.map((service: any, index: number) => {
             // Handle both CMS data (iconName) and hardcoded data (icon)
             const Icon = service.iconName ? (iconMap[service.iconName] || Cog) : (service.icon || Cog);
             return (
