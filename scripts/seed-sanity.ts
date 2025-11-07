@@ -139,6 +139,8 @@ async function seedSanity() {
         title: 'Defense & Government',
         slug: { current: 'defense' },
         order: 1,
+        shortDescription:
+          'ITAR registered with rapid prototyping and secure facility capabilities',
         description:
           'ITAR registered with rapid prototyping and secure facility capabilities',
         iconName: 'Shield',
@@ -159,6 +161,8 @@ async function seedSanity() {
         title: 'Energy & Power',
         slug: { current: 'energy' },
         order: 2,
+        shortDescription:
+          'Superalloy expertise with large part capability and field service support',
         description:
           'Superalloy expertise with large part capability and field service support',
         iconName: 'Zap',
@@ -183,6 +187,8 @@ async function seedSanity() {
         title: 'Aerospace & Aviation',
         slug: { current: 'aerospace' },
         order: 3,
+        shortDescription:
+          'AS9100D certified with NADCAP accreditation and zero defect delivery',
         description:
           'AS9100D certified with NADCAP accreditation and zero defect delivery',
         iconName: 'Plane',
