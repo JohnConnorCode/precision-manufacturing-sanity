@@ -18,6 +18,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { theme } from '@/lib/theme';
+import { constants } from '@/lib/design-system';
 
 // Hardcoded fallback data
 const defaultNavigation = [
@@ -126,7 +127,7 @@ export default function Header({ data }: HeaderProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      setIsScrolled(window.scrollY > constants.scrollThreshold.header);
     };
 
     window.addEventListener('scroll', handleScroll);

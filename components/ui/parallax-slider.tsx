@@ -1,4 +1,5 @@
 "use client";
+import { constants } from '@/lib/design-system';
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
@@ -12,7 +13,7 @@ interface ParallaxSliderProps {
 
 export default function ParallaxSlider({
   images,
-  interval = 8000,
+  interval = constants.carousel.interval,
   className = ''
 }: ParallaxSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);

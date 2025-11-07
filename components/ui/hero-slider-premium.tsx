@@ -1,4 +1,5 @@
 'use client';
+import { constants } from '@/lib/design-system';
 
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
@@ -19,7 +20,7 @@ interface HeroSliderPremiumProps {
 
 export default function HeroSliderPremium({
   slides,
-  interval = 8000,
+  interval = constants.carousel.interval,
   className = ''
 }: HeroSliderPremiumProps) {
   const [currentIndex, setCurrentIndex] = useState(0);

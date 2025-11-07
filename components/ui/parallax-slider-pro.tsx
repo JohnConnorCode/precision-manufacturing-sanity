@@ -1,4 +1,5 @@
 'use client';
+import { constants } from '@/lib/design-system';
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
@@ -21,7 +22,7 @@ interface ParallaxSliderProProps {
 
 export default function ParallaxSliderPro({
   slides,
-  interval = 8000,
+  interval = constants.carousel.interval,
   className = '',
   overlayIntensity = 'medium'
 }: ParallaxSliderProProps) {

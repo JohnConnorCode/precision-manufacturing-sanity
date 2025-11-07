@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { constants } from '@/lib/design-system';
 
 interface ScrollToTopProps {
   threshold?: number;
@@ -12,7 +13,7 @@ interface ScrollToTopProps {
 }
 
 export default function ScrollToTop({
-  threshold = 400,
+  threshold = constants.scrollThreshold.scrollToTop,
   className,
   smooth = true,
 }: ScrollToTopProps) {
