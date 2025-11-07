@@ -359,7 +359,12 @@ export async function getHomepage(preview = false) {
     industriesSection,
     technicalSpecs,
     imageShowcase,
-    resourcesSection,
+    resourcesSection {
+      header,
+      featuredSeries,
+      benefits,
+      cta
+    },
     cta
   }`
 
