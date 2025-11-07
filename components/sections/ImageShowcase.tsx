@@ -8,6 +8,20 @@ import { useRef } from 'react';
 import AnimatedSection from '@/components/ui/animated-section';
 import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
 
+// Helper function to convert Portable Text to plain text
+function portableTextToPlainText(blocks: any): string {
+  if (!blocks) return '';
+  if (typeof blocks === 'string') return blocks;
+  if (!Array.isArray(blocks)) return '';
+
+  return blocks
+    .map((block: any) => {
+      if (block._type !== 'block' || !block.children) return '';
+      return block.children.map((child: any) => child.text).join('');
+    })
+    .join(' ');
+}
+
 // Icon mapping for stats
 const iconMap: Record<string, any> = {
   Award,
@@ -53,7 +67,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"> {showcaseData?.header?.titleHighlight}</span>
           </h2>
           <p className={`${typography.descriptionMuted} max-w-3xl mx-auto`}>
-            {showcaseData?.header?.description}
+            {portableTextToPlainText(showcaseData?.header?.description) || showcaseData?.header?.description}
           </p>
         </AnimatedSection>
 

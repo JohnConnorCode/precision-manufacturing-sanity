@@ -6,6 +6,20 @@ import { ArrowRight, FileText, Shield, Award, Activity } from 'lucide-react';
 import Link from 'next/link';
 import { colorStyleToCSS, getBackgroundColor, getButtonStyles, paddingToClass, ColorStyle } from '@/lib/sanity-styles';
 
+// Helper function to convert Portable Text to plain text
+function portableTextToPlainText(blocks: any): string {
+  if (!blocks) return '';
+  if (typeof blocks === 'string') return blocks;
+  if (!Array.isArray(blocks)) return '';
+
+  return blocks
+    .map((block: any) => {
+      if (block._type !== 'block' || !block.children) return '';
+      return block.children.map((child: any) => child.text).join('');
+    })
+    .join(' ');
+}
+
 interface CTAData {
   title?: string;
   subtitle?: string;
@@ -52,7 +66,8 @@ interface CTAProps {
 
 export default function CTA({ data }: CTAProps) {
   const title = data?.title || 'Start Your Precision Manufacturing Project';
-  const subtitle = data?.subtitle || 'From prototype to production, we deliver AS9100D-certified precision components with tolerances to ±0.0001" for aerospace, defense, and medical applications.';
+  const rawSubtitle = data?.subtitle || 'From prototype to production, we deliver AS9100D-certified precision components with tolerances to ±0.0001" for aerospace, defense, and medical applications.';
+  const subtitle = portableTextToPlainText(rawSubtitle) || rawSubtitle;
   const buttons = (data?.buttons || [
     { text: 'Get Quote', href: '/contact', variant: 'default' as const },
     { text: 'Technical Specifications', href: '/compliance/supplier-requirements', variant: 'secondary' as const }
