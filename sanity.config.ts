@@ -29,7 +29,7 @@ export default defineConfig({
         origin: process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
       },
       resolve: {
-        locations: locate,
+        locations: locate as any,
       },
     }),
     structureTool({

@@ -280,52 +280,6 @@ export default function Hero({ data }: HeroProps) {
                   </Link>
                 </Button>
               )}
-              {ctaSecondary && ctaSecondary.text && (
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="group backdrop-blur-sm font-semibold transition-all duration-300 px-10 h-14 text-lg rounded-md"
-                  style={
-                    Object.keys(secondaryButtonStyles.style).length > 0
-                      ? secondaryButtonStyles.style
-                      : {
-                          borderWidth: '2px',
-                          borderColor: 'rgba(255, 255, 255, 0.8)',
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                          color: '#ffffff',
-                        }
-                  }
-                  asChild
-                >
-                  <Link href={ctaSecondary.href}>
-                    {ctaSecondary.text}
-                    <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                </Button>
-              )}
-              {ctaTertiary && ctaTertiary.text && (
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="group backdrop-blur-sm font-semibold transition-all duration-300 px-10 h-14 text-lg rounded-md"
-                  style={
-                    Object.keys(secondaryButtonStyles.style).length > 0
-                      ? secondaryButtonStyles.style
-                      : {
-                          borderWidth: '2px',
-                          borderColor: 'rgba(255, 255, 255, 0.8)',
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                          color: '#ffffff',
-                        }
-                  }
-                  asChild
-                >
-                  <Link href={ctaTertiary.href}>
-                    {ctaTertiary.text}
-                    <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                </Button>
-              )}
             </motion.div>
 
           </motion.div>

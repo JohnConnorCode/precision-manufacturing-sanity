@@ -6,9 +6,8 @@ import { PortableTextContent } from '@/components/portable-text-components';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
 
-// Use dynamic rendering with ISR for reliable builds
-export const dynamic = 'force-dynamic';
-export const revalidate = 60; // Revalidate every 60 seconds
+// Enable ISR with 60 second revalidation
+export const revalidate = 60;
 
 // Comprehensive SEO metadata with social sharing optimization
 export async function generateMetadata(): Promise<Metadata> {
@@ -20,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     resources = await getAllResources() || [];
   } catch (error) {
-    console.warn('Failed to fetch resources for metadata:', error);
+    // Silently fail and use empty array
   }
 
   return {

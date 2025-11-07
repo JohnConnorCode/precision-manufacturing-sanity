@@ -161,7 +161,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
           if (value) setValue(key as any, value);
         });
       } catch (e) {
-        console.error('Failed to load draft', e);
+        // Failed to load draft, continue without it
       }
     }
   }, [setValue]);
