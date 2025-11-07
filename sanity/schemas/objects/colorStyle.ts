@@ -8,10 +8,16 @@ export default defineType({
     {
       name: 'color',
       title: 'Color',
-      type: 'color',
+      type: 'string',
       options: {
-        disableAlpha: false,
+        list: [
+          { title: 'Black', value: '#000000' },
+          { title: 'White', value: '#FFFFFF' },
+          { title: 'Blue', value: '#2563EB' },
+          { title: 'Gray', value: '#71717A' },
+        ],
       },
+      description: 'Select a color from the list or enter a hex code (e.g., #2563EB)',
     },
     {
       name: 'opacity',
@@ -24,7 +30,7 @@ export default defineType({
   ],
   preview: {
     select: {
-      color: 'color.hex',
+      color: 'color',
       opacity: 'opacity',
     },
     prepare({ color, opacity }) {

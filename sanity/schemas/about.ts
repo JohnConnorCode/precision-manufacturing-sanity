@@ -11,6 +11,7 @@ export default {
     {name: 'values', title: 'Values & Culture'},
     {name: 'capabilities', title: 'Capabilities'},
     {name: 'certifications', title: 'Certifications'},
+    {name: 'leadership', title: 'Leadership Team'},
     {name: 'cta', title: 'CTA'},
     {name: 'seo', title: 'SEO & Sharing'},
   ],
@@ -295,6 +296,92 @@ export default {
         {
           type: 'object',
           fields: [{name: 'certification', type: 'string', title: 'Certification'}],
+        },
+      ],
+    },
+    {
+      name: 'leadership',
+      type: 'object',
+      title: 'Leadership Team',
+      group: 'leadership',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fieldsets: [
+        {name: 'header', title: 'Section Header'},
+        {name: 'team', title: 'Team Members'},
+      ],
+      fields: [
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Section Title',
+          fieldset: 'header',
+          initialValue: 'Leadership Team',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Section Description',
+          rows: 2,
+          fieldset: 'header',
+        },
+        {
+          name: 'team',
+          type: 'array',
+          title: 'Team Members',
+          fieldset: 'team',
+          of: [
+            {
+              type: 'object',
+              preview: {
+                select: {
+                  title: 'name',
+                  subtitle: 'title',
+                },
+                prepare({title, subtitle}: any) {
+                  return {
+                    title: title || 'Team Member',
+                    subtitle: subtitle || 'Position not set',
+                  }
+                },
+              },
+              fields: [
+                {
+                  name: 'name',
+                  type: 'string',
+                  title: 'Full Name',
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: 'title',
+                  type: 'string',
+                  title: 'Job Title',
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: 'experience',
+                  type: 'string',
+                  title: 'Experience Summary',
+                  description: 'E.g., "30+ years in precision manufacturing"',
+                },
+                {
+                  name: 'background',
+                  type: 'text',
+                  title: 'Background',
+                  rows: 3,
+                  description: 'Professional background and accomplishments',
+                },
+                {
+                  name: 'focus',
+                  type: 'string',
+                  title: 'Area of Focus',
+                  description: 'E.g., "Quality & Compliance"',
+                },
+              ],
+            },
+          ],
         },
       ],
     },

@@ -6,7 +6,7 @@ import { theme, styles, cn } from '@/lib/theme';
 import { ArrowRight, Award } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImagePro from '@/components/ui/parallax-image-pro';
-import { getAllServices, getPageContent } from '@/sanity/lib/queries';
+import { getAllServices, getServicesPage } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
@@ -29,16 +29,16 @@ export const revalidate = 60; // Revalidate every 60 seconds
 
 // Comprehensive SEO metadata with social sharing optimization - pulls from Sanity CMS
 export async function generateMetadata(): Promise<Metadata> {
-  const pageContent = await getPageContent();
+  const servicesPage = await getServicesPage();
   const baseUrl = 'https://iismet.com';
   const pageUrl = `${baseUrl}/services`;
 
   // Pull SEO data from Sanity with fallbacks
-  const seoTitle = pageContent?.servicesPage?.seo?.metaTitle || 'Precision Manufacturing Services | 5-Axis CNC, Metrology, Engineering | IIS';
-  const seoDescription = pageContent?.servicesPage?.seo?.metaDescription || 'Advanced manufacturing services: 5-axis CNC machining, precision metrology, adaptive machining, engineering design. AS9100D certified, ±0.0001" tolerances, 150+ materials. ITAR registered for aerospace & defense.';
-  const seoKeywords = pageContent?.servicesPage?.seo?.metaKeywords || 'precision manufacturing, 5-axis CNC machining, metrology services, CMM inspection, adaptive machining, engineering services, AS9100D, ITAR, aerospace machining, defense manufacturing, tight tolerance machining';
-  const ogImage = pageContent?.servicesPage?.seo?.ogImage?.asset?.url || `${baseUrl}/og-image-services.jpg`;
-  const ogImageAlt = pageContent?.servicesPage?.seo?.ogImage?.alt || 'IIS Precision Manufacturing Services - CNC Machining and Metrology';
+  const seoTitle = servicesPage?.seo?.metaTitle || 'Precision Manufacturing Services | 5-Axis CNC, Metrology, Engineering | IIS';
+  const seoDescription = servicesPage?.seo?.metaDescription || 'Advanced manufacturing services: 5-axis CNC machining, precision metrology, adaptive machining, engineering design. AS9100D certified, ±0.0001" tolerances, 150+ materials. ITAR registered for aerospace & defense.';
+  const seoKeywords = servicesPage?.seo?.keywords?.join(', ') || 'precision manufacturing, 5-axis CNC machining, metrology services, CMM inspection, adaptive machining, engineering services, AS9100D, ITAR, aerospace machining, defense manufacturing, tight tolerance machining';
+  const ogImage = servicesPage?.seo?.ogImage?.asset?.url || `${baseUrl}/og-image-services.jpg`;
+  const ogImageAlt = servicesPage?.seo?.ogImage?.alt || 'IIS Precision Manufacturing Services - CNC Machining and Metrology';
 
   return {
     title: seoTitle,
@@ -88,9 +88,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ServicesPage() {
   // Parallel data fetching - 2x faster than sequential
-  const [services, pageContent] = await Promise.all([
+  const [services, servicesPageData] = await Promise.all([
     getAllServices(),
-    getPageContent()
+    getServicesPage()
   ]);
 
   // Format services with slug and plain text description
@@ -102,14 +102,14 @@ export default async function ServicesPage() {
   })) || [];
 
   // Use CMS data or fallback to defaults
-  const capabilities = pageContent?.capabilities || [
+  const capabilities = [
     { label: 'Materials Certified', value: '150+', description: 'Aerospace & defense grade materials' },
     { label: 'Precision Tolerance', value: '±0.0001"', description: 'Guaranteed dimensional accuracy' },
     { label: 'Production Capacity', value: '24/7', description: 'Continuous manufacturing capability' },
     { label: 'Quality System', value: 'AS9100D', description: 'Full aerospace certification' }
   ];
 
-  const qualityAssurance = pageContent?.qualityAssurance || [
+  const qualityAssurance = servicesPageData?.qualityAssurance || [
     { title: 'AS9100D aerospace quality management' },
     { title: 'ISO 9001:2015 certified processes' },
     { title: 'ITAR registered for defense contracts' },
@@ -119,27 +119,20 @@ export default async function ServicesPage() {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={pageContent?.servicesPage?.hero?.backgroundImageUrl || pageContent?.servicesPage?.hero?.backgroundImage?.asset?.url || pageContent?.hero?.backgroundImageUrl || pageContent?.hero?.backgroundImage?.asset?.url ||
-          'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=2400&q=90'}
-        imageAlt="Advanced manufacturing services - precision CNC machining and quality control"
-        badge={pageContent?.servicesPage?.hero?.badge ? { text: pageContent.servicesPage.hero.badge } : undefined}
+        backgroundImage={servicesPageData?.hero?.backgroundImage?.asset?.url || 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=2400&q=90'}
+        imageAlt={servicesPageData?.hero?.backgroundImage?.alt || 'Advanced manufacturing services - precision CNC machining and quality control'}
+        badge={servicesPageData?.hero?.badge ? { text: servicesPageData.hero.badge } : undefined}
         title={
-          pageContent?.servicesPage?.hero?.title ? (
-            <span className="text-white">{pageContent.servicesPage.hero.title}</span>
+          servicesPageData?.hero?.heading ? (
+            <span className="text-white">{servicesPageData.hero.heading}</span>
           ) : (
             <>
               <span className="text-white">Our</span> <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">Services</span>
             </>
           )
         }
-        description={pageContent?.servicesPage?.hero?.descriptionRich ? (
-          <PortableTextContent value={pageContent.servicesPage.hero.descriptionRich} />
-        ) : (
-          pageContent?.servicesPage?.hero?.description || 'Advanced manufacturing capabilities delivering precision components for aerospace, defense, and energy sectors with industry-leading quality standards.'
-        )}
-        titleSize={pageContent?.servicesPage?.hero?.titleSize || pageContent?.hero?.titleSize}
-        descriptionSize={pageContent?.servicesPage?.hero?.descriptionSize || pageContent?.hero?.descriptionSize}
-        buttons={pageContent?.servicesPage?.hero?.buttons || [
+        description={servicesPageData?.hero?.description || 'Advanced manufacturing capabilities delivering precision components for aerospace, defense, and energy sectors with industry-leading quality standards.'}
+        buttons={[
           {
             label: 'Request Quote',
             href: '/contact',
@@ -186,9 +179,9 @@ export default async function ServicesPage() {
         <div className={theme.spacing.container}>
           <AnimatedSection>
             <div className="text-center mb-16">
-              <h2 className={cn(theme.typography.h2, "mb-6")}>Manufacturing Core Competencies</h2>
+              <h2 className={cn(theme.typography.h2, "mb-6")}>{servicesPageData?.content?.sectionTitle || 'Manufacturing Core Competencies'}</h2>
               <p className={cn(theme.typography.lead, "max-w-3xl mx-auto")}>
-                Comprehensive precision manufacturing services backed by advanced technology and industry certifications.
+                {servicesPageData?.content?.sectionDescription || 'Comprehensive precision manufacturing services backed by advanced technology and industry certifications.'}
               </p>
             </div>
           </AnimatedSection>
@@ -253,8 +246,7 @@ export default async function ServicesPage() {
               <div>
                 <h2 className={cn(theme.typography.h2, "mb-6")}>Quality Assurance</h2>
                 <p className={cn(theme.typography.lead, "mb-8")}>
-                  {pageContent?.servicesPage?.qualityIntro ||
-                    'Our comprehensive quality management system ensures every component meets or exceeds specifications with full traceability and documentation.'}
+                  Our comprehensive quality management system ensures every component meets or exceeds specifications with full traceability and documentation.
                 </p>
 
                 <div className="space-y-4">
@@ -274,7 +266,7 @@ export default async function ServicesPage() {
             <AnimatedSection delay={0.2}>
               <div className="relative">
                 <ParallaxImagePro
-                  src={pageContent?.servicesPage?.qualityImageUrl || pageContent?.servicesPage?.qualityImage?.asset?.url || 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1600&q=90'}
+                  src='https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1600&q=90'
                   alt="Quality assurance"
                   className="w-full h-96 rounded-lg"
                   speed={0.2}
@@ -290,20 +282,20 @@ export default async function ServicesPage() {
         <div className={theme.spacing.container}>
           <AnimatedSection>
             <div className="text-center max-w-4xl mx-auto">
-              <h2 className={cn(theme.typography.h2, "mb-6")}>{pageContent?.servicesPage?.cta?.heading || 'Ready to Start Your Project?'}</h2>
+              <h2 className={cn(theme.typography.h2, "mb-6")}>Ready to Start Your Project?</h2>
               <p className={cn(theme.typography.lead, "mb-8")}>
-                {pageContent?.servicesPage?.cta?.description || 'Partner with us for precision manufacturing solutions that meet the highest industry standards.'}
+                Partner with us for precision manufacturing solutions that meet the highest industry standards.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" className={styles.ctaPrimary} asChild>
-                  <Link href={pageContent?.servicesPage?.cta?.primaryButton?.href || '/contact?interest=quote'}>
-                    {pageContent?.servicesPage?.cta?.primaryButton?.label || 'Get Quote'}
+                  <Link href="/contact?interest=quote">
+                    Get Quote
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild className={styles.ctaSecondary}>
-                  <Link href={pageContent?.servicesPage?.cta?.secondaryButton?.href || '/contact'}>
-                    {pageContent?.servicesPage?.cta?.secondaryButton?.label || 'Contact Us'}
+                  <Link href="/contact">
+                    Contact Us
                   </Link>
                 </Button>
               </div>

@@ -6,8 +6,11 @@ export default {
   __experimental_singleton: true,
   groups: [
     {name: 'hero', title: 'Hero', default: true},
-    {name: 'content', title: 'Page Content'},
-    {name: 'cta', title: 'Call to Action'},
+    {name: 'benefits', title: 'Benefits'},
+    {name: 'values', title: 'Company Values'},
+    {name: 'opportunities', title: 'Job Opportunities'},
+    {name: 'why', title: 'Why Work Here'},
+    {name: 'cta', title: 'CTA'},
     {name: 'seo', title: 'SEO & Sharing'},
   ],
   fields: [
@@ -102,90 +105,267 @@ export default {
       ],
     },
     {
-      name: 'whyWorkHere',
+      name: 'benefits',
       type: 'object',
-      title: 'Why Work Here',
-      group: 'content',
+      title: 'Benefits Section',
+      group: 'benefits',
       options: {
         collapsible: true,
         collapsed: false,
       },
-      fieldsets: [
-        {name: 'text', title: 'Text Content'},
-        {name: 'image', title: 'Image'},
+      fields: [
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Section Title',
+          initialValue: 'Comprehensive Benefits Package',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Section Description',
+          rows: 2,
+        },
+        {
+          name: 'items',
+          type: 'array',
+          title: 'Benefits',
+          of: [
+            {
+              type: 'object',
+              preview: {
+                select: {
+                  title: 'title',
+                  subtitle: 'description',
+                },
+                prepare({title, subtitle}: any) {
+                  return {
+                    title: title || 'Benefit',
+                    subtitle: subtitle || 'No description',
+                  }
+                },
+              },
+              fields: [
+                {
+                  name: 'title',
+                  type: 'string',
+                  title: 'Title',
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: 'description',
+                  type: 'text',
+                  title: 'Description',
+                  rows: 2,
+                },
+                {
+                  name: 'iconName',
+                  type: 'string',
+                  title: 'Icon Name',
+                  description: 'Lucide icon name (e.g., "Heart", "Users", "Zap")',
+                },
+              ],
+            },
+          ],
+        },
       ],
-      fields: [
-        { name: 'heading', type: 'string', title: 'Heading' },
-        { name: 'paragraph1', type: 'text', title: 'Paragraph 1', rows: 3, fieldset: 'text' },
-        { name: 'paragraph2', type: 'text', title: 'Paragraph 2', rows: 3, fieldset: 'text' },
-        { name: 'paragraph3', type: 'text', title: 'Paragraph 3', rows: 3, fieldset: 'text' },
-        { name: 'image', type: 'image', title: 'Image', fieldset: 'image', options: { hotspot: true } },
-        { name: 'imageUrl', type: 'url', title: 'Image URL (optional)', fieldset: 'image' },
-        { name: 'imageAlt', type: 'string', title: 'Image Alt Text', fieldset: 'image' },
-      ]
-    },
-    {
-      name: 'benefits',
-      type: 'object',
-      title: 'Benefits',
-      group: 'content',
-      options: {
-        collapsible: true,
-        collapsed: true,
-      },
-      fields: [
-        { name: 'heading', type: 'string', title: 'Heading' },
-        { name: 'description', type: 'text', title: 'Description', rows: 3 },
-        { name: 'items', type: 'array', title: 'Benefit Items', of: [{ type: 'object', fields: [
-          { name: 'iconName', type: 'string', title: 'Icon Name' },
-          { name: 'title', type: 'string', title: 'Title' },
-          { name: 'description', type: 'text', title: 'Description', rows: 3 },
-        ]}]}
-      ]
     },
     {
       name: 'values',
       type: 'object',
-      title: 'Company Values',
-      group: 'content',
+      title: 'Company Values Section',
+      group: 'values',
       options: {
         collapsible: true,
-        collapsed: true,
+        collapsed: false,
       },
       fields: [
-        { name: 'heading', type: 'string', title: 'Heading' },
-        { name: 'description', type: 'text', title: 'Description', rows: 3 },
-        { name: 'items', type: 'array', title: 'Value Items', of: [{ type: 'object', fields: [
-          { name: 'title', type: 'string', title: 'Title' },
-          { name: 'description', type: 'text', title: 'Description', rows: 3 },
-        ]}]}
-      ]
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Section Title',
+          initialValue: 'Our Values',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Section Description',
+          rows: 2,
+        },
+        {
+          name: 'items',
+          type: 'array',
+          title: 'Values',
+          of: [
+            {
+              type: 'object',
+              preview: {
+                select: {
+                  title: 'title',
+                  subtitle: 'description',
+                },
+                prepare({title, subtitle}: any) {
+                  return {
+                    title: title || 'Value',
+                    subtitle: subtitle || 'No description',
+                  }
+                },
+              },
+              fields: [
+                {
+                  name: 'title',
+                  type: 'string',
+                  title: 'Title',
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: 'description',
+                  type: 'text',
+                  title: 'Description',
+                  rows: 2,
+                },
+                {
+                  name: 'iconName',
+                  type: 'string',
+                  title: 'Icon Name',
+                  description: 'Lucide icon name',
+                },
+              ],
+            },
+          ],
+        },
+      ],
     },
     {
       name: 'opportunities',
       type: 'object',
       title: 'Job Opportunities',
-      group: 'content',
+      group: 'opportunities',
       options: {
         collapsible: true,
-        collapsed: true,
+        collapsed: false,
       },
       fields: [
-        { name: 'heading', type: 'string', title: 'Heading' },
-        { name: 'description', type: 'text', title: 'Description', rows: 3 },
-        { name: 'positions', type: 'array', title: 'Job Positions', of: [{ type: 'object', fields: [
-          { name: 'title', type: 'string', title: 'Title' },
-          { name: 'description', type: 'text', title: 'Description', rows: 4 },
-          { name: 'type', type: 'string', title: 'Type' },
-          { name: 'location', type: 'string', title: 'Location' },
-          { name: 'link', type: 'string', title: 'Application Link' },
-        ]}]}
-      ]
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Section Title',
+          initialValue: 'Current Opportunities',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Section Description',
+          rows: 2,
+        },
+        {
+          name: 'jobs',
+          type: 'array',
+          title: 'Job Listings',
+          of: [
+            {
+              type: 'object',
+              preview: {
+                select: {
+                  title: 'title',
+                  subtitle: 'department',
+                },
+                prepare({title, subtitle}: any) {
+                  return {
+                    title: title || 'Job Opening',
+                    subtitle: subtitle || 'No department',
+                  }
+                },
+              },
+              fields: [
+                {
+                  name: 'title',
+                  type: 'string',
+                  title: 'Job Title',
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: 'department',
+                  type: 'string',
+                  title: 'Department',
+                },
+                {
+                  name: 'type',
+                  type: 'string',
+                  title: 'Employment Type',
+                  description: 'e.g., Full-time, Part-time, Contract',
+                },
+                {
+                  name: 'description',
+                  type: 'text',
+                  title: 'Job Description',
+                  rows: 3,
+                },
+                {
+                  name: 'qualifications',
+                  type: 'array',
+                  title: 'Qualifications',
+                  of: [
+                    {
+                      type: 'object',
+                      fields: [{name: 'qualification', type: 'string', title: 'Qualification'}],
+                    },
+                  ],
+                },
+                {
+                  name: 'link',
+                  type: 'string',
+                  title: 'Application Link or Email',
+                  description: 'Where to apply (URL or email)',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'why',
+      type: 'object',
+      title: 'Why Work Here',
+      group: 'why',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Section Title',
+          initialValue: 'Why Join IIS',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Section Description',
+          rows: 3,
+        },
+        {
+          name: 'items',
+          type: 'array',
+          title: 'Reasons',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {name: 'title', type: 'string', title: 'Title'},
+                {name: 'description', type: 'text', title: 'Description', rows: 2},
+              ],
+            },
+          ],
+        },
+      ],
     },
     {
       name: 'cta',
       type: 'object',
-      title: 'Call To Action',
+      title: 'Call to Action',
       group: 'cta',
       options: {
         collapsible: true,
@@ -196,17 +376,39 @@ export default {
         {name: 'buttons', title: 'Buttons'},
       ],
       fields: [
-        { name: 'heading', type: 'string', title: 'Heading', fieldset: 'content' },
-        { name: 'description', type: 'text', title: 'Description', rows: 3, fieldset: 'content' },
-        { name: 'buttons', type: 'array', title: 'Buttons', fieldset: 'buttons', of: [{ type: 'object', fields: [
-          { name: 'label', type: 'string', title: 'Label' },
-          { name: 'href', type: 'string', title: 'URL' },
-          { name: 'variant', type: 'string', title: 'Variant', options: { list: [
-            { title: 'Primary', value: 'primary' },
-            { title: 'Secondary', value: 'secondary' },
-          ]}},
-        ]}]}
-      ]
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Title',
+          fieldset: 'content',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Description',
+          rows: 2,
+          fieldset: 'content',
+        },
+        {
+          name: 'buttons',
+          type: 'array',
+          title: 'Buttons',
+          fieldset: 'buttons',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {name: 'label', type: 'string', title: 'Label'},
+                {name: 'href', type: 'string', title: 'URL'},
+                {name: 'variant', type: 'string', title: 'Variant', options: { list: [
+                  { title: 'Primary', value: 'primary' },
+                  { title: 'Secondary', value: 'secondary' },
+                ]}},
+              ],
+            },
+          ],
+        },
+      ],
     },
     {
       name: 'seo',

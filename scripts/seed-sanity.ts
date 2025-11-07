@@ -134,73 +134,57 @@ async function seedSanity() {
 
     const industries = [
       {
-        _id: 'industry-defense',
-        _type: 'industry',
-        title: 'Defense & Government',
-        slug: { current: 'defense' },
-        order: 1,
-        shortDescription:
-          'ITAR registered with rapid prototyping and secure facility capabilities',
-        description:
-          'ITAR registered with rapid prototyping and secure facility capabilities',
-        iconName: 'Shield',
-        published: true,
-        features: [
-          { _type: 'string', _key: 'feat1', text: 'ITAR registered' },
-          { _type: 'string', _key: 'feat2', text: 'Secure facility' },
-          {
-            _type: 'string',
-            _key: 'feat3',
-            text: 'Rapid prototyping',
-          },
-        ],
-      },
-      {
-        _id: 'industry-energy',
-        _type: 'industry',
-        title: 'Energy & Power',
-        slug: { current: 'energy' },
-        order: 2,
-        shortDescription:
-          'Superalloy expertise with large part capability and field service support',
-        description:
-          'Superalloy expertise with large part capability and field service support',
-        iconName: 'Zap',
-        published: true,
-        features: [
-          { _type: 'string', _key: 'feat1', text: 'Superalloy expertise' },
-          {
-            _type: 'string',
-            _key: 'feat2',
-            text: 'Large part capability',
-          },
-          {
-            _type: 'string',
-            _key: 'feat3',
-            text: 'Field service support',
-          },
-        ],
-      },
-      {
         _id: 'industry-aerospace',
         _type: 'industry',
-        title: 'Aerospace & Aviation',
+        title: 'Aerospace',
         slug: { current: 'aerospace' },
-        order: 3,
+        order: 1,
         shortDescription:
-          'AS9100D certified with NADCAP accreditation and zero defect delivery',
+          'Critical flight components and systems requiring the highest precision and reliability standards.',
         description:
-          'AS9100D certified with NADCAP accreditation and zero defect delivery',
+          'Critical flight components and systems requiring the highest precision and reliability standards.',
         iconName: 'Plane',
         published: true,
         features: [
           { _type: 'string', _key: 'feat1', text: 'AS9100D certified' },
           { _type: 'string', _key: 'feat2', text: 'NADCAP accredited' },
-          {
-            _type: 'string',
-            _key: 'feat3',
-            text: 'Zero defect delivery',
-          },
+          { _type: 'string', _key: 'feat3', text: '85% of production focus' },
+        ],
+      },
+      {
+        _id: 'industry-defense',
+        _type: 'industry',
+        title: 'Defense',
+        slug: { current: 'defense' },
+        order: 2,
+        shortDescription:
+          'Mission-critical components for defense systems with stringent security and quality requirements.',
+        description:
+          'Mission-critical components for defense systems with stringent security and quality requirements.',
+        iconName: 'Shield',
+        published: true,
+        features: [
+          { _type: 'string', _key: 'feat1', text: 'ITAR registered' },
+          { _type: 'string', _key: 'feat2', text: 'Security clearance capabilities' },
+          { _type: 'string', _key: 'feat3', text: '25+ years experience' },
+        ],
+      },
+      {
+        _id: 'industry-energy',
+        _type: 'industry',
+        title: 'Energy',
+        slug: { current: 'energy' },
+        order: 3,
+        shortDescription:
+          'Precision components for power generation, oil & gas, and renewable energy systems.',
+        description:
+          'Precision components for power generation, oil & gas, and renewable energy systems.',
+        iconName: 'Zap',
+        published: true,
+        features: [
+          { _type: 'string', _key: 'feat1', text: 'Superalloy expertise' },
+          { _type: 'string', _key: 'feat2', text: 'API & ASME certified' },
+          { _type: 'string', _key: 'feat3', text: 'High-volume capability' },
         ],
       },
     ]
@@ -225,8 +209,10 @@ async function seedSanity() {
       _type: 'homepage',
       title: 'Homepage',
       heroEnhanced: {
-        mainTitle: 'PRECISION MANUFACTURING',
-        subtitle: 'SERVICES',
+        word1: 'PRECISION',
+        word2: 'MANUFACTURING',
+        word3: 'SERVICES',
+        heroFontSize: 'text-5xl md:text-7xl',
         tagline:
           'Innovative Precision Machining & Manufacturing Excellence Since 1995',
         slides: [
@@ -305,6 +291,10 @@ async function seedSanity() {
           text: 'View Capabilities',
           href: '/services',
         },
+        ctaTertiary: {
+          text: 'Learn More',
+          href: '/about',
+        },
       },
       servicesSection: {
         eyebrow: 'COMPREHENSIVE MANUFACTURING SOLUTIONS',
@@ -379,6 +369,24 @@ async function seedSanity() {
             color: 'text-blue-600',
           },
         ],
+      },
+      resourcesSection: {
+        eyebrow: 'EXPERT KNOWLEDGE',
+        heading: 'Technical Resources',
+        description: 'In-depth guides, best practices, and technical documentation to help you make informed decisions about precision manufacturing.',
+        benefits: [
+          { _key: 'benefit-1', title: 'Expert Guides', description: 'Learn from our team of experienced engineers and technicians' },
+          { _key: 'benefit-2', title: 'Best Practices', description: 'Industry-leading standards and methodologies' },
+          { _key: 'benefit-3', title: 'Case Studies', description: 'Real-world applications and success stories' },
+        ],
+        cta: {
+          heading: 'Browse Our Knowledge Base',
+          description: '76 technical resources covering manufacturing processes, quality standards, materials science, and industry applications.',
+          buttons: [
+            { _key: 'btn-resources', text: 'Explore Resources', href: '/resources', variant: 'primary' },
+            { _key: 'btn-contact', text: 'Need Custom Solutions?', href: '/contact', variant: 'secondary' },
+          ],
+        },
       },
     }
 
@@ -628,11 +636,11 @@ async function seedSanity() {
           },
           {
             _key: 'pos-2',
-            title: 'Quality Inspector',
+            title: 'Quality Engineer',
             description: 'Perform dimensional inspection using CMM and optical comparators. Experience with GD&T and AS9102 first article inspection required. Proficiency with PC-DMIS preferred.',
             type: 'Full-Time',
             location: 'Clackamas, OR',
-            link: '/contact?interest=quality-inspector',
+            link: '/contact?interest=quality-engineer',
           },
           {
             _key: 'pos-3',
@@ -665,17 +673,408 @@ async function seedSanity() {
       console.warn('⚠️  Careers page might already exist:', error)
     }
 
+    // 7. CREATE CONTACT PAGE
+    console.log('\n📧 Creating contact page...')
+
+    const contact = {
+      _id: 'contact',
+      _type: 'contact',
+      hero: {
+        backgroundImage: {
+          _type: 'image',
+          asset: { _ref: 'image-contact-hero', _type: 'reference' },
+          alt: 'IIS Contact - Precision Manufacturing Team',
+        },
+        badge: 'GET IN TOUCH',
+        badgeIconName: 'Phone',
+        title: 'Contact',
+        titleHighlight: 'Our Team',
+        description: 'Connect with Integrated Inspection Systems for precision manufacturing solutions, technical consultations, and project quotes.',
+        buttonLabel: 'Start Your Project',
+        buttonHref: '#contact-form',
+      },
+      contactInfo: {
+        heading: 'Get in Touch',
+        description: 'Our engineering team is ready to discuss your precision manufacturing needs. We respond to all inquiries within 24 hours.',
+        addressLine1: 'Integrated Inspection Systems, Inc.',
+        addressLine2: '14310 SE Industrial Way',
+        addressLine3: 'Clackamas, OR 97015',
+        phone: '(503) 231-9093',
+        phoneLink: 'tel:+15032319093',
+        email: 'officemgr@iismet.com',
+        hoursLine1: 'Monday - Friday: 7:00 AM - 5:00 PM PST',
+        hoursLine2: '24/7 Production Facility',
+      },
+      certifications: [
+        { _key: 'cert-as9100', certification: 'AS9100D - Aerospace Quality' },
+        { _key: 'cert-iso', certification: 'ISO 9001:2015 - Quality Management' },
+        { _key: 'cert-itar', certification: 'ITAR Registered' },
+        { _key: 'cert-cmmc', certification: 'CMMC Compliant' },
+      ],
+      bottomStats: [
+        { _key: 'stat1', iconName: 'Zap', text: 'Quote Response in 24 Hours', animated: true },
+        { _key: 'stat2', iconName: 'Award', text: '30+ Years Experience', animated: false },
+        { _key: 'stat3', iconName: 'Shield', text: '99.8% First-Pass Yield', animated: false },
+        { _key: 'stat4', iconName: 'CheckCircle', text: 'AS9100D Certified', animated: false },
+      ],
+      seo: {
+        metaTitle: 'Contact IIS - Precision Manufacturing Quote & Support',
+        metaDescription: 'Get in touch with Integrated Inspection Systems for CNC machining, precision metrology, and engineering support. 24-hour response time. ITAR & AS9100 certified.',
+        metaKeywords: 'contact precision manufacturing, CNC machining quote, metrology inspection, aerospace manufacturing quote, Oregon',
+        ogImage: {
+          _type: 'image',
+          asset: { _ref: 'image-contact-og', _type: 'reference' },
+          alt: 'Contact IIS Precision Manufacturing',
+        },
+      },
+    }
+
+    try {
+      await client.createIfNotExists(contact)
+      console.log('✓ Created contact page')
+    } catch (error) {
+      console.warn('⚠️  Contact page might already exist:', error)
+    }
+
+    // 8. CREATE ABOUT PAGE
+    console.log('\n📖 Creating about page...')
+
+    const about = {
+      _id: 'about',
+      _type: 'about',
+      hero: {
+        backgroundImage: {
+          _type: 'image',
+          asset: { _ref: 'image-about-hero', _type: 'reference' },
+          alt: 'IIS Manufacturing Facility - 30 Years of Excellence',
+        },
+        badge: 'OUR STORY',
+        badgeIconName: 'History',
+        title: 'Engineering',
+        titleHighlight: 'Excellence Since 1995',
+        description: 'From a basement startup to an industry-leading precision manufacturing provider, our journey is defined by quality, innovation, and an unwavering commitment to our customers.',
+        buttons: [
+          { _key: 'btn-quote', text: 'Request Quote', href: '/contact?interest=quote' },
+          { _key: 'btn-capabilities', text: 'View Capabilities', href: '/services' },
+        ],
+      },
+      companyStats: [
+        { _key: 'stat-years', label: 'Years in Business', value: '30+' },
+        { _key: 'stat-team', label: 'Team Members', value: '150+' },
+        { _key: 'stat-revenue', label: 'Annual Revenue', value: '$25M+' },
+        { _key: 'stat-facility', label: 'Facility Size (sq ft)', value: '45,000' },
+      ],
+      story: {
+        title: 'From Basement Startup to Industry Leader',
+        paragraph1: 'IIS was established in 1995 from a residential basement by founders from Precision Castparts Inc. The early focus included small business networking and quality documentation. A major innovation came from applying aerospace GD&T principles to high-volume metrology. In 1998, the company purchased its first Zeiss CMM, relocated to Beaverton, Oregon, and served the plastics and high-volume metrology sectors.',
+        paragraph2: 'The company developed proprietary MetBase® software to integrate CMM data, CNC machines, and vision systems into closed-loop manufacturing. By 2001, they achieved a 3-sigma machining system and relocated to their current 20,000 sq ft Clackamas facility, later expanding to 4-sigma targeting systems. This innovation transformed quality control in precision manufacturing and became the industry standard.',
+        paragraph3: 'Today, IIS is recognized as a trusted partner by Fortune 500 companies in aerospace, defense, energy, and medical device industries. With 150+ skilled professionals and state-of-the-art capabilities, our AS9100D, ISO 9001:2015, ITAR registration, and CMMC compliance ensure that every component meets the highest quality standards.',
+        image: {
+          _type: 'image',
+          asset: { _ref: 'image-about-story', _type: 'reference' },
+          alt: 'IIS Precision Manufacturing Facility',
+        },
+      },
+      values: [
+        { _key: 'val-excellence', title: 'Excellence', description: 'Highest standards in components and customer service' },
+        { _key: 'val-innovation', title: 'Innovation', description: 'Investment in cutting-edge technology and creative thinking' },
+        { _key: 'val-integrity', title: 'Integrity', description: 'Transparency and honesty in business relationships' },
+        { _key: 'val-teamwork', title: 'Teamwork', description: 'Collaboration and mutual respect across departments' },
+      ],
+      capabilities: {
+        heading: 'Manufacturing Capabilities',
+        items: [
+          '5-Axis CNC Machining - ±0.0001" tolerance',
+          'Adaptive Machining - Real-time process optimization',
+          'CMM Inspection - 0.00005" accuracy',
+          'AS9102 First-Article Reports',
+          'GD&T Analysis & Documentation',
+          'MetBase® Software Integration',
+        ],
+      },
+      certifications: [
+        { _key: 'cert1', name: 'AS9100D', description: 'Aerospace Quality Management System' },
+        { _key: 'cert2', name: 'ISO 9001:2015', description: 'Quality Management System' },
+        { _key: 'cert3', name: 'ITAR Registered', description: 'International Traffic in Arms Regulations' },
+        { _key: 'cert4', name: 'CMMC', description: 'Cybersecurity Maturity Model Certification' },
+      ],
+      cta: {
+        heading: 'Ready to Work With IIS?',
+        description: 'Let our team of precision manufacturing experts help bring your most demanding projects to life.',
+        buttons: [
+          { _key: 'cta-quote', text: 'Request a Quote', href: '/contact?interest=quote', variant: 'primary' },
+          { _key: 'cta-consult', text: 'Schedule Consultation', href: '/contact?interest=technical', variant: 'secondary' },
+        ],
+      },
+      seo: {
+        metaTitle: 'About IIS - 30 Years of Precision Manufacturing Excellence',
+        metaDescription: 'Learn about Integrated Inspection Systems: 30 years of aerospace-grade precision manufacturing, AS9100 certified, ITAR registered, with proprietary MetBase® software.',
+        metaKeywords: 'precision manufacturing company, aerospace manufacturing, ISO 9001, AS9100, ITAR, MetBase software, Oregon manufacturing',
+        ogImage: {
+          _type: 'image',
+          asset: { _ref: 'image-about-og', _type: 'reference' },
+          alt: 'About IIS Precision Manufacturing',
+        },
+      },
+    }
+
+    try {
+      await client.createIfNotExists(about)
+      console.log('✓ Created about page')
+    } catch (error) {
+      console.warn('⚠️  About page might already exist:', error)
+    }
+
+    // 9. CREATE SAMPLE RESOURCES
+    console.log('\n📚 Creating sample resources...')
+
+    const resources = [
+      { _id: 'resource-1', _type: 'resource', title: 'Advanced MetBase Features: Automation and Custom Solutions for Complex Quality Management', slug: { current: 'advanced-metbase-features' }, category: 'metbase-integration', excerpt: 'Master advanced MetBase automation capabilities and custom development for complex quality management requirements', content: 'Advanced MetBase Features: Automation and Custom Solutions for Complex Quality Management', difficulty: 'expert', readTime: '7 min', publishDate: '2024-11-06T00:00:00Z', author: 'IIS Engineering Team', featured: true, published: true, tags: ['MetBase', 'Automation', 'Quality Management'] },
+      { _id: 'resource-2', _type: 'resource', title: 'Statistical Analysis and Reporting with MetBase: SPC Analysis and Quality Data Intelligence', slug: { current: 'statistical-analysis-metbase' }, category: 'metbase-integration', excerpt: 'Master statistical analysis and reporting capabilities in MetBase for comprehensive quality data intelligence', content: 'Statistical Analysis and Reporting with MetBase: SPC Analysis and Quality Data Intelligence', difficulty: 'advanced', readTime: '8 min', publishDate: '2024-11-05T00:00:00Z', author: 'IIS Engineering Team', featured: true, published: true, tags: ['MetBase', 'SPC', 'Quality Analysis'] },
+      { _id: 'resource-3', _type: 'resource', title: 'MetBase Setup and Integration with Measurement Equipment: Quality Data Management System Implementation', slug: { current: 'metbase-setup-integration' }, category: 'metbase-integration', excerpt: 'Master MetBase setup and integration with measurement equipment for comprehensive quality data management', content: 'MetBase Setup and Integration with Measurement Equipment: Quality Data Management System Implementation', difficulty: 'advanced', readTime: '9 min', publishDate: '2024-11-04T00:00:00Z', author: 'IIS Engineering Team', featured: false, published: true, tags: ['MetBase', 'Integration', 'Data Management'] },
+      { _id: 'resource-4', _type: 'resource', title: 'Supplier Management and Continuous Improvement in AS9100: Advanced Quality System Optimization', slug: { current: 'supplier-management-as9100' }, category: 'as9100-quality', excerpt: 'Master AS9100 supplier management requirements and continuous improvement strategies', content: 'Supplier Management and Continuous Improvement in AS9100: Advanced Quality System Optimization', difficulty: 'advanced', readTime: '8 min', publishDate: '2024-11-03T00:00:00Z', author: 'IIS Engineering Team', featured: false, published: true, tags: ['AS9100', 'Supplier Management', 'Quality'] },
+      { _id: 'resource-5', _type: 'resource', title: 'Risk Management and Configuration Control in AS9100: Advanced Aerospace Quality System Controls', slug: { current: 'risk-management-as9100' }, category: 'as9100-quality', excerpt: 'Master AS9100 risk management and configuration control requirements for aerospace quality systems', content: 'Risk Management and Configuration Control in AS9100: Advanced Aerospace Quality System Controls', difficulty: 'advanced', readTime: '9 min', publishDate: '2024-11-02T00:00:00Z', author: 'IIS Engineering Team', featured: false, published: true, tags: ['AS9100', 'Risk Management', 'Aerospace'] },
+      { _id: 'resource-6', _type: 'resource', title: 'AS9100 Implementation and Certification Process: Aerospace Quality Management System Guide', slug: { current: 'as9100-implementation-certification' }, category: 'as9100-quality', excerpt: 'Master AS9100 implementation and certification for aerospace quality management systems', content: 'AS9100 Implementation and Certification Process: Aerospace Quality Management System Guide', difficulty: 'advanced', readTime: '12 min', publishDate: '2024-11-01T00:00:00Z', author: 'IIS Engineering Team', featured: true, published: true, tags: ['AS9100', 'Certification', 'Aerospace Quality'] },
+      { _id: 'resource-7', _type: 'resource', title: 'Advanced CNC Techniques: 5-Axis and Multi-Setup Strategies for Complex Geometry Machining', slug: { current: 'advanced-cnc-techniques' }, category: 'cnc-manufacturing', excerpt: 'Master advanced CNC techniques including 5-axis machining, multi-setup strategies, and complex geometry programming', content: 'Advanced CNC Techniques: 5-Axis and Multi-Setup Strategies for Complex Geometry Machining', difficulty: 'expert', readTime: '10 min', publishDate: '2024-10-31T00:00:00Z', author: 'IIS Manufacturing Engineers', featured: true, published: true, tags: ['CNC', '5-Axis', 'Machining'] },
+      { _id: 'resource-8', _type: 'resource', title: 'Material Considerations for Precision CNC Machining: Optimization Strategies for Different Alloys', slug: { current: 'material-cnc-machining' }, category: 'cnc-manufacturing', excerpt: 'Master material-specific CNC machining strategies, tool selection, and parameter optimization', content: 'Material Considerations for Precision CNC Machining: Optimization Strategies for Different Alloys', difficulty: 'advanced', readTime: '9 min', publishDate: '2024-10-30T00:00:00Z', author: 'IIS Manufacturing Engineers', featured: false, published: true, tags: ['CNC', 'Materials', 'Machining'] },
+      { _id: 'resource-9', _type: 'resource', title: 'Surface Finish Requirements and Achievement: CNC Machining Surface Quality Control', slug: { current: 'surface-finish-cnc' }, category: 'cnc-manufacturing', excerpt: 'Master surface finish specifications, measurement techniques, and achievement methods for CNC machining', content: 'Surface Finish Requirements and Achievement: CNC Machining Surface Quality Control', difficulty: 'advanced', readTime: '8 min', publishDate: '2024-10-29T00:00:00Z', author: 'IIS Manufacturing Engineers', featured: false, published: true, tags: ['Surface Finish', 'Quality Control', 'CNC'] },
+      { _id: 'resource-10', _type: 'resource', title: 'CNC Machining Tolerance Capabilities and Specifications: Achieving Precision in Manufacturing', slug: { current: 'cnc-tolerance-capabilities' }, category: 'cnc-manufacturing', excerpt: 'Master CNC machining tolerance capabilities, achievable specifications, and factors affecting precision', content: 'CNC Machining Tolerance Capabilities and Specifications: Achieving Precision in Manufacturing', difficulty: 'advanced', readTime: '10 min', publishDate: '2024-10-28T00:00:00Z', author: 'IIS Manufacturing Engineers', featured: false, published: true, tags: ['Tolerance', 'Precision', 'CNC'] },
+      { _id: 'resource-11', _type: 'resource', title: 'GD&T Measurement and Verification Techniques: CMM Programming and Functional Gaging Methods', slug: { current: 'gdt-measurement-verification' }, category: 'gdt-fundamentals', excerpt: 'Master practical GD&T measurement methods, CMM programming techniques, and functional gaging strategies', content: 'GD&T Measurement and Verification Techniques: CMM Programming and Functional Gaging Methods', difficulty: 'advanced', readTime: '9 min', publishDate: '2024-10-27T00:00:00Z', author: 'IIS Metrology Team', featured: true, published: true, tags: ['GD&T', 'CMM', 'Measurement'] },
+      { _id: 'resource-12', _type: 'resource', title: 'Position Tolerance and Material Condition Modifiers: Advanced GD&T Applications and Bonus Tolerance', slug: { current: 'position-tolerance-gdt' }, category: 'gdt-fundamentals', excerpt: 'Master position tolerance applications, MMC/LMC material condition modifiers, and bonus tolerance calculations', content: 'Position Tolerance and Material Condition Modifiers: Advanced GD&T Applications and Bonus Tolerance', difficulty: 'advanced', readTime: '10 min', publishDate: '2024-10-26T00:00:00Z', author: 'IIS Metrology Team', featured: false, published: true, tags: ['GD&T', 'Position Tolerance', 'Bonus Tolerance'] },
+      { _id: 'resource-13', _type: 'resource', title: 'Datum Reference Frames and Establishment: Mastering Coordinate System Definition in GD&T', slug: { current: 'datum-reference-frames' }, category: 'gdt-fundamentals', excerpt: 'Master datum reference frame establishment, coordinate system definition, and the 3-2-1 principle in GD&T', content: 'Datum Reference Frames and Establishment: Mastering Coordinate System Definition in GD&T', difficulty: 'advanced', readTime: '8 min', publishDate: '2024-10-25T00:00:00Z', author: 'IIS Metrology Team', featured: false, published: true, tags: ['GD&T', 'Datum', 'Reference Frames'] },
+      { _id: 'resource-14', _type: 'resource', title: 'GD&T Symbols and Basic Principles: Understanding Geometric Dimensioning and Tolerancing Fundamentals', slug: { current: 'gdt-symbols-basics' }, category: 'gdt-fundamentals', excerpt: 'Master fundamental GD&T symbols, principles, and applications per ASME Y14.5 standard', content: 'GD&T Symbols and Basic Principles: Understanding Geometric Dimensioning and Tolerancing Fundamentals', difficulty: 'intermediate', readTime: '9 min', publishDate: '2024-10-24T00:00:00Z', author: 'IIS Metrology Team', featured: true, published: true, tags: ['GD&T', 'ASME Y14.5', 'Symbols'] },
+      { _id: 'resource-15', _type: 'resource', title: 'Customer Requirements and FAI Approval Process: Navigating Aerospace and Defense FAI Standards', slug: { current: 'customer-fai-approval' }, category: 'first-article-inspection', excerpt: 'Navigate complex customer-specific FAI requirements and approval processes for aerospace and defense programs', content: 'Customer Requirements and FAI Approval Process: Navigating Aerospace and Defense FAI Standards', difficulty: 'advanced', readTime: '7 min', publishDate: '2024-10-23T00:00:00Z', author: 'IIS Engineering Team', featured: false, published: true, tags: ['FAI', 'Customer Requirements', 'Aerospace'] },
+      { _id: 'resource-16', _type: 'resource', title: 'FAI Measurement and Inspection Procedures: Systematic AS9102 Compliance', slug: { current: 'fai-measurement-procedures' }, category: 'first-article-inspection', excerpt: 'Master systematic FAI measurement procedures, inspection planning, and AS9102 compliance verification', content: 'FAI Measurement and Inspection Procedures: Systematic AS9102 Compliance', difficulty: 'advanced', readTime: '8 min', publishDate: '2024-10-22T00:00:00Z', author: 'IIS Engineering Team', featured: false, published: true, tags: ['FAI', 'AS9102', 'Inspection'] },
+      { _id: 'resource-17', _type: 'resource', title: 'AS9102 Forms and Documentation Requirements: Complete FAI Compliance Guide', slug: { current: 'as9102-forms-documentation' }, category: 'first-article-inspection', excerpt: 'Master AS9102 Form 1, Form 2, and Form 3 completion for First Article Inspection compliance', content: 'AS9102 Forms and Documentation Requirements: Complete FAI Compliance Guide', difficulty: 'advanced', readTime: '10 min', publishDate: '2024-10-21T00:00:00Z', author: 'IIS Engineering Team', featured: true, published: true, tags: ['AS9102', 'FAI', 'Documentation'] },
+      { _id: 'resource-18', _type: 'resource', title: 'CMM Error Analysis and Troubleshooting: Identifying and Correcting Measurement Issues', slug: { current: 'cmm-error-analysis' }, category: 'cmm-inspection', excerpt: 'Master CMM error analysis, measurement uncertainty assessment, and systematic troubleshooting techniques', content: 'CMM Error Analysis and Troubleshooting: Identifying and Correcting Measurement Issues', difficulty: 'advanced', readTime: '8 min', publishDate: '2024-10-20T00:00:00Z', author: 'IIS Metrology Team', featured: false, published: true, tags: ['CMM', 'Error Analysis', 'Troubleshooting'] },
+      { _id: 'resource-19', _type: 'resource', title: 'CMM Measurement Strategies and Planning: Optimizing Accuracy and Efficiency', slug: { current: 'cmm-measurement-strategies' }, category: 'cmm-inspection', excerpt: 'Master CMM measurement strategy development, datum establishment, and measurement sequence planning', content: 'CMM Measurement Strategies and Planning: Optimizing Accuracy and Efficiency', difficulty: 'advanced', readTime: '9 min', publishDate: '2024-10-19T00:00:00Z', author: 'IIS Metrology Team', featured: true, published: true, tags: ['CMM', 'Measurement', 'Strategy'] },
+      { _id: 'resource-20', _type: 'resource', title: 'CMM Probe Selection and Configuration: Choosing the Right Tool for Precision', slug: { current: 'cmm-probe-selection' }, category: 'cmm-inspection', excerpt: 'Master CMM probe selection, configuration, and qualification procedures for optimal measurement accuracy', content: 'CMM Probe Selection and Configuration: Choosing the Right Tool for Precision', difficulty: 'intermediate', readTime: '7 min', publishDate: '2024-10-18T00:00:00Z', author: 'IIS Metrology Team', featured: false, published: true, tags: ['CMM', 'Probe', 'Configuration'] },
+    ]
+
+    for (const resource of resources) {
+      try {
+        await client.createIfNotExists(resource)
+      } catch (error) {
+        console.warn(`⚠️  Resource "${resource.title}" might already exist`)
+      }
+    }
+    console.log('✓ Created 20 resources from live site')
+
+    // 9. CREATE SERVICES PAGE SINGLETON
+    console.log('\n🛠️ Creating services page...')
+
+    const servicesPage = {
+      _id: 'servicesPage',
+      _type: 'servicesPage',
+      hero: {
+        badge: 'PRECISION MANUFACTURING SERVICES',
+        heading: 'Our Services',
+        description: 'Advanced manufacturing capabilities delivering precision components for aerospace, defense, and energy sectors with industry-leading quality standards.',
+        backgroundImage: {
+          _type: 'image',
+          asset: { _ref: 'image-services-hero', _type: 'reference' },
+          alt: 'IIS Services - Precision Manufacturing Solutions',
+        },
+      },
+      content: {
+        sectionTitle: 'Manufacturing Core Competencies',
+        sectionDescription: 'Four core service pillars delivering unmatched precision and reliability for aerospace and defense applications',
+        services: [
+          {
+            _key: 'service-1',
+            title: '5-Axis CNC Machining',
+            description: 'Complex geometries with unmatched precision for aerospace components',
+          },
+          {
+            _key: 'service-2',
+            title: 'Adaptive Machining',
+            description: 'Real-time adjustments based on in-process measurements',
+          },
+          {
+            _key: 'service-3',
+            title: 'Metrology & Inspection',
+            description: 'Comprehensive measurement and inspection services',
+          },
+          {
+            _key: 'service-4',
+            title: 'Engineering Support',
+            description: 'Design, analysis, and optimization expertise',
+          },
+        ],
+      },
+      seo: {
+        metaTitle: 'IIS - Precision Machining & CMM Inspection Services | AS9100 Certified | Oregon',
+        metaDescription: 'AS9100 & ISO 9001 certified precision machining and CMM inspection services. First article inspection, dimensional measurement, and proprietary MetBase® software for aerospace, defense & manufacturing industries.',
+        ogImage: {
+          _type: 'image',
+          asset: { _ref: 'image-services-og', _type: 'reference' },
+          alt: 'IIS Services',
+        },
+        keywords: [
+          'precision manufacturing',
+          'CNC machining',
+          'CMM inspection',
+          'AS9100',
+          'aerospace manufacturing',
+          'defense manufacturing',
+        ],
+      },
+    }
+
+    try {
+      await client.createIfNotExists(servicesPage)
+      console.log('✓ Created services page')
+    } catch (error) {
+      console.warn('⚠️  Services page might already exist:', error)
+    }
+
+    // 10. CREATE INDUSTRIES PAGE SINGLETON
+    console.log('\n🏭 Creating industries page...')
+
+    const industriesPage = {
+      _id: 'industriesPage',
+      _type: 'industriesPage',
+      hero: {
+        badge: 'SPECIALIZED SECTOR EXPERTISE',
+        heading: 'Critical Industry Solutions',
+        subheading: 'Trusted partner for aerospace, defense, and energy sectors, delivering mission-critical components with uncompromising quality and precision.',
+        backgroundImage: {
+          _type: 'image',
+          asset: { _ref: 'image-industries-hero', _type: 'reference' },
+          alt: 'IIS Industries - Critical Sector Solutions',
+        },
+      },
+      content: {
+        overviewTitle: 'Industries Overview',
+        overviewStats: [
+          { _key: 'stat-1', value: '30+', label: 'Years of Experience' },
+          { _key: 'stat-2', value: '200+', label: 'Active Programs' },
+          { _key: 'stat-3', value: '99.8%', label: 'Quality Rating' },
+          { _key: 'stat-4', value: '12+', label: 'Certifications' },
+        ],
+        industries: [
+          {
+            _key: 'industry-1',
+            name: 'Aerospace',
+            description: 'Engine components, landing gear, structural parts, avionics housings',
+            applications: [
+              'Engine components',
+              'Landing gear',
+              'Structural parts',
+              'Avionics housings',
+            ],
+            stats: [
+              { _key: 'aero-stat-1', label: 'Production', value: '85%' },
+              { _key: 'aero-stat-2', label: 'Active Clients', value: '50+' },
+              { _key: 'aero-stat-3', label: 'Experience', value: '30+ years' },
+            ],
+            certifications: ['AS9100D', 'NADCAP', 'ITAR'],
+            icon: 'Plane',
+          },
+          {
+            _key: 'industry-2',
+            name: 'Defense',
+            description: 'Weapon systems, radar components, vehicle parts, electronics',
+            applications: [
+              'Weapon systems',
+              'Radar components',
+              'Vehicle parts',
+              'Electronics',
+            ],
+            stats: [
+              { _key: 'def-stat-1', label: 'Production', value: '15%' },
+              { _key: 'def-stat-2', label: 'Active Clients', value: '25+' },
+              { _key: 'def-stat-3', label: 'Experience', value: '25+ years' },
+            ],
+            certifications: ['ITAR', 'DFARS', 'Security Clearance'],
+            icon: 'Shield',
+          },
+          {
+            _key: 'industry-3',
+            name: 'Energy',
+            description: 'Turbine parts, valve components, pump housings, generator parts',
+            applications: [
+              'Turbine parts',
+              'Valve components',
+              'Pump housings',
+              'Generator parts',
+            ],
+            stats: [
+              { _key: 'ene-stat-1', label: 'Production', value: '25%' },
+              { _key: 'ene-stat-2', label: 'Active Clients', value: '15+' },
+              { _key: 'ene-stat-3', label: 'Experience', value: '20+ years' },
+            ],
+            certifications: ['API', 'ASME', 'ISO 9001'],
+            icon: 'Zap',
+          },
+        ],
+      },
+      seo: {
+        metaTitle: 'IIS Industries | Aerospace, Defense & Energy | Precision Manufacturing',
+        metaDescription: 'Specialized precision manufacturing for aerospace, defense & energy sectors. 30+ years serving critical industries with AS9100D, ITAR & NADCAP certifications.',
+        ogImage: {
+          _type: 'image',
+          asset: { _ref: 'image-industries-og', _type: 'reference' },
+          alt: 'IIS Industries',
+        },
+        keywords: [
+          'aerospace manufacturing',
+          'defense manufacturing',
+          'energy sector',
+          'precision machining',
+          'AS9100 certified',
+          'ITAR registered',
+        ],
+      },
+    }
+
+    try {
+      await client.createIfNotExists(industriesPage)
+      console.log('✓ Created industries page')
+    } catch (error) {
+      console.warn('⚠️  Industries page might already exist:', error)
+    }
+
+    // Add SEO metadata to homepage
+    console.log('\n🔍 Adding SEO metadata to homepage...')
+    try {
+      await client.patch('homepage').set({
+        seo: {
+          metaTitle: 'IIS Precision Manufacturing | CNC Machining & Metrology Services',
+          metaDescription: 'Precision manufacturing, CNC machining, and metrology inspection for aerospace, defense & medical industries. AS9100 & ISO 9001 certified since 1995.',
+          metaKeywords: 'precision manufacturing, CNC machining, metrology inspection, aerospace manufacturing, defense contractor',
+          ogImage: {
+            _type: 'image',
+            asset: { _ref: 'image-home-og', _type: 'reference' },
+            alt: 'IIS Precision Manufacturing',
+          },
+        },
+      }).commit()
+      console.log('✓ Added SEO to homepage')
+    } catch (error) {
+      console.warn('⚠️  Could not update homepage SEO:', error)
+    }
+
     console.log('\n✅ Seed complete!\n')
     console.log('✨ Sanity CMS is now populated with:')
-    console.log('   • 4 Services (5-Axis, Adaptive, Metrology, Engineering)')
-    console.log('   • 3 Industries (Defense, Energy, Aerospace)')
-    console.log('   • Homepage sections with all content')
+    console.log('   • 4 Services (5-Axis, Adaptive, Metrology, Engineering Support)')
+    console.log('   • 3 Industries (Aerospace, Defense, Energy) - reordered to match live site')
+    console.log('   • Homepage (with hero, services, industries, resources, showcase sections + SEO)')
+    console.log('   • Services Page (with hero, core competencies, 4 services + SEO)')
+    console.log('   • Industries Page (with hero, overview stats, 3 industries with details + SEO)')
+    console.log('   • Contact Page (with address, hours, certifications + SEO)')
+    console.log('   • About Page (company history from 1995, team stats, values + SEO)')
+    console.log('   • Careers Page (hero, benefits, values, 3 open positions + SEO)')
+    console.log('   • 3 Sample Resources (AS9100D, CMM Inspection, Titanium Machining)')
     console.log('   • Site Settings (company info, contact, social, SEO defaults)')
-    console.log('   • Navigation (header menu with all links)')
-    console.log('   • Footer (footer links and content)')
-    console.log('   • Careers Page (hero, benefits, values, job listings)')
-    console.log('\n📝 Visit Sanity Studio to edit and customize content')
+    console.log('   • Navigation (complete menu with resource categories)')
+    console.log('   • Footer (links and company info)')
+    console.log('\n📋 All pages include professional SEO metadata ready to customize')
+    console.log('🖼️  Image placeholders created - add your own images in Sanity Studio')
+    console.log('📝 Visit Sanity Studio to edit and customize content')
     console.log('🔗 URL: http://localhost:3000/studio\n')
+    console.log('⚠️  Note: Live site has 76 total resources. The 3 seeded are samples.')
+    console.log('   Marketing team can add more articles directly in Sanity Studio.\n')
   } catch (error) {
     console.error('❌ Seed failed:', error)
     process.exit(1)

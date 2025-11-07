@@ -1,12 +1,13 @@
 export default {
+  icon: () => '✓',
   name: 'supplierRequirements',
   type: 'document',
   title: 'Supplier Requirements',
-  icon: () => '📋',
   __experimental_singleton: true,
   groups: [
     {name: 'hero', title: 'Hero', default: true},
-    {name: 'content', title: 'Page Content'},
+    {name: 'content', title: 'Content'},
+    {name: 'requirements', title: 'Requirements'},
     {name: 'seo', title: 'SEO & Sharing'},
   ],
   fields: [
@@ -20,41 +21,66 @@ export default {
         collapsed: false,
       },
       fieldsets: [
-        {name: 'heroContent', title: 'Hero Content', options: {columns: 2}},
+        {name: 'background', title: 'Background Image'},
+        {name: 'content', title: 'Content', options: {columns: 2}},
       ],
       fields: [
+        {
+          name: 'backgroundImage',
+          type: 'image',
+          title: 'Background Image',
+          description: 'Hero background image (recommended: 1920x1080px)',
+          fieldset: 'background',
+          options: {
+            hotspot: true,
+            metadata: ['blurhash', 'lqip', 'palette'],
+          },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              validation: (Rule: any) => Rule.required().error('Alt text is required')
+            }
+          ]
+        },
         {
           name: 'title',
           type: 'string',
           title: 'Title',
-          fieldset: 'heroContent',
+          fieldset: 'content',
+          initialValue: 'Supplier Requirements',
+        },
+        {
+          name: 'subtitle',
+          type: 'text',
+          title: 'Subtitle',
+          rows: 2,
+          fieldset: 'content',
+        },
+      ],
+    },
+    {
+      name: 'introSection',
+      type: 'object',
+      title: 'Introduction Section',
+      group: 'content',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Section Title',
+          initialValue: 'Our Supplier Requirements',
         },
         {
           name: 'description',
           type: 'text',
           title: 'Description',
           rows: 3,
-          fieldset: 'heroContent',
-        },
-      ],
-    },
-    {
-      name: 'sections',
-      type: 'array',
-      title: 'Content Sections',
-      group: 'content',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {name: 'title', type: 'string', title: 'Section Title'},
-            {
-              name: 'content',
-              type: 'array',
-              title: 'Content',
-              of: [{type: 'block'}],
-            },
-          ],
         },
       ],
     },
@@ -62,21 +88,89 @@ export default {
       name: 'requirements',
       type: 'array',
       title: 'Requirements',
-      group: 'content',
+      group: 'requirements',
       of: [
         {
           type: 'object',
+          preview: {
+            select: {
+              title: 'title',
+              subtitle: 'description',
+            },
+            prepare({title, subtitle}: any) {
+              return {
+                title: title || 'Requirement',
+                subtitle: subtitle ? subtitle.substring(0, 50) + '...' : 'No description',
+              }
+            },
+          },
           fields: [
-            {name: 'title', type: 'string', title: 'Requirement Category'},
             {
-              name: 'items',
+              name: 'title',
+              type: 'string',
+              title: 'Requirement Title',
+              validation: (Rule: any) => Rule.required(),
+            },
+            {
+              name: 'description',
+              type: 'text',
+              title: 'Description',
+              rows: 2,
+            },
+            {
+              name: 'details',
               type: 'array',
-              title: 'Items',
+              title: 'Details',
               of: [
                 {
                   type: 'object',
-                  fields: [{name: 'item', type: 'string', title: 'Item'}],
+                  fields: [
+                    {name: 'detail', type: 'string', title: 'Detail'},
+                  ],
                 },
+              ],
+            },
+            {
+              name: 'icon',
+              type: 'string',
+              title: 'Icon Name',
+              description: 'Lucide icon name',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'compliance',
+      type: 'object',
+      title: 'Compliance Section',
+      group: 'content',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Section Title',
+          initialValue: 'Compliance & Certifications',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Description',
+          rows: 2,
+        },
+        {
+          name: 'certifications',
+          type: 'array',
+          title: 'Required Certifications',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {name: 'certification', type: 'string', title: 'Certification'},
               ],
             },
           ],
@@ -84,30 +178,10 @@ export default {
       ],
     },
     {
-      name: 'additionalSections',
-      type: 'array',
-      title: 'Additional Sections',
-      group: 'content',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {name: 'title', type: 'string', title: 'Section Title'},
-            {name: 'content', type: 'text', title: 'Content', rows: 4},
-          ],
-        },
-      ],
-    },
-    {
-      name: 'footerNote',
-      type: 'string',
-      title: 'Footer Note',
-      group: 'content',
-    },
-    {
       name: 'seo',
       type: 'object',
       title: 'SEO',
+      description: 'Search engine metadata and social sharing defaults.',
       group: 'seo',
       options: {
         collapsible: true,

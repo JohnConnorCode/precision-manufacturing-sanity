@@ -512,9 +512,11 @@ export function IndustryContent({ industryData, slug: _slug }: IndustryContentPr
               Partner with IIS for {industry.title.toLowerCase()} solutions that meet the most demanding requirements.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className={styles.ctaPrimary}>
-                Schedule Consultation
-                <ArrowRight className="ml-2 h-4 w-4" />
+              <Button size="lg" className={styles.ctaPrimary} asChild>
+                <Link href="/contact">
+                  Schedule Consultation
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
               <Button size="lg" variant="outline" asChild className={cn(styles.ctaSecondary, 'border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white')}>
                 <Link href="/industries">View All Industries</Link>

@@ -9,12 +9,19 @@ import { usePrefersReducedMotion } from '@/lib/motion';
 import { colorStyleToCSS, getOverlayStyles, getButtonStyles, ColorStyle } from '@/lib/sanity-styles';
 
 interface HeroData {
+  // Three-word structure (new)
+  word1?: string;
+  word2?: string;
+  word3?: string;
+  heroFontSize?: string;
+  // Legacy single-title structure (backwards compatibility)
   mainTitle?: string;
   subTitle?: string;
   tagline?: string;
   badges?: string[];
   ctaPrimary?: { text: string; href: string };
   ctaSecondary?: { text: string; href: string };
+  ctaTertiary?: { text: string; href: string };
   slides?: Array<{
     image: string;
     alt: string;
@@ -97,9 +104,22 @@ export default function Hero({ data }: HeroProps) {
       }))
     : fallbackSlides;
 
-  const mainTitle = data?.mainTitle || 'PRECISION MANUFACTURING';
-  const subTitle = data?.subTitle || 'SERVICES';
+  // Support three-word structure (new) or legacy single-title (old)
+  let word1 = data?.word1 || 'PRECISION';
+  let word2 = data?.word2 || 'MANUFACTURING';
+  let word3 = data?.word3 || 'SERVICES';
+
+  // Fallback to legacy mainTitle/subTitle if three-word structure not available
+  if (!data?.word1 && data?.mainTitle) {
+    const words = (data.mainTitle || 'PRECISION MANUFACTURING').split(' ');
+    word1 = words[0] || 'PRECISION';
+    word2 = words.slice(1).join(' ') || 'MANUFACTURING';
+    // word3 stays as is if data.word3 not provided
+  }
+
+  const heroFontSize = data?.heroFontSize || 'text-5xl md:text-7xl';
   const tagline = data?.tagline || 'Innovative Precision Machining & Manufacturing Excellence Since 1995';
+
   // Handle both string badges and object badges from Sanity, with fallbacks
   const defaultBadges = [
     'Advanced CNC Machining',
@@ -115,6 +135,7 @@ export default function Hero({ data }: HeroProps) {
 
   const ctaPrimary = data?.ctaPrimary || { text: 'Get Quote', href: '/contact?interest=quote' };
   const ctaSecondary = data?.ctaSecondary || { text: 'View Capabilities', href: '/services' };
+  const ctaTertiary = data?.ctaTertiary || { text: 'Learn More', href: '/about' };
 
   // Extract styles from Sanity data
   const titleColor = colorStyleToCSS(data?.titleColor) || 'rgba(255, 255, 255, 0.9)';
@@ -150,26 +171,37 @@ export default function Hero({ data }: HeroProps) {
             className="text-center"
           >
 
-            {/* Main Title & Subtitle */}
-            {mainTitle && (
+            {/* Three-Word Hero Title - All Same Size */}
+            {word1 && (
               <motion.div
                 initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: prefersReducedMotion ? 0 : 0.6 }}
                 className="mb-4"
               >
+                {/* Word 1 */}
                 <div
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-wider"
+                  className={`${heroFontSize} font-bold tracking-wider leading-[1.1]`}
                   style={{ color: titleColor }}
                 >
-                  {mainTitle}
+                  {word1}
                 </div>
-                {subTitle && (
+                {/* Word 2 */}
+                {word2 && (
                   <div
-                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-wider mt-2"
+                    className={`${heroFontSize} font-bold tracking-wider leading-[1.1]`}
+                    style={{ color: titleColor }}
+                  >
+                    {word2}
+                  </div>
+                )}
+                {/* Word 3 */}
+                {word3 && (
+                  <div
+                    className={`${heroFontSize} font-bold tracking-wider leading-[1.1]`}
                     style={{ color: titleHighlightColor }}
                   >
-                    {subTitle}
+                    {word3}
                   </div>
                 )}
               </motion.div>
@@ -225,7 +257,7 @@ export default function Hero({ data }: HeroProps) {
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: prefersReducedMotion ? 0 : 1.2, duration: prefersReducedMotion ? 0 : 0.8 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap"
             >
               <Button
                 size="lg"
@@ -263,6 +295,27 @@ export default function Hero({ data }: HeroProps) {
               >
                 <Link href={ctaSecondary.href}>
                   {ctaSecondary.text}
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="group backdrop-blur-sm font-semibold transition-all duration-300 px-10 h-14 text-lg rounded-md"
+                style={
+                  Object.keys(secondaryButtonStyles.style).length > 0
+                    ? secondaryButtonStyles.style
+                    : {
+                        borderWidth: '2px',
+                        borderColor: 'rgba(255, 255, 255, 0.8)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        color: '#ffffff',
+                      }
+                }
+                asChild
+              >
+                <Link href={ctaTertiary.href}>
+                  {ctaTertiary.text}
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>

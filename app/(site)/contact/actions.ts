@@ -2,6 +2,7 @@
 
 import { z } from 'zod';
 import { sendContactEmail, ContactFormData } from '@/lib/email';
+import { logContactSubmission } from '@/lib/contact-logger';
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -32,26 +33,44 @@ export async function submitContactForm(formData: FormData) {
     // Send email notification
     const emailResult = await sendContactEmail(validatedData as ContactFormData);
 
+    // Log submission regardless of email result
+    await logContactSubmission({
+      ...validatedData,
+      emailSuccess: emailResult.success,
+      emailError: emailResult.error,
+      smtpConfigured: !!process.env.SMTP_HOST && !!process.env.SMTP_USER && !!process.env.SMTP_PASS,
+    });
+
     if (!emailResult.success) {
-      // Log error but still show success to user (to prevent exposing email issues)
-      console.error('Email send failed:', emailResult.error);
-
-      // In production, you might want to save to a database as backup
-      // await saveToDatabase(validatedData);
-    }
-
-    // Log submission for analytics (only in development)
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('Contact form submission:', {
+      // Log error with details
+      const smtpConfigured = process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS;
+      console.error('[CONTACT FORM] Email send failed:', {
         timestamp: new Date().toISOString(),
         company: validatedData.company,
-        interest: validatedData.interest,
+        error: emailResult.error,
+        smtpConfigured: !!smtpConfigured,
       });
+
+      // If SMTP isn't configured, tell user to contact manually
+      if (!smtpConfigured) {
+        return {
+          success: true,
+          message: 'Your inquiry has been received. Due to a temporary email configuration issue, please call us at (503) 231-9093 to ensure we process your request.',
+          partialSuccess: true,
+        };
+      }
+
+      // Otherwise still show success but note the email issue
+      return {
+        success: true,
+        message: 'Thank you for your inquiry. We will respond within 24 hours.',
+        warning: 'Note: We may not have received your email confirmation. If you don\'t hear from us within 24 hours, please call (503) 231-9093.',
+      };
     }
 
     return {
       success: true,
-      message: 'Thank you for your inquiry. We will respond within 24 hours.',
+      message: 'Thank you for your inquiry. We will respond within 24 hours. A confirmation email has been sent to ' + validatedData.email,
     };
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -62,7 +81,10 @@ export async function submitContactForm(formData: FormData) {
       };
     }
 
-    console.error('Contact form error:', error);
+    console.error('[CONTACT FORM] Unexpected error:', {
+      timestamp: new Date().toISOString(),
+      error: error instanceof Error ? error.message : String(error),
+    });
 
     return {
       success: false,

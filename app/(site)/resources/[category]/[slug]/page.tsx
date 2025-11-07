@@ -14,7 +14,7 @@ export async function generateStaticParams() {
     const resources = await getAllResources();
     if (!resources || resources.length === 0) return [];
     return resources.map((resource: any) => ({
-      category: resource.category,
+      category: typeof resource.category === 'string' ? resource.category : (resource.category?.name || 'general'),
       slug: resource.slug?.current || resource.slug,
     }));
   } catch (error) {

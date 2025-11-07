@@ -49,6 +49,12 @@ export default {
     {name: 'metadata', title: 'Resource Metadata'},
     {name: 'seo', title: 'SEO & Sharing'},
   ],
+  fieldsets: [
+    {name: 'categoryInfo', title: 'Category & Difficulty'},
+    {name: 'publishInfo', title: 'Publishing Details'},
+    {name: 'featuredImageInfo', title: 'Featured Image'},
+    {name: 'tagsInfo', title: 'Tags'},
+  ],
   fields: [
     {
       name: 'title',

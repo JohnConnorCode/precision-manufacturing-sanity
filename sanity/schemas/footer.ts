@@ -26,7 +26,6 @@ export default {
       name: 'company',
       type: 'object',
       title: 'Company Information',
-      group: 'company',
       fields: [
         {
           name: 'description',
@@ -50,7 +49,6 @@ export default {
       name: 'social',
       type: 'object',
       title: 'Social Media Links',
-      group: 'company',
       fields: [
         {
           name: 'linkedin',

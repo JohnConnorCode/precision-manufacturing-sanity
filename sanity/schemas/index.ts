@@ -8,12 +8,14 @@ import teamMember from './team-member'
 import siteSettings from './site-settings'
 import navigation from './navigation'
 import homepage from './homepage'
+import servicesPage from './services-page'
+import industriesPage from './industries-page'
 import footer from './footer'
 import about from './about'
 import contact from './contact'
-import careers from './careers'
-import terms from './terms'
-import supplierRequirements from './supplier-requirements'
+import careersPage from './careers'
+import termsPage from './terms'
+import supplierRequirementsPage from './supplier-requirements'
 import uiText from './ui-text'
 import pageContent from './page-content'
 import page from './page'
@@ -65,12 +67,14 @@ export const schemaTypes = [
   siteSettings,
   navigation,
   homepage,
+  servicesPage,
+  industriesPage,
   footer,
   about,
   contact,
-  careers,
-  terms,
-  supplierRequirements,
+  careersPage,
+  termsPage,
+  supplierRequirementsPage,
   uiText,
   pageContent,
   page,

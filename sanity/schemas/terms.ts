@@ -1,93 +1,106 @@
 export default {
+  icon: () => '📋',
   name: 'terms',
   type: 'document',
   title: 'Terms & Conditions',
-  icon: () => '📜',
   __experimental_singleton: true,
   groups: [
-    {name: 'header', title: 'Header', default: true},
-    {name: 'content', title: 'Page Content'},
-    {name: 'contact', title: 'Contact Information'},
+    {name: 'content', title: 'Content', default: true},
     {name: 'seo', title: 'SEO & Sharing'},
   ],
   fields: [
     {
-      name: 'header',
-      type: 'object',
-      title: 'Header',
-      group: 'header',
-      options: {
-        collapsible: true,
-        collapsed: false,
-      },
-      fieldsets: [
-        {name: 'headerContent', title: 'Header Content', options: {columns: 2}},
-      ],
-      fields: [
-        {
-          name: 'title',
-          type: 'string',
-          title: 'Title',
-          fieldset: 'headerContent',
-        },
-        {
-          name: 'description',
-          type: 'text',
-          title: 'Description',
-          rows: 3,
-          fieldset: 'headerContent',
-        },
-      ],
+      name: 'title',
+      type: 'string',
+      title: 'Page Title',
+      group: 'content',
+      initialValue: 'Terms & Conditions',
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: 'lastUpdated',
+      type: 'datetime',
+      title: 'Last Updated',
+      group: 'content',
+      description: 'Date when T&Cs were last updated',
     },
     {
       name: 'sections',
       type: 'array',
-      title: 'Content Sections',
+      title: 'Terms & Conditions Sections',
       group: 'content',
       of: [
         {
           type: 'object',
+          preview: {
+            select: {
+              title: 'heading',
+            },
+            prepare({title}: any) {
+              return {
+                title: title || 'Section',
+              }
+            },
+          },
           fields: [
-            {name: 'title', type: 'string', title: 'Section Title'},
+            {
+              name: 'heading',
+              type: 'string',
+              title: 'Section Heading',
+              validation: (Rule: any) => Rule.required(),
+            },
             {
               name: 'content',
               type: 'array',
               title: 'Content',
-              of: [{type: 'block'}],
+              of: [
+                {
+                  type: 'block',
+                  marks: {
+                    decorators: [
+                      {title: 'Strong', value: 'strong'},
+                      {title: 'Emphasis', value: 'em'},
+                      {title: 'Code', value: 'code'},
+                      {title: 'Underline', value: 'underline'},
+                    ],
+                    annotations: [
+                      {
+                        title: 'URL',
+                        name: 'link',
+                        type: 'object',
+                        fields: [
+                          {
+                            title: 'URL',
+                            name: 'href',
+                            type: 'url',
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+              ],
+            },
+            {
+              name: 'subsections',
+              type: 'array',
+              title: 'Subsections',
+              of: [
+                {
+                  type: 'object',
+                  fields: [
+                    {name: 'subheading', type: 'string', title: 'Subheading'},
+                    {
+                      name: 'text',
+                      type: 'text',
+                      title: 'Text',
+                      rows: 3,
+                    },
+                  ],
+                },
+              ],
             },
           ],
-        },
-      ],
-    },
-    {
-      name: 'contact',
-      type: 'object',
-      title: 'Contact Information',
-      group: 'contact',
-      options: {
-        collapsible: true,
-        collapsed: true,
-      },
-      fieldsets: [
-        {name: 'contactDetails', title: 'Contact Details', options: {columns: 2}},
-      ],
-      fields: [
-        {
-          name: 'email',
-          type: 'string',
-          title: 'Email Address',
-          fieldset: 'contactDetails',
-          validation: (Rule: any) =>
-            Rule.regex(
-              /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-              {name: 'email'}
-            ).warning('Please enter a valid email address'),
-        },
-        {
-          name: 'phone',
-          type: 'string',
-          title: 'Phone Number',
-          fieldset: 'contactDetails',
         },
       ],
     },
@@ -95,6 +108,7 @@ export default {
       name: 'seo',
       type: 'object',
       title: 'SEO',
+      description: 'Search engine metadata and social sharing defaults.',
       group: 'seo',
       options: {
         collapsible: true,

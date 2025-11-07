@@ -38,7 +38,12 @@ export async function getAllServices(preview = false) {
       equipment,
       materials,
       processes,
-      seo
+      seo {
+        metaTitle,
+        metaDescription,
+        metaKeywords,
+        ogImage{ asset->{url,_id}, alt }
+      }
     }`
 
     return await getClient(preview).fetch(query)
@@ -72,7 +77,12 @@ export async function getServiceBySlug(slug: string, preview = false) {
       equipment,
       materials,
       processes,
-      seo
+      seo {
+        metaTitle,
+        metaDescription,
+        metaKeywords,
+        ogImage{ asset->{url,_id}, alt }
+      }
     }`
 
     return await getClient(preview).fetch(query, { slug })
@@ -106,7 +116,12 @@ export async function getAllIndustries(preview = false) {
       components,
       qualityStandards,
       processBenefits,
-      seo
+      seo {
+        metaTitle,
+        metaDescription,
+        metaKeywords,
+        ogImage{ asset->{url,_id}, alt }
+      }
     }`
 
     return await getClient(preview).fetch(query)
@@ -136,7 +151,12 @@ export async function getIndustryBySlug(slug: string, preview = false) {
       components,
       qualityStandards,
       processBenefits,
-      seo
+      seo {
+        metaTitle,
+        metaDescription,
+        metaKeywords,
+        ogImage{ asset->{url,_id}, alt }
+      }
     }`
 
     return await getClient(preview).fetch(query, { slug })
@@ -374,7 +394,9 @@ export async function getAbout(preview = false) {
     values,
     capabilities,
     certifications,
-    cta
+    leadership,
+    cta,
+    seo
   }`
 
   return await getClient(preview).fetch(query)
@@ -390,7 +412,8 @@ export async function getContact(preview = false) {
     hero{ backgroundImage{asset->{url,_id}}, badge, badgeIconName, title, titleHighlight, description, buttonLabel, buttonHref },
     contactInfo,
     certifications,
-    bottomStats
+    bottomStats,
+    seo
   }`
 
   return await getClient(preview).fetch(query)
@@ -408,7 +431,8 @@ export async function getCareers(preview = false) {
     benefits{ heading, description, items },
     values{ heading, description, items },
     opportunities{ heading, description, positions },
-    cta{ heading, description, buttons }
+    cta{ heading, description, buttons },
+    seo
   }`
 
   return await getClient(preview).fetch(query)
@@ -498,6 +522,104 @@ export async function getPageContent(preview = false) {
   return await getClient(preview).fetch(query)
   } catch (error) {
     console.warn('Failed to fetch getPageContent:', error)
+    return null
+  }
+}
+
+/**
+ * Fetch the Services Page singleton with all content and SEO
+ */
+export async function getServicesPage(preview = false) {
+  try {
+    const query = `*[_type == "servicesPage"][0]{
+      _id,
+      hero{
+        badge,
+        heading,
+        description,
+        backgroundImage{
+          asset->{url, _id},
+          alt,
+          hotspot
+        }
+      },
+      content{
+        sectionTitle,
+        sectionDescription,
+        services[]{
+          _key,
+          title,
+          description
+        }
+      },
+      seo{
+        metaTitle,
+        metaDescription,
+        ogImage{
+          asset->{url, _id},
+          alt
+        },
+        keywords[]
+      }
+    }`
+    return await getClient(preview).fetch(query)
+  } catch (error) {
+    console.warn('Failed to fetch servicesPage:', error)
+    return null
+  }
+}
+
+/**
+ * Fetch the Industries Page singleton with all content and SEO
+ */
+export async function getIndustriesPage(preview = false) {
+  try {
+    const query = `*[_type == "industriesPage"][0]{
+      _id,
+      hero{
+        badge,
+        heading,
+        subheading,
+        backgroundImage{
+          asset->{url, _id},
+          alt,
+          hotspot
+        }
+      },
+      content{
+        overviewTitle,
+        overviewStats[]{
+          _key,
+          value,
+          label
+        },
+        industries[]{
+          _key,
+          name,
+          description,
+          applications[],
+          stats[]{
+            _key,
+            label,
+            value
+          },
+          certifications[],
+          icon
+        }
+      },
+      seo{
+        metaTitle,
+        metaDescription,
+        ogImage{
+          asset->{url, _id},
+          alt
+        },
+        keywords[]
+      }
+    }`
+    return await getClient(preview).fetch(query)
+  } catch (error) {
+    console.warn('Failed to fetch industriesPage:', error)
     return null
   }
 }

@@ -121,6 +121,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
   const [submitResult, setSubmitResult] = useState<{
     success: boolean;
     message: string;
+    warning?: string;
+    partialSuccess?: boolean;
   } | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -636,19 +638,28 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                       animate={{ opacity: 1, y: 0 }}
                       className={`p-4 rounded-lg ${
                         submitResult.success
-                          ? 'bg-green-500/10 border border-green-500/20'
+                          ? submitResult.partialSuccess
+                            ? 'bg-yellow-500/10 border border-yellow-500/20'
+                            : 'bg-green-500/10 border border-green-500/20'
                           : 'bg-red-500/10 border border-red-500/20'
                       }`}
                     >
                       <div className="flex items-start gap-3">
                         <CheckCircle className={`w-5 h-5 ${
-                          submitResult.success ? 'text-green-400' : 'text-red-400'
+                          !submitResult.success ? 'text-red-400' : submitResult.partialSuccess ? 'text-yellow-400' : 'text-green-400'
                         }`} />
-                        <p className={`text-sm ${
-                          submitResult.success ? 'text-green-400' : 'text-red-400'
-                        }`}>
-                          {submitResult.message}
-                        </p>
+                        <div>
+                          <p className={`text-sm ${
+                            !submitResult.success ? 'text-red-400' : submitResult.partialSuccess ? 'text-yellow-400' : 'text-green-400'
+                          }`}>
+                            {submitResult.message}
+                          </p>
+                          {submitResult.warning && (
+                            <p className="text-xs text-yellow-300 mt-2">
+                              {submitResult.warning}
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </motion.div>
                   )}

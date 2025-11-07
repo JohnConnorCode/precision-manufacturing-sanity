@@ -35,6 +35,9 @@ export default {
     {name: 'contact', title: 'Contact Info'},
     {name: 'display', title: 'Display Options'},
   ],
+  fieldsets: [
+    {name: 'nameInfo', title: 'Name & Title'},
+  ],
   fields: [
     {
       name: 'name',
