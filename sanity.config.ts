@@ -28,7 +28,9 @@ export default defineConfig({
       previewUrl: {
         origin: process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
       },
-      locate,
+      resolve: {
+        locations: locate,
+      },
     }),
     structureTool({
       structure,
