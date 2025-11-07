@@ -2,6 +2,7 @@ export default {
   name: 'supplierRequirements',
   type: 'document',
   title: 'Supplier Requirements',
+  icon: () => '📋',
   __experimental_singleton: true,
   groups: [
     {name: 'hero', title: 'Hero', default: true},

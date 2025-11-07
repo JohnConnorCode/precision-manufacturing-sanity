@@ -1,4 +1,5 @@
 export default {
+  icon: () => '⚙️',
   name: 'siteSettings',
   type: 'document',
   title: 'Site Settings',

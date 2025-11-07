@@ -1,4 +1,5 @@
 export default {
+  icon: () => 'ℹ️',
   name: 'about',
   type: 'document',
   title: 'About Page',

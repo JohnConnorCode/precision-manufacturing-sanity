@@ -1,4 +1,5 @@
 export default {
+  icon: () => '✉️',
   name: 'contact',
   type: 'document',
   title: 'Contact Page',

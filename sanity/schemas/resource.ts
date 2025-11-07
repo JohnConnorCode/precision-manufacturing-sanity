@@ -1,5 +1,7 @@
 export default {
+  icon: () => '📚',
   name: 'resource',
+  icon: () => '📚',
   type: 'document',
   title: 'Resources',
   orderings: [

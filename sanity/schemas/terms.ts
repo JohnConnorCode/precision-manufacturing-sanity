@@ -2,6 +2,7 @@ export default {
   name: 'terms',
   type: 'document',
   title: 'Terms & Conditions',
+  icon: () => '📜',
   __experimental_singleton: true,
   groups: [
     {name: 'header', title: 'Header', default: true},

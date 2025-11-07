@@ -1,4 +1,5 @@
 export default {
+  icon: () => '👤',
   name: 'teamMember',
   type: 'document',
   title: 'Team Members',
