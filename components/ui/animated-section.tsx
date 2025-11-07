@@ -3,6 +3,7 @@
 import { motion, MotionProps } from 'framer-motion';
 import { ReactNode } from 'react';
 import { fadeInUp, scrollAnimation } from '@/lib/animations';
+import { usePrefersReducedMotion } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 interface AnimatedSectionProps extends MotionProps {
@@ -16,6 +17,7 @@ interface AnimatedSectionProps extends MotionProps {
 
 /**
  * Reusable animated section component that fades in and moves up on scroll
+ * Automatically respects prefers-reduced-motion for accessibility
  * DRY principle: Replaces repetitive motion.div scroll animations throughout the app
  */
 export default function AnimatedSection({
@@ -28,8 +30,10 @@ export default function AnimatedSection({
   ...motionProps
 }: AnimatedSectionProps) {
   const LEGACY_PARITY = process.env.NEXT_PUBLIC_PARITY_MODE === 'legacy'
-  // If animations are disabled, return a regular div
-  if (disabled || LEGACY_PARITY) {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // If animations are disabled or user prefers reduced motion, return a regular div
+  if (disabled || LEGACY_PARITY || prefersReducedMotion) {
     return <div className={className}>{children}</div>;
   }
 
