@@ -13,15 +13,19 @@ export default async function CareersPage() {
   return <CareersPageClient data={careersData as any} />;
 }
 
-// Generate metadata for SEO
+// Generate metadata for SEO - pulls from Sanity CMS with fallbacks
 export async function generateMetadata() {
+  const { isEnabled } = await draftMode();
+  const careersData = await getCareers(isEnabled);
   const baseUrl = 'https://iismet.com';
 
+  // Pull SEO data from Sanity with fallbacks
   const metadata = {
-    title: 'Careers at IIS | Join Our Precision Manufacturing Team',
-    description: 'Build your career with Integrated Inspection Systems, a leader in precision manufacturing for aerospace and defense. We\'re hiring engineers, technicians, machinists, and quality professionals. AS9100D, ISO 9001:2015 certified.',
+    title: careersData?.seo?.metaTitle || 'Careers at IIS | Join Our Precision Manufacturing Team',
+    description: careersData?.seo?.metaDescription || 'Build your career with Integrated Inspection Systems, a leader in precision manufacturing for aerospace and defense. We\'re hiring engineers, technicians, machinists, and quality professionals. AS9100D, ISO 9001:2015 certified.',
     keywords: 'precision manufacturing careers, aerospace manufacturing jobs, CNC machinist jobs, quality engineer jobs, manufacturing engineer jobs, Oregon manufacturing careers, AS9100 jobs, ITAR careers, CMM inspector jobs',
-    ogImage: `${baseUrl}/og-image-careers.jpg`
+    ogImage: careersData?.seo?.ogImage?.asset?.url || `${baseUrl}/og-image-careers.jpg`,
+    ogImageAlt: careersData?.seo?.ogImage?.alt || 'Careers at IIS Precision Manufacturing',
   };
 
   return {
@@ -57,7 +61,7 @@ export async function generateMetadata() {
           url: metadata.ogImage,
           width: 1200,
           height: 630,
-          alt: 'Careers at IIS Precision Manufacturing',
+          alt: metadata.ogImageAlt,
           type: 'image/jpeg',
         }
       ],

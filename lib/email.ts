@@ -1,17 +1,32 @@
 import nodemailer from 'nodemailer';
 
 // Create reusable transporter
-// In production, use environment variables for credentials
+// PRODUCTION: Configure via environment variables
+// Example for SendGrid:
+//   SMTP_HOST="smtp.sendgrid.net"
+//   SMTP_PORT="587"
+//   SMTP_USER="apikey"
+//   SMTP_PASS="SG.your-actual-api-key"
+// Get API key from: https://app.sendgrid.com/settings/api_keys
 const createTransporter = () => {
-  // For development/demo, we'll use Ethereal Email (a fake SMTP service)
-  // In production, replace with real SMTP credentials (Gmail, SendGrid, etc.)
+  const host = process.env.SMTP_HOST;
+  const port = process.env.SMTP_PORT;
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+
+  // Validate that production credentials are configured
+  if (!host || !user || !pass) {
+    console.warn('⚠️  Email configuration incomplete. Contact forms will fail in production.');
+    console.warn('Please set SMTP_HOST, SMTP_USER, SMTP_PASS in environment variables.');
+  }
+
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.ethereal.email',
-    port: parseInt(process.env.SMTP_PORT || '587'),
+    host: host || 'smtp.ethereal.email',
+    port: parseInt(port || '587'),
     secure: false, // true for 465, false for other ports
     auth: {
-      user: process.env.SMTP_USER || 'ethereal.user',
-      pass: process.env.SMTP_PASS || 'ethereal.pass'
+      user: user || 'ethereal.user',
+      pass: pass || 'ethereal.pass'
     }
   });
 };

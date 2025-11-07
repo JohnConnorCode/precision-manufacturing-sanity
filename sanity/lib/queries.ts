@@ -276,14 +276,11 @@ export async function getAllTeamMembers(preview = false) {
 export async function getSiteSettings(preview = false) {
   try {
   const query = `*[_type == "siteSettings"][0] {
-    companyName,
-    tagline,
-    description,
-    contactEmail,
-    contactPhone,
-    address,
-    socialMedia,
-    defaultSEO
+    announcement,
+    company,
+    contact,
+    social,
+    seo
   }`
 
   return await getClient(preview).fetch(query)
@@ -351,10 +348,12 @@ export async function getHomepage(preview = false) {
 export async function getFooter(preview = false) {
   try {
   const query = `*[_type == "footer"][0] {
-    companyDescription,
-    socialLinks,
-    footerLinks,
-    contactInfo,
+    company,
+    social,
+    servicesLinks,
+    resourcesLinks,
+    quickLinks,
+    contact,
     copyright
   }`
 

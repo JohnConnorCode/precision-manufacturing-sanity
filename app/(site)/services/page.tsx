@@ -27,16 +27,23 @@ function toPlainText(value: any): string {
 export const dynamic = 'force-static';
 export const revalidate = 60; // Revalidate every 60 seconds
 
-// Comprehensive SEO metadata with social sharing optimization
+// Comprehensive SEO metadata with social sharing optimization - pulls from Sanity CMS
 export async function generateMetadata(): Promise<Metadata> {
+  const pageContent = await getPageContent();
   const baseUrl = 'https://iismet.com';
   const pageUrl = `${baseUrl}/services`;
-  const ogImage = `${baseUrl}/og-image-services.jpg`;
+
+  // Pull SEO data from Sanity with fallbacks
+  const seoTitle = pageContent?.servicesPage?.seo?.metaTitle || 'Precision Manufacturing Services | 5-Axis CNC, Metrology, Engineering | IIS';
+  const seoDescription = pageContent?.servicesPage?.seo?.metaDescription || 'Advanced manufacturing services: 5-axis CNC machining, precision metrology, adaptive machining, engineering design. AS9100D certified, ±0.0001" tolerances, 150+ materials. ITAR registered for aerospace & defense.';
+  const seoKeywords = pageContent?.servicesPage?.seo?.metaKeywords || 'precision manufacturing, 5-axis CNC machining, metrology services, CMM inspection, adaptive machining, engineering services, AS9100D, ITAR, aerospace machining, defense manufacturing, tight tolerance machining';
+  const ogImage = pageContent?.servicesPage?.seo?.ogImage?.asset?.url || `${baseUrl}/og-image-services.jpg`;
+  const ogImageAlt = pageContent?.servicesPage?.seo?.ogImage?.alt || 'IIS Precision Manufacturing Services - CNC Machining and Metrology';
 
   return {
-    title: 'Precision Manufacturing Services | 5-Axis CNC, Metrology, Engineering | IIS',
-    description: 'Advanced manufacturing services: 5-axis CNC machining, precision metrology, adaptive machining, engineering design. AS9100D certified, ±0.0001" tolerances, 150+ materials. ITAR registered for aerospace & defense.',
-    keywords: 'precision manufacturing, 5-axis CNC machining, metrology services, CMM inspection, adaptive machining, engineering services, AS9100D, ITAR, aerospace machining, defense manufacturing, tight tolerance machining',
+    title: seoTitle,
+    description: seoDescription,
+    keywords: seoKeywords,
     alternates: {
       canonical: pageUrl,
     },
@@ -45,14 +52,14 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: 'en_US',
       url: pageUrl,
       siteName: 'IIS Precision Manufacturing',
-      title: 'Advanced Precision Manufacturing Services - 5-Axis CNC, Metrology & Engineering',
-      description: '150+ certified materials, ±0.0001" tolerances, AS9100D certified. Full-service precision manufacturing for aerospace, defense, and energy sectors.',
+      title: seoTitle,
+      description: seoDescription,
       images: [
         {
           url: ogImage,
           width: 1200,
           height: 630,
-          alt: 'IIS Precision Manufacturing Services - CNC Machining and Metrology',
+          alt: ogImageAlt,
           type: 'image/jpeg',
         }
       ],
@@ -61,8 +68,8 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       site: '@iisprecision',
       creator: '@iisprecision',
-      title: 'Precision Manufacturing Services | IIS',
-      description: 'Advanced 5-axis CNC, metrology, adaptive machining, engineering. AS9100D certified, ±0.0001" tolerances.',
+      title: seoTitle,
+      description: seoDescription,
       images: [ogImage],
     },
     robots: {

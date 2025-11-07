@@ -14,15 +14,19 @@ export default async function ContactPage() {
   return <ContactPageClient data={contactData as any} />;
 }
 
-// Generate metadata for SEO
+// Generate metadata for SEO - pulls from Sanity CMS with fallbacks
 export async function generateMetadata() {
+  const { isEnabled } = await draftMode();
+  const contactData = await getContact(isEnabled);
   const baseUrl = 'https://iismet.com';
 
+  // Pull SEO data from Sanity with fallbacks
   const metadata = {
-    title: 'Contact IIS - Precision Manufacturing Quote & Consultation',
-    description: 'Contact Integrated Inspection Systems for precision manufacturing quotes, technical consultations, and project inquiries. AS9100, ISO 9001 certified, ITAR registered. 24-hour quote response.',
-    keywords: 'contact IIS, precision manufacturing quote, CNC machining quote, CMM inspection quote, aerospace manufacturing inquiry, technical consultation, metrology services quote, Oregon manufacturing',
-    ogImage: `${baseUrl}/og-image-contact.jpg`
+    title: contactData?.seo?.metaTitle || 'Contact IIS - Precision Manufacturing Quote & Consultation',
+    description: contactData?.seo?.metaDescription || 'Contact Integrated Inspection Systems for precision manufacturing quotes, technical consultations, and project inquiries. AS9100, ISO 9001 certified, ITAR registered. 24-hour quote response.',
+    keywords: contactData?.seo?.metaKeywords || 'contact IIS, precision manufacturing quote, CNC machining quote, CMM inspection quote, aerospace manufacturing inquiry, technical consultation, metrology services quote, Oregon manufacturing',
+    ogImage: contactData?.seo?.ogImage?.asset?.url || `${baseUrl}/og-image-contact.jpg`,
+    ogImageAlt: contactData?.seo?.ogImage?.alt || 'Contact IIS Precision Manufacturing',
   };
 
   return {
@@ -58,7 +62,7 @@ export async function generateMetadata() {
           url: metadata.ogImage,
           width: 1200,
           height: 630,
-          alt: 'Contact IIS Precision Manufacturing',
+          alt: metadata.ogImageAlt,
           type: 'image/jpeg',
         }
       ],
