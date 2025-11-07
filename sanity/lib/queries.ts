@@ -107,6 +107,7 @@ export async function getAllIndustries(preview = false) {
       description,
       order,
       image{asset->{url,_id}, alt},
+      imageUrl,
       features,
       hero{ backgroundImage{asset->{url,_id}}, badge, subtitle },
       overview,
