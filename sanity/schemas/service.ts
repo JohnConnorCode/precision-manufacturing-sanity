@@ -2,6 +2,7 @@ export default {
   name: 'service',
   type: 'document',
   title: 'Services',
+  icon: () => '⚙️',
   orderings: [
     {
       title: 'Title A-Z',

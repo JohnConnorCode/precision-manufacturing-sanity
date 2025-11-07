@@ -1,4 +1,5 @@
 export default {
+  icon: () => '📍',
   name: 'footer',
   type: 'document',
   title: 'Footer',

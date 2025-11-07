@@ -1,4 +1,5 @@
 export default {
+  icon: () => '💼',
   name: 'careers',
   type: 'document',
   title: 'Careers Page',

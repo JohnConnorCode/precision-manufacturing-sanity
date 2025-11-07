@@ -1,4 +1,5 @@
 export default {
+  icon: () => '🧭',
   name: 'navigation',
   type: 'document',
   title: 'Navigation',

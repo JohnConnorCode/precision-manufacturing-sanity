@@ -1,4 +1,5 @@
 export default {
+  icon: () => '🏠',
   name: 'homepage',
   type: 'document',
   title: 'Homepage',

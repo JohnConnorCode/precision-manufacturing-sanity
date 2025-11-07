@@ -2,6 +2,7 @@ export default {
   name: 'industry',
   type: 'document',
   title: 'Industries',
+  icon: () => '✈️',
   orderings: [
     {
       title: 'Title A-Z',

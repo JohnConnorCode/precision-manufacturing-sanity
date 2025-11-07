@@ -1,4 +1,5 @@
 export default {
+  icon: () => '📚',
   name: 'resource',
   type: 'document',
   title: 'Resources',
