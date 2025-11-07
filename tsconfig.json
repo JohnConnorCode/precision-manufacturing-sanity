@@ -26,6 +26,7 @@
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": [
     "node_modules",
+    "legacy-site",
     "cleanup-untitled-industry.ts",
     "seed-site-globals.ts",
     "payload.config.minimal.ts",
