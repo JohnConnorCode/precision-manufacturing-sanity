@@ -100,11 +100,11 @@ export default function Resources({ data }: ResourcesProps) {
                           <span>{series.readTime}</span>
                         </div>
                         <div className={`px-2 py-1 rounded-full text-xs ${
-                          series.difficulty === 'Beginner' ? 'bg-green-400/10 text-green-400 border border-green-400/20' :
-                          series.difficulty === 'Intermediate' ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/20' :
+                          (series.level || series.difficulty) === 'Beginner' ? 'bg-green-400/10 text-green-400 border border-green-400/20' :
+                          (series.level || series.difficulty) === 'Intermediate' ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/20' :
                           'bg-red-400/10 text-red-400 border border-red-400/20'
                         }`}>
-                          {series.difficulty}
+                          {series.level || series.difficulty}
                         </div>
                       </div>
                       <div className="flex items-center gap-2 text-blue-400 font-medium group-hover:text-blue-300 transition-colors">
