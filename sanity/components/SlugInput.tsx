@@ -6,6 +6,8 @@ import { Stack, Text, TextInput, Button } from '@sanity/ui';
 
 export function SlugInput(props: StringInputProps) {
   const { elementProps, onChange, value = '' } = props;
+  // Access document with proper type assertion
+  const document = (props as any).document;
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,12 +27,12 @@ export function SlugInput(props: StringInputProps) {
 
   const generateSlug = useCallback(() => {
     // Try to get title from document
-    const title = (props.document as any)?.title || '';
+    const title = document?.title || '';
     if (title) {
       const slug = slugify(title);
       onChange(set(slug));
     }
-  }, [props.document, onChange, slugify]);
+  }, [document, onChange, slugify]);
 
   return (
     <Stack space={2}>

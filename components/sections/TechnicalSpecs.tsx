@@ -1,9 +1,7 @@
 "use client";
 
-import { motion } from 'framer-motion';
 import { Gauge, Cpu, Shield, Target, Award, Clock, Activity, Zap } from 'lucide-react';
 import AnimatedSection from '@/components/ui/animated-section';
-import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
 
 interface TechnicalSpecsData {
   title?: string;

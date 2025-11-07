@@ -122,7 +122,7 @@ export default {
           name: 'color',
           type: 'colorStyle',
           title: 'Overlay Color',
-          hidden: ({ parent }) => !parent?.enabled,
+          hidden: ({ parent }: any) => !parent?.enabled,
         },
       ],
     },

@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import { compileMDX } from 'next-mdx-remote/rsc';
-import yaml from 'js-yaml';
 
 export interface FrontmatterData {
   [key: string]: any;

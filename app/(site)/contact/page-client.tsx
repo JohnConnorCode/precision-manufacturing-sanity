@@ -35,6 +35,7 @@ import {
   FileText,
   Check
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 // Icon mapping for bottom stats
 const iconMap: Record<string, any> = {
@@ -89,7 +90,8 @@ interface ContactPageClientProps {
 }
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-const ACCEPTED_FILE_TYPES = [
+// Accepted file types for contact form uploads
+const _ACCEPTED_FILE_TYPES = [
   'application/pdf',
   'image/jpeg',
   'image/png',
@@ -167,7 +169,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
     const files = Array.from(e.target.files || []);
     const validFiles = files.filter(file => {
       if (file.size > MAX_FILE_SIZE) {
-        alert(`${file.name} is too large. Maximum size is 10MB.`);
+        toast.error(`${file.name} is too large. Maximum size is 10MB.`);
         return false;
       }
       return true;
@@ -191,7 +193,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
     const files = Array.from(e.dataTransfer.files);
     const validFiles = files.filter(file => {
       if (file.size > MAX_FILE_SIZE) {
-        alert(`${file.name} is too large. Maximum size is 10MB.`);
+        toast.error(`${file.name} is too large. Maximum size is 10MB.`);
         return false;
       }
       return true;

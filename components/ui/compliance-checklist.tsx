@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, X, AlertCircle, ChevronDown, ChevronRight, Download, Upload, Search, Filter, TrendingUp } from 'lucide-react';
+import { Check, X, AlertCircle, ChevronDown, ChevronRight, Download, Search, TrendingUp } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
 import AnimatedSection from '@/components/ui/animated-section';
 

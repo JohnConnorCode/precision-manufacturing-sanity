@@ -93,14 +93,14 @@ export default function HeroSection({
   buttonStyles,
   className = ''
 }: HeroSectionProps) {
-  const LEGACY_PARITY = process.env.NEXT_PUBLIC_PARITY_MODE === 'legacy'
+  // Hooks must be called unconditionally
   const { scrollY } = useScroll();
+  const imageY = useTransform(scrollY, [0, 1000], [0, -200]);
+  const imageScale = useTransform(scrollY, [0, 1000], [1, 1.2]);
+  const contentY = useTransform(scrollY, [0, 500], [0, 50]);
+  const contentOpacity = useTransform(scrollY, [0, 300], [1, 0]);
 
-  // Parallax effects
-  const imageY = LEGACY_PARITY ? (0 as any) : useTransform(scrollY, [0, 1000], [0, -200]);
-  const imageScale = LEGACY_PARITY ? (1 as any) : useTransform(scrollY, [0, 1000], [1, 1.2]);
-  const contentY = LEGACY_PARITY ? (0 as any) : useTransform(scrollY, [0, 500], [0, 50]);
-  const contentOpacity = LEGACY_PARITY ? (1 as any) : useTransform(scrollY, [0, 300], [1, 0]);
+  const LEGACY_PARITY = process.env.NEXT_PUBLIC_PARITY_MODE === 'legacy'
 
   const heightClasses = {
     full: 'min-h-screen',
@@ -161,7 +161,7 @@ export default function HeroSection({
       {/* Parallax Background Image */}
       <motion.div
         className="absolute inset-0 w-full h-[120%] -top-[10%]"
-        style={LEGACY_PARITY ? undefined : { y: imageY, scale: imageScale }}
+        style={LEGACY_PARITY ? undefined : { y: imageY as any, scale: imageScale as any }}
       >
         <Image
           src={backgroundImage}
@@ -188,7 +188,7 @@ export default function HeroSection({
       {/* Content Container */}
       <motion.div
         className="container relative z-10 px-4 md:px-8"
-        style={LEGACY_PARITY ? undefined : { y: contentY, opacity: contentOpacity }}
+        style={LEGACY_PARITY ? undefined : { y: contentY as any, opacity: contentOpacity as any }}
       >
         <div className={cn(
           'max-w-5xl mx-auto flex flex-col',

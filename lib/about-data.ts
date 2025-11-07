@@ -1,4 +1,4 @@
-import { Users, Factory, Award, Target, Zap, CheckCircle } from 'lucide-react';
+import { Users, Award, Target, Zap } from 'lucide-react';
 
 export const companyStats = [
   { label: 'Years in Business', value: '30+', description: 'Decades of experience' },

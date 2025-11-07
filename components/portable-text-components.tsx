@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useMemo } from 'react';
 import { PortableText } from '@portabletext/react'
 import { CalloutBox } from '@/components/ui/callout-box'
 import { TechnicalSpecs } from '@/components/ui/technical-specs'
@@ -12,7 +13,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import Image from 'next/image'
 import Link from 'next/link'
-import { colorStyleToCSS, typographyStyleToCSS, typographyStyleToClasses, fontSizeToClass, fontWeightToClass } from '@/lib/sanity-styles'
+import { colorStyleToCSS, typographyStyleToClasses } from '@/lib/sanity-styles'
 
 // Define style interface for rich text
 export interface RichTextStyles {
@@ -335,9 +336,19 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
 // Default components (backward compatibility)
 export const portableTextComponents = createPortableTextComponents();
 
-// Component to render Portable Text content
-export function PortableTextContent({ value, styles }: { value: any; styles?: RichTextStyles }) {
-  const components = styles ? createPortableTextComponents(styles) : portableTextComponents;
+// Component to render Portable Text content (optimized with React.memo)
+export const PortableTextContent = React.memo(function PortableTextContent({
+  value,
+  styles
+}: {
+  value: any;
+  styles?: RichTextStyles
+}) {
+  // Memoize components to avoid recreating them on every render
+  const components = useMemo(
+    () => styles ? createPortableTextComponents(styles) : portableTextComponents,
+    [styles]
+  );
 
   return (
     <div className="prose prose-lg prose-invert max-w-none">
@@ -346,5 +357,11 @@ export function PortableTextContent({ value, styles }: { value: any; styles?: Ri
         components={components}
       />
     </div>
-  )
-}
+  );
+}, (prevProps, nextProps) => {
+  // Custom comparison function for better memoization
+  return (
+    prevProps.value === nextProps.value &&
+    JSON.stringify(prevProps.styles) === JSON.stringify(nextProps.styles)
+  );
+});

@@ -6,21 +6,8 @@ import { Plane, Zap, Shield, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImage from '@/components/ui/parallax-image';
 import AnimatedSection from '@/components/ui/animated-section';
-import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
-
-// Helper function to convert Portable Text to plain text
-function portableTextToPlainText(blocks: any): string {
-  if (!blocks) return '';
-  if (typeof blocks === 'string') return blocks;
-  if (!Array.isArray(blocks)) return '';
-
-  return blocks
-    .map((block: any) => {
-      if (block._type !== 'block' || !block.children) return '';
-      return block.children.map((child: any) => child.text).join('');
-    })
-    .join(' ');
-}
+import { typography, spacing, colors } from '@/lib/design-system';
+import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 
 // Icon mapping for CMS data
 const iconMap: Record<string, LucideIcon> = {

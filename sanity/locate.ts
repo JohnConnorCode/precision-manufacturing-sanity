@@ -1,11 +1,11 @@
-import { DocumentLocation, DocumentLocationsState } from 'sanity/presentation'
+import { DocumentLocationsState } from 'sanity/presentation'
 
 // Enhanced locate function for Presentation Tool (Visual Editing)
 // This enables editors to preview content in real-time as they edit
 export function locate(
   params: { id: string; type: string },
   context: any
-): DocumentLocation | DocumentLocationsState | null {
+): DocumentLocationsState | null {
   // Homepage
   if (params.type === 'homepage') {
     return {

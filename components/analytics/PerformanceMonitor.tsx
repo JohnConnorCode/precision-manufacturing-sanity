@@ -61,12 +61,13 @@ export function PerformanceMonitor() {
             }
             break;
 
-          case 'navigation':
+          case 'navigation': {
             const navEntry = entry as PerformanceNavigationTiming;
             const ttfb = navEntry.responseStart - navEntry.fetchStart;
             metrics.ttfb = ttfb;
             sendMetric('TTFB', ttfb, pathname);
             break;
+          }
         }
       }
     });

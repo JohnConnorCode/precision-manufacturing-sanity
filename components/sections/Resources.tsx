@@ -3,9 +3,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { BookOpen, ArrowRight, Clock, GraduationCap, TrendingUp } from 'lucide-react';
-import AnimatedSection from '@/components/ui/animated-section';
 import { PremiumButton } from '@/components/ui/premium-button';
-import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
 
 interface ResourcesProps {
   data?: any;
@@ -66,7 +64,7 @@ export default function Resources({ data }: ResourcesProps) {
 
         {/* Featured Series Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {resourcesData.featuredSeries.map((series, index) => (
+          {resourcesData.featuredSeries.map((series: any, index: number) => (
             <div key={`${series.slug}-${index}`}>
               <Link href={`/resources/series/${series.slug}`}>
                 <motion.article
@@ -143,7 +141,7 @@ export default function Resources({ data }: ResourcesProps) {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
-                {resourcesData.cta.buttons.filter((button: any) => button.enabled !== false).map((button, index) => (
+                {resourcesData.cta.buttons.filter((button: any) => button.enabled !== false).map((button: any, index: number) => (
                   <Link key={button.text} href={button.href}>
                     <PremiumButton size="lg" variant={button.variant === 'primary' ? 'default' : 'secondary'}>
                       {index === 0 && <BookOpen className="w-5 h-5" />}

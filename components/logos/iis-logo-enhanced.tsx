@@ -11,8 +11,8 @@ interface LogoProps {
   showAnimation?: boolean;
 }
 
-// Enhanced Precision Target Logo with Elegant Animations
-export const LogoPrecisionTargetEnhanced = ({
+// Enhanced Precision Target Logo with Elegant Animations (optimized with React.memo)
+export const LogoPrecisionTargetEnhanced = React.memo(({
   variant = 'primary',
   size = 'md',
   animated = true,
@@ -391,10 +391,11 @@ export const LogoPrecisionTargetEnhanced = ({
       </g>
     </motion.svg>
   );
-};
+});
+LogoPrecisionTargetEnhanced.displayName = 'LogoPrecisionTargetEnhanced';
 
-// Logo component for static use
-export const IISLogo = ({
+// Logo component for static use (optimized with React.memo)
+export const IISLogo = React.memo(({
   variant = 'primary',
   size = 'md',
   className = ''
@@ -458,7 +459,8 @@ export const IISLogo = ({
       </g>
     </svg>
   );
-};
+});
+IISLogo.displayName = 'IISLogo';
 
 // Showcase component
 export const EnhancedLogoShowcase = () => {

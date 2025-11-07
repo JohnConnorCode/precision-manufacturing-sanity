@@ -6,20 +6,7 @@ import Link from 'next/link';
 import { getAllIndustries, getPageContent } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
-
-// Helper function to convert Portable Text to plain text
-function portableTextToPlainText(blocks: any): string {
-  if (!blocks) return '';
-  if (typeof blocks === 'string') return blocks;
-  if (!Array.isArray(blocks)) return '';
-
-  return blocks
-    .map((block: any) => {
-      if (block._type !== 'block' || !block.children) return '';
-      return block.children.map((child: any) => child.text).join('');
-    })
-    .join(' ');
-}
+import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 
 // Force static generation for INSTANT routing (no server delays)
 export const dynamic = 'force-static';

@@ -3,10 +3,9 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ArrowRight, Plane, Zap, Shield, Factory, Award, Users, TrendingUp } from 'lucide-react';
+import { ArrowRight, Shield, Factory, Award, Users, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImage from '@/components/ui/parallax-image';
-import { theme, styles, cn } from '@/lib/theme';
 import React from 'react';
 
 interface IndustriesListProps {

@@ -27,7 +27,7 @@ export default function HelpDashboard() {
               <strong>Upload Images:</strong> Collections → Media → Upload
             </li>
             <li>
-              <strong>Preview Changes:</strong> Click "Live Preview" button when editing
+              <strong>Preview Changes:</strong> Click &quot;Live Preview&quot; button when editing
             </li>
           </ul>
         </div>
@@ -89,10 +89,10 @@ export default function HelpDashboard() {
             </h3>
             <ol style={{ marginLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px', color: '#374151' }}>
               <li>Navigate to <strong>Collections → Services</strong></li>
-              <li>Click on the service you want to edit (e.g., "5-Axis Machining")</li>
+              <li>Click on the service you want to edit (e.g., &quot;5-Axis Machining&quot;)</li>
               <li>Update fields like title, description, specs, or images</li>
-              <li>Click <strong>"Live Preview"</strong> to see changes in real-time</li>
-              <li>Click <strong>"Save"</strong> when finished</li>
+              <li>Click <strong>&quot;Live Preview&quot;</strong> to see changes in real-time</li>
+              <li>Click <strong>&quot;Save&quot;</strong> when finished</li>
             </ol>
           </div>
 
@@ -103,10 +103,10 @@ export default function HelpDashboard() {
             </h3>
             <ol style={{ marginLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px', color: '#374151' }}>
               <li>Go to <strong>Collections → Media</strong></li>
-              <li>Click <strong>"Create New"</strong> or drag and drop images</li>
+              <li>Click <strong>&quot;Create New&quot;</strong> or drag and drop images</li>
               <li>Fill in <strong>Alt Text</strong> (required for accessibility)</li>
               <li>Optionally add a caption</li>
-              <li>Click <strong>"Create"</strong> to upload</li>
+              <li>Click <strong>&quot;Create&quot;</strong> to upload</li>
               <li>To use the image: In any content page, select the image from the media picker</li>
             </ol>
           </div>
@@ -125,8 +125,8 @@ export default function HelpDashboard() {
                 <li><strong>Technical Specs:</strong> Capabilities showcase</li>
                 <li><strong>CTA:</strong> Call-to-action section</li>
               </ul>
-              <li>Use <strong>"Live Preview"</strong> to see changes</li>
-              <li>Click <strong>"Save"</strong> to publish</li>
+              <li>Use <strong>&quot;Live Preview&quot;</strong> to see changes</li>
+              <li>Click <strong>&quot;Save&quot;</strong> to publish</li>
             </ol>
           </div>
 
@@ -137,18 +137,18 @@ export default function HelpDashboard() {
             </h3>
             <ol style={{ marginLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px', color: '#374151' }}>
               <li>Go to <strong>Collections → Resources</strong></li>
-              <li>Click <strong>"Create New"</strong></li>
+              <li>Click <strong>&quot;Create New&quot;</strong></li>
               <li>Fill in required fields:</li>
               <ul style={{ marginLeft: '20px', marginTop: '4px' }}>
                 <li><strong>Title:</strong> Article headline</li>
-                <li><strong>Slug:</strong> URL-friendly name (e.g., "cnc-machining-guide")</li>
+                <li><strong>Slug:</strong> URL-friendly name (e.g., &quot;cnc-machining-guide&quot;)</li>
                 <li><strong>Category:</strong> manufacturing-processes, material-science, etc.</li>
                 <li><strong>Excerpt:</strong> Short summary</li>
                 <li><strong>Content:</strong> Full article body (use rich text editor)</li>
               </ul>
               <li>Set difficulty level and read time</li>
               <li>Add tags for better organization</li>
-              <li>Click <strong>"Create"</strong> to publish</li>
+              <li>Click <strong>&quot;Create&quot;</strong> to publish</li>
             </ol>
           </div>
         </div>
@@ -165,10 +165,10 @@ export default function HelpDashboard() {
             <strong>Use Live Preview:</strong> Preview your changes before saving to ensure they look correct
           </li>
           <li>
-            <strong>Slug format:</strong> Use lowercase letters, numbers, and hyphens only (e.g., "5-axis-machining")
+            <strong>Slug format:</strong> Use lowercase letters, numbers, and hyphens only (e.g., &quot;5-axis-machining&quot;)
           </li>
           <li>
-            <strong>Image optimization:</strong> Upload high-quality images - they're automatically optimized and resized
+            <strong>Image optimization:</strong> Upload high-quality images - they&apos;re automatically optimized and resized
           </li>
           <li>
             <strong>Rich text editor:</strong> Use headings, bold, italics, and lists to format content professionally
@@ -187,7 +187,7 @@ export default function HelpDashboard() {
         <h2 style={{ marginBottom: '16px', fontSize: '20px', fontWeight: '600', color: '#dc2626' }}>⚠️ Important Notes</h2>
         <ul style={{ marginLeft: '20px', display: 'flex', flexDirection: 'column', gap: '12px', color: '#374151' }}>
           <li>
-            <strong>Changes are live immediately:</strong> When you click "Save", changes appear on the website within seconds
+            <strong>Changes are live immediately:</strong> When you click &quot;Save&quot;, changes appear on the website within seconds
           </li>
           <li>
             <strong>Media storage:</strong> All images are stored in Vercel Blob and are persistent across deployments

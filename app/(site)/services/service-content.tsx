@@ -25,7 +25,7 @@ interface ServiceContentProps {
   slug: string;
 }
 
-export function ServiceContent({ serviceData, slug }: ServiceContentProps) {
+export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps) {
   const service = serviceData as any;
   const heroImage = service.hero?.backgroundImage?.asset?.url || service.hero?.backgroundImage
     ? (service.hero?.backgroundImage?.asset?.url || service.hero.backgroundImage)
