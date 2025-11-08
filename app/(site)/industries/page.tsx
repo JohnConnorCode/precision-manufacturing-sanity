@@ -7,6 +7,13 @@ import { getAllIndustries, getIndustriesPage } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import * as Icons from 'lucide-react';
+
+// Dynamic icon component
+function DynamicIcon({ name, className }: { name: string; className?: string }) {
+  const Icon = (Icons as any)[name] || Icons.Circle;
+  return <Icon className={className} />;
+}
 
 // Force static generation for INSTANT routing (no server delays)
 export const dynamic = 'force-static';
@@ -107,6 +114,28 @@ export default async function IndustriesPage() {
         alignment="center"
       />
 
+      {/* Key Statistics */}
+      {industriesPageData?.content?.overviewStats && industriesPageData.content.overviewStats.length > 0 && (
+        <section className="py-16 bg-slate-50">
+          <div className="container">
+            <AnimatedSection>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {industriesPageData.content.overviewStats.map((stat: any, index: number) => (
+                  <div key={index} className="text-center">
+                    <div className="text-4xl md:text-5xl font-black text-blue-600 mb-2">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm md:text-base text-slate-600 font-medium uppercase tracking-wide">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
+
       {/* Industries Grid */}
       <section id="industries" className="py-20">
         <div className="container">
@@ -139,6 +168,66 @@ export default async function IndustriesPage() {
           </div>
         </div>
       </section>
+
+      {/* Why Choose IIS */}
+      {industriesPageData?.content?.whyChooseUs && industriesPageData.content.whyChooseUs.length > 0 && (
+        <section className="py-20 bg-white">
+          <div className="container">
+            <AnimatedSection>
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">Why Choose IIS</h2>
+                <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                  Industry-leading capabilities and certifications that ensure mission-critical success.
+                </p>
+              </div>
+            </AnimatedSection>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {industriesPageData.content.whyChooseUs.map((item: any, index: number) => (
+                <AnimatedSection key={index} delay={index * 0.1}>
+                  <div className="text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600 mb-4">
+                      <DynamicIcon name={item.iconName || 'Circle'} className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                    <p className="text-slate-600">{item.description}</p>
+                  </div>
+                </AnimatedSection>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Proven Results */}
+      {industriesPageData?.content?.provenResults && industriesPageData.content.provenResults.length > 0 && (
+        <section className="py-20 bg-slate-900 text-white">
+          <div className="container">
+            <AnimatedSection>
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">Proven Results</h2>
+                <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+                  Measurable performance metrics that demonstrate our commitment to excellence.
+                </p>
+              </div>
+            </AnimatedSection>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {industriesPageData.content.provenResults.map((metric: any, index: number) => (
+                <AnimatedSection key={index} delay={index * 0.1}>
+                  <div className="text-center border border-slate-700 rounded-lg p-6 hover:border-blue-500 transition-colors">
+                    <div className="text-4xl md:text-5xl font-black text-blue-400 mb-2">
+                      {metric.value}
+                    </div>
+                    <div className="text-lg font-semibold mb-2">{metric.label}</div>
+                    <p className="text-sm text-slate-400">{metric.description}</p>
+                  </div>
+                </AnimatedSection>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Call to Action */}
       <section className="py-20 bg-slate-50">

@@ -211,6 +211,148 @@ export default {
               icon: 'Zap'
             }
           ]
+        },
+        {
+          name: 'whyChooseUs',
+          type: 'array',
+          title: 'Why Choose IIS',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {
+                  name: 'title',
+                  type: 'string',
+                  title: 'Title',
+                  validation: (Rule: any) => Rule.required()
+                },
+                {
+                  name: 'description',
+                  type: 'text',
+                  title: 'Description',
+                  rows: 3
+                },
+                {
+                  name: 'iconName',
+                  type: 'string',
+                  title: 'Icon Name',
+                  description: 'Lucide icon name (e.g., "Shield", "Target", "Zap", "Award")'
+                }
+              ],
+              preview: {
+                select: { title: 'title', subtitle: 'description' },
+                prepare({ title, subtitle }: any) {
+                  return { title, subtitle: subtitle?.substring(0, 50) + '...' }
+                }
+              }
+            }
+          ],
+          initialValue: [
+            {
+              title: 'Certified Excellence',
+              description: 'AS9100D, NADCAP, and ITAR certified manufacturing ensures compliance with the strictest aerospace and defense standards.',
+              iconName: 'Shield'
+            },
+            {
+              title: 'Mission-Critical Precision',
+              description: 'Advanced CMM inspection and process controls deliver tolerances to ±0.0001" for zero-defect performance.',
+              iconName: 'Target'
+            },
+            {
+              title: 'Rapid Response',
+              description: 'Dedicated program management and expedited capabilities meet urgent delivery requirements without compromising quality.',
+              iconName: 'Zap'
+            },
+            {
+              title: 'Full Traceability',
+              description: 'Comprehensive material certification and process documentation provide complete supply chain transparency.',
+              iconName: 'FileCheck'
+            }
+          ]
+        },
+        {
+          name: 'provenResults',
+          type: 'array',
+          title: 'Proven Results',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'value', type: 'string', title: 'Value' },
+                { name: 'label', type: 'string', title: 'Label' },
+                { name: 'description', type: 'text', title: 'Description', rows: 2 }
+              ],
+              preview: {
+                select: { title: 'value', subtitle: 'label' },
+                prepare({ title, subtitle }: any) {
+                  return { title, subtitle }
+                }
+              }
+            }
+          ],
+          initialValue: [
+            {
+              value: '99.8%',
+              label: 'On-Time Delivery',
+              description: 'Consistent delivery performance across all programs'
+            },
+            {
+              value: '0.02%',
+              label: 'Defect Rate',
+              description: 'Industry-leading quality metrics'
+            },
+            {
+              value: '200+',
+              label: 'Active Programs',
+              description: 'Concurrent aerospace and defense contracts'
+            },
+            {
+              value: '24hr',
+              label: 'Quote Response',
+              description: 'Fast-track program evaluation and pricing'
+            }
+          ]
+        }
+      ]
+    },
+
+    // CTA Section
+    {
+      name: 'cta',
+      type: 'object',
+      title: 'Call to Action',
+      group: 'content',
+      fields: [
+        {
+          name: 'heading',
+          type: 'string',
+          title: 'Heading',
+          initialValue: 'Partner with Industry Experts'
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Description',
+          rows: 2,
+          initialValue: "Join the industry leaders who trust us with their most critical manufacturing requirements. Let's discuss your specific needs."
+        },
+        {
+          name: 'primaryButton',
+          type: 'object',
+          title: 'Primary Button',
+          fields: [
+            { name: 'label', type: 'string', title: 'Label', initialValue: 'Schedule Consultation' },
+            { name: 'href', type: 'string', title: 'URL', initialValue: '/contact' }
+          ]
+        },
+        {
+          name: 'secondaryButton',
+          type: 'object',
+          title: 'Secondary Button',
+          fields: [
+            { name: 'label', type: 'string', title: 'Label', initialValue: 'View Our Services' },
+            { name: 'href', type: 'string', title: 'URL', initialValue: '/services' }
+          ]
         }
       ]
     },
