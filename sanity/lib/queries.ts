@@ -570,6 +570,7 @@ export async function getIndustriesPage(preview = false) {
       hero{
         badge,
         heading,
+        headingHighlight,
         subheading,
         backgroundImage{
           asset->{url, _id},
@@ -588,6 +589,10 @@ export async function getIndustriesPage(preview = false) {
           _key,
           name,
           description,
+          image{
+            asset->{url, _id},
+            alt
+          },
           applications[],
           stats[]{
             _key,
@@ -595,6 +600,7 @@ export async function getIndustriesPage(preview = false) {
             value
           },
           certifications[],
+          expertise[],
           icon
         },
         whyChooseUs[]{

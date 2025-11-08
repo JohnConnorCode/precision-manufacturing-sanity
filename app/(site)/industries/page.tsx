@@ -96,9 +96,15 @@ export default async function IndustriesPage() {
       <HeroSection
         backgroundImage={industriesPageData?.hero?.backgroundImage?.asset?.url || 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=2400&q=90'}
         imageAlt={industriesPageData?.hero?.backgroundImage?.alt || 'Industrial manufacturing - precision components for critical industries'}
+        badge={industriesPageData?.hero?.badge || '🏭 CRITICAL INDUSTRY SOLUTIONS'}
         title={
           industriesPageData?.hero?.heading ? (
-            <span className="text-white">{industriesPageData.hero.heading}</span>
+            <span className="text-white">
+              {industriesPageData.hero.heading.replace(industriesPageData.hero.headingHighlight || 'We Serve', '')}{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
+                {industriesPageData.hero.headingHighlight || 'We Serve'}
+              </span>
+            </span>
           ) : (
             <span className="text-white">
               Industries <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">We Serve</span>
@@ -148,20 +154,73 @@ export default async function IndustriesPage() {
             </div>
           </AnimatedSection>
 
-          <div className="space-y-8">
-            {formattedIndustries.map((industry: any, index: number) => (
-              <AnimatedSection key={industry.title} delay={index * 0.15}>
-                <div className="bg-white border border-slate-200 rounded-lg p-8">
-                  <h3 className="text-3xl font-bold mb-4">{industry.title}</h3>
-                  <p className="text-slate-600 mb-6 leading-relaxed text-lg">
-                    {industry.description}
-                  </p>
-                  <Button asChild variant="outline">
-                    <Link href={`/industries/${industry.slug}`}>
-                      Learn More About {industry.title}
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
+          <div className="space-y-12">
+            {industriesPageData?.content?.industries?.map((industry: any, index: number) => (
+              <AnimatedSection key={industry.name} delay={index * 0.15}>
+                <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                  <div className="grid md:grid-cols-2 gap-0">
+                    {/* Image */}
+                    {industry.image?.asset?.url && (
+                      <div className="relative h-64 md:h-auto">
+                        <img
+                          src={industry.image.asset.url}
+                          alt={industry.image.alt || industry.name}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+
+                    {/* Content */}
+                    <div className="p-8">
+                      <h3 className="text-3xl font-bold mb-4">{industry.name}</h3>
+                      <p className="text-slate-600 mb-6 leading-relaxed">
+                        {industry.description}
+                      </p>
+
+                      <div className="grid sm:grid-cols-2 gap-6 mb-6">
+                        {/* Certifications */}
+                        {industry.certifications && industry.certifications.length > 0 && (
+                          <div>
+                            <h4 className="font-semibold text-sm uppercase tracking-wide text-slate-900 mb-3">
+                              Certifications
+                            </h4>
+                            <ul className="space-y-2">
+                              {industry.certifications.map((cert: string, i: number) => (
+                                <li key={i} className="text-sm text-slate-600 flex items-start">
+                                  <span className="text-blue-600 mr-2">•</span>
+                                  {cert}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {/* Expertise */}
+                        {industry.expertise && industry.expertise.length > 0 && (
+                          <div>
+                            <h4 className="font-semibold text-sm uppercase tracking-wide text-slate-900 mb-3">
+                              Expertise
+                            </h4>
+                            <ul className="space-y-2">
+                              {industry.expertise.map((exp: string, i: number) => (
+                                <li key={i} className="text-sm text-slate-600 flex items-start">
+                                  <span className="text-blue-600 mr-2">•</span>
+                                  {exp}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+
+                      <Button asChild variant="outline">
+                        <Link href={`/industries/${industry.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                          Learn More About {industry.name}
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </AnimatedSection>
             ))}
@@ -175,9 +234,9 @@ export default async function IndustriesPage() {
           <div className="container">
             <AnimatedSection>
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold mb-6">Why Choose IIS</h2>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">Why Industry Leaders Choose Us</h2>
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                  Industry-leading capabilities and certifications that ensure mission-critical success.
+                  Proven capabilities and unwavering commitment to quality make us the preferred manufacturing partner for critical applications.
                 </p>
               </div>
             </AnimatedSection>
@@ -207,7 +266,7 @@ export default async function IndustriesPage() {
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-bold mb-6">Proven Results</h2>
                 <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-                  Measurable performance metrics that demonstrate our commitment to excellence.
+                  Measurable performance metrics that demonstrate our commitment to excellence and continuous improvement.
                 </p>
               </div>
             </AnimatedSection>

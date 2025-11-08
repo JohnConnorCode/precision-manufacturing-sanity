@@ -20,14 +20,21 @@ export default {
           name: 'badge',
           type: 'string',
           title: 'Badge Text',
-          initialValue: 'SPECIALIZED SECTOR EXPERTISE'
+          initialValue: '🏭 CRITICAL INDUSTRY SOLUTIONS'
         },
         {
           name: 'heading',
           type: 'string',
           title: 'Main Heading',
-          initialValue: 'Critical Industry Solutions',
+          initialValue: 'Industries We Serve',
           validation: (Rule: any) => Rule.required()
+        },
+        {
+          name: 'headingHighlight',
+          type: 'string',
+          title: 'Heading Highlight (shown in blue gradient)',
+          initialValue: 'We Serve',
+          description: 'This text will be highlighted in blue gradient within the heading'
         },
         {
           name: 'subheading',
@@ -118,6 +125,23 @@ export default {
                   rows: 2
                 },
                 {
+                  name: 'image',
+                  type: 'image',
+                  title: 'Industry Image',
+                  options: {
+                    hotspot: true,
+                    metadata: ['blurhash', 'lqip', 'palette']
+                  },
+                  fields: [
+                    {
+                      name: 'alt',
+                      type: 'string',
+                      title: 'Alt Text',
+                      validation: (Rule: any) => Rule.required()
+                    }
+                  ]
+                },
+                {
                   name: 'applications',
                   type: 'array',
                   title: 'Applications',
@@ -142,6 +166,13 @@ export default {
                   type: 'array',
                   title: 'Certifications',
                   of: [{ type: 'string' }]
+                },
+                {
+                  name: 'expertise',
+                  type: 'array',
+                  title: 'Expertise',
+                  of: [{ type: 'string' }],
+                  description: 'List of expertise areas for this industry'
                 },
                 {
                   name: 'icon',
@@ -249,24 +280,24 @@ export default {
           ],
           initialValue: [
             {
-              title: 'Certified Excellence',
-              description: 'AS9100D, NADCAP, and ITAR certified manufacturing ensures compliance with the strictest aerospace and defense standards.',
+              title: 'Regulatory Compliance',
+              description: 'Full compliance with federal regulations and quality standards. AS9100D, ITAR registered, NADCAP accredited. Comprehensive audit trails and documentation systems.',
               iconName: 'Shield'
             },
             {
-              title: 'Mission-Critical Precision',
-              description: 'Advanced CMM inspection and process controls deliver tolerances to ±0.0001" for zero-defect performance.',
+              title: 'Security & Traceability',
+              description: 'Comprehensive facility security and complete material traceability. Secure supply chain management with full chain of custody documentation for critical components.',
               iconName: 'Target'
             },
             {
-              title: 'Rapid Response',
-              description: 'Dedicated program management and expedited capabilities meet urgent delivery requirements without compromising quality.',
-              iconName: 'Zap'
+              title: 'Technical Expertise',
+              description: 'Deep industry knowledge and advanced manufacturing capabilities. Specialized engineering team with decades of experience in mission-critical applications.',
+              iconName: 'Wrench'
             },
             {
-              title: 'Full Traceability',
-              description: 'Comprehensive material certification and process documentation provide complete supply chain transparency.',
-              iconName: 'FileCheck'
+              title: 'Program Management',
+              description: 'Trusted support for long-term manufacturing programs. Dedicated program managers ensuring seamless coordination and on-time delivery.',
+              iconName: 'TrendingUp'
             }
           ]
         },
@@ -293,23 +324,23 @@ export default {
           initialValue: [
             {
               value: '99.8%',
+              label: 'First-Pass Yield',
+              description: 'Consistently delivering exceptional quality without rework or scrap'
+            },
+            {
+              value: '99.5%',
               label: 'On-Time Delivery',
-              description: 'Consistent delivery performance across all programs'
+              description: 'Industry-leading delivery performance across all programs'
             },
             {
-              value: '0.02%',
-              label: 'Defect Rate',
-              description: 'Industry-leading quality metrics'
+              value: '10-30%',
+              label: 'Cost Reduction',
+              description: 'Value-driven solutions and process improvements for cost savings'
             },
             {
-              value: '200+',
-              label: 'Active Programs',
-              description: 'Concurrent aerospace and defense contracts'
-            },
-            {
-              value: '24hr',
-              label: 'Quote Response',
-              description: 'Fast-track program evaluation and pricing'
+              value: '40%',
+              label: 'Lead Time Reduction',
+              description: 'Faster turnarounds through streamlined processes and optimization'
             }
           ]
         }
