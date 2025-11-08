@@ -54,7 +54,7 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
           </span>
         }
         description={data?.hero?.description || defaultHeroData.description}
-        buttons={(data?.hero?.buttons || defaultHeroData.buttons).map(btn => ({
+        buttons={(data?.hero?.buttons || defaultHeroData.buttons).map((btn: any) => ({
           label: btn.label,
           href: btn.href,
           variant: btn.variant as 'primary' | 'secondary'
@@ -119,7 +119,7 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {(data?.benefits?.items || []).map((benefit, index) => {
+            {(data?.benefits?.items || []).map((benefit: any, index: number) => {
               const Icon = iconMap[benefit.iconName] || Users;
               return (
                 <motion.div
@@ -166,7 +166,7 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {(data?.values?.items || []).map((value, index) => (
+            {(data?.values?.items || []).map((value: any, index: number) => (
               <motion.div
                 key={value.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -201,7 +201,7 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
           </motion.div>
 
           <div className="space-y-6">
-            {(data?.opportunities?.jobs || []).map((position, index) => (
+            {(data?.opportunities?.jobs || []).map((position: any, index: number) => (
               <motion.div
                 key={position.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -249,7 +249,7 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
               {data?.cta?.description || 'Take the next step in your career. We look forward to hearing from you.'}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {(data?.cta?.buttons || []).map((button, index) => (
+              {(data?.cta?.buttons || []).map((button: any, index: number) => (
                 <Button
                   key={index}
                   size="lg"

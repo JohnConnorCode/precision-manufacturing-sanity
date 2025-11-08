@@ -243,7 +243,7 @@ export function IndustriesList({ industries, capabilities, keyStrengths, success
                   </p>
 
                   <div className="space-y-3">
-                    {strength.features.map((feature) => (
+                    {strength.features.map((feature: string) => (
                       <div key={feature} className="flex items-center text-sm text-slate-600">
                         <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mr-3" />
                         {feature}
