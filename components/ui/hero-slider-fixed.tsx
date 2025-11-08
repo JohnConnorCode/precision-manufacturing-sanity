@@ -102,7 +102,7 @@ export default function HeroSliderFixed({
                 getFocalPosition(slides[0].focal)
               )}
               priority
-              quality={100}
+              quality={85}
               sizes="100vw"
             />
           </div>
@@ -129,7 +129,7 @@ export default function HeroSliderFixed({
               getFocalPosition(slides[0].focal)
             )}
             priority
-            quality={100}
+            quality={85}
             sizes="100vw"
           />
         </div>
@@ -162,7 +162,7 @@ export default function HeroSliderFixed({
                 getFocalPosition(slide.focal)
               )}
               priority={index === 0}
-              quality={100}
+              quality={85}
               sizes="100vw"
               loading={index === 0 ? "eager" : "lazy"}
             />

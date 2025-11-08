@@ -40,6 +40,7 @@
     "@sanity/icons": "^3.5.0",
     "@sanity/image-url": "^1.1.0",
     "@sanity/presentation": "^2.0.0",
+    "@sanity/types": "^4.14.1",
     "@sanity/ui": "^2.11.7",
     "@sanity/vision": "^3.68.0",
     "@sanity/visual-editing": "^2.15.4",

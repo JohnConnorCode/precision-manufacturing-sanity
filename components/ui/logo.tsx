@@ -70,7 +70,7 @@ export default function Logo({
           width={imageWidth}
           height={imageHeight}
           priority
-          quality={95}
+          quality={85}
           className="object-contain w-full h-full transition-transform duration-300 hover:scale-110"
         />
       </motion.div>

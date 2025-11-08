@@ -14,8 +14,6 @@ interface IndustryPageProps {
 
 // Enable ISR with 1 hour revalidation
 export const revalidate = 3600;
-// Use dynamic rendering for build without Sanity connection
-export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: IndustryPageProps) {
   const { slug } = await params;

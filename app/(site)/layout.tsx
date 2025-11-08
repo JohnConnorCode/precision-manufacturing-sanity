@@ -7,6 +7,7 @@ import { AdminToolbar } from "@/components/admin-toolbar";
 import { Analytics } from "@vercel/analytics/react";
 import PreviewBanner from "@/components/preview-banner";
 import { Toaster } from 'sonner';
+import { getNavigation, getFooter, getSiteSettings } from '@/sanity/lib/queries';
 
 // Use system font stack instead of Google Fonts for build reliability
 const fontClass = 'font-sans';
@@ -73,12 +74,70 @@ export const metadata: Metadata = {
   },
 };
 
+// Helper function to normalize navigation hrefs
+function normalizeHref(name: string, href?: string | null) {
+  const n = (name || '').toLowerCase()
+  const h = (href || '').trim()
+  if (h && h !== '#') return h
+  if (n.includes('about')) return '/about'
+  if (n.includes('contact')) return '/contact'
+  if (n.includes('service')) return '/services'
+  if (n.includes('industr')) return '/industries'
+  if (n.includes('resource')) return '/resources'
+  if (n.includes('career') || n.includes('job')) return '/careers'
+  return '/'
+}
+
+// Helper function to map navigation items
+function mapNavigationItem(item: any): any {
+  if (!item) return null
+  if (item?._type === 'navGroup') {
+    const title = item?.groupTitle || 'Group'
+    const items = Array.isArray(item?.items) ? item.items.map(mapNavigationItem).filter(Boolean) : []
+    return { name: title, href: '', description: '', linkType: 'internal', openInNewTab: false, iconName: null, showInHeader: true, showInMobile: true, style: { variant: 'link', badgeText: null }, children: items }
+  }
+  const name = item?.name ?? ''
+  const href = normalizeHref(name, item?.href ?? '')
+  const children = Array.isArray(item?.children) ? item.children.map(mapNavigationItem).filter(Boolean) : []
+  return {
+    name,
+    href,
+    description: item?.description || '',
+    linkType: item?.linkType || 'internal',
+    openInNewTab: Boolean(item?.openInNewTab),
+    iconName: (item?.iconPreset && item.iconPreset !== 'custom' && item.iconPreset !== 'none') ? item.iconPreset : (item?.iconName || null),
+    showInHeader: item?.showInHeader !== false,
+    showInMobile: item?.showInMobile !== false,
+    style: {
+      variant: item?.style?.variant || 'link',
+      badgeText: item?.style?.badgeText || null,
+    },
+    children,
+  }
+}
+
 export default async function SiteLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const { isEnabled: isDraft } = await draftMode()
+
+  // Fetch navigation, footer, and site settings server-side
+  const [navData, footerData, siteSettingsData] = await Promise.all([
+    getNavigation(isDraft).catch(() => null),
+    getFooter(isDraft).catch(() => null),
+    getSiteSettings(isDraft).catch(() => null),
+  ])
+
+  // Normalize navigation data
+  const navigationData = navData ? {
+    topBar: navData?.topBar ?? null,
+    cta: navData?.cta ?? null,
+    styles: navData?.styles ?? null,
+    menuItems: Array.isArray(navData?.menuItems) ? navData.menuItems.map(mapNavigationItem).filter(Boolean) : [],
+  } : null
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -217,7 +276,11 @@ export default async function SiteLayout({
         />
       </head>
       <body className={`${fontClass} antialiased`}>
-        <SiteChrome>
+        <SiteChrome
+          navigationData={navigationData}
+          footerData={footerData}
+          siteSettings={siteSettingsData}
+        >
           {children}
         </SiteChrome>
         <AdminToolbar />

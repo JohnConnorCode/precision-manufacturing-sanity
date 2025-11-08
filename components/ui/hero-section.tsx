@@ -170,7 +170,7 @@ export default function HeroSection({
           className="object-cover object-center animate-fade-in"
           priority={true}
           loading="eager"
-          quality={95}
+          quality={85}
           sizes="100vw"
         />
 

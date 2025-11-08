@@ -48,7 +48,6 @@ export async function getAllServices(preview = false) {
 
     return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch services from Sanity:', error)
     return []
   }
 }
@@ -87,7 +86,6 @@ export async function getServiceBySlug(slug: string, preview = false) {
 
     return await getClient(preview).fetch(query, { slug })
   } catch (error) {
-    console.warn(`Failed to fetch service with slug "${slug}":`, error)
     return null
   }
 }
@@ -127,7 +125,6 @@ export async function getAllIndustries(preview = false) {
 
     return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch industries from Sanity:', error)
     return []
   }
 }
@@ -162,7 +159,6 @@ export async function getIndustryBySlug(slug: string, preview = false) {
 
     return await getClient(preview).fetch(query, { slug })
   } catch (error) {
-    console.warn(`Failed to fetch industry with slug "${slug}":`, error)
     return null
   }
 }
@@ -213,7 +209,6 @@ export async function getResourceBySlug(slug: string, preview = false) {
 
   return await getClient(preview).fetch(query, { slug })
   } catch (error) {
-    console.warn('Failed to fetch getResourceBySlug:', error)
     return null
   }
 }
@@ -237,7 +232,6 @@ export async function getResourcesByCategory(category: string, preview = false) 
 
   return await getClient(preview).fetch(query, { category })
   } catch (error) {
-    console.warn('Failed to fetch getResourcesByCategory:', error)
     return []
   }
 }
@@ -260,7 +254,6 @@ export async function getFeaturedResources(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getFeaturedResources:', error)
     return null
   }
 }
@@ -285,7 +278,6 @@ export async function getAllTeamMembers(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getAllTeamMembers:', error)
     return []
   }
 }
@@ -306,7 +298,6 @@ export async function getSiteSettings(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getSiteSettings:', error)
     return null
   }
 }
@@ -322,7 +313,6 @@ export async function getNavigation(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getNavigation:', error)
     return null
   }
 }
@@ -371,7 +361,6 @@ export async function getHomepage(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getHomepage:', error)
     return null
   }
 }
@@ -390,7 +379,6 @@ export async function getFooter(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getFooter:', error)
     return null
   }
 }
@@ -412,7 +400,6 @@ export async function getAbout(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getAbout:', error)
     return null
   }
 }
@@ -429,7 +416,6 @@ export async function getContact(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getContact:', error)
     return null
   }
 }
@@ -448,7 +434,6 @@ export async function getCareers(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getCareers:', error)
     return null
   }
 }
@@ -463,7 +448,6 @@ export async function getTerms(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getTerms:', error)
     return null
   }
 }
@@ -480,7 +464,6 @@ export async function getSupplierRequirements(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getSupplierRequirements:', error)
     return null
   }
 }
@@ -494,7 +477,6 @@ export async function getUIText(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getUIText:', error)
     return null
   }
 }
@@ -532,7 +514,6 @@ export async function getPageContent(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getPageContent:', error)
     return null
   }
 }
@@ -575,7 +556,6 @@ export async function getServicesPage(preview = false) {
     }`
     return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch servicesPage:', error)
     return null
   }
 }
@@ -630,7 +610,6 @@ export async function getIndustriesPage(preview = false) {
     }`
     return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch industriesPage:', error)
     return null
   }
 }
@@ -651,7 +630,6 @@ export async function getPageBySlug(slug: string, preview = false) {
   }`
   return await getClient(preview).fetch(query, { slug })
   } catch (error) {
-    console.warn('Failed to fetch getPageBySlug:', error)
     return null
   }
 }
@@ -664,7 +642,6 @@ export async function getAllPageSlugs(preview = false) {
   }`
   return await getClient(preview).fetch(query)
   } catch (error) {
-    console.warn('Failed to fetch getAllPageSlugs:', error)
     return []
   }
 }

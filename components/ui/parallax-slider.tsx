@@ -51,7 +51,7 @@ export default function ParallaxSlider({
             fill
             className="object-cover"
             priority={currentIndex === 0}
-            quality={90}
+            quality={85}
             sizes="100vw"
           />
         </motion.div>
