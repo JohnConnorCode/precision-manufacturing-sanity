@@ -423,12 +423,46 @@ export async function getContact(preview = false) {
 export async function getCareers(preview = false) {
   try {
   const query = `*[_type == "careers"][0] {
-    hero{ backgroundImage{asset->{url,_id}}, badge, badgeIconName, title, titleHighlight, description, buttons },
-    whyWorkHere{ heading, paragraph1, paragraph2, paragraph3, image{asset->{url,_id}}, imageAlt },
-    benefits{ heading, description, items },
-    values{ heading, description, items },
-    opportunities{ heading, description, positions },
-    cta{ heading, description, buttons },
+    hero{
+      backgroundImage{asset->{url,_id}, alt},
+      backgroundImageUrl,
+      imageAlt,
+      badge,
+      badgeIconName,
+      title,
+      titleHighlight,
+      description,
+      buttons
+    },
+    whyWorkHere{
+      heading,
+      paragraph1,
+      paragraph2,
+      paragraph3,
+      image{asset->{url,_id}, alt},
+      imageUrl,
+      imageAlt
+    },
+    benefits{
+      title,
+      description,
+      items[]{ title, description, iconName }
+    },
+    values{
+      title,
+      description,
+      items[]{ title, description, iconName }
+    },
+    opportunities{
+      title,
+      description,
+      jobs[]{ title, department, type, description, qualifications, link, location }
+    },
+    cta{
+      title,
+      description,
+      buttons[]{ label, href, variant }
+    },
     seo
   }`
 

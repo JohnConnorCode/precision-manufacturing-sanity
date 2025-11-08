@@ -325,7 +325,7 @@ export default {
       ],
     },
     {
-      name: 'why',
+      name: 'whyWorkHere',
       type: 'object',
       title: 'Why Work Here',
       group: 'why',
@@ -335,30 +335,51 @@ export default {
       },
       fields: [
         {
-          name: 'title',
+          name: 'heading',
           type: 'string',
-          title: 'Section Title',
-          initialValue: 'Why Join IIS',
+          title: 'Section Heading',
+          initialValue: 'Why Work at IIS?',
         },
         {
-          name: 'description',
+          name: 'paragraph1',
           type: 'text',
-          title: 'Section Description',
+          title: 'Paragraph 1',
           rows: 3,
         },
         {
-          name: 'items',
-          type: 'array',
-          title: 'Reasons',
-          of: [
+          name: 'paragraph2',
+          type: 'text',
+          title: 'Paragraph 2',
+          rows: 3,
+        },
+        {
+          name: 'paragraph3',
+          type: 'text',
+          title: 'Paragraph 3',
+          rows: 3,
+        },
+        {
+          name: 'image',
+          type: 'image',
+          title: 'Section Image',
+          options: {
+            hotspot: true,
+            metadata: ['blurhash', 'lqip', 'palette'],
+          },
+          fields: [
             {
-              type: 'object',
-              fields: [
-                {name: 'title', type: 'string', title: 'Title'},
-                {name: 'description', type: 'text', title: 'Description', rows: 2},
-              ],
-            },
-          ],
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
+            }
+          ]
+        },
+        {
+          name: 'imageUrl',
+          type: 'url',
+          title: 'Image URL (alternative)',
+          description: 'Use if you prefer to provide an external image URL'
         },
       ],
     },

@@ -131,8 +131,11 @@ export default async function IndustriesPage() {
                     <div className="text-4xl md:text-5xl font-black text-blue-600 mb-2">
                       {stat.value}
                     </div>
-                    <div className="text-sm md:text-base text-slate-600 font-medium uppercase tracking-wide">
+                    <div className="text-sm md:text-base text-slate-900 font-semibold uppercase tracking-wide mb-2">
                       {stat.label}
+                    </div>
+                    <div className="text-sm text-slate-600">
+                      {stat.description}
                     </div>
                   </div>
                 ))}
@@ -241,15 +244,27 @@ export default async function IndustriesPage() {
               </div>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {industriesPageData.content.whyChooseUs.map((item: any, index: number) => (
                 <AnimatedSection key={index} delay={index * 0.1}>
-                  <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600 mb-4">
-                      <DynamicIcon name={item.iconName || 'Circle'} className="w-8 h-8" />
+                  <div className="p-8 border border-slate-200 rounded-lg hover:border-slate-300 transition-all duration-300 hover:shadow-lg h-full">
+                    <div className="flex items-center mb-6">
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4">
+                        <DynamicIcon name={item.icon || 'Circle'} className="w-6 h-6 text-slate-700" />
+                      </div>
+                      <h3 className="text-2xl font-bold">{item.title}</h3>
                     </div>
-                    <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                    <p className="text-slate-600">{item.description}</p>
+                    <p className="text-slate-600 mb-6 leading-relaxed">{item.description}</p>
+                    {item.features && item.features.length > 0 && (
+                      <div className="space-y-3">
+                        {item.features.map((feature: string, i: number) => (
+                          <div key={i} className="flex items-center text-sm text-slate-600">
+                            <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mr-3" />
+                            {feature}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </AnimatedSection>
               ))}
@@ -278,7 +293,7 @@ export default async function IndustriesPage() {
                     <div className="text-4xl md:text-5xl font-black text-blue-400 mb-2">
                       {metric.value}
                     </div>
-                    <div className="text-lg font-semibold mb-2">{metric.label}</div>
+                    <div className="text-lg font-semibold mb-2">{metric.metric}</div>
                     <p className="text-sm text-slate-400">{metric.description}</p>
                   </div>
                 </AnimatedSection>

@@ -86,8 +86,9 @@ export default {
             {
               type: 'object',
               fields: [
+                { name: 'label', type: 'string', title: 'Label' },
                 { name: 'value', type: 'string', title: 'Value' },
-                { name: 'label', type: 'string', title: 'Label' }
+                { name: 'description', type: 'string', title: 'Description' }
               ],
               preview: {
                 select: { title: 'value', subtitle: 'label' },
@@ -98,10 +99,10 @@ export default {
             }
           ],
           initialValue: [
-            { value: '30+', label: 'Years of Experience' },
-            { value: '200+', label: 'Active Programs' },
-            { value: '99.8%', label: 'Quality Rating' },
-            { value: '12+', label: 'Certifications' }
+            { label: 'Industry Experience', value: '30+', description: 'Years serving critical industries' },
+            { label: 'Active Programs', value: '200+', description: 'Ongoing manufacturing programs' },
+            { label: 'Quality Rating', value: '99.8%', description: 'On-time delivery performance' },
+            { label: 'Certifications', value: '12+', description: 'Industry-specific certifications' }
           ]
         },
         {
@@ -264,10 +265,17 @@ export default {
                   rows: 3
                 },
                 {
-                  name: 'iconName',
+                  name: 'icon',
                   type: 'string',
                   title: 'Icon Name',
-                  description: 'Lucide icon name (e.g., "Shield", "Target", "Zap", "Award")'
+                  description: 'Lucide icon name (e.g., "Award", "Shield", "Factory", "Users")'
+                },
+                {
+                  name: 'features',
+                  type: 'array',
+                  title: 'Features',
+                  of: [{ type: 'string' }],
+                  description: 'List of key features or capabilities'
                 }
               ],
               preview: {
@@ -281,23 +289,47 @@ export default {
           initialValue: [
             {
               title: 'Regulatory Compliance',
-              description: 'Full compliance with federal regulations and quality standards. AS9100D, ITAR registered, NADCAP accredited. Comprehensive audit trails and documentation systems.',
-              iconName: 'Shield'
+              description: 'Full compliance with industry-specific regulations and quality standards',
+              icon: 'Award',
+              features: [
+                'AS9100D aerospace quality system',
+                'ITAR registration and compliance',
+                'NADCAP accredited processes',
+                'ISO 9001:2015 certification'
+              ]
             },
             {
               title: 'Security & Traceability',
-              description: 'Comprehensive facility security and complete material traceability. Secure supply chain management with full chain of custody documentation for critical components.',
-              iconName: 'Target'
+              description: 'Comprehensive security protocols and complete material traceability',
+              icon: 'Shield',
+              features: [
+                'Secure facility access controls',
+                'Material traceability systems',
+                'Document control procedures',
+                'Supply chain verification'
+              ]
             },
             {
               title: 'Technical Expertise',
-              description: 'Deep industry knowledge and advanced manufacturing capabilities. Specialized engineering team with decades of experience in mission-critical applications.',
-              iconName: 'Wrench'
+              description: 'Deep industry knowledge and advanced manufacturing capabilities',
+              icon: 'Factory',
+              features: [
+                'Specialized material processing',
+                'Complex geometry machining',
+                'Precision measurement systems',
+                'Advanced quality control'
+              ]
             },
             {
               title: 'Program Management',
-              description: 'Trusted support for long-term manufacturing programs. Dedicated program managers ensuring seamless coordination and on-time delivery.',
-              iconName: 'TrendingUp'
+              description: 'Dedicated support for long-term manufacturing programs',
+              icon: 'Users',
+              features: [
+                'Dedicated program managers',
+                'Capacity planning',
+                'Inventory management',
+                'Continuous improvement'
+              ]
             }
           ]
         },
@@ -309,12 +341,12 @@ export default {
             {
               type: 'object',
               fields: [
+                { name: 'metric', type: 'string', title: 'Metric Name' },
                 { name: 'value', type: 'string', title: 'Value' },
-                { name: 'label', type: 'string', title: 'Label' },
                 { name: 'description', type: 'text', title: 'Description', rows: 2 }
               ],
               preview: {
-                select: { title: 'value', subtitle: 'label' },
+                select: { title: 'value', subtitle: 'metric' },
                 prepare({ title, subtitle }: any) {
                   return { title, subtitle }
                 }
@@ -323,24 +355,24 @@ export default {
           ],
           initialValue: [
             {
+              metric: 'First-Pass Yield',
               value: '99.8%',
-              label: 'First-Pass Yield',
-              description: 'Consistently delivering exceptional quality without rework or scrap'
+              description: 'Parts meeting specifications without rework'
             },
             {
+              metric: 'On-Time Delivery',
               value: '99.5%',
-              label: 'On-Time Delivery',
-              description: 'Industry-leading delivery performance across all programs'
+              description: 'Deliveries meeting committed schedules'
             },
             {
-              value: '10-30%',
-              label: 'Cost Reduction',
-              description: 'Value-driven solutions and process improvements for cost savings'
+              metric: 'Cost Reduction',
+              value: '15-30%',
+              description: 'Average cost savings through optimization'
             },
             {
+              metric: 'Lead Time Reduction',
               value: '40%',
-              label: 'Lead Time Reduction',
-              description: 'Faster turnarounds through streamlined processes and optimization'
+              description: 'Typical improvement in manufacturing cycle time'
             }
           ]
         }

@@ -10,24 +10,21 @@ import React from 'react';
 
 interface IndustriesListProps {
   industries: any[];
+  capabilities?: any[];
+  keyStrengths?: any[];
+  successMetrics?: any[];
 }
 
-export function IndustriesList({ industries }: IndustriesListProps) {
-  const capabilities = [
+export function IndustriesList({ industries, capabilities, keyStrengths, successMetrics }: IndustriesListProps) {
+  // Minimal fallbacks
+  const defaultCapabilities = [
     { label: 'Industry Experience', value: '30+', description: 'Years serving critical industries' },
     { label: 'Active Programs', value: '200+', description: 'Ongoing manufacturing programs' },
     { label: 'Quality Rating', value: '99.8%', description: 'On-time delivery performance' },
     { label: 'Certifications', value: '12+', description: 'Industry-specific certifications' }
   ];
 
-  const iconMap: Record<string, React.ReactNode> = {
-    Award: <Award className="w-6 h-6 text-slate-700" />,
-    Shield: <Shield className="w-6 h-6 text-slate-700" />,
-    Factory: <Factory className="w-6 h-6 text-slate-700" />,
-    Users: <Users className="w-6 h-6 text-slate-700" />,
-  };
-
-  const keyStrengths = [
+  const defaultKeyStrengths = [
     {
       title: 'Regulatory Compliance',
       description: 'Full compliance with industry-specific regulations and quality standards',
@@ -38,64 +35,23 @@ export function IndustriesList({ industries }: IndustriesListProps) {
         'NADCAP accredited processes',
         'ISO 9001:2015 certification'
       ]
-    },
-    {
-      title: 'Security & Traceability',
-      description: 'Comprehensive security protocols and complete material traceability',
-      icon: 'Shield',
-      features: [
-        'Secure facility access controls',
-        'Material traceability systems',
-        'Document control procedures',
-        'Supply chain verification'
-      ]
-    },
-    {
-      title: 'Technical Expertise',
-      description: 'Deep industry knowledge and advanced manufacturing capabilities',
-      icon: 'Factory',
-      features: [
-        'Specialized material processing',
-        'Complex geometry machining',
-        'Precision measurement systems',
-        'Advanced quality control'
-      ]
-    },
-    {
-      title: 'Program Management',
-      description: 'Dedicated support for long-term manufacturing programs',
-      icon: 'Users',
-      features: [
-        'Dedicated program managers',
-        'Capacity planning',
-        'Inventory management',
-        'Continuous improvement'
-      ]
     }
   ];
 
-  const successMetrics = [
+  const defaultSuccessMetrics = [
     {
       metric: 'First-Pass Yield',
       value: '99.8%',
       description: 'Parts meeting specifications without rework'
-    },
-    {
-      metric: 'On-Time Delivery',
-      value: '99.5%',
-      description: 'Deliveries meeting committed schedules'
-    },
-    {
-      metric: 'Cost Reduction',
-      value: '15-30%',
-      description: 'Average cost savings through optimization'
-    },
-    {
-      metric: 'Lead Time Reduction',
-      value: '40%',
-      description: 'Typical improvement in manufacturing cycle time'
     }
   ];
+
+  const iconMap: Record<string, React.ReactNode> = {
+    Award: <Award className="w-6 h-6 text-slate-700" />,
+    Shield: <Shield className="w-6 h-6 text-slate-700" />,
+    Factory: <Factory className="w-6 h-6 text-slate-700" />,
+    Users: <Users className="w-6 h-6 text-slate-700" />,
+  };
 
   return (
     <>
@@ -109,7 +65,7 @@ export function IndustriesList({ industries }: IndustriesListProps) {
             viewport={{ once: true }}
             className="grid grid-cols-2 md:grid-cols-4 gap-8"
           >
-            {capabilities.map((capability, index) => (
+            {(capabilities || defaultCapabilities).map((capability, index) => (
               <motion.div
                 key={capability.label}
                 initial={{ opacity: 0, y: 20 }}
@@ -266,7 +222,7 @@ export function IndustriesList({ industries }: IndustriesListProps) {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {keyStrengths.map((strength, index) => (
+            {(keyStrengths || defaultKeyStrengths).map((strength, index) => (
               <motion.div
                 key={strength.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -318,7 +274,7 @@ export function IndustriesList({ industries }: IndustriesListProps) {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {successMetrics.map((metric, index) => (
+            {(successMetrics || defaultSuccessMetrics).map((metric, index) => (
               <motion.div
                 key={metric.metric}
                 initial={{ opacity: 0, y: 20 }}
