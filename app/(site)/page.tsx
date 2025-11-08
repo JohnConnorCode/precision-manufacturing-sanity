@@ -3,6 +3,7 @@ import TechnicalSpecs from '@/components/sections/TechnicalSpecs';
 import Services from '@/components/sections/Services';
 import Industries from '@/components/sections/Industries';
 import ImageShowcase from '@/components/sections/ImageShowcase';
+import OperationalExcellence from '@/components/sections/OperationalExcellence';
 import Resources from '@/components/sections/Resources';
 import Stats from '@/components/sections/Stats';
 import CTA from '@/components/sections/CTA';
@@ -95,6 +96,7 @@ export default async function Home() {
       <TechnicalSpecs data={homepageData?.technicalSpecs || undefined} />
       <Industries data={formattedIndustries || undefined} sectionData={homepageData?.industriesSection || undefined} />
       <ImageShowcase data={homepageData?.imageShowcase || undefined} />
+      <OperationalExcellence data={homepageData?.operationalExcellence || undefined} />
       <Resources data={homepageData?.resourcesSection || undefined} />
       <Stats data={homepageData?.stats || undefined} />
       <CTA data={homepageData?.cta || undefined} />

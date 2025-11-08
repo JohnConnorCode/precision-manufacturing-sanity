@@ -774,6 +774,92 @@ export default {
       ],
     },
     {
+      name: 'operationalExcellence',
+      type: 'object',
+      title: 'Operational Excellence Section',
+      description: 'Operational Excellence section highlighting quality, processes, and team',
+      group: 'showcase',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      fields: [
+        {
+          name: 'heading',
+          type: 'string',
+          title: 'Heading',
+          initialValue: 'OPERATIONAL EXCELLENCE',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Description',
+          rows: 2,
+          initialValue: 'Proven systems and expert teams delivering consistent, superior results',
+        },
+        {
+          name: 'benefits',
+          type: 'array',
+          title: 'Benefits',
+          of: [
+            {
+              type: 'object',
+              preview: {
+                select: {
+                  title: 'title',
+                  subtitle: 'description',
+                  icon: 'iconName',
+                },
+                prepare({title, subtitle}: any) {
+                  return {
+                    title: title || 'Benefit',
+                    subtitle,
+                  }
+                },
+              },
+              fields: [
+                {
+                  name: 'iconName',
+                  type: 'string',
+                  title: 'Icon Name',
+                  description: 'Lucide icon name (e.g., "Gauge", "Workflow", "Users")',
+                },
+                {
+                  name: 'title',
+                  type: 'string',
+                  title: 'Title',
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: 'description',
+                  type: 'text',
+                  title: 'Description',
+                  rows: 3,
+                },
+              ],
+            },
+          ],
+          initialValue: [
+            {
+              iconName: 'Gauge',
+              title: 'Quality Control',
+              description: 'Comprehensive inspection protocols and real-time process monitoring ensure every component meets exact specifications.'
+            },
+            {
+              iconName: 'Workflow',
+              title: 'Process Optimization',
+              description: 'Lean manufacturing principles and continuous improvement initiatives maximize efficiency without compromising quality.'
+            },
+            {
+              iconName: 'Users',
+              title: 'Expert Team',
+              description: 'Highly trained machinists, engineers, and quality professionals with decades of precision manufacturing experience.'
+            }
+          ],
+        },
+      ],
+    },
+    {
       name: 'resourcesSection',
       type: 'object',
       title: 'Resources Section',

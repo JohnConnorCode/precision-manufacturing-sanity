@@ -596,6 +596,30 @@ export async function getIndustriesPage(preview = false) {
           },
           certifications[],
           icon
+        },
+        whyChooseUs[]{
+          _key,
+          iconName,
+          title,
+          description
+        },
+        provenResults[]{
+          _key,
+          value,
+          label,
+          description
+        }
+      },
+      cta{
+        heading,
+        description,
+        primaryButton{
+          label,
+          href
+        },
+        secondaryButton{
+          label,
+          href
         }
       },
       seo{

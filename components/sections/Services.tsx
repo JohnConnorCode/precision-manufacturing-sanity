@@ -64,6 +64,10 @@ interface ServicesProps {
     heading?: string;
     description?: string;
     subdescription?: string;
+    header?: {
+      eyebrow?: string;
+      heading?: string;
+    };
   };
 }
 
@@ -73,8 +77,9 @@ export default function Services({ data, sectionData }: ServicesProps) {
   const displayServices = (servicesData && servicesData.length > 0) ? servicesData : fallbackServices;
 
   // Section data from CMS (required) - with fallbacks
-  const eyebrow = sectionData?.eyebrow || 'COMPREHENSIVE MANUFACTURING SOLUTIONS';
-  const heading = sectionData?.heading || 'PRECISION SERVICES';
+  // Prefer nested header fields (new structure) over top-level fields (legacy)
+  const eyebrow = sectionData?.header?.eyebrow || sectionData?.eyebrow || 'COMPREHENSIVE MANUFACTURING SOLUTIONS';
+  const heading = sectionData?.header?.heading || sectionData?.heading || 'PRECISION SERVICES';
   const description = sectionData?.description || 'Four core service pillars delivering unmatched precision and reliability';
 
   return (
