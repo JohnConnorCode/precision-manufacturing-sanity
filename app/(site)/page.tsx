@@ -19,7 +19,6 @@ import { getAllServices, getAllIndustries, getHomepage } from '@/sanity/lib/quer
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 
 // Use ISR for automatic updates when Sanity content changes
-export const dynamic = 'force-static';
 export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function Home() {

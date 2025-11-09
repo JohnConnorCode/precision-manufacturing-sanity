@@ -22,11 +22,11 @@ export default function SiteChrome({ children, navigationData, footerData, siteS
 
   return (
     <AnalyticsProvider enablePerformanceMonitoring={true}>
-      <Header data={{ ...(navigationData || {}), announcement: siteSettings?.announcement }} />
+      <Header data={{ ...(navigationData || {}), announcement: siteSettings?.announcement, logo: siteSettings?.logo }} />
       <main id="main-content" className="min-h-screen pt-20 lg:pt-[120px]">
         {children}
       </main>
-      <Footer key="site-footer-unique" data={footerData} />
+      <Footer key="site-footer-unique" data={{ ...footerData, logo: siteSettings?.logo }} />
       <ScrollToTop />
     </AnalyticsProvider>
   )

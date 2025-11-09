@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { draftMode } from 'next/headers'
+import { Inter } from 'next/font/google'
 import "../globals.css";
 import SiteChrome from "@/components/layout/SiteChrome";
 import VisualEditingClient from '@/components/VisualEditingClient'
@@ -9,8 +10,14 @@ import PreviewBanner from "@/components/preview-banner";
 import { Toaster } from 'sonner';
 import { getNavigation, getFooter, getSiteSettings } from '@/sanity/lib/queries';
 
-// Use system font stack instead of Google Fonts for build reliability
-const fontClass = 'font-sans';
+// Load Inter font
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
+
+const fontClass = inter.className;
 
 export const metadata: Metadata = {
   title: "IIS - Precision Machining & CMM Inspection Services | AS9100 Certified | Oregon",

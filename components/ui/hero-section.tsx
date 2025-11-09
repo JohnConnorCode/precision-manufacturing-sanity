@@ -163,16 +163,18 @@ export default function HeroSection({
         className="absolute inset-0 w-full h-[120%] -top-[10%]"
         style={LEGACY_PARITY ? undefined : { y: imageY as any, scale: imageScale as any }}
       >
-        <Image
-          src={backgroundImage}
-          alt={imageAlt}
-          fill
-          className="object-cover object-center animate-fade-in"
-          priority={true}
-          loading="eager"
-          quality={85}
-          sizes="100vw"
-        />
+        {backgroundImage && (
+          <Image
+            src={backgroundImage}
+            alt={imageAlt}
+            fill
+            className="object-cover object-center animate-fade-in"
+            priority={true}
+            loading="eager"
+            quality={85}
+            sizes="100vw"
+          />
+        )}
 
         {/* Gradient Overlays - use Sanity overlay if provided */}
         {overlayStyle ? (

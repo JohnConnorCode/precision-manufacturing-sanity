@@ -6,6 +6,7 @@ export default {
   __experimental_singleton: true,
   groups: [
     {name: 'announcement', title: 'Announcement Bar', default: true},
+    {name: 'branding', title: 'Branding & Logo'},
     {name: 'company', title: 'Company Information'},
     {name: 'contact', title: 'Contact Information'},
     {name: 'social', title: 'Social Media'},
@@ -38,6 +39,85 @@ export default {
         ] }, initialValue: 'info' },
         { name: 'startAt', type: 'datetime', title: 'Start At', fieldset: 'timing' },
         { name: 'endAt', type: 'datetime', title: 'End At', fieldset: 'timing' },
+      ],
+    },
+    {
+      name: 'logo',
+      type: 'object',
+      title: 'Logo Settings',
+      group: 'branding',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fields: [
+        {
+          name: 'logoType',
+          type: 'string',
+          title: 'Logo Type',
+          description: 'Choose which logo to display across the site',
+          options: {
+            list: [
+              {title: 'SVG (Default - Animated, Best Performance)', value: 'svg'},
+              {title: 'Custom Image Upload', value: 'custom'},
+              {title: 'Original PNG (Legacy)', value: 'original'}
+            ],
+            layout: 'radio'
+          },
+          initialValue: 'svg',
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: 'customLogo',
+          type: 'image',
+          title: 'Custom Logo Upload',
+          description: 'Upload your own logo (PNG, SVG, JPEG). Note: Custom uploads are static (no animation).',
+          options: {
+            hotspot: true,
+            metadata: ['blurhash', 'lqip', 'palette']
+          },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              description: 'Describe the logo for screen readers',
+              initialValue: 'IIS Logo',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
+            }
+          ],
+          hidden: ({parent}: any) => parent?.logoType !== 'custom'
+        },
+        {
+          name: 'svgColor',
+          type: 'string',
+          title: 'SVG Logo Color Mode',
+          description: 'Control the color of the SVG logo',
+          options: {
+            list: [
+              {title: 'Auto (Dark in header, White in footer)', value: 'auto'},
+              {title: 'Always Dark/Black', value: 'dark'},
+              {title: 'Always Light/White', value: 'light'}
+            ]
+          },
+          initialValue: 'auto',
+          hidden: ({parent}: any) => parent?.logoType !== 'svg'
+        },
+        {
+          name: 'showCompanyText',
+          type: 'boolean',
+          title: 'Show Company Name',
+          description: 'Display "INTEGRATED INSPECTION SYSTEMS" text next to logo',
+          initialValue: true
+        },
+        {
+          name: 'enableAnimation',
+          type: 'boolean',
+          title: 'Enable Logo Animation',
+          description: 'Animate the logo on page load (SVG only)',
+          initialValue: true,
+          hidden: ({parent}: any) => parent?.logoType !== 'svg'
+        }
       ],
     },
     {

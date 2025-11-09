@@ -8,6 +8,7 @@ import Image from 'next/image';
 import AnimatedSection from '@/components/ui/animated-section';
 import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 // Icon mapping for CMS data
 const iconMap: Record<string, LucideIcon> = {
@@ -62,16 +63,22 @@ interface ServicesProps {
   sectionData?: {
     eyebrow?: string;
     heading?: string;
+    headingWord1?: string;
+    headingWord2?: string;
     description?: string;
     subdescription?: string;
     header?: {
       eyebrow?: string;
       heading?: string;
+      headingWord1?: string;
+      headingWord2?: string;
     };
   };
 }
 
 export default function Services({ data, sectionData }: ServicesProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   // Use CMS data with fallback
   const servicesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
   const displayServices = (servicesData && servicesData.length > 0) ? servicesData : fallbackServices;
@@ -79,7 +86,8 @@ export default function Services({ data, sectionData }: ServicesProps) {
   // Section data from CMS (required) - with fallbacks
   // Prefer nested header fields (new structure) over top-level fields (legacy)
   const eyebrow = sectionData?.header?.eyebrow || sectionData?.eyebrow || 'COMPREHENSIVE MANUFACTURING SOLUTIONS';
-  const heading = sectionData?.header?.heading || sectionData?.heading || 'PRECISION SERVICES';
+  const headingWord1 = sectionData?.headingWord1 || sectionData?.header?.headingWord1 || 'PRECISION';
+  const headingWord2 = sectionData?.headingWord2 || sectionData?.header?.headingWord2 || 'SERVICES';
   const description = sectionData?.description || 'Four core service pillars delivering unmatched precision and reliability';
 
   return (
@@ -103,7 +111,24 @@ export default function Services({ data, sectionData }: ServicesProps) {
           </p>
 
           <h2 className={`${typography.sectionHeading} mb-6`}>
-            {heading}
+            <motion.span
+              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: 0.5, ease: "easeOut" }}
+              className="inline-block"
+            >
+              {headingWord1}{' '}
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: prefersReducedMotion ? 0 : 0.4, duration: 0.5, ease: "easeOut" }}
+              className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500"
+            >
+              {headingWord2}
+            </motion.span>
           </h2>
 
           <p className={`${typography.descriptionMuted} max-w-3xl mx-auto`}>

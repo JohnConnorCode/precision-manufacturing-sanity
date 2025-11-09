@@ -457,10 +457,10 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     </div>
                   </div>
 
-                  <div>
+                  <div suppressHydrationWarning>
                     <Label htmlFor="interest" className={styles.form.label}>Inquiry Type *</Label>
                     <Select onValueChange={(value) => setValue('interest', value as ContactFormData['interest'])}>
-                      <SelectTrigger id="interest" aria-label="Inquiry Type" className={cn(styles.form.select.trigger, "mt-1")}>
+                      <SelectTrigger id="interest" aria-label="Inquiry Type" className={cn(styles.form.select.trigger, "mt-1")} suppressHydrationWarning>
                         <SelectValue placeholder="Select inquiry type" />
                       </SelectTrigger>
                       <SelectContent className={styles.form.select.content}>
@@ -479,10 +479,10 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                   {(interest === 'quote' || interest === 'technical') && (
                     <div className="grid md:grid-cols-2 gap-6">
-                      <div>
+                      <div suppressHydrationWarning>
                         <Label htmlFor="projectType" className={styles.form.label}>Industry</Label>
                         <Select onValueChange={(value) => setValue('projectType', value as ContactFormData['projectType'])}>
-                          <SelectTrigger id="projectType" aria-label="Industry" className={cn(styles.form.select.trigger, "mt-1")}>
+                          <SelectTrigger id="projectType" aria-label="Industry" className={cn(styles.form.select.trigger, "mt-1")} suppressHydrationWarning>
                             <SelectValue placeholder="Select industry" />
                           </SelectTrigger>
                           <SelectContent className={styles.form.select.content}>
@@ -495,10 +495,10 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                         </Select>
                       </div>
 
-                      <div>
+                      <div suppressHydrationWarning>
                         <Label htmlFor="timeline" className={styles.form.label}>Timeline</Label>
                         <Select onValueChange={(value) => setValue('timeline', value as ContactFormData['timeline'])}>
-                          <SelectTrigger id="timeline" aria-label="Timeline" className={cn(styles.form.select.trigger, "mt-1")}>
+                          <SelectTrigger id="timeline" aria-label="Timeline" className={cn(styles.form.select.trigger, "mt-1")} suppressHydrationWarning>
                             <SelectValue placeholder="Select timeline" />
                           </SelectTrigger>
                           <SelectContent className={styles.form.select.content}>

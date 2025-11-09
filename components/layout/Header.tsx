@@ -97,6 +97,16 @@ interface HeaderProps {
       startAt?: string
       endAt?: string
     }
+    logo?: {
+      logoType?: 'svg' | 'custom' | 'original';
+      customLogo?: {
+        asset?: { url: string; };
+        alt?: string;
+      };
+      svgColor?: 'auto' | 'dark' | 'light';
+      showCompanyText?: boolean;
+      enableAnimation?: boolean;
+    }
   } | null;
 }
 
@@ -123,7 +133,23 @@ export default function Header({ data }: HeaderProps) {
   const dropdownStyle: 'card' | 'columns' = navStyles.dropdownStyle || 'card'
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showAnnouncement, setShowAnnouncement] = useState(true);
   const pathname = usePathname();
+
+  // Check announcement dates client-side only to avoid hydration errors
+  useEffect(() => {
+    if (!announcement?.enabled) {
+      setShowAnnouncement(false);
+      return;
+    }
+
+    const now = new Date().toISOString();
+    const shouldShow =
+      (!announcement.startAt || now >= announcement.startAt) &&
+      (!announcement.endAt || now <= announcement.endAt);
+
+    setShowAnnouncement(shouldShow);
+  }, [announcement]);
 
   // Optimized scroll handler with requestAnimationFrame throttling
   // This reduces re-renders from ~60/sec to ~16/sec (60fps)
@@ -191,31 +217,28 @@ export default function Header({ data }: HeaderProps) {
   return (
     <>
       {/* Announcement Bar (optional) */}
-      {(() => {
-        if (!announcement?.enabled) return null
-        const now = new Date().toISOString()
-        if (announcement.startAt && now < announcement.startAt) return null
-        if (announcement.endAt && now > announcement.endAt) return null
-        const tones: Record<string, string> = {
-          info: 'bg-blue-600 text-white',
-          success: 'bg-green-600 text-white',
-          warning: 'bg-amber-500 text-slate-900',
-          alert: 'bg-red-600 text-white',
-        }
-        const tone = tones[announcement.variant || 'info']
-        return (
-          <aside className={cn('fixed top-0 z-[160] w-full', tone)} role="status" aria-label="Announcement">
-            <div className="container flex h-10 items-center justify-center text-sm gap-3">
-              <span>{announcement.message}</span>
-              {announcement.href && (
-                <Link href={announcement.href} className="underline font-semibold">
-                  {announcement.linkText || 'Learn more'}
-                </Link>
-              )}
-            </div>
-          </aside>
-        )
-      })()}
+      {showAnnouncement && announcement?.enabled && (
+        <aside
+          className={cn(
+            'fixed top-0 z-[160] w-full',
+            announcement.variant === 'success' ? 'bg-green-600 text-white' :
+            announcement.variant === 'warning' ? 'bg-amber-500 text-slate-900' :
+            announcement.variant === 'alert' ? 'bg-red-600 text-white' :
+            'bg-blue-600 text-white'
+          )}
+          role="status"
+          aria-label="Announcement"
+        >
+          <div className="container flex h-10 items-center justify-center text-sm gap-3">
+            <span>{announcement.message}</span>
+            {announcement.href && (
+              <Link href={announcement.href} className="underline font-semibold">
+                {announcement.linkText || 'Learn more'}
+              </Link>
+            )}
+          </div>
+        </aside>
+      )}
 
       {/* Top Info Bar - Hidden on mobile */}
       <aside className={cn('hidden lg:block fixed z-[150] w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-blue-600/10', announcement?.enabled ? 'top-10' : 'top-0')} role="complementary" aria-label="Contact information">
@@ -238,10 +261,10 @@ export default function Header({ data }: HeaderProps) {
       </aside>
 
       {/* Main Navigation */}
-      <header className={cn(headerClass, announcement?.enabled ? 'lg:top-20 top-10' : 'lg:top-10 top-0')}>
-        <nav className="container flex h-20 items-center justify-between">
+      <header className={cn(headerClass, announcement?.enabled ? 'lg:top-20 top-10' : 'lg:top-10 top-0')} suppressHydrationWarning>
+        <nav className="container flex h-20 items-center justify-between" suppressHydrationWarning>
           <Link href="/" className="flex items-center space-x-2" aria-label="IIS - Integrated Inspection Systems Home">
-            <Logo className="h-16 w-auto" />
+            <Logo className="h-16 w-auto" logoData={data?.logo} />
           </Link>
 
           {/* Desktop Navigation */}

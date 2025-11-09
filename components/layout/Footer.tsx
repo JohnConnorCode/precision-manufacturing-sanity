@@ -50,7 +50,18 @@ const defaultFooterData = {
 };
 
 interface FooterProps {
-  data?: typeof defaultFooterData | null;
+  data?: (typeof defaultFooterData & {
+    logo?: {
+      logoType?: 'svg' | 'custom' | 'original';
+      customLogo?: {
+        asset?: { url: string; };
+        alt?: string;
+      };
+      svgColor?: 'auto' | 'dark' | 'light';
+      showCompanyText?: boolean;
+      enableAnimation?: boolean;
+    }
+  }) | null;
 }
 
 const Footer = ({ data }: FooterProps) => {
@@ -135,7 +146,7 @@ const Footer = ({ data }: FooterProps) => {
         >
           <motion.div variants={itemVariants} className="space-y-4">
             <motion.div variants={logoVariants}>
-              <Logo variant="light" showText={true} size="md" />
+              <Logo variant="light" showText={true} size="md" logoData={data?.logo} />
             </motion.div>
             <p className={cn(theme.typography.small, 'text-slate-400 max-w-xs')}>
               {footerData.company.description}
