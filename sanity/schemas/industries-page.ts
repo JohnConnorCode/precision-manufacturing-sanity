@@ -60,6 +60,35 @@ export default {
               validation: (Rule: any) => Rule.required()
             }
           ]
+        },
+        {
+          name: 'buttons',
+          type: 'array',
+          title: 'Hero Buttons',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'label', type: 'string', title: 'Label' },
+                { name: 'href', type: 'string', title: 'URL' },
+                {
+                  name: 'variant',
+                  type: 'string',
+                  title: 'Variant',
+                  options: {
+                    list: [
+                      { title: 'Primary', value: 'primary' },
+                      { title: 'Secondary', value: 'secondary' }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          initialValue: [
+            { label: 'Explore Industries', href: '#industries', variant: 'primary' },
+            { label: 'Industry Consultation', href: '/contact', variant: 'secondary' }
+          ]
         }
       ]
     },
@@ -245,6 +274,48 @@ export default {
           ]
         },
         {
+          name: 'industriesSection',
+          type: 'object',
+          title: 'Industries Section Header',
+          fields: [
+            {
+              name: 'title',
+              type: 'string',
+              title: 'Section Title',
+              initialValue: 'Core Industries',
+              validation: (Rule: any) => Rule.required()
+            },
+            {
+              name: 'description',
+              type: 'text',
+              title: 'Section Description',
+              rows: 2,
+              initialValue: 'Specialized manufacturing solutions for the most demanding industries, backed by decades of experience and industry-leading certifications.'
+            }
+          ]
+        },
+        {
+          name: 'whyChooseSection',
+          type: 'object',
+          title: 'Why Choose Us Section Header',
+          fields: [
+            {
+              name: 'title',
+              type: 'string',
+              title: 'Section Title',
+              initialValue: 'Why Industry Leaders Choose Us',
+              validation: (Rule: any) => Rule.required()
+            },
+            {
+              name: 'description',
+              type: 'text',
+              title: 'Section Description',
+              rows: 2,
+              initialValue: 'Proven capabilities and unwavering commitment to quality make us the preferred manufacturing partner for critical applications.'
+            }
+          ]
+        },
+        {
           name: 'whyChooseUs',
           type: 'array',
           title: 'Why Choose IIS',
@@ -330,6 +401,27 @@ export default {
                 'Inventory management',
                 'Continuous improvement'
               ]
+            }
+          ]
+        },
+        {
+          name: 'resultsSection',
+          type: 'object',
+          title: 'Proven Results Section Header',
+          fields: [
+            {
+              name: 'title',
+              type: 'string',
+              title: 'Section Title',
+              initialValue: 'Proven Results',
+              validation: (Rule: any) => Rule.required()
+            },
+            {
+              name: 'description',
+              type: 'text',
+              title: 'Section Description',
+              rows: 2,
+              initialValue: 'Measurable performance metrics that demonstrate our commitment to excellence and continuous improvement.'
             }
           ]
         },

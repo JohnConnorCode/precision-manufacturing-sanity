@@ -290,6 +290,19 @@ export async function getSiteSettings(preview = false) {
   try {
   const query = `*[_type == "siteSettings"][0] {
     announcement,
+    logo {
+      logoType,
+      customLogo {
+        asset->{
+          url,
+          _id
+        },
+        alt
+      },
+      svgColor,
+      showCompanyText,
+      enableAnimation
+    },
     company,
     contact,
     social,
@@ -670,6 +683,12 @@ export async function getIndustriesPage(preview = false) {
           asset->{url, _id},
           alt,
           hotspot
+        },
+        buttons[]{
+          _key,
+          label,
+          href,
+          variant
         }
       },
       content{
@@ -678,6 +697,10 @@ export async function getIndustriesPage(preview = false) {
           _key,
           value,
           label
+        },
+        industriesSection{
+          title,
+          description
         },
         industries[]{
           _key,
@@ -697,16 +720,25 @@ export async function getIndustriesPage(preview = false) {
           expertise[],
           icon
         },
+        whyChooseSection{
+          title,
+          description
+        },
         whyChooseUs[]{
           _key,
-          iconName,
+          icon,
+          title,
+          description,
+          features[]
+        },
+        resultsSection{
           title,
           description
         },
         provenResults[]{
           _key,
+          metric,
           value,
-          label,
           description
         }
       },

@@ -112,7 +112,7 @@ export default async function IndustriesPage() {
           )
         }
         description={industriesPageData?.hero?.subheading || 'Trusted partner for aerospace, defense, and energy sectors, delivering mission-critical components with uncompromising quality and precision.'}
-        buttons={[
+        buttons={industriesPageData?.hero?.buttons || [
           { label: 'Explore Industries', href: '#industries', variant: 'primary' },
           { label: 'Industry Consultation', href: '/contact', variant: 'secondary' },
         ]}
@@ -150,9 +150,11 @@ export default async function IndustriesPage() {
         <div className="container">
           <AnimatedSection>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">Core Industries</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                {industriesPageData?.content?.industriesSection?.title || 'Core Industries'}
+              </h2>
               <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Specialized manufacturing solutions for the most demanding industries, backed by decades of experience and industry-leading certifications.
+                {industriesPageData?.content?.industriesSection?.description || 'Specialized manufacturing solutions for the most demanding industries, backed by decades of experience and industry-leading certifications.'}
               </p>
             </div>
           </AnimatedSection>
@@ -237,9 +239,11 @@ export default async function IndustriesPage() {
           <div className="container">
             <AnimatedSection>
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold mb-6">Why Industry Leaders Choose Us</h2>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                  {industriesPageData?.content?.whyChooseSection?.title || 'Why Industry Leaders Choose Us'}
+                </h2>
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                  Proven capabilities and unwavering commitment to quality make us the preferred manufacturing partner for critical applications.
+                  {industriesPageData?.content?.whyChooseSection?.description || 'Proven capabilities and unwavering commitment to quality make us the preferred manufacturing partner for critical applications.'}
                 </p>
               </div>
             </AnimatedSection>
@@ -279,9 +283,11 @@ export default async function IndustriesPage() {
           <div className="container">
             <AnimatedSection>
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold mb-6">Proven Results</h2>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                  {industriesPageData?.content?.resultsSection?.title || 'Proven Results'}
+                </h2>
                 <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-                  Measurable performance metrics that demonstrate our commitment to excellence and continuous improvement.
+                  {industriesPageData?.content?.resultsSection?.description || 'Measurable performance metrics that demonstrate our commitment to excellence and continuous improvement.'}
                 </p>
               </div>
             </AnimatedSection>
