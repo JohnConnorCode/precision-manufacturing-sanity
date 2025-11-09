@@ -3,6 +3,7 @@ import service from './service'
 import industry from './industry'
 import resource from './resource'
 import teamMember from './team-member'
+import jobPosting from './job-posting'
 
 // Globals
 import siteSettings from './site-settings'
@@ -62,6 +63,7 @@ export const schemaTypes = [
   industry,
   resource,
   teamMember,
+  jobPosting,
 
   // Globals
   siteSettings,

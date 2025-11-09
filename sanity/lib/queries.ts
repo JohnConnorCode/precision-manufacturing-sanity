@@ -351,10 +351,44 @@ export async function getHomepage(preview = false) {
     technicalSpecs,
     imageShowcase,
     resourcesSection {
-      header,
-      featuredSeries,
-      benefits,
-      cta
+      header {
+        badge,
+        title,
+        description
+      },
+      backgroundColor,
+      titleColor,
+      badgeColor,
+      featuredSeries[] {
+        _key,
+        title,
+        slug,
+        description,
+        articleCount,
+        readTime,
+        difficulty,
+        level,
+        icon,
+        gradient
+      },
+      benefits[] {
+        _key,
+        enabled,
+        iconName,
+        title,
+        description
+      },
+      cta {
+        title,
+        description,
+        buttons[] {
+          _key,
+          enabled,
+          text,
+          href,
+          variant
+        }
+      }
     },
     cta
   }`
@@ -707,5 +741,66 @@ export async function getAllPageSlugs(preview = false) {
   return await getClient(preview).fetch(query)
   } catch (error) {
     return []
+  }
+}
+
+// Job Postings
+export async function getAllJobPostings(preview = false) {
+  try {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "jobPosting"${pub}] | order(featured desc, order asc, postedDate desc) {
+    _id,
+    title,
+    'slug': slug.current,
+    department,
+    type,
+    location,
+    shortDescription,
+    description,
+    responsibilities,
+    qualifications,
+    preferredQualifications,
+    benefits,
+    salaryRange,
+    applicationLink,
+    applicationInstructions,
+    published,
+    featured,
+    postedDate,
+    closingDate
+  }`
+  return await getClient(preview).fetch(query)
+  } catch (error) {
+    return []
+  }
+}
+
+export async function getJobPostingBySlug(slug: string, preview = false) {
+  try {
+  const pub = preview ? '' : ' && published == true'
+  const query = `*[_type == "jobPosting" && slug.current == $slug${pub}][0] {
+    _id,
+    title,
+    'slug': slug.current,
+    department,
+    type,
+    location,
+    shortDescription,
+    description,
+    responsibilities,
+    qualifications,
+    preferredQualifications,
+    benefits,
+    salaryRange,
+    applicationLink,
+    applicationInstructions,
+    published,
+    featured,
+    postedDate,
+    closingDate
+  }`
+  return await getClient(preview).fetch(query, { slug })
+  } catch (error) {
+    return null
   }
 }

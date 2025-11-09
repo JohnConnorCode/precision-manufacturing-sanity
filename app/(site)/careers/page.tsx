@@ -1,5 +1,5 @@
 import CareersPageClient from './page-client';
-import { getCareers } from '@/sanity/lib/queries';
+import { getCareers, getAllJobPostings } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 
 // Force static generation with long revalidation
@@ -8,9 +8,12 @@ export const revalidate = 3600;
 export default async function CareersPage() {
   const { isEnabled } = await draftMode();
   // Fetch data from CMS
-  const careersData = await getCareers(isEnabled);
+  const [careersData, jobPostings] = await Promise.all([
+    getCareers(isEnabled),
+    getAllJobPostings(isEnabled)
+  ]);
 
-  return <CareersPageClient data={careersData as any} />;
+  return <CareersPageClient data={careersData as any} jobPostings={jobPostings} />;
 }
 
 // Generate metadata for SEO - pulls from Sanity CMS with fallbacks

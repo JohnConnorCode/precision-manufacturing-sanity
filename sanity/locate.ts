@@ -62,6 +62,20 @@ export async function locate(
     }
   }
 
+  // Job Postings
+  if (params.type === 'jobPosting') {
+    return {
+      message: 'This job posting appears on the careers page',
+      tone: 'positive',
+      locations: [
+        {
+          title: 'Careers Page',
+          href: '/careers',
+        },
+      ],
+    }
+  }
+
   // Custom Pages
   if (params.type === 'page') {
     return {

@@ -34,9 +34,10 @@ const defaultHeroData = {
 
 interface CareersPageClientProps {
   data?: any | null;
+  jobPostings?: any[];
 }
 
-export default function CareersPageClient({ data }: CareersPageClientProps) {
+export default function CareersPageClient({ data, jobPostings = [] }: CareersPageClientProps) {
   const BadgeIcon = iconMap[data?.hero?.badgeIconName || defaultHeroData.badgeIconName] || Users;
 
   return (
@@ -200,37 +201,82 @@ export default function CareersPageClient({ data }: CareersPageClientProps) {
             </p>
           </motion.div>
 
-          <div className="space-y-6">
-            {(data?.opportunities?.jobs || []).map((position: any, index: number) => (
-              <motion.div
-                key={position.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-              >
-                <Card className={cn(styles.featureCard)}>
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div>
-                      <h3 className={cn(theme.typography.h4, "mb-2")}>{position.title}</h3>
-                      <p className={cn(theme.typography.body, "text-slate-600 mb-3")}>
-                        {position.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">{position.type}</span>
-                        <span className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded-full">{position.location}</span>
+          {jobPostings.length > 0 ? (
+            <div className="space-y-6">
+              {jobPostings.map((position: any, index: number) => (
+                <motion.div
+                  key={position._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  viewport={{ once: true }}
+                >
+                  <Card className={cn(styles.featureCard)}>
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className={cn(theme.typography.h4, "mb-0")}>{position.title}</h3>
+                          {position.featured && (
+                            <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">
+                              ⭐ Featured
+                            </span>
+                          )}
+                        </div>
+                        {position.department && (
+                          <p className={cn(theme.typography.small, "text-slate-500 mb-3")}>
+                            {position.department}
+                          </p>
+                        )}
+                        <p className={cn(theme.typography.body, "text-slate-600 mb-3")}>
+                          {position.shortDescription}
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
+                            {position.type}
+                          </span>
+                          <span className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded-full">
+                            {position.location}
+                          </span>
+                          {position.salaryRange && (
+                            <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+                              ${position.salaryRange.min?.toLocaleString()} - ${position.salaryRange.max?.toLocaleString()}/{position.salaryRange.period}
+                            </span>
+                          )}
+                        </div>
                       </div>
+                      {position.applicationLink ? (
+                        <Link
+                          href={position.applicationLink}
+                          className="flex-shrink-0"
+                          target={position.applicationLink.startsWith('http') ? '_blank' : undefined}
+                          rel={position.applicationLink.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        >
+                          <Button className={styles.ctaPrimary}>
+                            Apply Now <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                        </Link>
+                      ) : (
+                        <Button className={styles.ctaPrimary} asChild>
+                          <Link href="/contact?interest=career">
+                            Apply Now <ArrowRight className="ml-2 h-4 w-4" />
+                          </Link>
+                        </Button>
+                      )}
                     </div>
-                    <Link href={position.link} className="flex-shrink-0">
-                      <Button className={styles.ctaPrimary}>
-                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <Card className="p-12 text-center">
+              <p className={cn(theme.typography.lead, "text-slate-600 mb-4")}>
+                No open positions at this time.
+              </p>
+              <p className={cn(theme.typography.body, "text-slate-500")}>
+                Check back soon or contact us to express your interest in future opportunities.
+              </p>
+            </Card>
+          )}
         </div>
       </section>
 
