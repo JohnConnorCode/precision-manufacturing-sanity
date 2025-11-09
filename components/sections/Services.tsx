@@ -116,9 +116,9 @@ export default function Services({ data, sectionData }: ServicesProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: 0.5, ease: "easeOut" }}
-              className="inline-block"
+              className="inline-block mr-3"
             >
-              {headingWord1}{' '}
+              {headingWord1}
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}

@@ -255,10 +255,11 @@ export default function Hero({ data }: HeroProps) {
                   <motion.span
                     key={badge}
                     initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
                     transition={{
-                      delay: prefersReducedMotion ? 0 : 0.8 + (index * 0.1),
-                      duration: prefersReducedMotion ? 0 : 0.5,
+                      delay: prefersReducedMotion ? 0 : index * 0.08,
+                      duration: prefersReducedMotion ? 0 : 0.4,
                       ease: "easeOut"
                     }}
                     className="px-3 md:px-5 py-1.5 md:py-2.5 rounded-full text-xs md:text-sm font-semibold border backdrop-blur-md hover:opacity-80 transition-all duration-300 whitespace-nowrap"
