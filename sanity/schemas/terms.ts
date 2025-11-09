@@ -10,12 +10,46 @@ export default {
   ],
   fields: [
     {
+      name: 'header',
+      type: 'object',
+      title: 'Page Header',
+      group: 'content',
+      fields: [
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Title',
+          initialValue: 'Terms & Conditions',
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: 'subtitle',
+          type: 'text',
+          title: 'Subtitle',
+          rows: 2,
+          initialValue: 'Please read these terms carefully before using our services',
+        },
+        {
+          name: 'effectiveDate',
+          type: 'string',
+          title: 'Effective Date',
+          initialValue: 'January 1, 2024',
+        },
+        {
+          name: 'version',
+          type: 'string',
+          title: 'Version',
+          initialValue: 'v2.1',
+        },
+      ],
+    },
+    {
       name: 'title',
       type: 'string',
-      title: 'Page Title',
+      title: 'Page Title (Legacy)',
       group: 'content',
       initialValue: 'Terms & Conditions',
-      validation: (Rule: any) => Rule.required(),
+      hidden: true,
     },
     {
       name: 'lastUpdated',
@@ -44,42 +78,30 @@ export default {
           },
           fields: [
             {
-              name: 'heading',
+              name: 'icon',
               type: 'string',
-              title: 'Section Heading',
+              title: 'Icon Name',
+              description: 'Lucide icon name (e.g., "FileText", "Shield", "Users")',
+              initialValue: 'FileText',
+            },
+            {
+              name: 'title',
+              type: 'string',
+              title: 'Section Title',
               validation: (Rule: any) => Rule.required(),
             },
             {
+              name: 'heading',
+              type: 'string',
+              title: 'Section Heading (Legacy)',
+              hidden: true,
+            },
+            {
               name: 'content',
-              type: 'array',
+              type: 'text',
               title: 'Content',
-              of: [
-                {
-                  type: 'block',
-                  marks: {
-                    decorators: [
-                      {title: 'Strong', value: 'strong'},
-                      {title: 'Emphasis', value: 'em'},
-                      {title: 'Code', value: 'code'},
-                      {title: 'Underline', value: 'underline'},
-                    ],
-                    annotations: [
-                      {
-                        title: 'URL',
-                        name: 'link',
-                        type: 'object',
-                        fields: [
-                          {
-                            title: 'URL',
-                            name: 'href',
-                            type: 'url',
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                },
-              ],
+              rows: 5,
+              validation: (Rule: any) => Rule.required(),
             },
             {
               name: 'subsections',
@@ -101,6 +123,45 @@ export default {
               ],
             },
           ],
+        },
+      ],
+    },
+    {
+      name: 'contact',
+      type: 'object',
+      title: 'Contact Information',
+      group: 'content',
+      fields: [
+        {
+          name: 'heading',
+          type: 'string',
+          title: 'Heading',
+          initialValue: 'Contact Information',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Description',
+          rows: 2,
+          initialValue: 'If you have any questions about these Terms & Conditions, please contact us:',
+        },
+        {
+          name: 'email',
+          type: 'string',
+          title: 'Email Address',
+          initialValue: 'legal@iismet.com',
+        },
+        {
+          name: 'phone',
+          type: 'string',
+          title: 'Phone Number',
+          initialValue: '(555) 123-4567',
+        },
+        {
+          name: 'department',
+          type: 'string',
+          title: 'Department',
+          initialValue: 'Legal Department',
         },
       ],
     },

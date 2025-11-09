@@ -151,7 +151,17 @@ interface TermsPageClientProps {
 }
 
 export default function TermsPageClient({ data }: TermsPageClientProps) {
-  const termsData = data || defaultTermsData;
+  // Convert CMS data (with icon strings) to component format (with icon components)
+  const termsData = data ? {
+    header: data.header || defaultTermsData.header,
+    sections: data.sections?.map((section: any) => ({
+      icon: iconMap[section.icon] || FileText,
+      title: section.title,
+      content: section.content
+    })) || defaultTermsData.sections,
+    contact: data.contact || defaultTermsData.contact
+  } : defaultTermsData;
+
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,

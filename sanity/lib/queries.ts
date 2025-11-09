@@ -522,9 +522,30 @@ export async function getCareers(preview = false) {
 export async function getTerms(preview = false) {
   try {
   const query = `*[_type == "terms"][0] {
-    header,
-    sections,
-    contact
+    header{
+      title,
+      subtitle,
+      effectiveDate,
+      version
+    },
+    sections[]{
+      _key,
+      icon,
+      title,
+      content
+    },
+    contact{
+      heading,
+      description,
+      email,
+      phone,
+      department
+    },
+    seo{
+      metaTitle,
+      metaDescription,
+      ogImage{asset->{url,_id}, alt}
+    }
   }`
 
   return await getClient(preview).fetch(query)
