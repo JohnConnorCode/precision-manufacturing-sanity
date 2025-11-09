@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import * as Icons from 'lucide-react';
+import { useTheme } from '@/lib/contexts/ThemeContext';
+import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-utils';
 
 // Dynamic icon component
 function DynamicIcon({ name, className }: { name: string; className?: string }) {
@@ -45,6 +47,7 @@ const defaultBenefits: Benefit[] = [
 ];
 
 export default function OperationalExcellence({ data }: OperationalExcellenceProps) {
+  const theme = useTheme();
   const heading = data?.heading || 'OPERATIONAL EXCELLENCE';
   const description = data?.description || 'Proven systems and expert teams delivering consistent, superior results';
   const benefits = data?.benefits && data.benefits.length > 0 ? data.benefits : defaultBenefits;
@@ -80,7 +83,7 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
               className="text-center"
             >
               {/* Icon */}
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600 text-white mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full text-white mb-6" style={{ backgroundColor: theme.colors.primary }}>
                 <DynamicIcon name={benefit.iconName || 'Circle'} className="w-8 h-8" />
               </div>
 

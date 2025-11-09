@@ -2,6 +2,8 @@
 
 import { Gauge, Cpu, Shield, Target, Award, Clock, Activity, Zap } from 'lucide-react';
 import AnimatedSection from '@/components/ui/animated-section';
+import { useTheme } from '@/lib/contexts/ThemeContext';
+import { getGradientStyle, hexToRgba } from '@/lib/theme-utils';
 
 interface TechnicalSpecsData {
   title?: string;
@@ -18,62 +20,56 @@ interface TechnicalSpecsProps {
 }
 
 export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
+  const theme = useTheme();
+
   const defaultMetrics = [
     {
       icon: Gauge,
       value: "±0.0001\"",
       label: "PRECISION",
       description: "Ultra-tight tolerances",
-      gradient: "from-blue-600 to-indigo-600"
     },
     {
       icon: Cpu,
       value: "5-AXIS",
       label: "CNC CAPABILITY",
       description: "Simultaneous machining",
-      gradient: "from-blue-600 to-indigo-600"
     },
     {
       icon: Shield,
       value: "AS9100D",
       label: "CERTIFIED",
       description: "Aerospace quality",
-      gradient: "from-blue-600 to-indigo-600"
     },
     {
       icon: Activity,
       value: "99.73%",
       label: "FIRST PASS YIELD",
       description: "Quality rate",
-      gradient: "from-indigo-600 to-purple-600"
     },
     {
       icon: Clock,
       value: "24/7",
       label: "PRODUCTION",
       description: "Continuous operation",
-      gradient: "from-blue-600 to-indigo-600"
     },
     {
       icon: Target,
       value: "99.8%",
       label: "ON-TIME",
       description: "Delivery performance",
-      gradient: "from-blue-600 to-indigo-600"
     },
     {
       icon: Zap,
       value: "30",
       label: "YEARS",
       description: "Manufacturing excellence",
-      gradient: "from-indigo-600 to-purple-600"
     },
     {
       icon: Award,
       value: "ITAR",
       label: "REGISTERED",
       description: "Defense compliant",
-      gradient: "from-blue-600 to-indigo-600"
     }
   ];
 
@@ -83,7 +79,6 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
     value: spec.value + (spec.unit || ''),
     label: spec.label.toUpperCase(),
     description: `${spec.label} specification`,
-    gradient: defaultMetrics[index % defaultMetrics.length].gradient
   })) : defaultMetrics;
 
   const title = data?.title || 'Precision By The Numbers';
@@ -94,7 +89,12 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
       {/* Premium Background Pattern */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] bg-[size:50px_50px] opacity-20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-950/20 via-transparent to-indigo-950/20" />
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `linear-gradient(to right, ${hexToRgba(theme.colors.primary, 0.2)}, transparent, ${hexToRgba(theme.colors.secondary, 0.2)})`
+          }}
+        />
       </div>
 
       <div className="container relative z-10">
@@ -102,10 +102,10 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
             {title.includes('Numbers') ? (
               <>
-                Precision By The <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">Numbers</span>
+                Precision By The <span className="text-transparent bg-clip-text" style={getGradientStyle(theme.colors)}>Numbers</span>
               </>
             ) : (
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">{title}</span>
+              <span className="text-transparent bg-clip-text" style={getGradientStyle(theme.colors)}>{title}</span>
             )}
           </h2>
           <p className="text-lg md:text-xl text-slate-400">
@@ -123,12 +123,29 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
                 delay={index * 0.05}
                 className="group relative"
               >
-                <div className="relative bg-slate-900/50 backdrop-blur-sm border border-slate-800/50 rounded-2xl p-6 hover:border-blue-600/30 transition-all duration-500 hover:shadow-[0_0_50px_rgba(59,130,246,0.15)] hover:bg-slate-900/70">
+                <div
+                  className="relative bg-slate-900/50 backdrop-blur-sm border border-slate-800/50 rounded-2xl p-6 transition-all duration-500 hover:bg-slate-900/70"
+                  style={{
+                    '--hover-border-color': hexToRgba(theme.colors.primary, 0.3),
+                    '--hover-shadow': `0 0 50px ${hexToRgba(theme.colors.primary, 0.15)}`,
+                  } as React.CSSProperties}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = hexToRgba(theme.colors.primary, 0.3);
+                    e.currentTarget.style.boxShadow = `0 0 50px ${hexToRgba(theme.colors.primary, 0.15)}`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '';
+                    e.currentTarget.style.boxShadow = '';
+                  }}
+                >
                   {/* Gradient Glow Effect */}
-                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r ${metric.gradient} blur-3xl -z-10`} />
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl -z-10"
+                    style={getGradientStyle(theme.colors)}
+                  />
 
                   {/* Icon */}
-                  <div className={`relative w-12 h-12 rounded-xl bg-gradient-to-r ${metric.gradient} p-[1px] mb-4`}>
+                  <div className="relative w-12 h-12 rounded-xl p-[1px] mb-4" style={getGradientStyle(theme.colors)}>
                     <div className="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center">
                       <Icon className="w-6 h-6 text-white" />
                     </div>
@@ -140,7 +157,7 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
                   </div>
 
                   {/* Label */}
-                  <div className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] mb-2">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: theme.colors.primary }}>
                     {metric.label}
                   </div>
 
@@ -150,7 +167,10 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
                   </div>
 
                   {/* Subtle Animation Line */}
-                  <div className={`absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r ${metric.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500`} />
+                  <div
+                    className="absolute bottom-0 left-0 right-0 h-px transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
+                    style={getGradientStyle(theme.colors)}
+                  />
                 </div>
               </AnimatedSection>
             );

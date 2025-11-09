@@ -8,6 +8,8 @@ import { useRef } from 'react';
 import AnimatedSection from '@/components/ui/animated-section';
 import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import { useTheme } from '@/lib/contexts/ThemeContext';
+import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-utils';
 
 // Icon mapping for stats
 const iconMap: Record<string, any> = {
@@ -39,12 +41,12 @@ const fallbackShowcaseImages = [
   }
 ];
 
-// Fallback stats
+// Fallback stats (color will be applied from theme)
 const fallbackStats = [
-  { iconName: 'Award', value: 'AS9100D', label: 'Certified Quality', color: 'text-blue-600' },
-  { iconName: 'Shield', value: 'ITAR', label: 'Registered', color: 'text-blue-600' },
-  { iconName: 'Clock', value: '24/7', label: 'Production', color: 'text-indigo-600' },
-  { iconName: 'Target', value: '±0.0001"', label: 'Tolerance', color: 'text-blue-600' }
+  { iconName: 'Award', value: 'AS9100D', label: 'Certified Quality' },
+  { iconName: 'Shield', value: 'ITAR', label: 'Registered' },
+  { iconName: 'Clock', value: '24/7', label: 'Production' },
+  { iconName: 'Target', value: '±0.0001"', label: 'Tolerance' }
 ];
 
 // Fallback header
@@ -60,6 +62,7 @@ interface ImageShowcaseProps {
 }
 
 export default function ImageShowcase({ data }: ImageShowcaseProps) {
+  const theme = useTheme();
   // Hooks must be called before early return
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -92,7 +95,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
           </p>
           <h2 className={`${typography.sectionHeading} mb-6`}>
             <span className={colors.textDark}>{header.title}</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"> {header.titleHighlight}</span>
+            <span className="text-transparent bg-clip-text" style={getGradientTextStyle(theme.colors)}> {header.titleHighlight}</span>
           </h2>
           <p className={`${typography.descriptionMuted} max-w-3xl mx-auto`}>
             {portableTextToPlainText(header.description) || header.description}
@@ -128,7 +131,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
 
                     {/* Content */}
                     <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-2">
+                      <p className="text-xs font-bold uppercase tracking-[0.2em] mb-2" style={{ color: theme.colors.primary }}>
                         {item.category}
                       </p>
                       <h3 className="text-2xl font-bold text-white mb-3">
@@ -169,7 +172,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                 }}
                 className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                <Icon className={`h-8 w-8 ${stat.color} mx-auto mb-3`} />
+                <Icon className="h-8 w-8 mx-auto mb-3" style={{ color: theme.colors.primary }} />
                 <div className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">
                   {stat.value}
                 </div>
@@ -204,9 +207,10 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                   href={button.href}
                   className={`inline-flex items-center px-8 py-4 font-semibold rounded-lg transition-all duration-300 ${
                     button.variant === 'primary'
-                      ? 'bg-blue-600 hover:bg-indigo-600 text-white shadow-xl hover:shadow-2xl'
+                      ? 'text-white shadow-xl hover:shadow-2xl'
                       : 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm'
                   }`}
+                  style={button.variant === 'primary' ? getGradientStyle(theme.colors) : undefined}
                 >
                   {button.text}
                   {index === 0 && <ArrowRight className="ml-2 h-5 w-5" />}

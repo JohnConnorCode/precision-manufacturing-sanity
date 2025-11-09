@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
+import { useTheme } from '@/lib/contexts/ThemeContext';
+import { getGradientStyle, getGradientTextStyle } from '@/lib/theme-utils';
 
 interface StatsData {
   title?: string;
@@ -26,6 +28,8 @@ const defaultStats = [
 ];
 
 export default function Stats({ data }: StatsProps) {
+  const theme = useTheme();
+
   // Use CMS data or fallback to defaults
   // Handle both old format (data.stats as array) and new format (data.items as array)
   const statsArray = (data as any)?.items || data?.stats;
@@ -67,7 +71,7 @@ export default function Stats({ data }: StatsProps) {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <p className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 uppercase tracking-[0.2em] mb-2">
+          <p className="text-sm font-bold text-transparent bg-clip-text uppercase tracking-[0.2em] mb-2" style={getGradientStyle(theme.colors)}>
             {subtitle}
           </p>
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">
@@ -87,14 +91,15 @@ export default function Stats({ data }: StatsProps) {
               className="text-center"
             >
               <div className="relative inline-block mb-3">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur-xl opacity-20" />
+                <div className="absolute inset-0 rounded-full blur-xl opacity-20" style={getGradientStyle(theme.colors)} />
                 <div className="relative bg-white rounded-2xl p-6 shadow-lg">
                   <AnimatedCounter
                     value={stat.value}
                     decimals={stat.decimals}
                     prefix={stat.prefix}
                     suffix={stat.suffix}
-                    className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"
+                    className="text-4xl md:text-5xl font-black text-transparent bg-clip-text"
+                    style={getGradientStyle(theme.colors)}
                   />
                 </div>
               </div>

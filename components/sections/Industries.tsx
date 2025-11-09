@@ -8,6 +8,8 @@ import ParallaxImage from '@/components/ui/parallax-image';
 import AnimatedSection from '@/components/ui/animated-section';
 import { typography, spacing, colors } from '@/lib/design-system';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import { useTheme } from '@/lib/contexts/ThemeContext';
+import { hexToRgba } from '@/lib/theme-utils';
 
 // Icon mapping for CMS data
 const iconMap: Record<string, LucideIcon> = {
@@ -55,6 +57,8 @@ interface IndustriesProps {
 }
 
 export default function Industries({ data, sectionData }: IndustriesProps) {
+  const theme = useTheme();
+
   // Use CMS data with fallback
   const industriesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
   const displayIndustries = (industriesData && industriesData.length > 0) ? industriesData : fallbackIndustries;
@@ -93,7 +97,14 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                   >
-                    <Card className={`overflow-hidden hover:shadow-xl transition-all duration-300 ${colors.borderLight} hover:border-blue-600/50`}>
+                    <Card
+                      className={`overflow-hidden hover:shadow-xl transition-all duration-300 ${colors.borderLight}`}
+                      style={{
+                        '--hover-border': hexToRgba(theme.colors.primary, 0.5),
+                      } as React.CSSProperties}
+                      onMouseEnter={(e) => e.currentTarget.style.borderColor = hexToRgba(theme.colors.primary, 0.5)}
+                      onMouseLeave={(e) => e.currentTarget.style.borderColor = ''}
+                    >
                     <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
                       {industry.image && (
                         <>
@@ -110,7 +121,12 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                       {/* Icon and title overlay on image */}
                       <div className="absolute bottom-0 left-0 right-0 p-6">
                         <div className="flex items-start gap-3 mb-3">
-                          <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-600 transition-colors">
+                          <div
+                            className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors"
+                            style={{ backgroundColor: theme.colors.primary }}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = theme.colors.secondary}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = theme.colors.primary}
+                          >
                             <Icon className="h-6 w-6 text-white" />
                           </div>
                           <h3 className="text-xl font-bold text-white leading-tight pt-2">
