@@ -451,75 +451,163 @@ export default function Header({ data }: HeaderProps) {
           {/* Mobile Menu */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild className="lg:hidden">
-              <button className="p-2 hover:bg-slate-100/50 rounded-lg transition-colors" aria-label="Open menu">
-                <Menu className="h-5 w-5" />
+              <button
+                className="relative w-12 h-12 flex items-center justify-center rounded-lg hover:bg-slate-100/80 active:bg-slate-200/60 transition-all duration-200"
+                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              >
+                {/* Animated Hamburger Icon */}
+                <div className="w-6 h-5 flex flex-col justify-center items-center gap-1.5">
+                  <motion.span
+                    animate={{
+                      rotate: mobileMenuOpen ? 45 : 0,
+                      y: mobileMenuOpen ? 8 : 0,
+                    }}
+                    transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                    className="w-full h-0.5 bg-slate-900 rounded-full origin-center"
+                  />
+                  <motion.span
+                    animate={{
+                      opacity: mobileMenuOpen ? 0 : 1,
+                      x: mobileMenuOpen ? -10 : 0,
+                    }}
+                    transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                    className="w-full h-0.5 bg-slate-900 rounded-full"
+                  />
+                  <motion.span
+                    animate={{
+                      rotate: mobileMenuOpen ? -45 : 0,
+                      y: mobileMenuOpen ? -8 : 0,
+                    }}
+                    transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                    className="w-full h-0.5 bg-slate-900 rounded-full origin-center"
+                  />
+                </div>
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className={cn('w-[300px] sm:w-[400px] backdrop-blur-xl overflow-y-auto max-h-screen', isDark ? 'bg-slate-950/95' : 'bg-white/95')}>
-              <nav className="flex flex-col space-y-6 mt-8">
-                {navigation.map((item: any) => {
-                  const children = Array.isArray(item.children) ? item.children : []
-                  const href = (item.href && item.href !== '#') ? item.href : '/'
-                  const itemVariant = item?.style?.variant || 'link'
-                  const target = item?.openInNewTab ? '_blank' : undefined
-                  const rel = item?.openInNewTab ? 'noopener noreferrer' : undefined
-                  return (
-                    <div key={item.name}>
-                      {children.length > 0 ? (
-                        <div className="space-y-3">
-                          <div className="font-semibold text-sm text-slate-900">
-                            {item.name}
-                          </div>
-                          <div className="space-y-2 pl-4">
-                            {children.map((child: any) => (
-                              <Link
-                                key={child.name}
-                                href={(child.href && child.href !== '#') ? child.href : href}
-                                target={child?.openInNewTab ? '_blank' : undefined}
-                                rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="block py-2 text-sm text-slate-600 hover:text-slate-900 transition-colors"
-                              >
-                                <span className="inline-flex items-center">
-                                  {IconFor(child?.iconName)}
-                                  {child.name}
+            <SheetContent
+              side="right"
+              className={cn(
+                'w-full sm:w-[400px] backdrop-blur-xl border-l-2',
+                isDark
+                  ? 'bg-slate-950/98 border-slate-800'
+                  : 'bg-white/98 border-slate-200'
+              )}
+            >
+              <nav className="flex flex-col h-full pt-12 pb-6">
+                <div className="flex-1 overflow-y-auto px-2">
+                  <div className="space-y-1">
+                    {navigation.map((item: any) => {
+                      const children = Array.isArray(item.children) ? item.children : []
+                      const href = (item.href && item.href !== '#') ? item.href : '/'
+                      const itemVariant = item?.style?.variant || 'link'
+                      const target = item?.openInNewTab ? '_blank' : undefined
+                      const rel = item?.openInNewTab ? 'noopener noreferrer' : undefined
+                      return (
+                        <div key={item.name} className="py-1">
+                          {children.length > 0 ? (
+                            <div className="space-y-1">
+                              <div className={cn(
+                                "px-4 py-3 font-bold text-base tracking-tight",
+                                isDark ? 'text-slate-100' : 'text-slate-900'
+                              )}>
+                                <span className="inline-flex items-center gap-2">
+                                  {IconFor(item?.iconName)}
+                                  {item.name}
                                 </span>
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      ) : itemVariant.startsWith('button-') ? (
-                        <Link href={href} target={target} rel={rel} onClick={() => setMobileMenuOpen(false)}>
-                          <PremiumButton className="w-full" variant={itemVariant === 'button-primary' ? 'default' : 'secondary'}>
-                            <span className="inline-flex items-center justify-center w-full">
+                              </div>
+                              <div className="space-y-0.5 pl-4 ml-2 border-l-2 border-slate-200/50">
+                                {children.map((child: any) => (
+                                  <Link
+                                    key={child.name}
+                                    href={(child.href && child.href !== '#') ? child.href : href}
+                                    target={child?.openInNewTab ? '_blank' : undefined}
+                                    rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={cn(
+                                      "flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 active:scale-[0.98]",
+                                      isDark
+                                        ? 'text-slate-300 hover:text-white hover:bg-slate-900/50 active:bg-slate-900/70'
+                                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 active:bg-slate-200/60'
+                                    )}
+                                  >
+                                    {IconFor(child?.iconName)}
+                                    {child.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          ) : itemVariant.startsWith('button-') ? (
+                            <Link href={href} target={target} rel={rel} onClick={() => setMobileMenuOpen(false)}>
+                              <PremiumButton className="w-full" variant={itemVariant === 'button-primary' ? 'default' : 'secondary'}>
+                                <span className="inline-flex items-center justify-center w-full gap-2">
+                                  {IconFor(item?.iconName)}
+                                  {item.name}
+                                </span>
+                              </PremiumButton>
+                            </Link>
+                          ) : (
+                            <Link
+                              href={href}
+                              target={target}
+                              rel={rel}
+                              onClick={() => setMobileMenuOpen(false)}
+                              className={cn(
+                                "flex items-center gap-2 px-4 py-3 rounded-lg font-bold text-base transition-all duration-200 active:scale-[0.98]",
+                                isDark
+                                  ? 'text-slate-100 hover:text-white hover:bg-slate-900/50 active:bg-slate-900/70'
+                                  : 'text-slate-900 hover:bg-slate-100/80 active:bg-slate-200/60',
+                                pathname === href && (isDark ? 'bg-slate-900/60' : 'bg-slate-100')
+                              )}
+                            >
                               {IconFor(item?.iconName)}
                               {item.name}
-                            </span>
-                          </PremiumButton>
-                        </Link>
-                      ) : (
-                        <Link
-                          href={href}
-                          target={target}
-                          rel={rel}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block py-2 font-semibold text-slate-900 hover:text-slate-700 transition-colors"
-                        >
-                          <span className="inline-flex items-center">
-                            {IconFor(item?.iconName)}
-                            {item.name}
-                          </span>
-                        </Link>
+                            </Link>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* CTA Button at bottom */}
+                <div className="px-2 pt-6 border-t border-slate-200/50">
+                  <Link href={cta.href} onClick={() => setMobileMenuOpen(false)} className="block">
+                    <PremiumButton className="w-full h-14 text-base font-semibold">
+                      {cta.text}
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </PremiumButton>
+                  </Link>
+
+                  {/* Contact info */}
+                  <div className="mt-6 space-y-3">
+                    <a
+                      href={topBar.phoneLink}
+                      className={cn(
+                        "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
+                        isDark
+                          ? 'text-slate-300 hover:text-white hover:bg-slate-900/40'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                       )}
-                    </div>
-                  )
-                })}
-              <Link href={cta.href} onClick={() => setMobileMenuOpen(false)} className="block mt-6">
-                <PremiumButton className="w-full">
-                  {cta.text}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </PremiumButton>
-              </Link>
+                      aria-label={`Call ${topBar.phone}`}
+                    >
+                      <Phone className="h-4 w-4" />
+                      <span className="text-sm font-medium">{topBar.phone}</span>
+                    </a>
+                    <a
+                      href={topBar.emailLink}
+                      className={cn(
+                        "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
+                        isDark
+                          ? 'text-slate-300 hover:text-white hover:bg-slate-900/40'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                      )}
+                      aria-label={`Email ${topBar.email}`}
+                    >
+                      <Mail className="h-4 w-4" />
+                      <span className="text-sm font-medium">{topBar.email}</span>
+                    </a>
+                  </div>
+                </div>
               </nav>
             </SheetContent>
           </Sheet>
