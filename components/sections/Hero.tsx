@@ -117,7 +117,7 @@ export default function Hero({ data }: HeroProps) {
     // word3 stays as is if data.word3 not provided
   }
 
-  const heroFontSize = data?.heroFontSize || 'text-4xl md:text-5xl lg:text-6xl';
+  const heroFontSize = data?.heroFontSize || 'text-[2rem] sm:text-[2.5rem] md:text-[3.25rem] lg:text-[4rem]';
   const tagline = data?.tagline || 'Innovative Precision Machining & Manufacturing Excellence Since 1995';
 
   // Handle both string badges and object badges from Sanity, with fallbacks
@@ -140,7 +140,7 @@ export default function Hero({ data }: HeroProps) {
 
   // Extract styles from Sanity data
   const titleColor = colorStyleToCSS(data?.titleColor) || 'rgba(255, 255, 255, 0.9)';
-  const titleHighlightColor = colorStyleToCSS(data?.titleHighlightColor) || '#60a5fa'; // blue-400
+  const titleHighlightColor = colorStyleToCSS(data?.titleHighlightColor);
   const descriptionColor = colorStyleToCSS(data?.descriptionColor) || 'rgba(255, 255, 255, 0.95)';
 
   const badgeTextColor = colorStyleToCSS(data?.badgeStyle?.textColor) || '#ffffff';
@@ -165,55 +165,73 @@ export default function Hero({ data }: HeroProps) {
         className="container relative z-10 px-6 md:px-8"
       >
         <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
-            className="text-center"
-          >
+          <div className="text-center">
 
-            {/* Three-Word Hero Title - All Same Size */}
-            {word1 && (
-              <motion.div
-                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: prefersReducedMotion ? 0 : 0.6 }}
-                className="mb-4"
-              >
-                {/* Word 1 */}
-                <div
-                  className={`${heroFontSize} font-bold tracking-wider leading-[1.1]`}
-                  style={{ color: titleColor }}
+            {/* Three-Word Hero Title - Sequential Animation */}
+            <div className="mb-4">
+              {/* Word 1 */}
+              {word1 && (
+                <motion.span
+                  initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: prefersReducedMotion ? 0 : 0.6, ease: "easeOut" }}
+                  className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
+                  style={{
+                    color: titleColor,
+                    filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
+                  }}
                 >
                   {word1}
-                </div>
-                {/* Word 2 */}
-                {word2 && (
-                  <div
-                    className={`${heroFontSize} font-bold tracking-wider leading-[1.1]`}
-                    style={{ color: titleColor }}
-                  >
-                    {word2}
-                  </div>
-                )}
-                {/* Word 3 */}
-                {word3 && (
-                  <div
-                    className={`${heroFontSize} font-bold tracking-wider leading-[1.1]`}
-                    style={{ color: titleHighlightColor }}
-                  >
-                    {word3}
-                  </div>
-                )}
-              </motion.div>
-            )}
+                </motion.span>
+              )}
+              {/* Word 2 */}
+              {word2 && (
+                <motion.span
+                  initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: prefersReducedMotion ? 0 : 0.4, duration: prefersReducedMotion ? 0 : 0.6, ease: "easeOut" }}
+                  className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
+                  style={{
+                    color: titleColor,
+                    filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
+                  }}
+                >
+                  {word2}
+                </motion.span>
+              )}
+              {/* Word 3 with gradient */}
+              {word3 && (
+                <motion.span
+                  initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: prefersReducedMotion ? 0 : 0.6, duration: prefersReducedMotion ? 0 : 0.6, ease: "easeOut" }}
+                  className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
+                  style={
+                    titleHighlightColor
+                      ? {
+                          color: titleHighlightColor,
+                          filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
+                        }
+                      : {
+                          background: 'linear-gradient(to right, #2563eb, #60a5fa, #4f46e5)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          backgroundClip: 'text',
+                          filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
+                        }
+                  }
+                >
+                  {word3}
+                </motion.span>
+              )}
+            </div>
 
             {/* Tagline */}
             <motion.h1
-              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 30 }}
+              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: prefersReducedMotion ? 0 : 0.4, duration: prefersReducedMotion ? 0 : 0.8 }}
-              className="text-lg sm:text-xl md:text-2xl font-semibold leading-[1.3] tracking-normal mb-8"
+              transition={{ delay: prefersReducedMotion ? 0 : 0.8, duration: prefersReducedMotion ? 0 : 0.8, ease: "easeOut" }}
+              className="text-lg sm:text-xl md:text-2xl font-light leading-[1.3] tracking-normal mb-8"
               style={{ color: descriptionColor }}
             >
               {tagline}
@@ -223,10 +241,10 @@ export default function Hero({ data }: HeroProps) {
             <motion.div
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: prefersReducedMotion ? 0 : 0.7, duration: prefersReducedMotion ? 0 : 0.8 }}
+              transition={{ delay: prefersReducedMotion ? 0 : 0.8, duration: prefersReducedMotion ? 0 : 0.8, ease: "easeOut" }}
               className="flex flex-wrap justify-center gap-3 mb-12 max-w-3xl mx-auto"
             >
-              {badges.map((badge, index) => {
+              {badges.map((badge) => {
                 const badgeStyle: React.CSSProperties = {
                   color: badgeTextColor,
                   borderColor: badgeBorderColor,
@@ -239,16 +257,13 @@ export default function Hero({ data }: HeroProps) {
                 }
 
                 return (
-                  <motion.span
+                  <span
                     key={badge}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: prefersReducedMotion ? 0 : (0.9 + index * 0.08), duration: prefersReducedMotion ? 0 : 0.5 }}
-                    className="px-5 py-2.5 rounded-sm text-sm font-semibold border backdrop-blur-md hover:opacity-80 transition-all duration-300"
+                    className="px-5 py-2.5 rounded-full text-sm font-semibold border backdrop-blur-md hover:opacity-80 transition-all duration-300"
                     style={badgeStyle}
                   >
                     {badge}
-                  </motion.span>
+                  </span>
                 );
               })}
             </motion.div>
@@ -257,19 +272,20 @@ export default function Hero({ data }: HeroProps) {
             <motion.div
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: prefersReducedMotion ? 0 : 1.2, duration: prefersReducedMotion ? 0 : 0.8 }}
+              transition={{ delay: prefersReducedMotion ? 0 : 1.1, duration: prefersReducedMotion ? 0 : 0.8, ease: "easeOut" }}
               className="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap"
             >
               {ctaPrimary && ctaPrimary.text && (
                 <Button
                   size="lg"
-                  className="group font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 px-10 h-14 text-lg rounded-md"
+                  className="group font-semibold transition-all duration-300 px-10 h-14 text-lg rounded-md"
                   style={
                     Object.keys(primaryButtonStyles.style).length > 0
                       ? primaryButtonStyles.style
                       : {
-                          backgroundImage: 'linear-gradient(to right, #2563eb, #4f46e5)',
+                          backgroundColor: 'rgba(0, 0, 0, 0)',
                           color: '#ffffff',
+                          boxShadow: 'rgba(37, 99, 235, 0.2) 0px 10px 15px -3px, rgba(37, 99, 235, 0.2) 0px 4px 6px -4px'
                         }
                   }
                   asChild
@@ -282,7 +298,7 @@ export default function Hero({ data }: HeroProps) {
               )}
             </motion.div>
 
-          </motion.div>
+          </div>
         </div>
       </motion.div>
 
@@ -290,7 +306,7 @@ export default function Hero({ data }: HeroProps) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: prefersReducedMotion ? 0 : 2.5, duration: prefersReducedMotion ? 0 : 1, ease: [0.33, 1, 0.68, 1] }}
+        transition={{ delay: prefersReducedMotion ? 0 : 1.9, duration: prefersReducedMotion ? 0 : 0.8, ease: "easeOut" }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >
         <motion.div
