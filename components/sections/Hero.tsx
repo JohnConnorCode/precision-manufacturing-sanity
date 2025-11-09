@@ -152,7 +152,7 @@ export default function Hero({ data }: HeroProps) {
   const secondaryButtonStyles = getButtonStyles(data?.buttonStyles?.secondaryButton);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 lg:pt-0">
       {/* Premium Background Slider */}
       <HeroSliderFixed slides={heroSlides} />
 
@@ -162,7 +162,7 @@ export default function Hero({ data }: HeroProps) {
       {/* Content Container */}
       <motion.div
         style={{ y: textY, opacity: textOpacity }}
-        className="container relative z-10 px-6 md:px-8"
+        className="container relative z-10 px-6 md:px-8 -mt-8 lg:mt-0"
       >
         <div className="max-w-5xl mx-auto">
           <div className="text-center">
