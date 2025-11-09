@@ -557,11 +557,52 @@ export async function getTerms(preview = false) {
 export async function getSupplierRequirements(preview = false) {
   try {
   const query = `*[_type == "supplierRequirements"][0] {
-    hero,
-    sections,
-    requirements,
-    additionalSections,
-    footerNote
+    hero{
+      backgroundImage{asset->{url,_id}, alt},
+      badges[]{_key, iconName, text},
+      title,
+      titleHighlight,
+      description,
+      versionStatus,
+      effectiveDate,
+      reviewPeriod
+    },
+    sections[]{
+      _key,
+      id,
+      number,
+      title,
+      iconName,
+      content,
+      color
+    },
+    requirements[]{
+      _key,
+      number,
+      title,
+      iconName,
+      content,
+      additional,
+      list[]{_key, item}
+    },
+    additionalSections[]{
+      _key,
+      number,
+      title,
+      iconName,
+      content,
+      list[]{_key, item}
+    },
+    footerNote{
+      iconName,
+      heading,
+      content
+    },
+    seo{
+      metaTitle,
+      metaDescription,
+      ogImage{asset->{url,_id}, alt}
+    }
   }`
 
   return await getClient(preview).fetch(query)

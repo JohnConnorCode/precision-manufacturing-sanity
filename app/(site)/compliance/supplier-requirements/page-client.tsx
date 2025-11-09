@@ -1,7 +1,11 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Shield, FileCheck, AlertCircle, Award, BookOpen, Users, Package, Clock, FileText, Lock } from 'lucide-react';
+import {
+  Shield, FileCheck, AlertCircle, Award, BookOpen, Users, Package, Clock, FileText, Lock,
+  Target, Globe, CheckCircle, Wrench, Scale, Info, Phone, Mail, MapPin, DollarSign,
+  Zap, Circle
+} from 'lucide-react';
 import { Card } from '@/components/ui/card';
 
 // Icon mapping for CMS data
@@ -16,6 +20,18 @@ const iconMap: Record<string, any> = {
   Clock,
   FileText,
   Lock,
+  Target,
+  Globe,
+  CheckCircle,
+  Wrench,
+  Scale,
+  Info,
+  Phone,
+  Mail,
+  MapPin,
+  DollarSign,
+  Zap,
+  Circle,
 };
 
 // Default fallback data

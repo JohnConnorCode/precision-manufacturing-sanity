@@ -45,36 +45,94 @@ export default {
           ]
         },
         {
+          name: 'badges',
+          type: 'array',
+          title: 'Badges',
+          fieldset: 'content',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {name: 'iconName', type: 'string', title: 'Icon Name', description: 'Lucide icon name'},
+                {name: 'text', type: 'string', title: 'Text'},
+              ],
+            },
+          ],
+          initialValue: [
+            {iconName: 'Shield', text: 'AS9100D Certified'},
+            {iconName: 'Award', text: 'ISO 9001:2015'},
+            {iconName: 'Lock', text: 'ITAR Registered'}
+          ]
+        },
+        {
           name: 'title',
           type: 'string',
           title: 'Title',
           fieldset: 'content',
-          initialValue: 'Supplier Requirements',
+          initialValue: 'Supplier Quality',
+        },
+        {
+          name: 'titleHighlight',
+          type: 'string',
+          title: 'Title Highlight',
+          fieldset: 'content',
+          description: 'Text shown in blue gradient',
+          initialValue: 'Requirements',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Description',
+          rows: 2,
+          fieldset: 'content',
+          initialValue: 'Comprehensive requirements for suppliers partnering with IIS',
         },
         {
           name: 'subtitle',
           type: 'text',
-          title: 'Subtitle',
+          title: 'Subtitle (Legacy)',
           rows: 2,
           fieldset: 'content',
+          hidden: true,
+        },
+        {
+          name: 'versionStatus',
+          type: 'string',
+          title: 'Version Status',
+          fieldset: 'content',
+          initialValue: 'Current Version',
+        },
+        {
+          name: 'effectiveDate',
+          type: 'string',
+          title: 'Effective Date',
+          fieldset: 'content',
+          initialValue: 'January 2024',
+        },
+        {
+          name: 'reviewPeriod',
+          type: 'string',
+          title: 'Review Period',
+          fieldset: 'content',
+          initialValue: 'Reviewed Annually',
         },
       ],
     },
     {
       name: 'introSection',
       type: 'object',
-      title: 'Introduction Section',
+      title: 'Introduction Section (Legacy)',
       group: 'content',
+      hidden: true,
       options: {
         collapsible: true,
-        collapsed: false,
+        collapsed: true,
       },
       fields: [
         {
           name: 'title',
           type: 'string',
           title: 'Section Title',
-          initialValue: 'Our Supplier Requirements',
         },
         {
           name: 'description',
@@ -83,6 +141,49 @@ export default {
           rows: 3,
         },
       ],
+    },
+    {
+      name: 'sections',
+      type: 'array',
+      title: 'Introduction Sections',
+      group: 'content',
+      of: [
+        {
+          type: 'object',
+          preview: {
+            select: {title: 'title', subtitle: 'number'},
+            prepare({title, subtitle}: any) {
+              return {title: `${subtitle}. ${title}`}
+            },
+          },
+          fields: [
+            {name: 'id', type: 'string', title: 'ID', initialValue: 'purpose'},
+            {name: 'number', type: 'string', title: 'Section Number', initialValue: '1'},
+            {name: 'title', type: 'string', title: 'Title', validation: (Rule: any) => Rule.required()},
+            {name: 'iconName', type: 'string', title: 'Icon Name', description: 'Lucide icon name'},
+            {name: 'content', type: 'text', title: 'Content', rows: 3},
+            {name: 'color', type: 'string', title: 'Gradient Color', initialValue: 'blue'},
+          ],
+        },
+      ],
+      initialValue: [
+        {
+          id: 'purpose',
+          number: '1',
+          title: 'Purpose',
+          iconName: 'Target',
+          content: 'These requirements establish quality, delivery, and compliance standards for all suppliers.',
+          color: 'blue'
+        },
+        {
+          id: 'scope',
+          number: '2',
+          title: 'Scope',
+          iconName: 'Globe',
+          content: 'Applies to all suppliers providing materials, components, or services to IIS.',
+          color: 'indigo'
+        }
+      ]
     },
     {
       name: 'requirements',
@@ -106,21 +207,66 @@ export default {
           },
           fields: [
             {
+              name: 'number',
+              type: 'string',
+              title: 'Requirement Number',
+              initialValue: '1',
+            },
+            {
               name: 'title',
               type: 'string',
               title: 'Requirement Title',
               validation: (Rule: any) => Rule.required(),
             },
             {
+              name: 'iconName',
+              type: 'string',
+              title: 'Icon Name',
+              description: 'Lucide icon name (e.g., "Shield", "FileCheck", "Award")',
+            },
+            {
+              name: 'icon',
+              type: 'string',
+              title: 'Icon Name (Legacy)',
+              hidden: true,
+            },
+            {
+              name: 'content',
+              type: 'text',
+              title: 'Main Content',
+              rows: 3,
+            },
+            {
               name: 'description',
               type: 'text',
-              title: 'Description',
+              title: 'Description (Legacy)',
               rows: 2,
+              hidden: true,
+            },
+            {
+              name: 'additional',
+              type: 'text',
+              title: 'Additional Information',
+              rows: 2,
+            },
+            {
+              name: 'list',
+              type: 'array',
+              title: 'List Items',
+              of: [
+                {
+                  type: 'object',
+                  fields: [
+                    {name: 'item', type: 'text', title: 'Item', rows: 2},
+                  ],
+                },
+              ],
             },
             {
               name: 'details',
               type: 'array',
-              title: 'Details',
+              title: 'Details (Legacy)',
+              hidden: true,
               of: [
                 {
                   type: 'object',
@@ -130,31 +276,72 @@ export default {
                 },
               ],
             },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'additionalSections',
+      type: 'array',
+      title: 'Additional Sections',
+      group: 'content',
+      of: [
+        {
+          type: 'object',
+          preview: {
+            select: {title: 'title', subtitle: 'number'},
+            prepare({title, subtitle}: any) {
+              return {title: `${subtitle}. ${title}`}
+            },
+          },
+          fields: [
+            {name: 'number', type: 'string', title: 'Section Number'},
+            {name: 'title', type: 'string', title: 'Title', validation: (Rule: any) => Rule.required()},
+            {name: 'iconName', type: 'string', title: 'Icon Name', description: 'Lucide icon name'},
+            {name: 'content', type: 'text', title: 'Content', rows: 3},
             {
-              name: 'icon',
-              type: 'string',
-              title: 'Icon Name',
-              description: 'Lucide icon name',
+              name: 'list',
+              type: 'array',
+              title: 'List Items',
+              of: [
+                {
+                  type: 'object',
+                  fields: [
+                    {name: 'item', type: 'string', title: 'Item'},
+                  ],
+                },
+              ],
             },
           ],
         },
       ],
     },
     {
+      name: 'footerNote',
+      type: 'object',
+      title: 'Footer Note',
+      group: 'content',
+      fields: [
+        {name: 'iconName', type: 'string', title: 'Icon Name', description: 'Lucide icon name'},
+        {name: 'heading', type: 'string', title: 'Heading'},
+        {name: 'content', type: 'text', title: 'Content', rows: 3},
+      ],
+    },
+    {
       name: 'compliance',
       type: 'object',
-      title: 'Compliance Section',
+      title: 'Compliance Section (Legacy)',
       group: 'content',
+      hidden: true,
       options: {
         collapsible: true,
-        collapsed: false,
+        collapsed: true,
       },
       fields: [
         {
           name: 'title',
           type: 'string',
           title: 'Section Title',
-          initialValue: 'Compliance & Certifications',
         },
         {
           name: 'description',
