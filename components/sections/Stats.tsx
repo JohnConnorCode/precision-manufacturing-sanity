@@ -93,14 +93,15 @@ export default function Stats({ data }: StatsProps) {
               <div className="relative inline-block mb-3">
                 <div className="absolute inset-0 rounded-full blur-xl opacity-20" style={getGradientStyle(theme.colors)} />
                 <div className="relative bg-white rounded-2xl p-6 shadow-lg">
-                  <AnimatedCounter
-                    value={stat.value}
-                    decimals={stat.decimals}
-                    prefix={stat.prefix}
-                    suffix={stat.suffix}
-                    className="text-4xl md:text-5xl font-black text-transparent bg-clip-text"
-                    style={getGradientStyle(theme.colors)}
-                  />
+                  <div style={getGradientStyle(theme.colors)}>
+                    <AnimatedCounter
+                      value={stat.value}
+                      decimals={stat.decimals}
+                      prefix={stat.prefix}
+                      suffix={stat.suffix}
+                      className="text-4xl md:text-5xl font-black text-transparent bg-clip-text"
+                    />
+                  </div>
                 </div>
               </div>
               <p className="text-sm font-semibold text-slate-600 uppercase tracking-wider">
