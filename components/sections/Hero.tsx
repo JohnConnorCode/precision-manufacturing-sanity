@@ -213,7 +213,7 @@ export default function Hero({ data }: HeroProps) {
                           filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
                         }
                       : {
-                          background: 'linear-gradient(to right, #2563eb, #60a5fa, #4f46e5)',
+                          background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
                           WebkitBackgroundClip: 'text',
                           WebkitTextFillColor: 'transparent',
                           backgroundClip: 'text',
@@ -237,14 +237,9 @@ export default function Hero({ data }: HeroProps) {
               {tagline}
             </motion.h1>
 
-            {/* Capabilities - Sharp Edge Badges */}
-            <motion.div
-              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: prefersReducedMotion ? 0 : 0.8, duration: prefersReducedMotion ? 0 : 0.8, ease: "easeOut" }}
-              className="flex flex-wrap justify-center gap-3 mb-12 max-w-3xl mx-auto"
-            >
-              {badges.map((badge) => {
+            {/* Capabilities - Sequentially Animated Badges */}
+            <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-12 max-w-3xl mx-auto">
+              {badges.map((badge, index) => {
                 const badgeStyle: React.CSSProperties = {
                   color: badgeTextColor,
                   borderColor: badgeBorderColor,
@@ -257,16 +252,23 @@ export default function Hero({ data }: HeroProps) {
                 }
 
                 return (
-                  <span
+                  <motion.span
                     key={badge}
-                    className="px-5 py-2.5 rounded-full text-sm font-semibold border backdrop-blur-md hover:opacity-80 transition-all duration-300"
+                    initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: prefersReducedMotion ? 0 : 0.8 + (index * 0.1),
+                      duration: prefersReducedMotion ? 0 : 0.5,
+                      ease: "easeOut"
+                    }}
+                    className="px-3 md:px-5 py-1.5 md:py-2.5 rounded-full text-xs md:text-sm font-semibold border backdrop-blur-md hover:opacity-80 transition-all duration-300 whitespace-nowrap"
                     style={badgeStyle}
                   >
                     {badge}
-                  </span>
+                  </motion.span>
                 );
               })}
-            </motion.div>
+            </div>
 
             {/* CTA */}
             <motion.div
@@ -276,25 +278,31 @@ export default function Hero({ data }: HeroProps) {
               className="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap"
             >
               {ctaPrimary && ctaPrimary.text && (
-                <Button
-                  size="lg"
-                  className="group font-semibold transition-all duration-300 px-10 h-14 text-lg rounded-md"
-                  style={
-                    Object.keys(primaryButtonStyles.style).length > 0
-                      ? primaryButtonStyles.style
-                      : {
-                          backgroundColor: 'rgba(0, 0, 0, 0)',
-                          color: '#ffffff',
-                          boxShadow: 'rgba(37, 99, 235, 0.2) 0px 10px 15px -3px, rgba(37, 99, 235, 0.2) 0px 4px 6px -4px'
-                        }
-                  }
-                  asChild
+                <motion.div
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                 >
-                  <Link href={ctaPrimary.href}>
-                    {ctaPrimary.text}
-                    <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                </Button>
+                  <Button
+                    size="lg"
+                    className="group font-semibold px-10 h-14 text-lg rounded-lg"
+                    style={
+                      Object.keys(primaryButtonStyles.style).length > 0
+                        ? primaryButtonStyles.style
+                        : {
+                            backgroundImage: 'linear-gradient(to right, #2563eb, #3b82f6, #4f46e5)',
+                            color: '#ffffff',
+                            boxShadow: 'rgba(37, 99, 235, 0.25) 0px 0px 20px, rgba(37, 99, 235, 0.15) 0px 8px 16px'
+                          }
+                    }
+                    asChild
+                  >
+                    <Link href={ctaPrimary.href}>
+                      {ctaPrimary.text}
+                      <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                    </Link>
+                  </Button>
+                </motion.div>
               )}
             </motion.div>
 
