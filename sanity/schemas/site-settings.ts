@@ -6,6 +6,7 @@ export default {
   __experimental_singleton: true,
   groups: [
     {name: 'announcement', title: 'Announcement Bar', default: true},
+    {name: 'theme', title: 'Theme & Colors'},
     {name: 'branding', title: 'Branding & Logo'},
     {name: 'company', title: 'Company Information'},
     {name: 'contact', title: 'Contact Information'},
@@ -39,6 +40,57 @@ export default {
         ] }, initialValue: 'info' },
         { name: 'startAt', type: 'datetime', title: 'Start At', fieldset: 'timing' },
         { name: 'endAt', type: 'datetime', title: 'End At', fieldset: 'timing' },
+      ],
+    },
+    {
+      name: 'theme',
+      type: 'object',
+      title: 'Brand Theme & Colors',
+      group: 'theme',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fieldsets: [
+        {name: 'brandColors', title: 'Brand Colors', options: {columns: 2}},
+        {name: 'gradients', title: 'Gradient Colors', options: {columns: 2}},
+      ],
+      fields: [
+        {
+          name: 'primaryColor',
+          type: 'colorStyle',
+          title: 'Primary Brand Color',
+          description: 'Main brand color used for buttons, links, and accents (Default: Blue 600)',
+          fieldset: 'brandColors',
+        },
+        {
+          name: 'secondaryColor',
+          type: 'colorStyle',
+          title: 'Secondary Brand Color',
+          description: 'Secondary color for gradients and highlights (Default: Indigo 600)',
+          fieldset: 'brandColors',
+        },
+        {
+          name: 'accentColor',
+          type: 'colorStyle',
+          title: 'Accent Color',
+          description: 'Optional accent color for special highlights',
+          fieldset: 'brandColors',
+        },
+        {
+          name: 'gradientFrom',
+          type: 'colorStyle',
+          title: 'Gradient Start Color',
+          description: 'Starting color for gradient backgrounds (Default: Primary Color)',
+          fieldset: 'gradients',
+        },
+        {
+          name: 'gradientTo',
+          type: 'colorStyle',
+          title: 'Gradient End Color',
+          description: 'Ending color for gradient backgrounds (Default: Secondary Color)',
+          fieldset: 'gradients',
+        },
       ],
     },
     {

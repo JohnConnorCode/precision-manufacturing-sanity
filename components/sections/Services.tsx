@@ -9,6 +9,8 @@ import AnimatedSection from '@/components/ui/animated-section';
 import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import { usePrefersReducedMotion } from '@/lib/motion';
+import { useTheme } from '@/lib/contexts/ThemeContext';
+import { getGradientTextStyle, getPrimaryColorStyle, hexToRgba } from '@/lib/theme-utils';
 
 // Icon mapping for CMS data
 const iconMap: Record<string, LucideIcon> = {
@@ -78,6 +80,7 @@ interface ServicesProps {
 
 export default function Services({ data, sectionData }: ServicesProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const theme = useTheme();
 
   // Use CMS data with fallback
   const servicesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
@@ -126,7 +129,8 @@ export default function Services({ data, sectionData }: ServicesProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ delay: prefersReducedMotion ? 0 : 0.4, duration: 0.5, ease: "easeOut" }}
-              className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500"
+              className="inline-block"
+              style={getGradientTextStyle(theme.colors)}
             >
               {headingWord2}
             </motion.span>
@@ -162,9 +166,12 @@ export default function Services({ data, sectionData }: ServicesProps) {
                     whileTap={{ scale: 0.98 }}
                     style={{ transformStyle: "preserve-3d" }}
                   >
-                    <Card className={`h-full overflow-hidden transition-all duration-300 hover:shadow-xl border-slate-200 bg-white relative ${
-                      service.highlight ? 'ring-2 ring-blue-600/20' : ''
-                    }`}>
+                    <Card
+                      className={`h-full overflow-hidden transition-all duration-300 hover:shadow-xl border-slate-200 bg-white relative ${
+                        service.highlight ? 'ring-2' : ''
+                      }`}
+                      style={service.highlight ? { borderColor: hexToRgba(theme.colors.primary, 0.2) } : undefined}
+                    >
                     {/* Image Header */}
                     <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
                       {service.image && (
@@ -182,14 +189,22 @@ export default function Services({ data, sectionData }: ServicesProps) {
 
                       {/* Floating Icon with Premium Effect */}
                       <div className="absolute bottom-4 left-4">
-                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-blue-600/50 group-hover:scale-105 group-hover:rotate-2 transition-all duration-300">
-                          <Icon className="h-6 w-6 text-blue-600" />
+                        <div
+                          className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:rotate-2 transition-all duration-300"
+                          style={{
+                            ...getPrimaryColorStyle(theme.colors),
+                          }}
+                        >
+                          <Icon className="h-6 w-6" style={getPrimaryColorStyle(theme.colors)} />
                         </div>
                       </div>
 
                       {service.highlight && (
                         <div className="absolute top-4 right-4">
-                          <span className="px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full">
+                          <span
+                            className="px-3 py-1 text-white text-xs font-semibold rounded-full"
+                            style={{ backgroundColor: theme.colors.primary }}
+                          >
                             FEATURED
                           </span>
                         </div>
@@ -198,7 +213,12 @@ export default function Services({ data, sectionData }: ServicesProps) {
 
                     {/* Content */}
                     <div className="p-6">
-                      <h3 className="text-xl font-bold mb-2 text-slate-900 group-hover:text-blue-600 transition-colors duration-300">
+                      <h3
+                        className="text-xl font-bold mb-2 text-slate-900 transition-colors duration-300"
+                        style={{ '--hover-color': theme.colors.primary } as React.CSSProperties}
+                        onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.primary}
+                        onMouseLeave={(e) => e.currentTarget.style.color = ''}
+                      >
                         {service.title}
                       </h3>
                       <p className="text-sm text-slate-800 mb-4 leading-relaxed">
@@ -211,14 +231,19 @@ export default function Services({ data, sectionData }: ServicesProps) {
                           const specText = typeof spec === 'string' ? spec : (spec.text || spec.spec);
                           return (
                             <li key={index} className="flex items-start text-xs text-slate-800">
-                              <CheckCircle className="h-3 w-3 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                              <CheckCircle className="h-3 w-3 mr-2 mt-0.5 flex-shrink-0" style={getPrimaryColorStyle(theme.colors)} />
                               <span>{specText}</span>
                             </li>
                           );
                         })}
                       </ul>
 
-                      <div className="flex items-center text-blue-600 font-semibold text-sm group-hover:text-indigo-600 transition-colors duration-300">
+                      <div
+                        className="flex items-center font-semibold text-sm transition-colors duration-300"
+                        style={{ color: theme.colors.primary }}
+                        onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.secondary}
+                        onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.primary}
+                      >
                         <span>Learn More</span>
                         <div className="ml-1 group-hover:translate-x-1 transition-transform duration-300">
                           <ArrowRight className="w-4 h-4" />
