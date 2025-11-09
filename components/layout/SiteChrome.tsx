@@ -4,6 +4,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import ScrollToTop from '@/components/ui/scroll-to-top'
 import AnalyticsProvider from '@/components/analytics/AnalyticsProvider'
+import { ThemeProvider } from '@/lib/contexts/ThemeContext'
 
 type Props = {
   children: React.ReactNode
@@ -21,13 +22,15 @@ export default function SiteChrome({ children, navigationData, footerData, siteS
   }
 
   return (
-    <AnalyticsProvider enablePerformanceMonitoring={true}>
-      <Header data={{ ...(navigationData || {}), announcement: siteSettings?.announcement, logo: siteSettings?.logo }} />
-      <main id="main-content" className="min-h-screen pt-20 lg:pt-[120px]">
-        {children}
-      </main>
-      <Footer key="site-footer-unique" data={{ ...footerData, logo: siteSettings?.logo }} />
-      <ScrollToTop />
-    </AnalyticsProvider>
+    <ThemeProvider themeData={siteSettings?.theme}>
+      <AnalyticsProvider enablePerformanceMonitoring={true}>
+        <Header data={{ ...(navigationData || {}), announcement: siteSettings?.announcement, logo: siteSettings?.logo }} />
+        <main id="main-content" className="min-h-screen pt-20 lg:pt-[120px]">
+          {children}
+        </main>
+        <Footer key="site-footer-unique" data={{ ...footerData, logo: siteSettings?.logo }} />
+        <ScrollToTop />
+      </AnalyticsProvider>
+    </ThemeProvider>
   )
 }

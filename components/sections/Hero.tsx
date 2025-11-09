@@ -262,7 +262,7 @@ export default function Hero({ data }: HeroProps) {
                       duration: prefersReducedMotion ? 0 : 0.4,
                       ease: "easeOut"
                     }}
-                    className="px-3 md:px-5 py-1.5 md:py-2.5 rounded-full text-xs md:text-sm font-semibold border backdrop-blur-md hover:opacity-80 transition-all duration-300 whitespace-nowrap"
+                    className="px-3 md:px-5 py-1.5 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold border backdrop-blur-md hover:opacity-80 transition-all duration-300 whitespace-nowrap"
                     style={badgeStyle}
                   >
                     {badge}

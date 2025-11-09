@@ -290,6 +290,7 @@ export async function getSiteSettings(preview = false) {
   try {
   const query = `*[_type == "siteSettings"][0] {
     announcement,
+    theme,
     logo {
       logoType,
       customLogo {

@@ -4,12 +4,15 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { BookOpen, ArrowRight, Clock, GraduationCap, TrendingUp } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
+import { useTheme } from '@/lib/contexts/ThemeContext';
+import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-utils';
 
 interface ResourcesProps {
   data?: any;
 }
 
 export default function Resources({ data }: ResourcesProps) {
+  const theme = useTheme();
   // ALL content must come from Sanity CMS
   if (!data || !data.header || !data.featuredSeries) {
     return null;
@@ -33,10 +36,14 @@ export default function Resources({ data }: ResourcesProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-600/10 to-indigo-600/10 border border-blue-600/20 mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border mb-6"
+            style={{
+              background: `linear-gradient(to right, ${hexToRgba(theme.colors.primary, 0.1)}, ${hexToRgba(theme.colors.secondary, 0.1)})`,
+              borderColor: hexToRgba(theme.colors.primary, 0.2)
+            }}
           >
-            <GraduationCap className="w-4 h-4 text-blue-400" />
-            <span className="text-sm font-medium bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+            <GraduationCap className="w-4 h-4" style={{ color: hexToRgba(theme.colors.primary, 0.8) }} />
+            <span className="text-sm font-medium text-transparent bg-clip-text" style={getGradientTextStyle(theme.colors)}>
               {resourcesData.header.badge}
             </span>
           </motion.div>
@@ -72,13 +79,32 @@ export default function Resources({ data }: ResourcesProps) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.1 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="group h-full bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl overflow-hidden hover:border-blue-600/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-600/10 hover:scale-[1.02]"
+                  className="group h-full bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+                  style={{
+                    '--hover-border-color': hexToRgba(theme.colors.primary, 0.5),
+                    '--hover-shadow-color': hexToRgba(theme.colors.primary, 0.1)
+                  } as React.CSSProperties}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = hexToRgba(theme.colors.primary, 0.5);
+                    e.currentTarget.style.boxShadow = `0 25px 50px -12px ${hexToRgba(theme.colors.primary, 0.1)}`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgb(30 41 59)'; // slate-800
+                    e.currentTarget.style.boxShadow = '';
+                  }}
                 >
                   {/* Series Header */}
                   <div className="p-6 border-b border-slate-800">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-4xl">{series.icon}</span>
-                      <span className="bg-blue-600/10 backdrop-blur-sm text-blue-400 border border-blue-600/20 px-3 py-1 rounded-full text-sm font-medium">
+                      <span
+                        className="backdrop-blur-sm border px-3 py-1 rounded-full text-sm font-medium"
+                        style={{
+                          backgroundColor: hexToRgba(theme.colors.primary, 0.1),
+                          color: hexToRgba(theme.colors.primary, 0.8),
+                          borderColor: hexToRgba(theme.colors.primary, 0.2)
+                        }}
+                      >
                         {series.articleCount} Articles
                       </span>
                     </div>
@@ -107,7 +133,7 @@ export default function Resources({ data }: ResourcesProps) {
                           {series.level || series.difficulty}
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 text-blue-400 font-medium group-hover:text-blue-300 transition-colors">
+                      <div className="flex items-center gap-2 font-medium transition-colors" style={{ color: hexToRgba(theme.colors.primary, 0.8) }}>
                         <span className="text-sm">Explore</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </div>
@@ -125,13 +151,17 @@ export default function Resources({ data }: ResourcesProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6 }}
-          className="bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-blue-600/10 border border-blue-600/20 rounded-2xl p-8 md:p-12"
+          className="border rounded-2xl p-8 md:p-12"
+          style={{
+            background: `linear-gradient(to right, ${hexToRgba(theme.colors.primary, 0.1)}, ${hexToRgba(theme.colors.secondary, 0.1)}, ${hexToRgba(theme.colors.primary, 0.1)})`,
+            borderColor: hexToRgba(theme.colors.primary, 0.2)
+          }}
         >
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex-1 text-center md:text-left">
                 <div className="flex items-center gap-2 justify-center md:justify-start mb-4">
-                  <TrendingUp className="w-5 h-5 text-blue-400" />
-                  <span className="text-sm font-medium text-blue-400">6 Complete Series • 21+ Technical Articles</span>
+                  <TrendingUp className="w-5 h-5" style={{ color: hexToRgba(theme.colors.primary, 0.8) }} />
+                  <span className="text-sm font-medium" style={{ color: hexToRgba(theme.colors.primary, 0.8) }}>6 Complete Series • 21+ Technical Articles</span>
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
                   {resourcesData.cta.title}
@@ -172,7 +202,14 @@ export default function Resources({ data }: ResourcesProps) {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="text-center p-6 bg-slate-900/30 rounded-xl border border-slate-800/50"
                 >
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600/20 to-indigo-600/20 border border-blue-600/30 text-blue-400 mb-4">
+                  <div
+                    className="inline-flex items-center justify-center w-12 h-12 rounded-xl border mb-4"
+                    style={{
+                      background: `linear-gradient(to bottom right, ${hexToRgba(theme.colors.primary, 0.2)}, ${hexToRgba(theme.colors.secondary, 0.2)})`,
+                      borderColor: hexToRgba(theme.colors.primary, 0.3),
+                      color: hexToRgba(theme.colors.primary, 0.8)
+                    }}
+                  >
                     <IconComponent className="w-6 h-6" />
                   </div>
                   <h4 className="text-lg font-bold text-white mb-2">{benefit.title}</h4>
