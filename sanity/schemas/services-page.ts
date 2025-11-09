@@ -53,6 +53,35 @@ export default {
               validation: (Rule: any) => Rule.required()
             }
           ]
+        },
+        {
+          name: 'buttons',
+          type: 'array',
+          title: 'Hero Buttons',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'label', type: 'string', title: 'Label' },
+                { name: 'href', type: 'string', title: 'URL' },
+                {
+                  name: 'variant',
+                  type: 'string',
+                  title: 'Variant',
+                  options: {
+                    list: [
+                      { title: 'Primary', value: 'primary' },
+                      { title: 'Secondary', value: 'secondary' }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          initialValue: [
+            { label: 'Request Quote', href: '/contact', variant: 'primary' },
+            { label: 'View Core Competencies', href: '#capabilities', variant: 'secondary' }
+          ]
         }
       ]
     },
@@ -77,6 +106,50 @@ export default {
           title: 'Section Description',
           rows: 2,
           initialValue: 'Four core service pillars delivering unmatched precision and reliability for aerospace and defense applications'
+        },
+        {
+          name: 'capabilities',
+          type: 'array',
+          title: 'Capabilities Statistics',
+          description: 'Key capability metrics displayed at the top of the page',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {
+                  name: 'label',
+                  type: 'string',
+                  title: 'Label',
+                  validation: (Rule: any) => Rule.required()
+                },
+                {
+                  name: 'value',
+                  type: 'string',
+                  title: 'Value',
+                  validation: (Rule: any) => Rule.required()
+                },
+                {
+                  name: 'description',
+                  type: 'text',
+                  title: 'Description',
+                  rows: 2,
+                  validation: (Rule: any) => Rule.required()
+                }
+              ],
+              preview: {
+                select: { title: 'label', subtitle: 'value' },
+                prepare({ title, subtitle }: any) {
+                  return { title: `${subtitle} - ${title}` }
+                }
+              }
+            }
+          ],
+          initialValue: [
+            { label: 'Materials Certified', value: '150+', description: 'Aerospace & defense grade materials' },
+            { label: 'Precision Tolerance', value: '±0.0001"', description: 'Guaranteed dimensional accuracy' },
+            { label: 'Production Capacity', value: '24/7', description: 'Continuous manufacturing capability' },
+            { label: 'Quality System', value: 'AS9100D', description: 'Full aerospace certification' }
+          ]
         },
         {
           name: 'services',
@@ -125,6 +198,87 @@ export default {
               title: 'Engineering Support',
               description: 'Design, analysis, and optimization expertise'
             }
+          ]
+        },
+        {
+          name: 'qualityAssurance',
+          type: 'array',
+          title: 'Quality Assurance Items',
+          description: 'Certifications and quality standards',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {
+                  name: 'title',
+                  type: 'string',
+                  title: 'Title',
+                  validation: (Rule: any) => Rule.required()
+                }
+              ],
+              preview: {
+                select: { title: 'title' }
+              }
+            }
+          ],
+          initialValue: [
+            { title: 'AS9100D aerospace quality management' },
+            { title: 'ISO 9001:2015 certified processes' },
+            { title: 'ITAR registered for defense contracts' },
+            { title: 'CMMC compliant for cybersecurity' }
+          ]
+        }
+      ]
+    },
+
+    // CTA Section
+    {
+      name: 'cta',
+      type: 'object',
+      title: 'Call to Action',
+      group: 'content',
+      fields: [
+        {
+          name: 'heading',
+          type: 'string',
+          title: 'CTA Heading',
+          initialValue: 'Ready to Start Your Project?',
+          validation: (Rule: any) => Rule.required()
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'CTA Description',
+          rows: 2,
+          initialValue: 'Partner with us for precision manufacturing solutions that meet the highest industry standards.'
+        },
+        {
+          name: 'buttons',
+          type: 'array',
+          title: 'CTA Buttons',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'label', type: 'string', title: 'Label' },
+                { name: 'href', type: 'string', title: 'URL' },
+                {
+                  name: 'variant',
+                  type: 'string',
+                  title: 'Variant',
+                  options: {
+                    list: [
+                      { title: 'Primary', value: 'primary' },
+                      { title: 'Secondary', value: 'secondary' }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          initialValue: [
+            { label: 'Get Quote', href: '/contact?interest=quote', variant: 'primary' },
+            { label: 'Contact Us', href: '/contact', variant: 'secondary' }
           ]
         }
       ]

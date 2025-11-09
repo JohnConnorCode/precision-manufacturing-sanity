@@ -101,15 +101,15 @@ export default async function ServicesPage() {
     href: `/services/${service.slug?.current || service.slug}`,
   })) || [];
 
-  // Use CMS data or fallback to defaults
-  const capabilities = [
+  // Use CMS data with minimal fallbacks
+  const capabilities = servicesPageData?.content?.capabilities || [
     { label: 'Materials Certified', value: '150+', description: 'Aerospace & defense grade materials' },
     { label: 'Precision Tolerance', value: '±0.0001"', description: 'Guaranteed dimensional accuracy' },
     { label: 'Production Capacity', value: '24/7', description: 'Continuous manufacturing capability' },
     { label: 'Quality System', value: 'AS9100D', description: 'Full aerospace certification' }
   ];
 
-  const qualityAssurance = servicesPageData?.qualityAssurance || [
+  const qualityAssurance = servicesPageData?.content?.qualityAssurance || [
     { title: 'AS9100D aerospace quality management' },
     { title: 'ISO 9001:2015 certified processes' },
     { title: 'ITAR registered for defense contracts' },
@@ -132,7 +132,7 @@ export default async function ServicesPage() {
           )
         }
         description={servicesPageData?.hero?.description || 'Advanced manufacturing capabilities delivering precision components for aerospace, defense, and energy sectors with industry-leading quality standards.'}
-        buttons={[
+        buttons={servicesPageData?.hero?.buttons || [
           {
             label: 'Request Quote',
             href: '/contact',
@@ -282,22 +282,30 @@ export default async function ServicesPage() {
         <div className={theme.spacing.container}>
           <AnimatedSection>
             <div className="text-center max-w-4xl mx-auto">
-              <h2 className={cn(theme.typography.h2, "mb-6")}>Ready to Start Your Project?</h2>
+              <h2 className={cn(theme.typography.h2, "mb-6")}>
+                {servicesPageData?.cta?.heading || 'Ready to Start Your Project?'}
+              </h2>
               <p className={cn(theme.typography.lead, "mb-8")}>
-                Partner with us for precision manufacturing solutions that meet the highest industry standards.
+                {servicesPageData?.cta?.description || 'Partner with us for precision manufacturing solutions that meet the highest industry standards.'}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className={styles.ctaPrimary} asChild>
-                  <Link href="/contact?interest=quote">
-                    Get Quote
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline" asChild className={styles.ctaSecondary}>
-                  <Link href="/contact">
-                    Contact Us
-                  </Link>
-                </Button>
+                {(servicesPageData?.cta?.buttons || [
+                  { label: 'Get Quote', href: '/contact?interest=quote', variant: 'primary' },
+                  { label: 'Contact Us', href: '/contact', variant: 'secondary' }
+                ]).map((button: any, index: number) => (
+                  <Button
+                    key={index}
+                    size="lg"
+                    className={button.variant === 'primary' ? styles.ctaPrimary : styles.ctaSecondary}
+                    variant={button.variant === 'secondary' ? 'outline' : 'default'}
+                    asChild
+                  >
+                    <Link href={button.href}>
+                      {button.label}
+                      {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
+                    </Link>
+                  </Button>
+                ))}
               </div>
             </div>
           </AnimatedSection>

@@ -601,15 +601,41 @@ export async function getServicesPage(preview = false) {
           asset->{url, _id},
           alt,
           hotspot
+        },
+        buttons[]{
+          _key,
+          label,
+          href,
+          variant
         }
       },
       content{
         sectionTitle,
         sectionDescription,
+        capabilities[]{
+          _key,
+          label,
+          value,
+          description
+        },
         services[]{
           _key,
           title,
           description
+        },
+        qualityAssurance[]{
+          _key,
+          title
+        }
+      },
+      cta{
+        heading,
+        description,
+        buttons[]{
+          _key,
+          label,
+          href,
+          variant
         }
       },
       seo{
