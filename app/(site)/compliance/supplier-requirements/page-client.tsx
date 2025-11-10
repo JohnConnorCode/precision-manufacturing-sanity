@@ -227,7 +227,22 @@ interface SupplierRequirementsPageClientProps {
 }
 
 export default function SupplierRequirementsPageClient({ data }: SupplierRequirementsPageClientProps) {
-  const pageData = data || defaultData;
+  // Merge CMS data with defaults to ensure all required fields exist
+  const pageData = data ? {
+    hero: {
+      badges: data.hero?.badges || defaultData.hero.badges,
+      title: data.hero?.title || defaultData.hero.title,
+      titleHighlight: data.hero?.titleHighlight || defaultData.hero.titleHighlight,
+      description: data.hero?.description || defaultData.hero.description,
+      versionStatus: data.hero?.versionStatus || defaultData.hero.versionStatus,
+      effectiveDate: data.hero?.effectiveDate || defaultData.hero.effectiveDate,
+      reviewPeriod: data.hero?.reviewPeriod || defaultData.hero.reviewPeriod,
+    },
+    sections: data.sections || defaultData.sections,
+    requirements: data.requirements || defaultData.requirements,
+    additionalSections: data.additionalSections || defaultData.additionalSections,
+    footerNote: data.footerNote || defaultData.footerNote,
+  } : defaultData;
 
   const containerVariants = {
     hidden: { opacity: 0 },
