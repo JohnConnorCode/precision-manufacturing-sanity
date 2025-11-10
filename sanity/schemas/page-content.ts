@@ -3,6 +3,14 @@ export default {
   type: 'document',
   title: 'Page Content',
   __experimental_singleton: true,
+  preview: {
+    prepare() {
+      return {
+        title: 'Page Content',
+        subtitle: 'Legacy page content settings (deprecated)',
+      }
+    },
+  },
   fields: [
     {
       name: 'pageName',
