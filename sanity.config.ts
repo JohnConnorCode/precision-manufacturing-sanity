@@ -26,34 +26,7 @@ export default defineConfig({
   plugins: [
     presentationTool({
       previewUrl: {
-        origin: process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
-        preview: (doc) => {
-          // Map document types to their preview URLs
-          const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
-
-          // Singleton pages
-          if (doc._type === 'homepage') return `${baseUrl}/`
-          if (doc._type === 'about') return `${baseUrl}/about`
-          if (doc._type === 'contact') return `${baseUrl}/contact`
-          if (doc._type === 'careers') return `${baseUrl}/careers`
-          if (doc._type === 'terms') return `${baseUrl}/compliance/terms`
-          if (doc._type === 'supplierRequirements') return `${baseUrl}/compliance/supplier-requirements`
-
-          // Collection pages with slugs
-          if (doc._type === 'service' && doc.slug?.current) {
-            return `${baseUrl}/services/${doc.slug.current}`
-          }
-          if (doc._type === 'industry' && doc.slug?.current) {
-            return `${baseUrl}/industries/${doc.slug.current}`
-          }
-          if (doc._type === 'resource' && doc.slug?.current && doc.category) {
-            return `${baseUrl}/resources/${doc.category}/${doc.slug.current}`
-          }
-
-          // Default to homepage
-          return `${baseUrl}/`
-        },
-        draftMode: {
+        previewMode: {
           enable: '/api/draft',
         },
       },
