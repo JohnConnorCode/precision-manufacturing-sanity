@@ -136,7 +136,7 @@ export default function Hero({ data }: HeroProps) {
     // word3 stays as is if data.word3 not provided
   }
 
-  const heroFontSize = data?.heroFontSize || 'text-[2rem] sm:text-[2.5rem] md:text-[3.25rem] lg:text-[4rem]';
+  const heroFontSize = data?.heroFontSize || 'text-[3rem] sm:text-[4rem] md:text-[5rem] lg:text-[6rem] xl:text-[7rem]';
   const tagline = data?.tagline || 'Innovative Precision Machining & Manufacturing Excellence Since 1995';
 
   // Handle both string badges and object badges from Sanity, with fallbacks
@@ -274,10 +274,9 @@ export default function Hero({ data }: HeroProps) {
                   <motion.span
                     key={badge}
                     initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      delay: prefersReducedMotion ? 0 : index * 0.08,
+                      delay: prefersReducedMotion ? 0 : 0.9 + (index * 0.08),
                       duration: prefersReducedMotion ? 0 : 0.4,
                       ease: "easeOut"
                     }}
