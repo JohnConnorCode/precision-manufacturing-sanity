@@ -1,9 +1,12 @@
 "use client";
 
 import { Gauge, Cpu, Shield, Target, Award, Clock, Activity, Zap } from 'lucide-react';
-import AnimatedSection from '@/components/ui/animated-section';
+import { motion } from 'framer-motion';
+import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, hexToRgba } from '@/lib/theme-utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 
 interface TechnicalSpecsData {
   title?: string;
@@ -21,6 +24,7 @@ interface TechnicalSpecsProps {
 
 export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
   const theme = useTheme();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const defaultMetrics = [
     {
@@ -98,29 +102,29 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
       </div>
 
       <div className="container relative z-10">
-        <AnimatedSection className="text-center mb-16 max-w-4xl mx-auto">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
-            {title.includes('Numbers') ? (
-              <>
-                Precision By The <span className="text-transparent bg-clip-text" style={getGradientStyle(theme.colors)}>Numbers</span>
-              </>
-            ) : (
-              <span className="text-transparent bg-clip-text" style={getGradientStyle(theme.colors)}>{title}</span>
-            )}
-          </h2>
-          <p className="text-lg md:text-xl text-slate-400">
-            {subtitle}
-          </p>
-        </AnimatedSection>
+        <div className="mb-16 max-w-4xl mx-auto">
+          <SectionHeader
+            heading={title}
+            gradientWordPosition="last"
+            description={subtitle}
+            centered={true}
+            className="[&_h2]:text-white [&_p]:text-slate-400"
+          />
+        </div>
 
         {/* Metrics Grid - Premium Card Design */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {metrics.map((metric, index) => {
             const Icon = metric.icon || Gauge;
+            const metricDelay = SECTION_CONFIGS.metricsGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
+
             return (
-              <AnimatedSection
+              <motion.div
                 key={metric.label}
-                delay={index * 0.05}
+                initial={getInitialState(prefersReducedMotion)}
+                whileInView={getAnimateState(metricDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
                 className="group relative"
               >
                 <div
@@ -172,7 +176,7 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
                     style={getGradientStyle(theme.colors)}
                   />
                 </div>
-              </AnimatedSection>
+              </motion.div>
             );
           })}
         </div>

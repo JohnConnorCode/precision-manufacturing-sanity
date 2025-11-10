@@ -5,11 +5,13 @@ import { Card } from '@/components/ui/card';
 import { Plane, Zap, Shield, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImage from '@/components/ui/parallax-image';
-import AnimatedSection from '@/components/ui/animated-section';
+import SectionHeader from '@/components/ui/section-header';
 import { typography, spacing, colors } from '@/lib/design-system';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { hexToRgba } from '@/lib/theme-utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 
 // Icon mapping for CMS data
 const iconMap: Record<string, LucideIcon> = {
@@ -58,6 +60,7 @@ interface IndustriesProps {
 
 export default function Industries({ data, sectionData }: IndustriesProps) {
   const theme = useTheme();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Use CMS data with fallback
   const industriesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
@@ -71,27 +74,28 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
   return (
     <section className={`${spacing.section} ${colors.bgLight}`}>
       <div className={spacing.containerWide}>
-        <AnimatedSection className={`text-center ${spacing.headingBottom}`}>
-          {/* Clear Section Purpose */}
-          <p className={`${typography.eyebrow} ${colors.textMedium} mb-4`}>
-            {eyebrow}
-          </p>
-
-          <h2 className={`${typography.sectionHeading} mb-6`}>
-            {heading}
-          </h2>
-
-          <p className={`${typography.descriptionMuted} max-w-3xl mx-auto`}>
-            {portableTextToPlainText(description) || description}
-          </p>
-        </AnimatedSection>
+        <SectionHeader
+          eyebrow={eyebrow}
+          heading={heading}
+          gradientWordPosition="last"
+          description={description}
+        />
 
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid}`}>
           {displayIndustries.map((industry: any, index: number) => {
             // Handle both CMS data (iconName) and hardcoded data (icon)
             const Icon = industry.iconName ? (iconMap[industry.iconName] || Plane) : (industry.icon || Plane);
+            const cardDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
+
             return (
-              <AnimatedSection key={industry.title} delay={index * 0.1} className="group">
+              <motion.div
+                key={industry.title}
+                initial={getInitialState(prefersReducedMotion)}
+                whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
+                className="group"
+              >
                 <Link href={industry.href} className="block">
                   <motion.div
                     whileHover={{ scale: 1.02 }}
@@ -160,7 +164,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                   </Card>
                   </motion.div>
                 </Link>
-              </AnimatedSection>
+              </motion.div>
             );
           })}
         </div>

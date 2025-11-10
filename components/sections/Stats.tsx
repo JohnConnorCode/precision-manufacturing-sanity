@@ -2,8 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
+import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, getGradientTextStyle } from '@/lib/theme-utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 
 interface StatsData {
   title?: string;
@@ -29,6 +32,7 @@ const defaultStats = [
 
 export default function Stats({ data }: StatsProps) {
   const theme = useTheme();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Use CMS data or fallback to defaults
   // Handle both old format (data.stats as array) and new format (data.items as array)
@@ -64,32 +68,29 @@ export default function Stats({ data }: StatsProps) {
 
       <div className="container relative z-10">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
-        >
-          <p className="text-sm font-bold text-transparent bg-clip-text uppercase tracking-[0.2em] mb-2" style={getGradientStyle(theme.colors)}>
-            {subtitle}
-          </p>
-          <h2 className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">
-            {title}
-          </h2>
-        </motion.div>
+        <div className="mb-12">
+          <SectionHeader
+            eyebrow={subtitle}
+            heading={title}
+            gradientWordPosition="last"
+            className="[&_p]:uppercase"
+          />
+        </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((stat: any, index: number) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="text-center"
-            >
+          {stats.map((stat: any, index: number) => {
+            const statDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
+
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.8 }}
+                whileInView={{ opacity: 1, scale: 1, transition: { delay: prefersReducedMotion ? 0 : statDelay, duration: prefersReducedMotion ? 0 : 0.6, ease: [0.25, 0.1, 0.25, 1] as any } }}
+                viewport={viewportConfig}
+                className="text-center"
+              >
               <div className="relative inline-block mb-3">
                 <div className="absolute inset-0 rounded-full blur-xl opacity-20" style={getGradientStyle(theme.colors)} />
                 <div className="relative bg-white rounded-2xl p-6 shadow-lg">
@@ -107,8 +108,9 @@ export default function Stats({ data }: StatsProps) {
               <p className="text-sm font-semibold text-slate-600 uppercase tracking-wider">
                 {stat.label}
               </p>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

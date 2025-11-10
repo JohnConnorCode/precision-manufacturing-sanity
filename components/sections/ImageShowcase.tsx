@@ -5,11 +5,13 @@ import Image from 'next/image';
 import { ArrowRight, Award, Shield, Clock, Target } from 'lucide-react';
 import Link from 'next/link';
 import { useRef } from 'react';
-import AnimatedSection from '@/components/ui/animated-section';
+import SectionHeader from '@/components/ui/section-header';
 import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 
 // Icon mapping for stats
 const iconMap: Record<string, any> = {
@@ -63,6 +65,7 @@ interface ImageShowcaseProps {
 
 export default function ImageShowcase({ data }: ImageShowcaseProps) {
   const theme = useTheme();
+  const prefersReducedMotion = usePrefersReducedMotion();
   // Hooks must be called before early return
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -70,8 +73,8 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
     offset: ["start end", "end start"]
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.5, 1, 1, 0.5]);
-  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.95, 1, 1, 0.95]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], prefersReducedMotion ? [1, 1, 1, 1] : [0.5, 1, 1, 0.5]);
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], prefersReducedMotion ? [1, 1, 1, 1] : [0.95, 1, 1, 0.95]);
 
   // Use CMS data or fallback
   const showcaseData = data || {};
@@ -89,27 +92,27 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         style={{ opacity, scale }}
         className={`${spacing.containerWide} relative z-10`}>
         {/* Section Header */}
-        <AnimatedSection className={`text-center ${spacing.headingBottom}`}>
-          <p className={`${typography.eyebrow} ${colors.textMedium} mb-4`}>
-            {header.eyebrow}
-          </p>
-          <h2 className={`${typography.sectionHeading} mb-6`}>
-            <span className={colors.textDark}>{header.title}</span>
-            <span className="text-transparent bg-clip-text" style={getGradientTextStyle(theme.colors)}> {header.titleHighlight}</span>
-          </h2>
-          <p className={`${typography.descriptionMuted} max-w-3xl mx-auto`}>
-            {portableTextToPlainText(header.description) || header.description}
-          </p>
-        </AnimatedSection>
+        <SectionHeader
+          eyebrow={header.eyebrow}
+          word1={header.title}
+          word2={header.titleHighlight}
+          description={header.description}
+        />
 
         {/* Large Feature Images */}
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} mb-20`}>
-          {showcaseImages.map((item: any, index: number) => (
-            <AnimatedSection
-              key={item.title}
-              delay={index * 0.1}
-              className="group"
-            >
+          {showcaseImages.map((item: any, index: number) => {
+            const imageDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
+
+            return (
+              <motion.div
+                key={item.title}
+                initial={getInitialState(prefersReducedMotion)}
+                whileInView={getAnimateState(imageDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
+                className="group"
+              >
               <Link href={item.href} className="block relative">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
@@ -145,8 +148,9 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                   </div>
                 </motion.div>
               </Link>
-            </AnimatedSection>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Stats Grid */}
