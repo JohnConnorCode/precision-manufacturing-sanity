@@ -4,6 +4,14 @@ export default {
   type: 'document',
   title: 'Site Settings',
   __experimental_singleton: true,
+  preview: {
+    prepare() {
+      return {
+        title: 'Site Settings',
+        subtitle: 'Global settings, theme, branding, and SEO defaults',
+      }
+    },
+  },
   groups: [
     {name: 'announcement', title: 'Announcement Bar', default: true},
     {name: 'theme', title: 'Theme & Colors'},

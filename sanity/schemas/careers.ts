@@ -4,6 +4,14 @@ export default {
   type: 'document',
   title: 'Careers Page',
   __experimental_singleton: true,
+  preview: {
+    prepare() {
+      return {
+        title: 'Careers Page',
+        subtitle: 'Join our team - Benefits, values, and opportunities',
+      }
+    },
+  },
   groups: [
     {name: 'hero', title: 'Hero', default: true},
     {name: 'benefits', title: 'Benefits'},
