@@ -23,7 +23,7 @@ interface HeroData {
   ctaSecondary?: { text: string; href: string };
   ctaTertiary?: { text: string; href: string };
   slides?: Array<{
-    image: string;
+    image: string | { asset?: { url?: string }; url?: string; alt?: string };
     alt: string;
     focal: 'center' | 'top' | 'bottom';
   }>;
@@ -104,13 +104,20 @@ export default function Hero({ data }: HeroProps) {
             ? slide.image
             : slide.image?.asset?.url || slide.image?.url;
 
+          // Get alt text - handle both string and object types
+          const imageAlt = typeof slide.image === 'string'
+            ? ''
+            : slide.image?.alt || '';
+
           return {
-            src: imageUrl,
-            alt: slide.alt || slide.image?.alt || '',
+            src: imageUrl || '',
+            alt: slide.alt || imageAlt || '',
             focal: slide.focal || 'center'
           };
         })
-        .filter(slide => slide.src && slide.src.trim() !== '')
+        .filter((slide): slide is { src: string; alt: string; focal: 'center' | 'top' | 'bottom' } =>
+          slide.src !== '' && slide.src.trim() !== ''
+        )
     : fallbackSlides;
 
   // Ensure we have at least one slide, fallback if all filtered out
