@@ -39,7 +39,7 @@ export default function HeroSliderFixed({
 
   // Preload first image immediately
   useEffect(() => {
-    if (!isClient || slides.length === 0) return;
+    if (!isClient || slides.length === 0 || !slides[0]?.src) return;
 
     const firstImg = new window.Image();
     firstImg.onload = () => {
@@ -53,14 +53,21 @@ export default function HeroSliderFixed({
     if (!isClient) return;
 
     let loadedCount = 0;
-    slides.forEach((slide, index) => {
+    const validSlides = slides.filter(slide => slide.src && slide.src.trim() !== '');
+
+    if (validSlides.length === 0) {
+      setImagesLoaded(true);
+      return;
+    }
+
+    validSlides.forEach((slide, index) => {
       const img = new window.Image();
       img.onload = () => {
         loadedCount++;
         if (index === 0) {
           setFirstImageLoaded(true);
         }
-        if (loadedCount === slides.length) {
+        if (loadedCount === validSlides.length) {
           setImagesLoaded(true);
         }
       };
@@ -93,18 +100,20 @@ export default function HeroSliderFixed({
       <div className={cn('absolute inset-0 overflow-hidden', className)}>
         <div className="absolute inset-0 w-full h-[115%] -top-[7.5%] pointer-events-none">
           <div className="relative w-full h-full">
-            <Image
-              src={slides[0].src}
-              alt={slides[0].alt}
-              fill
-              className={cn(
-                "object-cover",
-                getFocalPosition(slides[0].focal)
-              )}
-              priority
-              quality={85}
-              sizes="100vw"
-            />
+            {slides[0]?.src && (
+              <Image
+                src={slides[0].src}
+                alt={slides[0].alt}
+                fill
+                className={cn(
+                  "object-cover",
+                  getFocalPosition(slides[0].focal)
+                )}
+                priority
+                quality={85}
+                sizes="100vw"
+              />
+            )}
           </div>
         </div>
 
@@ -120,18 +129,20 @@ export default function HeroSliderFixed({
       {/* Always show first image as base layer to prevent grey background */}
       <div className="absolute inset-0 w-full h-[115%] -top-[7.5%] pointer-events-none">
         <div className="relative w-full h-full">
-          <Image
-            src={slides[0].src}
-            alt={slides[0].alt}
-            fill
-            className={cn(
-              "object-cover",
-              getFocalPosition(slides[0].focal)
-            )}
-            priority
-            quality={85}
-            sizes="100vw"
-          />
+          {slides[0]?.src && (
+            <Image
+              src={slides[0].src}
+              alt={slides[0].alt}
+              fill
+              className={cn(
+                "object-cover",
+                getFocalPosition(slides[0].focal)
+              )}
+              priority
+              quality={85}
+              sizes="100vw"
+            />
+          )}
         </div>
       </div>
 
@@ -153,19 +164,21 @@ export default function HeroSliderFixed({
           }}
         >
           <div className="relative w-full h-full">
-            <Image
-              src={slide.src}
-              alt={slide.alt}
-              fill
-              className={cn(
-                "object-cover",
-                getFocalPosition(slide.focal)
-              )}
-              priority={index === 0}
-              quality={85}
-              sizes="100vw"
-              loading={index === 0 ? "eager" : "lazy"}
-            />
+            {slide.src && (
+              <Image
+                src={slide.src}
+                alt={slide.alt}
+                fill
+                className={cn(
+                  "object-cover",
+                  getFocalPosition(slide.focal)
+                )}
+                priority={index === 0}
+                quality={85}
+                sizes="100vw"
+                loading={index === 0 ? "eager" : "lazy"}
+              />
+            )}
 
             {/* Subtle Ken Burns effect only on current image */}
             {index === currentIndex && (

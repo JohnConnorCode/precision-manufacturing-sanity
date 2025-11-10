@@ -76,9 +76,12 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
   // Use CMS data or fallback
   const showcaseData = data || {};
   const header = showcaseData?.header || fallbackHeader;
-  const showcaseImages = (showcaseData?.showcaseImages && showcaseData.showcaseImages.length > 0)
-    ? showcaseData.showcaseImages
-    : fallbackShowcaseImages;
+
+  // Check both showcaseImages and images fields, filter out items without src
+  const rawImages = showcaseData?.showcaseImages || showcaseData?.images || [];
+  const validImages = rawImages.filter((img: any) => img?.src && img.src.trim() !== '');
+  const showcaseImages = validImages.length > 0 ? validImages : fallbackShowcaseImages;
+
   const stats = (showcaseData?.stats && showcaseData.stats.length > 0)
     ? showcaseData.stats
     : fallbackStats;
@@ -117,14 +120,16 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                   className={`relative overflow-hidden ${borderRadius.card} bg-slate-100 shadow-lg hover:shadow-xl transition-all duration-300`}
                 >
                   <div className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
-                    <Image
-                      src={item.src}
-                      alt={item.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority={index < 3}
-                    />
+                    {item.src && (
+                      <Image
+                        src={item.src}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        priority={index < 3}
+                      />
+                    )}
 
                     {/* Clean gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />

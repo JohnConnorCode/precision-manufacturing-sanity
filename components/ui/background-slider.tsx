@@ -36,16 +36,18 @@ export default function BackgroundSlider({
           transition={{ duration: 1.5, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          <Image
-            src={images[currentIndex]}
-            alt="Manufacturing facility"
-            fill
-            className="object-cover"
-            style={{ filter: 'brightness(0.6) contrast(1.1)' }}
-            priority={currentIndex === 0}
-            quality={85}
-            sizes="100vw"
-          />
+          {images[currentIndex] && (
+            <Image
+              src={images[currentIndex]}
+              alt="Manufacturing facility"
+              fill
+              className="object-cover"
+              style={{ filter: 'brightness(0.6) contrast(1.1)' }}
+              priority={currentIndex === 0}
+              quality={85}
+              sizes="100vw"
+            />
+          )}
         </motion.div>
       </AnimatePresence>
 

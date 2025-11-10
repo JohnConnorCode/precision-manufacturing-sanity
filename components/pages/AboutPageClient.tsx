@@ -244,12 +244,14 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               viewport={{ once: true }}
               className="relative"
             >
-              <ParallaxImage
-                src={(aboutData as any)?.story?.imageUrl || aboutData?.story?.image || defaultData.story.image}
-                alt={aboutData?.story?.imageAlt || ''}
-                className="w-full h-96 rounded-lg"
-                speed={0.2}
-              />
+              {((aboutData as any)?.story?.imageUrl || aboutData?.story?.image || defaultData.story.image) && (
+                <ParallaxImage
+                  src={(aboutData as any)?.story?.imageUrl || aboutData?.story?.image || defaultData.story.image}
+                  alt={aboutData?.story?.imageAlt || ''}
+                  className="w-full h-96 rounded-lg"
+                  speed={0.2}
+                />
+              )}
             </motion.div>
           </div>
 

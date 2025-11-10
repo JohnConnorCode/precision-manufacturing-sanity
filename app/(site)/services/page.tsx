@@ -187,19 +187,25 @@ export default async function ServicesPage() {
           </AnimatedSection>
 
           <div className={styles.grid2Col}>
-            {formattedServices.map((service: any, index: number) => (
+            {formattedServices.map((service: any, index: number) => {
+              // Extract image URL safely
+              const imageUrl = service.image?.asset?.url || service.image;
+
+              return (
               <AnimatedSection key={service.title} delay={index * 0.1}>
                 <Card className={cn(styles.featureCard, "group h-full overflow-hidden")}>
-                  <div className="relative h-64 overflow-hidden">
-                    <ParallaxImagePro
-                      src={(service.image && service.image.asset && service.image.asset.url) || service.image || 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1600&q=90'}
-                      alt={service.title}
-                      className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                      speed={0.2}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    {/* Optional icon overlay can go here if provided by CMS */}
-                  </div>
+                  {imageUrl && (
+                    <div className="relative h-64 overflow-hidden">
+                      <ParallaxImagePro
+                        src={imageUrl}
+                        alt={service.title}
+                        className="w-full h-full group-hover:scale-105 transition-transform duration-500"
+                        speed={0.2}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                      {/* Optional icon overlay can go here if provided by CMS */}
+                    </div>
+                  )}
 
                   <div className="p-8">
                     <h3 className={cn(theme.typography.h4, "mb-4 group-hover:text-blue-600 transition-colors")}>
@@ -233,7 +239,8 @@ export default async function ServicesPage() {
                   </div>
                 </Card>
               </AnimatedSection>
-            ))}
+            );
+            })}
           </div>
         </div>
       </section>

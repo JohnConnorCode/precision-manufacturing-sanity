@@ -95,14 +95,26 @@ export default function Hero({ data }: HeroProps) {
     }
   ];
 
-  // Use CMS data or fallback
+  // Use CMS data or fallback - filter out empty images
   const heroSlides = (data?.slides && data.slides.length > 0)
-    ? data.slides.map(slide => ({
-        src: slide.image,
-        alt: slide.alt,
-        focal: slide.focal
-      }))
+    ? data.slides
+        .map(slide => {
+          // Handle both string URLs and Sanity image objects
+          const imageUrl = typeof slide.image === 'string'
+            ? slide.image
+            : slide.image?.asset?.url || slide.image?.url;
+
+          return {
+            src: imageUrl,
+            alt: slide.alt || slide.image?.alt || '',
+            focal: slide.focal || 'center'
+          };
+        })
+        .filter(slide => slide.src && slide.src.trim() !== '')
     : fallbackSlides;
+
+  // Ensure we have at least one slide, fallback if all filtered out
+  const finalSlides = (heroSlides && heroSlides.length > 0) ? heroSlides : fallbackSlides;
 
   // Support three-word structure (new) or legacy single-title (old)
   let word1 = data?.word1 || 'PRECISION';
@@ -154,7 +166,7 @@ export default function Hero({ data }: HeroProps) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 lg:pt-0">
       {/* Premium Background Slider */}
-      <HeroSliderFixed slides={heroSlides} />
+      <HeroSliderFixed slides={finalSlides} />
 
       {/* Overlay if enabled */}
       {overlayStyle && <div style={overlayStyle} />}

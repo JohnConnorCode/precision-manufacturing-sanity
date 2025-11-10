@@ -30,6 +30,13 @@ export default {
           validation: (Rule: any) => Rule.required()
         },
         {
+          name: 'headingHighlight',
+          type: 'string',
+          title: 'Heading Highlight',
+          description: 'Text to highlight in the heading (optional)',
+          initialValue: 'Services'
+        },
+        {
           name: 'description',
           type: 'text',
           title: 'Description',
@@ -149,55 +156,6 @@ export default {
             { label: 'Precision Tolerance', value: '±0.0001"', description: 'Guaranteed dimensional accuracy' },
             { label: 'Production Capacity', value: '24/7', description: 'Continuous manufacturing capability' },
             { label: 'Quality System', value: 'AS9100D', description: 'Full aerospace certification' }
-          ]
-        },
-        {
-          name: 'services',
-          type: 'array',
-          title: 'Services List',
-          of: [
-            {
-              type: 'object',
-              fields: [
-                {
-                  name: 'title',
-                  type: 'string',
-                  title: 'Service Title',
-                  validation: (Rule: any) => Rule.required()
-                },
-                {
-                  name: 'description',
-                  type: 'text',
-                  title: 'Service Description',
-                  rows: 2,
-                  validation: (Rule: any) => Rule.required()
-                }
-              ],
-              preview: {
-                select: { title: 'title', subtitle: 'description' },
-                prepare({ title, subtitle }: any) {
-                  return { title, subtitle: subtitle?.substring(0, 60) + '...' }
-                }
-              }
-            }
-          ],
-          initialValue: [
-            {
-              title: '5-Axis CNC Machining',
-              description: 'Complex geometries with unmatched precision for aerospace components'
-            },
-            {
-              title: 'Adaptive Machining',
-              description: 'Real-time adjustments based on in-process measurements'
-            },
-            {
-              title: 'Metrology & Inspection',
-              description: 'Comprehensive measurement and inspection services'
-            },
-            {
-              title: 'Engineering Support',
-              description: 'Design, analysis, and optimization expertise'
-            }
           ]
         },
         {

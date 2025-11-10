@@ -34,14 +34,14 @@ export default async function Home() {
     ...service,
     description: service.shortDescription || portableTextToPlainText(service.description),
     href: `/services/${service.slug?.current || service.slug}`,
-    image: service.image?.asset?.url || '', // Extract URL from Sanity image object
+    image: service.image?.asset?.url, // Extract URL from Sanity image object (undefined if missing)
   }));
 
   const formattedIndustries = industriesData?.map((industry: any) => ({
     ...industry,
     description: industry.shortDescription || portableTextToPlainText(industry.description),
     href: `/industries/${industry.slug?.current || industry.slug}`,
-    image: industry.image?.asset?.url || industry.imageUrl || '', // Extract URL from Sanity image object or imageUrl field
+    image: industry.image?.asset?.url || industry.imageUrl, // Extract URL from Sanity image object or imageUrl field (undefined if missing)
   }));
 
   const heroData = homepageData?.heroEnhanced || homepageData?.hero || undefined;
