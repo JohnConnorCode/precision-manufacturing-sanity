@@ -628,7 +628,7 @@ export default {
           initialValue: 'text-blue-600',
         },
         {
-          name: 'showcaseImages',
+          name: 'images',
           type: 'array',
           title: 'Showcase Images',
           fieldset: 'gallery',
@@ -705,7 +705,7 @@ export default {
                 select: {
                   title: 'value',
                   subtitle: 'label',
-                  media: 'iconName',
+                  media: 'icon',
                 },
                 prepare({title, subtitle}: any) {
                   return {
@@ -716,7 +716,7 @@ export default {
               },
               fields: [
                 {
-                  name: 'iconName',
+                  name: 'icon',
                   type: 'string',
                   title: 'Icon Name',
                   description: 'Lucide icon name',
