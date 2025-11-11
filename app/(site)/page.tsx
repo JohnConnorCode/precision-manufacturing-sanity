@@ -5,7 +5,6 @@ import Industries from '@/components/sections/Industries';
 import ImageShowcase from '@/components/sections/ImageShowcase';
 import OperationalExcellence from '@/components/sections/OperationalExcellence';
 import Resources from '@/components/sections/Resources';
-import Stats from '@/components/sections/Stats';
 import CTA from '@/components/sections/CTA';
 import StructuredData from '@/components/seo/StructuredData';
 import {
@@ -97,7 +96,6 @@ export default async function Home() {
       <ImageShowcase data={homepageData?.imageShowcase || undefined} />
       <OperationalExcellence data={homepageData?.operationalExcellence || undefined} />
       <Resources data={homepageData?.resourcesSection || undefined} />
-      <Stats data={homepageData?.stats || undefined} />
       <CTA data={homepageData?.cta || undefined} />
     </>
   );
