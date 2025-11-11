@@ -81,8 +81,8 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
   const showcaseData = data || {};
   const header = showcaseData?.header || fallbackHeader;
 
-  // Check both showcaseImages and images fields, filter out items without src
-  const rawImages = showcaseData?.showcaseImages || showcaseData?.images || [];
+  // Check showcaseImages field, filter out items without src
+  const rawImages = showcaseData?.showcaseImages || [];
   const validImages = rawImages.filter((img: any) => img?.src && img.src.trim() !== '');
   const showcaseImages = validImages.length > 0 ? validImages : fallbackShowcaseImages;
 
