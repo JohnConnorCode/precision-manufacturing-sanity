@@ -18,7 +18,7 @@ interface HeroData {
   mainTitle?: string;
   subTitle?: string;
   tagline?: string;
-  badges?: string[];
+  badges?: Array<{ text: string; enabled?: boolean } | string>;
   ctaPrimary?: { text: string; href: string };
   ctaSecondary?: { text: string; href: string };
   ctaTertiary?: { text: string; href: string };
@@ -26,6 +26,7 @@ interface HeroData {
     image: string | { asset?: { url?: string }; url?: string; alt?: string };
     alt: string;
     focal: 'center' | 'top' | 'bottom';
+    enabled?: boolean;
   }>;
   // Style fields from Sanity
   titleColor?: ColorStyle;
@@ -95,9 +96,10 @@ export default function Hero({ data }: HeroProps) {
     }
   ];
 
-  // Use CMS data or fallback - filter out empty images
+  // Use CMS data or fallback - filter out disabled and empty images
   const heroSlides = (data?.slides && data.slides.length > 0)
     ? data.slides
+        .filter(slide => slide.enabled !== false) // Filter out disabled slides
         .map(slide => {
           // Handle both string URLs and Sanity image objects
           const imageUrl = typeof slide.image === 'string'
@@ -147,9 +149,11 @@ export default function Hero({ data }: HeroProps) {
     '3 Sigma Yield'
   ];
   const badges = (data?.badges && data.badges.length > 0)
-    ? (data.badges || []).map((badge: any) =>
-        typeof badge === 'string' ? badge : (badge.text || badge.badge || badge.id || '')
-      )
+    ? (data.badges || [])
+        .filter((badge: any) => typeof badge === 'string' || badge.enabled !== false) // Filter out disabled badges
+        .map((badge: any) =>
+          typeof badge === 'string' ? badge : (badge.text || badge.badge || badge.id || '')
+        )
     : defaultBadges;
 
   // Reference site shows ONLY ONE button: "View Capabilities"

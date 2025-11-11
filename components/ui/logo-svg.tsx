@@ -141,10 +141,10 @@ export default function LogoSVG({
           variants={animated ? curveVariants : undefined}
         />
 
-        {/* IIS Text - positioned in center of curve */}
+        {/* IIS Text - positioned near bottom of curve */}
         <motion.text
           x="400"
-          y="340"
+          y="430"
           textAnchor="middle"
           fontSize="180"
           fontWeight="900"

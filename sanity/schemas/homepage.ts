@@ -156,24 +156,6 @@ export default {
           initialValue: 'text-[3rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[4.5rem] xl:text-[5rem]',
         },
         {
-          name: 'mainTitle',
-          type: 'string',
-          title: 'Main Title (Legacy)',
-          description: 'Legacy field - use word1/word2/word3 instead',
-          initialValue: 'PRECISION MANUFACTURING',
-          fieldset: 'copy',
-          hidden: true,
-        },
-        {
-          name: 'subtitle',
-          type: 'string',
-          title: 'Subtitle (Legacy)',
-          description: 'Legacy field - use word3 instead',
-          initialValue: 'SERVICES',
-          fieldset: 'copy',
-          hidden: true,
-        },
-        {
           name: 'tagline',
           type: 'text',
           title: 'Tagline',
@@ -194,16 +176,25 @@ export default {
                   title: 'caption',
                   subtitle: 'image.alt',
                   media: 'image',
+                  enabled: 'enabled',
                 },
-                prepare({title, subtitle, media}: any) {
+                prepare({title, subtitle, media, enabled}: any) {
+                  const status = enabled === false ? ' (HIDDEN)' : '';
                   return {
-                    title: title || subtitle || 'Hero Slide',
+                    title: `${title || subtitle || 'Hero Slide'}${status}`,
                     subtitle: subtitle ? `Alt: ${subtitle}` : undefined,
                     media,
                   }
                 },
               },
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this slide without deleting it',
+                  initialValue: true,
+                },
                 {
                   name: 'image',
                   type: 'image',
@@ -243,14 +234,23 @@ export default {
               preview: {
                 select: {
                   title: 'text',
+                  enabled: 'enabled',
                 },
-                prepare({title}: any) {
+                prepare({title, enabled}: any) {
+                  const status = enabled === false ? ' (HIDDEN)' : '';
                   return {
-                    title: title || 'Badge',
+                    title: `${title || 'Badge'}${status}`,
                   }
                 },
               },
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this badge without deleting it',
+                  initialValue: true,
+                },
                 {
                   name: 'text',
                   type: 'string',
@@ -420,32 +420,44 @@ export default {
                   title: 'label',
                   subtitle: 'description',
                   value: 'value',
+                  enabled: 'enabled',
                 },
-                prepare({title, subtitle, value}: any) {
+                prepare({title, subtitle, value, enabled}: any) {
                   const label = title;
                   const description = subtitle;
                   const details = [value, description].filter(Boolean).join(' • ');
+                  const status = enabled === false ? ' (HIDDEN)' : '';
                   return {
-                    title: label || value || 'Statistic',
+                    title: `${label || value || 'Statistic'}${status}`,
                     subtitle: details || undefined,
                   }
                 },
               },
               fields: [
                 {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this statistic without deleting it',
+                  initialValue: true,
+                },
+                {
                   name: 'value',
                   type: 'string',
                   title: 'Stat Value',
+                  description: 'The numeric value or measurement (e.g., "99.8%", "24/7", "30+")',
                 },
                 {
                   name: 'label',
                   type: 'string',
                   title: 'Stat Label',
+                  description: 'Label describing what the stat represents (e.g., "Quality Rate", "Uptime", "Years Experience")',
                 },
                 {
                   name: 'description',
                   type: 'string',
                   title: 'Description',
+                  description: 'Optional additional context or details about this statistic',
                 },
               ],
             },
@@ -639,19 +651,43 @@ export default {
               title: 'label',
               subtitle: 'description',
               value: 'value',
+              enabled: 'enabled',
             },
-            prepare({title, subtitle, value}: any) {
+            prepare({title, subtitle, value, enabled}: any) {
               const details = [value, subtitle].filter(Boolean).join(' • ');
+              const status = enabled === false ? ' (HIDDEN)' : '';
               return {
-                title: title || value || 'Technical specification',
+                title: `${title || value || 'Technical specification'}${status}`,
                 subtitle: details || undefined,
               }
             },
           },
           fields: [
-            {name: 'label', type: 'string', title: 'Label'},
-            {name: 'value', type: 'string', title: 'Value'},
-            {name: 'description', type: 'string', title: 'Description'},
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Uncheck to hide this specification card without deleting it',
+              initialValue: true,
+            },
+            {
+              name: 'label',
+              type: 'string',
+              title: 'Label',
+              description: 'Main label for the spec (e.g., "Precision", "Capacity", "Standards")',
+            },
+            {
+              name: 'value',
+              type: 'string',
+              title: 'Value',
+              description: 'The specification value (e.g., "±0.0001\"", "24/7", "AS9100D")',
+            },
+            {
+              name: 'description',
+              type: 'string',
+              title: 'Description',
+              description: 'Additional context or details about this specification',
+            },
             {
               name: 'iconName',
               type: 'string',
@@ -784,16 +820,25 @@ export default {
                   title: 'title',
                   subtitle: 'category',
                   media: 'image',
+                  enabled: 'enabled',
                 },
-                prepare({title, subtitle, media}: any) {
+                prepare({title, subtitle, media, enabled}: any) {
+                  const status = enabled === false ? ' (HIDDEN)' : '';
                   return {
-                    title: title || 'Showcase image',
+                    title: `${title || 'Showcase image'}${status}`,
                     subtitle,
                     media,
                   }
                 },
               },
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this image from the showcase without deleting it',
+                  initialValue: true,
+                },
                 {
                   name: 'image',
                   type: 'image',
@@ -847,28 +892,42 @@ export default {
                   title: 'value',
                   subtitle: 'label',
                   media: 'icon',
+                  enabled: 'enabled',
                 },
-                prepare({title, subtitle}: any) {
+                prepare({title, subtitle, enabled}: any) {
+                  const status = enabled === false ? ' (HIDDEN)' : '';
                   return {
-                    title: title || 'Stat',
+                    title: `${title || 'Stat'}${status}`,
                     subtitle,
                   }
                 },
               },
               fields: [
                 {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this stat without deleting it',
+                  initialValue: true,
+                },
+                {
                   name: 'icon',
                   type: 'string',
                   title: 'Icon Name',
-                  description: 'Lucide icon name',
+                  description: 'Lucide icon name (e.g., "Award", "CheckCircle", "Shield")',
                 },
                 {
                   name: 'value',
                   type: 'string',
                   title: 'Value',
-                  description: 'Stat value (e.g., "AS9100D", "99.9%")',
+                  description: 'Stat value (e.g., "AS9100D", "99.9%", "ITAR")',
                 },
-                {name: 'label', type: 'string', title: 'Label'},
+                {
+                  name: 'label',
+                  type: 'string',
+                  title: 'Label',
+                  description: 'Label describing this stat (e.g., "Certified", "Quality", "Registered")',
+                },
               ],
             },
           ],
@@ -966,15 +1025,24 @@ export default {
                   title: 'title',
                   subtitle: 'description',
                   icon: 'iconName',
+                  enabled: 'enabled',
                 },
-                prepare({title, subtitle}: any) {
+                prepare({title, subtitle, enabled}: any) {
+                  const status = enabled === false ? ' (HIDDEN)' : '';
                   return {
-                    title: title || 'Benefit',
+                    title: `${title || 'Benefit'}${status}`,
                     subtitle,
                   }
                 },
               },
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this benefit without deleting it',
+                  initialValue: true,
+                },
                 {
                   name: 'iconName',
                   type: 'string',
@@ -1117,19 +1185,29 @@ export default {
                   title: 'title',
                   subtitle: 'difficulty',
                   media: 'icon',
+                  enabled: 'enabled',
                 },
-                prepare({title, subtitle}: any) {
+                prepare({title, subtitle, enabled}: any) {
+                  const status = enabled === false ? ' (HIDDEN)' : '';
                   return {
-                    title: title || 'Series',
+                    title: `${title || 'Series'}${status}`,
                     subtitle: subtitle || 'Difficulty not set',
                   }
                 },
               },
               fields: [
                 {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this featured series without deleting it',
+                  initialValue: true,
+                },
+                {
                   name: 'title',
                   type: 'string',
                   title: 'Title',
+                  description: 'Series title (e.g., "CNC Machining Fundamentals")',
                   validation: (Rule: any) => Rule.required(),
                 },
                 {
@@ -1306,8 +1384,21 @@ export default {
         {name: 'badges', title: 'Badges & Trust Indicators'},
       ],
       fields: [
-        {name: 'title', type: 'string', title: 'Title', fieldset: 'content'},
-        {name: 'subtitle', type: 'text', title: 'Subtitle', rows: 2, fieldset: 'content'},
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Title',
+          description: 'Main CTA heading (e.g., "Ready to Get Started?", "Let\'s Work Together")',
+          fieldset: 'content',
+        },
+        {
+          name: 'subtitle',
+          type: 'text',
+          title: 'Subtitle',
+          description: 'Supporting text below the title explaining the value proposition or call to action',
+          rows: 2,
+          fieldset: 'content',
+        },
         {
           name: 'backgroundColor',
           type: 'string',
@@ -1397,11 +1488,13 @@ export default {
                   name: 'text',
                   type: 'string',
                   title: 'Button Text',
+                  description: 'Text displayed on the button (e.g., "Get Quote", "Contact Us", "Learn More")',
                 },
                 {
                   name: 'href',
                   type: 'string',
                   title: 'Button Link',
+                  description: 'URL where the button links (e.g., "/contact", "/services", "https://example.com")',
                 },
                 {
                   name: 'variant',
@@ -1444,15 +1537,24 @@ export default {
                 select: {
                   title: 'text',
                   subtitle: 'icon',
+                  enabled: 'enabled',
                 },
-                prepare({title, subtitle}: any) {
+                prepare({title, subtitle, enabled}: any) {
+                  const status = enabled === false ? ' (HIDDEN)' : '';
                   return {
-                    title: title || 'Certification Badge',
+                    title: `${title || 'Certification Badge'}${status}`,
                     subtitle: `Icon: ${subtitle || 'Not set'}`,
                   }
                 },
               },
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this certification badge without deleting it',
+                  initialValue: true,
+                },
                 {
                   name: 'icon',
                   type: 'string',
@@ -1463,6 +1565,7 @@ export default {
                   name: 'text',
                   type: 'string',
                   title: 'Badge Text',
+                  description: 'Text displayed on the badge (e.g., "24/7 Production", "AS9100D")',
                 },
               ],
             },

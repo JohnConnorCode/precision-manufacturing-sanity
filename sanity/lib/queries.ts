@@ -346,11 +346,18 @@ export async function getHomepage(preview = false) {
       word3,
       heroFontSize,
       tagline,
-      badges,
+      badges[] {
+        _key,
+        text,
+        enabled
+      },
       ctaPrimary,
       ctaSecondary,
       ctaTertiary,
       slides[] {
+        _key,
+        enabled,
+        focal,
         image {
           asset->{
             _id,
@@ -361,11 +368,77 @@ export async function getHomepage(preview = false) {
         }
       }
     },
-    stats,
+    stats {
+      title,
+      subtitle,
+      backgroundColor,
+      titleTextColor,
+      subtitleTextColor,
+      items[] {
+        _key,
+        enabled,
+        value,
+        label,
+        description
+      }
+    },
     servicesSection,
     industriesSection,
-    technicalSpecs,
-    imageShowcase,
+    technicalSpecs[] {
+      _key,
+      enabled,
+      label,
+      value,
+      description,
+      iconName,
+      gradient
+    },
+    imageShowcase {
+      header,
+      backgroundColor,
+      titleColor,
+      highlightColor,
+      images[] {
+        _key,
+        enabled,
+        title,
+        category,
+        href,
+        image {
+          asset->{url},
+          alt
+        }
+      },
+      stats[] {
+        _key,
+        enabled,
+        icon,
+        value,
+        label
+      },
+      cta {
+        title,
+        description,
+        buttons[] {
+          _key,
+          enabled,
+          text,
+          href,
+          variant
+        }
+      }
+    },
+    operationalExcellence {
+      heading,
+      description,
+      benefits[] {
+        _key,
+        enabled,
+        iconName,
+        title,
+        description
+      }
+    },
     resourcesSection {
       header {
         badge,
@@ -378,6 +451,7 @@ export async function getHomepage(preview = false) {
       additionalSeriesText,
       featuredSeries[] {
         _key,
+        enabled,
         title,
         slug,
         description,
@@ -412,6 +486,8 @@ export async function getHomepage(preview = false) {
       subtitle,
       badge,
       certifications[] {
+        _key,
+        enabled,
         icon,
         text
       },
