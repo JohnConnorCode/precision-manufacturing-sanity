@@ -123,14 +123,22 @@ export default {
             {
               type: 'object',
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this statistic without deleting it',
+                  initialValue: true,
+                },
                 { name: 'label', type: 'string', title: 'Label' },
                 { name: 'value', type: 'string', title: 'Value' },
                 { name: 'description', type: 'string', title: 'Description' }
               ],
               preview: {
-                select: { title: 'value', subtitle: 'label' },
-                prepare({ title, subtitle }: any) {
-                  return { title, subtitle }
+                select: { title: 'value', subtitle: 'label', enabled: 'enabled' },
+                prepare({ title, subtitle, enabled }: any) {
+                  const status = enabled === false ? ' (Hidden)' : '';
+                  return { title: `${title}${status}`, subtitle }
                 }
               }
             }
@@ -150,6 +158,13 @@ export default {
             {
               type: 'object',
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this industry without deleting it',
+                  initialValue: true,
+                },
                 {
                   name: 'name',
                   type: 'string',
@@ -220,9 +235,10 @@ export default {
                 }
               ],
               preview: {
-                select: { title: 'name', subtitle: 'description' },
-                prepare({ title, subtitle }: any) {
-                  return { title, subtitle: subtitle?.substring(0, 50) + '...' }
+                select: { title: 'name', subtitle: 'description', enabled: 'enabled' },
+                prepare({ title, subtitle, enabled }: any) {
+                  const status = enabled === false ? ' (Hidden)' : '';
+                  return { title: `${title}${status}`, subtitle: subtitle?.substring(0, 50) + '...' }
                 }
               }
             }
@@ -332,6 +348,13 @@ export default {
               type: 'object',
               fields: [
                 {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this reason without deleting it',
+                  initialValue: true,
+                },
+                {
                   name: 'title',
                   type: 'string',
                   title: 'Title',
@@ -358,9 +381,10 @@ export default {
                 }
               ],
               preview: {
-                select: { title: 'title', subtitle: 'description' },
-                prepare({ title, subtitle }: any) {
-                  return { title, subtitle: subtitle?.substring(0, 50) + '...' }
+                select: { title: 'title', subtitle: 'description', enabled: 'enabled' },
+                prepare({ title, subtitle, enabled }: any) {
+                  const status = enabled === false ? ' (Hidden)' : '';
+                  return { title: `${title}${status}`, subtitle: subtitle?.substring(0, 50) + '...' }
                 }
               }
             }
@@ -441,14 +465,22 @@ export default {
             {
               type: 'object',
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this metric without deleting it',
+                  initialValue: true,
+                },
                 { name: 'metric', type: 'string', title: 'Metric Name' },
                 { name: 'value', type: 'string', title: 'Value' },
                 { name: 'description', type: 'text', title: 'Description', rows: 2 }
               ],
               preview: {
-                select: { title: 'value', subtitle: 'metric' },
-                prepare({ title, subtitle }: any) {
-                  return { title, subtitle }
+                select: { title: 'value', subtitle: 'metric', enabled: 'enabled' },
+                prepare({ title, subtitle, enabled }: any) {
+                  const status = enabled === false ? ' (Hidden)' : '';
+                  return { title: `${title}${status}`, subtitle }
                 }
               }
             }

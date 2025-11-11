@@ -132,6 +132,13 @@ export default {
               type: 'object',
               fields: [
                 {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this capability without deleting it',
+                  initialValue: true,
+                },
+                {
                   name: 'label',
                   type: 'string',
                   title: 'Label',
@@ -152,9 +159,10 @@ export default {
                 }
               ],
               preview: {
-                select: { title: 'label', subtitle: 'value' },
-                prepare({ title, subtitle }: any) {
-                  return { title: `${subtitle} - ${title}` }
+                select: { title: 'label', subtitle: 'value', enabled: 'enabled' },
+                prepare({ title, subtitle, enabled }: any) {
+                  const status = enabled === false ? ' (Hidden)' : '';
+                  return { title: `${subtitle} - ${title}${status}` }
                 }
               }
             }
@@ -176,6 +184,13 @@ export default {
               type: 'object',
               fields: [
                 {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this quality standard without deleting it',
+                  initialValue: true,
+                },
+                {
                   name: 'title',
                   type: 'string',
                   title: 'Title',
@@ -183,7 +198,11 @@ export default {
                 }
               ],
               preview: {
-                select: { title: 'title' }
+                select: { title: 'title', enabled: 'enabled' },
+                prepare({ title, enabled }: any) {
+                  const status = enabled === false ? ' (Hidden)' : '';
+                  return { title: `${title}${status}` }
+                }
               }
             }
           ],

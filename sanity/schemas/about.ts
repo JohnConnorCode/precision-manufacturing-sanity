@@ -121,7 +121,28 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: {
+              title: 'value',
+              subtitle: 'label',
+              enabled: 'enabled',
+            },
+            prepare({title, subtitle, enabled}: any) {
+              const status = enabled === false ? ' (Hidden)' : '';
+              return {
+                title: `${title || 'Stat'}${status}`,
+                subtitle: subtitle || 'No label',
+              }
+            },
+          },
           fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Uncheck to hide this statistic without deleting it',
+              initialValue: true,
+            },
             {name: 'label', type: 'string', title: 'Label'},
             {name: 'value', type: 'string', title: 'Value'},
             {name: 'description', type: 'string', title: 'Description'},
@@ -218,7 +239,28 @@ export default {
           of: [
             {
               type: 'object',
+              preview: {
+                select: {
+                  title: 'year',
+                  subtitle: 'title',
+                  enabled: 'enabled',
+                },
+                prepare({title, subtitle, enabled}: any) {
+                  const status = enabled === false ? ' (Hidden)' : '';
+                  return {
+                    title: `${title || 'Year'}${status}`,
+                    subtitle: subtitle || 'No title',
+                  }
+                },
+              },
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this milestone without deleting it',
+                  initialValue: true,
+                },
                 {name: 'year', type: 'string', title: 'Year'},
                 {name: 'title', type: 'string', title: 'Title'},
                 {name: 'description', type: 'text', title: 'Description', rows: 3},
@@ -341,7 +383,28 @@ export default {
       of: [
         {
           type: 'object',
-          fields: [{name: 'certification', type: 'string', title: 'Certification'}],
+          preview: {
+            select: {
+              title: 'certification',
+              enabled: 'enabled',
+            },
+            prepare({title, enabled}: any) {
+              const status = enabled === false ? ' (Hidden)' : '';
+              return {
+                title: `${title || 'Certification'}${status}`,
+              }
+            },
+          },
+          fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Uncheck to hide this certification without deleting it',
+              initialValue: true,
+            },
+            {name: 'certification', type: 'string', title: 'Certification'}
+          ],
         },
       ],
     },
@@ -385,15 +448,24 @@ export default {
                 select: {
                   title: 'name',
                   subtitle: 'title',
+                  enabled: 'enabled',
                 },
-                prepare({title, subtitle}: any) {
+                prepare({title, subtitle, enabled}: any) {
+                  const status = enabled === false ? ' (Hidden)' : '';
                   return {
-                    title: title || 'Team Member',
+                    title: `${title || 'Team Member'}${status}`,
                     subtitle: subtitle || 'Position not set',
                   }
                 },
               },
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this team member without deleting them',
+                  initialValue: true,
+                },
                 {
                   name: 'name',
                   type: 'string',

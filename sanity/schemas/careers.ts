@@ -295,15 +295,24 @@ export default {
                 select: {
                   title: 'title',
                   subtitle: 'department',
+                  enabled: 'enabled',
                 },
-                prepare({title, subtitle}: any) {
+                prepare({title, subtitle, enabled}: any) {
+                  const status = enabled === false ? ' (Hidden)' : '';
                   return {
-                    title: title || 'Job Opening',
+                    title: `${title || 'Job Opening'}${status}`,
                     subtitle: subtitle || 'No department',
                   }
                 },
               },
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this job posting without deleting it',
+                  initialValue: true,
+                },
                 {
                   name: 'title',
                   type: 'string',

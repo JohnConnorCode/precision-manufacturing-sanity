@@ -1279,6 +1279,14 @@ export default {
             },
           ],
         },
+        {
+          name: 'additionalSeriesText',
+          type: 'string',
+          title: 'Additional Series Stats Text',
+          description: 'Text showing total series and article count (e.g., "6 Complete Series • 21+ Technical Articles")',
+          fieldset: 'featured',
+          initialValue: '6 Complete Series • 21+ Technical Articles',
+        },
       ],
     },
     {
@@ -1295,6 +1303,7 @@ export default {
         {name: 'content', title: 'Content'},
         {name: 'styling', title: 'Styling & Colors'},
         {name: 'buttons', title: 'Buttons'},
+        {name: 'badges', title: 'Badges & Trust Indicators'},
       ],
       fields: [
         {name: 'title', type: 'string', title: 'Title', fieldset: 'content'},
@@ -1413,6 +1422,64 @@ export default {
             { text: 'Get Quote', href: '/contact', variant: 'default' },
             { text: 'Technical Specifications', href: '/compliance/supplier-requirements', variant: 'secondary' },
           ],
+        },
+        {
+          name: 'badge',
+          type: 'string',
+          title: 'Top Badge Text',
+          description: 'Badge shown above the CTA title',
+          fieldset: 'badges',
+          initialValue: '30 Years of Aerospace Excellence',
+        },
+        {
+          name: 'certifications',
+          type: 'array',
+          title: 'Certification Badges',
+          description: 'Small certification/quality badges shown below the buttons',
+          fieldset: 'badges',
+          of: [
+            {
+              type: 'object',
+              preview: {
+                select: {
+                  title: 'text',
+                  subtitle: 'icon',
+                },
+                prepare({title, subtitle}: any) {
+                  return {
+                    title: title || 'Certification Badge',
+                    subtitle: `Icon: ${subtitle || 'Not set'}`,
+                  }
+                },
+              },
+              fields: [
+                {
+                  name: 'icon',
+                  type: 'string',
+                  title: 'Icon Name',
+                  description: 'Lucide icon name (e.g., "Clock", "Shield", "Award")',
+                },
+                {
+                  name: 'text',
+                  type: 'string',
+                  title: 'Badge Text',
+                },
+              ],
+            },
+          ],
+          initialValue: [
+            { icon: 'Clock', text: '24/7 Production' },
+            { icon: 'Shield', text: 'ITAR Registered' },
+            { icon: 'Award', text: 'AS9100D' },
+          ],
+        },
+        {
+          name: 'trustMessage',
+          type: 'string',
+          title: 'Trust Indicator Message',
+          description: 'Small text shown at the bottom indicating client trust',
+          fieldset: 'badges',
+          initialValue: 'Trusted by leading aerospace & defense contractors worldwide',
         },
       ],
     },

@@ -210,6 +210,25 @@ export default {
           initialValue: 'IIS Precision Manufacturing',
         },
         {
+          name: 'alternateName',
+          type: 'string',
+          title: 'Alternate/Short Name',
+          description: 'Short version of company name (e.g., "IIS")',
+          fieldset: 'identity',
+          initialValue: 'IIS',
+        },
+        {
+          name: 'websiteUrl',
+          type: 'url',
+          title: 'Website URL',
+          description: 'Company website URL',
+          fieldset: 'identity',
+          initialValue: 'https://iismet.com',
+          validation: (Rule: any) => Rule.uri({
+            scheme: ['http', 'https']
+          }),
+        },
+        {
           name: 'tagline',
           type: 'string',
           title: 'Tagline',
