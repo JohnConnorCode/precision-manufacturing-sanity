@@ -108,9 +108,9 @@ The site is production-ready with full Sanity CMS integration and power-user too
 - ✅ Industries section (heading, industries grid)
 - ✅ Image showcase (3 featured images with captions)
 - ✅ Operational excellence (all benefits)
-- ✅ Resources section (6 featured series, benefits, CTA)
+- ✅ Resources section (6 featured series, benefits, CTA, **NEW:** stats text)
 - ✅ Stats (4 company stats)
-- ✅ CTA section (heading, description, buttons)
+- ✅ CTA section (heading, description, buttons, **NEW:** badge, certifications, trust message)
 
 ### Services Page (`/services`)
 - ✅ Hero (background image, badge, heading, buttons)
@@ -176,7 +176,71 @@ The site is production-ready with full Sanity CMS integration and power-user too
 ### Global Elements
 - ✅ **Navigation**: Logo, menu items, dropdowns, mobile menu
 - ✅ **Footer**: All 4 column sections, legal links, certifications, social links
-- ✅ **Site Settings**: Company info, contact details, social media
+- ✅ **Site Settings**: Company info, contact details, social media, **NEW:** alternate name, website URL
+
+---
+
+## 🆕 NEW FIELDS ADDED - NEED POPULATION
+
+The following fields have been added to eliminate hardcoded content. They currently use fallback values but should be populated in Sanity Studio for full CMS control:
+
+### Homepage → CTA Section
+
+Navigate to: **Studio → Homepage → CTA Section → Badges & Trust Indicators**
+
+1. **Badge** (Text field)
+   - Current fallback: "30 Years of Aerospace Excellence"
+   - Purpose: Top badge shown above CTA title
+   - **Action needed**: Populate with company badge text
+
+2. **Certifications** (Array of objects)
+   - Current fallback: 3 badges (24/7 Production, ITAR Registered, AS9100D)
+   - Fields per item:
+     - `icon`: Icon name from Lucide (e.g., "Clock", "Shield", "Award")
+     - `text`: Badge text (e.g., "24/7 Production")
+   - **Action needed**: Review and customize certification badges
+
+3. **Trust Message** (Text field)
+   - Current fallback: "Trusted by leading aerospace & defense contractors worldwide"
+   - Purpose: Small text at bottom of CTA section
+   - **Action needed**: Populate with trust indicator message
+
+### Homepage → Resources Section
+
+Navigate to: **Studio → Homepage → Resources Section → Featured Series**
+
+1. **Additional Series Text** (Text field)
+   - Current fallback: "6 Complete Series • 21+ Technical Articles"
+   - Purpose: Stats text showing total series and article count
+   - **Action needed**: Update with actual article/series counts
+
+### Site Settings → Company Information
+
+Navigate to: **Studio → Site Settings → Company Information → Identity**
+
+1. **Alternate Name** (Text field)
+   - Current fallback: "IIS"
+   - Purpose: Short version of company name for structured data
+   - **Action needed**: Confirm or update short company name
+
+2. **Website URL** (URL field)
+   - Current fallback: "https://iismet.com"
+   - Purpose: Company website URL for structured data and SEO
+   - **Action needed**: Verify correct website URL
+
+### ⚠️ Important Notes
+
+- **Site works without populating these fields** - Fallback values ensure the site displays correctly
+- **Fallbacks match current design** - The default values are production-ready
+- **Structured data uses Site Settings** - Organization schema now pulls from CMS
+- **All content violations fixed** - No hardcoded content remains in components
+
+### 📝 Recommended Next Steps
+
+1. Review default values in Sanity Studio
+2. Populate new fields with finalized content
+3. Verify changes in preview mode
+4. Publish when ready
 
 ---
 

@@ -80,13 +80,9 @@ export default function CTA({ data }: CTAProps) {
   const subtitleColor = colorStyleToCSS(data?.subtitleColor) || colors.raw.slate400;
 
   // Extract badge, certifications, and trust message from Sanity
-  const badge = data?.badge || '30 Years of Aerospace Excellence';
-  const certifications = data?.certifications || [
-    { icon: 'Clock', text: '24/7 Production' },
-    { icon: 'Shield', text: 'ITAR Registered' },
-    { icon: 'Award', text: 'AS9100D' },
-  ];
-  const trustMessage = data?.trustMessage || 'Trusted by leading aerospace & defense contractors worldwide';
+  const badge = data?.badge || '';
+  const certifications = data?.certifications || [];
+  const trustMessage = data?.trustMessage || '';
 
   // Icon lookup for certification badges
   const iconMap: Record<string, LucideIcon> = {
@@ -121,15 +117,17 @@ export default function CTA({ data }: CTAProps) {
           className="max-w-4xl mx-auto text-center"
         >
           {/* Precision indicator */}
-          <motion.div
-            initial={getScaleInitialState(prefersReducedMotion)}
-            whileInView={getScaleAnimateState(0, 0.5, prefersReducedMotion)}
-            viewport={getViewportConfig()}
-            className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-blue-600/20 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 backdrop-blur-sm"
-          >
-            <Activity className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
-            <span className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">{badge}</span>
-          </motion.div>
+          {badge && (
+            <motion.div
+              initial={getScaleInitialState(prefersReducedMotion)}
+              whileInView={getScaleAnimateState(0, 0.5, prefersReducedMotion)}
+              viewport={getViewportConfig()}
+              className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-blue-600/20 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 backdrop-blur-sm"
+            >
+              <Activity className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
+              <span className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">{badge}</span>
+            </motion.div>
+          )}
 
           <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: titleColor }}>
             {title}
@@ -148,7 +146,6 @@ export default function CTA({ data }: CTAProps) {
               return (
               <Link key={index} href={button.href}>
                 <PremiumButton size="lg" variant={mappedVariant}>
-                  {index === 0 && <ArrowRight className="mr-2 h-5 w-5 transition-transform group-hover:translate-x-1" />}
                   {index === 1 && <FileText className="mr-2 h-5 w-5" />}
                   {button.text}
                   {index === 0 && <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />}
@@ -158,8 +155,9 @@ export default function CTA({ data }: CTAProps) {
           </div>
 
           {/* Certification badges with subtle animation */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
-            {certifications.map((cert, index) => {
+          {certifications.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
+              {certifications.map((cert, index) => {
               const Icon = iconMap[cert.icon] || Activity;
               const isFirstBadge = index === 0 && cert.icon === 'Clock';
 
@@ -187,19 +185,22 @@ export default function CTA({ data }: CTAProps) {
                 </motion.div>
               );
             })}
-          </div>
+            </div>
+          )}
 
           {/* Client trust indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1, transition: { delay: prefersReducedMotion ? 0 : 0.5, duration: prefersReducedMotion ? 0 : 1 } }}
-            viewport={getViewportConfig()}
-            className="mt-12 flex justify-center"
-          >
-            <div className="text-xs text-slate-500">
-              {trustMessage}
-            </div>
-          </motion.div>
+          {trustMessage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1, transition: { delay: prefersReducedMotion ? 0 : 0.5, duration: prefersReducedMotion ? 0 : 1 } }}
+              viewport={getViewportConfig()}
+              className="mt-12 flex justify-center"
+            >
+              <div className="text-xs text-slate-500">
+                {trustMessage}
+              </div>
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </section>

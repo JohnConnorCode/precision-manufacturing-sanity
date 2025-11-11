@@ -375,6 +375,7 @@ export async function getHomepage(preview = false) {
       backgroundColor,
       titleColor,
       badgeColor,
+      additionalSeriesText,
       featuredSeries[] {
         _key,
         title,
@@ -406,7 +407,22 @@ export async function getHomepage(preview = false) {
         }
       }
     },
-    cta
+    cta {
+      title,
+      subtitle,
+      badge,
+      certifications[] {
+        icon,
+        text
+      },
+      trustMessage,
+      buttons[] {
+        text,
+        href,
+        variant,
+        enabled
+      }
+    }
   }`
 
   return await getClient(preview).fetch(query)

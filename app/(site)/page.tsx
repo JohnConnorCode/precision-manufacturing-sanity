@@ -14,18 +14,19 @@ import {
   generateProductCatalogSchema,
   generateFAQSchema
 } from '@/lib/structured-data';
-import { getAllServices, getAllIndustries, getHomepage } from '@/sanity/lib/queries';
+import { getAllServices, getAllIndustries, getHomepage, getSiteSettings } from '@/sanity/lib/queries';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 
 // Use ISR for automatic updates when Sanity content changes
 export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function Home() {
-  // Parallel data fetching - 3x faster than sequential
-  const [servicesData, industriesData, homepageData] = await Promise.all([
+  // Parallel data fetching - 4x faster than sequential
+  const [servicesData, industriesData, homepageData, siteSettings] = await Promise.all([
     getAllServices(),
     getAllIndustries(),
-    getHomepage()
+    getHomepage(),
+    getSiteSettings()
   ]);
 
   // Format data for display
@@ -45,30 +46,31 @@ export default async function Home() {
 
   const heroData = homepageData?.heroEnhanced || homepageData?.hero || undefined;
 
-  // Organization data for structured markup
+  // Organization data for structured markup - from Sanity CMS with fallbacks
   const organizationData = {
-    name: "Integrated Inspection Systems (IIS)",
-    alternateName: "IIS",
-    url: "https://iismet.com",
+    name: siteSettings?.company?.name || "Integrated Inspection Systems (IIS)",
+    alternateName: siteSettings?.company?.alternateName || "IIS",
+    url: siteSettings?.company?.websiteUrl || "https://iismet.com",
     logo: "https://iismet.com/logo.png",
-    description: "Engineering, Metrology, Machining & Database Services since 1995. AS9100 & ISO 9001 certified precision machining and CMM inspection services. Proprietary MetBase® software for closed-loop data integration. ITAR registered. First article inspection, dimensional measurement, and process verification for aerospace, defense & manufacturing.",
-    foundingDate: "1995",
+    description: siteSettings?.company?.description || "Engineering, Metrology, Machining & Database Services since 1995. AS9100 & ISO 9001 certified precision machining and CMM inspection services. Proprietary MetBase® software for closed-loop data integration. ITAR registered. First article inspection, dimensional measurement, and process verification for aerospace, defense & manufacturing.",
+    foundingDate: siteSettings?.company?.foundingYear || "1995",
     address: {
-      streetAddress: "14310 SE Industrial Way",
-      addressLocality: "Clackamas",
-      addressRegion: "Oregon",
-      postalCode: "97015",
+      streetAddress: siteSettings?.contact?.address || "14310 SE Industrial Way",
+      addressLocality: siteSettings?.contact?.city || "Clackamas",
+      addressRegion: siteSettings?.contact?.state || "Oregon",
+      postalCode: siteSettings?.contact?.zip || "97015",
       addressCountry: "US"
     },
     contactPoint: {
-      telephone: "+1-503-231-9093",
-      email: "officemgr@iismet.com",
+      telephone: siteSettings?.contact?.phone || "+1-503-231-9093",
+      email: siteSettings?.contact?.email || "officemgr@iismet.com",
       contactType: "customer service"
     },
     sameAs: [
-      "https://www.linkedin.com/company/integrated-inspection-systems",
-      "https://twitter.com/iismet"
-    ]
+      siteSettings?.social?.linkedin,
+      siteSettings?.social?.twitter,
+      siteSettings?.social?.facebook
+    ].filter(Boolean) // Remove empty values
   };
 
   // Generate all structured data schemas

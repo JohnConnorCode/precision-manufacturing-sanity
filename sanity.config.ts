@@ -35,7 +35,7 @@ export default defineConfig({
         },
       },
       resolve: {
-        mainDocuments: async (prev, context) => {
+        mainDocuments: async (prev: any, context: any) => {
           // Fetch collections in parallel
           const [services, industries, resources, teamMembers, jobPostings] = await Promise.all([
             context.documentStore.listenQuery('*[_type == "service"] | order(order asc) [0...10]', {}, { perspective: 'drafts' }),
@@ -121,7 +121,7 @@ export default defineConfig({
         },
         locations: locate as any,
       },
-    }),
+    } as any),
     structureTool({
       structure,
     }),
