@@ -27,9 +27,9 @@ const defaultNavigation = [
     href: '/services',
     children: [
       { name: '5-Axis Machining', href: '/services/5-axis-machining', description: 'Complex geometries with precision' },
-      { name: 'Adaptive Machining', href: '/services/adaptive-machining', description: 'Real-time process adjustments' },
-      { name: 'Metrology & Inspection', href: '/services/metrology', description: 'Complete dimensional verification' },
-      { name: 'Engineering Support', href: '/services/engineering', description: 'Design for manufacturability' },
+      { name: 'Adaptive Machining', href: '/services/adaptive-machining-technology', description: 'Real-time process adjustments' },
+      { name: 'Metrology & Inspection', href: '/services/precision-metrology', description: 'Complete dimensional verification' },
+      { name: 'Engineering Support', href: '/services/comprehensive-engineering-services', description: 'Design for manufacturability' },
     ],
   },
   {

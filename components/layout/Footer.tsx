@@ -15,16 +15,16 @@ const defaultFooterData = {
     certifications: 'ISO 9001:2015 • AS9100D • ITAR Registered'
   },
   social: {
-    linkedin: '#',
-    twitter: '#',
-    facebook: '#'
+    linkedin: '',
+    twitter: '',
+    facebook: ''
   },
   servicesLinks: [
-    { label: 'Machining', href: '/services' },
-    { label: 'Inspection', href: '/services' },
-    { label: 'Fixture Design', href: '/services' },
-    { label: 'Metrology', href: '/services' },
-    { label: 'Metbase®', href: '/services' }
+    { label: '5-Axis Machining', href: '/services/5-axis-machining' },
+    { label: 'Adaptive Machining', href: '/services/adaptive-machining-technology' },
+    { label: 'Metrology & Inspection', href: '/services/precision-metrology' },
+    { label: 'Engineering Services', href: '/services/comprehensive-engineering-services' },
+    { label: 'All Services', href: '/services' }
   ],
   resourcesLinks: [
     { label: 'All Resources', href: '/resources' },
@@ -78,9 +78,9 @@ const Footer = ({ data }: FooterProps) => {
   const footerData = {
     company: data?.company || defaultFooterData.company,
     social: {
-      linkedin: data?.social?.linkedin || '#',
-      twitter: data?.social?.twitter || '#',
-      facebook: data?.social?.facebook || '#'
+      linkedin: data?.social?.linkedin || '',
+      twitter: data?.social?.twitter || '',
+      facebook: data?.social?.facebook || ''
     },
     servicesLinks: mapLinks(data?.servicesLinks),
     resourcesLinks: mapLinks(data?.resourcesLinks),
@@ -169,15 +169,21 @@ const Footer = ({ data }: FooterProps) => {
               {footerData.company.description}
             </p>
             <div className="flex space-x-4">
-              <Link href={footerData.social.linkedin} aria-label="LinkedIn">
-                <Linkedin className="h-5 w-5 text-slate-400 hover:text-blue-600 transition-colors" />
-              </Link>
-              <Link href={footerData.social.twitter} aria-label="Twitter">
-                <Twitter className="h-5 w-5 text-slate-400 hover:text-blue-600 transition-colors" />
-              </Link>
-              <Link href={footerData.social.facebook} aria-label="Facebook">
-                <Facebook className="h-5 w-5 text-slate-400 hover:text-blue-600 transition-colors" />
-              </Link>
+              {footerData.social.linkedin && footerData.social.linkedin !== '#' && footerData.social.linkedin !== '' && (
+                <Link href={footerData.social.linkedin} aria-label="LinkedIn">
+                  <Linkedin className="h-5 w-5 text-slate-400 hover:text-blue-600 transition-colors" />
+                </Link>
+              )}
+              {footerData.social.twitter && footerData.social.twitter !== '#' && footerData.social.twitter !== '' && (
+                <Link href={footerData.social.twitter} aria-label="Twitter">
+                  <Twitter className="h-5 w-5 text-slate-400 hover:text-blue-600 transition-colors" />
+                </Link>
+              )}
+              {footerData.social.facebook && footerData.social.facebook !== '#' && footerData.social.facebook !== '' && (
+                <Link href={footerData.social.facebook} aria-label="Facebook">
+                  <Facebook className="h-5 w-5 text-slate-400 hover:text-blue-600 transition-colors" />
+                </Link>
+              )}
             </div>
           </motion.div>
 

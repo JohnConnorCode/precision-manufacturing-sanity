@@ -4,12 +4,13 @@ import { motion } from 'framer-motion';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { ArrowRight, FileText, Shield, Award, Activity, Clock, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
+import SectionHeader from '@/components/ui/section-header';
 import { colorStyleToCSS, getBackgroundColor, paddingToClass, ColorStyle } from '@/lib/sanity-styles';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { getInitialState, getAnimateState, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { colors } from '@/lib/design-system';
-import { LinearGridBackground } from '@/lib/background-patterns';
+import { DotGridBackground } from '@/lib/background-patterns';
 
 interface CTAData {
   title?: string;
@@ -63,9 +64,11 @@ interface CTAProps {
 
 export default function CTA({ data }: CTAProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
-  const title = data?.title || 'Start Your Precision Manufacturing Project';
+  // Ensure title and subtitle are plain strings (handle stega encoding from Presentation Tool)
+  const rawTitle = data?.title || 'Start Your Precision Manufacturing Project';
+  const title = (typeof rawTitle === 'string' ? rawTitle : String(rawTitle || 'Start Your Precision Manufacturing Project'));
   const rawSubtitle = data?.subtitle || 'From prototype to production, we deliver AS9100D-certified precision components with tolerances to ±0.0001" for aerospace, defense, and medical applications.';
-  const subtitle = portableTextToPlainText(rawSubtitle) || rawSubtitle;
+  const subtitle = portableTextToPlainText(rawSubtitle) || (typeof rawSubtitle === 'string' ? rawSubtitle : String(rawSubtitle));
   const buttons = (Array.isArray(data?.buttons) ? data.buttons : [
     { text: 'Get Quote', href: '/contact', variant: 'default' as const },
     { text: 'Technical Specifications', href: '/compliance/supplier-requirements', variant: 'secondary' as const }
@@ -79,10 +82,12 @@ export default function CTA({ data }: CTAProps) {
   const titleColor = colorStyleToCSS(data?.titleColor) || colors.raw.white;
   const subtitleColor = colorStyleToCSS(data?.subtitleColor) || colors.raw.slate400;
 
-  // Extract badge, certifications, and trust message from Sanity
-  const badge = data?.badge || '';
+  // Extract badge, certifications, and trust message from Sanity (ensure strings)
+  const rawBadge = data?.badge || '';
+  const badge = typeof rawBadge === 'string' ? rawBadge : String(rawBadge || '');
   const certifications = Array.isArray(data?.certifications) ? data.certifications : [];
-  const trustMessage = data?.trustMessage || '';
+  const rawTrustMessage = data?.trustMessage || '';
+  const trustMessage = typeof rawTrustMessage === 'string' ? rawTrustMessage : String(rawTrustMessage || '');
 
   // Icon lookup for certification badges
   const iconMap: Record<string, LucideIcon> = {
@@ -100,13 +105,19 @@ export default function CTA({ data }: CTAProps) {
         ...(defaultBgColor && { backgroundColor: defaultBgColor }),
       }}
     >
-      {/* Simplified background - subtle grid + accent */}
+      {/* Animated background pattern */}
       <div className="absolute inset-0">
-        {/* Subtle static grid */}
-        <LinearGridBackground />
+        {/* Animated dot grid background */}
+        <DotGridBackground
+          color="rgba(59, 130, 246, 0.5)"
+          spacing={40}
+          dotPosition={1}
+          opacity={0.1}
+        />
 
-        {/* Subtle accent glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full filter blur-3xl" />
+        {/* Accent glow effects */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full filter blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-600/10 rounded-full filter blur-3xl" />
       </div>
 
       <div className="container relative z-10">
@@ -116,26 +127,15 @@ export default function CTA({ data }: CTAProps) {
           viewport={getViewportConfig()}
           className="max-w-4xl mx-auto text-center"
         >
-          {/* Precision indicator */}
-          {badge && (
-            <motion.div
-              initial={getScaleInitialState(prefersReducedMotion)}
-              whileInView={getScaleAnimateState(0, 0.5, prefersReducedMotion)}
-              viewport={getViewportConfig()}
-              className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-blue-600/20 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 backdrop-blur-sm"
-            >
-              <Activity className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
-              <span className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">{badge}</span>
-            </motion.div>
-          )}
-
-          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: titleColor }}>
-            {title}
-          </h2>
-
-          <p className="text-lg mb-10 max-w-2xl mx-auto" style={{ color: subtitleColor }}>
-            {subtitle}
-          </p>
+          {/* Section Header with gradient text */}
+          <SectionHeader
+            eyebrow={badge}
+            heading={title}
+            gradientWordPosition="last"
+            description={subtitle}
+            centered={true}
+            className="[&_h2]:text-white [&_p]:text-slate-300 [&_p]:text-lg mb-10"
+          />
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             {buttons.map((button, index) => {
