@@ -45,12 +45,7 @@ const fallbackShowcaseImages = [
 ];
 
 // Fallback stats (color will be applied from theme)
-const fallbackStats = [
-  { iconName: 'Award', value: 'AS9100D', label: 'Certified Quality' },
-  { iconName: 'Shield', value: 'ITAR', label: 'Registered' },
-  { iconName: 'Clock', value: '24/7', label: 'Production' },
-  { iconName: 'Target', value: '±0.0001"', label: 'Tolerance' }
-];
+const fallbackStats: ShowcaseStat[] = [];
 
 // Fallback header
 const fallbackHeader = {
@@ -160,8 +155,9 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20">
-          {stats.map((stat: ShowcaseStat, index: number) => {
+        {stats.length > 0 && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20">
+            {stats.map((stat: ShowcaseStat, index: number) => {
             const Icon = iconMap[stat.iconName] || Award;
             const statDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
@@ -184,7 +180,8 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
               </motion.div>
             );
           })}
-        </div>
+          </div>
+        )}
 
         {/* Call to Action */}
         {showcaseData?.cta && (
