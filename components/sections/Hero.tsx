@@ -178,7 +178,7 @@ export default function Hero({ data }: HeroProps) {
       {/* Overlay if enabled */}
       {overlayStyle && <div style={overlayStyle} />}
 
-      {/* Content Container */}
+      {/* Content Container - Parallax only applies AFTER initial animations */}
       <motion.div
         style={{ y: textY, opacity: textOpacity }}
         className="container relative z-10 px-6 md:px-8 -mt-8 lg:mt-0"
@@ -186,14 +186,14 @@ export default function Hero({ data }: HeroProps) {
         <div className="max-w-5xl mx-auto">
           <div className="text-center">
 
-            {/* Three-Word Hero Title - Sequential Animation */}
+            {/* Three-Word Hero Title - Clean Sequential Animation */}
             <div className="mb-4">
               {/* Word 1 */}
               {word1 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: prefersReducedMotion ? 0 : 0.6, ease: "easeOut" }}
+                  transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
                     color: titleColor,
@@ -208,7 +208,7 @@ export default function Hero({ data }: HeroProps) {
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: prefersReducedMotion ? 0 : 0.4, duration: prefersReducedMotion ? 0 : 0.6, ease: "easeOut" }}
+                  transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
                     color: titleColor,
@@ -223,7 +223,7 @@ export default function Hero({ data }: HeroProps) {
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: prefersReducedMotion ? 0 : 0.6, duration: prefersReducedMotion ? 0 : 0.6, ease: "easeOut" }}
+                  transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={
                     titleHighlightColor
@@ -247,16 +247,16 @@ export default function Hero({ data }: HeroProps) {
 
             {/* Tagline */}
             <motion.h1
-              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
+              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: prefersReducedMotion ? 0 : 0.8, duration: prefersReducedMotion ? 0 : 0.8, ease: "easeOut" }}
+              transition={{ delay: 0.9, duration: 0.5, ease: "easeOut" }}
               className="text-lg sm:text-xl md:text-2xl font-light leading-[1.3] tracking-normal mb-8"
               style={{ color: descriptionColor }}
             >
               {tagline}
             </motion.h1>
 
-            {/* Capabilities - Sequentially Animated Badges */}
+            {/* Capabilities - Clean Sequential Badges */}
             <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-12 max-w-3xl mx-auto">
               {badges.map((badge, index) => {
                 const badgeStyle: React.CSSProperties = {
@@ -266,21 +266,20 @@ export default function Hero({ data }: HeroProps) {
                 if (badgeBgColor) {
                   badgeStyle.backgroundColor = badgeBgColor;
                 } else {
-                  // Default gradient if no custom bg color
                   badgeStyle.backgroundImage = 'linear-gradient(to right, rgba(37, 99, 235, 0.2), rgba(79, 70, 229, 0.2))';
                 }
 
                 return (
                   <motion.span
-                    key={badge}
+                    key={`${badge}-${index}`}
                     initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      delay: prefersReducedMotion ? 0 : 0.9 + (index * 0.08),
-                      duration: prefersReducedMotion ? 0 : 0.4,
+                      delay: 1.2 + (index * 0.1),
+                      duration: 0.4,
                       ease: "easeOut"
                     }}
-                    className="px-3 md:px-5 py-1.5 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold border backdrop-blur-md hover:opacity-80 transition-all duration-300 whitespace-nowrap"
+                    className="px-3 md:px-5 py-1.5 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold border backdrop-blur-md whitespace-nowrap"
                     style={badgeStyle}
                   >
                     {badge}
@@ -289,41 +288,34 @@ export default function Hero({ data }: HeroProps) {
               })}
             </div>
 
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: prefersReducedMotion ? 0 : 1.1, duration: prefersReducedMotion ? 0 : 0.8, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap"
-            >
-              {ctaPrimary && ctaPrimary.text && (
-                <motion.div
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
+            {/* CTA Button - Single Clean Animation */}
+            {ctaPrimary && ctaPrimary.text && (
+              <motion.div
+                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.8, duration: 0.5, ease: "easeOut" }}
+              >
+                <Button
+                  size="lg"
+                  className="group font-semibold px-10 h-14 text-lg rounded-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                  style={
+                    Object.keys(primaryButtonStyles.style).length > 0
+                      ? primaryButtonStyles.style
+                      : {
+                          backgroundImage: 'linear-gradient(to right, #2563eb, #3b82f6, #4f46e5)',
+                          color: '#ffffff',
+                          boxShadow: 'rgba(37, 99, 235, 0.25) 0px 0px 20px, rgba(37, 99, 235, 0.15) 0px 8px 16px'
+                        }
+                  }
+                  asChild
                 >
-                  <Button
-                    size="lg"
-                    className="group font-semibold px-10 h-14 text-lg rounded-lg"
-                    style={
-                      Object.keys(primaryButtonStyles.style).length > 0
-                        ? primaryButtonStyles.style
-                        : {
-                            backgroundImage: 'linear-gradient(to right, #2563eb, #3b82f6, #4f46e5)',
-                            color: '#ffffff',
-                            boxShadow: 'rgba(37, 99, 235, 0.25) 0px 0px 20px, rgba(37, 99, 235, 0.15) 0px 8px 16px'
-                          }
-                    }
-                    asChild
-                  >
-                    <Link href={ctaPrimary.href}>
-                      {ctaPrimary.text}
-                      <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                  </Button>
-                </motion.div>
-              )}
-            </motion.div>
+                  <Link href={ctaPrimary.href}>
+                    {ctaPrimary.text}
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+              </motion.div>
+            )}
 
           </div>
         </div>
@@ -333,7 +325,7 @@ export default function Hero({ data }: HeroProps) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: prefersReducedMotion ? 0 : 1.9, duration: prefersReducedMotion ? 0 : 0.8, ease: "easeOut" }}
+        transition={{ delay: 2.2, duration: 0.5, ease: "easeOut" }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >
         <motion.div
