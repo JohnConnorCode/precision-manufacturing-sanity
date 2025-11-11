@@ -5,12 +5,15 @@ import { Card } from '@/components/ui/card';
 import { Cog, Cpu, Gauge, Users, ArrowRight, CheckCircle, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import AnimatedSection from '@/components/ui/animated-section';
+import SectionHeader from '@/components/ui/section-header';
 import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientTextStyle, getPrimaryColorStyle, hexToRgba } from '@/lib/theme-utils';
+import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { Service, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
+import { DotGridBackground } from '@/lib/background-patterns';
 
 // Icon mapping for CMS data
 const iconMap: Record<string, LucideIcon> = {
@@ -61,14 +64,8 @@ const fallbackServices = [
 ];
 
 interface ServicesProps {
-  data?: any;
-  sectionData?: {
-    eyebrow?: string;
-    heading?: string;
-    headingWord1?: string;
-    headingWord2?: string;
-    description?: string;
-    subdescription?: string;
+  data?: Service[];
+  sectionData?: SectionHeaderData & {
     header?: {
       eyebrow?: string;
       heading?: string;
@@ -96,59 +93,29 @@ export default function Services({ data, sectionData }: ServicesProps) {
   return (
     <section className={`relative ${spacing.section} overflow-hidden ${colors.bgLight}`}>
       {/* Subtle Background Pattern */}
-      <div className="absolute inset-0 opacity-[0.03]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgb(15 23 42) 1px, transparent 1px)`,
-            backgroundSize: '40px 40px'
-          }}
-        />
-      </div>
+      <DotGridBackground spacing={40} dotPosition={1} />
 
       <div className={`${spacing.containerWide} relative z-10`}>
-        <AnimatedSection className={`text-center ${spacing.headingBottom}`}>
-          {/* Section Context */}
-          <p className={`${typography.eyebrow} ${colors.textMedium} mb-4`}>
-            {eyebrow}
-          </p>
-
-          <h2 className={`${typography.sectionHeading} mb-6`}>
-            <motion.span
-              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: 0.5, ease: "easeOut" }}
-              className="inline-block mr-3"
-            >
-              {headingWord1}
-            </motion.span>
-            {' '}
-            <motion.span
-              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: prefersReducedMotion ? 0 : 0.4, duration: 0.5, ease: "easeOut" }}
-              className="inline-block"
-              style={getGradientTextStyle(theme.colors)}
-            >
-              {headingWord2}
-            </motion.span>
-          </h2>
-
-          <p className={`${typography.descriptionMuted} max-w-3xl mx-auto`}>
-            {portableTextToPlainText(description) || description}
-          </p>
-        </AnimatedSection>
+        <SectionHeader
+          eyebrow={eyebrow}
+          word1={headingWord1}
+          word2={headingWord2}
+          description={description}
+        />
 
         <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ${spacing.grid}`}>
-          {displayServices.map((service: any, index: number) => {
+          {displayServices.map((service: Service, index: number) => {
             // Handle both CMS data (iconName) and hardcoded data (icon)
             const Icon = service.iconName ? (iconMap[service.iconName] || Cog) : (service.icon || Cog);
+            const cardDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
+
             return (
-              <AnimatedSection
+              <motion.div
                 key={service.title}
-                delay={index * 0.1}
+                initial={getInitialState(prefersReducedMotion)}
+                whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
                 className="group perspective-1000"
               >
                 <Link href={service.href} className="block h-full">
@@ -226,11 +193,11 @@ export default function Services({ data, sectionData }: ServicesProps) {
                       </p>
 
                       <ul className="space-y-2 mb-5">
-                        {(service.specs || []).map((spec: any, index: number) => {
+                        {(service.specs || []).map((spec, specIndex: number) => {
                           // Handle both string and object formats
                           const specText = typeof spec === 'string' ? spec : (spec.text || spec.spec);
                           return (
-                            <li key={index} className="flex items-start text-xs text-slate-800">
+                            <li key={specIndex} className="flex items-start text-xs text-slate-800">
                               <CheckCircle className="h-3 w-3 mr-2 mt-0.5 flex-shrink-0" style={getPrimaryColorStyle(theme.colors)} />
                               <span>{specText}</span>
                             </li>
@@ -253,13 +220,18 @@ export default function Services({ data, sectionData }: ServicesProps) {
                   </Card>
                   </motion.div>
                 </Link>
-              </AnimatedSection>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Call to Action */}
-        <AnimatedSection className="text-center mt-16 md:mt-20" delay={0.5}>
+        <motion.div
+          initial={getInitialState(prefersReducedMotion)}
+          whileInView={getAnimateState(0.5, 0.6, prefersReducedMotion)}
+          viewport={getViewportConfig()}
+          className="text-center mt-16 md:mt-20"
+        >
           <Link
             href="/contact"
             className={`inline-flex items-center h-12 px-8 bg-gradient-to-r ${colors.primaryGradient} hover:${colors.primaryGradientHover} text-white font-semibold ${borderRadius.button} transition-all duration-300 shadow-lg hover:shadow-xl`}
@@ -267,7 +239,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
             Get Quote
             <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
-        </AnimatedSection>
+        </motion.div>
       </div>
     </section>
   );

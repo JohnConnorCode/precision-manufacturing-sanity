@@ -2,17 +2,30 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { BookOpen, ArrowRight, Clock, GraduationCap, TrendingUp } from 'lucide-react';
+import { BookOpen, ArrowRight, Clock, GraduationCap, TrendingUp, LucideIcon } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
+import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { ResourcesData, ResourceSeries, ResourceBenefit } from '@/lib/types/cms';
+import { DotGridBackground } from '@/lib/background-patterns';
+
+// Icon mapping for CMS data
+const iconMap: Record<string, LucideIcon> = {
+  BookOpen,
+  GraduationCap,
+  TrendingUp,
+};
 
 interface ResourcesProps {
-  data?: any;
+  data?: ResourcesData;
 }
 
 export default function Resources({ data }: ResourcesProps) {
   const theme = useTheme();
+  const prefersReducedMotion = usePrefersReducedMotion();
   // ALL content must come from Sanity CMS
   if (!data || !data.header || !data.featuredSeries) {
     return null;
@@ -22,63 +35,32 @@ export default function Resources({ data }: ResourcesProps) {
   return (
     <section className="relative py-24 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgb(59, 130, 246) 1px, transparent 0)`,
-          backgroundSize: '40px 40px'
-        }} />
-      </div>
+      <DotGridBackground color="rgb(59, 130, 246)" spacing={40} dotPosition={1} opacity={0.05} />
 
       <div className="container relative z-10">
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border mb-6"
-            style={{
-              background: `linear-gradient(to right, ${hexToRgba(theme.colors.primary, 0.1)}, ${hexToRgba(theme.colors.secondary, 0.1)})`,
-              borderColor: hexToRgba(theme.colors.primary, 0.2)
-            }}
-          >
-            <GraduationCap className="w-4 h-4" style={{ color: hexToRgba(theme.colors.primary, 0.8) }} />
-            <span className="text-sm font-medium text-transparent bg-clip-text" style={getGradientTextStyle(theme.colors)}>
-              {resourcesData.header.badge}
-            </span>
-          </motion.div>
-
-          <motion.h2
-            initial={{ opacity: 1, y: 0 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-white"
-          >
-            {resourcesData.header.title}
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 1, y: 0 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed"
-          >
-            {resourcesData.header.description}
-          </motion.p>
+        <div className="mb-16">
+          <SectionHeader
+            eyebrow={resourcesData.header.badge}
+            heading={resourcesData.header.title}
+            gradientWordPosition="last"
+            description={resourcesData.header.description}
+            className="[&_h2]:text-white [&_p]:text-slate-300 [&_p]:text-xl"
+          />
         </div>
 
         {/* Featured Series Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {resourcesData.featuredSeries.map((series: any, index: number) => (
-            <div key={`${series.slug}-${index}`}>
-              <Link href={`/resources/series/${series.slug}`}>
-                <motion.article
-                  initial={{ opacity: 1, y: 0 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+          {resourcesData.featuredSeries.map((series: ResourceSeries, index: number) => {
+            const cardDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
+
+            return (
+              <div key={`${series.slug}-${index}`}>
+                <Link href={`/resources/series/${series.slug}`}>
+                  <motion.article
+                    initial={getInitialState(prefersReducedMotion)}
+                    whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
+                    viewport={viewportConfig}
                   className="group h-full bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                   style={{
                     '--hover-border-color': hexToRgba(theme.colors.primary, 0.5),
@@ -141,16 +123,16 @@ export default function Resources({ data }: ResourcesProps) {
                   </div>
                 </motion.article>
               </Link>
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
 
         {/* Additional Series & CTA */}
         <motion.div
-          initial={{ opacity: 1, y: 0 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.6 }}
+          initial={getInitialState(prefersReducedMotion)}
+          whileInView={getAnimateState(0.4, 0.6, prefersReducedMotion)}
+          viewport={getViewportConfig()}
           className="border rounded-2xl p-8 md:p-12"
           style={{
             background: `linear-gradient(to right, ${hexToRgba(theme.colors.primary, 0.1)}, ${hexToRgba(theme.colors.secondary, 0.1)}, ${hexToRgba(theme.colors.primary, 0.1)})`,
@@ -171,7 +153,7 @@ export default function Resources({ data }: ResourcesProps) {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
-                {resourcesData.cta.buttons.filter((button: any) => button.enabled !== false).map((button: any, index: number) => (
+                {resourcesData.cta.buttons.filter(button => button.enabled !== false).map((button, index: number) => (
                   <Link key={button.text} href={button.href}>
                     <PremiumButton size="lg" variant={button.variant === 'primary' ? 'default' : 'secondary'}>
                       {index === 0 && <BookOpen className="w-5 h-5" />}
@@ -186,20 +168,17 @@ export default function Resources({ data }: ResourcesProps) {
         {/* Benefits Grid */}
         {resourcesData.benefits && resourcesData.benefits.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-            {resourcesData.benefits.filter((benefit: any) => benefit.enabled !== false).map((benefit: any, index: number) => {
-              // Icon mapping for CMS data
-              const IconComponent = benefit.iconName === 'BookOpen' ? BookOpen :
-                                   benefit.iconName === 'GraduationCap' ? GraduationCap :
-                                   benefit.iconName === 'TrendingUp' ? TrendingUp :
-                                   BookOpen;
+            {resourcesData.benefits.filter(benefit => benefit.enabled !== false).map((benefit: ResourceBenefit, index: number) => {
+              const IconComponent = (benefit.iconName && iconMap[benefit.iconName]) || BookOpen;
+              const benefitDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
+              const viewportConfig = getViewportConfig();
 
               return (
                 <motion.div
                   key={benefit.title || index}
-                  initial={{ opacity: 1, y: 0 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  initial={getInitialState(prefersReducedMotion)}
+                  whileInView={getAnimateState(benefitDelay, 0.6, prefersReducedMotion)}
+                  viewport={viewportConfig}
                   className="text-center p-6 bg-slate-900/30 rounded-xl border border-slate-800/50"
                 >
                   <div

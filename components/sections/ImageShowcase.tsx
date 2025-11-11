@@ -2,17 +2,20 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
-import { ArrowRight, Award, Shield, Clock, Target } from 'lucide-react';
+import { ArrowRight, Award, Shield, Clock, Target, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRef } from 'react';
-import AnimatedSection from '@/components/ui/animated-section';
+import SectionHeader from '@/components/ui/section-header';
 import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { SECTION_CONFIGS, getInitialState, getAnimateState, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { ImageShowcaseData, ShowcaseImage, ShowcaseStat } from '@/lib/types/cms';
 
 // Icon mapping for stats
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   Award,
   Shield,
   Clock,
@@ -58,11 +61,12 @@ const fallbackHeader = {
 };
 
 interface ImageShowcaseProps {
-  data?: any;
+  data?: ImageShowcaseData;
 }
 
 export default function ImageShowcase({ data }: ImageShowcaseProps) {
   const theme = useTheme();
+  const prefersReducedMotion = usePrefersReducedMotion();
   // Hooks must be called before early return
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -70,15 +74,15 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
     offset: ["start end", "end start"]
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.5, 1, 1, 0.5]);
-  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.95, 1, 1, 0.95]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], prefersReducedMotion ? [1, 1, 1, 1] : [0.5, 1, 1, 0.5]);
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], prefersReducedMotion ? [1, 1, 1, 1] : [0.95, 1, 1, 0.95]);
 
   // Use CMS data or fallback
   const showcaseData = data || {};
   const header = showcaseData?.header || fallbackHeader;
 
-  // Check both showcaseImages and images fields, filter out items without src
-  const rawImages = showcaseData?.showcaseImages || showcaseData?.images || [];
+  // Check showcaseImages field, filter out items without src
+  const rawImages = showcaseData?.showcaseImages || [];
   const validImages = rawImages.filter((img: any) => img?.src && img.src.trim() !== '');
   const showcaseImages = validImages.length > 0 ? validImages : fallbackShowcaseImages;
 
@@ -92,27 +96,27 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         style={{ opacity, scale }}
         className={`${spacing.containerWide} relative z-10`}>
         {/* Section Header */}
-        <AnimatedSection className={`text-center ${spacing.headingBottom}`}>
-          <p className={`${typography.eyebrow} ${colors.textMedium} mb-4`}>
-            {header.eyebrow}
-          </p>
-          <h2 className={`${typography.sectionHeading} mb-6`}>
-            <span className={colors.textDark}>{header.title}</span>
-            <span className="text-transparent bg-clip-text" style={getGradientTextStyle(theme.colors)}> {header.titleHighlight}</span>
-          </h2>
-          <p className={`${typography.descriptionMuted} max-w-3xl mx-auto`}>
-            {portableTextToPlainText(header.description) || header.description}
-          </p>
-        </AnimatedSection>
+        <SectionHeader
+          eyebrow={header.eyebrow}
+          word1={header.title}
+          word2={header.titleHighlight}
+          description={header.description}
+        />
 
         {/* Large Feature Images */}
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} mb-20`}>
-          {showcaseImages.map((item: any, index: number) => (
-            <AnimatedSection
-              key={item.title}
-              delay={index * 0.1}
-              className="group"
-            >
+          {showcaseImages.map((item: ShowcaseImage, index: number) => {
+            const imageDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
+
+            return (
+              <motion.div
+                key={item.title}
+                initial={getInitialState(prefersReducedMotion)}
+                whileInView={getAnimateState(imageDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
+                className="group"
+              >
               <Link href={item.href} className="block relative">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
@@ -150,31 +154,24 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                   </div>
                 </motion.div>
               </Link>
-            </AnimatedSection>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Stats Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20"
-        >
-          {stats.map((stat: any, index: number) => {
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20">
+          {stats.map((stat: ShowcaseStat, index: number) => {
             const Icon = iconMap[stat.iconName] || Award;
+            const statDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
+
             return (
               <motion.div
                 key={stat.label}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{
-                  delay: 0.3 + index * 0.1,
-                  duration: 0.6,
-                  ease: [0.25, 0.1, 0.25, 1]
-                }}
+                initial={getScaleInitialState(prefersReducedMotion)}
+                whileInView={getScaleAnimateState(statDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
                 className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <Icon className="h-8 w-8 mx-auto mb-3" style={{ color: theme.colors.primary }} />
@@ -187,15 +184,14 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
 
         {/* Call to Action */}
         {showcaseData?.cta && (
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            initial={getInitialState(prefersReducedMotion)}
+            whileInView={getAnimateState(0.4, 0.8, prefersReducedMotion)}
+            viewport={getViewportConfig()}
             className="text-center"
           >
             <div className="inline-flex flex-col items-center p-8 md:p-12 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-2xl">
@@ -206,7 +202,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                 {showcaseData.cta.description}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                {(showcaseData.cta.buttons || []).filter((button: any) => button.enabled !== false).map((button: any, index: number) => (
+                {(showcaseData.cta.buttons || []).filter(button => button.enabled !== false).map((button, index: number) => (
                 <Link
                   key={button.text}
                   href={button.href}

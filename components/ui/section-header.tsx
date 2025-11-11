@@ -1,0 +1,210 @@
+"use client";
+
+import { motion } from 'framer-motion';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { useTheme } from '@/lib/contexts/ThemeContext';
+import { getGradientTextStyle } from '@/lib/theme-utils';
+import { typography, spacing, colors } from '@/lib/design-system';
+import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import { HEADER_SEQUENCE, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
+
+interface SectionHeaderProps {
+  /**
+   * Optional eyebrow text (small text above heading)
+   */
+  eyebrow?: string;
+
+  /**
+   * First word of heading (regular color)
+   */
+  word1?: string;
+
+  /**
+   * Second word of heading (gradient color)
+   */
+  word2?: string;
+
+  /**
+   * Alternative: Single heading string (will be used if word1/word2 not provided)
+   */
+  heading?: string;
+
+  /**
+   * Which word to apply gradient to when using single heading
+   * @default 'last'
+   */
+  gradientWordPosition?: 'first' | 'last' | number;
+
+  /**
+   * Description text below heading
+   */
+  description?: string;
+
+  /**
+   * Center align the text
+   * @default true
+   */
+  centered?: boolean;
+
+  /**
+   * Additional CSS classes
+   */
+  className?: string;
+
+  /**
+   * Maximum width for description text
+   * @default 'max-w-3xl'
+   */
+  descriptionMaxWidth?: string;
+}
+
+/**
+ * Reusable section header component with consistent sequential animations.
+ *
+ * Features:
+ * - Sequential animation: eyebrow → word1 → word2 → description
+ * - Gradient text on second word for visual consistency
+ * - Respects reduced motion preferences
+ * - Uses theme colors from ThemeContext
+ * - Supports both two-word structure and single heading with gradient word
+ *
+ * Usage:
+ * ```tsx
+ * <SectionHeader
+ *   eyebrow="OUR SERVICES"
+ *   word1="PRECISION"
+ *   word2="MANUFACTURING"
+ *   description="Industry-leading capabilities backed by decades of expertise"
+ * />
+ * ```
+ *
+ * Or with single heading:
+ * ```tsx
+ * <SectionHeader
+ *   eyebrow="OUR SERVICES"
+ *   heading="PRECISION MANUFACTURING"
+ *   gradientWordPosition="last"
+ *   description="Industry-leading capabilities backed by decades of expertise"
+ * />
+ * ```
+ */
+export default function SectionHeader({
+  eyebrow,
+  word1,
+  word2,
+  heading,
+  gradientWordPosition = 'last',
+  description,
+  centered = true,
+  className = '',
+  descriptionMaxWidth = 'max-w-3xl',
+}: SectionHeaderProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const theme = useTheme();
+  const viewportConfig = getViewportConfig();
+
+  // Handle single heading string with gradient word
+  let displayWord1 = word1;
+  let displayWord2 = word2;
+
+  if (!word1 && !word2 && heading) {
+    const words = heading.split(' ');
+    if (words.length === 1) {
+      // Single word - apply gradient to it
+      displayWord1 = '';
+      displayWord2 = words[0];
+    } else if (gradientWordPosition === 'first') {
+      displayWord1 = words[0];
+      displayWord2 = words.slice(1).join(' ');
+    } else if (gradientWordPosition === 'last') {
+      displayWord1 = words.slice(0, -1).join(' ');
+      displayWord2 = words[words.length - 1];
+    } else if (typeof gradientWordPosition === 'number') {
+      const index = gradientWordPosition;
+      displayWord1 = words.slice(0, index).join(' ');
+      displayWord2 = words.slice(index).join(' ');
+    } else {
+      // Default: split in middle
+      const mid = Math.floor(words.length / 2);
+      displayWord1 = words.slice(0, mid).join(' ');
+      displayWord2 = words.slice(mid).join(' ');
+    }
+  }
+
+  const alignmentClass = centered ? 'text-center' : 'text-left';
+  const descriptionAlignClass = centered ? 'mx-auto' : '';
+
+  return (
+    <div className={`${alignmentClass} ${spacing.headingBottom} ${className}`}>
+      {/* Eyebrow */}
+      {eyebrow && (
+        <motion.p
+          initial={getInitialState(prefersReducedMotion)}
+          whileInView={getAnimateState(
+            HEADER_SEQUENCE.eyebrow.delay,
+            HEADER_SEQUENCE.eyebrow.duration,
+            prefersReducedMotion
+          )}
+          viewport={viewportConfig}
+          className={`${typography.eyebrow} ${colors.textMedium} mb-4`}
+        >
+          {eyebrow}
+        </motion.p>
+      )}
+
+      {/* Heading with Sequential Word Animation */}
+      {(displayWord1 || displayWord2) && (
+        <h2 className={`${typography.sectionHeading} mb-6`}>
+          {displayWord1 && (
+            <>
+              <motion.span
+                initial={getInitialState(prefersReducedMotion)}
+                whileInView={getAnimateState(
+                  HEADER_SEQUENCE.word1.delay,
+                  HEADER_SEQUENCE.word1.duration,
+                  prefersReducedMotion
+                )}
+                viewport={viewportConfig}
+                className="inline-block"
+              >
+                {displayWord1}
+              </motion.span>
+              {displayWord2 && ' '}
+            </>
+          )}
+          {displayWord2 && (
+            <motion.span
+              initial={getInitialState(prefersReducedMotion)}
+              whileInView={getAnimateState(
+                HEADER_SEQUENCE.word2.delay,
+                HEADER_SEQUENCE.word2.duration,
+                prefersReducedMotion
+              )}
+              viewport={viewportConfig}
+              className="inline-block text-transparent bg-clip-text"
+              style={getGradientTextStyle(theme.colors)}
+            >
+              {displayWord2}
+            </motion.span>
+          )}
+        </h2>
+      )}
+
+      {/* Description */}
+      {description && (
+        <motion.p
+          initial={getInitialState(prefersReducedMotion)}
+          whileInView={getAnimateState(
+            HEADER_SEQUENCE.description.delay,
+            HEADER_SEQUENCE.description.duration,
+            prefersReducedMotion
+          )}
+          viewport={viewportConfig}
+          className={`${typography.descriptionMuted} ${descriptionMaxWidth} ${descriptionAlignClass}`}
+        >
+          {portableTextToPlainText(description) || description}
+        </motion.p>
+      )}
+    </div>
+  );
+}

@@ -2,19 +2,13 @@
 
 import { motion } from 'framer-motion';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
+import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, getGradientTextStyle } from '@/lib/theme-utils';
-
-interface StatsData {
-  title?: string;
-  subtitle?: string;
-  stats?: Array<{
-    value: string;
-    label: string;
-    description?: string;
-    icon?: string;
-  }>;
-}
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { SECTION_CONFIGS, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { StatsData, StatItem } from '@/lib/types/cms';
+import { DotGridBackground } from '@/lib/background-patterns';
 
 interface StatsProps {
   data?: StatsData;
@@ -29,14 +23,16 @@ const defaultStats = [
 
 export default function Stats({ data }: StatsProps) {
   const theme = useTheme();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Use CMS data or fallback to defaults
   // Handle both old format (data.stats as array) and new format (data.items as array)
-  const statsArray = (data as any)?.items || data?.stats;
-  const stats = statsArray ? statsArray.map((stat: any) => {
+  const statsArray = data?.items || data?.stats;
+  const stats = statsArray ? statsArray.map((stat: StatItem) => {
     // Parse numeric value from string for animation
-    const numValue = parseFloat(stat.value.replace(/[^0-9.-]/g, ''));
-    const suffix = stat.value.replace(/[0-9.-]/g, '');
+    const valueStr = String(stat.value);
+    const numValue = parseFloat(valueStr.replace(/[^0-9.-]/g, ''));
+    const suffix = valueStr.replace(/[0-9.-]/g, '');
     return {
       value: numValue,
       suffix: suffix || '',
@@ -52,44 +48,33 @@ export default function Stats({ data }: StatsProps) {
   return (
     <section className="py-20 md:py-24 bg-gradient-to-b from-slate-100 to-white relative overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-[0.03]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, rgb(15 23 42) 1px, transparent 1px)',
-            backgroundSize: '32px 32px'
-          }}
-        />
-      </div>
+      <DotGridBackground />
 
       <div className="container relative z-10">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
-        >
-          <p className="text-sm font-bold text-transparent bg-clip-text uppercase tracking-[0.2em] mb-2" style={getGradientStyle(theme.colors)}>
-            {subtitle}
-          </p>
-          <h2 className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">
-            {title}
-          </h2>
-        </motion.div>
+        <div className="mb-12">
+          <SectionHeader
+            eyebrow={subtitle}
+            heading={title}
+            gradientWordPosition="last"
+            className="[&_p]:uppercase"
+          />
+        </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((stat: any, index: number) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="text-center"
-            >
+          {stats.map((stat, index: number) => {
+            const statDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
+
+            return (
+              <motion.div
+                key={index}
+                initial={getScaleInitialState(prefersReducedMotion)}
+                whileInView={getScaleAnimateState(statDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
+                className="text-center"
+              >
               <div className="relative inline-block mb-3">
                 <div className="absolute inset-0 rounded-full blur-xl opacity-20" style={getGradientStyle(theme.colors)} />
                 <div className="relative bg-white rounded-2xl p-6 shadow-lg">
@@ -107,8 +92,9 @@ export default function Stats({ data }: StatsProps) {
               <p className="text-sm font-semibold text-slate-600 uppercase tracking-wider">
                 {stat.label}
               </p>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
