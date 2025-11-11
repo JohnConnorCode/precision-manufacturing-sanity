@@ -41,7 +41,20 @@ export default {
             { name: 'descriptionSize', type: 'string', title: 'Description Size', options: { list: [
               { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' }, { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }
             ] } },
-            { name: 'backgroundImage', type: 'image', title: 'Background Image', options: { hotspot: true } },
+            {
+              name: 'backgroundImage',
+              type: 'image',
+              title: 'Background Image',
+              options: { hotspot: true },
+              fields: [
+                {
+                  name: 'alt',
+                  type: 'string',
+                  title: 'Alternative Text',
+                  validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility'),
+                },
+              ],
+            },
             { name: 'backgroundImageUrl', type: 'url', title: 'Background Image URL (optional)' },
             { name: 'buttons', type: 'array', title: 'Buttons', of: [{ type: 'object', fields: [
               { name: 'label', type: 'string' },
@@ -85,7 +98,20 @@ export default {
           { name: 'descriptionSize', type: 'string', title: 'Description Size', options: { list: [
             { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' }, { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }
           ] } },
-          { name: 'backgroundImage', type: 'image', options: { hotspot: true } },
+          {
+            name: 'backgroundImage',
+            type: 'image',
+            title: 'Background Image',
+            options: { hotspot: true },
+            fields: [
+              {
+                name: 'alt',
+                type: 'string',
+                title: 'Alternative Text',
+                validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility'),
+              },
+            ],
+          },
           { name: 'backgroundImageUrl', type: 'url', title: 'Background Image URL (optional)' },
           { name: 'buttons', type: 'array', of: [{ type: 'object', fields: [
             { name: 'label', type: 'string' },
@@ -165,7 +191,15 @@ export default {
           name: 'backgroundImage',
           type: 'image',
           title: 'Background Image',
-          options: {hotspot: true},
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility'),
+            },
+          ],
         },
         {
           name: 'backgroundImageUrl',
@@ -238,6 +272,14 @@ export default {
               type: 'image',
               title: 'Background Image',
               options: { hotspot: true },
+              fields: [
+                {
+                  name: 'alt',
+                  type: 'string',
+                  title: 'Alternative Text',
+                  validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility'),
+                },
+              ],
             },
             {
               name: 'backgroundImageUrl',
@@ -272,7 +314,20 @@ export default {
           ],
         },
         { name: 'qualityIntro', type: 'text', title: 'Quality Intro', rows: 3 },
-        { name: 'qualityImage', type: 'image', title: 'Quality Image', options: { hotspot: true } },
+        {
+          name: 'qualityImage',
+          type: 'image',
+          title: 'Quality Image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility'),
+            },
+          ],
+        },
         { name: 'qualityImageUrl', type: 'url', title: 'Quality Image URL (optional)' },
         {
           name: 'cta',
@@ -351,7 +406,15 @@ export default {
           type: 'image',
           title: 'Social Share Image',
           description: 'Image shown when shared on social media (1200x630px recommended)',
-          options: {hotspot: true},
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility'),
+            },
+          ],
         },
       ],
     },

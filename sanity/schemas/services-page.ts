@@ -3,6 +3,14 @@ export default {
   type: 'document',
   title: 'Services Page',
   __experimental_singleton: true,
+  preview: {
+    prepare() {
+      return {
+        title: 'Services Page',
+        subtitle: 'Overview of all manufacturing services and capabilities',
+      }
+    },
+  },
   groups: [
     { name: 'hero', title: 'Hero Section', default: true },
     { name: 'content', title: 'Main Content' },

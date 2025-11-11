@@ -4,6 +4,14 @@ export default {
   type: 'document',
   title: 'Terms & Conditions',
   __experimental_singleton: true,
+  preview: {
+    prepare() {
+      return {
+        title: 'Terms & Conditions',
+        subtitle: 'Legal terms, policies, and user agreements',
+      }
+    },
+  },
   groups: [
     {name: 'content', title: 'Content', default: true},
     {name: 'seo', title: 'SEO & Sharing'},

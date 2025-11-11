@@ -4,6 +4,14 @@ export default {
   type: 'document',
   title: 'Homepage',
   __experimental_singleton: true,
+  preview: {
+    prepare() {
+      return {
+        title: 'Homepage',
+        subtitle: 'Hero, stats, showcase, resources, and CTA sections',
+      }
+    },
+  },
   groups: [
     {name: 'hero', title: 'Hero', default: true},
     {name: 'services', title: 'Services & Industries'},

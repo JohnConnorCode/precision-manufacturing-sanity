@@ -4,6 +4,14 @@ export default {
   type: 'document',
   title: 'Supplier Requirements',
   __experimental_singleton: true,
+  preview: {
+    prepare() {
+      return {
+        title: 'Supplier Requirements',
+        subtitle: 'Quality standards and compliance requirements for suppliers',
+      }
+    },
+  },
   groups: [
     {name: 'hero', title: 'Hero', default: true},
     {name: 'content', title: 'Content'},

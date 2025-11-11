@@ -91,7 +91,21 @@ export default {
       fields: [
         { name: 'metaTitle', type: 'string', title: 'Meta Title', fieldset: 'meta' },
         { name: 'metaDescription', type: 'text', rows: 3, title: 'Meta Description', fieldset: 'meta' },
-        { name: 'ogImage', type: 'image', title: 'OpenGraph Image', fieldset: 'social', options: { hotspot: true } },
+        {
+          name: 'ogImage',
+          type: 'image',
+          title: 'OpenGraph Image',
+          fieldset: 'social',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility'),
+            },
+          ],
+        },
       ]
     }
   ],

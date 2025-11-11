@@ -3,6 +3,14 @@ export default {
   type: 'document',
   title: 'Industries Page',
   __experimental_singleton: true,
+  preview: {
+    prepare() {
+      return {
+        title: 'Industries Page',
+        subtitle: 'Aerospace, defense, energy, and other industry solutions',
+      }
+    },
+  },
   groups: [
     { name: 'hero', title: 'Hero Section', default: true },
     { name: 'content', title: 'Main Content' },

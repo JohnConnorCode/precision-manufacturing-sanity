@@ -19,12 +19,14 @@ export default {
     select: {
       title: 'name',
       subtitle: 'title',
-      media: 'photo'
+      media: 'photo',
+      published: 'published'
     },
     prepare(selection: any) {
-      const {title, subtitle, media} = selection
+      const {title, subtitle, media, published} = selection
+      const status = published === false ? ' (HIDDEN)' : ''
       return {
-        title: title,
+        title: `${title}${status}`,
         subtitle: subtitle,
         media: media
       }
@@ -85,6 +87,14 @@ export default {
           validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
         }
       ]
+    },
+    {
+      name: 'published',
+      type: 'boolean',
+      title: 'Published',
+      description: 'Controls whether this team member appears on the website. Uncheck to hide without deleting.',
+      group: 'display',
+      initialValue: true,
     },
     {
       name: 'order',
