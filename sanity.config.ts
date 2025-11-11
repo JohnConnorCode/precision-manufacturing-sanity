@@ -34,6 +34,12 @@ export default defineConfig({
       resolve: {
         locations: locate as any,
       },
+      // Allow both localhost and Vercel preview URLs
+      allowOrigins: [
+        'http://localhost:3000',
+        'https://precision-manufacturing-sanity.vercel.app',
+        'https://*.vercel.app', // Allow all Vercel preview deployments
+      ],
     }),
     structureTool({
       structure,
