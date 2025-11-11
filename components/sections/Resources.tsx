@@ -10,6 +10,13 @@ import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-u
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 
+// Icon mapping for CMS data
+const iconMap: Record<string, any> = {
+  BookOpen,
+  GraduationCap,
+  TrendingUp,
+};
+
 interface ResourcesProps {
   data?: any;
 }
@@ -126,10 +133,9 @@ export default function Resources({ data }: ResourcesProps) {
 
         {/* Additional Series & CTA */}
         <motion.div
-          initial={{ opacity: 1, y: 0 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.6 }}
+          initial={getInitialState(prefersReducedMotion)}
+          whileInView={getAnimateState(0.4, 0.6, prefersReducedMotion)}
+          viewport={getViewportConfig()}
           className="border rounded-2xl p-8 md:p-12"
           style={{
             background: `linear-gradient(to right, ${hexToRgba(theme.colors.primary, 0.1)}, ${hexToRgba(theme.colors.secondary, 0.1)}, ${hexToRgba(theme.colors.primary, 0.1)})`,
@@ -166,19 +172,16 @@ export default function Resources({ data }: ResourcesProps) {
         {resourcesData.benefits && resourcesData.benefits.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {resourcesData.benefits.filter((benefit: any) => benefit.enabled !== false).map((benefit: any, index: number) => {
-              // Icon mapping for CMS data
-              const IconComponent = benefit.iconName === 'BookOpen' ? BookOpen :
-                                   benefit.iconName === 'GraduationCap' ? GraduationCap :
-                                   benefit.iconName === 'TrendingUp' ? TrendingUp :
-                                   BookOpen;
+              const IconComponent = iconMap[benefit.iconName] || BookOpen;
+              const benefitDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
+              const viewportConfig = getViewportConfig();
 
               return (
                 <motion.div
                   key={benefit.title || index}
-                  initial={{ opacity: 1, y: 0 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  initial={getInitialState(prefersReducedMotion)}
+                  whileInView={getAnimateState(benefitDelay, 0.6, prefersReducedMotion)}
+                  viewport={viewportConfig}
                   className="text-center p-6 bg-slate-900/30 rounded-xl border border-slate-800/50"
                 >
                   <div

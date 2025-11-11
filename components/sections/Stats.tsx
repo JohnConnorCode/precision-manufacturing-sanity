@@ -6,7 +6,7 @@ import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, getGradientTextStyle } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
-import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { SECTION_CONFIGS, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
 
 interface StatsData {
   title?: string;
@@ -86,8 +86,8 @@ export default function Stats({ data }: StatsProps) {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.8 }}
-                whileInView={{ opacity: 1, scale: 1, transition: { delay: prefersReducedMotion ? 0 : statDelay, duration: prefersReducedMotion ? 0 : 0.6, ease: [0.25, 0.1, 0.25, 1] as any } }}
+                initial={getScaleInitialState(prefersReducedMotion)}
+                whileInView={getScaleAnimateState(statDelay, 0.6, prefersReducedMotion)}
                 viewport={viewportConfig}
                 className="text-center"
               >

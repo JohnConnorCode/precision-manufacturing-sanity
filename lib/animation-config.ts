@@ -175,6 +175,35 @@ export function getAnimateState(
 }
 
 /**
+ * Get initial state for scale animations (like stats)
+ */
+export function getScaleInitialState(prefersReducedMotion: boolean = false) {
+  return {
+    opacity: 0,
+    scale: prefersReducedMotion ? 1 : 0.8,
+  };
+}
+
+/**
+ * Get animate state for scale animations
+ */
+export function getScaleAnimateState(
+  delay: number,
+  duration: number = DURATIONS.slow,
+  prefersReducedMotion: boolean = false
+) {
+  return {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delay: prefersReducedMotion ? 0 : delay,
+      duration: prefersReducedMotion ? 0 : duration,
+      ease: EASING as any,
+    },
+  };
+}
+
+/**
  * Create viewport configuration for scroll-triggered animations
  */
 export function getViewportConfig(once: boolean = true, margin: string = "-100px") {

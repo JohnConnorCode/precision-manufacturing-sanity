@@ -11,7 +11,7 @@ import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/li
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
-import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { SECTION_CONFIGS, getInitialState, getAnimateState, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
 
 // Icon mapping for stats
 const iconMap: Record<string, any> = {
@@ -154,26 +154,18 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         </div>
 
         {/* Stats Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20"
-        >
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20">
           {stats.map((stat: any, index: number) => {
             const Icon = iconMap[stat.iconName] || Award;
+            const statDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
+
             return (
               <motion.div
                 key={stat.label}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{
-                  delay: 0.3 + index * 0.1,
-                  duration: 0.6,
-                  ease: [0.25, 0.1, 0.25, 1]
-                }}
+                initial={getScaleInitialState(prefersReducedMotion)}
+                whileInView={getScaleAnimateState(statDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
                 className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <Icon className="h-8 w-8 mx-auto mb-3" style={{ color: theme.colors.primary }} />
@@ -186,7 +178,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
 
         {/* Call to Action */}
         {showcaseData?.cta && (
