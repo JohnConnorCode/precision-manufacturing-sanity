@@ -35,12 +35,6 @@ export default defineConfig({
         },
       },
       locate,
-      mainDocuments: [
-        { id: 'homepage', type: 'homepage', title: 'Homepage' },
-        { id: 'about', type: 'about', title: 'About Page' },
-        { id: 'contact', type: 'contact', title: 'Contact Page' },
-        { id: 'careers', type: 'careers', title: 'Careers Page' },
-      ],
     }),
     structureTool({
       structure,

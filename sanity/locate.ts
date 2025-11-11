@@ -1,11 +1,9 @@
-import { DocumentLocationsState } from 'sanity/presentation'
+import { DocumentLocationsState, DocumentLocationResolver } from 'sanity/presentation'
+import { map } from 'rxjs'
 
 // Enhanced locate function for Presentation Tool (Visual Editing)
 // This enables editors to preview content in real-time as they edit
-export async function locate(
-  params: { id: string; type: string },
-  context: any
-): Promise<DocumentLocationsState | null> {
+export const locate: DocumentLocationResolver = (params, context) => {
   // Homepage
   if (params.type === 'homepage') {
     return {
@@ -36,25 +34,26 @@ export async function locate(
 
   // Individual Services - appear on services page and their own detail page
   if (params.type === 'service') {
-    const doc = await context.documentStore.listenQuery(
+    return context.documentStore.listenQuery(
       `*[_type == "service" && _id == $id][0]{ slug }`,
       { id: params.id },
       { perspective: 'drafts' }
+    ).pipe(
+      map((doc: any) => ({
+        message: 'This service appears on the services page and has its own detail page',
+        tone: 'positive' as const,
+        locations: [
+          {
+            title: 'Services Overview',
+            href: '/services',
+          },
+          ...(doc?.slug?.current ? [{
+            title: 'Service Detail Page',
+            href: `/services/${doc.slug.current}`,
+          }] : []),
+        ],
+      }))
     )
-    return {
-      message: 'This service appears on the services page and has its own detail page',
-      tone: 'positive',
-      locations: [
-        {
-          title: 'Services Overview',
-          href: '/services',
-        },
-        ...(doc?.slug?.current ? [{
-          title: 'Service Detail Page',
-          href: `/services/${doc.slug.current}`,
-        }] : []),
-      ],
-    }
   }
 
   // Industries Overview Page
@@ -73,48 +72,50 @@ export async function locate(
 
   // Individual Industries - appear on industries page and their own detail page
   if (params.type === 'industry') {
-    const doc = await context.documentStore.listenQuery(
+    return context.documentStore.listenQuery(
       `*[_type == "industry" && _id == $id][0]{ slug }`,
       { id: params.id },
       { perspective: 'drafts' }
+    ).pipe(
+      map((doc: any) => ({
+        message: 'This industry appears on the industries page and has its own detail page',
+        tone: 'positive' as const,
+        locations: [
+          {
+            title: 'Industries Overview',
+            href: '/industries',
+          },
+          ...(doc?.slug?.current ? [{
+            title: 'Industry Detail Page',
+            href: `/industries/${doc.slug.current}`,
+          }] : []),
+        ],
+      }))
     )
-    return {
-      message: 'This industry appears on the industries page and has its own detail page',
-      tone: 'positive',
-      locations: [
-        {
-          title: 'Industries Overview',
-          href: '/industries',
-        },
-        ...(doc?.slug?.current ? [{
-          title: 'Industry Detail Page',
-          href: `/industries/${doc.slug.current}`,
-        }] : []),
-      ],
-    }
   }
 
   // Resources (articles) - appear on resources page and their own detail page
   if (params.type === 'resource') {
-    const doc = await context.documentStore.listenQuery(
+    return context.documentStore.listenQuery(
       `*[_type == "resource" && _id == $id][0]{ slug }`,
       { id: params.id },
       { perspective: 'drafts' }
+    ).pipe(
+      map((doc: any) => ({
+        message: 'This resource appears in the resources section',
+        tone: 'positive' as const,
+        locations: [
+          {
+            title: 'Resources Overview',
+            href: '/resources',
+          },
+          ...(doc?.slug?.current ? [{
+            title: 'Resource Detail Page',
+            href: `/resources/${doc.slug.current}`,
+          }] : []),
+        ],
+      }))
     )
-    return {
-      message: 'This resource appears in the resources section',
-      tone: 'positive',
-      locations: [
-        {
-          title: 'Resources Overview',
-          href: '/resources',
-        },
-        ...(doc?.slug?.current ? [{
-          title: 'Resource Detail Page',
-          href: `/resources/${doc.slug.current}`,
-        }] : []),
-      ],
-    }
   }
 
   // Team Members - appear on about page
@@ -133,25 +134,26 @@ export async function locate(
 
   // Job Postings - appear on careers page and their own detail page
   if (params.type === 'jobPosting') {
-    const doc = await context.documentStore.listenQuery(
+    return context.documentStore.listenQuery(
       `*[_type == "jobPosting" && _id == $id][0]{ slug }`,
       { id: params.id },
       { perspective: 'drafts' }
+    ).pipe(
+      map((doc: any) => ({
+        message: 'This job posting appears on the careers page',
+        tone: 'positive' as const,
+        locations: [
+          {
+            title: 'Careers Page',
+            href: '/careers',
+          },
+          ...(doc?.slug?.current ? [{
+            title: 'Job Detail Page',
+            href: `/careers/${doc.slug.current}`,
+          }] : []),
+        ],
+      }))
     )
-    return {
-      message: 'This job posting appears on the careers page',
-      tone: 'positive',
-      locations: [
-        {
-          title: 'Careers Page',
-          href: '/careers',
-        },
-        ...(doc?.slug?.current ? [{
-          title: 'Job Detail Page',
-          href: `/careers/${doc.slug.current}`,
-        }] : []),
-      ],
-    }
   }
 
   // Custom Pages

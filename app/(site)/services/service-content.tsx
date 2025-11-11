@@ -136,11 +136,11 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     viewport={{ once: true }}
                   >
                     <Card className={cn(styles.featureCard, 'group h-full overflow-hidden')}>
-                      {offering.image && (
+                      {offering.image?.asset?.url && (
                         <div className="relative h-64 overflow-hidden">
                           <ParallaxImagePro
-                            src={offering.image}
-                            alt={offering.title}
+                            src={offering.image.asset.url}
+                            alt={offering.image.alt || offering.title}
                             className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                             speed={0.2}
                           />
