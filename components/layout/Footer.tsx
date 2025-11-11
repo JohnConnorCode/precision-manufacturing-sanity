@@ -66,14 +66,31 @@ interface FooterProps {
 
 const Footer = ({ data }: FooterProps) => {
   // Use CMS data if available, otherwise fall back to hardcoded defaults
-  // Properly merge each property to handle empty objects
+  // Map Sanity field names (text) to expected field names (label)
+  const mapLinks = (links: any[] | undefined) => {
+    if (!links) return defaultFooterData.servicesLinks;
+    return links.map(link => ({
+      label: link.text || link.label || '',
+      href: link.href || '#'
+    }));
+  };
+
   const footerData = {
     company: data?.company || defaultFooterData.company,
-    social: data?.social || defaultFooterData.social,
-    servicesLinks: data?.servicesLinks || defaultFooterData.servicesLinks,
-    resourcesLinks: data?.resourcesLinks || defaultFooterData.resourcesLinks,
-    quickLinks: data?.quickLinks || defaultFooterData.quickLinks,
-    contact: data?.contact || defaultFooterData.contact,
+    social: {
+      linkedin: data?.social?.linkedin || '#',
+      twitter: data?.social?.twitter || '#',
+      facebook: data?.social?.facebook || '#'
+    },
+    servicesLinks: mapLinks(data?.servicesLinks),
+    resourcesLinks: mapLinks(data?.resourcesLinks),
+    quickLinks: mapLinks(data?.quickLinks),
+    contact: {
+      email: data?.contact?.email || defaultFooterData.contact.email,
+      phone: data?.contact?.phone || defaultFooterData.contact.phone,
+      phoneLink: data?.contact?.phone ? `tel:+1${data.contact.phone.replace(/\D/g, '')}` : defaultFooterData.contact.phoneLink,
+      address: data?.contact?.address || defaultFooterData.contact.address
+    },
     copyright: data?.copyright || defaultFooterData.copyright
   };
   const [isVisible, setIsVisible] = useState(false);

@@ -84,6 +84,21 @@ export default {
       validation: (Rule: any) => Rule.min(100).max(200).warning('Should be between 100-200 characters for optimal display'),
     },
     {
+      name: 'icon',
+      type: 'string',
+      title: 'Icon Name',
+      description: 'Lucide icon name (e.g., "Cog", "Cpu", "Ruler", "Wrench")',
+      group: 'general',
+    },
+    {
+      name: 'fullDescription',
+      type: 'text',
+      title: 'Full Description',
+      description: 'Detailed description of the service',
+      group: 'general',
+      rows: 5,
+    },
+    {
       name: 'description',
       type: 'array',
       title: 'Description',

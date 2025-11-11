@@ -68,10 +68,14 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
     image: ({ value }: any) => {
       if (!value?.asset) return null
 
+      // Don't render if URL is empty
+      const imageUrl = value.url || value.asset?.url;
+      if (!imageUrl) return null;
+
       return (
         <div className="my-8">
           <Image
-            src={value.url || 'https://via.placeholder.com/1200x800'}
+            src={imageUrl}
             alt={value.alt || 'Resource image'}
             width={1200}
             height={800}

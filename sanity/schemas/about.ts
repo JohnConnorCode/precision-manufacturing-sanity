@@ -4,6 +4,14 @@ export default {
   type: 'document',
   title: 'About Page',
   __experimental_singleton: true,
+  preview: {
+    prepare() {
+      return {
+        title: 'About Page',
+        subtitle: 'Our story, values, and leadership team',
+      }
+    },
+  },
   groups: [
     {name: 'hero', title: 'Hero', default: true},
     {name: 'statsStory', title: 'Story & Stats'},

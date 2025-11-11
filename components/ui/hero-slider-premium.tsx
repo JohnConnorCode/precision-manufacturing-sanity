@@ -71,20 +71,22 @@ export default function HeroSliderPremium({
         style={{ y, scale }}
       >
         <div className="relative w-full h-full">
-          <Image
-            src={slides[currentIndex].src}
-            alt={slides[currentIndex].alt}
-            fill
-            className={cn(
-              "object-cover",
-              getFocalPosition(slides[currentIndex].focal)
-            )}
-            priority
-            quality={85}
-            sizes="100vw"
-            placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k="
-          />
+          {slides[currentIndex]?.src && (
+            <Image
+              src={slides[currentIndex].src}
+              alt={slides[currentIndex].alt}
+              fill
+              className={cn(
+                "object-cover",
+                getFocalPosition(slides[currentIndex].focal)
+              )}
+              priority
+              quality={85}
+              sizes="100vw"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k="
+            />
+          )}
 
           {/* Subtle Ken Burns effect */}
           <motion.div
@@ -106,7 +108,7 @@ export default function HeroSliderPremium({
 
       {/* Next Image (preloaded and ready) */}
       <AnimatePresence>
-        {isTransitioning && (
+        {isTransitioning && slides[nextIndex]?.src && (
           <motion.div
             className="absolute inset-0 w-full h-[115%] -top-[7.5%]"
             style={{ y, scale }}

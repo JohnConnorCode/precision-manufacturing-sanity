@@ -4,6 +4,14 @@ export default {
   title: 'UI Text',
   icon: () => '💬',
   __experimental_singleton: true,
+  preview: {
+    prepare() {
+      return {
+        title: 'UI Text',
+        subtitle: 'Global button labels and section text',
+      }
+    },
+  },
   groups: [
     {name: 'buttons', title: 'Button Text', default: true},
     {name: 'sections', title: 'Section Text'},

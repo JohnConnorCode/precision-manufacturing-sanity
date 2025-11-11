@@ -38,6 +38,9 @@ export default function ParallaxImagePro({
   const { scrollY } = useScroll();
   const isInView = useInView(containerRef, { once: true, margin: '100px' });
 
+  // Don't render if src is empty
+  if (!src) return null;
+
   const y = useTransform(scrollY, (value) => {
     if (!containerRef.current) return 0;
     const rect = containerRef.current.getBoundingClientRect();

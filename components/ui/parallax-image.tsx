@@ -29,6 +29,9 @@ export default function ParallaxImage({
     offset: ["start end", "end start"]
   });
 
+  // Don't render if src is empty
+  if (!src) return null;
+
   const y = useTransform(scrollYProgress, [0, 1], [-100 * speed, 100 * speed]);
   const scaleProgress = useTransform(scrollYProgress, [0, 0.5, 1], scale ? [0.8, 1, 0.8] : [1, 1, 1]);
   const opacityProgress = useTransform(scrollYProgress, [0, 0.5, 1], opacity ? [0.5, 1, 0.5] : [1, 1, 1]);

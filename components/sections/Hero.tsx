@@ -7,7 +7,6 @@ import Link from 'next/link';
 import HeroSliderFixed from '@/components/ui/hero-slider-fixed';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { colorStyleToCSS, getOverlayStyles, getButtonStyles, ColorStyle } from '@/lib/sanity-styles';
-import { colors } from '@/lib/design-system';
 
 interface HeroData {
   // Three-word structure (new)
@@ -24,7 +23,7 @@ interface HeroData {
   ctaSecondary?: { text: string; href: string };
   ctaTertiary?: { text: string; href: string };
   slides?: Array<{
-    image: string;
+    image: string | { asset?: { url?: string }; url?: string; alt?: string };
     alt: string;
     focal: 'center' | 'top' | 'bottom';
   }>;
@@ -96,14 +95,33 @@ export default function Hero({ data }: HeroProps) {
     }
   ];
 
-  // Use CMS data or fallback
+  // Use CMS data or fallback - filter out empty images
   const heroSlides = (data?.slides && data.slides.length > 0)
-    ? data.slides.map(slide => ({
-        src: slide.image,
-        alt: slide.alt,
-        focal: slide.focal
-      }))
+    ? data.slides
+        .map(slide => {
+          // Handle both string URLs and Sanity image objects
+          const imageUrl = typeof slide.image === 'string'
+            ? slide.image
+            : slide.image?.asset?.url || slide.image?.url;
+
+          // Get alt text - handle both string and object types
+          const imageAlt = typeof slide.image === 'string'
+            ? ''
+            : slide.image?.alt || '';
+
+          return {
+            src: imageUrl || '',
+            alt: slide.alt || imageAlt || '',
+            focal: slide.focal || 'center'
+          };
+        })
+        .filter((slide): slide is { src: string; alt: string; focal: 'center' | 'top' | 'bottom' } =>
+          slide.src !== '' && slide.src.trim() !== ''
+        )
     : fallbackSlides;
+
+  // Ensure we have at least one slide, fallback if all filtered out
+  const finalSlides = (heroSlides && heroSlides.length > 0) ? heroSlides : fallbackSlides;
 
   // Support three-word structure (new) or legacy single-title (old)
   let word1 = data?.word1 || 'PRECISION';
@@ -118,7 +136,7 @@ export default function Hero({ data }: HeroProps) {
     // word3 stays as is if data.word3 not provided
   }
 
-  const heroFontSize = data?.heroFontSize || 'text-[2rem] sm:text-[2.5rem] md:text-[3.25rem] lg:text-[4rem]';
+  const heroFontSize = data?.heroFontSize || 'text-[3rem] sm:text-[4rem] md:text-[5rem] lg:text-[6rem] xl:text-[7rem]';
   const tagline = data?.tagline || 'Innovative Precision Machining & Manufacturing Excellence Since 1995';
 
   // Handle both string badges and object badges from Sanity, with fallbacks
@@ -140,13 +158,13 @@ export default function Hero({ data }: HeroProps) {
   const ctaTertiary = null; // Hidden - reference site shows only 1 button
 
   // Extract styles from Sanity data
-  const titleColor = colorStyleToCSS(data?.titleColor) || colors.raw.white_alpha90;
+  const titleColor = colorStyleToCSS(data?.titleColor) || 'rgba(255, 255, 255, 0.9)';
   const titleHighlightColor = colorStyleToCSS(data?.titleHighlightColor);
-  const descriptionColor = colorStyleToCSS(data?.descriptionColor) || colors.raw.white_alpha95;
+  const descriptionColor = colorStyleToCSS(data?.descriptionColor) || 'rgba(255, 255, 255, 0.95)';
 
-  const badgeTextColor = colorStyleToCSS(data?.badgeStyle?.textColor) || colors.raw.white;
+  const badgeTextColor = colorStyleToCSS(data?.badgeStyle?.textColor) || '#ffffff';
   const badgeBgColor = colorStyleToCSS(data?.badgeStyle?.backgroundColor);
-  const badgeBorderColor = colorStyleToCSS(data?.badgeStyle?.borderColor) || colors.raw.blue600_alpha50;
+  const badgeBorderColor = colorStyleToCSS(data?.badgeStyle?.borderColor) || 'rgba(96, 165, 250, 0.3)';
 
   const overlayStyle = getOverlayStyles(data?.overlay);
   const primaryButtonStyles = getButtonStyles(data?.buttonStyles?.primaryButton);
@@ -155,7 +173,7 @@ export default function Hero({ data }: HeroProps) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 lg:pt-0">
       {/* Premium Background Slider */}
-      <HeroSliderFixed slides={heroSlides} />
+      <HeroSliderFixed slides={finalSlides} />
 
       {/* Overlay if enabled */}
       {overlayStyle && <div style={overlayStyle} />}
@@ -179,7 +197,7 @@ export default function Hero({ data }: HeroProps) {
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
                     color: titleColor,
-                    filter: `drop-shadow(0 2px 8px ${colors.raw.blue600_alpha25})`
+                    filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
                   }}
                 >
                   {word1}
@@ -194,7 +212,7 @@ export default function Hero({ data }: HeroProps) {
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
                     color: titleColor,
-                    filter: `drop-shadow(0 2px 8px ${colors.raw.blue600_alpha25})`
+                    filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
                   }}
                 >
                   {word2}
@@ -211,14 +229,14 @@ export default function Hero({ data }: HeroProps) {
                     titleHighlightColor
                       ? {
                           color: titleHighlightColor,
-                          filter: `drop-shadow(0 2px 8px ${colors.raw.blue600_alpha25})`
+                          filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
                         }
                       : {
-                          background: `linear-gradient(to right, ${colors.raw.blue500}, ${colors.raw.indigo600})`,
+                          background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
                           WebkitBackgroundClip: 'text',
                           WebkitTextFillColor: 'transparent',
                           backgroundClip: 'text',
-                          filter: `drop-shadow(0 2px 8px ${colors.raw.blue600_alpha25})`
+                          filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
                         }
                   }
                 >
@@ -249,7 +267,7 @@ export default function Hero({ data }: HeroProps) {
                   badgeStyle.backgroundColor = badgeBgColor;
                 } else {
                   // Default gradient if no custom bg color
-                  badgeStyle.backgroundImage = `linear-gradient(to right, ${colors.raw.blue600_alpha20}, ${colors.raw.indigo600_alpha20})`;
+                  badgeStyle.backgroundImage = 'linear-gradient(to right, rgba(37, 99, 235, 0.2), rgba(79, 70, 229, 0.2))';
                 }
 
                 return (
@@ -258,7 +276,7 @@ export default function Hero({ data }: HeroProps) {
                     initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      delay: prefersReducedMotion ? 0 : 1.0 + (index * 0.08),
+                      delay: prefersReducedMotion ? 0 : 0.9 + (index * 0.08),
                       duration: prefersReducedMotion ? 0 : 0.4,
                       ease: "easeOut"
                     }}
@@ -291,9 +309,9 @@ export default function Hero({ data }: HeroProps) {
                       Object.keys(primaryButtonStyles.style).length > 0
                         ? primaryButtonStyles.style
                         : {
-                            backgroundImage: `linear-gradient(to right, ${colors.raw.blue600}, ${colors.raw.blue500}, ${colors.raw.indigo600})`,
-                            color: colors.raw.white,
-                            boxShadow: `${colors.raw.blue600_alpha25} 0px 0px 20px, ${colors.raw.blue600_alpha15} 0px 8px 16px`
+                            backgroundImage: 'linear-gradient(to right, #2563eb, #3b82f6, #4f46e5)',
+                            color: '#ffffff',
+                            boxShadow: 'rgba(37, 99, 235, 0.25) 0px 0px 20px, rgba(37, 99, 235, 0.15) 0px 8px 16px'
                           }
                     }
                     asChild

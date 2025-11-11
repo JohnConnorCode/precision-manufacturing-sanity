@@ -4,6 +4,14 @@ export default {
   type: 'document',
   title: 'Contact Page',
   __experimental_singleton: true,
+  preview: {
+    prepare() {
+      return {
+        title: 'Contact Page',
+        subtitle: 'Get in touch - Contact information and form',
+      }
+    },
+  },
   groups: [
     {name: 'hero', title: 'Hero', default: true},
     {name: 'contactDetails', title: 'Contact Details'},

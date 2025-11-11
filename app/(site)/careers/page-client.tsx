@@ -7,6 +7,34 @@ import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight, Users, Briefcase, Award, Heart, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { theme, styles, cn } from '@/lib/theme';
+import imageUrlBuilder from '@sanity/image-url';
+import { client } from '@/sanity/lib/client';
+
+const builder = imageUrlBuilder(client);
+
+function urlFor(source: any) {
+  if (!source) return '';
+  // If it's already a URL, return it
+  if (typeof source === 'string') {
+    // Check if it's a Sanity asset reference string
+    if (source.startsWith('asset-reference:') || source.includes('image-')) {
+      return ''; // Return empty string for invalid asset references
+    }
+    if (source.startsWith('http')) {
+      return source;
+    }
+    return '';
+  }
+  // If it's a Sanity image object
+  if (source && (source._type === 'image' || source.asset)) {
+    try {
+      return builder.image(source).url();
+    } catch (e) {
+      return '';
+    }
+  }
+  return '';
+}
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -43,8 +71,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={(data as any)?.hero?.backgroundImageUrl || data?.hero?.backgroundImage || defaultHeroData.backgroundImage}
-        imageAlt={data?.hero?.imageAlt || defaultHeroData.imageAlt}
+        backgroundImage={urlFor(data?.hero?.backgroundImage) || (data as any)?.hero?.backgroundImageUrl || defaultHeroData.backgroundImage}
+        imageAlt={data?.hero?.imageAlt || data?.hero?.backgroundImage?.alt || defaultHeroData.imageAlt}
         badge={{
           text: data?.hero?.badge || defaultHeroData.badge,
           icon: BadgeIcon
@@ -56,8 +84,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
         }
         description={data?.hero?.description || defaultHeroData.description}
         buttons={(data?.hero?.buttons || defaultHeroData.buttons).map((btn: any) => ({
-          label: btn.label,
-          href: btn.href,
+          label: btn.label || 'Learn More',
+          href: btn.href || '#',
           variant: btn.variant as 'primary' | 'secondary'
         }))}
         height="large"
@@ -93,11 +121,16 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               viewport={{ once: true }}
               className="relative"
             >
-              <img
-                src={(data as any)?.whyWorkHere?.imageUrl || data?.whyWorkHere?.image || 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80'}
-                alt={data?.whyWorkHere?.imageAlt || 'Team collaboration'}
-                className="w-full h-96 rounded-lg object-cover shadow-lg"
-              />
+              {(() => {
+                const imageUrl = urlFor(data?.whyWorkHere?.image) || (data as any)?.whyWorkHere?.imageUrl;
+                return imageUrl && (
+                  <img
+                    src={imageUrl}
+                    alt={data?.whyWorkHere?.imageAlt || 'Team collaboration'}
+                    className="w-full h-96 rounded-lg object-cover shadow-lg"
+                  />
+                );
+              })()}
             </motion.div>
           </div>
         </div>
@@ -246,10 +279,10 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                       </div>
                       {position.applicationLink ? (
                         <Link
-                          href={position.applicationLink}
+                          href={position.applicationLink || '/contact'}
                           className="flex-shrink-0"
-                          target={position.applicationLink.startsWith('http') ? '_blank' : undefined}
-                          rel={position.applicationLink.startsWith('http') ? 'noopener noreferrer' : undefined}
+                          target={position.applicationLink?.startsWith('http') ? '_blank' : undefined}
+                          rel={position.applicationLink?.startsWith('http') ? 'noopener noreferrer' : undefined}
                         >
                           <Button className={styles.ctaPrimary}>
                             Apply Now <ArrowRight className="ml-2 h-4 w-4" />
@@ -295,7 +328,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               {data?.cta?.description || 'Take the next step in your career. We look forward to hearing from you.'}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {(data?.cta?.buttons || []).map((button: any, index: number) => (
+              {((data?.cta?.buttons && data.cta.buttons.length > 0) ? data.cta.buttons : [{ label: 'View Openings', href: '#opportunities', variant: 'primary' }]).map((button: any, index: number) => (
                 <Button
                   key={index}
                   size="lg"
@@ -303,8 +336,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                   variant={button.variant === 'outline' ? 'outline' : 'default'}
                   asChild
                 >
-                  <Link href={button.href}>
-                    {button.label} {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
+                  <Link href={button.href || '/contact'}>
+                    {button.label || 'Learn More'} {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
                   </Link>
                 </Button>
               ))}

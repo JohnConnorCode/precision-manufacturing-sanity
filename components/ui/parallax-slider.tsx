@@ -45,15 +45,17 @@ export default function ParallaxSlider({
           style={{ y }}
           className="absolute inset-0 w-full h-[120%] -top-[10%]"
         >
-          <Image
-            src={images[currentIndex]}
-            alt="Manufacturing facility"
-            fill
-            className="object-cover"
-            priority={currentIndex === 0}
-            quality={85}
-            sizes="100vw"
-          />
+          {images[currentIndex] && (
+            <Image
+              src={images[currentIndex]}
+              alt="Manufacturing facility"
+              fill
+              className="object-cover"
+              priority={currentIndex === 0}
+              quality={85}
+              sizes="100vw"
+            />
+          )}
         </motion.div>
       </AnimatePresence>
 
