@@ -77,11 +77,11 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
   const header = showcaseData?.header || fallbackHeader;
 
   // Check showcaseImages field, filter out items without src
-  const rawImages = showcaseData?.showcaseImages || [];
+  const rawImages = Array.isArray(showcaseData?.showcaseImages) ? showcaseData.showcaseImages : [];
   const validImages = rawImages.filter((img: any) => img?.src && img.src.trim() !== '');
   const showcaseImages = validImages.length > 0 ? validImages : fallbackShowcaseImages;
 
-  const stats = (showcaseData?.stats && showcaseData.stats.length > 0)
+  const stats = Array.isArray(showcaseData?.stats) && showcaseData.stats.length > 0
     ? showcaseData.stats
     : fallbackStats;
 
@@ -199,7 +199,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                 {showcaseData.cta.description}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                {(showcaseData.cta.buttons || []).filter(button => button.enabled !== false).map((button, index: number) => (
+                {(Array.isArray(showcaseData.cta.buttons) ? showcaseData.cta.buttons : []).filter(button => button.enabled !== false).map((button, index: number) => (
                 <Link
                   key={button.text}
                   href={button.href}

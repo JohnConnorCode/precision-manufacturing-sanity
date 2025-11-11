@@ -66,7 +66,7 @@ export default function CTA({ data }: CTAProps) {
   const title = data?.title || 'Start Your Precision Manufacturing Project';
   const rawSubtitle = data?.subtitle || 'From prototype to production, we deliver AS9100D-certified precision components with tolerances to ±0.0001" for aerospace, defense, and medical applications.';
   const subtitle = portableTextToPlainText(rawSubtitle) || rawSubtitle;
-  const buttons = (data?.buttons || [
+  const buttons = (Array.isArray(data?.buttons) ? data.buttons : [
     { text: 'Get Quote', href: '/contact', variant: 'default' as const },
     { text: 'Technical Specifications', href: '/compliance/supplier-requirements', variant: 'secondary' as const }
   ]).filter(button => button.enabled !== false);
@@ -81,7 +81,7 @@ export default function CTA({ data }: CTAProps) {
 
   // Extract badge, certifications, and trust message from Sanity
   const badge = data?.badge || '';
-  const certifications = data?.certifications || [];
+  const certifications = Array.isArray(data?.certifications) ? data.certifications : [];
   const trustMessage = data?.trustMessage || '';
 
   // Icon lookup for certification badges

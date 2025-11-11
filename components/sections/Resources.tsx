@@ -27,7 +27,7 @@ export default function Resources({ data }: ResourcesProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
   // ALL content must come from Sanity CMS
-  if (!data || !data.header || !data.featuredSeries) {
+  if (!data || !data.header || !Array.isArray(data.featuredSeries)) {
     return null;
   }
 
@@ -155,7 +155,7 @@ export default function Resources({ data }: ResourcesProps) {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
-                {resourcesData.cta.buttons.filter(button => button.enabled !== false).map((button, index: number) => (
+                {(Array.isArray(resourcesData.cta?.buttons) ? resourcesData.cta.buttons : []).filter(button => button.enabled !== false).map((button, index: number) => (
                   <Link key={button.text} href={button.href}>
                     <PremiumButton size="lg" variant={button.variant === 'primary' ? 'default' : 'secondary'}>
                       {index === 0 && <BookOpen className="w-5 h-5" />}
@@ -168,7 +168,7 @@ export default function Resources({ data }: ResourcesProps) {
           </motion.div>
 
         {/* Benefits Grid */}
-        {resourcesData.benefits && resourcesData.benefits.length > 0 && (
+        {Array.isArray(resourcesData.benefits) && resourcesData.benefits.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {resourcesData.benefits.filter(benefit => benefit.enabled !== false).map((benefit: ResourceBenefit, index: number) => {
               const IconComponent = (benefit.iconName && iconMap[benefit.iconName]) || BookOpen;
