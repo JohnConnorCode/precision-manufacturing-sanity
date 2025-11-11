@@ -240,7 +240,9 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
 
           {jobPostings.length > 0 ? (
             <div className="space-y-6">
-              {jobPostings.map((position: any, index: number) => (
+              {jobPostings
+                .filter((position: any) => position?.enabled !== false)
+                .map((position: any, index: number) => (
                 <motion.div
                   key={position._id}
                   initial={{ opacity: 0, y: 20 }}

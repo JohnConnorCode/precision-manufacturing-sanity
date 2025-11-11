@@ -126,7 +126,9 @@ export default async function IndustriesPage() {
           <div className="container">
             <AnimatedSection>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {industriesPageData.content.overviewStats.map((stat: any, index: number) => (
+                {industriesPageData.content.overviewStats
+                  .filter((stat: any) => stat?.enabled !== false)
+                  .map((stat: any, index: number) => (
                   <div key={index} className="text-center">
                     <div className="text-4xl md:text-5xl font-black text-blue-600 mb-2">
                       {stat.value}
@@ -160,7 +162,9 @@ export default async function IndustriesPage() {
           </AnimatedSection>
 
           <div className="space-y-12">
-            {industriesPageData?.content?.industries?.map((industry: any, index: number) => (
+            {industriesPageData?.content?.industries
+              ?.filter((industry: any) => industry?.enabled !== false)
+              ?.map((industry: any, index: number) => (
               <AnimatedSection key={industry.name} delay={index * 0.15}>
                 <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                   <div className="grid md:grid-cols-2 gap-0">
@@ -249,7 +253,9 @@ export default async function IndustriesPage() {
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {industriesPageData.content.whyChooseUs.map((item: any, index: number) => (
+              {industriesPageData.content.whyChooseUs
+                .filter((item: any) => item?.enabled !== false)
+                .map((item: any, index: number) => (
                 <AnimatedSection key={index} delay={index * 0.1}>
                   <div className="p-8 border border-slate-200 rounded-lg hover:border-slate-300 transition-all duration-300 hover:shadow-lg h-full">
                     <div className="flex items-center mb-6">
@@ -293,7 +299,9 @@ export default async function IndustriesPage() {
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {industriesPageData.content.provenResults.map((metric: any, index: number) => (
+              {industriesPageData.content.provenResults
+                .filter((metric: any) => metric?.enabled !== false)
+                .map((metric: any, index: number) => (
                 <AnimatedSection key={index} delay={index * 0.1}>
                   <div className="text-center border border-slate-700 rounded-lg p-6 hover:border-blue-500 transition-colors">
                     <div className="text-4xl md:text-5xl font-black text-blue-400 mb-2">

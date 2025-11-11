@@ -26,21 +26,101 @@ export default defineConfig({
   plugins: [
     presentationTool({
       previewUrl: {
-        origin: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+        origin: typeof window === 'undefined'
+          ? (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
+          : window.location.origin,
         draftMode: {
           enable: '/api/draft',
           disable: '/api/disable-draft',
         },
       },
       resolve: {
+        mainDocuments: async (prev, context) => {
+          // Fetch collections in parallel
+          const [services, industries, resources, teamMembers, jobPostings] = await Promise.all([
+            context.documentStore.listenQuery('*[_type == "service"] | order(order asc) [0...10]', {}, { perspective: 'drafts' }),
+            context.documentStore.listenQuery('*[_type == "industry"] | order(order asc) [0...10]', {}, { perspective: 'drafts' }),
+            context.documentStore.listenQuery('*[_type == "resource"] | order(_createdAt desc) [0...10]', {}, { perspective: 'drafts' }),
+            context.documentStore.listenQuery('*[_type == "teamMember"] | order(order asc) [0...10]', {}, { perspective: 'drafts' }),
+            context.documentStore.listenQuery('*[_type == "jobPosting"] | order(_createdAt desc) [0...10]', {}, { perspective: 'drafts' }),
+          ])
+
+          return [
+            // Main Pages (Singletons)
+            {
+              id: 'homepage',
+              title: 'Homepage',
+              schemaType: 'homepage',
+            },
+            {
+              id: 'about',
+              title: 'About Page',
+              schemaType: 'about',
+            },
+            {
+              id: 'contact',
+              title: 'Contact Page',
+              schemaType: 'contact',
+            },
+            {
+              id: 'careers',
+              title: 'Careers Page',
+              schemaType: 'careers',
+            },
+            {
+              id: 'servicesPage',
+              title: 'Services Overview Page',
+              schemaType: 'servicesPage',
+            },
+            {
+              id: 'industriesPage',
+              title: 'Industries Overview Page',
+              schemaType: 'industriesPage',
+            },
+            {
+              id: 'terms',
+              title: 'Terms & Conditions',
+              schemaType: 'terms',
+            },
+            {
+              id: 'supplierRequirements',
+              title: 'Supplier Requirements',
+              schemaType: 'supplierRequirements',
+            },
+            // Collection pages - services
+            ...services.map((doc: any) => ({
+              id: doc._id,
+              title: `Service: ${doc.title || 'Untitled'}`,
+              schemaType: 'service',
+            })),
+            // Collection pages - industries
+            ...industries.map((doc: any) => ({
+              id: doc._id,
+              title: `Industry: ${doc.title || 'Untitled'}`,
+              schemaType: 'industry',
+            })),
+            // Collection pages - resources
+            ...resources.map((doc: any) => ({
+              id: doc._id,
+              title: `Resource: ${doc.title || 'Untitled'}`,
+              schemaType: 'resource',
+            })),
+            // Collection pages - team members
+            ...teamMembers.map((doc: any) => ({
+              id: doc._id,
+              title: `Team: ${doc.title || doc.name || 'Untitled'}`,
+              schemaType: 'teamMember',
+            })),
+            // Collection pages - job postings
+            ...jobPostings.map((doc: any) => ({
+              id: doc._id,
+              title: `Job: ${doc.title || 'Untitled'}`,
+              schemaType: 'jobPosting',
+            })),
+          ]
+        },
         locations: locate as any,
       },
-      // Allow both localhost and Vercel preview URLs
-      allowOrigins: [
-        'http://localhost:3000',
-        'https://precision-manufacturing-sanity.vercel.app',
-        'https://*.vercel.app', // Allow all Vercel preview deployments
-      ],
     }),
     structureTool({
       structure,

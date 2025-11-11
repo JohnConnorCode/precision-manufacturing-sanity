@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { PremiumButton } from '@/components/ui/premium-button';
-import { ArrowRight, FileText, Shield, Award, Activity } from 'lucide-react';
+import { ArrowRight, FileText, Shield, Award, Activity, Clock, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { colorStyleToCSS, getBackgroundColor, paddingToClass, ColorStyle } from '@/lib/sanity-styles';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
@@ -20,6 +20,12 @@ interface CTAData {
     variant: 'default' | 'secondary' | 'primary' | 'outline';
     enabled?: boolean;
   }>;
+  badge?: string;
+  certifications?: Array<{
+    icon: string;
+    text: string;
+  }>;
+  trustMessage?: string;
   // Style fields from Sanity
   theme?: {
     backgroundColor?: ColorStyle;
@@ -73,6 +79,23 @@ export default function CTA({ data }: CTAProps) {
   const titleColor = colorStyleToCSS(data?.titleColor) || colors.raw.white;
   const subtitleColor = colorStyleToCSS(data?.subtitleColor) || colors.raw.slate400;
 
+  // Extract badge, certifications, and trust message from Sanity
+  const badge = data?.badge || '30 Years of Aerospace Excellence';
+  const certifications = data?.certifications || [
+    { icon: 'Clock', text: '24/7 Production' },
+    { icon: 'Shield', text: 'ITAR Registered' },
+    { icon: 'Award', text: 'AS9100D' },
+  ];
+  const trustMessage = data?.trustMessage || 'Trusted by leading aerospace & defense contractors worldwide';
+
+  // Icon lookup for certification badges
+  const iconMap: Record<string, LucideIcon> = {
+    Clock,
+    Shield,
+    Award,
+    Activity,
+  };
+
   return (
     <section
       className={`relative ${paddingClass} overflow-hidden`}
@@ -105,7 +128,7 @@ export default function CTA({ data }: CTAProps) {
             className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-blue-600/20 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 backdrop-blur-sm"
           >
             <Activity className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
-            <span className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">30 Years of Aerospace Excellence</span>
+            <span className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">{badge}</span>
           </motion.div>
 
           <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: titleColor }}>
@@ -136,42 +159,34 @@ export default function CTA({ data }: CTAProps) {
 
           {/* Certification badges with subtle animation */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
-            <motion.div
-              initial={getInitialState(prefersReducedMotion)}
-              whileInView={getAnimateState(0.1, 0.5, prefersReducedMotion)}
-              viewport={getViewportConfig()}
-              className="group flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-colors"
-            >
-              <div className="relative">
-                <div className="w-2 h-2 bg-green-500 rounded-full" />
+            {certifications.map((cert, index) => {
+              const Icon = iconMap[cert.icon] || Activity;
+              const isFirstBadge = index === 0 && cert.icon === 'Clock';
+
+              return (
                 <motion.div
-                  className="absolute inset-0 w-2 h-2 bg-green-500 rounded-full"
-                  animate={{ scale: [1, 2, 1], opacity: [1, 0, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-              </div>
-              <span className="text-sm font-medium text-slate-300">24/7 Production</span>
-            </motion.div>
-
-            <motion.div
-              initial={getInitialState(prefersReducedMotion)}
-              whileInView={getAnimateState(0.2, 0.5, prefersReducedMotion)}
-              viewport={getViewportConfig()}
-              className="group flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-colors"
-            >
-              <Shield className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
-              <span className="text-sm font-medium text-slate-300">ITAR Registered</span>
-            </motion.div>
-
-            <motion.div
-              initial={getInitialState(prefersReducedMotion)}
-              whileInView={getAnimateState(0.3, 0.5, prefersReducedMotion)}
-              viewport={getViewportConfig()}
-              className="group flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-colors"
-            >
-              <Award className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
-              <span className="text-sm font-medium text-slate-300">AS9100D</span>
-            </motion.div>
+                  key={`${cert.icon}-${cert.text}`}
+                  initial={getInitialState(prefersReducedMotion)}
+                  whileInView={getAnimateState(0.1 + (index * 0.1), 0.5, prefersReducedMotion)}
+                  viewport={getViewportConfig()}
+                  className="group flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-colors"
+                >
+                  {isFirstBadge ? (
+                    <div className="relative">
+                      <div className="w-2 h-2 bg-green-500 rounded-full" />
+                      <motion.div
+                        className="absolute inset-0 w-2 h-2 bg-green-500 rounded-full"
+                        animate={{ scale: [1, 2, 1], opacity: [1, 0, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      />
+                    </div>
+                  ) : (
+                    <Icon className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
+                  )}
+                  <span className="text-sm font-medium text-slate-300">{cert.text}</span>
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Client trust indicator */}
@@ -181,10 +196,8 @@ export default function CTA({ data }: CTAProps) {
             viewport={getViewportConfig()}
             className="mt-12 flex justify-center"
           >
-            <div className="flex items-center gap-2 text-xs text-slate-500">
-              <span>Trusted by leading</span>
-              <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">aerospace & defense</span>
-              <span>contractors worldwide</span>
+            <div className="text-xs text-slate-500">
+              {trustMessage}
             </div>
           </motion.div>
         </motion.div>

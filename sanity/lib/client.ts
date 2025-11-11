@@ -1,10 +1,27 @@
 import { createClient } from 'next-sanity'
 
+// Determine studio URL dynamically for both local and production environments
+const getStudioUrl = () => {
+  if (process.env.NEXT_PUBLIC_STUDIO_URL) {
+    return process.env.NEXT_PUBLIC_STUDIO_URL
+  }
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return new URL('/studio', process.env.NEXT_PUBLIC_SITE_URL).toString()
+  }
+  return 'http://localhost:3000/studio'
+}
+
 export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
-  useCdn: false, // Set to true in production for faster response times
+  useCdn: false, // Required for embedded studios
+  perspective: 'published',
+  // Add stega for Presentation Tool to work
+  stega: {
+    enabled: false, // Only enabled in preview mode
+    studioUrl: getStudioUrl(),
+  },
 })
 
 // Client for preview/draft mode
@@ -14,20 +31,14 @@ export const previewClient = createClient({
   apiVersion: '2024-01-01',
   useCdn: false,
   token: process.env.SANITY_API_READ_TOKEN,
-  perspective: 'previewDrafts',
+  perspective: 'drafts',
   stega: {
     enabled: true,
-    studioUrl:
-      process.env.NEXT_PUBLIC_STUDIO_URL ||
-      (process.env.NEXT_PUBLIC_SITE_URL
-        ? new URL('/studio', process.env.NEXT_PUBLIC_SITE_URL).toString()
-        : 'http://localhost:3000/studio'),
+    studioUrl: getStudioUrl(),
   },
 })
 
 // Helper to get client based on draft mode
 export function getClient(preview = false) {
-  // Enable stega annotations when in preview to power Visual Editing overlays
-  const base = preview ? previewClient : client
-  return base.withConfig({ stega: preview })
+  return preview ? previewClient : client
 }

@@ -195,7 +195,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
             viewport={{ once: true }}
             className="grid grid-cols-2 md:grid-cols-4 gap-8"
           >
-            {(aboutData?.companyStats || []).map((stat, index) => (
+            {(aboutData?.companyStats || [])
+              .filter((stat: any) => stat?.enabled !== false)
+              .map((stat, index) => (
               <motion.div
                 key={stat?.label}
                 initial={{ opacity: 0, y: 20 }}
@@ -272,7 +274,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
           <div className="relative">
             <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-slate-300 h-full"></div>
             <div className="space-y-12">
-              {(aboutData?.timeline?.milestones || []).map((item, index) => (
+              {(aboutData?.timeline?.milestones || [])
+                .filter((item: any) => item?.enabled !== false)
+                .map((item, index) => (
                 <motion.div
                   key={item?.year}
                   initial={{ opacity: 0, y: 20 }}
@@ -367,7 +371,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {(aboutData?.leadership?.team || []).map((leader, index) => (
+            {(aboutData?.leadership?.team || [])
+              .filter((leader: any) => leader?.enabled !== false)
+              .map((leader, index) => (
               <motion.div
                 key={leader?.name}
                 initial={{ opacity: 0, y: 20 }}
@@ -443,7 +449,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
             >
               <h2 className="text-4xl font-bold mb-8">{aboutData?.certifications?.title}</h2>
               <div className="space-y-4">
-                {(aboutData?.certifications?.items || []).map((cert, index) => (
+                {(aboutData?.certifications?.items || [])
+                  .filter((cert: any) => cert?.enabled !== false)
+                  .map((cert, index) => (
                   <motion.div
                     key={cert?.certification}
                     initial={{ opacity: 0, y: 20 }}

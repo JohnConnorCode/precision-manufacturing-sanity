@@ -153,7 +153,9 @@ export default async function ServicesPage() {
         <div className={theme.spacing.container}>
           <AnimatedSection>
             <div className={cn(styles.grid4Col, "mb-20")}>
-              {capabilities.map((capability: any) => (
+              {capabilities
+                .filter((capability: any) => capability?.enabled !== false)
+                .map((capability: any) => (
                 <div
                   key={capability.label}
                   className="text-center"
@@ -257,7 +259,9 @@ export default async function ServicesPage() {
                 </p>
 
                 <div className="space-y-4">
-                  {qualityAssurance.map((item: any) => (
+                  {qualityAssurance
+                    .filter((item: any) => item?.enabled !== false)
+                    .map((item: any) => (
                     <div
                       key={item.title}
                       className="flex items-center"

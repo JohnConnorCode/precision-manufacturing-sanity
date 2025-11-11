@@ -45,15 +45,31 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        // Studio routes - allow all iframe embedding for Sanity Studio
         source: '/studio/:path*',
         headers: [
           {
             key: 'X-Frame-Options',
             value: 'ALLOWALL'
           },
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'self' https://*.sanity.studio https://*.vercel.app"
+          },
         ],
       },
       {
+        // API routes for draft mode - allow iframe from Sanity
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'self' https://*.sanity.studio https://*.vercel.app"
+          },
+        ],
+      },
+      {
+        // All other routes - allow iframe from Sanity for Presentation Tool
         source: '/:path*',
         headers: [
           {
@@ -63,10 +79,6 @@ const nextConfig: NextConfig = {
           {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload'
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN'
           },
           {
             key: 'X-Content-Type-Options',
@@ -79,6 +91,10 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=(self)'
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'self' https://*.sanity.studio https://*.vercel.app"
           },
         ],
       },

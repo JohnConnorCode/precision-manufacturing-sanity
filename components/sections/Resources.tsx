@@ -32,6 +32,8 @@ export default function Resources({ data }: ResourcesProps) {
   }
 
   const resourcesData = data;
+  const additionalSeriesText = (resourcesData as any)?.additionalSeriesText || '6 Complete Series • 21+ Technical Articles';
+
   return (
     <section className="relative py-24 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 overflow-hidden">
       {/* Background Pattern */}
