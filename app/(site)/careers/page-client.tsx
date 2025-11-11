@@ -153,7 +153,9 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {(data?.benefits?.items || []).map((benefit: any, index: number) => {
+            {(data?.benefits?.items || [])
+              .filter((benefit: any) => benefit?.enabled !== false)
+              .map((benefit: any, index: number) => {
               const Icon = iconMap[benefit.iconName] || Users;
               return (
                 <motion.div
@@ -200,7 +202,9 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {(data?.values?.items || []).map((value: any, index: number) => (
+            {(data?.values?.items || [])
+              .filter((value: any) => value?.enabled !== false)
+              .map((value: any, index: number) => (
               <motion.div
                 key={value.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -328,7 +332,9 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               {data?.cta?.description || 'Take the next step in your career. We look forward to hearing from you.'}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {((data?.cta?.buttons && data.cta.buttons.length > 0) ? data.cta.buttons : [{ label: 'View Openings', href: '#opportunities', variant: 'primary' }]).map((button: any, index: number) => (
+              {((data?.cta?.buttons && data.cta.buttons.length > 0) ? data.cta.buttons : [{ label: 'View Openings', href: '#opportunities', variant: 'primary' }])
+                .filter((button: any) => button?.enabled !== false)
+                .map((button: any, index: number) => (
                 <Button
                   key={index}
                   size="lg"

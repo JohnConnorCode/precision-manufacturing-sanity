@@ -45,33 +45,73 @@ export default {
         {
           name: 'backgroundGradient',
           type: 'string',
-          title: 'Background Gradient (Tailwind)',
-          description: 'Tailwind gradient classes (e.g., "from-blue-600 to-indigo-600")',
+          title: 'Background Style',
+          description: 'Hero section background color or gradient',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Blue Gradient ⭐ (Default)', value: 'from-blue-600 to-indigo-600' },
+              { title: 'Dark Blue Gradient', value: 'from-blue-800 to-indigo-800' },
+              { title: 'Dark Gradient', value: 'from-zinc-800 to-zinc-900' },
+              { title: 'Indigo Gradient', value: 'from-indigo-600 to-purple-600' },
+              { title: 'Solid Blue', value: 'bg-blue-600' },
+              { title: 'Solid Dark', value: 'bg-zinc-900' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'from-blue-600 to-indigo-600',
         },
         {
           name: 'headingTextColor',
           type: 'string',
-          title: 'Heading Text Color (Tailwind)',
-          description: 'Text color for hero heading words (e.g., "text-white")',
+          title: 'Heading Text Color',
+          description: 'Color of the three hero heading words',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'White ⭐ (Default)', value: 'text-white' },
+              { title: 'Off-White', value: 'text-white/90' },
+              { title: 'Dark Gray', value: 'text-zinc-900' },
+              { title: 'Medium Gray', value: 'text-zinc-600' },
+              { title: 'Blue Accent', value: 'text-blue-600' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-white',
         },
         {
           name: 'taglineTextColor',
           type: 'string',
-          title: 'Tagline Text Color (Tailwind)',
-          description: 'Text color for tagline (e.g., "text-white/80")',
+          title: 'Tagline Text Color',
+          description: 'Color of the tagline/subtitle text',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Off-White ⭐ (Default)', value: 'text-white/80' },
+              { title: 'White', value: 'text-white' },
+              { title: 'Light Gray', value: 'text-zinc-300' },
+              { title: 'Medium Gray', value: 'text-zinc-400' },
+              { title: 'Dark Gray', value: 'text-zinc-600' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-white/80',
         },
         {
           name: 'heroVerticalPadding',
           type: 'string',
-          title: 'Hero Vertical Padding (Tailwind)',
-          description: 'Vertical padding/spacing (e.g., "py-24 md:py-32")',
+          title: 'Hero Section Spacing',
+          description: 'Vertical padding/spacing around hero content',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Compact', value: 'py-16 md:py-20' },
+              { title: 'Standard', value: 'py-20 md:py-24' },
+              { title: 'Spacious ⭐ (Default)', value: 'py-24 md:py-32' },
+              { title: 'Extra Spacious', value: 'py-32 md:py-40' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'py-24 md:py-32',
         },
         {
@@ -101,10 +141,19 @@ export default {
         {
           name: 'heroFontSize',
           type: 'string',
-          title: 'Hero Font Size (Tailwind)',
-          description: 'Font size class for all three heading words (e.g., "text-4xl md:text-5xl lg:text-6xl")',
-          initialValue: 'text-4xl md:text-5xl lg:text-6xl',
+          title: 'Hero Text Size',
+          description: 'Size of the three hero heading words',
           fieldset: 'copy',
+          options: {
+            list: [
+              { title: 'Small (40px → 64px)', value: 'text-[2.5rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem]' },
+              { title: 'Medium (44px → 72px)', value: 'text-[2.75rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[4.5rem]' },
+              { title: 'Large ⭐ (48px → 80px)', value: 'text-[3rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[4.5rem] xl:text-[5rem]' },
+              { title: 'Extra Large (56px → 96px)', value: 'text-[3.5rem] sm:text-[4rem] md:text-[5rem] lg:text-[5.5rem] xl:text-[6rem]' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
+          initialValue: 'text-[3rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[4.5rem] xl:text-[5rem]',
         },
         {
           name: 'mainTitle',
@@ -311,25 +360,52 @@ export default {
         {
           name: 'backgroundColor',
           type: 'string',
-          title: 'Background Color (Tailwind)',
-          description: 'Background color class (e.g., "bg-zinc-50", "bg-blue-50")',
+          title: 'Background Color',
+          description: 'Section background color',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Light Gray ⭐ (Default)', value: 'bg-zinc-50' },
+              { title: 'White', value: 'bg-white' },
+              { title: 'Light Blue', value: 'bg-blue-50' },
+              { title: 'Very Light Gray', value: 'bg-gray-100' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'bg-zinc-50',
         },
         {
           name: 'titleTextColor',
           type: 'string',
-          title: 'Title Text Color (Tailwind)',
-          description: 'Heading text color (e.g., "text-zinc-900")',
+          title: 'Title Text Color',
+          description: 'Section heading color',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Dark Gray ⭐ (Default)', value: 'text-zinc-900' },
+              { title: 'Black', value: 'text-black' },
+              { title: 'Medium Gray', value: 'text-zinc-700' },
+              { title: 'Blue', value: 'text-blue-600' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-zinc-900',
         },
         {
           name: 'subtitleTextColor',
           type: 'string',
-          title: 'Subtitle Text Color (Tailwind)',
-          description: 'Subtitle text color (e.g., "text-zinc-600")',
+          title: 'Subtitle Text Color',
+          description: 'Section subtitle color',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Medium Gray ⭐ (Default)', value: 'text-zinc-600' },
+              { title: 'Dark Gray', value: 'text-zinc-700' },
+              { title: 'Light Gray', value: 'text-zinc-500' },
+              { title: 'Blue', value: 'text-blue-600' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-zinc-600',
         },
         {
@@ -434,17 +510,36 @@ export default {
         {
           name: 'headingColor',
           type: 'string',
-          title: 'Heading Color (Tailwind)',
-          description: 'Heading text color (e.g., "text-zinc-900")',
+          title: 'Heading Color',
+          description: 'Section heading text color',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Dark Gray ⭐ (Default)', value: 'text-zinc-900' },
+              { title: 'Black', value: 'text-black' },
+              { title: 'Medium Gray', value: 'text-zinc-700' },
+              { title: 'Blue', value: 'text-blue-600' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-zinc-900',
         },
         {
           name: 'eyebrowColor',
           type: 'string',
-          title: 'Eyebrow Color (Tailwind)',
-          description: 'Eyebrow text color (e.g., "text-blue-600")',
+          title: 'Eyebrow Color',
+          description: 'Small text above heading',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Blue ⭐ (Default)', value: 'text-blue-600' },
+              { title: 'Dark Blue', value: 'text-blue-700' },
+              { title: 'Indigo', value: 'text-indigo-600' },
+              { title: 'Dark Gray', value: 'text-zinc-700' },
+              { title: 'Medium Gray', value: 'text-zinc-600' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-blue-600',
         },
       ],
@@ -493,17 +588,36 @@ export default {
         {
           name: 'headingColor',
           type: 'string',
-          title: 'Heading Color (Tailwind)',
-          description: 'Heading text color (e.g., "text-zinc-900")',
+          title: 'Heading Color',
+          description: 'Section heading text color',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Dark Gray ⭐ (Default)', value: 'text-zinc-900' },
+              { title: 'Black', value: 'text-black' },
+              { title: 'Medium Gray', value: 'text-zinc-700' },
+              { title: 'Blue', value: 'text-blue-600' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-zinc-900',
         },
         {
           name: 'eyebrowColor',
           type: 'string',
-          title: 'Eyebrow Color (Tailwind)',
-          description: 'Eyebrow text color (e.g., "text-blue-600")',
+          title: 'Eyebrow Color',
+          description: 'Small text above heading',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Blue ⭐ (Default)', value: 'text-blue-600' },
+              { title: 'Dark Blue', value: 'text-blue-700' },
+              { title: 'Indigo', value: 'text-indigo-600' },
+              { title: 'Dark Gray', value: 'text-zinc-700' },
+              { title: 'Medium Gray', value: 'text-zinc-600' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-blue-600',
         },
       ],
@@ -606,25 +720,52 @@ export default {
         {
           name: 'backgroundColor',
           type: 'string',
-          title: 'Background Color (Tailwind)',
-          description: 'Background color (e.g., "bg-white", "bg-zinc-50")',
+          title: 'Background Color',
+          description: 'Section background color',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'White ⭐ (Default)', value: 'bg-white' },
+              { title: 'Light Gray', value: 'bg-zinc-50' },
+              { title: 'Light Blue', value: 'bg-blue-50' },
+              { title: 'Very Light Gray', value: 'bg-gray-100' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'bg-white',
         },
         {
           name: 'titleColor',
           type: 'string',
-          title: 'Title Color (Tailwind)',
-          description: 'Section title color (e.g., "text-zinc-900")',
+          title: 'Title Color',
+          description: 'Section title text color',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Dark Gray ⭐ (Default)', value: 'text-zinc-900' },
+              { title: 'Black', value: 'text-black' },
+              { title: 'Medium Gray', value: 'text-zinc-700' },
+              { title: 'Blue', value: 'text-blue-600' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-zinc-900',
         },
         {
           name: 'highlightColor',
           type: 'string',
-          title: 'Highlight Color (Tailwind)',
-          description: 'Title highlight color (e.g., "text-blue-600")',
+          title: 'Title Highlight Color',
+          description: 'Highlighted portion of title',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Blue ⭐ (Default)', value: 'text-blue-600' },
+              { title: 'Dark Blue', value: 'text-blue-700' },
+              { title: 'Indigo', value: 'text-indigo-600' },
+              { title: 'Dark Gray', value: 'text-zinc-700' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-blue-600',
         },
         {

@@ -319,17 +319,21 @@ export default async function IndustriesPage() {
                 {industriesPageData?.cta?.description || "Join the industry leaders who trust us with their most critical manufacturing requirements. Let's discuss your specific needs."}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="px-8 py-6 bg-slate-900 hover:bg-slate-800 text-white font-semibold" asChild>
-                  <Link href={industriesPageData?.cta?.primaryButton?.href || '/contact'}>
-                    {industriesPageData?.cta?.primaryButton?.label || 'Schedule Consultation'}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline" asChild className="px-8 py-6 font-semibold">
-                  <Link href={industriesPageData?.cta?.secondaryButton?.href || '/services'}>
-                    {industriesPageData?.cta?.secondaryButton?.label || 'View Our Services'}
-                  </Link>
-                </Button>
+                {industriesPageData?.cta?.primaryButton?.enabled !== false && (
+                  <Button size="lg" className="px-8 py-6 bg-slate-900 hover:bg-slate-800 text-white font-semibold" asChild>
+                    <Link href={industriesPageData?.cta?.primaryButton?.href || '/contact'}>
+                      {industriesPageData?.cta?.primaryButton?.label || 'Schedule Consultation'}
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                )}
+                {industriesPageData?.cta?.secondaryButton?.enabled !== false && (
+                  <Button size="lg" variant="outline" asChild className="px-8 py-6 font-semibold">
+                    <Link href={industriesPageData?.cta?.secondaryButton?.href || '/services'}>
+                      {industriesPageData?.cta?.secondaryButton?.label || 'View Our Services'}
+                    </Link>
+                  </Button>
+                )}
               </div>
             </div>
           </AnimatedSection>

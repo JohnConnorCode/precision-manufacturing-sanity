@@ -136,7 +136,7 @@ export default function Hero({ data }: HeroProps) {
     // word3 stays as is if data.word3 not provided
   }
 
-  const heroFontSize = data?.heroFontSize || 'text-[3rem] sm:text-[4rem] md:text-[5rem] lg:text-[6rem] xl:text-[7rem]';
+  const heroFontSize = data?.heroFontSize || 'text-[3rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[4.5rem] xl:text-[5rem]';
   const tagline = data?.tagline || 'Innovative Precision Machining & Manufacturing Excellence Since 1995';
 
   // Handle both string badges and object badges from Sanity, with fallbacks

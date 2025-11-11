@@ -314,7 +314,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {(aboutData?.values?.items || []).map((value, index) => {
+            {(aboutData?.values?.items || [])
+              .filter((value: any) => value?.enabled !== false)
+              .map((value, index) => {
               const Icon = iconMap[value?.iconName || ''] || Award;
               return (
                 <motion.div
@@ -406,7 +408,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
             >
               <h2 className="text-4xl font-bold mb-8">{aboutData?.capabilities?.title}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {(aboutData?.capabilities?.categories || []).map((capability, index) => (
+                {(aboutData?.capabilities?.categories || [])
+                  .filter((capability: any) => capability?.enabled !== false)
+                  .map((capability, index) => (
                   <motion.div
                     key={capability?.category}
                     initial={{ opacity: 0, y: 20 }}
@@ -480,12 +484,16 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               {aboutData?.cta?.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {(aboutData?.cta?.buttons || []).map((button, index) => {
+              {(aboutData?.cta?.buttons || [])
+                .filter((button: any) => button?.enabled !== false)
+                .map((button, index) => {
                 if (index === 0 && button?.variant === 'primary') {
                   return (
-                    <Button key={button?.label} size="lg" className="px-8 py-6 bg-slate-900 hover:bg-slate-800 text-white font-semibold">
-                      {button?.label}
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                    <Button key={button?.label} size="lg" className="px-8 py-6 bg-slate-900 hover:bg-slate-800 text-white font-semibold" asChild>
+                      <Link href={button?.href || '#'}>
+                        {button?.label}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
                     </Button>
                   );
                 }
