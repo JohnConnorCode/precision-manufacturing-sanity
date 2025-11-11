@@ -7,17 +7,8 @@ import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, getGradientTextStyle } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
-
-interface StatsData {
-  title?: string;
-  subtitle?: string;
-  stats?: Array<{
-    value: string;
-    label: string;
-    description?: string;
-    icon?: string;
-  }>;
-}
+import { StatsData, StatItem } from '@/lib/types/cms';
+import { DotGridBackground } from '@/lib/background-patterns';
 
 interface StatsProps {
   data?: StatsData;
@@ -36,8 +27,8 @@ export default function Stats({ data }: StatsProps) {
 
   // Use CMS data or fallback to defaults
   // Handle both old format (data.stats as array) and new format (data.items as array)
-  const statsArray = (data as any)?.items || data?.stats;
-  const stats = statsArray ? statsArray.map((stat: any) => {
+  const statsArray = data?.items || data?.stats;
+  const stats = statsArray ? statsArray.map((stat: StatItem) => {
     // Parse numeric value from string for animation
     const numValue = parseFloat(stat.value.replace(/[^0-9.-]/g, ''));
     const suffix = stat.value.replace(/[0-9.-]/g, '');
@@ -56,15 +47,7 @@ export default function Stats({ data }: StatsProps) {
   return (
     <section className="py-20 md:py-24 bg-gradient-to-b from-slate-100 to-white relative overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-[0.03]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, rgb(15 23 42) 1px, transparent 1px)',
-            backgroundSize: '32px 32px'
-          }}
-        />
-      </div>
+      <DotGridBackground />
 
       <div className="container relative z-10">
         {/* Section Header */}
@@ -79,7 +62,7 @@ export default function Stats({ data }: StatsProps) {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((stat: any, index: number) => {
+          {stats.map((stat, index: number) => {
             const statDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
 

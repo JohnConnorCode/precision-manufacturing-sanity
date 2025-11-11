@@ -12,6 +12,8 @@ import { usePrefersReducedMotion } from '@/lib/motion';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientTextStyle, getPrimaryColorStyle, hexToRgba } from '@/lib/theme-utils';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { Service, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
+import { DotGridBackground } from '@/lib/background-patterns';
 
 // Icon mapping for CMS data
 const iconMap: Record<string, LucideIcon> = {
@@ -62,14 +64,8 @@ const fallbackServices = [
 ];
 
 interface ServicesProps {
-  data?: any;
-  sectionData?: {
-    eyebrow?: string;
-    heading?: string;
-    headingWord1?: string;
-    headingWord2?: string;
-    description?: string;
-    subdescription?: string;
+  data?: Service[];
+  sectionData?: SectionHeaderData & {
     header?: {
       eyebrow?: string;
       heading?: string;
@@ -97,15 +93,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
   return (
     <section className={`relative ${spacing.section} overflow-hidden ${colors.bgLight}`}>
       {/* Subtle Background Pattern */}
-      <div className="absolute inset-0 opacity-[0.03]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgb(15 23 42) 1px, transparent 1px)`,
-            backgroundSize: '40px 40px'
-          }}
-        />
-      </div>
+      <DotGridBackground spacing={40} dotPosition={1} />
 
       <div className={`${spacing.containerWide} relative z-10`}>
         <SectionHeader
@@ -116,7 +104,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
         />
 
         <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ${spacing.grid}`}>
-          {displayServices.map((service: any, index: number) => {
+          {displayServices.map((service: Service, index: number) => {
             // Handle both CMS data (iconName) and hardcoded data (icon)
             const Icon = service.iconName ? (iconMap[service.iconName] || Cog) : (service.icon || Cog);
             const cardDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
@@ -205,11 +193,11 @@ export default function Services({ data, sectionData }: ServicesProps) {
                       </p>
 
                       <ul className="space-y-2 mb-5">
-                        {(service.specs || []).map((spec: any, index: number) => {
+                        {(service.specs || []).map((spec, specIndex: number) => {
                           // Handle both string and object formats
                           const specText = typeof spec === 'string' ? spec : (spec.text || spec.spec);
                           return (
-                            <li key={index} className="flex items-start text-xs text-slate-800">
+                            <li key={specIndex} className="flex items-start text-xs text-slate-800">
                               <CheckCircle className="h-3 w-3 mr-2 mt-0.5 flex-shrink-0" style={getPrimaryColorStyle(theme.colors)} />
                               <span>{specText}</span>
                             </li>

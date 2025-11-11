@@ -7,6 +7,7 @@ import Link from 'next/link';
 import HeroSliderFixed from '@/components/ui/hero-slider-fixed';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { colorStyleToCSS, getOverlayStyles, getButtonStyles, ColorStyle } from '@/lib/sanity-styles';
+import { colors } from '@/lib/design-system';
 
 interface HeroData {
   // Three-word structure (new)
@@ -139,13 +140,13 @@ export default function Hero({ data }: HeroProps) {
   const ctaTertiary = null; // Hidden - reference site shows only 1 button
 
   // Extract styles from Sanity data
-  const titleColor = colorStyleToCSS(data?.titleColor) || 'rgba(255, 255, 255, 0.9)';
+  const titleColor = colorStyleToCSS(data?.titleColor) || colors.raw.white_alpha90;
   const titleHighlightColor = colorStyleToCSS(data?.titleHighlightColor);
-  const descriptionColor = colorStyleToCSS(data?.descriptionColor) || 'rgba(255, 255, 255, 0.95)';
+  const descriptionColor = colorStyleToCSS(data?.descriptionColor) || colors.raw.white_alpha95;
 
-  const badgeTextColor = colorStyleToCSS(data?.badgeStyle?.textColor) || '#ffffff';
+  const badgeTextColor = colorStyleToCSS(data?.badgeStyle?.textColor) || colors.raw.white;
   const badgeBgColor = colorStyleToCSS(data?.badgeStyle?.backgroundColor);
-  const badgeBorderColor = colorStyleToCSS(data?.badgeStyle?.borderColor) || 'rgba(96, 165, 250, 0.3)';
+  const badgeBorderColor = colorStyleToCSS(data?.badgeStyle?.borderColor) || colors.raw.blue600_alpha50;
 
   const overlayStyle = getOverlayStyles(data?.overlay);
   const primaryButtonStyles = getButtonStyles(data?.buttonStyles?.primaryButton);
@@ -178,7 +179,7 @@ export default function Hero({ data }: HeroProps) {
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
                     color: titleColor,
-                    filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
+                    filter: `drop-shadow(0 2px 8px ${colors.raw.blue600_alpha25})`
                   }}
                 >
                   {word1}
@@ -193,7 +194,7 @@ export default function Hero({ data }: HeroProps) {
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
                     color: titleColor,
-                    filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
+                    filter: `drop-shadow(0 2px 8px ${colors.raw.blue600_alpha25})`
                   }}
                 >
                   {word2}
@@ -210,14 +211,14 @@ export default function Hero({ data }: HeroProps) {
                     titleHighlightColor
                       ? {
                           color: titleHighlightColor,
-                          filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
+                          filter: `drop-shadow(0 2px 8px ${colors.raw.blue600_alpha25})`
                         }
                       : {
-                          background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+                          background: `linear-gradient(to right, ${colors.raw.blue500}, ${colors.raw.indigo600})`,
                           WebkitBackgroundClip: 'text',
                           WebkitTextFillColor: 'transparent',
                           backgroundClip: 'text',
-                          filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
+                          filter: `drop-shadow(0 2px 8px ${colors.raw.blue600_alpha25})`
                         }
                   }
                 >
@@ -248,7 +249,7 @@ export default function Hero({ data }: HeroProps) {
                   badgeStyle.backgroundColor = badgeBgColor;
                 } else {
                   // Default gradient if no custom bg color
-                  badgeStyle.backgroundImage = 'linear-gradient(to right, rgba(37, 99, 235, 0.2), rgba(79, 70, 229, 0.2))';
+                  badgeStyle.backgroundImage = `linear-gradient(to right, ${colors.raw.blue600_alpha20}, ${colors.raw.indigo600_alpha20})`;
                 }
 
                 return (
@@ -290,9 +291,9 @@ export default function Hero({ data }: HeroProps) {
                       Object.keys(primaryButtonStyles.style).length > 0
                         ? primaryButtonStyles.style
                         : {
-                            backgroundImage: 'linear-gradient(to right, #2563eb, #3b82f6, #4f46e5)',
-                            color: '#ffffff',
-                            boxShadow: 'rgba(37, 99, 235, 0.25) 0px 0px 20px, rgba(37, 99, 235, 0.15) 0px 8px 16px'
+                            backgroundImage: `linear-gradient(to right, ${colors.raw.blue600}, ${colors.raw.blue500}, ${colors.raw.indigo600})`,
+                            color: colors.raw.white,
+                            boxShadow: `${colors.raw.blue600_alpha25} 0px 0px 20px, ${colors.raw.blue600_alpha15} 0px 8px 16px`
                           }
                     }
                     asChild

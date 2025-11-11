@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
-import { ArrowRight, Award, Shield, Clock, Target } from 'lucide-react';
+import { ArrowRight, Award, Shield, Clock, Target, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRef } from 'react';
 import SectionHeader from '@/components/ui/section-header';
@@ -12,9 +12,10 @@ import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { ImageShowcaseData, ShowcaseImage, ShowcaseStat } from '@/lib/types/cms';
 
 // Icon mapping for stats
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   Award,
   Shield,
   Clock,
@@ -60,7 +61,7 @@ const fallbackHeader = {
 };
 
 interface ImageShowcaseProps {
-  data?: any;
+  data?: ImageShowcaseData;
 }
 
 export default function ImageShowcase({ data }: ImageShowcaseProps) {
@@ -101,7 +102,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
 
         {/* Large Feature Images */}
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} mb-20`}>
-          {showcaseImages.map((item: any, index: number) => {
+          {showcaseImages.map((item: ShowcaseImage, index: number) => {
             const imageDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
 
@@ -155,7 +156,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20">
-          {stats.map((stat: any, index: number) => {
+          {stats.map((stat: ShowcaseStat, index: number) => {
             const Icon = iconMap[stat.iconName] || Award;
             const statDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
@@ -196,7 +197,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                 {showcaseData.cta.description}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                {(showcaseData.cta.buttons || []).filter((button: any) => button.enabled !== false).map((button: any, index: number) => (
+                {(showcaseData.cta.buttons || []).filter(button => button.enabled !== false).map((button, index: number) => (
                 <Link
                   key={button.text}
                   href={button.href}

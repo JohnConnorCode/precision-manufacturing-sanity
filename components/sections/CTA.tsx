@@ -8,6 +8,8 @@ import { colorStyleToCSS, getBackgroundColor, paddingToClass, ColorStyle } from 
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { getInitialState, getAnimateState, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { colors } from '@/lib/design-system';
+import { LinearGridBackground } from '@/lib/background-patterns';
 
 interface CTAData {
   title?: string;
@@ -65,11 +67,11 @@ export default function CTA({ data }: CTAProps) {
 
   // Extract styles from Sanity data
   const backgroundStyle = getBackgroundColor(data?.theme);
-  const defaultBgColor = backgroundStyle.backgroundColor || backgroundStyle.backgroundImage ? '' : '#020617'; // slate-950
+  const defaultBgColor = backgroundStyle.backgroundColor || backgroundStyle.backgroundImage ? '' : colors.raw.slate950;
   const paddingClass = paddingToClass(data?.padding) || 'py-24';
 
-  const titleColor = colorStyleToCSS(data?.titleColor) || '#ffffff';
-  const subtitleColor = colorStyleToCSS(data?.subtitleColor) || '#94a3b8'; // slate-400
+  const titleColor = colorStyleToCSS(data?.titleColor) || colors.raw.white;
+  const subtitleColor = colorStyleToCSS(data?.subtitleColor) || colors.raw.slate400;
 
   return (
     <section
@@ -82,10 +84,7 @@ export default function CTA({ data }: CTAProps) {
       {/* Simplified background - subtle grid + accent */}
       <div className="absolute inset-0">
         {/* Subtle static grid */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: `linear-gradient(0deg, transparent 49%, rgba(59, 130, 246, 0.5) 50%, transparent 51%), linear-gradient(90deg, transparent 49%, rgba(59, 130, 246, 0.5) 50%, transparent 51%)`,
-          backgroundSize: '50px 50px',
-        }} />
+        <LinearGridBackground />
 
         {/* Subtle accent glow */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full filter blur-3xl" />

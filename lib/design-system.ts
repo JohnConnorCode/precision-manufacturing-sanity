@@ -63,6 +63,38 @@ export const colors = {
   bgLight: 'bg-gradient-to-b from-slate-50 to-white',
   bgDark: 'bg-slate-950',
   bgWhite: 'bg-white',
+
+  // Raw color values for inline styles and CSS
+  raw: {
+    // Slate colors
+    slate950: '#020617',
+    slate400: '#94a3b8',
+    slate900: '#0f172a',
+    white: '#ffffff',
+
+    // Blue colors (primary)
+    blue600: '#2563eb',
+    blue600_rgb: 'rgb(37, 99, 235)',
+    blue600_alpha80: 'rgba(37, 99, 235, 0.8)',
+    blue600_alpha50: 'rgba(37, 99, 235, 0.5)',
+    blue600_alpha25: 'rgba(37, 99, 235, 0.25)',
+    blue600_alpha20: 'rgba(37, 99, 235, 0.2)',
+    blue600_alpha15: 'rgba(37, 99, 235, 0.15)',
+    blue600_alpha10: 'rgba(37, 99, 235, 0.1)',
+    blue500: '#3b82f6',
+    blue500_rgb: 'rgb(59, 130, 246)',
+
+    // Indigo colors (secondary)
+    indigo600: '#4f46e5',
+    indigo600_rgb: 'rgb(79, 70, 229)',
+    indigo600_alpha80: 'rgba(79, 70, 229, 0.8)',
+    indigo600_alpha20: 'rgba(79, 70, 229, 0.2)',
+    indigo600_alpha10: 'rgba(79, 70, 229, 0.1)',
+
+    // White with alpha
+    white_alpha90: 'rgba(255, 255, 255, 0.9)',
+    white_alpha95: 'rgba(255, 255, 255, 0.95)',
+  },
 } as const;
 
 // ==================== BORDER RADIUS ====================

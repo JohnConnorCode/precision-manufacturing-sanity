@@ -2,23 +2,25 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { BookOpen, ArrowRight, Clock, GraduationCap, TrendingUp } from 'lucide-react';
+import { BookOpen, ArrowRight, Clock, GraduationCap, TrendingUp, LucideIcon } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
 import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { ResourcesData, ResourceSeries, ResourceBenefit } from '@/lib/types/cms';
+import { DotGridBackground } from '@/lib/background-patterns';
 
 // Icon mapping for CMS data
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   BookOpen,
   GraduationCap,
   TrendingUp,
 };
 
 interface ResourcesProps {
-  data?: any;
+  data?: ResourcesData;
 }
 
 export default function Resources({ data }: ResourcesProps) {
@@ -33,12 +35,7 @@ export default function Resources({ data }: ResourcesProps) {
   return (
     <section className="relative py-24 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgb(59, 130, 246) 1px, transparent 0)`,
-          backgroundSize: '40px 40px'
-        }} />
-      </div>
+      <DotGridBackground color="rgb(59, 130, 246)" spacing={40} dotPosition={1} opacity={0.05} />
 
       <div className="container relative z-10">
         <div className="mb-16">
@@ -53,7 +50,7 @@ export default function Resources({ data }: ResourcesProps) {
 
         {/* Featured Series Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {resourcesData.featuredSeries.map((series: any, index: number) => {
+          {resourcesData.featuredSeries.map((series: ResourceSeries, index: number) => {
             const cardDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
 
@@ -156,7 +153,7 @@ export default function Resources({ data }: ResourcesProps) {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
-                {resourcesData.cta.buttons.filter((button: any) => button.enabled !== false).map((button: any, index: number) => (
+                {resourcesData.cta.buttons.filter(button => button.enabled !== false).map((button, index: number) => (
                   <Link key={button.text} href={button.href}>
                     <PremiumButton size="lg" variant={button.variant === 'primary' ? 'default' : 'secondary'}>
                       {index === 0 && <BookOpen className="w-5 h-5" />}
@@ -171,7 +168,7 @@ export default function Resources({ data }: ResourcesProps) {
         {/* Benefits Grid */}
         {resourcesData.benefits && resourcesData.benefits.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-            {resourcesData.benefits.filter((benefit: any) => benefit.enabled !== false).map((benefit: any, index: number) => {
+            {resourcesData.benefits.filter(benefit => benefit.enabled !== false).map((benefit: ResourceBenefit, index: number) => {
               const IconComponent = iconMap[benefit.iconName] || BookOpen;
               const benefitDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
               const viewportConfig = getViewportConfig();

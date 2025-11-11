@@ -12,6 +12,7 @@ import { useTheme } from '@/lib/contexts/ThemeContext';
 import { hexToRgba } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { Industry, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
 
 // Icon mapping for CMS data
 const iconMap: Record<string, LucideIcon> = {
@@ -49,13 +50,8 @@ const fallbackIndustries = [
 ];
 
 interface IndustriesProps {
-  data?: any;
-  sectionData?: {
-    eyebrow?: string;
-    heading?: string;
-    description?: string;
-    subdescription?: string;
-  };
+  data?: Industry[];
+  sectionData?: SectionHeaderData;
 }
 
 export default function Industries({ data, sectionData }: IndustriesProps) {
@@ -82,7 +78,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
         />
 
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid}`}>
-          {displayIndustries.map((industry: any, index: number) => {
+          {displayIndustries.map((industry: Industry, index: number) => {
             // Handle both CMS data (iconName) and hardcoded data (icon)
             const Icon = industry.iconName ? (iconMap[industry.iconName] || Plane) : (industry.icon || Plane);
             const cardDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
