@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
-import { Plane, Zap, Shield, LucideIcon } from 'lucide-react';
+import * as Icons from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImage from '@/components/ui/parallax-image';
 import SectionHeader from '@/components/ui/section-header';
@@ -14,12 +14,11 @@ import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { Industry, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
 
-// Icon mapping for CMS data
-const iconMap: Record<string, LucideIcon> = {
-  'Shield': Shield,
-  'Zap': Zap,
-  'Plane': Plane,
-};
+// Dynamic icon component - supports ALL Lucide icons
+function DynamicIcon({ name, className }: { name?: string; className?: string }) {
+  const Icon = name ? (Icons as any)[name] || Icons.Circle : Icons.Circle;
+  return <Icon className={className} />;
+}
 
 // Fallback industries data
 const fallbackIndustries = [

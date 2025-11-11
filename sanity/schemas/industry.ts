@@ -510,6 +510,14 @@ export default {
       group: 'display',
     },
     {
+      name: 'iconName',
+      type: 'string',
+      title: 'Card Icon',
+      description: 'Lucide icon name for the industry card (e.g., "Plane", "Shield", "Factory", "Zap", "Heart", "Building2")',
+      group: 'display',
+      validation: (Rule: any) => Rule.required().error('Icon name is required for card display')
+    },
+    {
       name: 'image',
       type: 'image',
       title: 'Industry Card Image',
