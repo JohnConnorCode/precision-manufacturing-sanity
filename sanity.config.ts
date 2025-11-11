@@ -26,7 +26,8 @@ export default defineConfig({
   plugins: [
     presentationTool({
       previewUrl: {
-        previewMode: {
+        origin: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+        draftMode: {
           enable: '/api/draft',
         },
       },
