@@ -30,8 +30,9 @@ export default function Stats({ data }: StatsProps) {
   const statsArray = data?.items || data?.stats;
   const stats = statsArray ? statsArray.map((stat: StatItem) => {
     // Parse numeric value from string for animation
-    const numValue = parseFloat(stat.value.replace(/[^0-9.-]/g, ''));
-    const suffix = stat.value.replace(/[0-9.-]/g, '');
+    const valueStr = String(stat.value);
+    const numValue = parseFloat(valueStr.replace(/[^0-9.-]/g, ''));
+    const suffix = valueStr.replace(/[0-9.-]/g, '');
     return {
       value: numValue,
       suffix: suffix || '',

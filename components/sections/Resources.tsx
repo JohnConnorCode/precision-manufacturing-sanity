@@ -169,7 +169,7 @@ export default function Resources({ data }: ResourcesProps) {
         {resourcesData.benefits && resourcesData.benefits.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {resourcesData.benefits.filter(benefit => benefit.enabled !== false).map((benefit: ResourceBenefit, index: number) => {
-              const IconComponent = iconMap[benefit.iconName] || BookOpen;
+              const IconComponent = (benefit.iconName && iconMap[benefit.iconName]) || BookOpen;
               const benefitDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
               const viewportConfig = getViewportConfig();
 
