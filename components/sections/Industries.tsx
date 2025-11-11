@@ -78,10 +78,16 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
 
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid}`}>
           {displayIndustries.map((industry: Industry, index: number) => {
-            // Handle both CMS data (iconName) and hardcoded data (icon)
-            const Icon = industry.iconName ? (iconMap[industry.iconName] || Plane) : (industry.icon || Plane);
             const cardDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
+
+            // Get image URL - handle both Sanity image objects and direct URLs
+            const imageUrl = typeof industry.image === 'string'
+              ? industry.image
+              : (industry.image as any)?.asset?.url || null;
+            // Placeholder image for industries without images
+            const placeholderImage = 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=90';
+            const displayImage = imageUrl || placeholderImage;
 
             return (
               <motion.div
@@ -105,17 +111,13 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                       onMouseLeave={(e) => e.currentTarget.style.borderColor = ''}
                     >
                     <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
-                      {industry.image && (
-                        <>
-                          <ParallaxImage
-                            src={industry.image}
-                            alt={industry.title}
-                            className="w-full h-full group-hover:scale-110 transition-transform duration-700"
-                            speed={0.2}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/50 to-transparent" />
-                        </>
-                      )}
+                      <ParallaxImage
+                        src={displayImage}
+                        alt={industry.title}
+                        className="w-full h-full group-hover:scale-110 transition-transform duration-700"
+                        speed={0.2}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/50 to-transparent" />
 
                       {/* Icon and title overlay on image */}
                       <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -126,7 +128,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = theme.colors.secondary}
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = theme.colors.primary}
                           >
-                            <Icon className="h-6 w-6 text-white" />
+                            <DynamicIcon name={industry.iconName} className="h-6 w-6 text-white" />
                           </div>
                           <h3 className="text-xl font-bold text-white leading-tight pt-2">
                             {industry.title}
