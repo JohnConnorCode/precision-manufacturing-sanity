@@ -467,6 +467,13 @@ export default {
             {
               type: 'object',
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this button without deleting it',
+                  initialValue: true,
+                },
                 {name: 'label', type: 'string', title: 'Label'},
                 {name: 'href', type: 'string', title: 'URL'},
                 {name: 'variant', type: 'string', title: 'Variant', options: { list: [

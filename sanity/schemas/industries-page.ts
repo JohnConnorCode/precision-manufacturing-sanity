@@ -504,6 +504,13 @@ export default {
           type: 'object',
           title: 'Primary Button',
           fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Uncheck to hide this button without deleting it',
+              initialValue: true,
+            },
             { name: 'label', type: 'string', title: 'Label', initialValue: 'Schedule Consultation' },
             { name: 'href', type: 'string', title: 'URL', initialValue: '/contact' }
           ]
@@ -513,6 +520,13 @@ export default {
           type: 'object',
           title: 'Secondary Button',
           fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Uncheck to hide this button without deleting it',
+              initialValue: true,
+            },
             { name: 'label', type: 'string', title: 'Label', initialValue: 'View Our Services' },
             { name: 'href', type: 'string', title: 'URL', initialValue: '/services' }
           ]
