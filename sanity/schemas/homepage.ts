@@ -1053,25 +1053,52 @@ export default {
         {
           name: 'backgroundColor',
           type: 'string',
-          title: 'Background Color (Tailwind)',
-          description: 'Background color (e.g., "bg-white", "bg-zinc-50")',
+          title: 'Background Color',
+          description: 'Background color for the resources section',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'White ⭐ (Default)', value: 'bg-white' },
+              { title: 'Light Gray', value: 'bg-zinc-50' },
+              { title: 'Very Light Gray', value: 'bg-zinc-100' },
+              { title: 'Light Blue', value: 'bg-blue-50' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'bg-white',
         },
         {
           name: 'titleColor',
           type: 'string',
-          title: 'Title Color (Tailwind)',
-          description: 'Section title color (e.g., "text-zinc-900")',
+          title: 'Title Color',
+          description: 'Color for the section title text',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Dark Gray ⭐ (Default)', value: 'text-zinc-900' },
+              { title: 'Black', value: 'text-black' },
+              { title: 'Medium Gray', value: 'text-zinc-700' },
+              { title: 'Blue Accent', value: 'text-blue-600' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-zinc-900',
         },
         {
           name: 'badgeColor',
           type: 'string',
-          title: 'Badge Color (Tailwind)',
-          description: 'Badge text color (e.g., "text-blue-600")',
+          title: 'Badge Color',
+          description: 'Color for resource category badges',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Blue ⭐ (Default)', value: 'text-blue-600' },
+              { title: 'Dark Blue', value: 'text-blue-700' },
+              { title: 'Indigo', value: 'text-indigo-600' },
+              { title: 'Dark Gray', value: 'text-zinc-700' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-blue-600',
         },
         {
@@ -1275,25 +1302,54 @@ export default {
         {
           name: 'backgroundColor',
           type: 'string',
-          title: 'Background Color (Tailwind)',
-          description: 'Background gradient or color (e.g., "from-blue-600 to-indigo-600")',
+          title: 'Background Style',
+          description: 'Background gradient or solid color for the CTA section',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Blue Gradient ⭐ (Default)', value: 'from-blue-600 to-indigo-600' },
+              { title: 'Dark Blue Gradient', value: 'from-blue-800 to-indigo-800' },
+              { title: 'Dark Gradient', value: 'from-zinc-800 to-zinc-900' },
+              { title: 'Indigo Gradient', value: 'from-indigo-600 to-purple-600' },
+              { title: 'Solid Blue', value: 'bg-blue-600' },
+              { title: 'Solid Dark', value: 'bg-zinc-900' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'from-blue-600 to-indigo-600',
         },
         {
           name: 'titleColor',
           type: 'string',
-          title: 'Title Color (Tailwind)',
-          description: 'Title text color (e.g., "text-white")',
+          title: 'Title Color',
+          description: 'Color for the CTA title text',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'White ⭐ (Default)', value: 'text-white' },
+              { title: 'Off-White', value: 'text-white/90' },
+              { title: 'Light Gray', value: 'text-zinc-100' },
+              { title: 'Blue Accent', value: 'text-blue-100' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-white',
         },
         {
           name: 'subtitleColor',
           type: 'string',
-          title: 'Subtitle Color (Tailwind)',
-          description: 'Subtitle text color (e.g., "text-white/90")',
+          title: 'Subtitle Color',
+          description: 'Color for the CTA subtitle text',
           fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Off-White ⭐ (Default)', value: 'text-white/90' },
+              { title: 'White', value: 'text-white' },
+              { title: 'Light Gray', value: 'text-zinc-200' },
+              { title: 'Very Light', value: 'text-white/80' },
+              { title: 'Custom (Advanced)', value: 'custom' }
+            ]
+          },
           initialValue: 'text-white/90',
         },
         {
