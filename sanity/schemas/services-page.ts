@@ -197,6 +197,45 @@ export default {
       ]
     },
 
+    // Deprecated/Orphaned Fields (for data migration - not used by frontend)
+    {
+      name: 'header',
+      type: 'object',
+      title: '[DEPRECATED] Header (use Hero instead)',
+      description: 'This field is deprecated and not used. Data will be migrated to hero section.',
+      hidden: true,
+      fields: [
+        {
+          name: 'eyebrow',
+          type: 'string',
+          title: 'Eyebrow'
+        },
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Title'
+        },
+        {
+          name: 'titleHighlight',
+          type: 'string',
+          title: 'Title Highlight'
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Description'
+        }
+      ]
+    },
+    {
+      name: 'services',
+      type: 'array',
+      title: '[DEPRECATED] Services References',
+      description: 'This field is deprecated. Services are now pulled automatically from the Service collection.',
+      hidden: true,
+      of: [{ type: 'reference', to: [{ type: 'service' }] }]
+    },
+
     // CTA Section
     {
       name: 'cta',
@@ -204,6 +243,13 @@ export default {
       title: 'Call to Action',
       group: 'content',
       fields: [
+        {
+          name: 'title',
+          type: 'string',
+          title: '[DEPRECATED] Title (use heading instead)',
+          description: 'This field is deprecated. Use "heading" field below instead.',
+          hidden: true,
+        },
         {
           name: 'heading',
           type: 'string',
@@ -226,6 +272,13 @@ export default {
             {
               type: 'object',
               fields: [
+                {
+                  name: 'text',
+                  type: 'string',
+                  title: '[DEPRECATED] Text (use label instead)',
+                  description: 'This field is deprecated. Use "label" field below instead.',
+                  hidden: true,
+                },
                 { name: 'label', type: 'string', title: 'Label' },
                 { name: 'href', type: 'string', title: 'URL' },
                 {
@@ -238,6 +291,13 @@ export default {
                       { title: 'Secondary', value: 'secondary' }
                     ]
                   }
+                },
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this button without deleting it',
+                  initialValue: true,
                 }
               ]
             }

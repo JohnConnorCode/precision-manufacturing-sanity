@@ -290,7 +290,7 @@ export default async function ServicesPage() {
           <AnimatedSection>
             <div className="text-center max-w-4xl mx-auto">
               <h2 className={cn(theme.typography.h2, "mb-6")}>
-                {servicesPageData?.cta?.heading || 'Ready to Start Your Project?'}
+                {servicesPageData?.cta?.heading || servicesPageData?.cta?.title || 'Ready to Start Your Project?'}
               </h2>
               <p className={cn(theme.typography.lead, "mb-8")}>
                 {servicesPageData?.cta?.description || 'Partner with us for precision manufacturing solutions that meet the highest industry standards.'}
@@ -299,7 +299,7 @@ export default async function ServicesPage() {
                 {(servicesPageData?.cta?.buttons || [
                   { label: 'Get Quote', href: '/contact?interest=quote', variant: 'primary' },
                   { label: 'Contact Us', href: '/contact', variant: 'secondary' }
-                ]).map((button: any, index: number) => (
+                ]).filter((button: any) => button.enabled !== false).map((button: any, index: number) => (
                   <Button
                     key={index}
                     size="lg"
@@ -308,7 +308,7 @@ export default async function ServicesPage() {
                     asChild
                   >
                     <Link href={button.href}>
-                      {button.label}
+                      {button.label || button.text}
                       {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
                     </Link>
                   </Button>
