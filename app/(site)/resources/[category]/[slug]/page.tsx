@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { Clock, ArrowLeft, Calendar, Tag } from 'lucide-react';
+import { Clock, ArrowLeft, Calendar, Tag, ArrowRight } from 'lucide-react';
 import { getResourceBySlug, getAllResources } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 import { PortableTextContent } from '@/components/portable-text-components';
+import { PremiumButton } from '@/components/ui/premium-button';
+import SectionHeader from '@/components/ui/section-header';
 
 // Enable ISR with 1 hour revalidation
 export const revalidate = 3600;
@@ -159,18 +161,17 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
         <section className="py-12 px-4 opacity-0 animate-fade-up" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
           <div className="max-w-4xl mx-auto">
             <div className="bg-gradient-to-br from-blue-600/10 to-indigo-600/10 border border-blue-600/20 rounded-2xl p-8 text-center">
-              <h2 className="text-2xl font-bold text-foreground mb-4">
-                Ready to Get Started?
-              </h2>
-              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Contact us to discuss your precision manufacturing needs and learn how we can help bring your project to life.
-              </p>
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
-              >
-                Contact Us Today
-                <ArrowLeft className="w-4 h-4 rotate-180" />
+              <SectionHeader
+                heading="Ready to Get Started?"
+                gradientWordPosition="last"
+                description="Contact us to discuss your precision manufacturing needs and learn how we can help bring your project to life."
+                className="mb-6"
+              />
+              <Link href="/contact">
+                <PremiumButton size="lg" variant="default">
+                  Contact Us Today
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </PremiumButton>
               </Link>
             </div>
           </div>

@@ -15,6 +15,7 @@ interface TechnicalSpecsData {
     label: string;
     value: string;
     unit?: string;
+    enabled?: boolean;
   }>;
 }
 
@@ -77,13 +78,15 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
     }
   ];
 
-  // Convert CMS data to metrics format if available
-  const metrics = data?.specs ? data.specs.map((spec, index) => ({
-    icon: defaultMetrics[index % defaultMetrics.length].icon,
-    value: spec.value + (spec.unit || ''),
-    label: spec.label.toUpperCase(),
-    description: `${spec.label} specification`,
-  })) : defaultMetrics;
+  // Convert CMS data to metrics format if available - filter out disabled specs
+  const metrics = data?.specs ? data.specs
+    .filter(spec => spec.enabled !== false)
+    .map((spec, index) => ({
+      icon: defaultMetrics[index % defaultMetrics.length].icon,
+      value: spec.value + (spec.unit || ''),
+      label: spec.label.toUpperCase(),
+      description: `${spec.label} specification`,
+    })) : defaultMetrics;
 
   const title = data?.title || 'Precision By The Numbers';
   const subtitle = data?.subtitle || 'Industry-leading capabilities backed by decades of aerospace and defense manufacturing expertise';

@@ -52,7 +52,7 @@ export default function Resources({ data }: ResourcesProps) {
 
         {/* Featured Series Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {resourcesData.featuredSeries.map((series: ResourceSeries, index: number) => {
+          {resourcesData.featuredSeries.filter((series: any) => series.enabled !== false).map((series: ResourceSeries, index: number) => {
             const cardDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
 

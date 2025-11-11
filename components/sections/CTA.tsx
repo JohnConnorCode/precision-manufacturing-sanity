@@ -25,6 +25,7 @@ interface CTAData {
   certifications?: Array<{
     icon: string;
     text: string;
+    enabled?: boolean;
   }>;
   trustMessage?: string;
   // Style fields from Sanity
@@ -157,7 +158,7 @@ export default function CTA({ data }: CTAProps) {
           {/* Certification badges with subtle animation */}
           {certifications.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
-              {certifications.map((cert, index) => {
+              {certifications.filter((cert: any) => cert.enabled !== false).map((cert, index) => {
               const Icon = iconMap[cert.icon] || Activity;
               const isFirstBadge = index === 0 && cert.icon === 'Clock';
 

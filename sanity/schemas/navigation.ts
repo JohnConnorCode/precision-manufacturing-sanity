@@ -36,6 +36,14 @@ export default {
       ],
       fields: [
         {
+          name: 'showPhone',
+          type: 'boolean',
+          title: 'Show Phone Number',
+          description: 'Display phone number in top bar',
+          initialValue: true,
+          fieldset: 'phoneInfo',
+        },
+        {
           name: 'phone',
           type: 'string',
           title: 'Phone Number',
@@ -48,6 +56,14 @@ export default {
           title: 'Phone Link',
           description: 'tel: link for phone number',
           fieldset: 'phoneInfo',
+        },
+        {
+          name: 'showEmail',
+          type: 'boolean',
+          title: 'Show Email Address',
+          description: 'Display email address in top bar',
+          initialValue: true,
+          fieldset: 'emailInfo',
         },
         {
           name: 'email',
@@ -67,6 +83,14 @@ export default {
           title: 'Email Link',
           description: 'mailto: link for email',
           fieldset: 'emailInfo',
+        },
+        {
+          name: 'showCertifications',
+          type: 'boolean',
+          title: 'Show Certifications',
+          description: 'Display certifications text in top bar',
+          initialValue: true,
+          fieldset: 'certifications',
         },
         {
           name: 'certifications',

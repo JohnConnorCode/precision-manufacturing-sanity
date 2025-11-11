@@ -2,10 +2,12 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { PremiumButton } from '@/components/ui/premium-button';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, CheckCircle, Zap, Award, TrendingUp, Shield, Target } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImagePro from '@/components/ui/parallax-image-pro';
+import SectionHeader from '@/components/ui/section-header';
 import { theme, styles, cn } from '@/lib/theme';
 import { PortableTextContent } from '@/components/portable-text-components';
 import HeroSection from '@/components/ui/hero-section';
@@ -500,29 +502,27 @@ export function IndustryContent({ industryData, slug: _slug }: IndustryContentPr
       {/* CTA Section */}
       <section className={styles.sectionDark}>
         <div className={theme.spacing.container}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center max-w-4xl mx-auto"
-          >
-            <h2 className={cn(theme.typography.h2, 'mb-6 text-white')}>Ready to Get Started?</h2>
-            <p className={cn(theme.typography.lead, 'text-slate-300 mb-8')}>
-              Partner with IIS for {industry.title.toLowerCase()} solutions that meet the most demanding requirements.
-            </p>
+          <div className="text-center max-w-4xl mx-auto">
+            <SectionHeader
+              heading="Ready to Get Started?"
+              gradientWordPosition="last"
+              description={`Partner with IIS for ${industry.title.toLowerCase()} solutions that meet the most demanding requirements.`}
+              className="[&_h2]:text-white [&_p]:text-slate-300 mb-8"
+            />
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className={styles.ctaPrimary} asChild>
-                <Link href="/contact">
+              <Link href="/contact">
+                <PremiumButton size="lg" variant="default">
                   Schedule Consultation
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" asChild className={cn(styles.ctaSecondary, 'border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white')}>
-                <Link href="/industries">View All Industries</Link>
-              </Button>
+                </PremiumButton>
+              </Link>
+              <Link href="/industries">
+                <PremiumButton size="lg" variant="secondary">
+                  View All Industries
+                </PremiumButton>
+              </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </div>

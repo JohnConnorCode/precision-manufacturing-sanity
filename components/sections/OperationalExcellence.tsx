@@ -71,7 +71,7 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
 
         {/* Benefits Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-          {benefits.map((benefit, index) => {
+          {benefits.filter((benefit: any) => benefit.enabled !== false).map((benefit, index) => {
             const benefitDelay = SECTION_CONFIGS.listItems.getDelay(index);
             const viewportConfig = getViewportConfig();
 

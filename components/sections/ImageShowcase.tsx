@@ -100,7 +100,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
 
         {/* Large Feature Images */}
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} mb-20`}>
-          {showcaseImages.map((item: ShowcaseImage, index: number) => {
+          {showcaseImages.filter((item: ShowcaseImage) => item.enabled !== false).map((item: ShowcaseImage, index: number) => {
             const imageDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
 
@@ -157,7 +157,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         {/* Stats Grid */}
         {stats.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20">
-            {stats.map((stat: ShowcaseStat, index: number) => {
+            {stats.filter((stat: ShowcaseStat) => stat.enabled !== false).map((stat: ShowcaseStat, index: number) => {
             const Icon = iconMap[stat.iconName] || Award;
             const statDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();

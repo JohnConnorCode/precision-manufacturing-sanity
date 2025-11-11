@@ -27,12 +27,27 @@ export async function getAllServices(preview = false) {
         alt
       },
       hero{
-        backgroundImage{asset->{url,_id}},
-        badge, subtitle
+        backgroundImage{asset->{url,_id}, alt},
+        badge,
+        subtitle,
+        descriptionRich,
+        titleSize,
+        descriptionSize
       },
-      overview,
+      overview{
+        description,
+        descriptionRich
+      },
       capabilities,
-      services,
+      services[]{
+        title,
+        description,
+        descriptionRich,
+        iconName,
+        image{asset->{url,_id}, alt, caption},
+        bullets,
+        features
+      },
       technicalSpecs,
       process,
       equipment,

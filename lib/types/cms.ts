@@ -94,6 +94,7 @@ export interface ResourceSeries {
   readTime: string;
   level?: 'Beginner' | 'Intermediate' | 'Advanced';
   difficulty?: 'Beginner' | 'Intermediate' | 'Advanced';
+  enabled?: boolean;
 }
 
 export interface ResourceBenefit {
@@ -136,12 +137,14 @@ export interface ShowcaseImage {
   title: string;
   category: string;
   href: string;
+  enabled?: boolean;
 }
 
 export interface ShowcaseStat {
   iconName: string;
   value: string;
   label: string;
+  enabled?: boolean;
 }
 
 export interface ShowcaseCTAButton {
@@ -179,6 +182,7 @@ export interface StatItem {
   prefix?: string;
   suffix?: string;
   decimals?: number;
+  enabled?: boolean;
 }
 
 export interface StatsData {
@@ -196,6 +200,7 @@ export interface Benefit {
   iconName?: string;
   title: string;
   description: string;
+  enabled?: boolean;
 }
 
 export interface OperationalExcellenceData {
@@ -212,6 +217,7 @@ export interface HeroSlide {
   image: string;
   alt: string;
   focal: 'center' | 'top' | 'bottom';
+  enabled?: boolean;
 }
 
 export interface ColorStyle {
@@ -306,6 +312,7 @@ export interface TechnicalSpec {
   label: string;
   value: string;
   unit?: string;
+  enabled?: boolean;
 }
 
 export interface TechnicalSpecsData {

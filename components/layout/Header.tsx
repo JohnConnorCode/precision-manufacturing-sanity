@@ -71,10 +71,13 @@ const defaultNavigation = [
 ];
 
 const defaultTopBar = {
+  showPhone: true,
   phone: '503-231-9093',
   phoneLink: 'tel:+15032319093',
+  showEmail: true,
   email: 'officemgr@iismet.com',
   emailLink: 'mailto:officemgr@iismet.com',
+  showCertifications: true,
   certifications: 'ISO 9001 • AS9100D • ITAR REGISTERED'
 };
 
@@ -244,18 +247,26 @@ export default function Header({ data }: HeaderProps) {
       <aside className={cn('hidden lg:block fixed z-[150] w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-blue-600/10', announcement?.enabled ? 'top-10' : 'top-0')} role="complementary" aria-label="Contact information">
         <div className="container flex h-10 items-center justify-between text-sm">
           <div className="flex items-center space-x-6">
-            <a href={topBar.phoneLink} className="flex items-center space-x-2 text-slate-400 hover:text-blue-600 transition-colors group" aria-label={`Phone: ${topBar.phone}`}>
-              <Phone className="h-3 w-3 group-hover:text-blue-600" aria-hidden="true" />
-              <span>{topBar.phone}</span>
-            </a>
-            <a href={topBar.emailLink} className="flex items-center space-x-2 text-slate-400 hover:text-blue-600 transition-colors group" aria-label={`Email: ${topBar.email}`}>
-              <Mail className="h-3 w-3 group-hover:text-blue-600" aria-hidden="true" />
-              <span>{topBar.email}</span>
-            </a>
+            {topBar.showPhone !== false && (
+              <a href={topBar.phoneLink} className="flex items-center space-x-2 text-slate-400 hover:text-blue-600 transition-colors group" aria-label={`Phone: ${topBar.phone}`}>
+                <Phone className="h-3 w-3 group-hover:text-blue-600" aria-hidden="true" />
+                <span>{topBar.phone}</span>
+              </a>
+            )}
+            {topBar.showEmail !== false && (
+              <a href={topBar.emailLink} className="flex items-center space-x-2 text-slate-400 hover:text-blue-600 transition-colors group" aria-label={`Email: ${topBar.email}`}>
+                <Mail className="h-3 w-3 group-hover:text-blue-600" aria-hidden="true" />
+                <span>{topBar.email}</span>
+              </a>
+            )}
           </div>
           <div className="flex items-center space-x-4">
-            <Zap className="h-3 w-3 text-blue-600" aria-hidden="true" />
-            <span className={cn(theme.typography.badge, 'text-slate-400')}>{topBar.certifications}</span>
+            {topBar.showCertifications !== false && (
+              <>
+                <Zap className="h-3 w-3 text-blue-600" aria-hidden="true" />
+                <span className={cn(theme.typography.badge, 'text-slate-400')}>{topBar.certifications}</span>
+              </>
+            )}
           </div>
         </div>
       </aside>
@@ -580,32 +591,36 @@ export default function Header({ data }: HeaderProps) {
 
                   {/* Contact info */}
                   <div className="mt-6 space-y-3">
-                    <a
-                      href={topBar.phoneLink}
-                      className={cn(
-                        "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
-                        isDark
-                          ? 'text-slate-300 hover:text-white hover:bg-slate-900/40'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                      )}
-                      aria-label={`Call ${topBar.phone}`}
-                    >
-                      <Phone className="h-4 w-4" />
-                      <span className="text-sm font-medium">{topBar.phone}</span>
-                    </a>
-                    <a
-                      href={topBar.emailLink}
-                      className={cn(
-                        "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
-                        isDark
-                          ? 'text-slate-300 hover:text-white hover:bg-slate-900/40'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                      )}
-                      aria-label={`Email ${topBar.email}`}
-                    >
-                      <Mail className="h-4 w-4" />
-                      <span className="text-sm font-medium">{topBar.email}</span>
-                    </a>
+                    {topBar.showPhone !== false && (
+                      <a
+                        href={topBar.phoneLink}
+                        className={cn(
+                          "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
+                          isDark
+                            ? 'text-slate-300 hover:text-white hover:bg-slate-900/40'
+                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                        )}
+                        aria-label={`Call ${topBar.phone}`}
+                      >
+                        <Phone className="h-4 w-4" />
+                        <span className="text-sm font-medium">{topBar.phone}</span>
+                      </a>
+                    )}
+                    {topBar.showEmail !== false && (
+                      <a
+                        href={topBar.emailLink}
+                        className={cn(
+                          "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
+                          isDark
+                            ? 'text-slate-300 hover:text-white hover:bg-slate-900/40'
+                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                        )}
+                        aria-label={`Email ${topBar.email}`}
+                      >
+                        <Mail className="h-4 w-4" />
+                        <span className="text-sm font-medium">{topBar.email}</span>
+                      </a>
+                    )}
                   </div>
                 </div>
               </nav>
