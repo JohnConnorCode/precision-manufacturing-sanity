@@ -145,15 +145,24 @@ export default {
                 select: {
                   title: 'title',
                   subtitle: 'description',
+                  enabled: 'enabled',
                 },
-                prepare({title, subtitle}: any) {
+                prepare({title, subtitle, enabled}: any) {
+                  const status = enabled === false ? ' (Hidden)' : '';
                   return {
-                    title: title || 'Benefit',
+                    title: `${title || 'Benefit'}${status}`,
                     subtitle: subtitle || 'No description',
                   }
                 },
               },
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this benefit without deleting it',
+                  initialValue: true,
+                },
                 {
                   name: 'title',
                   type: 'string',
@@ -211,15 +220,24 @@ export default {
                 select: {
                   title: 'title',
                   subtitle: 'description',
+                  enabled: 'enabled',
                 },
-                prepare({title, subtitle}: any) {
+                prepare({title, subtitle, enabled}: any) {
+                  const status = enabled === false ? ' (Hidden)' : '';
                   return {
-                    title: title || 'Value',
+                    title: `${title || 'Value'}${status}`,
                     subtitle: subtitle || 'No description',
                   }
                 },
               },
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this value without deleting it',
+                  initialValue: true,
+                },
                 {
                   name: 'title',
                   type: 'string',

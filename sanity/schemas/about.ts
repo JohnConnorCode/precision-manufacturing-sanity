@@ -250,7 +250,26 @@ export default {
           of: [
             {
               type: 'object',
+              preview: {
+                select: {
+                  title: 'title',
+                  enabled: 'enabled',
+                },
+                prepare({title, enabled}: any) {
+                  return {
+                    title: title || 'Value',
+                    subtitle: enabled === false ? 'Hidden' : 'Visible',
+                  }
+                },
+              },
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this value without deleting it',
+                  initialValue: true,
+                },
                 {name: 'title', type: 'string', title: 'Title'},
                 {name: 'description', type: 'text', title: 'Description', rows: 3},
                 {name: 'iconName', type: 'string', title: 'Icon Name'},
@@ -278,7 +297,26 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: {
+              title: 'title',
+              enabled: 'enabled',
+            },
+            prepare({title, enabled}: any) {
+              return {
+                title: title || 'Capability',
+                subtitle: enabled === false ? 'Hidden' : 'Visible',
+              }
+            },
+          },
           fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Uncheck to hide this capability without deleting it',
+              initialValue: true,
+            },
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
             {

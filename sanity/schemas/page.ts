@@ -3,6 +3,18 @@ export default {
   type: 'document',
   title: 'Custom Pages',
   icon: () => '📄',
+  orderings: [
+    {
+      title: 'Title A-Z',
+      name: 'titleAsc',
+      by: [{field: 'title', direction: 'asc'}]
+    },
+    {
+      title: 'Recently Updated',
+      name: 'updatedDesc',
+      by: [{field: '_updatedAt', direction: 'desc'}]
+    }
+  ],
   groups: [
     { name: 'content', title: 'Content', default: true },
     { name: 'seo', title: 'SEO & Sharing' },
