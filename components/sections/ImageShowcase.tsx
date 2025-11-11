@@ -183,10 +183,9 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         {/* Call to Action */}
         {showcaseData?.cta && (
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            initial={getInitialState(prefersReducedMotion)}
+            whileInView={getAnimateState(0.4, 0.8, prefersReducedMotion)}
+            viewport={getViewportConfig()}
             className="text-center"
           >
             <div className="inline-flex flex-col items-center p-8 md:p-12 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-2xl">

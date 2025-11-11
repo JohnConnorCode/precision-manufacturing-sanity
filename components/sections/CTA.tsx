@@ -6,6 +6,8 @@ import { ArrowRight, FileText, Shield, Award, Activity } from 'lucide-react';
 import Link from 'next/link';
 import { colorStyleToCSS, getBackgroundColor, paddingToClass, ColorStyle } from '@/lib/sanity-styles';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { getInitialState, getAnimateState, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
 
 interface CTAData {
   title?: string;
@@ -52,6 +54,7 @@ interface CTAProps {
 }
 
 export default function CTA({ data }: CTAProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const title = data?.title || 'Start Your Precision Manufacturing Project';
   const rawSubtitle = data?.subtitle || 'From prototype to production, we deliver AS9100D-certified precision components with tolerances to ±0.0001" for aerospace, defense, and medical applications.';
   const subtitle = portableTextToPlainText(rawSubtitle) || rawSubtitle;
@@ -90,18 +93,16 @@ export default function CTA({ data }: CTAProps) {
 
       <div className="container relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          initial={getInitialState(prefersReducedMotion)}
+          whileInView={getAnimateState(0, 0.5, prefersReducedMotion)}
+          viewport={getViewportConfig()}
           className="max-w-4xl mx-auto text-center"
         >
           {/* Precision indicator */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            initial={getScaleInitialState(prefersReducedMotion)}
+            whileInView={getScaleAnimateState(0, 0.5, prefersReducedMotion)}
+            viewport={getViewportConfig()}
             className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-blue-600/20 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 backdrop-blur-sm"
           >
             <Activity className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
@@ -137,10 +138,9 @@ export default function CTA({ data }: CTAProps) {
           {/* Certification badges with subtle animation */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              initial={getInitialState(prefersReducedMotion)}
+              whileInView={getAnimateState(0.1, 0.5, prefersReducedMotion)}
+              viewport={getViewportConfig()}
               className="group flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-colors"
             >
               <div className="relative">
@@ -155,10 +155,9 @@ export default function CTA({ data }: CTAProps) {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              initial={getInitialState(prefersReducedMotion)}
+              whileInView={getAnimateState(0.2, 0.5, prefersReducedMotion)}
+              viewport={getViewportConfig()}
               className="group flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-colors"
             >
               <Shield className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
@@ -166,10 +165,9 @@ export default function CTA({ data }: CTAProps) {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              initial={getInitialState(prefersReducedMotion)}
+              whileInView={getAnimateState(0.3, 0.5, prefersReducedMotion)}
+              viewport={getViewportConfig()}
               className="group flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-colors"
             >
               <Award className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
@@ -180,9 +178,8 @@ export default function CTA({ data }: CTAProps) {
           {/* Client trust indicator */}
           <motion.div
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.5 }}
+            whileInView={{ opacity: 1, transition: { delay: prefersReducedMotion ? 0 : 0.5, duration: prefersReducedMotion ? 0 : 1 } }}
+            viewport={getViewportConfig()}
             className="mt-12 flex justify-center"
           >
             <div className="flex items-center gap-2 text-xs text-slate-500">
