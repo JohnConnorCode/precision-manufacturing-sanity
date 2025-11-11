@@ -262,6 +262,35 @@ export default {
         },
       ],
     },
+    // Legacy fields (deprecated but kept for backward compatibility)
+    {
+      name: 'heading',
+      type: 'string',
+      title: 'Heading (Legacy)',
+      description: '⚠️ Deprecated: Use opportunities.title instead',
+      group: 'opportunities',
+      hidden: true,
+    },
+    {
+      name: 'positions',
+      type: 'array',
+      title: 'Positions (Legacy)',
+      description: '⚠️ Deprecated: Use opportunities.jobs instead',
+      group: 'opportunities',
+      hidden: true,
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {name: 'title', type: 'string', title: 'Job Title'},
+            {name: 'description', type: 'text', title: 'Description'},
+            {name: 'location', type: 'string', title: 'Location'},
+            {name: 'type', type: 'string', title: 'Employment Type'},
+            {name: 'link', type: 'string', title: 'Application Link'},
+          ],
+        },
+      ],
+    },
     {
       name: 'opportunities',
       type: 'object',
