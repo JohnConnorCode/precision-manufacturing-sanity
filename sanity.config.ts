@@ -14,6 +14,26 @@ import { analytics } from './sanity/plugins/analytics'
 import { presentationTool } from 'sanity/presentation'
 import { locate } from './sanity/locate'
 
+// Define singleton document types (v3 best practice)
+const singletonTypes = new Set([
+  'homepage',
+  'siteSettings',
+  'navigation',
+  'footer',
+  'about',
+  'contact',
+  'careers',
+  'terms',
+  'supplierRequirements',
+  'servicesPage',
+  'industriesPage',
+  'uiText',
+  'pageContent',
+])
+
+// Define allowed actions for singleton documents
+const singletonActions = new Set(['publish', 'discardChanges', 'restore'])
+
 export default defineConfig({
   name: 'default',
   title: 'IIS Precision Manufacturing',
@@ -50,10 +70,25 @@ export default defineConfig({
 
   schema: {
     types: schemaTypes,
+    // Filter out singleton types from the global "New document" menu
+    templates: (templates) =>
+      templates.filter(({ schemaType }) => !singletonTypes.has(schemaType)),
   },
 
   document: {
-    actions: resolveDocumentActions,
+    // For singleton types, filter out actions that are not explicitly included
+    // Custom actions are preserved via resolveDocumentActions
+    actions: (input, context) => {
+      const isSingleton = singletonTypes.has(context.schemaType)
+
+      // Apply custom actions first
+      const withCustomActions = resolveDocumentActions(input, context)
+
+      // Then filter for singletons
+      return isSingleton
+        ? withCustomActions.filter(({ action }) => action && singletonActions.has(action))
+        : withCustomActions
+    },
     badges: resolveBadges,
   },
 })

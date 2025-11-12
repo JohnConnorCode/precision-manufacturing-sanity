@@ -3,7 +3,6 @@ export default {
   name: 'navigation',
   type: 'document',
   title: 'Navigation',
-  __experimental_singleton: true,
   groups: [
     { name: 'content', title: 'Content' },
     { name: 'styles', title: 'Styles' },

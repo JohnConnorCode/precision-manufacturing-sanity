@@ -252,6 +252,7 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
       <p
         className={`leading-relaxed mb-4 ${bodyClasses}`}
         style={{ color: bodyColor }}
+        suppressHydrationWarning
       >
         {children}
       </p>
@@ -355,7 +356,7 @@ export const PortableTextContent = React.memo(function PortableTextContent({
   );
 
   return (
-    <div className="prose prose-lg prose-invert max-w-none">
+    <div className="prose prose-lg prose-invert max-w-none" suppressHydrationWarning>
       <PortableText
         value={value}
         components={components}

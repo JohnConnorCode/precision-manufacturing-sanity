@@ -1,8 +1,21 @@
 'use client'
 
 import { VisualEditing } from '@sanity/visual-editing/react'
+import { useRouter } from 'next/navigation'
 
 export default function VisualEditingClient() {
-  return <VisualEditing portal={false} />
+  const router = useRouter()
+
+  return (
+    <VisualEditing
+      zIndex={1000000}
+      portal={false}
+      refresh={(payload) => {
+        // Refresh the page when content changes in the Studio
+        router.refresh()
+        return false
+      }}
+    />
+  )
 }
 

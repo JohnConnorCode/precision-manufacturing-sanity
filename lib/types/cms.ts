@@ -94,6 +94,7 @@ export interface ResourceSeries {
   readTime: string;
   level?: 'Beginner' | 'Intermediate' | 'Advanced';
   difficulty?: 'Beginner' | 'Intermediate' | 'Advanced';
+  gradient?: string;
   enabled?: boolean;
 }
 

@@ -3,7 +3,6 @@ export default {
   name: 'supplierRequirements',
   type: 'document',
   title: 'Supplier Requirements',
-  __experimental_singleton: true,
   preview: {
     prepare() {
       return {

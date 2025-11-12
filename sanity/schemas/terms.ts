@@ -3,7 +3,6 @@ export default {
   name: 'terms',
   type: 'document',
   title: 'Terms & Conditions',
-  __experimental_singleton: true,
   preview: {
     prepare() {
       return {

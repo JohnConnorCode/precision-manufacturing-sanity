@@ -3,7 +3,6 @@ export default {
   name: 'careers',
   type: 'document',
   title: 'Careers Page',
-  __experimental_singleton: true,
   preview: {
     prepare() {
       return {

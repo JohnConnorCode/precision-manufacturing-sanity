@@ -67,8 +67,8 @@ interface FooterProps {
 const Footer = ({ data }: FooterProps) => {
   // Use CMS data if available, otherwise fall back to hardcoded defaults
   // Map Sanity field names (text) to expected field names (label)
-  const mapLinks = (links: any[] | undefined) => {
-    if (!links) return defaultFooterData.servicesLinks;
+  const mapLinks = (links: any[] | undefined, fallback: any[]) => {
+    if (!links) return fallback;
     return links.map(link => ({
       label: link.text || link.label || '',
       href: link.href || '#'
@@ -82,9 +82,9 @@ const Footer = ({ data }: FooterProps) => {
       twitter: data?.social?.twitter || '',
       facebook: data?.social?.facebook || ''
     },
-    servicesLinks: mapLinks(data?.servicesLinks),
-    resourcesLinks: mapLinks(data?.resourcesLinks),
-    quickLinks: mapLinks(data?.quickLinks),
+    servicesLinks: mapLinks(data?.servicesLinks, defaultFooterData.servicesLinks),
+    resourcesLinks: mapLinks(data?.resourcesLinks, defaultFooterData.resourcesLinks),
+    quickLinks: mapLinks(data?.quickLinks, defaultFooterData.quickLinks),
     contact: {
       email: data?.contact?.email || defaultFooterData.contact.email,
       phone: data?.contact?.phone || defaultFooterData.contact.phone,

@@ -19,6 +19,62 @@ const iconMap: Record<string, LucideIcon> = {
   TrendingUp,
 };
 
+// Fallback data when Sanity content is missing
+const fallbackResources: ResourcesData = {
+  header: {
+    badge: 'Technical Resources & Knowledge Base',
+    title: 'Master Precision Manufacturing',
+    description: 'Access our comprehensive resources'
+  },
+  featuredSeries: [
+    {
+      title: 'CMM Inspection Mastery',
+      slug: 'cmm-inspection',
+      description: 'Complete guide to coordinate measuring machine inspection',
+      articleCount: 4,
+      readTime: '34 min',
+      difficulty: 'Advanced',
+      icon: 'Gauge',
+      gradient: 'from-blue-500 to-cyan-500',
+      enabled: true
+    },
+    {
+      title: 'First Article Inspection Excellence',
+      slug: 'first-article',
+      description: 'AS9102 FAI procedures and best practices',
+      articleCount: 3,
+      readTime: '26 min',
+      difficulty: 'Intermediate',
+      icon: 'CheckCircle',
+      gradient: 'from-green-500 to-emerald-500',
+      enabled: true
+    },
+    {
+      title: 'GD&T Fundamentals',
+      slug: 'gdt-fundamentals',
+      description: 'Geometric dimensioning and tolerancing basics',
+      articleCount: 4,
+      readTime: '35 min',
+      difficulty: 'Beginner',
+      icon: 'Target',
+      gradient: 'from-purple-500 to-pink-500',
+      enabled: true
+    }
+  ],
+  cta: {
+    title: 'Start Learning Today',
+    description: 'Access all resources and technical articles',
+    buttons: [
+      {
+        text: 'Browse All Resources',
+        href: '/resources',
+        variant: 'primary',
+        enabled: true
+      }
+    ]
+  }
+};
+
 interface ResourcesProps {
   data?: ResourcesData;
 }
@@ -26,12 +82,12 @@ interface ResourcesProps {
 export default function Resources({ data }: ResourcesProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
-  // ALL content must come from Sanity CMS
-  if (!data || !data.header || !Array.isArray(data.featuredSeries)) {
-    return null;
-  }
 
-  const resourcesData = data;
+  // Use CMS data with fallback
+  const resourcesData = data && data.header && Array.isArray(data.featuredSeries)
+    ? data
+    : fallbackResources;
+
   const additionalSeriesText = (resourcesData as any)?.additionalSeriesText || '6 Complete Series • 21+ Technical Articles';
 
   return (

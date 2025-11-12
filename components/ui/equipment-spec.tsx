@@ -49,7 +49,7 @@ export function EquipmentSpec({
       </div>
 
       {/* Image */}
-      {image && (
+      {image && image.url && (
         <div className="relative w-full h-64">
           <Image
             src={image.url}

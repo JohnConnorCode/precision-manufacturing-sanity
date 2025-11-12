@@ -2,7 +2,6 @@ export default {
   name: 'industriesPage',
   type: 'document',
   title: 'Industries Page',
-  __experimental_singleton: true,
   preview: {
     prepare() {
       return {

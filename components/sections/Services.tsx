@@ -72,6 +72,12 @@ interface ServicesProps {
       headingWord1?: string;
       headingWord2?: string;
     };
+    cta?: {
+      enabled?: boolean;
+      text?: string;
+      href?: string;
+      variant?: string;
+    };
   };
 }
 
@@ -226,20 +232,22 @@ export default function Services({ data, sectionData }: ServicesProps) {
         </div>
 
         {/* Call to Action */}
-        <motion.div
-          initial={getInitialState(prefersReducedMotion)}
-          whileInView={getAnimateState(0.5, 0.6, prefersReducedMotion)}
-          viewport={getViewportConfig()}
-          className="text-center mt-16 md:mt-20"
-        >
-          <Link
-            href="/contact"
-            className={`inline-flex items-center h-12 px-8 bg-gradient-to-r ${colors.primaryGradient} hover:${colors.primaryGradientHover} text-white font-semibold ${borderRadius.button} transition-all duration-300 shadow-lg hover:shadow-xl`}
+        {(sectionData?.cta?.enabled !== false) && (
+          <motion.div
+            initial={getInitialState(prefersReducedMotion)}
+            whileInView={getAnimateState(0.5, 0.6, prefersReducedMotion)}
+            viewport={getViewportConfig()}
+            className="text-center mt-16 md:mt-20"
           >
-            Get Quote
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Link>
-        </motion.div>
+            <Link
+              href={sectionData?.cta?.href || '/contact'}
+              className={`inline-flex items-center h-12 px-8 bg-gradient-to-r ${colors.primaryGradient} hover:${colors.primaryGradientHover} text-white font-semibold ${borderRadius.button} transition-all duration-300 shadow-lg hover:shadow-xl`}
+            >
+              {sectionData?.cta?.text || 'Get Quote'}
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </motion.div>
+        )}
       </div>
     </section>
   );

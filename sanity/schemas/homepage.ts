@@ -3,7 +3,6 @@ export default {
   name: 'homepage',
   type: 'document',
   title: 'Homepage',
-  __experimental_singleton: true,
   preview: {
     prepare() {
       return {
@@ -553,6 +552,46 @@ export default {
             ]
           },
           initialValue: 'text-blue-600',
+        },
+        {
+          name: 'cta',
+          type: 'object',
+          title: 'Call to Action Button',
+          description: 'CTA button displayed below the services grid',
+          fieldset: 'content',
+          fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Show CTA Button',
+              description: 'Toggle to show/hide the CTA button below services',
+              initialValue: true,
+            },
+            {
+              name: 'text',
+              type: 'string',
+              title: 'Button Text',
+              initialValue: 'Get Quote',
+            },
+            {
+              name: 'href',
+              type: 'string',
+              title: 'Button URL',
+              initialValue: '/contact',
+            },
+            {
+              name: 'variant',
+              type: 'string',
+              title: 'Button Style',
+              options: {
+                list: [
+                  { title: 'Primary (Blue Gradient)', value: 'primary' },
+                  { title: 'Secondary (Outline)', value: 'secondary' },
+                ],
+              },
+              initialValue: 'primary',
+            },
+          ],
         },
       ],
     },

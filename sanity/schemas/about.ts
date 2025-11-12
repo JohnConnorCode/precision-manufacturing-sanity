@@ -3,7 +3,6 @@ export default {
   name: 'about',
   type: 'document',
   title: 'About Page',
-  __experimental_singleton: true,
   preview: {
     prepare() {
       return {

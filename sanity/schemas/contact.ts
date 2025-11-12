@@ -3,7 +3,6 @@ export default {
   name: 'contact',
   type: 'document',
   title: 'Contact Page',
-  __experimental_singleton: true,
   preview: {
     prepare() {
       return {

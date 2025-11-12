@@ -1,3 +1,4 @@
+import { draftMode } from 'next/headers';
 import Hero from '@/components/sections/Hero';
 import TechnicalSpecs from '@/components/sections/TechnicalSpecs';
 import Services from '@/components/sections/Services';
@@ -21,12 +22,14 @@ import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/li
 export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function Home() {
+  const { isEnabled: isDraft } = await draftMode();
+
   // Parallel data fetching - 4x faster than sequential
   const [servicesData, industriesData, homepageData, siteSettings] = await Promise.all([
-    getAllServices(),
-    getAllIndustries(),
-    getHomepage(),
-    getSiteSettings()
+    getAllServices(isDraft),
+    getAllIndustries(isDraft),
+    getHomepage(isDraft),
+    getSiteSettings(isDraft)
   ]);
 
   // Format data for display

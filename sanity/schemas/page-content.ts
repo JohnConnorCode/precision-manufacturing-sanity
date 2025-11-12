@@ -2,7 +2,6 @@ export default {
   name: 'pageContent',
   type: 'document',
   title: 'Page Content',
-  __experimental_singleton: true,
   preview: {
     prepare() {
       return {

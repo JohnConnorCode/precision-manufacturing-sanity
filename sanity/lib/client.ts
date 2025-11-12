@@ -24,14 +24,14 @@ export const client = createClient({
   },
 })
 
-// Client for preview/draft mode
+// Client for preview/draft mode with write access
 export const previewClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
   useCdn: false,
-  token: process.env.SANITY_API_READ_TOKEN,
-  perspective: 'drafts',
+  token: process.env.SANITY_API_WRITE_TOKEN,
+  perspective: 'previewDrafts', // Shows drafts when available, otherwise published
   stega: {
     enabled: true,
     studioUrl: getStudioUrl(),

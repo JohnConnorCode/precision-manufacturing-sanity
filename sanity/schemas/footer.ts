@@ -3,7 +3,6 @@ export default {
   name: 'footer',
   type: 'document',
   title: 'Footer',
-  __experimental_singleton: true,
   preview: {
     select: {
       company: 'company.description'

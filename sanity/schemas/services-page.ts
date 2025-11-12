@@ -2,7 +2,6 @@ export default {
   name: 'servicesPage',
   type: 'document',
   title: 'Services Page',
-  __experimental_singleton: true,
   preview: {
     prepare() {
       return {

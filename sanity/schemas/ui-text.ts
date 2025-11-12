@@ -3,7 +3,6 @@ export default {
   type: 'document',
   title: 'UI Text',
   icon: () => '💬',
-  __experimental_singleton: true,
   preview: {
     prepare() {
       return {
