@@ -69,10 +69,12 @@ const Footer = ({ data }: FooterProps) => {
   // Map Sanity field names (text) to expected field names (label)
   const mapLinks = (links: any[] | undefined, fallback: any[]) => {
     if (!links) return fallback;
-    return links.map(link => ({
-      label: link.text || link.label || '',
-      href: link.href || '#'
-    }));
+    return links
+      .filter(link => link?.enabled !== false)
+      .map(link => ({
+        label: link.text || link.label || '',
+        href: link.href || '#'
+      }));
   };
 
   const footerData = {
@@ -88,7 +90,17 @@ const Footer = ({ data }: FooterProps) => {
     contact: {
       email: data?.contact?.email || defaultFooterData.contact.email,
       phone: data?.contact?.phone || defaultFooterData.contact.phone,
-      phoneLink: data?.contact?.phone ? `tel:+1${data.contact.phone.replace(/\D/g, '')}` : defaultFooterData.contact.phoneLink,
+      phoneLink: (() => {
+        const phoneValue = data?.contact?.phone || defaultFooterData.contact.phone;
+        if (!phoneValue) return defaultFooterData.contact.phoneLink;
+        const trimmed = phoneValue.trim();
+        const digits = phoneValue.replace(/\D/g, '');
+        if (trimmed.startsWith('+')) {
+          const normalized = trimmed.replace(/[()\s-]/g, '');
+          return `tel:${normalized}`;
+        }
+        return digits ? `tel:+1${digits}` : defaultFooterData.contact.phoneLink;
+      })(),
       address: data?.contact?.address || defaultFooterData.contact.address
     },
     copyright: data?.copyright || defaultFooterData.copyright

@@ -1,6 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
@@ -60,43 +62,14 @@ interface HeroProps {
 }
 
 export default function Hero({ data }: HeroProps) {
-  // Hooks must be called before early return
-  const { scrollY } = useScroll();
+  // Disable parallax scroll effects to avoid hydration issues
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  const textY = useTransform(scrollY, [0, 500], prefersReducedMotion ? [0, 0] : [0, 50]);
-  const textOpacity = useTransform(scrollY, [0, 300], prefersReducedMotion ? [1, 1] : [1, 0]);
+  // Use static motion values instead of scroll-based transforms
+  const textY = 0;
+  const textOpacity = 1;
 
-  // Fallback images - 5 slides with Unsplash images
-  const fallbackSlides = [
-    {
-      src: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=2400&q=95',
-      alt: 'Advanced 5-axis CNC machining center',
-      focal: 'center' as const
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=2400&q=95',
-      alt: 'Precision metrology and inspection',
-      focal: 'center' as const
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2400&q=95',
-      alt: 'Automated manufacturing systems',
-      focal: 'center' as const
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=2400&q=95',
-      alt: 'Industrial engineering and process development',
-      focal: 'center' as const
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1581092335397-9583eb92d232?auto=format&fit=crop&w=2400&q=95',
-      alt: 'Defense and aerospace components manufacturing',
-      focal: 'center' as const
-    }
-  ];
-
-  // Use CMS data or fallback - filter out disabled and empty images
+  // Use ONLY Sanity data - no fallbacks
   const heroSlides = (data?.slides && data.slides.length > 0)
     ? data.slides
         .filter(slide => slide.enabled !== false) // Filter out disabled slides
@@ -120,46 +93,37 @@ export default function Hero({ data }: HeroProps) {
         .filter((slide): slide is { src: string; alt: string; focal: 'center' | 'top' | 'bottom' } =>
           slide.src !== '' && slide.src.trim() !== ''
         )
-    : fallbackSlides;
+    : [];
 
-  // Ensure we have at least one slide, fallback if all filtered out
-  const finalSlides = (heroSlides && heroSlides.length > 0) ? heroSlides : fallbackSlides;
+  const finalSlides = heroSlides;
 
-  // Support three-word structure (new) or legacy single-title (old)
-  let word1 = data?.word1 || 'PRECISION';
-  let word2 = data?.word2 || 'MANUFACTURING';
-  let word3 = data?.word3 || 'SERVICES';
-
-  // Fallback to legacy mainTitle/subTitle if three-word structure not available
-  if (!data?.word1 && data?.mainTitle) {
-    const words = (data.mainTitle || 'PRECISION MANUFACTURING').split(' ');
-    word1 = words[0] || 'PRECISION';
-    word2 = words.slice(1).join(' ') || 'MANUFACTURING';
-    // word3 stays as is if data.word3 not provided
-  }
+  // Use ONLY Sanity data - no fallback splitting
+  const word1 = data?.word1?.trim() || '';
+  const word2 = data?.word2?.trim() || '';
+  const word3 = data?.word3?.trim() || '';
 
   const heroFontSize = data?.heroFontSize || 'text-[3rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[4.5rem] xl:text-[5rem]';
-  const tagline = data?.tagline || 'Innovative Precision Machining & Manufacturing Excellence Since 1995';
+  const tagline = data?.tagline?.trim() || '';
 
-  // Handle both string badges and object badges from Sanity, with fallbacks
-  const defaultBadges = [
-    'Advanced CNC Machining',
-    'Precision Metrology',
-    'Engineering Excellence',
-    '3 Sigma Yield'
-  ];
-  const badges = (data?.badges && data.badges.length > 0)
-    ? (data.badges || [])
-        .filter((badge: any) => typeof badge === 'string' || badge.enabled !== false) // Filter out disabled badges
+  // Handle both string badges and object badges from Sanity
+  const badges = Array.isArray(data?.badges)
+    ? (data?.badges as Array<any>)
+        .filter((badge: any) => {
+          if (typeof badge === 'string') {
+            return badge.trim().length > 0;
+          }
+          return badge?.enabled !== false && Boolean(badge?.text || badge?.badge);
+        })
         .map((badge: any) =>
-          typeof badge === 'string' ? badge : (badge.text || badge.badge || badge.id || '')
+          typeof badge === 'string' ? badge : (badge.text || badge.badge || '')
         )
-    : defaultBadges;
+    : [];
 
-  // Reference site shows ONLY ONE button: "View Capabilities"
-  const ctaPrimary = data?.ctaPrimary?.text ? data.ctaPrimary : { text: 'View Capabilities', href: '/services' };
-  const ctaSecondary = null; // Hidden - reference site shows only 1 button
-  const ctaTertiary = null; // Hidden - reference site shows only 1 button
+  const hasPrimaryCta = Boolean(data?.ctaPrimary?.text && data?.ctaPrimary?.href);
+  const primaryCta = hasPrimaryCta ? {
+    text: data?.ctaPrimary?.text?.trim() as string,
+    href: data?.ctaPrimary?.href as string,
+  } : null;
 
   // Extract styles from Sanity data
   const titleColor = colorStyleToCSS(data?.titleColor) || 'rgba(255, 255, 255, 0.9)';
@@ -178,6 +142,10 @@ export default function Hero({ data }: HeroProps) {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 lg:pt-0">
       {/* Premium Background Slider */}
       <HeroSliderFixed slides={finalSlides} />
+
+      {finalSlides[0]?.src && (
+        <img src={finalSlides[0].src} alt={finalSlides[0].alt} className="sr-only" loading="eager" />
+      )}
 
       {/* Overlay if enabled */}
       {overlayStyle && <div style={overlayStyle} />}
@@ -293,7 +261,7 @@ export default function Hero({ data }: HeroProps) {
             </div>
 
             {/* CTA Button - Single Clean Animation */}
-            {ctaPrimary && ctaPrimary.text && (
+            {primaryCta && (
               <motion.div
                 initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -313,8 +281,8 @@ export default function Hero({ data }: HeroProps) {
                   }
                   asChild
                 >
-                  <Link href={ctaPrimary.href}>
-                    {ctaPrimary.text}
+                  <Link href={primaryCta.href}>
+                    {primaryCta.text}
                     <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </Button>

@@ -70,7 +70,7 @@ export default {
       name: 'published',
       type: 'boolean',
       title: 'Published',
-      description: 'Controls whether this industry appears on the website. Uncheck to hide without deleting.',
+      description: 'Controls whether this industry appears on the website. Toggle off to hide without deleting.',
       group: 'general',
       initialValue: true,
     },
@@ -153,6 +153,33 @@ export default {
         { name: 'descriptionSize', type: 'string', title: 'Description Size', fieldset: 'sizing', options: { list: [
           { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' }, { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }
         ] } },
+        {
+          name: 'buttons',
+          type: 'array',
+          title: 'Hero Buttons',
+          description: 'Primary calls to action displayed in the hero section',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'text', type: 'string', title: 'Text', validation: (Rule: any) => Rule.required() },
+                { name: 'href', type: 'string', title: 'URL', validation: (Rule: any) => Rule.required() },
+                {
+                  name: 'variant',
+                  type: 'string',
+                  title: 'Variant',
+                  options: {
+                    list: [
+                      { title: 'Primary', value: 'primary' },
+                      { title: 'Secondary', value: 'secondary' }
+                    ]
+                  }
+                },
+                { name: 'enabled', type: 'boolean', title: 'Enabled', initialValue: true },
+              ]
+            }
+          ]
+        }
       ],
     },
     {
@@ -224,36 +251,70 @@ export default {
         {
           type: 'object',
           fields: [
+            {name: 'title', type: 'string', title: 'Title'},
             {name: 'label', type: 'string', title: 'Label'},
             {name: 'value', type: 'string', title: 'Value'},
             {name: 'description', type: 'string', title: 'Description'},
+            {
+              name: 'technicalDetails',
+              type: 'array',
+              title: 'Technical Details',
+              of: [
+                {
+                  type: 'object',
+                  fields: [{name: 'detail', type: 'string', title: 'Detail'}],
+                },
+              ],
+            },
           ],
         },
       ],
     },
     {
       name: 'regulatory',
-      type: 'array',
-      title: 'Regulatory Standards',
+      type: 'object',
+      title: 'Regulatory & Compliance',
       group: 'details',
       options: {
         collapsible: true,
         collapsed: true,
       },
-      of: [
+      fields: [
         {
-          type: 'object',
-          fields: [
-            {name: 'title', type: 'string', title: 'Title'},
-            {name: 'description', type: 'text', title: 'Description', rows: 3},
+          name: 'certifications',
+          type: 'array',
+          title: 'Certifications',
+          of: [
             {
-              name: 'details',
-              type: 'array',
-              title: 'Details',
-              of: [
+              type: 'object',
+              fields: [
+                { name: 'name', type: 'string', title: 'Name' },
+                { name: 'description', type: 'text', title: 'Description', rows: 3 },
+                { name: 'scope', type: 'string', title: 'Scope / Coverage' },
+              ],
+            },
+          ],
+        },
+        {
+          name: 'standards',
+          type: 'array',
+          title: 'Standards & Documentation',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'name', type: 'string', title: 'Standard' },
+                { name: 'description', type: 'text', title: 'Description', rows: 3 },
                 {
-                  type: 'object',
-                  fields: [{name: 'detail', type: 'string', title: 'Detail'}],
+                  name: 'details',
+                  type: 'array',
+                  title: 'Details',
+                  of: [
+                    {
+                      type: 'object',
+                      fields: [{ name: 'detail', type: 'string', title: 'Detail' }],
+                    },
+                  ],
                 },
               ],
             },
@@ -275,6 +336,7 @@ export default {
           type: 'object',
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
+            {name: 'description', type: 'text', title: 'Description', rows: 3},
             {
               name: 'features',
               type: 'array',
@@ -327,6 +389,12 @@ export default {
                   title: 'Caption'
                 }
               ]
+            },
+            {
+              name: 'imageUrl',
+              type: 'url',
+              title: 'External Image URL',
+              description: 'Optional remote image source when an upload is not available'
             },
             {
               name: 'parts',
@@ -418,6 +486,42 @@ export default {
                   type: 'object',
                   fields: [{name: 'feature', type: 'string', title: 'Feature'}],
                 },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'cta',
+      type: 'object',
+      title: 'Call-To-Action',
+      group: 'details',
+      fields: [
+        { name: 'heading', type: 'string', title: 'Heading' },
+        { name: 'description', type: 'text', title: 'Description', rows: 3 },
+        {
+          name: 'buttons',
+          type: 'array',
+          title: 'Buttons',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'text', type: 'string', title: 'Text', validation: (Rule: any) => Rule.required() },
+                { name: 'href', type: 'string', title: 'URL', validation: (Rule: any) => Rule.required() },
+                {
+                  name: 'variant',
+                  type: 'string',
+                  title: 'Variant',
+                  options: {
+                    list: [
+                      { title: 'Primary', value: 'primary' },
+                      { title: 'Secondary', value: 'secondary' }
+                    ]
+                  }
+                },
+                { name: 'enabled', type: 'boolean', title: 'Enabled', initialValue: true },
               ],
             },
           ],
@@ -546,6 +650,13 @@ export default {
           title: 'Attribution/Credit'
         }
       ]
+    },
+    {
+      name: 'imageUrl',
+      type: 'url',
+      title: 'Industry Card Image URL',
+      description: 'Optional remote image source for card display',
+      group: 'display',
     },
     {
       name: 'features',

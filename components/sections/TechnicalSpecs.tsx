@@ -1,6 +1,6 @@
 "use client";
 
-import { Gauge, Cpu, Shield, Target, Award, Clock, Activity, Zap } from 'lucide-react';
+import { Gauge, Cpu, Shield, Target, Award, Clock, Activity, Zap, CheckCircle2, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
@@ -16,6 +16,8 @@ interface TechnicalSpecsData {
     value: string;
     unit?: string;
     enabled?: boolean;
+    description?: string;
+    iconName?: string;
   }>;
 }
 
@@ -27,69 +29,40 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  const defaultMetrics = [
-    {
-      icon: Gauge,
-      value: "±0.0001\"",
-      label: "PRECISION",
-      description: "Ultra-tight tolerances",
-    },
-    {
-      icon: Cpu,
-      value: "5-AXIS",
-      label: "CNC CAPABILITY",
-      description: "Simultaneous machining",
-    },
-    {
-      icon: Shield,
-      value: "AS9100D",
-      label: "CERTIFIED",
-      description: "Aerospace quality",
-    },
-    {
-      icon: Activity,
-      value: "99.73%",
-      label: "FIRST PASS YIELD",
-      description: "Quality rate",
-    },
-    {
-      icon: Clock,
-      value: "24/7",
-      label: "PRODUCTION",
-      description: "Continuous operation",
-    },
-    {
-      icon: Target,
-      value: "99.8%",
-      label: "ON-TIME",
-      description: "Delivery performance",
-    },
-    {
-      icon: Zap,
-      value: "30",
-      label: "YEARS",
-      description: "Manufacturing excellence",
-    },
-    {
-      icon: Award,
-      value: "ITAR",
-      label: "REGISTERED",
-      description: "Defense compliant",
-    }
-  ];
+  // Icon mapping for CMS data
+  const iconMap: Record<string, any> = {
+    Gauge,
+    Cpu,
+    Shield,
+    Activity,
+    Clock,
+    Target,
+    Zap,
+    Award,
+    CheckCircle2,
+    Calendar,
+  };
 
-  // Convert CMS data to metrics format if available - filter out disabled specs
-  const metrics = data?.specs ? data.specs
+  // Convert CMS data to metrics format - filter out disabled specs, return null if no specs
+  if (!data?.specs || data.specs.length === 0) {
+    return null;
+  }
+
+  const metrics = data.specs
     .filter(spec => spec.enabled !== false)
-    .map((spec, index) => ({
-      icon: defaultMetrics[index % defaultMetrics.length].icon,
-      value: spec.value + (spec.unit || ''),
-      label: spec.label.toUpperCase(),
-      description: `${spec.label} specification`,
-    })) : defaultMetrics;
+    .map((spec) => {
+      const iconKey = spec.iconName || spec.label;
+      const IconComponent = iconKey && iconMap[iconKey] ? iconMap[iconKey] : Gauge;
+      return {
+        icon: IconComponent,
+        value: spec.value,
+        label: spec.label ? spec.label.toUpperCase() : '',
+        description: spec.description || '',
+      };
+    });
 
-  const title = data?.title || 'Precision By The Numbers';
-  const subtitle = data?.subtitle || 'Industry-leading capabilities backed by decades of aerospace and defense manufacturing expertise';
+  const title = data?.title;
+  const subtitle = data?.subtitle;
 
   return (
     <section className="py-24 md:py-32 relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
@@ -119,7 +92,8 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {metrics.map((metric, index) => {
             const Icon = metric.icon || Gauge;
-            const metricDelay = SECTION_CONFIGS.metricsGrid.getDelay(index);
+            const headerDelay = SECTION_CONFIGS.metricsGrid.headerCompletion;
+            const metricDelay = headerDelay + SECTION_CONFIGS.metricsGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
 
             return (

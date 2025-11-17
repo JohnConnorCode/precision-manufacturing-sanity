@@ -76,6 +76,13 @@ export default {
             {
               type: 'object',
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Toggle off to hide',
+                  initialValue: true,
+                },
                 { name: 'label', type: 'string', title: 'Label' },
                 { name: 'href', type: 'string', title: 'URL' },
                 {
@@ -134,7 +141,7 @@ export default {
                   name: 'enabled',
                   type: 'boolean',
                   title: 'Enabled',
-                  description: 'Uncheck to hide this capability without deleting it',
+                  description: 'Toggle off to hide this capability without deleting it',
                   initialValue: true,
                 },
                 {
@@ -186,7 +193,7 @@ export default {
                   name: 'enabled',
                   type: 'boolean',
                   title: 'Enabled',
-                  description: 'Uncheck to hide this quality standard without deleting it',
+                  description: 'Toggle off to hide this quality standard without deleting it',
                   initialValue: true,
                 },
                 {
@@ -314,7 +321,7 @@ export default {
                   name: 'enabled',
                   type: 'boolean',
                   title: 'Enabled',
-                  description: 'Uncheck to hide this button without deleting it',
+                  description: 'Toggle off to hide this button without deleting it',
                   initialValue: true,
                 }
               ]

@@ -23,45 +23,7 @@ const iconMap: Record<string, LucideIcon> = {
   'Users': Users,
 };
 
-// Fallback services data
-const fallbackServices = [
-  {
-    title: '5-Axis CNC Machining',
-    description: 'Complex geometries with unmatched precision for aerospace components',
-    iconName: 'Cog',
-    href: '/services/5-axis-machining',
-    specs: ['±0.0001" tolerance', 'Titanium & super alloys', 'Up to 60" parts'],
-    image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=90',
-    highlight: true
-  },
-  {
-    title: 'Adaptive Machining',
-    description: 'Real-time adjustments based on in-process measurements',
-    iconName: 'Cpu',
-    href: '/services/adaptive-machining',
-    specs: ['In-process verification', 'Automated compensation', 'Zero defect goal'],
-    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=90',
-    highlight: false
-  },
-  {
-    title: 'Metrology & Inspection',
-    description: 'Complete dimensional verification with CMM and laser scanning',
-    iconName: 'Gauge',
-    href: '/services/metrology',
-    specs: ['0.00005" accuracy', 'GD&T analysis', 'AS9102 certified'],
-    image: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=90',
-    highlight: false
-  },
-  {
-    title: 'Engineering Services',
-    description: 'Design optimization and manufacturing consultation',
-    iconName: 'Users',
-    href: '/services/engineering',
-    specs: ['DFM analysis', 'Process planning', 'Cost optimization'],
-    image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&q=90',
-    highlight: false
-  }
-];
+// NO fallback services - use ONLY Sanity data
 
 interface ServicesProps {
   data?: Service[];
@@ -85,16 +47,21 @@ export default function Services({ data, sectionData }: ServicesProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const theme = useTheme();
 
-  // Use CMS data with fallback
+  // Use CMS data with text fallbacks for section headers
   const servicesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
-  const displayServices = (servicesData && servicesData.length > 0) ? servicesData : fallbackServices;
+  const displayServices = servicesData || [];
 
-  // Section data from CMS (required) - with fallbacks
-  // Prefer nested header fields (new structure) over top-level fields (legacy)
-  const eyebrow = sectionData?.header?.eyebrow || sectionData?.eyebrow || 'COMPREHENSIVE MANUFACTURING SOLUTIONS';
-  const headingWord1 = sectionData?.headingWord1 || sectionData?.header?.headingWord1 || 'PRECISION';
-  const headingWord2 = sectionData?.headingWord2 || sectionData?.header?.headingWord2 || 'SERVICES';
-  const description = sectionData?.description || 'Four core service pillars delivering unmatched precision and reliability';
+  // Section data from CMS (no hard-coded fallbacks)
+  const eyebrow = sectionData?.header?.eyebrow || sectionData?.eyebrow;
+  const headingWord1 = sectionData?.headingWord1 || sectionData?.header?.headingWord1;
+  const headingWord2 = sectionData?.headingWord2 || sectionData?.header?.headingWord2;
+  const heading = sectionData?.header?.heading || sectionData?.heading;
+  const description = sectionData?.description;
+  const hasHeaderContent = Boolean(eyebrow || headingWord1 || headingWord2 || heading || description);
+  const ctaLink = sectionData?.cta?.enabled !== false && sectionData?.cta?.href && sectionData?.cta?.text
+    ? { href: sectionData.cta.href, text: sectionData.cta.text }
+    : null;
+  const subdescription = sectionData?.subdescription;
 
   return (
     <section className={`relative ${spacing.section} overflow-hidden ${colors.bgLight}`}>
@@ -102,18 +69,28 @@ export default function Services({ data, sectionData }: ServicesProps) {
       <DotGridBackground spacing={40} dotPosition={1} />
 
       <div className={`${spacing.containerWide} relative z-10`}>
-        <SectionHeader
-          eyebrow={eyebrow}
-          word1={headingWord1}
-          word2={headingWord2}
-          description={description}
-        />
+        {hasHeaderContent && (
+          <SectionHeader
+            eyebrow={eyebrow}
+            word1={headingWord1}
+            word2={headingWord2}
+            heading={!headingWord1 && !headingWord2 ? heading : undefined}
+            description={description}
+          />
+        )}
+
+        {subdescription && (
+          <p className="text-base md:text-lg text-slate-600 text-center max-w-4xl mx-auto mb-12">
+            {subdescription}
+          </p>
+        )}
 
         <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ${spacing.grid}`}>
           {displayServices.map((service: Service, index: number) => {
             // Handle both CMS data (iconName) and hardcoded data (icon)
             const Icon = service.iconName ? (iconMap[service.iconName] || Cog) : (service.icon || Cog);
-            const cardDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
+            const baseDelay = SECTION_CONFIGS.fourColumnGrid.headerCompletion;
+            const cardDelay = baseDelay + SECTION_CONFIGS.fourColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
 
             return (
@@ -232,7 +209,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
         </div>
 
         {/* Call to Action */}
-        {(sectionData?.cta?.enabled !== false) && (
+        {ctaLink && (
           <motion.div
             initial={getInitialState(prefersReducedMotion)}
             whileInView={getAnimateState(0.5, 0.6, prefersReducedMotion)}
@@ -240,10 +217,10 @@ export default function Services({ data, sectionData }: ServicesProps) {
             className="text-center mt-16 md:mt-20"
           >
             <Link
-              href={sectionData?.cta?.href || '/contact'}
+              href={ctaLink.href}
               className={`inline-flex items-center h-12 px-8 bg-gradient-to-r ${colors.primaryGradient} hover:${colors.primaryGradientHover} text-white font-semibold ${borderRadius.button} transition-all duration-300 shadow-lg hover:shadow-xl`}
             >
-              {sectionData?.cta?.text || 'Get Quote'}
+              {ctaLink.text}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </motion.div>

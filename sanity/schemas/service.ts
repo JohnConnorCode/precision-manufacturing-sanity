@@ -10,6 +10,47 @@ export default {
       by: [{field: 'title', direction: 'asc'}]
     },
     {
+      name: 'cta',
+      type: 'object',
+      title: 'Call To Action',
+      group: 'display',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      fields: [
+        {name: 'badge', type: 'string', title: 'Badge'},
+        {name: 'title', type: 'string', title: 'Heading'},
+        {name: 'description', type: 'text', title: 'Description', rows: 3},
+        {
+          name: 'buttons',
+          type: 'array',
+          title: 'Buttons',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {name: 'text', type: 'string', title: 'Text'},
+                {name: 'href', type: 'string', title: 'URL'},
+                {
+                  name: 'variant',
+                  type: 'string',
+                  title: 'Variant',
+                  options: {
+                    list: [
+                      { title: 'Primary', value: 'primary' },
+                      { title: 'Secondary', value: 'secondary' }
+                    ]
+                  }
+                },
+                {name: 'enabled', type: 'boolean', title: 'Enabled', initialValue: true}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       title: 'Title Z-A',
       name: 'titleDesc',
       by: [{field: 'title', direction: 'desc'}]
@@ -70,7 +111,7 @@ export default {
       name: 'published',
       type: 'boolean',
       title: 'Published',
-      description: 'Controls whether this service appears on the website. Uncheck to hide without deleting.',
+      description: 'Controls whether this service appears on the website. Toggle off to hide without deleting.',
       group: 'general',
       initialValue: true,
     },
@@ -160,6 +201,12 @@ export default {
           fieldset: 'titles',
         },
         {
+          name: 'title',
+          type: 'string',
+          title: 'Hero Heading Override',
+          fieldset: 'titles',
+        },
+        {
           name: 'descriptionRich',
           type: 'array',
           title: 'Description (Rich Text)',
@@ -185,6 +232,33 @@ export default {
             { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' }, { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }
           ] },
         },
+        {
+          name: 'buttons',
+          type: 'array',
+          title: 'Hero Buttons',
+          description: 'Primary CTAs displayed in the hero section',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'text', type: 'string', title: 'Text', validation: (Rule: any) => Rule.required() },
+                { name: 'href', type: 'string', title: 'URL', validation: (Rule: any) => Rule.required() },
+                {
+                  name: 'variant',
+                  type: 'string',
+                  title: 'Variant',
+                  options: {
+                    list: [
+                      { title: 'Primary', value: 'primary' },
+                      { title: 'Secondary', value: 'secondary' }
+                    ]
+                  }
+                },
+                { name: 'enabled', type: 'boolean', title: 'Enabled', initialValue: true }
+              ]
+            }
+          ]
+        }
       ],
     },
     {
@@ -252,6 +326,8 @@ export default {
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
             {name: 'descriptionRich', type: 'array', title: 'Description (Rich Text)', of: [{ type: 'block' }]},
+            {name: 'featuresLabel', type: 'string', title: 'Features Label', description: 'Defaults to \"Key Features\"'},
+            {name: 'capabilitiesLabel', type: 'string', title: 'Capabilities Label', description: 'Defaults to \"Capabilities\"'},
             {name: 'iconName', type: 'string', title: 'Icon Name'},
             {
               name: 'image',
@@ -277,6 +353,12 @@ export default {
               ]
             },
             {
+              name: 'imageUrl',
+              type: 'url',
+              title: 'External Image URL',
+              description: 'Optional external image source (e.g., Unsplash)'
+            },
+            {
               name: 'bullets',
               type: 'array',
               title: 'Bullet Points',
@@ -287,9 +369,113 @@ export default {
                 },
               ],
             },
+            {
+              name: 'features',
+              type: 'array',
+              title: 'Key Features',
+              of: [
+                {
+                  type: 'object',
+                  fields: [{name: 'feature', type: 'string', title: 'Feature'}],
+                },
+              ],
+            },
+            {
+              name: 'capabilities',
+              type: 'array',
+              title: 'Capabilities',
+              of: [
+                {
+                  type: 'object',
+                  fields: [{name: 'capability', type: 'string', title: 'Capability'}],
+                },
+              ],
+            },
           ],
         },
       ],
+    },
+    {
+      name: 'servicesHeading',
+      type: 'string',
+      title: 'Services Section Heading',
+      group: 'details',
+    },
+    {
+      name: 'servicesDescription',
+      type: 'text',
+      title: 'Services Section Description',
+      rows: 3,
+      group: 'details',
+    },
+    {
+      name: 'servicesDescriptionRich',
+      type: 'array',
+      title: 'Services Description (Rich Text)',
+      of: [{ type: 'block' }],
+      group: 'details',
+    },
+    {
+      name: 'applicationsHeading',
+      type: 'string',
+      title: 'Industry Applications Heading',
+      group: 'details',
+    },
+    {
+      name: 'applicationsDescription',
+      type: 'text',
+      title: 'Industry Applications Description',
+      rows: 3,
+      group: 'details',
+    },
+    {
+      name: 'applicationsListLabel',
+      type: 'string',
+      title: 'Applications List Label',
+      description: 'Defaults to \"Key Highlights\"',
+      group: 'details',
+    },
+    {
+      name: 'applications',
+      type: 'array',
+      title: 'Industry Applications',
+      group: 'details',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {name: 'title', type: 'string', title: 'Title'},
+            {name: 'description', type: 'text', title: 'Description', rows: 3},
+            {name: 'timeline', type: 'string', title: 'Timeline'},
+            {name: 'listLabel', type: 'string', title: 'List Label', description: 'Overrides the default label for the bullet list'},
+            {
+              name: 'challenges',
+              type: 'array',
+              title: 'Key Challenges',
+              of: [
+                { type: 'object', fields: [{ name: 'challenge', type: 'string', title: 'Challenge' }] }
+              ]
+            },
+            {
+              name: 'image',
+              type: 'image',
+              title: 'Application Image',
+              options: {
+                hotspot: true,
+                metadata: ['blurhash', 'lqip', 'palette']
+              },
+              fields: [
+                { name: 'alt', type: 'string', title: 'Alt Text', validation: (Rule: any) => Rule.required() }
+              ]
+            },
+            { name: 'imageUrl', type: 'url', title: 'External Image URL' }
+          ]
+        }
+      ]
     },
     {
       name: 'technicalSpecs',
@@ -362,6 +548,19 @@ export default {
       ],
     },
     {
+      name: 'materialsHeading',
+      type: 'string',
+      title: 'Materials Section Heading',
+      group: 'details',
+    },
+    {
+      name: 'materialsDescription',
+      type: 'text',
+      title: 'Materials Section Description',
+      rows: 3,
+      group: 'details',
+    },
+    {
       name: 'materials',
       type: 'array',
       title: 'Materials',
@@ -390,6 +589,89 @@ export default {
           ],
         },
       ],
+    },
+    {
+      name: 'qualityStandardsHeading',
+      type: 'string',
+      title: 'Quality Standards Heading',
+      group: 'details',
+    },
+    {
+      name: 'qualityStandardsDescription',
+      type: 'text',
+      title: 'Quality Standards Description',
+      rows: 3,
+      group: 'details',
+    },
+    {
+      name: 'qualityStandards',
+      type: 'array',
+      title: 'Quality Standards',
+      group: 'details',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {name: 'title', type: 'string', title: 'Title'},
+            {name: 'description', type: 'text', title: 'Description', rows: 3},
+            {name: 'iconName', type: 'string', title: 'Icon Name'},
+          ],
+        },
+      ],
+    },
+    {
+      name: 'qualityImage',
+      type: 'object',
+      title: 'Quality Section Image',
+      description: 'Optional supporting imagery displayed beside the quality standards list.',
+      group: 'details',
+      fields: [
+        {
+          name: 'image',
+          type: 'image',
+          title: 'Image Asset',
+          options: {
+            hotspot: true,
+            metadata: ['blurhash', 'lqip', 'palette'],
+          },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alt Text',
+              description: 'Describe the image for accessibility.'
+            }
+          ]
+        },
+        {
+          name: 'imageUrl',
+          type: 'url',
+          title: 'External Image URL'
+        },
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alt Text Override',
+          description: 'Used when providing an external URL instead of uploading an asset.'
+        }
+      ]
+    },
+    {
+      name: 'processHeading',
+      type: 'string',
+      title: 'Process Section Heading',
+      group: 'details',
+    },
+    {
+      name: 'processDescription',
+      type: 'text',
+      title: 'Process Section Description',
+      rows: 3,
+      group: 'details',
     },
     {
       name: 'processes',

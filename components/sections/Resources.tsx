@@ -19,61 +19,7 @@ const iconMap: Record<string, LucideIcon> = {
   TrendingUp,
 };
 
-// Fallback data when Sanity content is missing
-const fallbackResources: ResourcesData = {
-  header: {
-    badge: 'Technical Resources & Knowledge Base',
-    title: 'Master Precision Manufacturing',
-    description: 'Access our comprehensive resources'
-  },
-  featuredSeries: [
-    {
-      title: 'CMM Inspection Mastery',
-      slug: 'cmm-inspection',
-      description: 'Complete guide to coordinate measuring machine inspection',
-      articleCount: 4,
-      readTime: '34 min',
-      difficulty: 'Advanced',
-      icon: 'Gauge',
-      gradient: 'from-blue-500 to-cyan-500',
-      enabled: true
-    },
-    {
-      title: 'First Article Inspection Excellence',
-      slug: 'first-article',
-      description: 'AS9102 FAI procedures and best practices',
-      articleCount: 3,
-      readTime: '26 min',
-      difficulty: 'Intermediate',
-      icon: 'CheckCircle',
-      gradient: 'from-green-500 to-emerald-500',
-      enabled: true
-    },
-    {
-      title: 'GD&T Fundamentals',
-      slug: 'gdt-fundamentals',
-      description: 'Geometric dimensioning and tolerancing basics',
-      articleCount: 4,
-      readTime: '35 min',
-      difficulty: 'Beginner',
-      icon: 'Target',
-      gradient: 'from-purple-500 to-pink-500',
-      enabled: true
-    }
-  ],
-  cta: {
-    title: 'Start Learning Today',
-    description: 'Access all resources and technical articles',
-    buttons: [
-      {
-        text: 'Browse All Resources',
-        href: '/resources',
-        variant: 'primary',
-        enabled: true
-      }
-    ]
-  }
-};
+// NO fallback resources - use ONLY Sanity data
 
 interface ResourcesProps {
   data?: ResourcesData;
@@ -82,13 +28,17 @@ interface ResourcesProps {
 export default function Resources({ data }: ResourcesProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
+  const sectionHeaderDelay = SECTION_CONFIGS.threeColumnGrid.headerCompletion;
 
-  // Use CMS data with fallback
-  const resourcesData = data && data.header && Array.isArray(data.featuredSeries)
-    ? data
-    : fallbackResources;
+  // Use ONLY CMS data - NO fallbacks
+  if (!data || !data.header || !Array.isArray(data.featuredSeries)) {
+    return null;
+  }
 
-  const additionalSeriesText = (resourcesData as any)?.additionalSeriesText || '6 Complete Series • 21+ Technical Articles';
+  const resourcesData = data;
+  const additionalSeriesText = (resourcesData as any)?.additionalSeriesText;
+  const ctaData = resourcesData.cta;
+  const showCta = Boolean(ctaData && (ctaData.title || ctaData.description));
 
   return (
     <section className="relative py-24 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 overflow-hidden">
@@ -109,12 +59,16 @@ export default function Resources({ data }: ResourcesProps) {
         {/* Featured Series Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {resourcesData.featuredSeries.filter((series: any) => series.enabled !== false).map((series: ResourceSeries, index: number) => {
-            const cardDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
+            const cardDelay = sectionHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
+            const seriesSlug = series.slug;
+            if (!seriesSlug) {
+              return null;
+            }
 
             return (
               <div key={`${series.slug}-${index}`}>
-                <Link href={`/resources/series/${series.slug}`}>
+                <Link href={`/resources/series/${seriesSlug}`}>
                   <motion.article
                     initial={getInitialState(prefersReducedMotion)}
                     whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
@@ -187,7 +141,8 @@ export default function Resources({ data }: ResourcesProps) {
         </div>
 
         {/* Additional Series & CTA */}
-        <motion.div
+        {showCta && (
+          <motion.div
           initial={getInitialState(prefersReducedMotion)}
           whileInView={getAnimateState(0.4, 0.6, prefersReducedMotion)}
           viewport={getViewportConfig()}
@@ -199,19 +154,23 @@ export default function Resources({ data }: ResourcesProps) {
         >
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex-1 text-center md:text-left">
-                <div className="flex items-center gap-2 justify-center md:justify-start mb-4">
-                  <TrendingUp className="w-5 h-5" style={{ color: hexToRgba(theme.colors.primary, 0.8) }} />
-                  <span className="text-sm font-medium" style={{ color: hexToRgba(theme.colors.primary, 0.8) }}>{additionalSeriesText}</span>
-                </div>
+                {additionalSeriesText && (
+                  <div className="flex items-center gap-2 justify-center md:justify-start mb-4">
+                    <TrendingUp className="w-5 h-5" style={{ color: hexToRgba(theme.colors.primary, 0.8) }} />
+                    <span className="text-sm font-medium" style={{ color: hexToRgba(theme.colors.primary, 0.8) }}>{additionalSeriesText}</span>
+                  </div>
+                )}
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                  {resourcesData.cta.title}
+                  {ctaData?.title}
                 </h3>
                 <p className="text-lg text-slate-300">
-                  {resourcesData.cta.description}
+                  {ctaData?.description}
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
-                {(Array.isArray(resourcesData.cta?.buttons) ? resourcesData.cta.buttons : []).filter(button => button.enabled !== false).map((button, index: number) => (
+                {(Array.isArray(ctaData?.buttons) ? ctaData.buttons : [])
+                  .filter(button => button.enabled !== false && button.text && button.href)
+                  .map((button, index: number) => (
                   <Link key={button.text} href={button.href}>
                     <PremiumButton size="lg" variant={button.variant === 'primary' ? 'default' : 'secondary'}>
                       {index === 0 && <BookOpen className="w-5 h-5" />}
@@ -222,13 +181,14 @@ export default function Resources({ data }: ResourcesProps) {
               </div>
             </div>
           </motion.div>
+        )}
 
         {/* Benefits Grid */}
         {Array.isArray(resourcesData.benefits) && resourcesData.benefits.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {resourcesData.benefits.filter(benefit => benefit.enabled !== false).map((benefit: ResourceBenefit, index: number) => {
               const IconComponent = (benefit.iconName && iconMap[benefit.iconName]) || BookOpen;
-              const benefitDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
+              const benefitDelay = sectionHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
               const viewportConfig = getViewportConfig();
 
               return (

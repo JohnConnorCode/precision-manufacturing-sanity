@@ -22,38 +22,7 @@ const iconMap: Record<string, LucideIcon> = {
   Target,
 };
 
-// Fallback data for showcase images
-const fallbackShowcaseImages = [
-  {
-    src: 'https://images.unsplash.com/photo-1581092335397-9583eb92d232?w=1200&q=90',
-    title: 'Aerospace Components',
-    category: 'Turbine Blades',
-    href: '/services/5-axis-machining'
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1609139003551-ee40f5f73ec0?w=1200&q=90',
-    title: 'Defense Systems',
-    category: 'ITAR Certified',
-    href: '/services/adaptive-machining'
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1200&q=90',
-    title: 'Precision Metrology',
-    category: 'Quality Control',
-    href: '/services/metrology'
-  }
-];
-
-// Fallback stats (color will be applied from theme)
-const fallbackStats: ShowcaseStat[] = [];
-
-// Fallback header
-const fallbackHeader = {
-  eyebrow: 'Manufacturing Excellence',
-  title: 'Precision',
-  titleHighlight: 'Delivered',
-  description: 'From concept to completion, we deliver aerospace-grade components with uncompromising precision'
-};
+// NO fallback data - use ONLY Sanity data
 
 interface ImageShowcaseProps {
   data?: ImageShowcaseData;
@@ -72,18 +41,24 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], prefersReducedMotion ? [1, 1, 1, 1] : [0.5, 1, 1, 0.5]);
   const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], prefersReducedMotion ? [1, 1, 1, 1] : [0.95, 1, 1, 0.95]);
 
-  // Use CMS data or fallback
-  const showcaseData = data || {};
-  const header = showcaseData?.header || fallbackHeader;
+  if (!data) {
+    return null;
+  }
 
-  // Check showcaseImages field, filter out items without src
-  const rawImages = Array.isArray(showcaseData?.showcaseImages) ? showcaseData.showcaseImages : [];
-  const validImages = rawImages.filter((img: any) => img?.src && img.src.trim() !== '');
-  const showcaseImages = validImages.length > 0 ? validImages : fallbackShowcaseImages;
+  const header = data.header;
+  const hasHeader =
+    Boolean(header?.eyebrow || header?.title || header?.titleHighlight || header?.description);
 
-  const stats = Array.isArray(showcaseData?.stats) && showcaseData.stats.length > 0
-    ? showcaseData.stats
-    : fallbackStats;
+  // Check showcaseImages field, filter out items without usable imagery
+  const rawImages = Array.isArray(data.showcaseImages) ? data.showcaseImages : [];
+  const showcaseImages = rawImages.filter((img: ShowcaseImage) => {
+    if (!img) return false;
+    const directSrc = typeof img.src === 'string' ? img.src.trim() : '';
+    const assetSrc = (img as any).image?.asset?.url;
+    return Boolean(directSrc || assetSrc);
+  });
+
+  const stats = Array.isArray(data.stats) ? data.stats : [];
 
   return (
     <section ref={containerRef} className={`relative ${spacing.section} ${colors.bgLight} overflow-hidden`}>
@@ -91,18 +66,69 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         style={{ opacity, scale }}
         className={`${spacing.containerWide} relative z-10`}>
         {/* Section Header */}
-        <SectionHeader
-          eyebrow={header.eyebrow}
-          word1={header.title}
-          word2={header.titleHighlight}
-          description={header.description}
-        />
+        {hasHeader && header && (
+          <SectionHeader
+            eyebrow={header.eyebrow}
+            word1={header.title}
+            word2={header.titleHighlight}
+            description={header.description}
+          />
+        )}
 
         {/* Large Feature Images */}
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} mb-20`}>
           {showcaseImages.filter((item: ShowcaseImage) => item.enabled !== false).map((item: ShowcaseImage, index: number) => {
-            const imageDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
+            const imageHeaderDelay = SECTION_CONFIGS.threeColumnGrid.headerCompletion;
+            const imageDelay = imageHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
+            const imageSrc = (typeof item.src === 'string' && item.src.trim().length > 0)
+              ? item.src
+              : (item as any).image?.asset?.url;
+
+            if (!imageSrc) {
+              return null;
+            }
+
+            const altText = item.alt || (item as any).image?.alt || item.title || 'Showcase image';
+            const card = (
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+                className={`relative overflow-hidden ${borderRadius.card} bg-slate-100 shadow-lg hover:shadow-xl transition-all duration-300`}
+              >
+                <div className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
+                  {imageSrc && (
+                    <Image
+                      src={imageSrc}
+                      alt={altText}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority={index < 3}
+                    />
+                  )}
+
+                  {/* Clean gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+
+                  {/* Content */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    {item.category && (
+                      <p className="text-xs font-bold uppercase tracking-[0.2em] mb-2" style={{ color: theme.colors.primary }}>
+                        {item.category}
+                      </p>
+                    )}
+                    <h3 className="text-2xl font-bold text-white mb-3">
+                      {item.title}
+                    </h3>
+                    <div className="flex items-center text-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className="text-sm font-medium">View Details</span>
+                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            );
 
             return (
               <motion.div
@@ -112,43 +138,13 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                 viewport={viewportConfig}
                 className="group"
               >
-              <Link href={item.href} className="block relative">
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
-                  className={`relative overflow-hidden ${borderRadius.card} bg-slate-100 shadow-lg hover:shadow-xl transition-all duration-300`}
-                >
-                  <div className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
-                    {item.src && (
-                      <Image
-                        src={item.src}
-                        alt={item.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        priority={index < 3}
-                      />
-                    )}
-
-                    {/* Clean gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-
-                    {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <p className="text-xs font-bold uppercase tracking-[0.2em] mb-2" style={{ color: theme.colors.primary }}>
-                        {item.category}
-                      </p>
-                      <h3 className="text-2xl font-bold text-white mb-3">
-                        {item.title}
-                      </h3>
-                      <div className="flex items-center text-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span className="text-sm font-medium">View Details</span>
-                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </Link>
+                {item.href ? (
+                  <Link href={item.href} className="block relative">
+                    {card}
+                  </Link>
+                ) : (
+                  card
+                )}
               </motion.div>
             );
           })}
@@ -158,13 +154,15 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         {stats.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20">
             {stats.filter((stat: ShowcaseStat) => stat.enabled !== false).map((stat: ShowcaseStat, index: number) => {
-            const Icon = iconMap[stat.iconName] || Award;
-            const statDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
+            const iconKey = stat.iconName || (stat as any).icon;
+            const Icon = (iconKey && iconMap[iconKey]) || Award;
+            const statsHeaderDelay = SECTION_CONFIGS.fourColumnGrid.headerCompletion;
+            const statDelay = statsHeaderDelay + SECTION_CONFIGS.fourColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
 
             return (
               <motion.div
-                key={stat.label}
+                key={stat._key || `stat-${index}`}
                 initial={getScaleInitialState(prefersReducedMotion)}
                 whileInView={getScaleAnimateState(statDelay, 0.6, prefersReducedMotion)}
                 viewport={viewportConfig}
@@ -184,7 +182,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         )}
 
         {/* Call to Action */}
-        {showcaseData?.cta && (
+        {data?.cta && (data.cta.title || data.cta.description) && (
           <motion.div
             initial={getInitialState(prefersReducedMotion)}
             whileInView={getAnimateState(0.4, 0.8, prefersReducedMotion)}
@@ -193,26 +191,28 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
           >
             <div className="inline-flex flex-col items-center p-8 md:p-12 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-2xl">
               <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                {showcaseData.cta.title}
+                {data.cta.title}
               </h3>
               <p className="text-lg text-slate-300 mb-8 max-w-md">
-                {showcaseData.cta.description}
+                {data.cta.description}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                {(Array.isArray(showcaseData.cta.buttons) ? showcaseData.cta.buttons : []).filter(button => button.enabled !== false).map((button, index: number) => (
-                <Link
-                  key={button.text}
-                  href={button.href}
-                  className={`inline-flex items-center px-8 py-4 font-semibold rounded-lg transition-all duration-300 ${
-                    button.variant === 'primary'
-                      ? 'text-white shadow-xl hover:shadow-2xl'
-                      : 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm'
-                  }`}
-                  style={button.variant === 'primary' ? getGradientStyle(theme.colors) : undefined}
-                >
-                  {button.text}
-                  {index === 0 && <ArrowRight className="ml-2 h-5 w-5" />}
-                </Link>
+                {(Array.isArray(data.cta.buttons) ? data.cta.buttons : [])
+                  .filter(button => button.enabled !== false && button.text && button.href)
+                  .map((button, index: number) => (
+                  <Link
+                    key={button.text}
+                    href={button.href}
+                    className={`inline-flex items-center px-8 py-4 font-semibold rounded-lg transition-all duration-300 ${
+                      button.variant === 'primary'
+                        ? 'text-white shadow-xl hover:shadow-2xl'
+                        : 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm'
+                    }`}
+                    style={button.variant === 'primary' ? getGradientStyle(theme.colors) : undefined}
+                  >
+                    {button.text}
+                    {index === 0 && <ArrowRight className="ml-2 h-5 w-5" />}
+                  </Link>
                 ))}
               </div>
             </div>

@@ -6,7 +6,7 @@ import { theme, styles, cn } from '@/lib/theme';
 import { ArrowRight, Award } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImagePro from '@/components/ui/parallax-image-pro';
-import { getAllServices, getServicesPage } from '@/sanity/lib/queries';
+import { getAllServices, getPageContent, getServicesPage } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
@@ -88,10 +88,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ServicesPage() {
   // Parallel data fetching - 2x faster than sequential
-  const [services, servicesPageData] = await Promise.all([
+  const [services, servicesPageData, pageContent] = await Promise.all([
     getAllServices(),
-    getServicesPage()
+    getServicesPage(),
+    getPageContent()
   ]);
+
+  const sharedServicesPage = pageContent?.servicesPage;
 
   // Format services with slug and plain text description
   const formattedServices = services?.map((service: any, _slug: number) => ({
@@ -101,52 +104,92 @@ export default async function ServicesPage() {
     href: `/services/${service.slug?.current || service.slug}`,
   })) || [];
 
-  // Use CMS data with minimal fallbacks
-  const capabilities = servicesPageData?.content?.capabilities || [
-    { label: 'Materials Certified', value: '150+', description: 'Aerospace & defense grade materials' },
-    { label: 'Precision Tolerance', value: '±0.0001"', description: 'Guaranteed dimensional accuracy' },
-    { label: 'Production Capacity', value: '24/7', description: 'Continuous manufacturing capability' },
-    { label: 'Quality System', value: 'AS9100D', description: 'Full aerospace certification' }
-  ];
+  const capabilities = (servicesPageData?.content?.capabilities || []).filter(
+    (capability: any) => capability?.label && capability?.value && capability?.description
+  );
 
-  const qualityAssurance = servicesPageData?.content?.qualityAssurance || [
-    { title: 'AS9100D aerospace quality management' },
-    { title: 'ISO 9001:2015 certified processes' },
-    { title: 'ITAR registered for defense contracts' },
-    { title: 'CMMC compliant for cybersecurity' }
-  ];
+  const qualityAssurance = (servicesPageData?.content?.qualityAssurance || []).filter(
+    (item: any) => item?.title
+  );
+
+  const heroBackgroundImage =
+    servicesPageData?.hero?.backgroundImage?.asset?.url ||
+    sharedServicesPage?.hero?.backgroundImage?.asset?.url ||
+    sharedServicesPage?.hero?.backgroundImageUrl;
+  const heroImageAlt =
+    servicesPageData?.hero?.backgroundImage?.alt ||
+    sharedServicesPage?.hero?.backgroundImage?.alt ||
+    '';
+  const heroHeading =
+    servicesPageData?.hero?.heading ||
+    sharedServicesPage?.hero?.title ||
+    sharedServicesPage?.hero?.heading;
+  const heroDescription =
+    servicesPageData?.hero?.description ||
+    sharedServicesPage?.hero?.description;
+  const heroBadge =
+    servicesPageData?.hero?.badge ||
+    sharedServicesPage?.hero?.badge;
+  const heroButtonsSource = (servicesPageData?.hero?.buttons && servicesPageData.hero.buttons.length > 0)
+    ? servicesPageData.hero.buttons
+    : sharedServicesPage?.hero?.buttons || [];
+  const heroButtons = heroButtonsSource
+    .filter((button: any) => button?.enabled !== false && button?.label && button?.href)
+    .map((button: any) => ({
+      label: button.label,
+      href: button.href,
+      variant: button.variant as 'primary' | 'secondary' | undefined,
+    }));
+  const showHero = Boolean(heroHeading || heroDescription || heroBackgroundImage);
+
+  const qualityIntro = sharedServicesPage?.qualityIntro;
+  const qualityImageUrl =
+    sharedServicesPage?.qualityImage?.asset?.url ||
+    sharedServicesPage?.qualityImageUrl;
+  const qualityImageAlt = sharedServicesPage?.qualityImage?.alt || '';
+  const qualityHeading =
+    (servicesPageData as any)?.content?.qualitySectionTitle ||
+    (sharedServicesPage as any)?.qualityHeading;
+
+  const ctaHeading =
+    servicesPageData?.cta?.heading ||
+    sharedServicesPage?.cta?.heading;
+  const ctaDescription =
+    servicesPageData?.cta?.description ||
+    sharedServicesPage?.cta?.description;
+  const ctaButtons = (Array.isArray(servicesPageData?.cta?.buttons) && servicesPageData.cta.buttons.length > 0)
+    ? servicesPageData.cta.buttons
+        .filter((button: any) => button?.enabled !== false && button?.label && button?.href)
+    : [
+        sharedServicesPage?.cta?.primaryButton
+          ? { ...sharedServicesPage.cta.primaryButton, variant: 'primary' }
+          : null,
+        sharedServicesPage?.cta?.secondaryButton
+          ? { ...sharedServicesPage.cta.secondaryButton, variant: 'secondary' }
+          : null,
+      ].filter(Boolean) as Array<{ label: string; href: string; variant?: string }>;
+  const showCta = Boolean(ctaHeading || ctaDescription || ctaButtons.length);
 
   return (
     <div className="min-h-screen bg-background">
-      <HeroSection
-        backgroundImage={servicesPageData?.hero?.backgroundImage?.asset?.url || 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=2400&q=90'}
-        imageAlt={servicesPageData?.hero?.backgroundImage?.alt || 'Advanced manufacturing services - precision CNC machining and quality control'}
-        badge={servicesPageData?.hero?.badge ? { text: servicesPageData.hero.badge } : undefined}
-        title={
-          servicesPageData?.hero?.heading ? (
-            <span className="text-white">{servicesPageData.hero.heading}</span>
-          ) : (
-            <>
-              <span className="text-white">Our</span> <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">Services</span>
-            </>
-          )
-        }
-        description={servicesPageData?.hero?.description || 'Advanced manufacturing capabilities delivering precision components for aerospace, defense, and energy sectors with industry-leading quality standards.'}
-        buttons={servicesPageData?.hero?.buttons || [
-          {
-            label: 'Request Quote',
-            href: '/contact',
-            variant: 'primary'
-          },
-          {
-            label: 'View Core Competencies',
-            href: '#capabilities',
-            variant: 'secondary'
+      {showHero && (
+        <HeroSection
+          backgroundImage={heroBackgroundImage || ''}
+          imageAlt={heroImageAlt}
+          badge={heroBadge ? { text: heroBadge } : undefined}
+          title={
+            heroHeading ? (
+              <span className="text-white">{heroHeading}</span>
+            ) : (
+              ''
+            )
           }
-        ]}
-        height="large"
-        alignment="center"
-      />
+          description={heroDescription}
+          buttons={heroButtons}
+          height="large"
+          alignment="center"
+        />
+      )}
 
       {/* Capabilities Overview */}
       <section id="capabilities" className={styles.sectionLight}>
@@ -179,14 +222,22 @@ export default async function ServicesPage() {
       {/* Services Grid */}
       <section id="services" className={theme.spacing.section}>
         <div className={theme.spacing.container}>
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <h2 className={cn(theme.typography.h2, "mb-6")}>{servicesPageData?.content?.sectionTitle || 'Manufacturing Core Competencies'}</h2>
-              <p className={cn(theme.typography.lead, "max-w-3xl mx-auto")}>
-                {servicesPageData?.content?.sectionDescription || 'Comprehensive precision manufacturing services backed by advanced technology and industry certifications.'}
-              </p>
-            </div>
-          </AnimatedSection>
+          {(servicesPageData?.content?.sectionTitle || servicesPageData?.content?.sectionDescription) && (
+            <AnimatedSection>
+              <div className="text-center mb-16">
+                {servicesPageData?.content?.sectionTitle && (
+                  <h2 className={cn(theme.typography.h2, "mb-6")}>
+                    {servicesPageData.content.sectionTitle}
+                  </h2>
+                )}
+                {servicesPageData?.content?.sectionDescription && (
+                  <p className={cn(theme.typography.lead, "max-w-3xl mx-auto")}>
+                    {servicesPageData.content.sectionDescription}
+                  </p>
+                )}
+              </div>
+            </AnimatedSection>
+          )}
 
           <div className={styles.grid2Col}>
             {formattedServices.map((service: any, index: number) => {
@@ -247,81 +298,90 @@ export default async function ServicesPage() {
         </div>
       </section>
 
-      {/* Quality Assurance Section */}
-      <section className={styles.sectionLight}>
-        <div className={theme.spacing.container}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <AnimatedSection>
-              <div>
-                <h2 className={cn(theme.typography.h2, "mb-6")}>Quality Assurance</h2>
-                <p className={cn(theme.typography.lead, "mb-8")}>
-                  Our comprehensive quality management system ensures every component meets or exceeds specifications with full traceability and documentation.
-                </p>
+      {(qualityIntro || qualityAssurance.length > 0) && (
+        <section className={styles.sectionLight}>
+          <div className={theme.spacing.container}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <AnimatedSection>
+                <div>
+                  {qualityHeading && (
+                    <h2 className={cn(theme.typography.h2, "mb-6")}>{qualityHeading}</h2>
+                  )}
+                  {qualityIntro && (
+                    <p className={cn(theme.typography.lead, "mb-8")}>
+                      {qualityIntro}
+                    </p>
+                  )}
 
-                <div className="space-y-4">
-                  {qualityAssurance
-                    .filter((item: any) => item?.enabled !== false)
-                    .map((item: any) => (
-                    <div
-                      key={item.title}
-                      className="flex items-center"
+                  <div className="space-y-4">
+                    {qualityAssurance
+                      .filter((item: any) => item?.enabled !== false)
+                      .map((item: any) => (
+                      <div
+                        key={item.title}
+                        className="flex items-center"
+                      >
+                        <Award className="w-5 h-5 text-slate-600 mr-3" />
+                        <span className={theme.typography.body}>{item.title}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </AnimatedSection>
+
+              {qualityImageUrl && (
+                <AnimatedSection delay={0.2}>
+                  <div className="relative">
+                    <ParallaxImagePro
+                      src={qualityImageUrl}
+                      alt={qualityImageAlt || ''}
+                      className="w-full h-96 rounded-lg"
+                      speed={0.2}
+                    />
+                  </div>
+                </AnimatedSection>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {showCta && (
+        <section className={theme.spacing.section}>
+          <div className={theme.spacing.container}>
+            <AnimatedSection>
+              <div className="text-center max-w-4xl mx-auto">
+                {ctaHeading && (
+                  <h2 className={cn(theme.typography.h2, "mb-6")}>
+                    {ctaHeading}
+                  </h2>
+                )}
+                {ctaDescription && (
+                  <p className={cn(theme.typography.lead, "mb-8")}>
+                    {ctaDescription}
+                  </p>
+                )}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  {ctaButtons.map((button: any, index: number) => (
+                    <Button
+                      key={`${button.label}-${index}`}
+                      size="lg"
+                      className={button.variant === 'secondary' ? styles.ctaSecondary : styles.ctaPrimary}
+                      variant={button.variant === 'secondary' ? 'outline' : 'default'}
+                      asChild
                     >
-                      <Award className="w-5 h-5 text-slate-600 mr-3" />
-                      <span className={theme.typography.body}>{item.title}</span>
-                    </div>
+                      <Link href={button.href}>
+                        {button.label || button.text}
+                        {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
+                      </Link>
+                    </Button>
                   ))}
                 </div>
               </div>
             </AnimatedSection>
-
-            <AnimatedSection delay={0.2}>
-              <div className="relative">
-                <ParallaxImagePro
-                  src='https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1600&q=90'
-                  alt="Quality assurance"
-                  className="w-full h-96 rounded-lg"
-                  speed={0.2}
-                />
-              </div>
-            </AnimatedSection>
           </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className={theme.spacing.section}>
-        <div className={theme.spacing.container}>
-          <AnimatedSection>
-            <div className="text-center max-w-4xl mx-auto">
-              <h2 className={cn(theme.typography.h2, "mb-6")}>
-                {servicesPageData?.cta?.heading || servicesPageData?.cta?.title || 'Ready to Start Your Project?'}
-              </h2>
-              <p className={cn(theme.typography.lead, "mb-8")}>
-                {servicesPageData?.cta?.description || 'Partner with us for precision manufacturing solutions that meet the highest industry standards.'}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                {(servicesPageData?.cta?.buttons || [
-                  { label: 'Get Quote', href: '/contact?interest=quote', variant: 'primary' },
-                  { label: 'Contact Us', href: '/contact', variant: 'secondary' }
-                ]).filter((button: any) => button.enabled !== false).map((button: any, index: number) => (
-                  <Button
-                    key={index}
-                    size="lg"
-                    className={button.variant === 'primary' ? styles.ctaPrimary : styles.ctaSecondary}
-                    variant={button.variant === 'secondary' ? 'outline' : 'default'}
-                    asChild
-                  >
-                    <Link href={button.href}>
-                      {button.label || button.text}
-                      {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
-                    </Link>
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }

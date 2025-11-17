@@ -21,16 +21,56 @@ interface IndustryContentProps {
 export function IndustryContent({ industryData, slug: _slug }: IndustryContentProps) {
   const industry = industryData as any;
 
-  const heroImage = industry.hero?.backgroundImage?.asset?.url || industry.hero?.backgroundImage
-    ? (industry.hero?.backgroundImage?.asset?.url || industry.hero.backgroundImage)
-    : 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=2400&q=90';
+  const heroImage =
+    industry.hero?.backgroundImage?.asset?.url ||
+    industry.hero?.backgroundImageUrl ||
+    (typeof industry.hero?.backgroundImage === 'string' ? industry.hero.backgroundImage : null) ||
+    'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=2400&q=90';
+
+  const heroButtons =
+    Array.isArray(industry.hero?.buttons) && industry.hero.buttons.length > 0
+      ? industry.hero.buttons
+          .filter((button: any) => button?.enabled !== false && button?.text && button?.href)
+          .map((button: any) => ({
+            label: button.text,
+            href: button.href,
+            variant: (button.variant === 'secondary' ? 'secondary' : 'primary') as 'primary' | 'secondary',
+          }))
+      : [
+          { label: 'Get Consultation', href: '/contact', variant: 'primary' as const },
+          { label: 'View Industries', href: '/industries', variant: 'secondary' as const },
+        ];
+
+  const regulatoryData = Array.isArray(industry.regulatory)
+    ? { certifications: industry.regulatory, standards: [] }
+    : industry.regulatory || {};
+  const certifications = regulatoryData?.certifications || [];
+  const standards = regulatoryData?.standards || regulatoryData?.details || [];
+
+  const ctaHeading = industry.cta?.heading || 'Ready to Get Started?';
+  const ctaDescription =
+    industry.cta?.description ||
+    `Partner with IIS for ${industry.title?.toLowerCase()} solutions that meet the most demanding requirements.`;
+  const ctaButtons =
+    Array.isArray(industry.cta?.buttons) && industry.cta.buttons.length > 0
+      ? industry.cta.buttons
+          .filter((button: any) => button?.enabled !== false && button?.text && button?.href)
+          .map((button: any) => ({
+            label: button.text,
+            href: button.href,
+            variant: (button.variant === 'secondary' ? 'secondary' : 'primary') as 'primary' | 'secondary',
+          }))
+      : [
+          { label: 'Schedule Consultation', href: '/contact', variant: 'primary' as const },
+          { label: 'View All Industries', href: '/industries', variant: 'secondary' as const },
+        ];
 
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <HeroSection
         backgroundImage={heroImage}
-        imageAlt={industry.title}
+        imageAlt={industry.hero?.backgroundImage?.alt || industry.title}
         height="large"
         alignment="center"
         showScrollIndicator={true}
@@ -40,25 +80,18 @@ export function IndustryContent({ industryData, slug: _slug }: IndustryContentPr
         }}
         title={<span className="text-white">{industry.title}</span>}
         subtitle={industry.hero?.subtitle}
-        description={industry.hero?.descriptionRich ? (
-          <PortableTextContent value={industry.hero.descriptionRich} />
-        ) : (
-          industry.overview?.description
-        )}
+        description={
+          industry.hero?.descriptionRich ? (
+            <PortableTextContent value={industry.hero.descriptionRich} />
+          ) : industry.overview?.descriptionRich ? (
+            <PortableTextContent value={industry.overview.descriptionRich} />
+          ) : (
+            industry.overview?.description
+          )
+        }
         titleSize={industry.hero?.titleSize}
         descriptionSize={industry.hero?.descriptionSize}
-        buttons={[
-          {
-            label: 'Get Consultation',
-            href: '/contact',
-            variant: 'primary',
-          },
-          {
-            label: 'View Industries',
-            href: '/industries',
-            variant: 'secondary',
-          },
-        ]}
+        buttons={heroButtons}
       />
 
       {/* Market Overview */}
@@ -155,34 +188,54 @@ export function IndustryContent({ industryData, slug: _slug }: IndustryContentPr
             </motion.div>
 
             <div className={styles.grid2Col}>
-              {industry.capabilities.map((capability: any, index: number) => (
-                <motion.div
-                  key={capability.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
-                >
-                  <Card className={cn(styles.featureCard, 'h-full')}>
-                    <h3 className={cn(theme.typography.h4, 'mb-4')}>{capability.title}</h3>
-                    <p className={cn(theme.typography.body, 'mb-6')}>{capability.description}</p>
+              {industry.capabilities.map((capability: any, index: number) => {
+                const capabilityTitle =
+                  capability.title ||
+                  capability.label ||
+                  capability.name ||
+                  capability.value ||
+                  `Capability ${index + 1}`;
+                const capabilityDescription = capability.description || capability.value || '';
+                const technicalDetails =
+                  capability.technicalDetails ||
+                  capability.details ||
+                  capability.requirements ||
+                  capability.points ||
+                  [];
+                return (
+                  <motion.div
+                    key={capabilityTitle}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.6 }}
+                    viewport={{ once: true }}
+                  >
+                    <Card className={cn(styles.featureCard, 'h-full')}>
+                      <h3 className={cn(theme.typography.h4, 'mb-4')}>{capabilityTitle}</h3>
+                      {capabilityDescription && (
+                        <p className={cn(theme.typography.body, 'mb-6')}>{capabilityDescription}</p>
+                      )}
 
-                    {capability.technicalDetails && capability.technicalDetails.length > 0 && (
-                      <div>
-                        <h4 className={cn(theme.typography.label, 'mb-3')}>Technical Details</h4>
-                        <div className="space-y-2">
-                          {capability.technicalDetails.map((detail: any, idx: number) => (
-                            <div key={detail.detail || idx} className="flex items-center text-sm text-slate-600">
-                              <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
-                              {typeof detail === 'string' ? detail : (detail.detail || '')}
-                            </div>
-                          ))}
+                      {technicalDetails && technicalDetails.length > 0 && (
+                        <div>
+                          <h4 className={cn(theme.typography.label, 'mb-3')}>Technical Details</h4>
+                          <div className="space-y-2">
+                            {technicalDetails.map((detail: any, idx: number) => {
+                              const detailText = typeof detail === 'string' ? detail : detail?.detail;
+                              return (
+                                <div key={detailText || idx} className="flex items-center text-sm text-slate-600">
+                                  <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
+                                  {detailText || ''}
+                                </div>
+                              );
+                            })}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </Card>
-                </motion.div>
-              ))}
+                      )}
+                    </Card>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -215,17 +268,24 @@ export function IndustryContent({ industryData, slug: _slug }: IndustryContentPr
                   viewport={{ once: true }}
                 >
                   <Card className={cn(styles.featureCard, 'group h-full overflow-hidden')}>
-                    {component.image && (
-                      <div className="relative h-64 overflow-hidden">
-                        <ParallaxImagePro
-                          src={component.image}
-                          alt={component.category}
-                          className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                          speed={0.2}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                      </div>
-                    )}
+                    {(() => {
+                      const componentImage =
+                        component.image?.asset?.url ||
+                        component.imageUrl ||
+                        (typeof component.image === 'string' ? component.image : null);
+                      if (!componentImage) return null;
+                      return (
+                        <div className="relative h-64 overflow-hidden">
+                          <ParallaxImagePro
+                            src={componentImage}
+                            alt={component.image?.alt || component.category}
+                            className="w-full h-full group-hover:scale-105 transition-transform duration-500"
+                            speed={0.2}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                        </div>
+                      );
+                    })()}
 
                     <div className="p-8">
                       <h3 className={cn(theme.typography.h4, 'mb-4 group-hover:text-blue-600 transition-colors')}>
@@ -286,7 +346,7 @@ export function IndustryContent({ industryData, slug: _slug }: IndustryContentPr
       )}
 
       {/* Regulatory & Certifications */}
-      {industry.regulatory && (industry.regulatory.certifications || industry.regulatory.standards) && (
+      {(certifications.length > 0 || standards.length > 0) && (
         <section className={theme.spacing.section}>
           <div className={theme.spacing.container}>
             <motion.div
@@ -303,7 +363,7 @@ export function IndustryContent({ industryData, slug: _slug }: IndustryContentPr
             </motion.div>
 
             <div className={styles.grid2Col}>
-              {industry.regulatory.certifications && industry.regulatory.certifications.length > 0 && (
+              {certifications.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -314,12 +374,14 @@ export function IndustryContent({ industryData, slug: _slug }: IndustryContentPr
                     <Award className="w-12 h-12 text-blue-600 mb-4" />
                     <h3 className={cn(theme.typography.h4, 'mb-6')}>Certifications</h3>
                     <div className="space-y-4">
-                      {industry.regulatory.certifications.map((cert: any) => (
-                        <div key={cert.name} className="border-l-4 border-blue-600 pl-4">
-                          <h4 className={cn(theme.typography.label, 'mb-1')}>{cert.name}</h4>
-                          <p className="text-sm text-slate-600 mb-1">{cert.description}</p>
-                          {cert.scope && (
-                            <p className="text-xs text-slate-500">{cert.scope}</p>
+                      {certifications.map((cert: any) => (
+                        <div key={cert.name || cert.title} className="border-l-4 border-blue-600 pl-4">
+                          <h4 className={cn(theme.typography.label, 'mb-1')}>{cert.name || cert.title}</h4>
+                          {cert.description && (
+                            <p className="text-sm text-slate-600 mb-1">{cert.description}</p>
+                          )}
+                          {(cert.scope || cert.detail) && (
+                            <p className="text-xs text-slate-500">{cert.scope || cert.detail}</p>
                           )}
                         </div>
                       ))}
@@ -328,7 +390,7 @@ export function IndustryContent({ industryData, slug: _slug }: IndustryContentPr
                 </motion.div>
               )}
 
-              {industry.regulatory.standards && industry.regulatory.standards.length > 0 && (
+              {standards.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -339,12 +401,14 @@ export function IndustryContent({ industryData, slug: _slug }: IndustryContentPr
                     <CheckCircle className="w-12 h-12 text-blue-600 mb-4" />
                     <h3 className={cn(theme.typography.h4, 'mb-6')}>Standards</h3>
                     <div className="space-y-3">
-                      {industry.regulatory.standards.map((standard: any) => (
-                        <div key={standard.name} className="flex items-start">
+                      {standards.map((standard: any) => (
+                        <div key={standard.name || standard.title} className="flex items-start">
                           <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0" />
                           <div>
-                            <h4 className={cn(theme.typography.label, 'mb-1')}>{standard.name}</h4>
-                            <p className="text-sm text-slate-600">{standard.description}</p>
+                            <h4 className={cn(theme.typography.label, 'mb-1')}>{standard.name || standard.title}</h4>
+                            {standard.description && (
+                              <p className="text-sm text-slate-600">{standard.description}</p>
+                            )}
                           </div>
                         </div>
                       ))}
@@ -426,22 +490,29 @@ export function IndustryContent({ industryData, slug: _slug }: IndustryContentPr
             </motion.div>
 
             <div className={styles.grid4Col}>
-              {industry.qualityStandards.map((item: any, index: number) => (
-                <motion.div
-                  key={item.standard || index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05, duration: 0.6 }}
-                  viewport={{ once: true }}
-                >
-                  <Card className={cn(styles.featureCard, 'h-full text-center')}>
-                    <CheckCircle className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                    <p className={cn(theme.typography.small, 'font-medium')}>
-                      {typeof item === 'string' ? item : (item.standard || '')}
-                    </p>
-                  </Card>
-                </motion.div>
-              ))}
+              {industry.qualityStandards.map((item: any, index: number) => {
+                const label = item.title || item.name || item.standard || item;
+                const description = item.description || item.detail;
+                return (
+                  <motion.div
+                    key={label || index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05, duration: 0.6 }}
+                    viewport={{ once: true }}
+                  >
+                    <Card className={cn(styles.featureCard, 'h-full text-center')}>
+                      <CheckCircle className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+                      <p className={cn(theme.typography.small, 'font-medium')}>
+                        {typeof label === 'string' ? label : ''}
+                      </p>
+                      {description && (
+                        <p className="text-xs text-slate-500 mt-2">{description}</p>
+                      )}
+                    </Card>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>

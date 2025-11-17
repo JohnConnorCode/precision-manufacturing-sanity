@@ -118,7 +118,7 @@ export default function ParallaxImagePro({
               objectFit === 'cover' ? 'object-cover' : `object-${objectFit}`
             )}
             priority={priority}
-            quality={85}
+            quality={90}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
             loading={priority ? 'eager' : 'lazy'}
           />

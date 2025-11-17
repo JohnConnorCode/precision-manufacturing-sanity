@@ -99,6 +99,13 @@ export default {
             {
               type: 'object',
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Toggle off to hide',
+                  initialValue: true,
+                },
                 {name: 'label', type: 'string', title: 'Label'},
                 {name: 'href', type: 'string', title: 'URL'},
                 {name: 'variant', type: 'string', title: 'Variant', options: { list: [
@@ -159,7 +166,7 @@ export default {
                   name: 'enabled',
                   type: 'boolean',
                   title: 'Enabled',
-                  description: 'Uncheck to hide this benefit without deleting it',
+                  description: 'Toggle off to hide this benefit without deleting it',
                   initialValue: true,
                 },
                 {
@@ -234,7 +241,7 @@ export default {
                   name: 'enabled',
                   type: 'boolean',
                   title: 'Enabled',
-                  description: 'Uncheck to hide this value without deleting it',
+                  description: 'Toggle off to hide this value without deleting it',
                   initialValue: true,
                 },
                 {
@@ -338,7 +345,7 @@ export default {
                   name: 'enabled',
                   type: 'boolean',
                   title: 'Enabled',
-                  description: 'Uncheck to hide this job posting without deleting it',
+                  description: 'Toggle off to hide this job posting without deleting it',
                   initialValue: true,
                 },
                 {
@@ -486,7 +493,7 @@ export default {
                   name: 'enabled',
                   type: 'boolean',
                   title: 'Enabled',
-                  description: 'Uncheck to hide this button without deleting it',
+                  description: 'Toggle off to hide this button without deleting it',
                   initialValue: true,
                 },
                 {name: 'label', type: 'string', title: 'Label'},

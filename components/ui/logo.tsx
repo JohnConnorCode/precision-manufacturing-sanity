@@ -85,6 +85,7 @@ export default function Logo({
           alt={logoData.customLogo.alt || 'IIS Logo'}
           width={width}
           height={height}
+          quality={95}
           className={`object-contain ${className}`}
           priority
         />
@@ -122,6 +123,7 @@ export default function Logo({
           alt="IIS - Integrated Inspection Systems"
           width={width}
           height={height}
+          quality={95}
           className={`object-contain ${className}`}
           priority
         />

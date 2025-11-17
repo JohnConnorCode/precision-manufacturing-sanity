@@ -29,7 +29,7 @@ function urlFor(source: any) {
   if (source && (source._type === 'image' || source.asset)) {
     try {
       return builder.image(source).url();
-    } catch (e) {
+    } catch {
       return '';
     }
   }
@@ -83,11 +83,13 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
           </span>
         }
         description={data?.hero?.description || defaultHeroData.description}
-        buttons={(data?.hero?.buttons || defaultHeroData.buttons).map((btn: any) => ({
-          label: btn.label || 'Learn More',
-          href: btn.href || '#',
-          variant: btn.variant as 'primary' | 'secondary'
-        }))}
+        buttons={(data?.hero?.buttons || defaultHeroData.buttons)
+          .filter((btn: any) => btn?.enabled !== false)
+          .map((btn: any) => ({
+            label: btn.label || 'Learn More',
+            href: btn.href || '#',
+            variant: btn.variant as 'primary' | 'secondary'
+          }))}
         height="large"
         alignment="center"
       />

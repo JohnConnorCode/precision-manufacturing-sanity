@@ -64,7 +64,7 @@ export default {
       name: 'published',
       type: 'boolean',
       title: 'Published',
-      description: 'Uncheck to hide this page without deleting it',
+      description: 'Toggle off to hide this page without deleting it',
       group: 'content',
       initialValue: true,
     },

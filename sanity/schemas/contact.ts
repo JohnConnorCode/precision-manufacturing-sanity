@@ -195,7 +195,16 @@ export default {
       of: [
         {
           type: 'object',
-          fields: [{name: 'certification', type: 'string', title: 'Certification'}],
+          fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Toggle off to hide',
+              initialValue: true,
+            },
+            {name: 'certification', type: 'string', title: 'Certification'},
+          ],
         },
       ],
     },
@@ -212,6 +221,13 @@ export default {
         {
           type: 'object',
           fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Toggle off to hide',
+              initialValue: true,
+            },
             {name: 'iconName', type: 'string', title: 'Icon Name'},
             {name: 'text', type: 'string', title: 'Text'},
             {

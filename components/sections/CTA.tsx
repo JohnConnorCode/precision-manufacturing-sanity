@@ -23,6 +23,7 @@ interface CTAData {
   }>;
   badge?: string;
   certifications?: Array<{
+    _key?: string;
     icon: string;
     text: string;
     enabled?: boolean;
@@ -65,15 +66,41 @@ interface CTAProps {
 
 export default function CTA({ data }: CTAProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Use ONLY CMS data - NO fallbacks
+  if (!data?.title || !data?.buttons || data.buttons.length === 0) {
+    return null;
+  }
+
   // Ensure title and subtitle are plain strings (handle stega encoding from Presentation Tool)
-  const rawTitle = data?.title || 'Start Your Precision Manufacturing Project';
-  const title = (typeof rawTitle === 'string' ? rawTitle : String(rawTitle || 'Start Your Precision Manufacturing Project'));
-  const rawSubtitle = data?.subtitle || 'From prototype to production, we deliver AS9100D-certified precision components with tolerances to ±0.0001" for aerospace, defense, and medical applications.';
-  const subtitle = portableTextToPlainText(rawSubtitle) || (typeof rawSubtitle === 'string' ? rawSubtitle : String(rawSubtitle));
-  const buttons = (Array.isArray(data?.buttons) ? data.buttons : [
-    { text: 'Get Quote', href: '/contact', variant: 'default' as const },
-    { text: 'Technical Specifications', href: '/compliance/supplier-requirements', variant: 'secondary' as const }
-  ]).filter(button => button.enabled !== false);
+  const rawTitle = data.title;
+  const title = (typeof rawTitle === 'string' ? rawTitle : String(rawTitle));
+  const rawSubtitle = data.subtitle;
+  const subtitleString = portableTextToPlainText(rawSubtitle) || (typeof rawSubtitle === 'string' ? rawSubtitle : String(rawSubtitle || ''));
+  const subtitleSegments = subtitleString
+    ? subtitleString.split(/\n{2,}/).map(segment => segment.trim()).filter(Boolean)
+    : [];
+
+  let highlightText = '';
+  let secondaryTitle = '';
+  let subtitleBody = '';
+
+  if (subtitleSegments.length > 1) {
+    highlightText = subtitleSegments[0];
+    const remainder = subtitleSegments.slice(1).join(' ').trim();
+    if (remainder.includes('—')) {
+      const [headline, ...bodyParts] = remainder.split('—');
+      secondaryTitle = headline.trim();
+      subtitleBody = bodyParts.join('—').trim();
+    } else {
+      secondaryTitle = remainder;
+    }
+  } else if (subtitleSegments.length === 1) {
+    subtitleBody = subtitleSegments[0];
+  }
+
+  const sectionDescription = (!highlightText && !secondaryTitle) ? subtitleBody : '';
+  const buttons = (Array.isArray(data.buttons) ? data.buttons : []).filter(button => button.enabled !== false);
 
   // Extract styles from Sanity data
   const backgroundStyle = getBackgroundColor(data?.theme);
@@ -133,10 +160,36 @@ export default function CTA({ data }: CTAProps) {
             eyebrow={badge}
             heading={title}
             gradientWordPosition="last"
-            description={subtitle}
+            description={sectionDescription}
             centered={true}
-            className="[&_h2]:text-white [&_p]:text-slate-300 [&_p]:text-lg mb-10"
+            className="[&_h2]:text-white [&_p]:text-slate-300 [&_p]:text-lg mb-6"
           />
+
+          {highlightText && (
+            <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-full border border-blue-600/30 bg-white/5 backdrop-blur-sm">
+              <ArrowRight className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
+              <span className="text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">
+                {highlightText}
+              </span>
+            </div>
+          )}
+
+          {secondaryTitle && (
+            <motion.h2
+              initial={getInitialState(prefersReducedMotion)}
+              whileInView={getAnimateState(0.1, 0.6, prefersReducedMotion)}
+              viewport={getViewportConfig()}
+              className="text-4xl md:text-5xl font-bold text-white mb-4"
+            >
+              {secondaryTitle}
+            </motion.h2>
+          )}
+
+          {subtitleBody && (highlightText || secondaryTitle) && (
+            <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
+              {subtitleBody}
+            </p>
+          )}
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             {buttons.map((button, index) => {
@@ -164,7 +217,7 @@ export default function CTA({ data }: CTAProps) {
 
               return (
                 <motion.div
-                  key={`${cert.icon}-${cert.text}`}
+                  key={cert._key || `cert-${index}`}
                   initial={getInitialState(prefersReducedMotion)}
                   whileInView={getAnimateState(0.1 + (index * 0.1), 0.5, prefersReducedMotion)}
                   viewport={getViewportConfig()}

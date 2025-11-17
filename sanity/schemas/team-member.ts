@@ -92,7 +92,7 @@ export default {
       name: 'published',
       type: 'boolean',
       title: 'Published',
-      description: 'Controls whether this team member appears on the website. Uncheck to hide without deleting.',
+      description: 'Controls whether this team member appears on the website. Toggle off to hide without deleting.',
       group: 'display',
       initialValue: true,
     },

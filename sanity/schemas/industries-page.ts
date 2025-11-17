@@ -76,6 +76,13 @@ export default {
             {
               type: 'object',
               fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Toggle off to hide',
+                  initialValue: true,
+                },
                 { name: 'label', type: 'string', title: 'Label' },
                 { name: 'href', type: 'string', title: 'URL' },
                 {
@@ -126,7 +133,7 @@ export default {
                   name: 'enabled',
                   type: 'boolean',
                   title: 'Enabled',
-                  description: 'Uncheck to hide this statistic without deleting it',
+                  description: 'Toggle off to hide this statistic without deleting it',
                   initialValue: true,
                 },
                 { name: 'label', type: 'string', title: 'Label' },
@@ -161,7 +168,7 @@ export default {
                   name: 'enabled',
                   type: 'boolean',
                   title: 'Enabled',
-                  description: 'Uncheck to hide this industry without deleting it',
+                  description: 'Toggle off to hide this industry without deleting it',
                   initialValue: true,
                 },
                 {
@@ -350,7 +357,7 @@ export default {
                   name: 'enabled',
                   type: 'boolean',
                   title: 'Enabled',
-                  description: 'Uncheck to hide this reason without deleting it',
+                  description: 'Toggle off to hide this reason without deleting it',
                   initialValue: true,
                 },
                 {
@@ -468,7 +475,7 @@ export default {
                   name: 'enabled',
                   type: 'boolean',
                   title: 'Enabled',
-                  description: 'Uncheck to hide this metric without deleting it',
+                  description: 'Toggle off to hide this metric without deleting it',
                   initialValue: true,
                 },
                 { name: 'metric', type: 'string', title: 'Metric Name' },
@@ -539,7 +546,7 @@ export default {
               name: 'enabled',
               type: 'boolean',
               title: 'Enabled',
-              description: 'Uncheck to hide this button without deleting it',
+              description: 'Toggle off to hide this button without deleting it',
               initialValue: true,
             },
             { name: 'label', type: 'string', title: 'Label', initialValue: 'Schedule Consultation' },
@@ -555,7 +562,7 @@ export default {
               name: 'enabled',
               type: 'boolean',
               title: 'Enabled',
-              description: 'Uncheck to hide this button without deleting it',
+              description: 'Toggle off to hide this button without deleting it',
               initialValue: true,
             },
             { name: 'label', type: 'string', title: 'Label', initialValue: 'View Our Services' },

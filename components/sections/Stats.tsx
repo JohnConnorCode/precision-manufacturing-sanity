@@ -14,21 +14,19 @@ interface StatsProps {
   data?: StatsData;
 }
 
-const defaultStats = [
-  { value: 30, suffix: '+', label: 'Years Experience', decimals: 0 },
-  { value: 99.97, suffix: '%', label: 'On-Time Delivery', decimals: 2 },
-  { value: 0.0001, suffix: '"', label: 'Min Tolerance', prefix: '±', decimals: 4 },
-  { value: 500, suffix: '+', label: 'Active Clients', decimals: 0 },
-];
+// NO fallback stats - use ONLY Sanity data
 
 export default function Stats({ data }: StatsProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  // Use CMS data or fallback to defaults
-  // Handle both old format (data.stats as array) and new format (data.items as array)
+  // Use ONLY CMS data - return null if no data
   const statsArray = data?.items || data?.stats;
-  const stats = statsArray ? statsArray.map((stat: StatItem) => {
+  if (!statsArray || statsArray.length === 0) {
+    return null;
+  }
+
+  const stats = statsArray.map((stat: StatItem) => {
     // Parse numeric value from string for animation
     const valueStr = String(stat.value);
     const numValue = parseFloat(valueStr.replace(/[^0-9.-]/g, ''));
@@ -40,10 +38,14 @@ export default function Stats({ data }: StatsProps) {
       decimals: numValue < 1 ? 4 : numValue < 100 ? 2 : 0,
       prefix: undefined
     };
-  }) : defaultStats;
+  });
 
-  const title = data?.title || 'Operational Excellence';
-  const subtitle = data?.subtitle || 'THE NUMBERS SPEAK FOR THEMSELVES';
+  const title = data?.title;
+  const subtitle = data?.subtitle;
+
+  if (!title || !subtitle) {
+    return null;
+  }
 
   return (
     <section className="py-20 md:py-24 bg-gradient-to-b from-slate-100 to-white relative overflow-hidden">
@@ -64,7 +66,8 @@ export default function Stats({ data }: StatsProps) {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, index: number) => {
-            const statDelay = SECTION_CONFIGS.fourColumnGrid.getDelay(index);
+            const headerDelay = SECTION_CONFIGS.fourColumnGrid.headerCompletion;
+            const statDelay = headerDelay + SECTION_CONFIGS.fourColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
 
             return (

@@ -47,46 +47,9 @@ const iconMap: Record<string, any> = {
 };
 
 // Default fallback data
-const defaultContactData = {
-  hero: {
-    backgroundImage: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=2400&q=80',
-    imageAlt: 'Contact our precision manufacturing team',
-    badge: 'GET STARTED',
-    badgeIconName: 'Activity',
-    title: 'Contact',
-    titleHighlight: 'Our Team',
-    description: 'Connect with Integrated Inspection Systems for precision manufacturing solutions, technical consultations, and project quotes.',
-    buttonLabel: 'Start Your Project',
-    buttonHref: '#contact-form'
-  },
-  contactInfo: {
-    heading: 'Get in Touch',
-    description: 'Our engineering team is ready to discuss your precision manufacturing needs.',
-    addressLine1: 'Integrated Inspection Systems, Inc.',
-    addressLine2: '12345 Precision Way',
-    addressLine3: 'Torrance, CA 90501',
-    phone: '(503) 231-9093',
-    phoneLink: 'tel:+15032319093',
-    email: 'officemgr@iismet.com',
-    hoursLine1: 'Monday - Friday: 7:00 AM - 5:00 PM PST',
-    hoursLine2: '24/7 Production Facility'
-  },
-  certifications: [
-    { certification: 'AS9100D' },
-    { certification: 'ISO 9001:2015' },
-    { certification: 'ITAR Registered' },
-    { certification: 'CMMC Compliant' }
-  ],
-  bottomStats: [
-    { iconName: 'pulse', text: 'Quote Response in 24 Hours', animated: true },
-    { iconName: 'Award', text: '30+ Years | 1000+ Projects', animated: false },
-    { iconName: 'Shield', text: '99.8% First-Pass Yield', animated: false },
-    { iconName: 'CheckCircle', text: 'AS9100D | ITAR Certified', animated: false }
-  ]
-};
 
 interface ContactPageClientProps {
-  data?: typeof defaultContactData | null;
+  data?: any | null;
 }
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -116,7 +79,7 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>;
 
 export default function ContactPageClient({ data }: ContactPageClientProps) {
-  const contactData = data || defaultContactData;
+  const contactData = data;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState<{
     success: boolean;
@@ -160,7 +123,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
         Object.entries(draft).forEach(([key, value]) => {
           if (value) setValue(key as any, value);
         });
-      } catch (e) {
+      } catch {
         // Failed to load draft, continue without it
       }
     }
@@ -232,31 +195,49 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
     }
   };
 
+  if (!contactData) {
+    return null;
+  }
+
+  const heroBackgroundImage =
+    contactData.hero?.backgroundImage?.asset?.url ||
+    (typeof contactData.hero?.backgroundImage === 'string' ? contactData.hero.backgroundImage : '') ||
+    contactData.hero?.backgroundImageUrl ||
+    '';
+  const heroButtons = contactData.hero?.buttonLabel && contactData.hero?.buttonHref
+    ? [{
+        label: contactData.hero.buttonLabel,
+        href: contactData.hero.buttonHref,
+        variant: 'primary' as const
+      }]
+    : [];
+  const HeroBadgeIcon = iconMap[contactData.hero?.badgeIconName || 'Activity'] || Activity;
+
   return (
     <div className="min-h-screen bg-background">
-      <HeroSection
-        backgroundImage={(contactData as any)?.hero?.backgroundImageUrl || contactData.hero.backgroundImage}
-        imageAlt={contactData.hero.imageAlt}
-        badge={{
-          text: contactData.hero.badge,
-          icon: Activity
-        }}
-        title={
-          <span className="text-white">
-            {contactData.hero.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">{contactData.hero.titleHighlight}</span>
-          </span>
-        }
-        description={contactData.hero.description}
-        buttons={[
-          {
-            label: contactData.hero.buttonLabel,
-            href: contactData.hero.buttonHref,
-            variant: "primary"
+      {contactData.hero && (
+        <HeroSection
+          backgroundImage={heroBackgroundImage}
+          imageAlt={contactData.hero.imageAlt || contactData.hero.backgroundImage?.alt || ''}
+          badge={contactData.hero.badge ? { text: contactData.hero.badge, icon: HeroBadgeIcon } : undefined}
+          title={
+            contactData.hero.title ? (
+              <span className="text-white">
+                {contactData.hero.title}{' '}
+                {contactData.hero.titleHighlight && (
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
+                    {contactData.hero.titleHighlight}
+                  </span>
+                )}
+              </span>
+            ) : ''
           }
-        ]}
-        height="large"
-        alignment="center"
-      />
+          description={contactData.hero.description}
+          buttons={heroButtons}
+          height="large"
+          alignment="center"
+        />
+      )}
 
       {/* Main Content */}
       <section id="contact-form" className={styles.sectionDark}>
@@ -336,10 +317,12 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
               <Card className={cn(theme.components.card.form, "p-6")}>
                 <h3 className={cn(theme.typography.label, "text-white mb-4")}>Certifications</h3>
                 <div className="space-y-3">
-                  {contactData.certifications.map((cert) => (
-                    <div key={cert.certification} className="flex items-center gap-3">
+                  {Array.isArray(contactData.certifications) && contactData.certifications
+                    .filter((cert: any) => cert?.enabled !== false)
+                    .map((cert: any) => (
+                    <div key={cert?.certification} className="flex items-center gap-3">
                       <Shield className="w-4 h-4 text-blue-600" />
-                      <span className={theme.typography.small}>{cert.certification}</span>
+                      <span className={theme.typography.small}>{cert?.certification}</span>
                     </div>
                   ))}
                 </div>
@@ -676,16 +659,18 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
             className="mt-20 text-center"
           >
             <div className="inline-flex flex-wrap justify-center gap-8 text-sm font-medium">
-              {contactData.bottomStats.map((stat, index) => {
-                const IconComponent = iconMap[stat.iconName] || Activity;
+              {Array.isArray(contactData.bottomStats) && contactData.bottomStats
+                .filter((stat: any) => stat?.enabled !== false)
+                .map((stat: any, index: number) => {
+                const IconComponent = iconMap[stat?.iconName] || Activity;
                 return (
-                  <div key={index} className="flex items-center gap-2">
-                    {stat.animated ? (
+                  <div key={`${stat?.text}-${index}`} className="flex items-center gap-2">
+                    {stat?.animated ? (
                       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                     ) : (
                       <IconComponent className="w-4 h-4 text-blue-400" />
                     )}
-                    <span className="text-white">{stat.text}</span>
+                    <span className="text-white">{stat?.text}</span>
                   </div>
                 );
               })}

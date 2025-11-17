@@ -3,6 +3,7 @@ import { draftMode } from 'next/headers'
 import { Inter } from 'next/font/google'
 import "../globals.css";
 import SiteChrome from "@/components/layout/SiteChrome";
+import CMSIndicator from "@/components/cms-indicator";
 import VisualEditingClient from '@/components/VisualEditingClient'
 import { AdminToolbar } from "@/components/admin-toolbar";
 import { Analytics } from "@vercel/analytics/react";
@@ -298,6 +299,7 @@ export default async function SiteLayout({
           closeButton
           theme="dark"
         />
+        <CMSIndicator />
         {isDraft && process.env.NEXT_PUBLIC_ENABLE_VISUAL_EDITING === 'true' ? <VisualEditingClient /> : null}
         {isDraft ? <PreviewBanner /> : null}
       </body>

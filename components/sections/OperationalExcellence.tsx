@@ -30,31 +30,20 @@ interface OperationalExcellenceProps {
   data?: OperationalExcellenceData;
 }
 
-// Default benefits matching reference site
-const defaultBenefits: Benefit[] = [
-  {
-    iconName: 'Gauge',
-    title: 'Quality Control',
-    description: 'Comprehensive inspection protocols and real-time process monitoring ensure every component meets exact specifications.'
-  },
-  {
-    iconName: 'Workflow',
-    title: 'Process Optimization',
-    description: 'Lean manufacturing principles and continuous improvement initiatives maximize efficiency without compromising quality.'
-  },
-  {
-    iconName: 'Users',
-    title: 'Expert Team',
-    description: 'Highly trained machinists, engineers, and quality professionals with decades of precision manufacturing experience.'
-  }
-];
+// NO fallback benefits - use ONLY Sanity data
 
 export default function OperationalExcellence({ data }: OperationalExcellenceProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
-  const heading = data?.heading || 'OPERATIONAL EXCELLENCE';
-  const description = data?.description || 'Proven systems and expert teams delivering consistent, superior results';
-  const benefits = data?.benefits && data.benefits.length > 0 ? data.benefits : defaultBenefits;
+
+  // Use CMS data, return null if no benefits data
+  if (!data?.benefits || data.benefits.length === 0) {
+    return null;
+  }
+
+  const heading = data?.heading;
+  const description = data?.description;
+  const benefits = data.benefits;
 
   return (
     <section className="py-20 md:py-24 bg-slate-900 text-white">
@@ -72,7 +61,8 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
         {/* Benefits Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {benefits.filter((benefit: any) => benefit.enabled !== false).map((benefit, index) => {
-            const benefitDelay = SECTION_CONFIGS.listItems.getDelay(index);
+            const headerDelay = SECTION_CONFIGS.listItems.headerCompletion;
+            const benefitDelay = headerDelay + SECTION_CONFIGS.listItems.getDelay(index);
             const viewportConfig = getViewportConfig();
 
             return (

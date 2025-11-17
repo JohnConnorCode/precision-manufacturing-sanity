@@ -91,6 +91,13 @@ export default {
         {
           type: 'object',
           fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Toggle off to hide',
+              initialValue: true,
+            },
             {name: 'label', type: 'string', title: 'Label'},
             {name: 'href', type: 'string', title: 'URL'},
           ],
@@ -110,6 +117,13 @@ export default {
         {
           type: 'object',
           fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Toggle off to hide',
+              initialValue: true,
+            },
             {name: 'label', type: 'string', title: 'Label'},
             {name: 'href', type: 'string', title: 'URL'},
           ],
@@ -129,6 +143,13 @@ export default {
         {
           type: 'object',
           fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Toggle off to hide',
+              initialValue: true,
+            },
             {name: 'label', type: 'string', title: 'Label'},
             {name: 'href', type: 'string', title: 'URL'},
           ],

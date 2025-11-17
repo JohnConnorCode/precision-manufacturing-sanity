@@ -20,33 +20,7 @@ function DynamicIcon({ name, className }: { name?: string; className?: string })
   return <Icon className={className} />;
 }
 
-// Fallback industries data
-const fallbackIndustries = [
-  {
-    title: 'Defense & Government',
-    description: 'ITAR registered with rapid prototyping and secure facility capabilities',
-    iconName: 'Shield',
-    href: '/industries/defense',
-    image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=90',
-    features: ['ITAR registered', 'Secure facility', 'Rapid prototyping']
-  },
-  {
-    title: 'Energy & Power',
-    description: 'Superalloy expertise with large part capability and field service support',
-    iconName: 'Zap',
-    href: '/industries/energy',
-    image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=90',
-    features: ['Superalloy expertise', 'Large part capability', 'Field service support']
-  },
-  {
-    title: 'Aerospace & Aviation',
-    description: 'AS9100D certified with NADCAP accreditation and zero defect delivery',
-    iconName: 'Plane',
-    href: '/industries/aerospace',
-    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=90',
-    features: ['AS9100D certified', 'NADCAP accredited', 'Zero defect delivery']
-  }
-];
+// NO fallback industries - use ONLY Sanity data
 
 interface IndustriesProps {
   data?: Industry[];
@@ -57,59 +31,60 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  // Use CMS data with fallback
+  // Use CMS data with text fallbacks for section headers
   const industriesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
-  const displayIndustries = (industriesData && industriesData.length > 0) ? industriesData : fallbackIndustries;
+  const displayIndustries = industriesData || [];
 
-  // Use section data from CMS with fallbacks
-  const eyebrow = sectionData?.eyebrow || 'SPECIALIZED SECTOR EXPERTISE';
-  const heading = sectionData?.heading || 'INDUSTRY LEADERS';
-  const description = sectionData?.description || 'Three decades of trusted precision manufacturing across critical sectors';
+  // Use section data from CMS with text fallbacks
+  const eyebrow = sectionData?.eyebrow;
+  const heading = sectionData?.heading;
+  const description = sectionData?.description;
+  const subdescription = sectionData?.subdescription;
+  const hasHeaderContent = Boolean(eyebrow || heading || description);
 
   return (
     <section className={`${spacing.section} ${colors.bgLight}`}>
       <div className={spacing.containerWide}>
-        <SectionHeader
-          eyebrow={eyebrow}
-          heading={heading}
-          gradientWordPosition="last"
-          description={description}
-        />
+        {hasHeaderContent && (
+          <SectionHeader
+            eyebrow={eyebrow}
+            heading={heading}
+            gradientWordPosition="last"
+            description={description}
+          />
+        )}
+
+        {subdescription && (
+          <p className="text-base md:text-lg text-slate-600 text-center max-w-3xl mx-auto mb-12">
+            {subdescription}
+          </p>
+        )}
 
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid}`}>
           {displayIndustries.map((industry: Industry, index: number) => {
-            const cardDelay = SECTION_CONFIGS.threeColumnGrid.getDelay(index);
+            const headerDelay = SECTION_CONFIGS.threeColumnGrid.headerCompletion;
+            const cardDelay = headerDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
 
             // Get image URL - handle both Sanity image objects and direct URLs
             const imageUrl = typeof industry.image === 'string'
               ? industry.image
               : (industry.image as any)?.asset?.url || null;
-            // Placeholder image for industries without images
-            const placeholderImage = 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=90';
-            const displayImage = imageUrl || placeholderImage;
+            const displayImage = imageUrl;
 
-            return (
+            const card = (
               <motion.div
-                key={industry.title}
-                initial={getInitialState(prefersReducedMotion)}
-                whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
-                viewport={viewportConfig}
-                className="group"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
               >
-                <Link href={industry.href} className="block">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                  >
-                    <Card
-                      className={`overflow-hidden hover:shadow-xl transition-all duration-300 ${colors.borderLight}`}
-                      style={{
-                        '--hover-border': hexToRgba(theme.colors.primary, 0.5),
-                      } as React.CSSProperties}
-                      onMouseEnter={(e) => e.currentTarget.style.borderColor = hexToRgba(theme.colors.primary, 0.5)}
-                      onMouseLeave={(e) => e.currentTarget.style.borderColor = ''}
-                    >
+                <Card
+                  className={`overflow-hidden hover:shadow-xl transition-all duration-300 ${colors.borderLight}`}
+                  style={{
+                    '--hover-border': hexToRgba(theme.colors.primary, 0.5),
+                  } as React.CSSProperties}
+                  onMouseEnter={(e) => e.currentTarget.style.borderColor = hexToRgba(theme.colors.primary, 0.5)}
+                  onMouseLeave={(e) => e.currentTarget.style.borderColor = ''}
+                >
                     <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
                       <ParallaxImage
                         src={displayImage}
@@ -158,9 +133,25 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                         {industry.description}
                       </p>
                     </div>
-                  </Card>
-                  </motion.div>
-                </Link>
+                </Card>
+              </motion.div>
+            );
+
+            return (
+              <motion.div
+                key={industry.title}
+                initial={getInitialState(prefersReducedMotion)}
+                whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
+                className="group"
+              >
+                {industry.href ? (
+                  <Link href={industry.href} className="block">
+                    {card}
+                  </Link>
+                ) : (
+                  card
+                )}
               </motion.div>
             );
           })}

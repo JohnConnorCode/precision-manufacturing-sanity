@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useId } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, Phone, Mail, Zap, ArrowRight, Home, Info, Wrench, Building2, BookOpen, FileText, Briefcase, Layers, Shield, PhoneCall, Mail as MailIcon } from 'lucide-react';
@@ -14,7 +14,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { theme } from '@/lib/theme';
@@ -117,17 +117,9 @@ export default function Header({ data }: HeaderProps) {
   // Use CMS data if available, otherwise fall back to hardcoded defaults
   const topBar = data?.topBar || defaultTopBar;
   const announcement = data?.announcement
-  // Filter out items that should not be in the main nav (e.g., Careers)
+  // Filter out items hidden via CMS flags (Careers should remain visible for parity)
   const rawNavigation = data?.menuItems || defaultNavigation;
-  // Respect CMS flags and remove careers from header
-  const navigation = (rawNavigation || []).filter((item: any) => {
-    const n = (item?.name || '').toString().toLowerCase();
-    const href = (item?.href || '').toString().toLowerCase();
-    const banned = ['career', 'careers', 'jobs', 'join our team'];
-    const matchesBanned = banned.some((k) => n.includes(k)) || href === '/careers';
-    const visible = item?.showInHeader !== false;
-    return visible && !matchesBanned;
-  });
+  const navigation = (rawNavigation || []).filter((item: any) => item?.showInHeader !== false);
   const cta = data?.cta || defaultCTA;
   const navStyles = (data as any)?.styles || {}
   const align: 'left' | 'center' | 'right' = navStyles.alignment || 'left'
@@ -138,6 +130,7 @@ export default function Header({ data }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const pathname = usePathname();
+  const mobileSheetId = useId();
 
   // Check announcement dates client-side only to avoid hydration errors
   useEffect(() => {
@@ -273,15 +266,15 @@ export default function Header({ data }: HeaderProps) {
 
       {/* Main Navigation */}
       <header className={cn(headerClass, announcement?.enabled ? 'lg:top-20 top-10' : 'lg:top-10 top-0')} suppressHydrationWarning>
-        <nav className="container flex h-20 items-center justify-between" suppressHydrationWarning>
-          <Link href="/" className="flex items-center space-x-2" aria-label="IIS - Integrated Inspection Systems Home">
-            <Logo className="h-16 w-auto" logoData={data?.logo} />
+        <nav className="container flex h-20 items-center justify-between gap-4" suppressHydrationWarning>
+          <Link href="/" className="flex items-center space-x-2 flex-shrink-0" aria-label="IIS - Integrated Inspection Systems Home">
+            <Logo className="h-12 sm:h-14 md:h-16 w-auto" logoData={data?.logo} />
           </Link>
 
-          {/* Desktop Navigation */}
-          <NavigationMenu className="hidden lg:flex">
+          {/* Desktop Navigation - Progressive Collapse Strategy */}
+          <NavigationMenu className="hidden lg:flex flex-1">
             <NavigationMenuList className={listJustify}>
-              {navigation.map((item: any) => {
+              {navigation.map((item: any, index: number) => {
                 const children = Array.isArray((item as any).children)
                   ? (item as any).children.filter((c: any) => c && (c.href || c.name))
                   : []
@@ -291,8 +284,15 @@ export default function Header({ data }: HeaderProps) {
                 const badgeText = item?.style?.badgeText
                 const target = item?.openInNewTab ? '_blank' : undefined
                 const rel = item?.openInNewTab ? 'noopener noreferrer' : undefined
+
+                // Progressive collapse: hide less important items at smaller breakpoints
+                // Priority 1 (always show on lg+): Services, Industries, Contact (indexes 0, 1, 5)
+                // Priority 2 (show on xl+): Resources, About, Compliance (indexes 2, 3, 4)
+                const isPriority1 = index === 0 || index === 1 || index === 5 // Services, Industries, Contact
+                const itemClasses = isPriority1 ? '' : 'hidden xl:flex'
+
                 return (
-                  <NavigationMenuItem key={item.name}>
+                  <NavigationMenuItem key={item.name} className={itemClasses}>
                     {hasChildren ? (
                       <>
                         <NavigationMenuTrigger
@@ -452,50 +452,73 @@ export default function Header({ data }: HeaderProps) {
           {/* Desktop CTA - Premium Design */}
           <div className="hidden lg:flex items-center space-x-4">
             <Link href={cta.href}>
-              <PremiumButton>
+              <PremiumButton className="hidden xl:flex">
                 {cta.text}
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </PremiumButton>
+              {/* Compact CTA for lg screens */}
+              <PremiumButton className="xl:hidden" size="sm">
+                Quote
               </PremiumButton>
             </Link>
           </div>
 
-          {/* Mobile Menu */}
+          {/* Mobile/More Menu - Shows below lg (1024px) OR as "More" button on lg-xl */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetTrigger asChild className="lg:hidden">
-              <button
-                className="relative w-12 h-12 flex items-center justify-center rounded-lg hover:bg-slate-100/80 active:bg-slate-200/60 transition-all duration-200"
-                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-              >
-                {/* Animated Hamburger Icon */}
-                <div className="w-6 h-5 flex flex-col justify-center items-center gap-1.5">
-                  <motion.span
-                    animate={{
-                      rotate: mobileMenuOpen ? 45 : 0,
-                      y: mobileMenuOpen ? 8 : 0,
-                    }}
-                    transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                    className="w-full h-0.5 bg-slate-900 rounded-full origin-center"
-                  />
-                  <motion.span
-                    animate={{
-                      opacity: mobileMenuOpen ? 0 : 1,
-                      x: mobileMenuOpen ? -10 : 0,
-                    }}
-                    transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                    className="w-full h-0.5 bg-slate-900 rounded-full"
-                  />
-                  <motion.span
-                    animate={{
-                      rotate: mobileMenuOpen ? -45 : 0,
-                      y: mobileMenuOpen ? -8 : 0,
-                    }}
-                    transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                    className="w-full h-0.5 bg-slate-900 rounded-full origin-center"
-                  />
-                </div>
-              </button>
-            </SheetTrigger>
+            {/* Mobile hamburger (below lg) */}
+            <button
+              type="button"
+              className="lg:hidden relative w-12 h-12 flex items-center justify-center rounded-lg hover:bg-slate-100/80 active:bg-slate-200/60 transition-all duration-200"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-haspopup="dialog"
+              aria-expanded={mobileMenuOpen}
+              aria-controls={mobileSheetId}
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+            >
+              {/* Animated Hamburger Icon */}
+              <div className="w-6 h-5 flex flex-col justify-center items-center gap-1.5">
+                <motion.span
+                  animate={{
+                    rotate: mobileMenuOpen ? 45 : 0,
+                    y: mobileMenuOpen ? 8 : 0,
+                  }}
+                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                  className="w-full h-0.5 bg-slate-900 rounded-full origin-center"
+                />
+                <motion.span
+                  animate={{
+                    opacity: mobileMenuOpen ? 0 : 1,
+                    x: mobileMenuOpen ? -10 : 0,
+                  }}
+                  transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                  className="w-full h-0.5 bg-slate-900 rounded-full"
+                />
+                <motion.span
+                  animate={{
+                    rotate: mobileMenuOpen ? -45 : 0,
+                    y: mobileMenuOpen ? -8 : 0,
+                  }}
+                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                  className="w-full h-0.5 bg-slate-900 rounded-full origin-center"
+                />
+              </div>
+            </button>
+
+            {/* "More" button for lg-xl screens (when some items are hidden) */}
+            <button
+              type="button"
+              className="hidden lg:flex xl:hidden items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all hover:bg-slate-100/80 active:bg-slate-200/60"
+              aria-label="More menu options"
+              aria-haspopup="dialog"
+              aria-expanded={mobileMenuOpen}
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+            >
+              <Menu className="h-4 w-4" />
+              <span>More</span>
+            </button>
+
             <SheetContent
+              id={mobileSheetId}
               side="right"
               className={cn(
                 'w-full sm:w-[400px] backdrop-blur-xl border-l-2',

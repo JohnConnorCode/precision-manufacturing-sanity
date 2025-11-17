@@ -112,10 +112,10 @@ export default async function IndustriesPage() {
           )
         }
         description={industriesPageData?.hero?.subheading || 'Trusted partner for aerospace, defense, and energy sectors, delivering mission-critical components with uncompromising quality and precision.'}
-        buttons={industriesPageData?.hero?.buttons || [
+        buttons={(industriesPageData?.hero?.buttons || [
           { label: 'Explore Industries', href: '#industries', variant: 'primary' },
           { label: 'Industry Consultation', href: '/contact', variant: 'secondary' },
-        ]}
+        ]).filter((button: any) => button?.enabled !== false)}
         height="large"
         alignment="center"
       />
