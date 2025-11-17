@@ -725,6 +725,7 @@ export default {
       },
       fieldsets: [
         {name: 'visibility', title: '👁️ Section Visibility', options: {collapsible: false}},
+        {name: 'content', title: 'Section Content'},
       ],
       fields: [
         {
@@ -735,6 +736,23 @@ export default {
           fieldset: 'visibility',
           initialValue: true,
           validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Section Title',
+          description: 'Main heading for the technical specifications section',
+          fieldset: 'content',
+          initialValue: 'Precision By The Numbers',
+        },
+        {
+          name: 'subtitle',
+          type: 'text',
+          rows: 2,
+          title: 'Section Subtitle',
+          description: 'Description text below the heading',
+          fieldset: 'content',
+          initialValue: 'Industry-leading capabilities backed by decades of aerospace and defense manufacturing expertise',
         },
         {
           name: 'specs',

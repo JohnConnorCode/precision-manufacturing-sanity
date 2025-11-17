@@ -536,13 +536,37 @@ export async function getHomepage(preview = false) {
       }
     },
     servicesSection {
-      enabled
+      enabled,
+      eyebrow,
+      headingWord1,
+      headingWord2,
+      heading,
+      description,
+      subdescription,
+      header {
+        eyebrow,
+        heading,
+        headingWord1,
+        headingWord2
+      },
+      cta {
+        enabled,
+        text,
+        href,
+        variant
+      }
     },
     industriesSection {
-      enabled
+      enabled,
+      eyebrow,
+      heading,
+      description,
+      subdescription
     },
     technicalSpecs {
       enabled,
+      title,
+      subtitle,
       specs[] {
         _key,
         enabled,
