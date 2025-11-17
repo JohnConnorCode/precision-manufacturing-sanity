@@ -31,15 +31,12 @@ interface ImageShowcaseProps {
 export default function ImageShowcase({ data }: ImageShowcaseProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
-  // Hooks must be called before early return
+  // Use global scroll instead of targeted scroll to avoid hydration issues
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
+  const { scrollY } = useScroll();
 
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], prefersReducedMotion ? [1, 1, 1, 1] : [0.5, 1, 1, 0.5]);
-  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], prefersReducedMotion ? [1, 1, 1, 1] : [0.95, 1, 1, 0.95]);
+  const opacity = useTransform(scrollY, [0, 300, 800, 1200], prefersReducedMotion ? [1, 1, 1, 1] : [0.5, 1, 1, 0.5]);
+  const scale = useTransform(scrollY, [0, 300, 800, 1200], prefersReducedMotion ? [1, 1, 1, 1] : [0.95, 1, 1, 0.95]);
 
   if (!data) {
     return null;
