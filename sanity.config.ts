@@ -45,7 +45,12 @@ export default defineConfig({
 
   plugins: [
     presentationTool({
-      previewUrl: 'http://localhost:3000',  // Hardcoded for local development
+      previewUrl: {
+        origin: 'http://localhost:3000',  // Hardcoded for local development
+        draftMode: {
+          enable: '/api/draft',
+        },
+      },
       resolve: {
         locations: locate,
       },
