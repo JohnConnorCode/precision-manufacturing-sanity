@@ -134,7 +134,14 @@ export interface ResourcesData {
 // ============================================================================
 
 export interface ShowcaseImage {
-  src: string;
+  src?: string;
+  image?: {
+    asset?: {
+      url?: string;
+    };
+    alt?: string;
+  };
+  alt?: string;
   title: string;
   category: string;
   href: string;
@@ -142,7 +149,9 @@ export interface ShowcaseImage {
 }
 
 export interface ShowcaseStat {
-  iconName: string;
+  _key?: string;
+  iconName?: string;
+  icon?: string;
   value: string;
   label: string;
   enabled?: boolean;
@@ -317,6 +326,7 @@ export interface TechnicalSpec {
 }
 
 export interface TechnicalSpecsData {
+  enabled?: boolean;
   title?: string;
   subtitle?: string;
   specs?: TechnicalSpec[];

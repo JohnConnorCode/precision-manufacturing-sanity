@@ -37,7 +37,7 @@ export default async function Home() {
     ...service,
     description: service.shortDescription || portableTextToPlainText(service.description),
     href: `/services/${service.slug?.current || service.slug}`,
-    image: service.image?.asset?.url, // Extract URL from Sanity image object (undefined if missing)
+    image: service.imageUrl || service.image?.asset?.url, // Use external URL first to preserve reference imagery
   }));
 
   const formattedIndustries = industriesData?.map((industry: any) => ({
@@ -48,6 +48,14 @@ export default async function Home() {
   }));
 
   const heroData = homepageData?.heroEnhanced || homepageData?.hero || undefined;
+
+  const technicalSpecsData = Array.isArray(homepageData?.technicalSpecs)
+    ? {
+        title: homepageData?.stats?.title || 'Precision By The Numbers',
+        subtitle: homepageData?.stats?.subtitle || 'Industry-leading capabilities backed by decades of aerospace and defense manufacturing expertise',
+        specs: homepageData.technicalSpecs
+      }
+    : homepageData?.technicalSpecs;
 
   // Organization data for structured markup - from Sanity CMS with fallbacks
   const organizationData = {
@@ -94,14 +102,18 @@ export default async function Home() {
         faqSchema
       ]} />
 
-      <Hero data={heroData} />
-      <Services data={formattedServices || undefined} sectionData={homepageData?.servicesSection || undefined} />
-      <TechnicalSpecs data={homepageData?.technicalSpecs || undefined} />
-      <Industries data={formattedIndustries || undefined} sectionData={homepageData?.industriesSection || undefined} />
-      <ImageShowcase data={homepageData?.imageShowcase || undefined} />
-      <OperationalExcellence data={homepageData?.operationalExcellence || undefined} />
-      <Resources data={homepageData?.resourcesSection || undefined} />
-      <CTA data={homepageData?.cta || undefined} />
+      {heroData?.enabled !== false && <Hero data={heroData} />}
+      {homepageData?.servicesSection?.enabled !== false && (
+        <Services data={formattedServices || undefined} sectionData={homepageData?.servicesSection || undefined} />
+      )}
+      {technicalSpecsData?.enabled !== false && <TechnicalSpecs data={technicalSpecsData || undefined} />}
+      {homepageData?.industriesSection?.enabled !== false && (
+        <Industries data={formattedIndustries || undefined} sectionData={homepageData?.industriesSection || undefined} />
+      )}
+      {homepageData?.imageShowcase?.enabled !== false && <ImageShowcase data={homepageData?.imageShowcase || undefined} />}
+      {homepageData?.operationalExcellence?.enabled !== false && <OperationalExcellence data={homepageData?.operationalExcellence || undefined} />}
+      {homepageData?.resourcesSection?.enabled !== false && <Resources data={homepageData?.resourcesSection || undefined} />}
+      {homepageData?.cta?.enabled !== false && <CTA data={homepageData?.cta || undefined} />}
     </>
   );
 }

@@ -97,7 +97,7 @@ export const locate: DocumentLocationResolver = (params, context) => {
   // Resources (articles) - appear on resources page and their own detail page
   if (params.type === 'resource') {
     return context.documentStore.listenQuery(
-      `*[_type == "resource" && _id == $id][0]{ slug }`,
+      `*[_type == "resource" && _id == $id][0]{ slug, category }`,
       { id: params.id },
       { perspective: 'drafts' }
     ).pipe(
@@ -111,7 +111,7 @@ export const locate: DocumentLocationResolver = (params, context) => {
           },
           ...(doc?.slug?.current ? [{
             title: 'Resource Detail Page',
-            href: `/resources/${doc.slug.current}`,
+            href: `/resources/${doc.category || 'manufacturing-processes'}/${doc.slug.current}`,
           }] : []),
         ],
       }))

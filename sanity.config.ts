@@ -45,16 +45,10 @@ export default defineConfig({
 
   plugins: [
     presentationTool({
-      previewUrl: {
-        origin: typeof window === 'undefined'
-          ? (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
-          : window.location.origin,
-        draftMode: {
-          enable: '/api/draft',
-          disable: '/api/disable-draft',
-        },
+      previewUrl: 'http://localhost:3000',  // Hardcoded for local development
+      resolve: {
+        locations: locate,
       },
-      locate,
     }),
     structureTool({
       structure,

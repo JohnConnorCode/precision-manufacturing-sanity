@@ -32,6 +32,7 @@ export default {
         collapsed: false,
       },
       fieldsets: [
+        {name: 'visibility', title: '👁️ Section Visibility', options: {collapsible: false}},
         {name: 'copy', title: 'Primary Copy', options: {columns: 2}},
         {name: 'styling', title: 'Styling & Colors'},
         {name: 'slides', title: 'Hero Slides', options: {collapsible: true, collapsed: false}},
@@ -41,6 +42,15 @@ export default {
         {name: 'tertiaryCta', title: 'Tertiary CTA (Hidden by default)', options: {columns: 2, collapsible: true, collapsed: true}},
       ],
       fields: [
+        {
+          name: 'enabled',
+          type: 'boolean',
+          title: 'Show Hero Section',
+          description: '🟢 Enabled | 🔴 Uncheck to hide the entire Hero section from the website',
+          fieldset: 'visibility',
+          initialValue: true,
+          validation: (Rule: any) => Rule.required(),
+        },
         {
           name: 'backgroundGradient',
           type: 'string',
@@ -338,10 +348,20 @@ export default {
         collapsed: false,
       },
       fieldsets: [
+        {name: 'visibility', title: '👁️ Section Visibility', options: {collapsible: false}},
         {name: 'content', title: 'Section Content', options: {columns: 2}},
         {name: 'styling', title: 'Styling & Colors'},
       ],
       fields: [
+        {
+          name: 'enabled',
+          type: 'boolean',
+          title: 'Show Statistics Section',
+          description: '🟢 Enabled | 🔴 Uncheck to hide the entire Statistics section from the website',
+          fieldset: 'visibility',
+          initialValue: true,
+          validation: (Rule: any) => Rule.required(),
+        },
         {
           name: 'title',
           type: 'string',
@@ -475,10 +495,20 @@ export default {
         collapsed: false,
       },
       fieldsets: [
+        {name: 'visibility', title: '👁️ Section Visibility', options: {collapsible: false}},
         {name: 'content', title: 'Section Content'},
         {name: 'styling', title: 'Styling & Colors'},
       ],
       fields: [
+        {
+          name: 'enabled',
+          type: 'boolean',
+          title: 'Show Services Section',
+          description: '🟢 Enabled | 🔴 Uncheck to hide the entire Services section from the website',
+          fieldset: 'visibility',
+          initialValue: true,
+          validation: (Rule: any) => Rule.required(),
+        },
         {
           name: 'eyebrow',
           type: 'string',
@@ -606,10 +636,20 @@ export default {
         collapsed: true,
       },
       fieldsets: [
+        {name: 'visibility', title: '👁️ Section Visibility', options: {collapsible: false}},
         {name: 'content', title: 'Section Content'},
         {name: 'styling', title: 'Styling & Colors'},
       ],
       fields: [
+        {
+          name: 'enabled',
+          type: 'boolean',
+          title: 'Show Industries Section',
+          description: '🟢 Enabled | 🔴 Uncheck to hide the entire Industries section from the website',
+          fieldset: 'visibility',
+          initialValue: true,
+          validation: (Rule: any) => Rule.required(),
+        },
         {
           name: 'eyebrow',
           type: 'string',
@@ -675,69 +715,93 @@ export default {
     },
     {
       name: 'technicalSpecs',
-      type: 'array',
-      title: 'Technical Specifications',
+      type: 'object',
+      title: 'Technical Specifications Section',
       description: 'Tile-based overview of capabilities, certifications, and differentiators.',
       group: 'metrics',
       options: {
-        layout: 'grid',
+        collapsible: true,
+        collapsed: false,
       },
-      of: [
+      fieldsets: [
+        {name: 'visibility', title: '👁️ Section Visibility', options: {collapsible: false}},
+      ],
+      fields: [
         {
-          type: 'object',
-          preview: {
-            select: {
-              title: 'label',
-              subtitle: 'description',
-              value: 'value',
-              enabled: 'enabled',
-            },
-            prepare({title, subtitle, value, enabled}: any) {
-              const details = [value, subtitle].filter(Boolean).join(' • ');
-              const status = enabled === false ? ' (HIDDEN)' : '';
-              return {
-                title: `${title || value || 'Technical specification'}${status}`,
-                subtitle: details || undefined,
-              }
-            },
+          name: 'enabled',
+          type: 'boolean',
+          title: 'Show Technical Specifications Section',
+          description: '🟢 Enabled | 🔴 Uncheck to hide the entire Technical Specifications section from the website',
+          fieldset: 'visibility',
+          initialValue: true,
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: 'specs',
+          type: 'array',
+          title: 'Specification Cards',
+          description: 'Individual specification tiles',
+          options: {
+            layout: 'grid',
           },
-          fields: [
+          of: [
             {
-              name: 'enabled',
-              type: 'boolean',
-              title: 'Enabled',
-              description: 'Uncheck to hide this specification card without deleting it',
-              initialValue: true,
-            },
-            {
-              name: 'label',
-              type: 'string',
-              title: 'Label',
-              description: 'Main label for the spec (e.g., "Precision", "Capacity", "Standards")',
-            },
-            {
-              name: 'value',
-              type: 'string',
-              title: 'Value',
-              description: 'The specification value (e.g., "±0.0001\"", "24/7", "AS9100D")',
-            },
-            {
-              name: 'description',
-              type: 'string',
-              title: 'Description',
-              description: 'Additional context or details about this specification',
-            },
-            {
-              name: 'iconName',
-              type: 'string',
-              title: 'Icon Name',
-              description: 'Lucide icon name (e.g., "Gauge", "Zap", "Shield")',
-            },
-            {
-              name: 'gradient',
-              type: 'string',
-              title: 'Gradient Classes',
-              description: 'Tailwind gradient classes (e.g., "from-blue-600 to-indigo-600")',
+              type: 'object',
+              preview: {
+                select: {
+                  title: 'label',
+                  subtitle: 'description',
+                  value: 'value',
+                  enabled: 'enabled',
+                },
+                prepare({title, subtitle, value, enabled}: any) {
+                  const details = [value, subtitle].filter(Boolean).join(' • ');
+                  const status = enabled === false ? ' (HIDDEN)' : '';
+                  return {
+                    title: `${title || value || 'Technical specification'}${status}`,
+                    subtitle: details || undefined,
+                  }
+                },
+              },
+              fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this specification card without deleting it',
+                  initialValue: true,
+                },
+                {
+                  name: 'label',
+                  type: 'string',
+                  title: 'Label',
+                  description: 'Main label for the spec (e.g., "Precision", "Capacity", "Standards")',
+                },
+                {
+                  name: 'value',
+                  type: 'string',
+                  title: 'Value',
+                  description: 'The specification value (e.g., "±0.0001\"", "24/7", "AS9100D")',
+                },
+                {
+                  name: 'description',
+                  type: 'string',
+                  title: 'Description',
+                  description: 'Additional context or details about this specification',
+                },
+                {
+                  name: 'iconName',
+                  type: 'string',
+                  title: 'Icon Name',
+                  description: 'Lucide icon name (e.g., "Gauge", "Zap", "Shield")',
+                },
+                {
+                  name: 'gradient',
+                  type: 'string',
+                  title: 'Gradient Classes',
+                  description: 'Tailwind gradient classes (e.g., "from-blue-600 to-indigo-600")',
+                },
+              ],
             },
           ],
         },
@@ -754,6 +818,7 @@ export default {
         collapsed: false,
       },
       fieldsets: [
+        {name: 'visibility', title: '👁️ Section Visibility', options: {collapsible: false}},
         {name: 'header', title: 'Section Header', options: {columns: 2}},
         {name: 'styling', title: 'Styling & Colors'},
         {name: 'gallery', title: 'Showcase Gallery', options: {collapsible: true, collapsed: false}},
@@ -761,6 +826,15 @@ export default {
         {name: 'cta', title: 'Inline CTA', options: {columns: 2}},
       ],
       fields: [
+        {
+          name: 'enabled',
+          type: 'boolean',
+          title: 'Show Image Showcase Section',
+          description: '🟢 Enabled | 🔴 Uncheck to hide the entire Image Showcase section from the website',
+          fieldset: 'visibility',
+          initialValue: true,
+          validation: (Rule: any) => Rule.required(),
+        },
         {
           name: 'header',
           type: 'object',
@@ -844,7 +918,7 @@ export default {
           initialValue: 'text-blue-600',
         },
         {
-          name: 'images',
+          name: 'showcaseImages',
           type: 'array',
           title: 'Showcase Images',
           fieldset: 'gallery',
@@ -860,12 +934,13 @@ export default {
                   subtitle: 'category',
                   media: 'image',
                   enabled: 'enabled',
+                  src: 'src',
                 },
-                prepare({title, subtitle, media, enabled}: any) {
+                prepare({title, subtitle, media, enabled, src}: any) {
                   const status = enabled === false ? ' (HIDDEN)' : '';
                   return {
                     title: `${title || 'Showcase image'}${status}`,
-                    subtitle,
+                    subtitle: subtitle || src || 'No category',
                     media,
                   }
                 },
@@ -881,8 +956,8 @@ export default {
                 {
                   name: 'image',
                   type: 'image',
-                  title: 'Showcase Image',
-                  description: 'Image for showcase grid (recommended: 800x600px)',
+                  title: 'Showcase Image (Sanity Asset)',
+                  description: 'Upload an optimized image or provide an external URL below.',
                   options: {
                     hotspot: true,
                     metadata: ['blurhash', 'lqip', 'palette'],
@@ -892,9 +967,22 @@ export default {
                       name: 'alt',
                       type: 'string',
                       title: 'Alternative Text',
-                      validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
+                      description: 'Used when no Alt Text is provided below.'
                     }
                   ]
+                },
+                {
+                  name: 'src',
+                  type: 'url',
+                  title: 'External Image URL',
+                  description: 'Optional remote image source (Unsplash, CDN, etc.)'
+                },
+                {
+                  name: 'alt',
+                  type: 'string',
+                  title: 'Alt Text',
+                  description: 'Short, descriptive caption for accessibility',
+                  validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
                 },
                 {
                   name: 'title',
@@ -930,7 +1018,7 @@ export default {
                 select: {
                   title: 'value',
                   subtitle: 'label',
-                  media: 'icon',
+                  media: 'iconName',
                   enabled: 'enabled',
                 },
                 prepare({title, subtitle, enabled}: any) {
@@ -950,7 +1038,7 @@ export default {
                   initialValue: true,
                 },
                 {
-                  name: 'icon',
+                  name: 'iconName',
                   type: 'string',
                   title: 'Icon Name',
                   description: 'Lucide icon name (e.g., "Award", "CheckCircle", "Shield")',
@@ -1038,7 +1126,19 @@ export default {
         collapsible: true,
         collapsed: true,
       },
+      fieldsets: [
+        {name: 'visibility', title: '👁️ Section Visibility', options: {collapsible: false}},
+      ],
       fields: [
+        {
+          name: 'enabled',
+          type: 'boolean',
+          title: 'Show Operational Excellence Section',
+          description: '🟢 Enabled | 🔴 Uncheck to hide the entire Operational Excellence section from the website',
+          fieldset: 'visibility',
+          initialValue: true,
+          validation: (Rule: any) => Rule.required(),
+        },
         {
           name: 'heading',
           type: 'string',
@@ -1134,6 +1234,7 @@ export default {
         collapsed: true,
       },
       fieldsets: [
+        {name: 'visibility', title: '👁️ Section Visibility', options: {collapsible: false}},
         {name: 'header', title: 'Section Header', options: {columns: 2}},
         {name: 'styling', title: 'Styling & Colors'},
         {name: 'featured', title: 'Featured Series', options: {collapsible: true, collapsed: false}},
@@ -1141,6 +1242,15 @@ export default {
         {name: 'cta', title: 'Resources CTA', options: {columns: 2}},
       ],
       fields: [
+        {
+          name: 'enabled',
+          type: 'boolean',
+          title: 'Show Resources Section',
+          description: '🟢 Enabled | 🔴 Uncheck to hide the entire Resources section from the website',
+          fieldset: 'visibility',
+          initialValue: true,
+          validation: (Rule: any) => Rule.required(),
+        },
         {
           name: 'header',
           type: 'object',
@@ -1417,12 +1527,22 @@ export default {
         collapsed: false,
       },
       fieldsets: [
+        {name: 'visibility', title: '👁️ Section Visibility', options: {collapsible: false}},
         {name: 'content', title: 'Content'},
         {name: 'styling', title: 'Styling & Colors'},
         {name: 'buttons', title: 'Buttons'},
         {name: 'badges', title: 'Badges & Trust Indicators'},
       ],
       fields: [
+        {
+          name: 'enabled',
+          type: 'boolean',
+          title: 'Show Final CTA Section',
+          description: '🟢 Enabled | 🔴 Uncheck to hide the entire Final CTA section from the website',
+          fieldset: 'visibility',
+          initialValue: true,
+          validation: (Rule: any) => Rule.required(),
+        },
         {
           name: 'title',
           type: 'string',

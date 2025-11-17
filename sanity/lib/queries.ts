@@ -12,7 +12,7 @@ import { getClient } from './client'
 export async function getAllServices(preview = false) {
   try {
     const pub = preview ? '' : ' && published == true'
-    const query = `*[_type == "service"${pub}] | order(order asc) {
+    const query = `*[_type == "service" && !(_id in path("drafts.**"))${pub}] | order(order asc) {
       _id,
       title,
       slug,
@@ -26,13 +26,21 @@ export async function getAllServices(preview = false) {
         asset->{url,_id},
         alt
       },
+      imageUrl,
       hero{
         backgroundImage{asset->{url,_id}, alt},
         badge,
+        title,
         subtitle,
         descriptionRich,
         titleSize,
-        descriptionSize
+        descriptionSize,
+        buttons[]{
+          text,
+          href,
+          variant,
+          enabled
+        }
       },
       overview{
         description,
@@ -43,16 +51,36 @@ export async function getAllServices(preview = false) {
         title,
         description,
         descriptionRich,
+        featuresLabel,
+        capabilitiesLabel,
         iconName,
         image{asset->{url,_id}, alt, caption},
+        imageUrl,
         bullets,
-        features
+        features,
+        capabilities
+      },
+      servicesHeading,
+      servicesDescription,
+      servicesDescriptionRich,
+      applicationsHeading,
+      applicationsDescription,
+      applicationsListLabel,
+      applications[] {
+        title,
+        description,
+        timeline,
+        listLabel,
+        challenges,
+        image{asset->{url,_id}, alt, caption},
+        imageUrl
       },
       technicalSpecs,
       process,
       equipment,
       materials,
       processes,
+      cta,
       seo {
         metaTitle,
         metaDescription,
@@ -70,7 +98,7 @@ export async function getAllServices(preview = false) {
 export async function getServiceBySlug(slug: string, preview = false) {
   try {
     const pub = preview ? '' : ' && published == true'
-    const query = `*[_type == "service" && slug.current == $slug${pub}][0] {
+    const query = `*[_type == "service" && slug.current == $slug && !(_id in path("drafts.**"))${pub}][0] {
       _id,
       title,
       slug,
@@ -79,13 +107,21 @@ export async function getServiceBySlug(slug: string, preview = false) {
       order,
       highlight,
       image{asset->{url,_id}, alt},
+      imageUrl,
       hero{
         backgroundImage{asset->{url,_id}, alt},
         badge,
+        title,
         subtitle,
         descriptionRich,
         titleSize,
-        descriptionSize
+        descriptionSize,
+        buttons[]{
+          text,
+          href,
+          variant,
+          enabled
+        }
       },
       overview{
         description,
@@ -96,16 +132,47 @@ export async function getServiceBySlug(slug: string, preview = false) {
         title,
         description,
         descriptionRich,
+        featuresLabel,
+        capabilitiesLabel,
         iconName,
         image{asset->{url,_id}, alt, caption},
+        imageUrl,
         bullets,
-        features
+        features,
+        capabilities
+      },
+      servicesHeading,
+      servicesDescription,
+      servicesDescriptionRich,
+      applicationsHeading,
+      applicationsDescription,
+      applicationsListLabel,
+      applications[] {
+        title,
+        description,
+        listLabel,
+        challenges,
+        image{asset->{url,_id}, alt, caption},
+        imageUrl
       },
       technicalSpecs,
       process,
       equipment,
+      materialsHeading,
+      materialsDescription,
       materials,
+      qualityStandardsHeading,
+      qualityStandardsDescription,
+      qualityStandards,
+      qualityImage{
+        image{asset->{url,_id}, alt},
+        imageUrl,
+        alt
+      },
+      processHeading,
+      processDescription,
       processes,
+      cta,
       seo {
         metaTitle,
         metaDescription,
@@ -127,7 +194,7 @@ export async function getServiceBySlug(slug: string, preview = false) {
 export async function getAllIndustries(preview = false) {
   try {
     const pub = preview ? '' : ' && published == true'
-    const query = `*[_type == "industry"${pub}] | order(order asc) {
+    const query = `*[_type == "industry" && !(_id in path("drafts.**"))${pub}] | order(order asc) {
       _id,
       title,
       slug,
@@ -138,14 +205,41 @@ export async function getAllIndustries(preview = false) {
       image{asset->{url,_id}, alt},
       imageUrl,
       features,
-      hero{ backgroundImage{asset->{url,_id}}, badge, subtitle },
+      hero{
+        backgroundImage{asset->{url,_id}, alt},
+        backgroundImageUrl,
+        badge,
+        subtitle,
+        descriptionRich,
+        titleSize,
+        descriptionSize,
+        buttons[]{
+          text,
+          href,
+          variant,
+          enabled
+        }
+      },
       overview,
       capabilities,
       regulatory,
       applications,
-      components,
+      components{
+        category,
+        description,
+        image{asset->{url,_id}, alt},
+        imageUrl,
+        parts,
+        materials,
+        requirements
+      },
       qualityStandards,
       processBenefits,
+      cta{
+        heading,
+        description,
+        buttons[]{text, href, variant, enabled}
+      },
       seo {
         metaTitle,
         metaDescription,
@@ -163,7 +257,7 @@ export async function getAllIndustries(preview = false) {
 export async function getIndustryBySlug(slug: string, preview = false) {
   try {
     const pub = preview ? '' : ' && published == true'
-    const query = `*[_type == "industry" && slug.current == $slug${pub}][0] {
+    const query = `*[_type == "industry" && slug.current == $slug && !(_id in path("drafts.**"))${pub}][0] {
       _id,
       title,
       slug,
@@ -173,14 +267,41 @@ export async function getIndustryBySlug(slug: string, preview = false) {
       iconName,
       image{asset->{url,_id}, alt},
       features,
-      hero{ backgroundImage{asset->{url,_id}}, badge, subtitle },
+      hero{
+        backgroundImage{asset->{url,_id}, alt},
+        backgroundImageUrl,
+        badge,
+        subtitle,
+        descriptionRich,
+        titleSize,
+        descriptionSize,
+        buttons[]{
+          text,
+          href,
+          variant,
+          enabled
+        }
+      },
       overview,
       capabilities,
       regulatory,
       applications,
-      components,
+      components{
+        category,
+        description,
+        image{asset->{url,_id}, alt},
+        imageUrl,
+        parts,
+        materials,
+        requirements
+      },
       qualityStandards,
       processBenefits,
+      cta{
+        heading,
+        description,
+        buttons[]{text, href, variant, enabled}
+      },
       seo {
         metaTitle,
         metaDescription,
@@ -201,7 +322,7 @@ export async function getIndustryBySlug(slug: string, preview = false) {
 
 export async function getAllResources(preview = false) {
   const pub = preview ? '' : ' && published == true'
-  const query = `*[_type == "resource"${pub}] | order(publishDate desc) {
+  const query = `*[_type == "resource" && !(_id in path("drafts.**"))${pub}] | order(publishDate desc) {
     _id,
     title,
     slug,
@@ -223,7 +344,7 @@ export async function getAllResources(preview = false) {
 export async function getResourceBySlug(slug: string, preview = false) {
   try {
   const pub = preview ? '' : ' && published == true'
-  const query = `*[_type == "resource" && slug.current == $slug${pub}][0] {
+  const query = `*[_type == "resource" && slug.current == $slug && !(_id in path("drafts.**"))${pub}][0] {
     _id,
     title,
     slug,
@@ -248,7 +369,7 @@ export async function getResourceBySlug(slug: string, preview = false) {
 export async function getResourcesByCategory(category: string, preview = false) {
   try {
   const pub = preview ? '' : ' && published == true'
-  const query = `*[_type == "resource" && category == $category${pub}] | order(publishDate desc) {
+  const query = `*[_type == "resource" && category == $category && !(_id in path("drafts.**"))${pub}] | order(publishDate desc) {
     _id,
     title,
     slug,
@@ -271,7 +392,7 @@ export async function getResourcesByCategory(category: string, preview = false) 
 export async function getFeaturedResources(preview = false) {
   try {
   const pub = preview ? '' : ' && published == true'
-  const query = `*[_type == "resource" && featured == true${pub}] | order(publishDate desc) [0...6] {
+  const query = `*[_type == "resource" && featured == true && !(_id in path("drafts.**"))${pub}] | order(publishDate desc) [0...6] {
     _id,
     title,
     slug,
@@ -367,6 +488,7 @@ export async function getHomepage(preview = false) {
   try {
   const query = `*[_type == "homepage"][0] {
     hero {
+      enabled,
       backgroundGradient,
       headingTextColor,
       taglineTextColor,
@@ -399,6 +521,7 @@ export async function getHomepage(preview = false) {
       }
     },
     stats {
+      enabled,
       title,
       subtitle,
       backgroundColor,
@@ -412,28 +535,38 @@ export async function getHomepage(preview = false) {
         description
       }
     },
-    servicesSection,
-    industriesSection,
-    technicalSpecs[] {
-      _key,
+    servicesSection {
+      enabled
+    },
+    industriesSection {
+      enabled
+    },
+    technicalSpecs {
       enabled,
-      label,
-      value,
-      description,
-      iconName,
-      gradient
+      specs[] {
+        _key,
+        enabled,
+        label,
+        value,
+        description,
+        iconName,
+        gradient
+      }
     },
     imageShowcase {
+      enabled,
       header,
       backgroundColor,
       titleColor,
       highlightColor,
-      images[] {
+      showcaseImages[] {
         _key,
         enabled,
         title,
         category,
         href,
+        src,
+        alt,
         image {
           asset->{url},
           alt
@@ -442,7 +575,7 @@ export async function getHomepage(preview = false) {
       stats[] {
         _key,
         enabled,
-        icon,
+        iconName,
         value,
         label
       },
@@ -459,6 +592,7 @@ export async function getHomepage(preview = false) {
       }
     },
     operationalExcellence {
+      enabled,
       heading,
       description,
       benefits[] {
@@ -470,6 +604,7 @@ export async function getHomepage(preview = false) {
       }
     },
     resourcesSection {
+      enabled,
       header {
         badge,
         title,
@@ -512,6 +647,7 @@ export async function getHomepage(preview = false) {
       }
     },
     cta {
+      enabled,
       title,
       subtitle,
       badge,
