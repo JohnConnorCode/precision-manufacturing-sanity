@@ -123,6 +123,7 @@ export default {
           {title: 'Material Science', value: 'material-science'},
           {title: 'Quality & Compliance', value: 'quality-compliance'},
           {title: 'Industry Applications', value: 'industry-applications'},
+          {title: 'Calculators & Tools', value: 'calculators-tools'},
         ]
       }
     },

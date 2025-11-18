@@ -1,22 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { motion, AnimatePresence } from 'framer-motion';
-import { submitContactForm } from './actions';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
 import { theme, styles, cn } from '@/lib/theme';
@@ -25,175 +9,30 @@ import {
   Phone,
   MapPin,
   Clock,
-  ArrowRight,
-  CheckCircle,
   Shield,
   Award,
   Activity,
-  Upload,
-  X,
+  Building2,
+  MessageCircle,
   FileText,
-  Check
 } from 'lucide-react';
-import { toast } from 'sonner';
+import Link from 'next/link';
+import ParallaxImagePro from '@/components/ui/parallax-image-pro';
 
-// Icon mapping for bottom stats
+// Icon mapping for stats
 const iconMap: Record<string, any> = {
   pulse: Activity,
   Activity,
   Award,
   Shield,
-  CheckCircle,
 };
-
-// Default fallback data
 
 interface ContactPageClientProps {
   data?: any | null;
 }
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-// Accepted file types for contact form uploads
-const _ACCEPTED_FILE_TYPES = [
-  'application/pdf',
-  'image/jpeg',
-  'image/png',
-  'application/step',
-  'application/sla',
-  'application/vnd.ms-excel',
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-];
-
-const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
-  company: z.string().min(2, 'Company name must be at least 2 characters'),
-  phone: z.string().optional(),
-  interest: z.enum(['general', 'quote', 'partnership', 'supplier', 'career', 'technical']),
-  projectType: z.enum(['aerospace', 'defense', 'medical', 'energy', 'other']).optional(),
-  timeline: z.enum(['immediate', '1-3months', '3-6months', '6months+']).optional(),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
-  files: z.any().optional(),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
-
 export default function ContactPageClient({ data }: ContactPageClientProps) {
   const contactData = data;
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitResult, setSubmitResult] = useState<{
-    success: boolean;
-    message: string;
-    warning?: string;
-    partialSuccess?: boolean;
-  } | null>(null);
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [isDragging, setIsDragging] = useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, dirtyFields },
-    reset,
-    setValue,
-    watch,
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
-  });
-
-  const interest = watch('interest');
-  const formValues = watch();
-
-  // Auto-save to localStorage
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (Object.keys(dirtyFields).length > 0) {
-        localStorage.setItem('contact-form-draft', JSON.stringify(formValues));
-      }
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [formValues, dirtyFields]);
-
-  // Load saved draft on mount
-  useEffect(() => {
-    const savedDraft = localStorage.getItem('contact-form-draft');
-    if (savedDraft) {
-      try {
-        const draft = JSON.parse(savedDraft);
-        Object.entries(draft).forEach(([key, value]) => {
-          if (value) setValue(key as any, value);
-        });
-      } catch {
-        // Failed to load draft, continue without it
-      }
-    }
-  }, [setValue]);
-
-  // File upload handlers
-  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    const validFiles = files.filter(file => {
-      if (file.size > MAX_FILE_SIZE) {
-        toast.error(`${file.name} is too large. Maximum size is 10MB.`);
-        return false;
-      }
-      return true;
-    });
-    setUploadedFiles(prev => [...prev, ...validFiles].slice(0, 3)); // Max 3 files
-  }, []);
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  }, []);
-
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const files = Array.from(e.dataTransfer.files);
-    const validFiles = files.filter(file => {
-      if (file.size > MAX_FILE_SIZE) {
-        toast.error(`${file.name} is too large. Maximum size is 10MB.`);
-        return false;
-      }
-      return true;
-    });
-    setUploadedFiles(prev => [...prev, ...validFiles].slice(0, 3));
-  }, []);
-
-  const removeFile = useCallback((index: number) => {
-    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
-  }, []);
-
-  const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true);
-    const formData = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
-      if (value !== undefined) {
-        formData.append(key, value);
-      }
-    });
-
-    // Add files to form data
-    uploadedFiles.forEach((file, index) => {
-      formData.append(`file_${index}`, file);
-    });
-
-    const result = await submitContactForm(formData);
-    setSubmitResult(result);
-    setIsSubmitting(false);
-
-    if (result.success) {
-      reset();
-      setUploadedFiles([]);
-      localStorage.removeItem('contact-form-draft');
-    }
-  };
 
   if (!contactData) {
     return null;
@@ -225,7 +64,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
               <span className="text-white">
                 {contactData.hero.title}{' '}
                 {contactData.hero.titleHighlight && (
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
                     {contactData.hero.titleHighlight}
                   </span>
                 )}
@@ -234,450 +73,281 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
           }
           description={contactData.hero.description}
           buttons={heroButtons}
-          height="large"
+          height="medium"
           alignment="center"
         />
       )}
 
-      {/* Main Content */}
-      <section id="contact-form" className={styles.sectionDark}>
+      {/* Main Contact Section */}
+      <section className={styles.sectionLight}>
         <div className={theme.spacing.container}>
-          <div className="grid lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
-            {/* Contact Information */}
+          <div className="max-w-6xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="space-y-8"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
             >
-              <div>
-                <h2 className={cn(theme.typography.h3, "text-white mb-6")}>{contactData.contactInfo.heading}</h2>
-                <p className={cn(theme.typography.body, "text-slate-400 mb-8")}>
-                  {contactData.contactInfo.description}
-                </p>
-              </div>
+              <h2 className={cn(theme.typography.h2, 'mb-6')}>Get in Touch</h2>
+              <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto text-slate-600')}>
+                {contactData.contactInfo.description}
+              </p>
+            </motion.div>
 
-              {/* Contact Cards */}
-              <Card className={cn(theme.components.card.form, "p-6")}>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-blue-600/10 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-5 h-5 text-blue-600" />
+            <div className="grid lg:grid-cols-2 gap-12 mb-20">
+              {/* Primary Contact Information */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Card className={cn(styles.featureCard, 'p-10 h-full')}>
+                  <h3 className={cn(theme.typography.h3, 'mb-8')}>Contact Information</h3>
+
+                  <div className="space-y-8">
+                    {/* Address */}
+                    <div className="flex items-start gap-5">
+                      <div className={cn(styles.iconContainer.large, "flex-shrink-0")}>
+                        <MapPin className="w-7 h-7 text-white" />
+                      </div>
+                      <div>
+                        <h4 className={cn(theme.typography.h5, 'mb-2')}>Headquarters</h4>
+                        <p className={cn(theme.typography.body, 'text-slate-600 leading-relaxed')}>
+                          {contactData.contactInfo.addressLine1}<br />
+                          {contactData.contactInfo.addressLine2}<br />
+                          {contactData.contactInfo.addressLine3}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className={cn(theme.typography.label, "text-white mb-1")}>Headquarters</h3>
-                      <p className={theme.typography.small}>
-                        {contactData.contactInfo.addressLine1}<br />
-                        {contactData.contactInfo.addressLine2}<br />
-                        {contactData.contactInfo.addressLine3}
-                      </p>
+
+                    {/* Phone */}
+                    <div className="flex items-start gap-5">
+                      <div className={cn(styles.iconContainer.large, "flex-shrink-0")}>
+                        <Phone className="w-7 h-7 text-white" />
+                      </div>
+                      <div>
+                        <h4 className={cn(theme.typography.h5, 'mb-2')}>Phone</h4>
+                        <a
+                          href={contactData.contactInfo.phoneLink}
+                          className={cn(theme.typography.body, 'text-blue-600 hover:text-blue-700 transition-colors font-semibold text-lg')}
+                        >
+                          {contactData.contactInfo.phone}
+                        </a>
+                        <p className={cn(theme.typography.small, 'text-slate-500 mt-1')}>
+                          Direct line for quotes and inquiries
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Email */}
+                    <div className="flex items-start gap-5">
+                      <div className={cn(styles.iconContainer.large, "flex-shrink-0")}>
+                        <Mail className="w-7 h-7 text-white" />
+                      </div>
+                      <div>
+                        <h4 className={cn(theme.typography.h5, 'mb-2')}>Email</h4>
+                        <a
+                          href={`mailto:${contactData.contactInfo.email}`}
+                          className={cn(theme.typography.body, 'text-blue-600 hover:text-blue-700 transition-colors font-semibold')}
+                        >
+                          {contactData.contactInfo.email}
+                        </a>
+                        <p className={cn(theme.typography.small, 'text-slate-500 mt-1')}>
+                          Send us your project details
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Business Hours */}
+                    <div className="flex items-start gap-5">
+                      <div className={cn(styles.iconContainer.large, "flex-shrink-0")}>
+                        <Clock className="w-7 h-7 text-white" />
+                      </div>
+                      <div>
+                        <h4 className={cn(theme.typography.h5, 'mb-2')}>Business Hours</h4>
+                        <p className={cn(theme.typography.body, 'text-slate-600')}>
+                          {contactData.contactInfo.hoursLine1}<br />
+                          {contactData.contactInfo.hoursLine2}
+                        </p>
+                      </div>
                     </div>
                   </div>
+                </Card>
+              </motion.div>
 
+              {/* Quick Actions / Additional Info */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="space-y-6"
+              >
+                {/* Quick Actions */}
+                <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-blue-600/10 flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-5 h-5 text-blue-600" />
+                    <div className={cn(styles.iconContainer.blueLight, "flex-shrink-0 group-hover:bg-blue-100 transition-colors")}>
+                      <MessageCircle className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <h3 className={cn(theme.typography.label, "text-white mb-1")}>Phone</h3>
-                      <a href={contactData.contactInfo.phoneLink} className={cn(theme.typography.small, "hover:text-blue-600 transition-colors")}>
+                      <h4 className={cn(theme.typography.h5, 'mb-2')}>Request a Quote</h4>
+                      <p className={cn(theme.typography.body, 'text-slate-600 mb-4')}>
+                        Email us your specifications, drawings, or project details for a comprehensive quote.
+                      </p>
+                      <a
+                        href={`mailto:${contactData.contactInfo.email}?subject=Quote Request`}
+                        className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center gap-2 text-sm"
+                      >
+                        <Mail className="w-4 h-4" />
+                        Send Quote Request
+                      </a>
+                    </div>
+                  </div>
+                </Card>
+
+                <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
+                  <div className="flex items-start gap-4">
+                    <div className={cn(styles.iconContainer.blueLight, "flex-shrink-0 group-hover:bg-blue-100 transition-colors")}>
+                      <Phone className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h4 className={cn(theme.typography.h5, 'mb-2')}>Technical Consultation</h4>
+                      <p className={cn(theme.typography.body, 'text-slate-600 mb-4')}>
+                        Call us directly to discuss your technical requirements with our engineering team.
+                      </p>
+                      <a
+                        href={contactData.contactInfo.phoneLink}
+                        className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center gap-2 text-sm"
+                      >
+                        <Phone className="w-4 h-4" />
                         {contactData.contactInfo.phone}
                       </a>
                     </div>
                   </div>
+                </Card>
 
+                <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-blue-600/10 flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-5 h-5 text-blue-600" />
+                    <div className={cn(styles.iconContainer.blueLight, "flex-shrink-0 group-hover:bg-blue-100 transition-colors")}>
+                      <FileText className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <h3 className={cn(theme.typography.label, "text-white mb-1")}>Email</h3>
-                      <a href={`mailto:${contactData.contactInfo.email}`} className={cn(theme.typography.small, "hover:text-blue-600 transition-colors")}>
-                        {contactData.contactInfo.email}
-                      </a>
+                      <h4 className={cn(theme.typography.h5, 'mb-2')}>General Inquiries</h4>
+                      <p className={cn(theme.typography.body, 'text-slate-600 mb-4')}>
+                        Have questions about our capabilities or services? Reach out via email or phone.
+                      </p>
+                      <div className="flex flex-col gap-2">
+                        <a
+                          href={`mailto:${contactData.contactInfo.email}`}
+                          className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center gap-2 text-sm"
+                        >
+                          <Mail className="w-4 h-4" />
+                          {contactData.contactInfo.email}
+                        </a>
+                      </div>
                     </div>
                   </div>
+                </Card>
+              </motion.div>
+            </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-blue-600/10 flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className={cn(theme.typography.label, "text-white mb-1")}>Business Hours</h3>
-                      <p className={theme.typography.small}>
-                        {contactData.contactInfo.hoursLine1}<br />
-                        {contactData.contactInfo.hoursLine2}
+            {/* Certifications & Capabilities */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+              {Array.isArray(contactData.certifications) && contactData.certifications
+                .filter((cert: any) => cert?.enabled !== false)
+                .map((cert: any, index: number) => (
+                  <motion.div
+                    key={cert?.certification}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.6 }}
+                    viewport={{ once: true }}
+                  >
+                    <Card className={cn(styles.featureCard, 'p-6 text-center h-full')}>
+                      <div className={cn(styles.iconContainer.blueLight, "mx-auto mb-4")}>
+                        <Shield className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <p className={cn(theme.typography.small, 'font-semibold text-slate-800')}>
+                        {cert?.certification}
+                      </p>
+                    </Card>
+                  </motion.div>
+                ))}
+            </div>
+
+            {/* Map Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <Card className="overflow-hidden shadow-2xl">
+                <div className="relative h-[500px]">
+                  <ParallaxImagePro
+                    src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=2400&q=90"
+                    alt="IIS Manufacturing Facility Location"
+                    className="w-full h-full object-cover"
+                    speed={0.1}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                    <div className="max-w-md bg-black/50 backdrop-blur-sm rounded-lg p-6 border border-white/10">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
+                          <Building2 className="w-5 h-5 text-white" />
+                        </div>
+                        <h3 className={cn(theme.typography.h4, 'text-white drop-shadow-lg')}>Visit Our Facility</h3>
+                      </div>
+                      <p className={cn(theme.typography.body, 'mb-4 text-white drop-shadow-md')}>
+                        Located in Clackamas, Oregon, our state-of-the-art facility features advanced CNC machining, metrology, and inspection capabilities.
+                      </p>
+                      <p className={cn(theme.typography.small, 'text-white font-semibold drop-shadow-md')}>
+                        {contactData.contactInfo.addressLine1}, {contactData.contactInfo.addressLine2}
                       </p>
                     </div>
                   </div>
                 </div>
               </Card>
-
-              {/* Certifications */}
-              <Card className={cn(theme.components.card.form, "p-6")}>
-                <h3 className={cn(theme.typography.label, "text-white mb-4")}>Certifications</h3>
-                <div className="space-y-3">
-                  {Array.isArray(contactData.certifications) && contactData.certifications
-                    .filter((cert: any) => cert?.enabled !== false)
-                    .map((cert: any) => (
-                    <div key={cert?.certification} className="flex items-center gap-3">
-                      <Shield className="w-4 h-4 text-blue-600" />
-                      <span className={theme.typography.small}>{cert?.certification}</span>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            </motion.div>
-
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="lg:col-span-2"
-            >
-              <Card className={cn(theme.components.card.form, "p-8")}>
-                <h2 className={cn(theme.typography.h3, "text-white mb-6")}>Send a Message</h2>
-
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="relative">
-                      <Label htmlFor="name" className={styles.form.label}>Full Name *</Label>
-                      <div className="relative">
-                        <Input
-                          id="name"
-                          {...register('name')}
-                          placeholder="John Doe"
-                          className={cn(
-                            styles.form.input,
-                            "mt-1 pr-10",
-                            !errors.name && watch('name')?.length >= 2 && "border-green-500/50"
-                          )}
-                        />
-                        {!errors.name && watch('name')?.length >= 2 && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 mt-0.5"
-                          >
-                            <Check className="w-4 h-4 text-green-500" />
-                          </motion.div>
-                        )}
-                      </div>
-                      {errors.name && (
-                        <p className="text-sm text-red-400 mt-1">{errors.name.message}</p>
-                      )}
-                    </div>
-
-                    <div className="relative">
-                      <Label htmlFor="email" className={styles.form.label}>Email Address *</Label>
-                      <div className="relative">
-                        <Input
-                          id="email"
-                          type="email"
-                          {...register('email')}
-                          placeholder="john@company.com"
-                          className={cn(
-                            styles.form.input,
-                            "mt-1 pr-10",
-                            !errors.email && watch('email')?.includes('@') && "border-green-500/50"
-                          )}
-                        />
-                        {!errors.email && watch('email')?.includes('@') && watch('email')?.includes('.') && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 mt-0.5"
-                          >
-                            <Check className="w-4 h-4 text-green-500" />
-                          </motion.div>
-                        )}
-                      </div>
-                      {errors.email && (
-                        <p className="text-sm text-red-400 mt-1">{errors.email.message}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="relative">
-                      <Label htmlFor="company" className={styles.form.label}>Company *</Label>
-                      <div className="relative">
-                        <Input
-                          id="company"
-                          {...register('company')}
-                          placeholder="Acme Aerospace"
-                          className={cn(
-                            styles.form.input,
-                            "mt-1 pr-10",
-                            !errors.company && watch('company')?.length >= 2 && "border-green-500/50"
-                          )}
-                        />
-                        {!errors.company && watch('company')?.length >= 2 && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 mt-0.5"
-                          >
-                            <Check className="w-4 h-4 text-green-500" />
-                          </motion.div>
-                        )}
-                      </div>
-                      {errors.company && (
-                        <p className="text-sm text-red-400 mt-1">{errors.company.message}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <Label htmlFor="phone" className={styles.form.label}>Phone</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        {...register('phone')}
-                        placeholder="+1 (555) 123-4567"
-                        className={cn(styles.form.input, "mt-1")}
-                      />
-                    </div>
-                  </div>
-
-                  <div suppressHydrationWarning>
-                    <Label htmlFor="interest" className={styles.form.label}>Inquiry Type *</Label>
-                    <Select onValueChange={(value) => setValue('interest', value as ContactFormData['interest'])}>
-                      <SelectTrigger id="interest" aria-label="Inquiry Type" className={cn(styles.form.select.trigger, "mt-1")} suppressHydrationWarning>
-                        <SelectValue placeholder="Select inquiry type" />
-                      </SelectTrigger>
-                      <SelectContent className={styles.form.select.content}>
-                        <SelectItem className={styles.form.select.item} value="quote">Request Quote</SelectItem>
-                        <SelectItem className={styles.form.select.item} value="technical">Technical Consultation</SelectItem>
-                        <SelectItem className={styles.form.select.item} value="partnership">Strategic Partnership</SelectItem>
-                        <SelectItem className={styles.form.select.item} value="supplier">Supplier Inquiry</SelectItem>
-                        <SelectItem className={styles.form.select.item} value="career">Career Opportunities</SelectItem>
-                        <SelectItem className={styles.form.select.item} value="general">General Information</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.interest && (
-                      <p className="text-sm text-red-400 mt-1">{errors.interest.message}</p>
-                    )}
-                  </div>
-
-                  {(interest === 'quote' || interest === 'technical') && (
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div suppressHydrationWarning>
-                        <Label htmlFor="projectType" className={styles.form.label}>Industry</Label>
-                        <Select onValueChange={(value) => setValue('projectType', value as ContactFormData['projectType'])}>
-                          <SelectTrigger id="projectType" aria-label="Industry" className={cn(styles.form.select.trigger, "mt-1")} suppressHydrationWarning>
-                            <SelectValue placeholder="Select industry" />
-                          </SelectTrigger>
-                          <SelectContent className={styles.form.select.content}>
-                            <SelectItem className={styles.form.select.item} value="aerospace">Aerospace</SelectItem>
-                            <SelectItem className={styles.form.select.item} value="defense">Defense</SelectItem>
-                            <SelectItem className={styles.form.select.item} value="medical">Medical Devices</SelectItem>
-                            <SelectItem className={styles.form.select.item} value="energy">Energy</SelectItem>
-                            <SelectItem className={styles.form.select.item} value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div suppressHydrationWarning>
-                        <Label htmlFor="timeline" className={styles.form.label}>Timeline</Label>
-                        <Select onValueChange={(value) => setValue('timeline', value as ContactFormData['timeline'])}>
-                          <SelectTrigger id="timeline" aria-label="Timeline" className={cn(styles.form.select.trigger, "mt-1")} suppressHydrationWarning>
-                            <SelectValue placeholder="Select timeline" />
-                          </SelectTrigger>
-                          <SelectContent className={styles.form.select.content}>
-                            <SelectItem className={styles.form.select.item} value="immediate">Immediate</SelectItem>
-                            <SelectItem className={styles.form.select.item} value="1-3months">1-3 Months</SelectItem>
-                            <SelectItem className={styles.form.select.item} value="3-6months">3-6 Months</SelectItem>
-                            <SelectItem className={styles.form.select.item} value="6months+">6+ Months</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* File Upload */}
-                  <div>
-                    <Label className={styles.form.label}>
-                      Attach Files <span className="text-slate-500 text-xs">(Optional - CAD files, drawings, specs)</span>
-                    </Label>
-                    <div
-                      onDragOver={handleDragOver}
-                      onDragLeave={handleDragLeave}
-                      onDrop={handleDrop}
-                      className={cn(
-                        "mt-2 border-2 border-dashed rounded-lg p-6 transition-all duration-300",
-                        isDragging
-                          ? "border-blue-500 bg-blue-500/10"
-                          : "border-slate-700 bg-slate-800/30 hover:border-slate-600"
-                      )}
-                    >
-                      <input
-                        type="file"
-                        id="file-upload"
-                        multiple
-                        accept=".pdf,.jpg,.jpeg,.png,.step,.stp,.sla,.stl,.xls,.xlsx"
-                        onChange={handleFileChange}
-                        className="hidden"
-                      />
-                      <label
-                        htmlFor="file-upload"
-                        className="cursor-pointer flex flex-col items-center gap-3"
-                      >
-                        <div className="w-12 h-12 rounded-full bg-blue-600/20 flex items-center justify-center">
-                          <Upload className="w-6 h-6 text-blue-400" />
-                        </div>
-                        <div className="text-center">
-                          <p className="text-sm text-white font-medium mb-1">
-                            Drop files here or click to browse
-                          </p>
-                          <p className="text-xs text-slate-400">
-                            PDF, JPG, PNG, STEP, STL, Excel (max 10MB, up to 3 files)
-                          </p>
-                        </div>
-                      </label>
-                    </div>
-
-                    {/* Uploaded Files List */}
-                    <AnimatePresence>
-                      {uploadedFiles.length > 0 && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          className="mt-3 space-y-2"
-                        >
-                          {uploadedFiles.map((file, index) => (
-                            <motion.div
-                              key={`${file.name}-${index}`}
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              exit={{ opacity: 0, x: 20 }}
-                              className="flex items-center justify-between bg-slate-800/50 rounded-lg p-3 border border-slate-700"
-                            >
-                              <div className="flex items-center gap-3">
-                                <FileText className="w-4 h-4 text-blue-400" />
-                                <div>
-                                  <p className="text-sm text-white">{file.name}</p>
-                                  <p className="text-xs text-slate-400">
-                                    {(file.size / 1024).toFixed(1)} KB
-                                  </p>
-                                </div>
-                              </div>
-                              <button
-                                type="button"
-                                onClick={() => removeFile(index)}
-                                className="p-1 hover:bg-slate-700 rounded transition-colors"
-                                aria-label="Remove file"
-                              >
-                                <X className="w-4 h-4 text-slate-400" />
-                              </button>
-                            </motion.div>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="message" className={styles.form.label}>Message *</Label>
-                    <Textarea
-                      id="message"
-                      {...register('message')}
-                      placeholder="Please describe your project requirements..."
-                      rows={6}
-                      className={cn(styles.form.textarea, "mt-1")}
-                    />
-                    {errors.message && (
-                      <p className="text-sm text-red-400 mt-1">{errors.message.message}</p>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <p className={cn(theme.typography.small, "text-xs text-slate-500")}>
-                      * Required fields
-                    </p>
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className={cn(styles.ctaPrimary, "group h-12 px-8")}
-                    >
-                      {isSubmitting ? (
-                        'Sending...'
-                      ) : (
-                        <>
-                          {interest === 'quote' ? 'Get Quote in 24 Hours' :
-                           interest === 'technical' ? 'Schedule Consultation' :
-                           interest === 'partnership' ? 'Discuss Partnership' :
-                           'Send Message'}
-                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                        </>
-                      )}
-                    </Button>
-                  </div>
-
-                  {submitResult && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className={`p-4 rounded-lg ${
-                        submitResult.success
-                          ? submitResult.partialSuccess
-                            ? 'bg-yellow-500/10 border border-yellow-500/20'
-                            : 'bg-green-500/10 border border-green-500/20'
-                          : 'bg-red-500/10 border border-red-500/20'
-                      }`}
-                    >
-                      <div className="flex items-start gap-3">
-                        <CheckCircle className={`w-5 h-5 ${
-                          !submitResult.success ? 'text-red-400' : submitResult.partialSuccess ? 'text-yellow-400' : 'text-green-400'
-                        }`} />
-                        <div>
-                          <p className={`text-sm ${
-                            !submitResult.success ? 'text-red-400' : submitResult.partialSuccess ? 'text-yellow-400' : 'text-green-400'
-                          }`}>
-                            {submitResult.message}
-                          </p>
-                          {submitResult.warning && (
-                            <p className="text-xs text-yellow-300 mt-2">
-                              {submitResult.warning}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </form>
-              </Card>
             </motion.div>
           </div>
-
-          {/* Bottom Info Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="mt-20 text-center"
-          >
-            <div className="inline-flex flex-wrap justify-center gap-8 text-sm font-medium">
-              {Array.isArray(contactData.bottomStats) && contactData.bottomStats
-                .filter((stat: any) => stat?.enabled !== false)
-                .map((stat: any, index: number) => {
-                const IconComponent = iconMap[stat?.iconName] || Activity;
-                return (
-                  <div key={`${stat?.text}-${index}`} className="flex items-center gap-2">
-                    {stat?.animated ? (
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                    ) : (
-                      <IconComponent className="w-4 h-4 text-blue-400" />
-                    )}
-                    <span className="text-white">{stat?.text}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </motion.div>
         </div>
       </section>
+
+      {/* Bottom Stats Bar */}
+      {Array.isArray(contactData.bottomStats) && contactData.bottomStats.length > 0 && (
+        <section className={styles.sectionDark}>
+          <div className={theme.spacing.container}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="flex flex-wrap justify-center gap-12"
+            >
+              {contactData.bottomStats
+                .filter((stat: any) => stat?.enabled !== false)
+                .map((stat: any, index: number) => {
+                  const IconComponent = iconMap[stat?.iconName] || Activity;
+                  return (
+                    <div key={`${stat?.text}-${index}`} className="flex items-center gap-3">
+                      {stat?.animated ? (
+                        <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+                      ) : (
+                        <IconComponent className="w-5 h-5 text-blue-400" />
+                      )}
+                      <span className={cn(theme.typography.body, 'text-white font-medium')}>
+                        {stat?.text}
+                      </span>
+                    </div>
+                  );
+                })}
+            </motion.div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

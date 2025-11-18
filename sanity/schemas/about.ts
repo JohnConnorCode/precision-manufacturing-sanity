@@ -1,3 +1,5 @@
+import { iconField } from './fields/iconField'
+
 export default {
   icon: () => 'ℹ️',
   name: 'about',
@@ -320,7 +322,7 @@ export default {
                 },
                 {name: 'title', type: 'string', title: 'Title'},
                 {name: 'description', type: 'text', title: 'Description', rows: 3},
-                {name: 'iconName', type: 'string', title: 'Icon Name'},
+                iconField('iconName', 'Icon', 'Visual icon selector for value'),
                 {
                   name: 'bullets',
                   type: 'array',

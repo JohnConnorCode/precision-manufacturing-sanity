@@ -220,6 +220,7 @@ export async function getAllIndustries(preview = false) {
           enabled
         }
       },
+      statistics,
       overview,
       capabilities,
       regulatory,
@@ -282,6 +283,7 @@ export async function getIndustryBySlug(slug: string, preview = false) {
           enabled
         }
       },
+      statistics,
       overview,
       capabilities,
       regulatory,

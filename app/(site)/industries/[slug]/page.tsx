@@ -1,10 +1,6 @@
-import { getIndustryBySlug, getAllIndustries } from '@/sanity/lib/queries';
-import { draftMode } from 'next/headers';
-import { IndustryContent } from '../industry-content';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/theme';
-import { theme } from '@/lib/theme';
-import Link from 'next/link';
+import { client } from '@/sanity/lib/client';
+import { notFound } from 'next/navigation';
+import IndustryDetailPage from '@/components/industries/industry-detail-page';
 
 interface IndustryPageProps {
   params: Promise<{
@@ -15,12 +11,34 @@ interface IndustryPageProps {
 // Enable ISR with 1 hour revalidation
 export const revalidate = 3600;
 
+async function getIndustryBySlug(slug: string) {
+  const query = `*[_type == "industry" && slug.current == $slug && published == true][0]{
+    _id,
+    title,
+    slug,
+    shortDescription,
+    hero,
+    stats,
+    marketOverview,
+    expertise,
+    certifications,
+    capabilities,
+    components,
+    applications,
+    qualityStandards,
+    processBenefits,
+    regulatory,
+    seo
+  }`;
+
+  return await client.fetch(query, { slug });
+}
+
 export async function generateMetadata({ params }: IndustryPageProps) {
   const { slug } = await params;
-  const { isEnabled } = await draftMode();
-  const industryData = await getIndustryBySlug(slug, isEnabled);
+  const industry = await getIndustryBySlug(slug);
 
-  if (!industryData) {
+  if (!industry) {
     return {
       title: 'Industry Not Found',
       description: 'The requested industry could not be found.',
@@ -28,48 +46,22 @@ export async function generateMetadata({ params }: IndustryPageProps) {
   }
 
   return {
-    title: industryData.seo?.metaTitle || industryData.title,
-    description: industryData.seo?.metaDescription || industryData.description,
+    title: industry.seo?.metaTitle || `${industry.title} | Precision Manufacturing`,
+    description: industry.seo?.metaDescription || industry.shortDescription,
     openGraph: {
-      title: industryData.seo?.metaTitle || industryData.title,
-      description: industryData.seo?.metaDescription || industryData.description,
+      title: industry.seo?.metaTitle || industry.title,
+      description: industry.seo?.metaDescription || industry.shortDescription,
     },
   };
 }
 
-export async function generateStaticParams() {
-  try {
-    const industries = await getAllIndustries();
-    if (!industries || industries.length === 0) return [];
-    return industries.map((industry: any) => ({
-      slug: industry.slug?.current || industry.slug,
-    }));
-  } catch (error) {
-    console.warn('Failed to generate static params for industries:', error);
-    return [];
-  }
-}
-
 export default async function IndustryPage({ params }: IndustryPageProps) {
   const { slug } = await params;
-  const { isEnabled } = await draftMode();
-  const industryData = await getIndustryBySlug(slug, isEnabled);
+  const industry = await getIndustryBySlug(slug);
 
-  if (!industryData) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <h1 className={cn(theme.typography.h1, 'mb-4')}>Industry Not Found</h1>
-          <p className={cn(theme.typography.body, 'text-slate-600 mb-8')}>
-            The industry you&apos;re looking for could not be found.
-          </p>
-          <Button asChild>
-            <Link href="/industries">View All Industries</Link>
-          </Button>
-        </div>
-      </div>
-    );
+  if (!industry) {
+    notFound();
   }
 
-  return <IndustryContent industryData={industryData} slug={slug} />;
+  return <IndustryDetailPage industry={industry} />;
 }

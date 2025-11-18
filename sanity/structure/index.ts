@@ -157,6 +157,16 @@ export const structure = (S: StructureBuilder) =>
             .documentId('careers')
         ),
 
+      S.listItem()
+        .title('Job Postings')
+        .icon(Briefcase)
+        .child(
+          S.documentTypeList('jobPosting')
+            .title('Job Postings')
+            .filter('_type == "jobPosting"')
+            .defaultOrdering([{field: 'featured', direction: 'desc'}, {field: 'order', direction: 'asc'}])
+        ),
+
       S.divider(),
 
       // Compliance & Legal

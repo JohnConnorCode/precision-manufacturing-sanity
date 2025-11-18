@@ -1,3 +1,5 @@
+import { iconField } from './fields/iconField';
+
 export default {
   name: 'service',
   type: 'document',
@@ -8,47 +10,6 @@ export default {
       title: 'Title A-Z',
       name: 'titleAsc',
       by: [{field: 'title', direction: 'asc'}]
-    },
-    {
-      name: 'cta',
-      type: 'object',
-      title: 'Call To Action',
-      group: 'display',
-      options: {
-        collapsible: true,
-        collapsed: true,
-      },
-      fields: [
-        {name: 'badge', type: 'string', title: 'Badge'},
-        {name: 'title', type: 'string', title: 'Heading'},
-        {name: 'description', type: 'text', title: 'Description', rows: 3},
-        {
-          name: 'buttons',
-          type: 'array',
-          title: 'Buttons',
-          of: [
-            {
-              type: 'object',
-              fields: [
-                {name: 'text', type: 'string', title: 'Text'},
-                {name: 'href', type: 'string', title: 'URL'},
-                {
-                  name: 'variant',
-                  type: 'string',
-                  title: 'Variant',
-                  options: {
-                    list: [
-                      { title: 'Primary', value: 'primary' },
-                      { title: 'Secondary', value: 'secondary' }
-                    ]
-                  }
-                },
-                {name: 'enabled', type: 'boolean', title: 'Enabled', initialValue: true}
-              ]
-            }
-          ]
-        }
-      ]
     },
     {
       title: 'Title Z-A',
@@ -328,7 +289,7 @@ export default {
             {name: 'descriptionRich', type: 'array', title: 'Description (Rich Text)', of: [{ type: 'block' }]},
             {name: 'featuresLabel', type: 'string', title: 'Features Label', description: 'Defaults to \"Key Features\"'},
             {name: 'capabilitiesLabel', type: 'string', title: 'Capabilities Label', description: 'Defaults to \"Capabilities\"'},
-            {name: 'iconName', type: 'string', title: 'Icon Name'},
+            iconField('iconName', 'Icon', 'Visual icon selector for capability'),
             {
               name: 'image',
               type: 'image',
@@ -618,7 +579,7 @@ export default {
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
-            {name: 'iconName', type: 'string', title: 'Icon Name'},
+            iconField('iconName', 'Icon', 'Visual icon selector for benefit'),
           ],
         },
       ],
@@ -823,6 +784,100 @@ export default {
       description: 'Highlight this service on listing pages',
       group: 'display',
       initialValue: false,
+    },
+    {
+      name: 'cta',
+      type: 'object',
+      title: 'Call To Action',
+      description: 'Optional CTA section displayed on the service detail page',
+      group: 'display',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      fields: [
+        {
+          name: 'badge',
+          type: 'string',
+          title: 'Badge',
+          description: 'Small label above the heading (e.g., "GET STARTED")',
+        },
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Heading',
+          description: 'Main CTA heading',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Description',
+          description: 'Supporting text below the heading',
+          rows: 3,
+        },
+        {
+          name: 'buttons',
+          type: 'array',
+          title: 'Buttons',
+          description: 'CTA buttons (1-2 recommended)',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {
+                  name: 'text',
+                  type: 'string',
+                  title: 'Button Text',
+                  validation: (Rule: any) => Rule.required().error('Button text is required'),
+                },
+                {
+                  name: 'href',
+                  type: 'string',
+                  title: 'URL',
+                  description: 'Link destination (e.g., /contact, /quote)',
+                  validation: (Rule: any) => Rule.required().error('URL is required'),
+                },
+                {
+                  name: 'variant',
+                  type: 'string',
+                  title: 'Button Style',
+                  options: {
+                    list: [
+                      { title: 'Primary (Blue)', value: 'primary' },
+                      { title: 'Secondary (Outline)', value: 'secondary' },
+                    ],
+                  },
+                  initialValue: 'primary',
+                },
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Uncheck to hide this button without deleting it',
+                  initialValue: true,
+                },
+              ],
+              preview: {
+                select: {
+                  text: 'text',
+                  href: 'href',
+                  variant: 'variant',
+                  enabled: 'enabled',
+                },
+                prepare({ text, href, variant, enabled }: any) {
+                  const status = enabled === false ? ' (HIDDEN)' : ''
+                  const style = variant === 'primary' ? '🔵' : '⚪'
+                  return {
+                    title: `${style} ${text}${status}`,
+                    subtitle: href,
+                  }
+                },
+              },
+            },
+          ],
+          validation: (Rule: any) => Rule.max(2).warning('Maximum 2 buttons recommended'),
+        },
+      ],
     },
     {
       name: 'specs',

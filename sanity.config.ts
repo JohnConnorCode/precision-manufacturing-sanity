@@ -13,6 +13,7 @@ import { collaboration } from './sanity/plugins/collaboration'
 import { analytics } from './sanity/plugins/analytics'
 import { presentationTool } from 'sanity/presentation'
 import { locate } from './sanity/locate'
+import StudioLogo from './sanity/components/StudioLogo'
 
 // Define singleton document types (v3 best practice)
 const singletonTypes = new Set([
@@ -42,6 +43,13 @@ export default defineConfig({
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
 
   basePath: '/studio',
+
+  // Custom branding for IIS Precision Manufacturing
+  studio: {
+    components: {
+      logo: StudioLogo,
+    },
+  },
 
   plugins: [
     presentationTool({

@@ -116,7 +116,7 @@ export default function LogoSVG({
         xmlns="http://www.w3.org/2000/svg"
         className={`flex-shrink-0 ${className}`}
         initial={animated ? "hidden" : "visible"}
-        animate="visible"
+        animate={animated ? "visible" : undefined}
       >
         {/* Gaussian Bell Curve - mathematically accurate smooth path */}
         <motion.path
@@ -160,7 +160,7 @@ export default function LogoSVG({
       {showText && (
         <motion.div
           initial={animated ? "hidden" : "visible"}
-          animate="visible"
+          animate={animated ? "visible" : undefined}
           variants={animated ? containerLabelVariants : undefined}
           className={`flex flex-col justify-center ${gapClass}`}
         >

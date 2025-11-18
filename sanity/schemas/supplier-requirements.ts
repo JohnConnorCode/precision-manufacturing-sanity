@@ -1,3 +1,5 @@
+import { iconField } from './fields/iconField'
+
 export default {
   icon: () => '✓',
   name: 'supplierRequirements',
@@ -60,7 +62,7 @@ export default {
             {
               type: 'object',
               fields: [
-                {name: 'iconName', type: 'string', title: 'Icon Name', description: 'Lucide icon name'},
+                iconField('iconName', 'Icon', 'Visual icon selector'),
                 {name: 'text', type: 'string', title: 'Text'},
               ],
             },
@@ -167,7 +169,7 @@ export default {
             {name: 'id', type: 'string', title: 'ID', initialValue: 'purpose'},
             {name: 'number', type: 'string', title: 'Section Number', initialValue: '1'},
             {name: 'title', type: 'string', title: 'Title', validation: (Rule: any) => Rule.required()},
-            {name: 'iconName', type: 'string', title: 'Icon Name', description: 'Lucide icon name'},
+            iconField('iconName', 'Icon', 'Visual icon selector for section'),
             {name: 'content', type: 'text', title: 'Content', rows: 3},
             {name: 'color', type: 'string', title: 'Gradient Color', initialValue: 'blue'},
           ],
@@ -304,7 +306,7 @@ export default {
           fields: [
             {name: 'number', type: 'string', title: 'Section Number'},
             {name: 'title', type: 'string', title: 'Title', validation: (Rule: any) => Rule.required()},
-            {name: 'iconName', type: 'string', title: 'Icon Name', description: 'Lucide icon name'},
+            iconField('iconName', 'Icon', 'Visual icon selector for overview section'),
             {name: 'content', type: 'text', title: 'Content', rows: 3},
             {
               name: 'list',
@@ -329,7 +331,7 @@ export default {
       title: 'Footer Note',
       group: 'content',
       fields: [
-        {name: 'iconName', type: 'string', title: 'Icon Name', description: 'Lucide icon name'},
+        iconField('iconName', 'Icon', 'Visual icon selector for footer note'),
         {name: 'heading', type: 'string', title: 'Heading'},
         {name: 'content', type: 'text', title: 'Content', rows: 3},
       ],

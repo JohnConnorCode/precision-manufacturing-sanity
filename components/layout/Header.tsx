@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useId } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, Phone, Mail, Zap, ArrowRight, Home, Info, Wrench, Building2, BookOpen, FileText, Briefcase, Layers, Shield, PhoneCall, Mail as MailIcon } from 'lucide-react';
@@ -130,7 +130,8 @@ export default function Header({ data }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const pathname = usePathname();
-  const mobileSheetId = useId();
+  // Use static ID to prevent hydration mismatch (only one mobile menu per page)
+  const mobileSheetId = 'mobile-navigation-sheet';
 
   // Check announcement dates client-side only to avoid hydration errors
   useEffect(() => {

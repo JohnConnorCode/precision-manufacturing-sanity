@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { ArrowRight, Shield, Factory, Award, Users, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImage from '@/components/ui/parallax-image';
+import { theme } from '@/lib/theme';
 import React from 'react';
 
 interface IndustriesListProps {
@@ -99,7 +100,7 @@ export function IndustriesList({ industries, capabilities, keyStrengths, success
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Core Industries</h2>
+            <h2 className={theme.typography.sectionHeading}>Core Industries</h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
               Specialized manufacturing solutions for the most demanding industries, backed by decades of experience and industry-leading certifications.
             </p>
@@ -215,7 +216,7 @@ export function IndustriesList({ industries, capabilities, keyStrengths, success
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-6">Why Industry Leaders Choose Us</h2>
+            <h2 className={theme.typography.subsectionTitle}>Why Industry Leaders Choose Us</h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
               Proven capabilities and unwavering commitment to quality make us the preferred manufacturing partner for critical applications.
             </p>
@@ -235,7 +236,7 @@ export function IndustriesList({ industries, capabilities, keyStrengths, success
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4">
                       {iconMap[strength.icon as keyof typeof iconMap]}
                     </div>
-                    <h3 className="text-2xl font-bold">{strength.title}</h3>
+                    <h3 className={theme.typography.cardTitle}>{strength.title}</h3>
                   </div>
 
                   <p className="text-slate-600 mb-6 leading-relaxed">
@@ -267,7 +268,7 @@ export function IndustriesList({ industries, capabilities, keyStrengths, success
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-6">Proven Results</h2>
+            <h2 className={theme.typography.subsectionTitle}>Proven Results</h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
               Measurable performance metrics that demonstrate our commitment to excellence and continuous improvement.
             </p>

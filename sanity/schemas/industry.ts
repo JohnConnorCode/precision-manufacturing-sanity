@@ -1,3 +1,5 @@
+import { iconField } from './fields/iconField';
+
 export default {
   name: 'industry',
   type: 'document',
@@ -181,6 +183,197 @@ export default {
           ]
         }
       ],
+    },
+    {
+      name: 'statistics',
+      type: 'array',
+      title: 'Key Statistics',
+      description: 'Important metrics displayed prominently below the hero (e.g., "85% Aerospace Volume", "150+ Active Programs")',
+      group: 'overview',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'value',
+              type: 'string',
+              title: 'Value',
+              description: 'The statistic value (e.g., "85%", "150+", "±0.0001")',
+              validation: (Rule: any) => Rule.required()
+            },
+            {
+              name: 'label',
+              type: 'string',
+              title: 'Label',
+              description: 'The statistic label (e.g., "Aerospace Volume", "Active Programs")',
+              validation: (Rule: any) => Rule.required()
+            },
+            {
+              name: 'description',
+              type: 'text',
+              title: 'Description',
+              description: 'Optional longer description of this statistic',
+              rows: 2
+            }
+          ],
+          preview: {
+            select: {
+              value: 'value',
+              label: 'label'
+            },
+            prepare(selection: any) {
+              return {
+                title: `${selection.value} - ${selection.label}`
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: 'stats',
+      type: 'array',
+      title: 'Stats (Metrics Banner)',
+      description: 'Key metrics displayed in banner below hero',
+      group: 'overview',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'value', type: 'string', title: 'Value', validation: (Rule: any) => Rule.required() },
+            { name: 'label', type: 'string', title: 'Label', validation: (Rule: any) => Rule.required() },
+            { name: 'description', type: 'text', title: 'Description', rows: 2 }
+          ],
+          preview: {
+            select: { value: 'value', label: 'label' },
+            prepare(selection: any) {
+              return { title: `${selection.value} - ${selection.label}` }
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: 'expertise',
+      type: 'array',
+      title: 'Component Expertise',
+      description: 'Detailed component expertise sections (Engine Components, Structural, etc.)',
+      group: 'details',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title', type: 'string', title: 'Title', validation: (Rule: any) => Rule.required() },
+            { name: 'description', type: 'text', title: 'Description', rows: 3 },
+            iconField('iconName', 'Icon', 'Visual icon selector for expertise section'),
+            {
+              name: 'image',
+              type: 'image',
+              title: 'Background Image',
+              description: 'Background image for expertise card',
+              options: {
+                hotspot: true,
+                metadata: ['blurhash', 'lqip', 'palette']
+              },
+              fields: [
+                {
+                  name: 'alt',
+                  type: 'string',
+                  title: 'Alt Text',
+                  description: 'Alternative text for accessibility'
+                }
+              ]
+            },
+            {
+              name: 'imageUrl',
+              type: 'url',
+              title: 'External Image URL',
+              description: 'Optional external image URL (if Sanity image not used)'
+            },
+            {
+              name: 'components',
+              type: 'array',
+              title: 'Typical Components',
+              of: [{ type: 'string' }]
+            },
+            {
+              name: 'materials',
+              type: 'array',
+              title: 'Materials',
+              of: [{ type: 'string' }]
+            },
+            {
+              name: 'requirements',
+              type: 'array',
+              title: 'Key Requirements',
+              of: [{ type: 'string' }]
+            }
+          ],
+          preview: {
+            select: { title: 'title' },
+            prepare(selection: any) {
+              return { title: selection.title }
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: 'certifications',
+      type: 'array',
+      title: 'Certifications',
+      description: 'Industry certifications (AS9100D, NADCAP, ITAR, etc.)',
+      group: 'details',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title', type: 'string', title: 'Title', validation: (Rule: any) => Rule.required() },
+            { name: 'description', type: 'text', title: 'Description', rows: 3 },
+            iconField('iconName', 'Icon', 'Visual icon selector for certification')
+          ],
+          preview: {
+            select: { title: 'title' },
+            prepare(selection: any) {
+              return { title: selection.title }
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: 'marketOverview',
+      type: 'object',
+      title: 'Market Overview',
+      description: 'Market size and drivers information',
+      group: 'overview',
+      fields: [
+        { name: 'title', type: 'string', title: 'Title' },
+        { name: 'description', type: 'text', title: 'Description', rows: 4 },
+        {
+          name: 'marketSize',
+          type: 'object',
+          title: 'Market Size',
+          fields: [
+            { name: 'title', type: 'string', title: 'Title' },
+            { name: 'description', type: 'string', title: 'Description' }
+          ]
+        },
+        {
+          name: 'marketDrivers',
+          type: 'object',
+          title: 'Market Drivers',
+          fields: [
+            { name: 'title', type: 'string', title: 'Title' },
+            {
+              name: 'drivers',
+              type: 'array',
+              title: 'Drivers',
+              of: [{ type: 'string' }]
+            }
+          ]
+        }
+      ]
     },
     {
       name: 'overview',
@@ -466,7 +659,7 @@ export default {
     {
       name: 'processBenefits',
       type: 'array',
-      title: 'Process Benefits',
+      title: 'Process Benefits / Manufacturing Advantages',
       group: 'details',
       options: {
         collapsible: true,
@@ -477,6 +670,7 @@ export default {
           type: 'object',
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
+            {name: 'description', type: 'text', title: 'Description', rows: 3},
             {
               name: 'features',
               type: 'array',
@@ -614,10 +808,7 @@ export default {
       group: 'display',
     },
     {
-      name: 'iconName',
-      type: 'string',
-      title: 'Card Icon',
-      description: 'Lucide icon name for the industry card (e.g., "Plane", "Shield", "Factory", "Zap", "Heart", "Building2")',
+      ...iconField('iconName', 'Card Icon', 'Lucide icon name for the industry card (e.g., "Plane", "Shield", "Factory")'),
       group: 'display',
       validation: (Rule: any) => Rule.required().error('Icon name is required for card display')
     },

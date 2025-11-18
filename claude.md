@@ -6,6 +6,53 @@
 
 ---
 
+## 0. SANITY API TOKEN MANAGEMENT
+
+### Current API Token (Read/Write Access)
+
+**Token Location:** `.env.local`
+**Token Value:** `skoDqXfFqDrVj735nbtXKTBby81kkVTphHF94Vz2qDZZFwoMMwoh3FRWBmmIctzalhAFPGvACjjpQTWh0I3sUmKMUJ0dZ0Ds2znOcCuwbOZpqvxzI6CrtkwEvcIrxcAOfoJUWvzfaVWv3qD1eBaVLwFl1VoKY7OKCNqmUas0JTiCmizvnkTr`
+
+**Environment Variables:**
+```bash
+SANITY_API_READ_TOKEN="skoDqXfFqDrVj735nbtXKTBby81kkVTphHF94Vz2qDZZFwoMMwoh3FRWBmmIctzalhAFPGvACjjpQTWh0I3sUmKMUJ0dZ0Ds2znOcCuwbOZpqvxzI6CrtkwEvcIrxcAOfoJUWvzfaVWv3qD1eBaVLwFl1VoKY7OKCNqmUas0JTiCmizvnkTr"
+SANITY_API_WRITE_TOKEN="skoDqXfFqDrVj735nbtXKTBby81kkVTphHF94Vz2qDZZFwoMMwoh3FRWBmmIctzalhAFPGvACjjpQTWh0I3sUmKMUJ0dZ0Ds2znOcCuwbOZpqvxzI6CrtkwEvcIrxcAOfoJUWvzfaVWv3qD1eBaVLwFl1VoKY7OKCNqmUas0JTiCmizvnkTr"
+```
+
+**Usage in Scripts:**
+```typescript
+import { createClient } from '@sanity/client';
+
+const client = createClient({
+  projectId: 'vgacjlhu',
+  dataset: 'production',
+  apiVersion: '2024-01-01',
+  useCdn: false,
+  token: 'skoDqXfFqDrVj735nbtXKTBby81kkVTphHF94Vz2qDZZFwoMMwoh3FRWBmmIctzalhAFPGvACjjpQTWh0I3sUmKMUJ0dZ0Ds2znOcCuwbOZpqvxzI6CrtkwEvcIrxcAOfoJUWvzfaVWv3qD1eBaVLwFl1VoKY7OKCNqmUas0JTiCmizvnkTr'
+});
+```
+
+**Token Permissions:**
+- ✅ Read access to `production` dataset
+- ✅ Write access to `production` dataset
+- ✅ Can query documents
+- ✅ Can create/update/patch documents
+- ✅ Can delete documents
+
+**Managing Tokens:**
+- Tokens are managed at: https://www.sanity.io/manage/personal/tokens
+- If you get 403 Forbidden errors, the token may have been revoked
+- Create new tokens with Editor permissions for full read/write access
+- Always update both READ and WRITE tokens in `.env.local`
+
+**Token Security:**
+- ⚠️ Keep tokens in `.env.local` (already in `.gitignore`)
+- ⚠️ Never commit tokens to git
+- ⚠️ Rotate tokens if exposed publicly
+- ⚠️ Use separate tokens for production vs development when deploying
+
+---
+
 ## 1. SANITY CMS - EVERYTHING MUST BE EDITABLE
 
 ### Golden Rule: NO HARDCODED CONTENT

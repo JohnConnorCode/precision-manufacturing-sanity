@@ -1,3 +1,5 @@
+import { iconField } from './fields/iconField'
+
 export default {
   icon: () => '✉️',
   name: 'contact',
@@ -228,7 +230,7 @@ export default {
               description: 'Toggle off to hide',
               initialValue: true,
             },
-            {name: 'iconName', type: 'string', title: 'Icon Name'},
+            iconField('iconName', 'Icon', 'Visual icon selector for feature'),
             {name: 'text', type: 'string', title: 'Text'},
             {
               name: 'animated',

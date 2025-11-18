@@ -25,18 +25,48 @@ export const theme = {
       800: 'rgb(30, 41, 59)',
       900: 'rgb(15, 23, 42)',
       950: 'rgb(2, 6, 23)',
+    },
+    // Commonly used color classes (for easy reference)
+    text: {
+      blue: 'text-blue-600', // Used 47x
+      blueLight: 'text-blue-400', // Used 31x
+      blueHover: 'text-blue-600 hover:text-blue-700', // Used 10x
+      muted: 'text-slate-400', // Common muted text
+      mutedHover: 'text-slate-400 hover:text-blue-600', // Used 10x
+    },
+    background: {
+      dark: 'bg-slate-900', // Used 26x
+      darkCard: 'bg-slate-800', // Used 24x
+      primary: 'bg-blue-600', // Used 14x
+      primaryHover: 'bg-blue-600 hover:bg-blue-700', // Used 12x
+      light: 'bg-slate-50', // Used 6x
+      lightCard: 'bg-slate-100', // Used 8x
+      accent: 'bg-blue-50', // Used 3x
+      accentHover: 'bg-blue-50 hover:bg-blue-100', // Used 3x
     }
   },
 
   // Typography Classes
   typography: {
-    // Headings
+    // Headings - Base (no margin)
     h1: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight',
     h2: 'text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight',
     h3: 'text-2xl sm:text-3xl md:text-4xl font-semibold',
     h4: 'text-xl sm:text-2xl md:text-3xl font-semibold',
     h5: 'text-lg sm:text-xl md:text-2xl font-medium',
     h6: 'text-base sm:text-lg md:text-xl font-medium',
+
+    // Headings - With common margins (most frequently used)
+    h1Spaced: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6',
+    h2Spaced: 'text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-6',
+    h3Spaced: 'text-2xl sm:text-3xl md:text-4xl font-semibold mb-4',
+    h4Spaced: 'text-xl sm:text-2xl md:text-3xl font-semibold mb-4',
+
+    // Common heading variants (found in codebase)
+    sectionHeading: 'text-4xl md:text-5xl font-bold mb-6', // Used 5x
+    cardTitle: 'text-2xl font-bold', // Used 5x
+    cardTitleWhite: 'text-2xl font-bold text-white', // Used 6x
+    subsectionTitle: 'text-4xl font-bold mb-4', // Used 4x
 
     // Body
     lead: 'text-lg md:text-xl text-slate-600 leading-relaxed',
@@ -50,12 +80,31 @@ export const theme = {
 
   // Component Styles
   components: {
-    // Cards
+    // Cards - Comprehensive variants matching codebase patterns
     card: {
       base: 'bg-white/80 backdrop-blur-sm border border-slate-200/50 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300',
       dark: 'bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl shadow-xl',
       glass: 'bg-white/10 backdrop-blur-md border border-white/20 rounded-xl',
       form: 'bg-slate-900/50 border-slate-800 backdrop-blur-sm rounded-lg',
+      // Most common card patterns from analysis
+      simple: 'rounded-lg', // Used 38x - minimal card
+      withPadding: 'rounded-lg p-6', // Used 14x
+      compact: 'rounded-lg p-4', // Used 11x
+      elevated: 'rounded-xl shadow-lg', // Common pattern
+      interactive: 'rounded-xl p-6 hover:shadow-xl transition-shadow', // Hover pattern
+    },
+
+    // Padding presets (most common patterns)
+    padding: {
+      card: 'p-6', // Used 48x - standard card padding
+      cardLarge: 'p-8', // Used 37x - large card padding
+      cardCompact: 'p-4', // Used 27x - compact padding
+      cardMinimal: 'p-3', // Used 13x
+      badge: 'px-3 py-1', // Used 16x - badge/tag padding
+      button: 'px-4 py-2', // Used 27x - button padding
+      buttonLarge: 'px-4 py-3', // Used 10x
+      section: 'py-20', // Used 9x - section vertical padding
+      sectionLarge: 'py-24', // Used 7x
     },
 
     // Buttons
@@ -233,4 +282,78 @@ export const styles = {
   grid2Col: 'grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8',
   grid3Col: 'grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8',
   grid4Col: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8',
+
+  // Common Heading Patterns (ready to use with cn())
+  heading: {
+    // Section headings
+    section: cn(theme.typography.sectionHeading, 'text-foreground'),
+    sectionWhite: cn(theme.typography.sectionHeading, 'text-white'),
+    sectionDark: cn(theme.typography.sectionHeading, 'text-zinc-900'),
+
+    // Subsection headings
+    subsection: cn(theme.typography.subsectionTitle, 'text-foreground'),
+    subsectionWhite: cn(theme.typography.subsectionTitle, 'text-white'),
+
+    // Card titles
+    card: cn(theme.typography.cardTitle, 'text-foreground'),
+    cardWhite: cn(theme.typography.cardTitleWhite),
+    cardSpaced: cn(theme.typography.cardTitle, 'mb-2'),
+  },
+
+  // Common Card Patterns (ready to use)
+  cardPatterns: {
+    // Simple variants
+    minimal: cn(theme.components.card.simple), // Just rounded corners
+    standard: cn(theme.components.card.withPadding), // Rounded + padding
+    compact: cn(theme.components.card.compact), // Rounded + less padding
+
+    // Feature cards
+    feature: cn(theme.components.card.base, theme.components.padding.card, 'group'),
+    featureLarge: cn(theme.components.card.base, theme.components.padding.cardLarge, 'group'),
+
+    // Interactive cards
+    clickable: cn(
+      theme.components.card.simple,
+      theme.components.padding.card,
+      'hover:shadow-xl transition-shadow cursor-pointer'
+    ),
+    hoverable: cn(
+      theme.components.card.simple,
+      theme.components.padding.card,
+      'group hover:shadow-xl transition-all duration-300'
+    ),
+  },
+
+  // Common Icon Containers
+  iconContainer: {
+    // Small icon backgrounds (common pattern)
+    small: 'w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center',
+    medium: 'w-12 h-12 rounded-lg bg-blue-600/10 flex items-center justify-center',
+    large: 'w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-600/30',
+
+    // With specific colors
+    blueLight: 'w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center',
+    blueDark: 'w-12 h-12 rounded-lg bg-blue-600 flex items-center justify-center',
+  },
+
+  // Common Text Colors (shorthand)
+  textColor: {
+    primary: theme.colors.text.blue,
+    primaryHover: theme.colors.text.blueHover,
+    light: theme.colors.text.blueLight,
+    muted: theme.colors.text.muted,
+    mutedHover: theme.colors.text.mutedHover,
+  },
+
+  // Common Background Colors (shorthand)
+  bgColor: {
+    dark: theme.colors.background.dark,
+    darkCard: theme.colors.background.darkCard,
+    primary: theme.colors.background.primary,
+    primaryHover: theme.colors.background.primaryHover,
+    light: theme.colors.background.light,
+    lightCard: theme.colors.background.lightCard,
+    accent: theme.colors.background.accent,
+    accentHover: theme.colors.background.accentHover,
+  },
 } as const;

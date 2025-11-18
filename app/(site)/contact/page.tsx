@@ -23,7 +23,7 @@ export async function generateMetadata() {
   // Pull SEO data from Sanity with fallbacks
   const metadata = {
     title: contactData?.seo?.metaTitle || 'Contact IIS - Precision Manufacturing Quote & Consultation',
-    description: contactData?.seo?.metaDescription || 'Contact Integrated Inspection Systems for precision manufacturing quotes, technical consultations, and project inquiries. AS9100, ISO 9001 certified, ITAR registered. 24-hour quote response.',
+    description: contactData?.seo?.metaDescription || 'Contact Integrated Inspection Systems for precision manufacturing quotes, technical consultations, and project inquiries. AS9100, ISO 9001 certified, ITAR registered facility.',
     keywords: contactData?.seo?.metaKeywords || 'contact IIS, precision manufacturing quote, CNC machining quote, CMM inspection quote, aerospace manufacturing inquiry, technical consultation, metrology services quote, Oregon manufacturing',
     ogImage: contactData?.seo?.ogImage?.asset?.url || `${baseUrl}/og-image-contact.jpg`,
     ogImageAlt: contactData?.seo?.ogImage?.alt || 'Contact IIS Precision Manufacturing',
