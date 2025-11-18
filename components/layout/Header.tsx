@@ -522,15 +522,15 @@ export default function Header({ data }: HeaderProps) {
               id={mobileSheetId}
               side="right"
               className={cn(
-                'w-full sm:w-[400px] backdrop-blur-xl border-l-2',
+                'w-full sm:w-[400px] border-l',
                 isDark
-                  ? 'bg-slate-950/98 border-slate-800'
-                  : 'bg-white/98 border-slate-200'
+                  ? 'bg-slate-900 border-slate-700'
+                  : 'bg-white border-slate-200'
               )}
             >
               <nav className="flex flex-col h-full pt-12 pb-6">
-                <div className="flex-1 overflow-y-auto px-2">
-                  <div className="space-y-1">
+                <div className="flex-1 overflow-y-auto px-4">
+                  <div className="space-y-2">
                     {navigation.map((item: any) => {
                       const children = Array.isArray(item.children) ? item.children : []
                       const href = (item.href && item.href !== '#') ? item.href : '/'
@@ -542,15 +542,15 @@ export default function Header({ data }: HeaderProps) {
                           {children.length > 0 ? (
                             <div className="space-y-1">
                               <div className={cn(
-                                "px-4 py-3 font-bold text-base tracking-tight",
-                                isDark ? 'text-slate-100' : 'text-slate-900'
+                                "px-3 py-2.5 font-bold text-lg",
+                                isDark ? 'text-white' : 'text-slate-900'
                               )}>
-                                <span className="inline-flex items-center gap-2">
+                                <span className="inline-flex items-center gap-3">
                                   {IconFor(item?.iconName)}
                                   {item.name}
                                 </span>
                               </div>
-                              <div className="space-y-0.5 pl-4 ml-2 border-l-2 border-slate-200/50">
+                              <div className="space-y-1 pl-4 ml-3 border-l-2 border-slate-300">
                                 {children.map((child: any) => (
                                   <Link
                                     key={child.name}
@@ -559,10 +559,10 @@ export default function Header({ data }: HeaderProps) {
                                     rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
                                     onClick={() => setMobileMenuOpen(false)}
                                     className={cn(
-                                      "flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 active:scale-[0.98]",
+                                      "flex items-center gap-3 px-3 py-2.5 rounded-lg text-base font-medium transition-colors",
                                       isDark
-                                        ? 'text-slate-300 hover:text-white hover:bg-slate-900/50 active:bg-slate-900/70'
-                                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 active:bg-slate-200/60'
+                                        ? 'text-slate-200 hover:text-white hover:bg-slate-800'
+                                        : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                                     )}
                                   >
                                     {IconFor(child?.iconName)}
@@ -587,11 +587,11 @@ export default function Header({ data }: HeaderProps) {
                               rel={rel}
                               onClick={() => setMobileMenuOpen(false)}
                               className={cn(
-                                "flex items-center gap-2 px-4 py-3 rounded-lg font-bold text-base transition-all duration-200 active:scale-[0.98]",
+                                "flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-lg transition-colors",
                                 isDark
-                                  ? 'text-slate-100 hover:text-white hover:bg-slate-900/50 active:bg-slate-900/70'
-                                  : 'text-slate-900 hover:bg-slate-100/80 active:bg-slate-200/60',
-                                pathname === href && (isDark ? 'bg-slate-900/60' : 'bg-slate-100')
+                                  ? 'text-white hover:bg-slate-800'
+                                  : 'text-slate-900 hover:bg-slate-100',
+                                pathname === href && (isDark ? 'bg-slate-800' : 'bg-slate-100')
                               )}
                             >
                               {IconFor(item?.iconName)}
@@ -605,44 +605,44 @@ export default function Header({ data }: HeaderProps) {
                 </div>
 
                 {/* CTA Button at bottom */}
-                <div className="px-2 pt-6 border-t border-slate-200/50">
+                <div className="px-4 pt-6 border-t border-slate-200">
                   <Link href={cta.href} onClick={() => setMobileMenuOpen(false)} className="block">
-                    <PremiumButton className="w-full h-14 text-base font-semibold">
+                    <PremiumButton className="w-full h-12 text-base font-semibold">
                       {cta.text}
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </PremiumButton>
                   </Link>
 
                   {/* Contact info */}
-                  <div className="mt-6 space-y-3">
+                  <div className="mt-4 space-y-2">
                     {topBar.showPhone !== false && (
                       <a
                         href={topBar.phoneLink}
                         className={cn(
-                          "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
+                          "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
                           isDark
-                            ? 'text-slate-300 hover:text-white hover:bg-slate-900/40'
-                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                            ? 'text-slate-200 hover:text-white hover:bg-slate-800'
+                            : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                         )}
                         aria-label={`Call ${topBar.phone}`}
                       >
-                        <Phone className="h-4 w-4" />
-                        <span className="text-sm font-medium">{topBar.phone}</span>
+                        <Phone className="h-5 w-5" />
+                        <span className="text-base font-medium">{topBar.phone}</span>
                       </a>
                     )}
                     {topBar.showEmail !== false && (
                       <a
                         href={topBar.emailLink}
                         className={cn(
-                          "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
+                          "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
                           isDark
-                            ? 'text-slate-300 hover:text-white hover:bg-slate-900/40'
-                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                            ? 'text-slate-200 hover:text-white hover:bg-slate-800'
+                            : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                         )}
                         aria-label={`Email ${topBar.email}`}
                       >
-                        <Mail className="h-4 w-4" />
-                        <span className="text-sm font-medium">{topBar.email}</span>
+                        <Mail className="h-5 w-5" />
+                        <span className="text-base font-medium">{topBar.email}</span>
                       </a>
                     )}
                   </div>
