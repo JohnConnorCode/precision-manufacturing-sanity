@@ -222,7 +222,7 @@ export default {
             }
           ]
         },
-        { name: 'imageUrl', type: 'url', title: 'Story Image URL (optional)', fieldset: 'image' },
+        { name: 'imageUrl', type: 'url', title: 'Story Image URL (optional)', fieldset: 'image', validation: (Rule: any) => Rule.uri({ scheme: ['http', 'https'] }).warning('Must be a valid URL starting with http:// or https://') },
       ],
     },
     {

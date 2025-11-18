@@ -91,6 +91,7 @@ export default {
       title: 'Icon Name',
       description: 'Lucide icon name (e.g., "Cog", "Cpu", "Ruler", "Wrench")',
       group: 'general',
+      validation: (Rule: any) => Rule.required().error('Icon is required for service cards'),
     },
     {
       name: 'fullDescription',
@@ -317,7 +318,8 @@ export default {
               name: 'imageUrl',
               type: 'url',
               title: 'External Image URL',
-              description: 'Optional external image source (e.g., Unsplash)'
+              description: 'Optional external image source (e.g., Unsplash)',
+              validation: (Rule: any) => Rule.uri({ scheme: ['http', 'https'] }).warning('Must be a valid URL starting with http:// or https://')
             },
             {
               name: 'bullets',
@@ -433,7 +435,7 @@ export default {
                 { name: 'alt', type: 'string', title: 'Alt Text', validation: (Rule: any) => Rule.required() }
               ]
             },
-            { name: 'imageUrl', type: 'url', title: 'External Image URL' }
+            { name: 'imageUrl', type: 'url', title: 'External Image URL', validation: (Rule: any) => Rule.uri({ scheme: ['http', 'https'] }).warning('Must be a valid URL starting with http:// or https://') }
           ]
         }
       ]
@@ -611,7 +613,8 @@ export default {
         {
           name: 'imageUrl',
           type: 'url',
-          title: 'External Image URL'
+          title: 'External Image URL',
+          validation: (Rule: any) => Rule.uri({ scheme: ['http', 'https'] }).warning('Must be a valid URL starting with http:// or https://')
         },
         {
           name: 'alt',
@@ -746,6 +749,8 @@ export default {
       title: 'Display Order',
       description: 'Controls the order in which services appear (lower numbers first)',
       group: 'display',
+      initialValue: 0,
+      validation: (Rule: any) => Rule.required().min(0).error('Order is required and must be 0 or greater'),
     },
     {
       name: 'image',
@@ -753,6 +758,7 @@ export default {
       title: 'Service Card Image',
       description: 'Image displayed on service cards (recommended: 800x600px)',
       group: 'display',
+      validation: (Rule: any) => Rule.required().error('Image is required for service cards'),
       options: {
         hotspot: true,
         metadata: ['blurhash', 'lqip', 'palette'],

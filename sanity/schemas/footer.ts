@@ -90,6 +90,23 @@ export default {
       of: [
         {
           type: 'object',
+          name: 'footerLink',
+          title: 'Footer Link',
+          preview: {
+            select: {
+              title: 'label',
+              subtitle: 'href',
+              enabled: 'enabled',
+            },
+            prepare(selection: any) {
+              const { title, subtitle, enabled } = selection
+              const status = enabled === false ? ' (Hidden)' : ''
+              return {
+                title: `${title || 'Untitled Link'}${status}`,
+                subtitle: subtitle || 'No URL set',
+              }
+            }
+          },
           fields: [
             {
               name: 'enabled',
@@ -116,6 +133,23 @@ export default {
       of: [
         {
           type: 'object',
+          name: 'footerLink',
+          title: 'Footer Link',
+          preview: {
+            select: {
+              title: 'label',
+              subtitle: 'href',
+              enabled: 'enabled',
+            },
+            prepare(selection: any) {
+              const { title, subtitle, enabled } = selection
+              const status = enabled === false ? ' (Hidden)' : ''
+              return {
+                title: `${title || 'Untitled Link'}${status}`,
+                subtitle: subtitle || 'No URL set',
+              }
+            }
+          },
           fields: [
             {
               name: 'enabled',
@@ -142,6 +176,23 @@ export default {
       of: [
         {
           type: 'object',
+          name: 'footerLink',
+          title: 'Footer Link',
+          preview: {
+            select: {
+              title: 'label',
+              subtitle: 'href',
+              enabled: 'enabled',
+            },
+            prepare(selection: any) {
+              const { title, subtitle, enabled } = selection
+              const status = enabled === false ? ' (Hidden)' : ''
+              return {
+                title: `${title || 'Untitled Link'}${status}`,
+                subtitle: subtitle || 'No URL set',
+              }
+            }
+          },
           fields: [
             {
               name: 'enabled',

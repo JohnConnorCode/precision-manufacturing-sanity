@@ -11,7 +11,10 @@ import {
   FileCheck,
   Settings,
   Navigation,
-  Layout
+  Layout,
+  Type,
+  File,
+  Globe
 } from 'lucide-react';
 
 export const structure = (S: StructureBuilder) =>
@@ -68,6 +71,7 @@ export const structure = (S: StructureBuilder) =>
                   S.documentTypeList('resource')
                     .title('All Resources')
                     .filter('_type == "resource"')
+                    .defaultOrdering([{field: 'publishDate', direction: 'desc'}])
                 ),
 
               S.divider(),
@@ -78,6 +82,7 @@ export const structure = (S: StructureBuilder) =>
                   S.documentTypeList('resource')
                     .title('Manufacturing Processes')
                     .filter('_type == "resource" && category == "manufacturing-processes"')
+                    .defaultOrdering([{field: 'publishDate', direction: 'desc'}])
                 ),
 
               S.listItem()
@@ -86,6 +91,7 @@ export const structure = (S: StructureBuilder) =>
                   S.documentTypeList('resource')
                     .title('Material Science')
                     .filter('_type == "resource" && category == "material-science"')
+                    .defaultOrdering([{field: 'publishDate', direction: 'desc'}])
                 ),
 
               S.listItem()
@@ -94,6 +100,7 @@ export const structure = (S: StructureBuilder) =>
                   S.documentTypeList('resource')
                     .title('Quality & Compliance')
                     .filter('_type == "resource" && category == "quality-compliance"')
+                    .defaultOrdering([{field: 'publishDate', direction: 'desc'}])
                 ),
 
               S.listItem()
@@ -102,6 +109,7 @@ export const structure = (S: StructureBuilder) =>
                   S.documentTypeList('resource')
                     .title('Industry Applications')
                     .filter('_type == "resource" && category == "industry-applications"')
+                    .defaultOrdering([{field: 'publishDate', direction: 'desc'}])
                 ),
 
               S.listItem()
@@ -110,6 +118,7 @@ export const structure = (S: StructureBuilder) =>
                   S.documentTypeList('resource')
                     .title('Calculators & Tools')
                     .filter('_type == "resource" && category == "calculators-tools"')
+                    .defaultOrdering([{field: 'publishDate', direction: 'desc'}])
                 ),
             ])
         ),
@@ -228,6 +237,51 @@ export const structure = (S: StructureBuilder) =>
                     .schemaType('footer')
                     .documentId('footer')
                 ),
+              S.listItem()
+                .title('Services Page')
+                .icon(Cog)
+                .child(
+                  S.document()
+                    .schemaType('servicesPage')
+                    .documentId('servicesPage')
+                ),
+              S.listItem()
+                .title('Industries Page')
+                .icon(Plane)
+                .child(
+                  S.document()
+                    .schemaType('industriesPage')
+                    .documentId('industriesPage')
+                ),
+              S.listItem()
+                .title('UI Text')
+                .icon(Type)
+                .child(
+                  S.document()
+                    .schemaType('uiText')
+                    .documentId('uiText')
+                ),
+              S.listItem()
+                .title('Page Content')
+                .icon(File)
+                .child(
+                  S.document()
+                    .schemaType('pageContent')
+                    .documentId('pageContent')
+                ),
             ])
+        ),
+
+      S.divider(),
+
+      // Generic Pages Collection
+      S.listItem()
+        .title('Generic Pages')
+        .icon(Globe)
+        .child(
+          S.documentTypeList('page')
+            .title('Generic Pages')
+            .filter('_type == "page"')
+            .defaultOrdering([{field: 'title', direction: 'asc'}])
         ),
     ]);

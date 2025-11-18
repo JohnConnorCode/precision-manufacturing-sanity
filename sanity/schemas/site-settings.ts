@@ -4,10 +4,19 @@ export default {
   type: 'document',
   title: 'Site Settings',
   preview: {
-    prepare() {
+    select: {
+      companyName: 'company.name',
+      phone: 'contact.phone',
+      email: 'contact.email',
+      announcementEnabled: 'announcement.enabled',
+    },
+    prepare(selection: any) {
+      const {companyName, phone, email, announcementEnabled} = selection
+      const subtitle = phone && email ? `${phone} • ${email}` : 'Global settings'
+      const announcement = announcementEnabled ? ' 📢 Announcement Active' : ''
       return {
-        title: 'Site Settings',
-        subtitle: 'Global settings, theme, branding, and SEO defaults',
+        title: `${companyName || 'Site Settings'}${announcement}`,
+        subtitle: subtitle,
       }
     },
   },

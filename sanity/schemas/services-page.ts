@@ -75,6 +75,8 @@ export default {
           of: [
             {
               type: 'object',
+              name: 'button',
+              title: 'Button',
               fields: [
                 {
                   name: 'enabled',
@@ -96,7 +98,24 @@ export default {
                     ]
                   }
                 }
-              ]
+              ],
+              preview: {
+                select: {
+                  label: 'label',
+                  href: 'href',
+                  variant: 'variant',
+                  enabled: 'enabled',
+                },
+                prepare(selection: any) {
+                  const { label, href, variant, enabled } = selection
+                  const status = enabled === false ? ' (Hidden)' : ''
+                  const variantIcon = variant === 'primary' ? '🔵' : '⚪'
+                  return {
+                    title: `${variantIcon} ${label || 'Untitled Button'}${status}`,
+                    subtitle: href || 'No URL set',
+                  }
+                }
+              }
             }
           ],
           initialValue: [
@@ -136,6 +155,8 @@ export default {
           of: [
             {
               type: 'object',
+              name: 'capability',
+              title: 'Capability',
               fields: [
                 {
                   name: 'enabled',

@@ -288,7 +288,8 @@ export default {
               name: 'imageUrl',
               type: 'url',
               title: 'External Image URL',
-              description: 'Optional external image URL (if Sanity image not used)'
+              description: 'Optional external image URL (if Sanity image not used)',
+              validation: (Rule: any) => Rule.uri({ scheme: ['http', 'https'] }).warning('Must be a valid URL starting with http:// or https://')
             },
             {
               name: 'components',
@@ -587,7 +588,8 @@ export default {
               name: 'imageUrl',
               type: 'url',
               title: 'External Image URL',
-              description: 'Optional remote image source when an upload is not available'
+              description: 'Optional remote image source when an upload is not available',
+              validation: (Rule: any) => Rule.uri({ scheme: ['http', 'https'] }).warning('Must be a valid URL starting with http:// or https://')
             },
             {
               name: 'parts',
@@ -806,6 +808,8 @@ export default {
       title: 'Display Order',
       description: 'Controls the order in which industries appear (lower numbers first)',
       group: 'display',
+      initialValue: 0,
+      validation: (Rule: any) => Rule.required().min(0).error('Order is required and must be 0 or greater'),
     },
     {
       ...iconField('iconName', 'Card Icon', 'Lucide icon name for the industry card (e.g., "Plane", "Shield", "Factory")'),
@@ -818,6 +822,7 @@ export default {
       title: 'Industry Card Image',
       description: 'Image displayed on industry cards (recommended: 800x600px)',
       group: 'display',
+      validation: (Rule: any) => Rule.required().error('Image is required for industry cards'),
       options: {
         hotspot: true,
         metadata: ['blurhash', 'lqip', 'palette'],
@@ -848,6 +853,7 @@ export default {
       title: 'Industry Card Image URL',
       description: 'Optional remote image source for card display',
       group: 'display',
+      validation: (Rule: any) => Rule.uri({ scheme: ['http', 'https'] }).warning('Must be a valid URL starting with http:// or https://'),
     },
     {
       name: 'features',

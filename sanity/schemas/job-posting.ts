@@ -48,21 +48,6 @@ export default {
       }
     },
     {
-      name: 'type',
-      type: 'string',
-      title: 'Employment Type (Legacy)',
-      description: 'DEPRECATED: Use employmentType instead',
-      hidden: true,
-      options: {
-        list: [
-          { title: 'Full-time', value: 'Full-time' },
-          { title: 'Part-time', value: 'Part-time' },
-          { title: 'Contract', value: 'Contract' },
-          { title: 'Temporary', value: 'Temporary' }
-        ]
-      }
-    },
-    {
       name: 'employmentType',
       type: 'string',
       title: 'Employment Type',
@@ -252,14 +237,6 @@ export default {
       description: 'Lower numbers appear first (featured jobs always first)',
       group: 'settings',
       initialValue: 0
-    },
-    {
-      name: 'postedDate',
-      type: 'date',
-      title: 'Posted Date (Legacy)',
-      description: 'DEPRECATED: Use datePosted instead',
-      group: 'settings',
-      hidden: true
     }
   ],
   preview: {
@@ -267,13 +244,12 @@ export default {
       title: 'title',
       department: 'department',
       employmentType: 'employmentType',
-      type: 'type',
       published: 'published',
       featured: 'featured'
     },
     prepare(selection: any) {
-      const { title, department, employmentType, type, published, featured } = selection
-      const empType = employmentType || type || 'Full-time'
+      const { title, department, employmentType, published, featured } = selection
+      const empType = employmentType || 'Full-time'
       let subtitle = empType
       if (department) subtitle += ` • ${department}`
 
@@ -294,7 +270,7 @@ export default {
       by: [
         { field: 'featured', direction: 'desc' },
         { field: 'order', direction: 'asc' },
-        { field: 'postedDate', direction: 'desc' }
+        { field: 'datePosted', direction: 'desc' }
       ]
     },
     {

@@ -74,6 +74,7 @@ export default {
       title: 'Photo',
       description: 'Team member photo (recommended: 400x400px, square aspect ratio)',
       group: 'general',
+      validation: (Rule: any) => Rule.required().error('Photo is required for team member profile'),
       options: {
         hotspot: true,
         metadata: ['blurhash', 'lqip', 'palette'],

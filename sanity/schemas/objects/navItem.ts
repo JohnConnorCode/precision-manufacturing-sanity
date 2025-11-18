@@ -2,6 +2,27 @@ export default {
   name: 'navItem',
   type: 'object',
   title: 'Navigation Item',
+  preview: {
+    select: {
+      title: 'name',
+      subtitle: 'href',
+      iconPreset: 'iconPreset',
+      showInHeader: 'showInHeader',
+      showInFooter: 'showInFooter',
+    },
+    prepare(selection: any) {
+      const { title, subtitle, iconPreset, showInHeader, showInFooter } = selection
+      const icon = iconPreset && iconPreset !== 'none' ? `📍 ` : ''
+      const locations = []
+      if (showInHeader === false) locations.push('Header Hidden')
+      if (showInFooter === true) locations.push('Footer')
+      const locationText = locations.length > 0 ? ` • ${locations.join(', ')}` : ''
+      return {
+        title: `${icon}${title || 'Untitled'}${locationText}`,
+        subtitle: subtitle || 'No URL set',
+      }
+    }
+  },
   fields: [
     { name: 'name', type: 'string', title: 'Label', validation: (Rule: any) => Rule.required() },
     { name: 'href', type: 'string', title: 'URL', description: 'Internal path (/about) or full external URL' },

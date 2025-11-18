@@ -180,6 +180,7 @@ export default {
       description: 'Main image for the resource (recommended: 1200x800px)',
       group: 'metadata',
       fieldset: 'featuredImageInfo',
+      validation: (Rule: any) => Rule.required().error('Featured image is required for resource cards and previews'),
       options: {
         hotspot: true,
         metadata: ['blurhash', 'lqip', 'palette'],

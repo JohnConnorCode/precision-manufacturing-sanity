@@ -449,7 +449,8 @@ export default {
           name: 'imageUrl',
           type: 'url',
           title: 'Image URL (alternative)',
-          description: 'Use if you prefer to provide an external image URL'
+          description: 'Use if you prefer to provide an external image URL',
+          validation: (Rule: any) => Rule.uri({ scheme: ['http', 'https'] }).warning('Must be a valid URL starting with http:// or https://')
         },
       ],
     },
