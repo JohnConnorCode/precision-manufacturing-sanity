@@ -5,7 +5,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // This layout wraps ALL routes but should NOT render html/body
-  // because route groups (like (payload) and (site)) provide their own
-  return children;
+  // Root layout required by Next.js 15.5.3
+  // Route groups provide their own body/head content
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>{children}</body>
+    </html>
+  );
 }

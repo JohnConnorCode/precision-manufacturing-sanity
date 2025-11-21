@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from 'next/script';
 import { draftMode } from 'next/headers'
 import { Inter } from 'next/font/google'
 import "../globals.css";
@@ -276,14 +277,13 @@ export default async function SiteLayout({
   };
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </head>
-      <body className={`${fontClass} antialiased`}>
+    <>
+      <Script
+        id="json-ld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className={`${fontClass} antialiased`}>
         <SiteChrome
           navigationData={navigationData}
           footerData={footerData}
@@ -302,7 +302,7 @@ export default async function SiteLayout({
         <CMSIndicator />
         {isDraft && process.env.NEXT_PUBLIC_ENABLE_VISUAL_EDITING === 'true' ? <VisualEditingClient /> : null}
         {isDraft ? <PreviewBanner /> : null}
-      </body>
-    </html>
+      </div>
+    </>
   );
 }
