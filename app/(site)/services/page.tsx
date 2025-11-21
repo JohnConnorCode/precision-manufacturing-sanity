@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
-import { PortableTextContent } from '@/components/portable-text-components';
 import { theme, styles, cn } from '@/lib/theme';
 import { ArrowRight, Award } from 'lucide-react';
 import Link from 'next/link';
@@ -285,7 +284,7 @@ export default async function ServicesPage() {
                       className={cn(styles.ctaSecondary, "w-full group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900")}
                     >
                       <Link href={service.href}>
-                        Learn More
+                        {service.cardCtaText}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>

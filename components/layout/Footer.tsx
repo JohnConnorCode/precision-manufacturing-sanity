@@ -7,50 +7,47 @@ import Logo from '@/components/ui/logo';
 import { theme, cn } from '@/lib/theme';
 import { motion } from 'framer-motion';
 
-// Hardcoded fallback data
-const defaultFooterData = {
-  company: {
-    description: 'Precision manufacturing and metrology solutions for aerospace, defense, and advanced industries.',
-    foundedYear: '1995',
-    certifications: 'ISO 9001:2015 • AS9100D • ITAR Registered'
-  },
-  social: {
-    linkedin: '',
-    twitter: '',
-    facebook: ''
-  },
-  servicesLinks: [
-    { label: '5-Axis Machining', href: '/services/5-axis-machining' },
-    { label: 'Adaptive Machining', href: '/services/adaptive-machining-technology' },
-    { label: 'Metrology & Inspection', href: '/services/precision-metrology' },
-    { label: 'Engineering Services', href: '/services/comprehensive-engineering-services' },
-    { label: 'All Services', href: '/services' }
-  ],
-  resourcesLinks: [
-    { label: 'All Resources', href: '/resources' },
-    { label: 'Manufacturing Processes', href: '/resources/manufacturing-processes' },
-    { label: 'Quality & Compliance', href: '/resources/quality-compliance' },
-    { label: 'Material Science', href: '/resources/material-science' }
-  ],
-  quickLinks: [
-    { label: 'About Us', href: '/about' },
-    { label: 'Careers', href: '/careers' },
-    { label: 'Industries', href: '/industries' },
-    { label: 'Terms & Conditions', href: '/compliance/terms' },
-    { label: 'Supplier Requirements', href: '/compliance/supplier-requirements' },
-    { label: 'Contact', href: '/contact' }
-  ],
-  contact: {
-    email: 'officemgr@iismet.com',
-    phone: '+1 (503) 231-9093',
-    phoneLink: 'tel:+15032319093',
-    address: '14310 SE Industrial Way\nClackamas, OR 97015\nUnited States'
-  },
-  copyright: '© {year} Integrated Inspection Systems, Inc. All rights reserved.'
-};
-
 interface FooterProps {
-  data?: (typeof defaultFooterData & {
+  data?: {
+    servicesHeading?: string;
+    resourcesHeading?: string;
+    quickLinksHeading?: string;
+    contactHeading?: string;
+    company?: {
+      description?: string;
+      foundedYear?: string;
+      certifications?: string;
+    };
+    social?: {
+      linkedin?: string;
+      twitter?: string;
+      facebook?: string;
+    };
+    servicesLinks?: Array<{
+      label?: string;
+      text?: string;
+      href?: string;
+      enabled?: boolean;
+    }>;
+    resourcesLinks?: Array<{
+      label?: string;
+      text?: string;
+      href?: string;
+      enabled?: boolean;
+    }>;
+    quickLinks?: Array<{
+      label?: string;
+      text?: string;
+      href?: string;
+      enabled?: boolean;
+    }>;
+    contact?: {
+      email?: string;
+      phone?: string;
+      phoneLink?: string;
+      address?: string;
+    };
+    copyright?: string;
     logo?: {
       logoType?: 'svg' | 'custom' | 'original';
       customLogo?: {
@@ -60,15 +57,15 @@ interface FooterProps {
       svgColor?: 'auto' | 'dark' | 'light';
       showCompanyText?: boolean;
       enableAnimation?: boolean;
-    }
-  }) | null;
+    };
+  } | null;
 }
 
 const Footer = ({ data }: FooterProps) => {
-  // Use CMS data if available, otherwise fall back to hardcoded defaults
+  // 100% CMS controlled - no hardcoded fallbacks
   // Map Sanity field names (text) to expected field names (label)
-  const mapLinks = (links: any[] | undefined, fallback: any[]) => {
-    if (!links) return fallback;
+  const mapLinks = (links: any[] | undefined) => {
+    if (!links) return [];
     return links
       .filter(link => link?.enabled !== false)
       .map(link => ({
@@ -78,32 +75,36 @@ const Footer = ({ data }: FooterProps) => {
   };
 
   const footerData = {
-    company: data?.company || defaultFooterData.company,
+    servicesHeading: data?.servicesHeading,
+    resourcesHeading: data?.resourcesHeading,
+    quickLinksHeading: data?.quickLinksHeading,
+    contactHeading: data?.contactHeading,
+    company: data?.company,
     social: {
       linkedin: data?.social?.linkedin || '',
       twitter: data?.social?.twitter || '',
       facebook: data?.social?.facebook || ''
     },
-    servicesLinks: mapLinks(data?.servicesLinks, defaultFooterData.servicesLinks),
-    resourcesLinks: mapLinks(data?.resourcesLinks, defaultFooterData.resourcesLinks),
-    quickLinks: mapLinks(data?.quickLinks, defaultFooterData.quickLinks),
+    servicesLinks: mapLinks(data?.servicesLinks),
+    resourcesLinks: mapLinks(data?.resourcesLinks),
+    quickLinks: mapLinks(data?.quickLinks),
     contact: {
-      email: data?.contact?.email || defaultFooterData.contact.email,
-      phone: data?.contact?.phone || defaultFooterData.contact.phone,
+      email: data?.contact?.email,
+      phone: data?.contact?.phone,
       phoneLink: (() => {
-        const phoneValue = data?.contact?.phone || defaultFooterData.contact.phone;
-        if (!phoneValue) return defaultFooterData.contact.phoneLink;
+        const phoneValue = data?.contact?.phone;
+        if (!phoneValue) return undefined;
         const trimmed = phoneValue.trim();
         const digits = phoneValue.replace(/\D/g, '');
         if (trimmed.startsWith('+')) {
           const normalized = trimmed.replace(/[()\s-]/g, '');
           return `tel:${normalized}`;
         }
-        return digits ? `tel:+1${digits}` : defaultFooterData.contact.phoneLink;
+        return digits ? `tel:+1${digits}` : undefined;
       })(),
-      address: data?.contact?.address || defaultFooterData.contact.address
+      address: data?.contact?.address
     },
-    copyright: data?.copyright || defaultFooterData.copyright
+    copyright: data?.copyright
   };
   const [isVisible, setIsVisible] = useState(false);
 
@@ -152,7 +153,7 @@ const Footer = ({ data }: FooterProps) => {
     }
   };
 
-  const logoVariants = {
+  const _logoVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: {
       opacity: 1,
@@ -176,7 +177,7 @@ const Footer = ({ data }: FooterProps) => {
           <motion.div variants={itemVariants} className="space-y-4">
             <Logo variant="light" showText={true} size="md" animated={false} logoData={data?.logo} />
             <p className={cn(theme.typography.small, 'text-slate-400 max-w-xs')}>
-              {footerData.company.description}
+              {footerData.company?.description}
             </p>
             <div className="flex space-x-4">
               {footerData.social.linkedin && footerData.social.linkedin !== '#' && footerData.social.linkedin !== '' && (
@@ -198,7 +199,7 @@ const Footer = ({ data }: FooterProps) => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-3 text-blue-600">Services</h4>
+            <h4 className="font-semibold mb-3 text-blue-600">{footerData.servicesHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.servicesLinks.map((link) => (
                 <li key={link.label}>
@@ -211,7 +212,7 @@ const Footer = ({ data }: FooterProps) => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-3 text-blue-600">Resources</h4>
+            <h4 className="font-semibold mb-3 text-blue-600">{footerData.resourcesHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.resourcesLinks.map((link) => (
                 <li key={link.label}>
@@ -224,7 +225,7 @@ const Footer = ({ data }: FooterProps) => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-3 text-blue-600">Quick Links</h4>
+            <h4 className="font-semibold mb-3 text-blue-600">{footerData.quickLinksHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.quickLinks.map((link) => (
                 <li key={link.label}>
@@ -237,7 +238,7 @@ const Footer = ({ data }: FooterProps) => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-3 text-blue-600">Contact</h4>
+            <h4 className="font-semibold mb-3 text-blue-600">{footerData.contactHeading}</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start space-x-2">
                 <Mail className="h-4 w-4 text-slate-400 mt-0.5" />
@@ -254,10 +255,10 @@ const Footer = ({ data }: FooterProps) => {
               <li className="flex items-start space-x-2">
                 <MapPin className="h-4 w-4 text-slate-400 mt-0.5" />
                 <span className="text-slate-400">
-                  {footerData.contact.address.split('\n').map((line, i) => (
+                  {footerData.contact.address?.split('\n').map((line, i) => (
                     <span key={i}>
                       {line}
-                      {i < footerData.contact.address.split('\n').length - 1 && <br />}
+                      {i < (footerData.contact.address?.split('\n').length ?? 0) - 1 && <br />}
                     </span>
                   ))}
                 </span>
@@ -274,14 +275,14 @@ const Footer = ({ data }: FooterProps) => {
         >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className={cn(theme.typography.small, 'text-slate-500')}>
-              {footerData.copyright.replace('{year}', new Date().getFullYear().toString())}
+              {footerData.copyright?.replace('{year}', new Date().getFullYear().toString())}
             </p>
             <div className="flex items-center space-x-6">
               <Zap className="h-3 w-3 text-blue-600" />
               <div className={cn(theme.typography.badge, 'text-slate-500')}>
-                <span>Founded {footerData.company.foundedYear}</span>
+                <span>Founded {footerData.company?.foundedYear}</span>
                 <span className="mx-2">•</span>
-                <span>{footerData.company.certifications}</span>
+                <span>{footerData.company?.certifications}</span>
               </div>
             </div>
           </div>

@@ -4,6 +4,17 @@ import JobContent from './job-content';
 
 export const revalidate = 3600; // Revalidate every hour
 
+async function getSiteSettings() {
+  const query = `*[_type == "siteSettings"][0] {
+    hrEmail,
+    contact {
+      phone,
+      email
+    }
+  }`;
+  return await client.fetch(query);
+}
+
 async function getJobBySlug(slug: string) {
   const query = `*[_type == "jobPosting" && slug.current == $slug && published == true][0] {
     _id,
@@ -63,11 +74,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function JobPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const job = await getJobBySlug(slug);
+  const [job, siteSettings] = await Promise.all([
+    getJobBySlug(slug),
+    getSiteSettings()
+  ]);
 
   if (!job) {
     notFound();
   }
 
-  return <JobContent job={job} />;
+  return <JobContent job={job} siteSettings={siteSettings} />;
 }

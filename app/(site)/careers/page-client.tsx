@@ -45,49 +45,34 @@ const iconMap: Record<string, any> = {
   CheckCircle,
 };
 
-// Minimal fallback for hero only (all other content should come from Sanity)
-const defaultHeroData = {
-  backgroundImage: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=2400&q=90',
-  imageAlt: 'Careers at Integrated Inspection Systems',
-  badge: 'CAREERS',
-  badgeIconName: 'Users',
-  title: 'Join Our',
-  titleHighlight: 'Team',
-  description: 'Build your career with us',
-  buttons: [
-      { label: 'Explore Opportunities', href: '#opportunities', variant: 'primary' },
-      { label: 'Contact HR', href: '/contact?interest=career', variant: 'secondary' }
-    ]
-};
-
 interface CareersPageClientProps {
   data?: any | null;
   jobPostings?: any[];
 }
 
 export default function CareersPageClient({ data, jobPostings = [] }: CareersPageClientProps) {
-  const BadgeIcon = iconMap[data?.hero?.badgeIconName || defaultHeroData.badgeIconName] || Users;
+  const BadgeIcon = data?.hero?.badgeIconName ? (iconMap[data.hero.badgeIconName] || Users) : Users;
 
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={urlFor(data?.hero?.backgroundImage) || (data as any)?.hero?.backgroundImageUrl || defaultHeroData.backgroundImage}
-        imageAlt={data?.hero?.imageAlt || data?.hero?.backgroundImage?.alt || defaultHeroData.imageAlt}
+        backgroundImage={urlFor(data?.hero?.backgroundImage) || (data as any)?.hero?.backgroundImageUrl}
+        imageAlt={data?.hero?.imageAlt || data?.hero?.backgroundImage?.alt}
         badge={{
-          text: data?.hero?.badge || defaultHeroData.badge,
+          text: data?.hero?.badge,
           icon: BadgeIcon
         }}
         title={
           <span className="text-white">
-            {data?.hero?.title || defaultHeroData.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">{data?.hero?.titleHighlight || defaultHeroData.titleHighlight}</span>
+            {data?.hero?.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">{data?.hero?.titleHighlight}</span>
           </span>
         }
-        description={data?.hero?.description || defaultHeroData.description}
-        buttons={(data?.hero?.buttons || defaultHeroData.buttons)
+        description={data?.hero?.description}
+        buttons={(data?.hero?.buttons || [])
           .filter((btn: any) => btn?.enabled !== false)
           .map((btn: any) => ({
-            label: btn.label || 'Learn More',
-            href: btn.href || '#',
+            label: btn.label,
+            href: btn.href,
             variant: btn.variant as 'primary' | 'secondary'
           }))}
         height="large"

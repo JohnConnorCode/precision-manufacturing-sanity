@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import SupplierRequirementsPageClient from './page-client';
 import { getSupplierRequirements } from '@/sanity/lib/queries';
 
@@ -7,6 +8,11 @@ export const revalidate = 3600;
 export default async function SupplierRequirementsPage() {
   // Fetch data from CMS
   const supplierRequirementsData = await getSupplierRequirements();
+
+  // Return 404 if document doesn't exist yet in Sanity
+  if (!supplierRequirementsData) {
+    notFound();
+  }
 
   return <SupplierRequirementsPageClient data={supplierRequirementsData as any} />;
 }

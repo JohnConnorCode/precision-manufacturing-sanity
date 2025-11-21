@@ -1,15 +1,13 @@
 "use client";
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { ArrowRight, Award, Shield, Clock, Target, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useRef } from 'react';
 import SectionHeader from '@/components/ui/section-header';
-import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
-import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import { spacing, colors, borderRadius } from '@/lib/design-system';
 import { useTheme } from '@/lib/contexts/ThemeContext';
-import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-utils';
+import { getGradientStyle } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { ImageShowcaseData, ShowcaseImage, ShowcaseStat } from '@/lib/types/cms';
@@ -31,12 +29,6 @@ interface ImageShowcaseProps {
 export default function ImageShowcase({ data }: ImageShowcaseProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
-  // Use global scroll instead of targeted scroll to avoid hydration issues
-  const containerRef = useRef(null);
-  const { scrollY } = useScroll();
-
-  const opacity = useTransform(scrollY, [0, 300, 800, 1200], prefersReducedMotion ? [1, 1, 1, 1] : [0.5, 1, 1, 0.5]);
-  const scale = useTransform(scrollY, [0, 300, 800, 1200], prefersReducedMotion ? [1, 1, 1, 1] : [0.95, 1, 1, 0.95]);
 
   if (!data) {
     return null;
@@ -58,10 +50,8 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
   const stats = Array.isArray(data.stats) ? data.stats : [];
 
   return (
-    <section ref={containerRef} className={`relative ${spacing.section} ${colors.bgLight} overflow-hidden`}>
-      <motion.div
-        style={{ opacity, scale }}
-        className={`${spacing.containerWide} relative z-10`}>
+    <section className={`relative ${spacing.section} ${colors.bgLight} overflow-hidden`}>
+      <div className={`${spacing.containerWide} relative z-10`}>
         {/* Section Header */}
         {hasHeader && header && (
           <SectionHeader
@@ -119,8 +109,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                       {item.title}
                     </h3>
                     <div className="flex items-center text-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <span className="text-sm font-medium">View Details</span>
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </div>
@@ -215,7 +204,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
             </div>
           </motion.div>
         )}
-      </motion.div>
+      </div>
     </section>
   );
 }

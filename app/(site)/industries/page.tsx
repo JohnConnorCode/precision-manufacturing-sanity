@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
 import HeroSection from '@/components/ui/hero-section';
-import { PortableTextContent } from '@/components/portable-text-components';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { getAllIndustries, getIndustriesPage } from '@/sanity/lib/queries';
@@ -85,7 +84,7 @@ export default async function IndustriesPage() {
   ]);
 
   // Format industries with slug and plain text description
-  const formattedIndustries = industries.map((industry: any) => ({
+  const _formattedIndustries = industries.map((industry: any) => ({
     ...industry,
     slug: industry.slug?.current || industry.slug,
     description: industry.shortDescription || portableTextToPlainText(industry.description),
@@ -94,8 +93,8 @@ export default async function IndustriesPage() {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={industriesPageData?.hero?.backgroundImage?.asset?.url || 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=2400&q=90'}
-        imageAlt={industriesPageData?.hero?.backgroundImage?.alt || 'Industrial manufacturing - precision components for critical industries'}
+        backgroundImage={industriesPageData?.hero?.backgroundImage?.asset?.url || ''}
+        imageAlt={industriesPageData?.hero?.backgroundImage?.alt || ''}
         badge={industriesPageData?.hero?.badge || '🏭 CRITICAL INDUSTRY SOLUTIONS'}
         title={
           industriesPageData?.hero?.heading ? (
@@ -224,7 +223,7 @@ export default async function IndustriesPage() {
 
                       <Button asChild variant="outline">
                         <Link href={`/industries/${industry.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                          Learn More About {industry.name}
+                          {industry.cardCtaText || 'Learn More About'} {industry.name}
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>

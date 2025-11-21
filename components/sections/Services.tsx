@@ -6,11 +6,10 @@ import { Cog, Cpu, Gauge, Users, ArrowRight, CheckCircle, LucideIcon } from 'luc
 import Link from 'next/link';
 import Image from 'next/image';
 import SectionHeader from '@/components/ui/section-header';
-import { typography, spacing, colors, borderRadius } from '@/lib/design-system';
-import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import { spacing, colors, borderRadius } from '@/lib/design-system';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useTheme } from '@/lib/contexts/ThemeContext';
-import { getGradientTextStyle, getPrimaryColorStyle, hexToRgba } from '@/lib/theme-utils';
+import { getPrimaryColorStyle, hexToRgba } from '@/lib/theme-utils';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { Service, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
 import { DotGridBackground } from '@/lib/background-patterns';
@@ -194,8 +193,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
                         onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.secondary}
                         onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.primary}
                       >
-                        <span>Learn More</span>
-                        <div className="ml-1 group-hover:translate-x-1 transition-transform duration-300">
+                        <div className="group-hover:translate-x-1 transition-transform duration-300">
                           <ArrowRight className="w-4 h-4" />
                         </div>
                       </div>

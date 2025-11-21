@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+ 
 "use client";
 
 import React from 'react';
@@ -136,7 +136,7 @@ export default function Hero({ data }: HeroProps) {
 
   const overlayStyle = getOverlayStyles(data?.overlay);
   const primaryButtonStyles = getButtonStyles(data?.buttonStyles?.primaryButton);
-  const secondaryButtonStyles = getButtonStyles(data?.buttonStyles?.secondaryButton);
+  const _secondaryButtonStyles = getButtonStyles(data?.buttonStyles?.secondaryButton);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 lg:pt-0">
@@ -165,7 +165,7 @@ export default function Hero({ data }: HeroProps) {
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
+                  transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
                     color: titleColor,
@@ -180,7 +180,7 @@ export default function Hero({ data }: HeroProps) {
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
+                  transition={{ delay: 0.25, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
                     color: titleColor,
@@ -195,7 +195,7 @@ export default function Hero({ data }: HeroProps) {
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
+                  transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={
                     titleHighlightColor
@@ -221,7 +221,7 @@ export default function Hero({ data }: HeroProps) {
             <motion.h1
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9, duration: 0.5, ease: "easeOut" }}
+              transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
               className="text-lg sm:text-xl md:text-2xl font-light leading-[1.3] tracking-normal mb-8"
               style={{ color: descriptionColor }}
             >
@@ -247,7 +247,7 @@ export default function Hero({ data }: HeroProps) {
                     initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      delay: 1.2 + (index * 0.1),
+                      delay: 0.8 + (index * 0.05),
                       duration: 0.4,
                       ease: "easeOut"
                     }}
@@ -265,7 +265,7 @@ export default function Hero({ data }: HeroProps) {
               <motion.div
                 initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.8, duration: 0.5, ease: "easeOut" }}
+                transition={{ delay: 1.0, duration: 0.5, ease: "easeOut" }}
               >
                 <Button
                   size="lg"
@@ -297,7 +297,7 @@ export default function Hero({ data }: HeroProps) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.2, duration: 0.5, ease: "easeOut" }}
+        transition={{ delay: 1.4, duration: 0.5, ease: "easeOut" }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >
         <motion.div

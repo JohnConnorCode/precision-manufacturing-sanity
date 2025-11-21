@@ -258,6 +258,38 @@ export default {
           fieldset: 'description',
           initialValue: '1993',
         },
+        {
+          name: 'logoUrl',
+          type: 'url',
+          title: 'Logo URL',
+          description: 'Public URL to company logo for structured data (Schema.org)',
+          fieldset: 'identity',
+          initialValue: 'https://iismet.com/logo.png',
+          validation: (Rule: any) => Rule.uri({
+            scheme: ['http', 'https']
+          }),
+        },
+        {
+          name: 'coordinates',
+          type: 'object',
+          title: 'Geographic Coordinates',
+          description: 'Company location coordinates for structured data and maps',
+          fieldset: 'description',
+          fields: [
+            {
+              name: 'latitude',
+              type: 'string',
+              title: 'Latitude',
+              initialValue: '45.4215',
+            },
+            {
+              name: 'longitude',
+              type: 'string',
+              title: 'Longitude',
+              initialValue: '-122.5701',
+            },
+          ],
+        },
       ],
     },
     {
@@ -284,7 +316,8 @@ export default {
         {
           name: 'email',
           type: 'string',
-          title: 'Email Address',
+          title: 'Primary Email Address',
+          description: 'General inquiries email',
           fieldset: 'primary',
           validation: (Rule: any) =>
             Rule.required().regex(
@@ -293,11 +326,49 @@ export default {
             ).error('A valid email address is required'),
         },
         {
+          name: 'hrEmail',
+          type: 'string',
+          title: 'HR/Careers Email',
+          description: 'Email for job applications and career inquiries',
+          fieldset: 'primary',
+          validation: (Rule: any) =>
+            Rule.regex(
+              /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              {name: 'email'}
+            ).warning('Should be a valid email address'),
+        },
+        {
+          name: 'legalEmail',
+          type: 'string',
+          title: 'Legal/Compliance Email',
+          description: 'Email for legal and compliance matters',
+          fieldset: 'primary',
+          validation: (Rule: any) =>
+            Rule.regex(
+              /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              {name: 'email'}
+            ).warning('Should be a valid email address'),
+        },
+        {
+          name: 'supportEmail',
+          type: 'string',
+          title: 'Support Email',
+          description: 'Email for customer support and technical assistance',
+          fieldset: 'primary',
+          initialValue: 'officemgr@iismet.com',
+          validation: (Rule: any) =>
+            Rule.regex(
+              /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              {name: 'email'}
+            ).warning('Should be a valid email address'),
+        },
+        {
           name: 'address',
           type: 'text',
           title: 'Address',
           rows: 3,
           fieldset: 'address',
+          initialValue: '14310 SE Industrial Way',
           validation: (Rule: any) => Rule.required(),
         },
         {
@@ -305,18 +376,21 @@ export default {
           type: 'string',
           title: 'City',
           fieldset: 'address',
+          initialValue: 'Clackamas',
         },
         {
           name: 'state',
           type: 'string',
           title: 'State',
           fieldset: 'address',
+          initialValue: 'Oregon',
         },
         {
           name: 'zip',
           type: 'string',
           title: 'ZIP Code',
           fieldset: 'address',
+          initialValue: '97015',
         },
         {
           name: 'country',
@@ -347,6 +421,7 @@ export default {
           title: 'LinkedIn URL',
           description: 'Company LinkedIn page URL',
           fieldset: 'links',
+          initialValue: 'https://www.linkedin.com/company/integrated-inspection-systems',
           validation: (Rule: any) => Rule.uri({
             scheme: ['http', 'https']
           }).warning('Must be a valid URL starting with http:// or https://'),
@@ -357,6 +432,7 @@ export default {
           title: 'Twitter URL',
           description: 'Company Twitter/X profile URL',
           fieldset: 'links',
+          initialValue: 'https://twitter.com/iismet',
           validation: (Rule: any) => Rule.uri({
             scheme: ['http', 'https']
           }).warning('Must be a valid URL starting with http:// or https://'),

@@ -897,5 +897,14 @@ export default {
         },
       ],
     },
+    {
+      name: 'cardCtaText',
+      type: 'string',
+      title: 'Card CTA Button Text',
+      description: 'Text for the call-to-action button on service cards (e.g., "Learn More", "View Details", "Explore Service")',
+      group: 'display',
+      initialValue: 'Learn More',
+      validation: (Rule: any) => Rule.required().error('CTA button text is required for service cards'),
+    },
   ],
 }

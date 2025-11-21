@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import * as Icons from 'lucide-react';
 import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
-import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 

@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
 
   /* Enable ESLint during build for production quality */
   eslint: {
-    ignoreDuringBuilds: true, // Temporarily disabled - TODO: Fix ESLint warnings
+    ignoreDuringBuilds: false,
   },
 
   /* Enable TypeScript error checking for production quality */

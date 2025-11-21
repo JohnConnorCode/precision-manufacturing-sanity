@@ -16,7 +16,6 @@ import {
   MessageCircle,
   FileText,
 } from 'lucide-react';
-import Link from 'next/link';
 import ParallaxImagePro from '@/components/ui/parallax-image-pro';
 
 // Icon mapping for stats
@@ -89,7 +88,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className={cn(theme.typography.h2, 'mb-6')}>Get in Touch</h2>
+              <h2 className={cn(theme.typography.h2, 'mb-6')}>{contactData.contactInfo.heading}</h2>
               <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto text-slate-600')}>
                 {contactData.contactInfo.description}
               </p>
@@ -136,7 +135,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                           {contactData.contactInfo.phone}
                         </a>
                         <p className={cn(theme.typography.small, 'text-slate-500 mt-1')}>
-                          Direct line for quotes and inquiries
+                          {contactData.contactInfo?.phoneDescription || 'Direct line for quotes and inquiries'}
                         </p>
                       </div>
                     </div>
@@ -155,7 +154,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                           {contactData.contactInfo.email}
                         </a>
                         <p className={cn(theme.typography.small, 'text-slate-500 mt-1')}>
-                          Send us your project details
+                          {contactData.contactInfo?.emailDescription || 'Send us your project details'}
                         </p>
                       </div>
                     </div>
@@ -201,7 +200,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                         className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center gap-2 text-sm"
                       >
                         <Mail className="w-4 h-4" />
-                        Send Quote Request
+                        {contactData.contactInfo?.submitButtonText || 'Send Quote Request'}
                       </a>
                     </div>
                   </div>
@@ -213,7 +212,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                       <Phone className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <h4 className={cn(theme.typography.h5, 'mb-2')}>Technical Consultation</h4>
+                      <h4 className={cn(theme.typography.h5, 'mb-2')}>{contactData.contactInfo?.consultationHeading || 'Technical Consultation'}</h4>
                       <p className={cn(theme.typography.body, 'text-slate-600 mb-4')}>
                         Call us directly to discuss your technical requirements with our engineering team.
                       </p>
@@ -286,12 +285,14 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
             >
               <Card className="overflow-hidden shadow-2xl">
                 <div className="relative h-[500px]">
+                  {contactData.locationImage?.asset?.url && (
                   <ParallaxImagePro
-                    src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=2400&q=90"
-                    alt="IIS Manufacturing Facility Location"
+                    src={contactData.locationImage.asset.url}
+                    alt={contactData.locationImage.alt || "Location"}
                     className="w-full h-full object-cover"
                     speed={0.1}
                   />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
                     <div className="max-w-md bg-black/50 backdrop-blur-sm rounded-lg p-6 border border-white/10">

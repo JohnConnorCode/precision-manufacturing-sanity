@@ -20,77 +20,34 @@ import { motion } from 'framer-motion';
 import { theme } from '@/lib/theme';
 import { throttleRAF } from '@/lib/performance';
 
-// Hardcoded fallback data
-const defaultNavigation = [
-  {
-    name: 'Services',
-    href: '/services',
-    children: [
-      { name: '5-Axis Machining', href: '/services/5-axis-machining', description: 'Complex geometries with precision' },
-      { name: 'Adaptive Machining', href: '/services/adaptive-machining-technology', description: 'Real-time process adjustments' },
-      { name: 'Metrology & Inspection', href: '/services/precision-metrology', description: 'Complete dimensional verification' },
-      { name: 'Engineering Support', href: '/services/comprehensive-engineering-services', description: 'Design for manufacturability' },
-    ],
-  },
-  {
-    name: 'Industries',
-    href: '/industries',
-    children: [
-      { name: 'Aerospace', href: '/industries/aerospace', description: 'Critical aerospace components' },
-      { name: 'Energy & Turbines', href: '/industries/energy', description: 'Power generation solutions' },
-      { name: 'Defense', href: '/industries/defense', description: 'ITAR compliant manufacturing' },
-    ],
-  },
-  {
-    name: 'Resources',
-    href: '/resources',
-    children: [
-      { name: 'Manufacturing Processes', href: '/resources/manufacturing-processes', description: 'CNC machining guides and techniques' },
-      { name: 'Material Science', href: '/resources/material-science', description: 'Aerospace alloys and properties' },
-      { name: 'Quality & Compliance', href: '/resources/quality-compliance', description: 'AS9100D and ITAR guidance' },
-      { name: 'Industry Applications', href: '/resources/industry-applications', description: 'Real-world case studies' },
-      { name: 'Calculators & Tools', href: '/resources/calculators-tools', description: 'Interactive calculators' },
-    ],
-  },
-  {
-    name: 'About',
-    href: '/about',
-  },
-  {
-    name: 'Compliance',
-    href: '#',
-    children: [
-      { name: 'Terms & Conditions', href: '/compliance/terms', description: 'Purchase order terms' },
-      { name: 'Supplier Requirements', href: '/compliance/supplier-requirements', description: 'Supplier guidelines' },
-    ],
-  },
-  {
-    name: 'Contact',
-    href: '/contact',
-  },
-];
-
-const defaultTopBar = {
-  showPhone: true,
-  phone: '503-231-9093',
-  phoneLink: 'tel:+15032319093',
-  showEmail: true,
-  email: 'officemgr@iismet.com',
-  emailLink: 'mailto:officemgr@iismet.com',
-  showCertifications: true,
-  certifications: 'ISO 9001 • AS9100D • ITAR REGISTERED'
-};
-
-const defaultCTA = {
-  text: 'REQUEST QUOTE',
-  href: '/contact'
-};
-
 interface HeaderProps {
   data?: {
-    topBar?: typeof defaultTopBar;
-    menuItems?: typeof defaultNavigation;
-    cta?: typeof defaultCTA;
+    topBar?: {
+      showPhone?: boolean;
+      phone?: string;
+      phoneLink?: string;
+      showEmail?: boolean;
+      email?: string;
+      emailLink?: string;
+      showCertifications?: boolean;
+      certifications?: string;
+    };
+    menuItems?: Array<{
+      name: string;
+      href: string;
+      description?: string;
+      children?: Array<{
+        name: string;
+        href: string;
+        description?: string;
+      }>;
+      showInHeader?: boolean;
+    }>;
+    cta?: {
+      text: string;
+      href: string;
+    };
+    moreButtonText?: string;
     announcement?: {
       enabled?: boolean
       message?: string
@@ -114,13 +71,14 @@ interface HeaderProps {
 }
 
 export default function Header({ data }: HeaderProps) {
-  // Use CMS data if available, otherwise fall back to hardcoded defaults
-  const topBar = data?.topBar || defaultTopBar;
-  const announcement = data?.announcement
-  // Filter out items hidden via CMS flags (Careers should remain visible for parity)
-  const rawNavigation = data?.menuItems || defaultNavigation;
+  // 100% CMS controlled - no hardcoded fallbacks
+  const topBar = data?.topBar;
+  const announcement = data?.announcement;
+  // Filter out items hidden via CMS flags
+  const rawNavigation = data?.menuItems;
   const navigation = (rawNavigation || []).filter((item: any) => item?.showInHeader !== false);
-  const cta = data?.cta || defaultCTA;
+  const cta = data?.cta;
+  const moreButtonText = data?.moreButtonText;
   const navStyles = (data as any)?.styles || {}
   const align: 'left' | 'center' | 'right' = navStyles.alignment || 'left'
   const themeMode: 'auto' | 'light' | 'dark' = navStyles.theme || 'auto'
@@ -228,9 +186,9 @@ export default function Header({ data }: HeaderProps) {
         >
           <div className="container flex h-10 items-center justify-center text-sm gap-3">
             <span>{announcement.message}</span>
-            {announcement.href && (
+            {announcement.href && announcement.linkText && (
               <Link href={announcement.href} className="underline font-semibold">
-                {announcement.linkText || 'Learn more'}
+                {announcement.linkText}
               </Link>
             )}
           </div>
@@ -238,32 +196,34 @@ export default function Header({ data }: HeaderProps) {
       )}
 
       {/* Top Info Bar - Hidden on mobile */}
+      {topBar && (
       <aside className={cn('hidden lg:block fixed z-[150] w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-blue-600/10', announcement?.enabled ? 'top-10' : 'top-0')} role="complementary" aria-label="Contact information">
         <div className="container flex h-10 items-center justify-between text-sm">
           <div className="flex items-center space-x-6">
-            {topBar.showPhone !== false && (
-              <a href={topBar.phoneLink} className="flex items-center space-x-2 text-slate-400 hover:text-blue-600 transition-colors group" aria-label={`Phone: ${topBar.phone}`}>
+            {topBar?.showPhone !== false && (
+              <a href={topBar?.phoneLink} className="flex items-center space-x-2 text-slate-400 hover:text-blue-600 transition-colors group" aria-label={`Phone: ${topBar?.phone}`}>
                 <Phone className="h-3 w-3 group-hover:text-blue-600" aria-hidden="true" />
-                <span>{topBar.phone}</span>
+                <span>{topBar?.phone}</span>
               </a>
             )}
-            {topBar.showEmail !== false && (
-              <a href={topBar.emailLink} className="flex items-center space-x-2 text-slate-400 hover:text-blue-600 transition-colors group" aria-label={`Email: ${topBar.email}`}>
+            {topBar?.showEmail !== false && (
+              <a href={topBar?.emailLink} className="flex items-center space-x-2 text-slate-400 hover:text-blue-600 transition-colors group" aria-label={`Email: ${topBar?.email}`}>
                 <Mail className="h-3 w-3 group-hover:text-blue-600" aria-hidden="true" />
-                <span>{topBar.email}</span>
+                <span>{topBar?.email}</span>
               </a>
             )}
           </div>
           <div className="flex items-center space-x-4">
-            {topBar.showCertifications !== false && (
+            {topBar?.showCertifications !== false && (
               <>
                 <Zap className="h-3 w-3 text-blue-600" aria-hidden="true" />
-                <span className={cn(theme.typography.badge, 'text-slate-400')}>{topBar.certifications}</span>
+                <span className={cn(theme.typography.badge, 'text-slate-400')}>{topBar?.certifications}</span>
               </>
             )}
           </div>
         </div>
       </aside>
+      )}
 
       {/* Main Navigation */}
       <header className={cn(headerClass, announcement?.enabled ? 'lg:top-20 top-10' : 'lg:top-10 top-0')} suppressHydrationWarning>
@@ -451,18 +411,16 @@ export default function Header({ data }: HeaderProps) {
           </NavigationMenu>
 
           {/* Desktop CTA - Premium Design */}
+          {cta && cta.text && (
           <div className="hidden lg:flex items-center space-x-4">
-            <Link href={cta.href}>
-              <PremiumButton className="hidden xl:flex">
+            <Link href={cta.href || '/contact'}>
+              <PremiumButton>
                 {cta.text}
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </PremiumButton>
-              {/* Compact CTA for lg screens */}
-              <PremiumButton className="xl:hidden" size="sm">
-                Quote
-              </PremiumButton>
             </Link>
           </div>
+          )}
 
           {/* Mobile/More Menu - Shows below lg (1024px) OR as "More" button on lg-xl */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -506,6 +464,7 @@ export default function Header({ data }: HeaderProps) {
             </button>
 
             {/* "More" button for lg-xl screens (when some items are hidden) */}
+            {moreButtonText && (
             <button
               type="button"
               className="hidden lg:flex xl:hidden items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all hover:bg-slate-100/80 active:bg-slate-200/60"
@@ -515,8 +474,9 @@ export default function Header({ data }: HeaderProps) {
               onClick={() => setMobileMenuOpen((prev) => !prev)}
             >
               <Menu className="h-4 w-4" />
-              <span>More</span>
+              <span>{moreButtonText}</span>
             </button>
+            )}
 
             <SheetContent
               id={mobileSheetId}
@@ -606,46 +566,50 @@ export default function Header({ data }: HeaderProps) {
 
                 {/* CTA Button at bottom */}
                 <div className="px-4 pt-6 border-t border-slate-200">
-                  <Link href={cta.href} onClick={() => setMobileMenuOpen(false)} className="block">
+                  {cta && (
+                  <Link href={cta?.href || '/contact'} onClick={() => setMobileMenuOpen(false)} className="block">
                     <PremiumButton className="w-full h-12 text-base font-semibold">
-                      {cta.text}
+                      {cta?.text}
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </PremiumButton>
                   </Link>
+                  )}
 
                   {/* Contact info */}
+                  {topBar && (
                   <div className="mt-4 space-y-2">
-                    {topBar.showPhone !== false && (
+                    {topBar?.showPhone !== false && (
                       <a
-                        href={topBar.phoneLink}
+                        href={topBar?.phoneLink}
                         className={cn(
                           "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
                           isDark
                             ? 'text-slate-200 hover:text-white hover:bg-slate-800'
                             : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                         )}
-                        aria-label={`Call ${topBar.phone}`}
+                        aria-label={`Call ${topBar?.phone}`}
                       >
                         <Phone className="h-5 w-5" />
-                        <span className="text-base font-medium">{topBar.phone}</span>
+                        <span className="text-base font-medium">{topBar?.phone}</span>
                       </a>
                     )}
-                    {topBar.showEmail !== false && (
+                    {topBar?.showEmail !== false && (
                       <a
-                        href={topBar.emailLink}
+                        href={topBar?.emailLink}
                         className={cn(
                           "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
                           isDark
                             ? 'text-slate-200 hover:text-white hover:bg-slate-800'
                             : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                         )}
-                        aria-label={`Email ${topBar.email}`}
+                        aria-label={`Email ${topBar?.email}`}
                       >
                         <Mail className="h-5 w-5" />
-                        <span className="text-base font-medium">{topBar.email}</span>
+                        <span className="text-base font-medium">{topBar?.email}</span>
                       </a>
                     )}
                   </div>
+                  )}
                 </div>
               </nav>
             </SheetContent>

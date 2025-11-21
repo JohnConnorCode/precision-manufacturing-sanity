@@ -57,24 +57,24 @@ export default async function Home() {
       }
     : homepageData?.technicalSpecs;
 
-  // Organization data for structured markup - from Sanity CMS with fallbacks
+  // Organization data for structured markup - 100% from Sanity CMS
   const organizationData = {
-    name: siteSettings?.company?.name || "Integrated Inspection Systems (IIS)",
-    alternateName: siteSettings?.company?.alternateName || "IIS",
-    url: siteSettings?.company?.websiteUrl || "https://iismet.com",
-    logo: "https://iismet.com/logo.png",
-    description: siteSettings?.company?.description || "Engineering, Metrology, Machining & Database Services since 1995. AS9100 & ISO 9001 certified precision machining and CMM inspection services. Proprietary MetBase® software for closed-loop data integration. ITAR registered. First article inspection, dimensional measurement, and process verification for aerospace, defense & manufacturing.",
-    foundingDate: siteSettings?.company?.foundingYear || "1995",
+    name: siteSettings?.company?.name,
+    alternateName: siteSettings?.company?.alternateName,
+    url: siteSettings?.company?.websiteUrl,
+    logo: siteSettings?.company?.logoUrl,
+    description: siteSettings?.company?.description,
+    foundingDate: siteSettings?.company?.foundingYear,
     address: {
-      streetAddress: siteSettings?.contact?.address || "14310 SE Industrial Way",
-      addressLocality: siteSettings?.contact?.city || "Clackamas",
-      addressRegion: siteSettings?.contact?.state || "Oregon",
-      postalCode: siteSettings?.contact?.zip || "97015",
-      addressCountry: "US"
+      streetAddress: siteSettings?.contact?.address,
+      addressLocality: siteSettings?.contact?.city,
+      addressRegion: siteSettings?.contact?.state,
+      postalCode: siteSettings?.contact?.zip,
+      addressCountry: siteSettings?.contact?.country
     },
     contactPoint: {
-      telephone: siteSettings?.contact?.phone || "+1-503-231-9093",
-      email: siteSettings?.contact?.email || "officemgr@iismet.com",
+      telephone: siteSettings?.contact?.phone,
+      email: siteSettings?.contact?.email,
       contactType: "customer service"
     },
     sameAs: [
@@ -120,10 +120,13 @@ export default async function Home() {
 
 // Generate metadata for SEO - pulls from Sanity CMS with fallbacks
 export async function generateMetadata() {
-  const homepageData = await getHomepage();
+  const [homepageData, siteSettings] = await Promise.all([
+    getHomepage(),
+    getSiteSettings()
+  ]);
   const baseUrl = 'https://iismet.com';
 
-  // Pull SEO data from Sanity with fallbacks
+  // Pull SEO data from Sanity with fallbacks (fallbacks allowed for SEO resilience)
   const metadata = {
     title: homepageData?.seo?.metaTitle || 'IIS - Integrated Inspection Systems | Engineering, Metrology, Machining & Database Services',
     description: homepageData?.seo?.metaDescription || 'Integrated Inspection Systems (IIS): Engineering, Metrology, Machining & Database Services since 1995. Proprietary MetBase® software links CMM, CNC & vision systems. AS9100, ISO 9001 certified, ITAR registered. Serving aerospace, manufacturing & government.',
@@ -178,23 +181,22 @@ export async function generateMetadata() {
       description: metadata.description,
       images: [metadata.ogImage],
     },
-    verification: {
-      google: 'google-verification-code', // Add actual verification code
-      yandex: 'yandex-verification-code',
-      yahoo: 'yahoo-verification-code',
-      other: {
-        'msvalidate.01': 'bing-verification-code',
-      },
-    },
+    // verification: {
+    //   // Add search engine verification codes when obtained from:
+    //   // - Google Search Console: https://search.google.com/search-console
+    //   // - Bing Webmaster Tools: https://www.bing.com/webmasters
+    //   // google: 'your-google-verification-code',
+    //   // other: { 'msvalidate.01': 'your-bing-verification-code' },
+    // },
     category: 'Business',
     classification: 'Manufacturing',
     other: {
-      'business:contact_data:street_address': '14310 SE Industrial Way',
-      'business:contact_data:locality': 'Clackamas',
-      'business:contact_data:region': 'Oregon',
-      'business:contact_data:postal_code': '97015',
-      'business:contact_data:country_name': 'United States',
-      'business:contact_data:phone_number': '+1-503-231-9093',
+      'business:contact_data:street_address': siteSettings?.contact?.address,
+      'business:contact_data:locality': siteSettings?.contact?.city,
+      'business:contact_data:region': siteSettings?.contact?.state,
+      'business:contact_data:postal_code': siteSettings?.contact?.zip,
+      'business:contact_data:country_name': siteSettings?.contact?.country,
+      'business:contact_data:phone_number': siteSettings?.contact?.phone,
       'business:contact_data:website': baseUrl,
     },
   };

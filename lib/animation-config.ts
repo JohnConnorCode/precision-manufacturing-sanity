@@ -17,29 +17,31 @@
 
 /**
  * Standard animation durations (in seconds)
+ * Reduced for snappier, more responsive feel
  */
 export const DURATIONS = {
-  fast: 0.4,
-  normal: 0.5,
-  slow: 0.6,
-  slower: 0.8,
+  fast: 0.3,
+  normal: 0.4,
+  slow: 0.5,
+  slower: 0.6,
 } as const;
 
 /**
  * Standard easing function for all animations
- * Smooth, natural cubic-bezier curve
+ * Smooth, natural easeOut curve for better perceived performance
  */
-export const EASING = [0.25, 0.1, 0.25, 1] as const;
+export const EASING = "easeOut" as const;
 
 /**
  * Stagger delays for different contexts (in seconds)
+ * Reduced for faster, more dynamic animations
  */
 export const STAGGER = {
-  header: 0.2,        // Delay between header elements
-  cards: 0.08,        // Delay between card items
-  badges: 0.08,       // Delay between badge items
-  list: 0.15,         // Delay between list items
-  metrics: 0.06,      // Delay between metric items (faster for grids)
+  header: 0.1,        // Delay between header elements (reduced from 0.2)
+  cards: 0.05,        // Delay between card items (reduced from 0.08)
+  badges: 0.05,       // Delay between badge items (reduced from 0.08)
+  list: 0.1,          // Delay between list items (reduced from 0.15)
+  metrics: 0.04,      // Delay between metric items (reduced from 0.06)
 } as const;
 
 // ============================================================================
@@ -49,33 +51,34 @@ export const STAGGER = {
 /**
  * Sequential animation timing for section headers
  * Each element has a delay and duration, creating a cascading effect
+ * Optimized for faster, more responsive feel
  */
 export const HEADER_SEQUENCE = {
   eyebrow: {
     delay: 0,
     duration: DURATIONS.normal,
-    completesAt: 0.5, // When this animation finishes
+    completesAt: 0.4, // When this animation finishes
   },
   word1: {
     delay: STAGGER.header,
     duration: DURATIONS.normal,
-    completesAt: 0.7, // delay (0.2) + duration (0.5)
+    completesAt: 0.5, // delay (0.1) + duration (0.4)
   },
   word2: {
     delay: STAGGER.header * 2,
     duration: DURATIONS.normal,
-    completesAt: 0.9, // delay (0.4) + duration (0.5)
+    completesAt: 0.6, // delay (0.2) + duration (0.4)
   },
   description: {
     delay: STAGGER.header * 3,
-    duration: DURATIONS.slow,
-    completesAt: 1.2, // delay (0.6) + duration (0.6)
+    duration: DURATIONS.normal,
+    completesAt: 0.7, // delay (0.3) + duration (0.4)
   },
 } as const;
 
 /**
  * When the entire header section completes animating
- * Content animations should start AFTER this time
+ * Content starts immediately after (reduced from 1.2s to 0.7s)
  */
 export const HEADER_COMPLETION_TIME = HEADER_SEQUENCE.description.completesAt;
 
@@ -85,42 +88,43 @@ export const HEADER_COMPLETION_TIME = HEADER_SEQUENCE.description.completesAt;
 
 /**
  * Hero section has more dramatic sequential timing
+ * Optimized for better perceived performance
  */
 export const HERO_SEQUENCE = {
   word1: {
-    delay: 0.2,
-    duration: 0.6,
-    completesAt: 0.8,
+    delay: 0.1,
+    duration: 0.5,
+    completesAt: 0.6,
   },
   word2: {
-    delay: 0.4,
-    duration: 0.6,
-    completesAt: 1.0,
+    delay: 0.25,
+    duration: 0.5,
+    completesAt: 0.75,
   },
   word3: {
-    delay: 0.6,
-    duration: 0.6,
-    completesAt: 1.2,
+    delay: 0.4,
+    duration: 0.5,
+    completesAt: 0.9,
   },
   tagline: {
-    delay: 0.8,
-    duration: 0.8,
-    completesAt: 1.6,
+    delay: 0.6,
+    duration: 0.5,
+    completesAt: 1.1,
   },
   badges: {
-    startDelay: 1.0, // When first badge starts
+    startDelay: 0.8, // When first badge starts (reduced from 1.0)
     stagger: STAGGER.badges,
     duration: 0.4,
   },
   cta: {
-    delay: 1.3,
-    duration: 0.8,
-    completesAt: 2.1,
+    delay: 1.0,
+    duration: 0.5,
+    completesAt: 1.5,
   },
   scrollIndicator: {
-    delay: 1.9,
-    duration: 0.8,
-    completesAt: 2.7,
+    delay: 1.4,
+    duration: 0.5,
+    completesAt: 1.9,
   },
 } as const;
 

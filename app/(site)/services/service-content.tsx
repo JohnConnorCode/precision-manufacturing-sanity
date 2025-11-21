@@ -31,8 +31,6 @@ interface ServiceContentProps {
   slug: string;
 }
 
-const DEFAULT_HERO_IMAGE = 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=2400&q=90';
-
 export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps) {
   const service = serviceData as any;
   const router = useRouter();
@@ -49,8 +47,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
   const heroImage =
     service.hero?.backgroundImage?.asset?.url ||
     service.hero?.backgroundImage?.url ||
-    service.hero?.backgroundImageUrl ||
-    DEFAULT_HERO_IMAGE;
+    service.hero?.backgroundImageUrl;
   const heroDescription = service.hero?.descriptionRich
     ? <PortableTextContent value={service.hero.descriptionRich} />
     : (service.overview?.descriptionRich
@@ -105,37 +102,22 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         ? <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>{service.servicesDescription}</p>
         : service.overview?.descriptionRich
           ? <PortableTextContent value={service.overview.descriptionRich} />
-          : (
-            <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
-              Comprehensive capabilities for complex components requiring precision and reliability.
-            </p>
-          ));
+          : null);
 
-  const materialsHeading = service.materialsHeading || 'Material Capabilities';
-  const materialsDescription =
-    service.materialsDescription || 'Expert machining across a wide range of materials from standard aluminum to exotic superalloys.';
+  const materialsHeading = service.materialsHeading;
+  const materialsDescription = service.materialsDescription;
 
-  const applicationsHeading = service.applicationsHeading || 'Industry Applications';
-  const applicationsDescription = service.applicationsDescription || 'Precision solutions tailored for mission-critical sectors.';
-  const applicationsListLabel = service.applicationsListLabel || 'Key Highlights';
+  const applicationsHeading = service.applicationsHeading;
+  const applicationsDescription = service.applicationsDescription;
+  const applicationsListLabel = service.applicationsListLabel;
 
-  const processHeading = service.processHeading || 'Manufacturing Process';
-  const processDescription =
-    service.processDescription || 'Our comprehensive approach ensures optimal results from initial programming through final inspection.';
+  const processHeading = service.processHeading;
+  const processDescription = service.processDescription;
 
-  const qualityHeading = service.qualityStandardsHeading || 'Quality Standards & Certifications';
-  const qualityDescription = service.qualityStandardsDescription ||
-    'Our metrology lab maintains the highest standards of accuracy and traceability with certifications that meet aerospace and defense requirements.';
+  const qualityHeading = service.qualityStandardsHeading;
+  const qualityDescription = service.qualityStandardsDescription;
 
-  const ctaData = service.cta || {
-    badge: 'READY FOR COMPLEX MACHINING?',
-    title: 'Ready to Get Started?',
-    description: `Partner with IIS for ${service.title?.toLowerCase() || 'advanced'} solutions that meet the most demanding aerospace and defense requirements.`,
-    buttons: [
-      { text: 'Get Technical Quote', href: '/contact?interest=quote', variant: 'primary', enabled: true },
-      { text: 'View All Services', href: '/services', variant: 'secondary', enabled: true }
-    ]
-  };
+  const ctaData = service.cta;
 
   return (
     <div className="min-h-screen bg-background">

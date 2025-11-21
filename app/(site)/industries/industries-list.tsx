@@ -17,36 +17,6 @@ interface IndustriesListProps {
 }
 
 export function IndustriesList({ industries, capabilities, keyStrengths, successMetrics }: IndustriesListProps) {
-  // Minimal fallbacks
-  const defaultCapabilities = [
-    { label: 'Industry Experience', value: '30+', description: 'Years serving critical industries' },
-    { label: 'Active Programs', value: '200+', description: 'Ongoing manufacturing programs' },
-    { label: 'Quality Rating', value: '99.8%', description: 'On-time delivery performance' },
-    { label: 'Certifications', value: '12+', description: 'Industry-specific certifications' }
-  ];
-
-  const defaultKeyStrengths = [
-    {
-      title: 'Regulatory Compliance',
-      description: 'Full compliance with industry-specific regulations and quality standards',
-      icon: 'Award',
-      features: [
-        'AS9100D aerospace quality system',
-        'ITAR registration and compliance',
-        'NADCAP accredited processes',
-        'ISO 9001:2015 certification'
-      ]
-    }
-  ];
-
-  const defaultSuccessMetrics = [
-    {
-      metric: 'First-Pass Yield',
-      value: '99.8%',
-      description: 'Parts meeting specifications without rework'
-    }
-  ];
-
   const iconMap: Record<string, React.ReactNode> = {
     Award: <Award className="w-6 h-6 text-slate-700" />,
     Shield: <Shield className="w-6 h-6 text-slate-700" />,
@@ -66,7 +36,7 @@ export function IndustriesList({ industries, capabilities, keyStrengths, success
             viewport={{ once: true }}
             className="grid grid-cols-2 md:grid-cols-4 gap-8"
           >
-            {(capabilities || defaultCapabilities).map((capability, index) => (
+            {capabilities?.map((capability, index) => (
               <motion.div
                 key={capability.label}
                 initial={{ opacity: 0, y: 20 }}
@@ -223,7 +193,7 @@ export function IndustriesList({ industries, capabilities, keyStrengths, success
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {(keyStrengths || defaultKeyStrengths).map((strength, index) => (
+            {keyStrengths?.map((strength, index) => (
               <motion.div
                 key={strength.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -275,7 +245,7 @@ export function IndustriesList({ industries, capabilities, keyStrengths, success
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {(successMetrics || defaultSuccessMetrics).map((metric, index) => (
+            {successMetrics?.map((metric, index) => (
               <motion.div
                 key={metric.metric}
                 initial={{ opacity: 0, y: 20 }}

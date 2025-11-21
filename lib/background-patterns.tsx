@@ -34,7 +34,7 @@ export function getDotGridPattern(options: GridPatternOptions = {}): {
     dotSize = 1,
     dotPosition = 2,
     opacity = 0.03,
-    type = 'radial',
+    type: _type = 'radial',
   } = options;
 
   return {

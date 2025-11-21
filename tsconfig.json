@@ -33,6 +33,8 @@
     "lib/direct-cms-access.ts",
     "lib/get-cms-data-direct.ts",
     "lib/get-cms-data-payload.ts",
-    "scripts/cms-health.ts"
+    "lib/archive/**/*",
+    "scripts/cms-health.ts",
+    "scripts/archive/**/*"
   ]
 }

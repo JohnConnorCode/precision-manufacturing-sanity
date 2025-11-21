@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
-import { ArrowRight, Users, Factory, Award, CheckCircle, Target, Zap, Shield, Lightbulb } from 'lucide-react';
+import { ArrowRight, Users, Factory, Award, Target, Zap, Shield, Lightbulb } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImage from '@/components/ui/parallax-image';
 import { theme, styles } from '@/lib/theme';

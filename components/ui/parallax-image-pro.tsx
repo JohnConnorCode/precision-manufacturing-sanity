@@ -38,9 +38,7 @@ export default function ParallaxImagePro({
   const { scrollY } = useScroll();
   const isInView = useInView(containerRef, { once: true, margin: '100px' });
 
-  // Don't render if src is empty
-  if (!src) return null;
-
+  // Call hooks unconditionally BEFORE early return
   const y = useTransform(scrollY, (value) => {
     if (!containerRef.current) return 0;
     const rect = containerRef.current.getBoundingClientRect();
@@ -55,6 +53,9 @@ export default function ParallaxImagePro({
     const progress = Math.min(Math.max((value - offset) / rect.height, 0), 1);
     return 1 + progress * 0.1;
   });
+
+  // Don't render if src is empty
+  if (!src) return null;
 
   const gradients = {
     dark: 'bg-gradient-to-b from-slate-950/60 via-slate-950/20 to-slate-950/60',

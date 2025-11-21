@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ArrowRight, CheckCircle, Zap, Award, TrendingUp, Shield, Target } from 'lucide-react';
+import { ArrowRight, CheckCircle, Award, TrendingUp, Shield, Target } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImagePro from '@/components/ui/parallax-image-pro';
 import { theme, styles, cn } from '@/lib/theme';
@@ -19,15 +19,13 @@ interface IndustryContentProps {
   slug: string;
 }
 
-export function IndustryContent({ industryData, slug }: IndustryContentProps) {
+export function IndustryContent({ industryData }: IndustryContentProps) {
   const industry = industryData as any;
 
   // Extract hero image properly from Sanity
   const heroImage = industry.hero?.backgroundImage?.asset
     ? builder.image(industry.hero.backgroundImage).width(1920).height(1080).url()
-    : industry.hero?.backgroundImage
-    ? industry.hero.backgroundImage
-    : 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=2400&q=90';
+    : industry.hero?.backgroundImage;
 
   return (
     <div className="min-h-screen bg-background">
@@ -45,18 +43,7 @@ export function IndustryContent({ industryData, slug }: IndustryContentProps) {
         title={<span className="text-white">{industry.title}</span>}
         subtitle={industry.hero?.subtitle}
         description={industry.hero?.description || industry.overview?.description}
-        buttons={[
-          {
-            label: 'Get Consultation',
-            href: '/contact',
-            variant: 'primary',
-          },
-          {
-            label: 'View Industries',
-            href: '/industries',
-            variant: 'secondary',
-          },
-        ]}
+        buttons={industry.hero?.buttons || []}
       />
 
       {/* Market Overview */}

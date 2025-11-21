@@ -79,6 +79,15 @@ export default {
       ],
     },
     {
+      name: 'servicesHeading',
+      type: 'string',
+      title: 'Services Section Heading',
+      description: 'Heading text for the services links section in the footer',
+      group: 'links',
+      initialValue: 'Services',
+      validation: (Rule: any) => Rule.required().error('Services heading is required'),
+    },
+    {
       name: 'servicesLinks',
       type: 'array',
       title: 'Services Links',
@@ -120,6 +129,15 @@ export default {
           ],
         },
       ],
+    },
+    {
+      name: 'resourcesHeading',
+      type: 'string',
+      title: 'Resources Section Heading',
+      description: 'Heading text for the resources links section in the footer',
+      group: 'links',
+      initialValue: 'Resources',
+      validation: (Rule: any) => Rule.required().error('Resources heading is required'),
     },
     {
       name: 'resourcesLinks',
@@ -165,6 +183,15 @@ export default {
       ],
     },
     {
+      name: 'quickLinksHeading',
+      type: 'string',
+      title: 'Quick Links Section Heading',
+      description: 'Heading text for the quick links section in the footer',
+      group: 'links',
+      initialValue: 'Quick Links',
+      validation: (Rule: any) => Rule.required().error('Quick Links heading is required'),
+    },
+    {
       name: 'quickLinks',
       type: 'array',
       title: 'Quick Links',
@@ -206,6 +233,15 @@ export default {
           ],
         },
       ],
+    },
+    {
+      name: 'contactHeading',
+      type: 'string',
+      title: 'Contact Section Heading',
+      description: 'Heading text for the contact section in the footer',
+      group: 'contact',
+      initialValue: 'Contact',
+      validation: (Rule: any) => Rule.required().error('Contact heading is required'),
     },
     {
       name: 'contact',

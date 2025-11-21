@@ -254,6 +254,21 @@ export default {
       ]
     },
     {
+      name: 'expertiseSectionHeading',
+      type: 'string',
+      title: 'Expertise Section Heading',
+      description: 'Main heading for the expertise section (e.g., "Aerospace Component Expertise", "Energy Sector Expertise")',
+      group: 'details',
+    },
+    {
+      name: 'expertiseSectionDescription',
+      type: 'text',
+      title: 'Expertise Section Description',
+      description: 'Description text below the expertise section heading',
+      group: 'details',
+      rows: 3,
+    },
+    {
       name: 'expertise',
       type: 'array',
       title: 'Component Expertise',
@@ -292,6 +307,13 @@ export default {
               validation: (Rule: any) => Rule.uri({ scheme: ['http', 'https'] }).warning('Must be a valid URL starting with http:// or https://')
             },
             {
+              name: 'componentsLabel',
+              type: 'string',
+              title: 'Components Section Label',
+              description: 'Custom label for components section (defaults to "Typical Components", can override with "Applications", etc.)',
+              initialValue: 'Typical Components'
+            },
+            {
               name: 'components',
               type: 'array',
               title: 'Typical Components',
@@ -302,6 +324,13 @@ export default {
               type: 'array',
               title: 'Materials',
               of: [{ type: 'string' }]
+            },
+            {
+              name: 'requirementsLabel',
+              type: 'string',
+              title: 'Requirements Section Label',
+              description: 'Custom label for requirements section (defaults to "Key Requirements", can override with "Key Challenges", etc.)',
+              initialValue: 'Key Requirements'
             },
             {
               name: 'requirements',
@@ -318,6 +347,21 @@ export default {
           }
         }
       ]
+    },
+    {
+      name: 'certificationsSectionHeading',
+      type: 'string',
+      title: 'Certifications Section Heading',
+      description: 'Main heading for the certifications section (e.g., "Aerospace Certifications", "Industry Standards & Compliance")',
+      group: 'details',
+    },
+    {
+      name: 'certificationsSectionDescription',
+      type: 'text',
+      title: 'Certifications Section Description',
+      description: 'Description text below the certifications section heading',
+      group: 'details',
+      rows: 3,
     },
     {
       name: 'certifications',
@@ -659,6 +703,21 @@ export default {
       ],
     },
     {
+      name: 'processBenefitsSectionHeading',
+      type: 'string',
+      title: 'Process Benefits Section Heading',
+      description: 'Main heading for the process benefits section (e.g., "Aerospace Manufacturing Advantages", "Specialized Capabilities")',
+      group: 'details',
+    },
+    {
+      name: 'processBenefitsSectionDescription',
+      type: 'text',
+      title: 'Process Benefits Section Description',
+      description: 'Description text below the process benefits section heading',
+      group: 'details',
+      rows: 3,
+    },
+    {
       name: 'processBenefits',
       type: 'array',
       title: 'Process Benefits / Manufacturing Advantages',
@@ -866,6 +925,15 @@ export default {
           fields: [{name: 'feature', type: 'string', title: 'Feature'}],
         },
       ],
+    },
+    {
+      name: 'cardCtaText',
+      type: 'string',
+      title: 'Card CTA Button Text',
+      description: 'Text for the call-to-action button on industry cards (e.g., "Learn More", "View Details", "Explore Industry")',
+      group: 'display',
+      initialValue: 'Learn More',
+      validation: (Rule: any) => Rule.required().error('CTA button text is required for industry cards'),
     },
   ],
 }

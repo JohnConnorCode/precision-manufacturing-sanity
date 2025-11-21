@@ -6,7 +6,7 @@ import { BookOpen, ArrowRight, Clock, GraduationCap, TrendingUp, LucideIcon } fr
 import { PremiumButton } from '@/components/ui/premium-button';
 import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
-import { getGradientStyle, getGradientTextStyle, hexToRgba } from '@/lib/theme-utils';
+import { hexToRgba } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { ResourcesData, ResourceSeries, ResourceBenefit } from '@/lib/types/cms';
@@ -67,12 +67,14 @@ export default function Resources({ data }: ResourcesProps) {
             }
 
             return (
-              <div key={`${series.slug}-${index}`}>
+              <motion.div
+                key={`${series.slug}-${index}`}
+                initial={getInitialState(prefersReducedMotion)}
+                whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
+              >
                 <Link href={`/resources/series/${seriesSlug}`}>
-                  <motion.article
-                    initial={getInitialState(prefersReducedMotion)}
-                    whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
-                    viewport={viewportConfig}
+                  <article
                   className="group h-full bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                   style={{
                     '--hover-border-color': hexToRgba(theme.colors.primary, 0.5),
@@ -128,14 +130,13 @@ export default function Resources({ data }: ResourcesProps) {
                         </div>
                       </div>
                       <div className="flex items-center gap-2 font-medium transition-colors" style={{ color: hexToRgba(theme.colors.primary, 0.8) }}>
-                        <span className="text-sm">Explore</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
                   </div>
-                </motion.article>
+                </article>
               </Link>
-              </div>
+              </motion.div>
             );
           })}
         </div>

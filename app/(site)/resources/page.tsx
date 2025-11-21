@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   let resources = [];
   try {
     resources = await getAllResources() || [];
-  } catch (error) {
+  } catch {
     // Silently fail and use empty array
   }
 
@@ -83,8 +83,8 @@ export default async function ResourcesPage() {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={pageContent?.resourcesPage?.hero?.backgroundImageUrl || pageContent?.resourcesPage?.hero?.backgroundImage?.asset?.url || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=2400&q=90'}
-        imageAlt="Technical resources and manufacturing knowledge"
+        backgroundImage={pageContent?.resourcesPage?.hero?.backgroundImageUrl || pageContent?.resourcesPage?.hero?.backgroundImage?.asset?.url || ''}
+        imageAlt={pageContent?.resourcesPage?.hero?.backgroundImage?.alt || ''}
         badge={pageContent?.resourcesPage?.hero?.badge ? { text: pageContent.resourcesPage.hero.badge } : undefined}
         title={
           pageContent?.resourcesPage?.hero?.title ? (

@@ -17,6 +17,7 @@ import contact from './contact'
 import careersPage from './careers'
 import termsPage from './terms'
 import supplierRequirementsPage from './supplier-requirements'
+import errorPages from './error-pages'
 import uiText from './ui-text'
 import pageContent from './page-content'
 import page from './page'
@@ -77,6 +78,7 @@ export const schemaTypes = [
   careersPage,
   termsPage,
   supplierRequirementsPage,
+  errorPages,
   uiText,
   pageContent,
   page,

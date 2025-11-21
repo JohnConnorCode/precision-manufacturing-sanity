@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function GlobalError({
   error,
@@ -9,11 +9,45 @@ export default function GlobalError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const [content, setContent] = useState({
+    heading: 'Something went wrong',
+    description: 'A critical error occurred. Please try refreshing the page.',
+    tryAgainButtonText: 'Try again',
+    supportMessagePrefix: 'Need help?',
+    supportLinkText: 'Contact support',
+    supportEmail: 'officemgr@iismet.com'
+  })
+
   useEffect(() => {
     // Log error in development only
     if (process.env.NODE_ENV === 'development') {
       console.error('Global error:', error)
     }
+
+    // Fetch error pages content from CMS
+    async function fetchContent() {
+      try {
+        const response = await fetch('/api/error-pages')
+        if (response.ok) {
+          const data = await response.json()
+          if (data?.globalError) {
+            setContent({
+              heading: data.globalError.heading || content.heading,
+              description: data.globalError.description || content.description,
+              tryAgainButtonText: data.globalError.tryAgainButtonText || content.tryAgainButtonText,
+              supportMessagePrefix: data.globalError.supportMessagePrefix || content.supportMessagePrefix,
+              supportLinkText: data.globalError.supportLinkText || content.supportLinkText,
+              supportEmail: data.siteSettings?.contact?.supportEmail || content.supportEmail
+            })
+          }
+        }
+      } catch (err) {
+        // Fail silently and use default content
+        console.error('Failed to fetch error page content:', err)
+      }
+    }
+
+    fetchContent()
   }, [error])
 
   return (
@@ -43,14 +77,14 @@ export default function GlobalError({
               color: '#0f172a',
               marginBottom: '1rem'
             }}>
-              Something went wrong
+              {content.heading}
             </h1>
 
             <p style={{
               color: '#64748b',
               marginBottom: '2rem'
             }}>
-              A critical error occurred. Please try refreshing the page.
+              {content.description}
             </p>
 
             <div style={{
@@ -71,7 +105,7 @@ export default function GlobalError({
                   cursor: 'pointer'
                 }}
               >
-                Try again
+                {content.tryAgainButtonText}
               </button>
               <button
                 onClick={() => window.location.href = '/'}
@@ -95,12 +129,12 @@ export default function GlobalError({
               borderTop: '1px solid #e2e8f0'
             }}>
               <p style={{ fontSize: '0.875rem', color: '#94a3b8' }}>
-                Need help?{' '}
+                {content.supportMessagePrefix}{' '}
                 <a
-                  href="mailto:officemgr@iismet.com"
+                  href={`mailto:${content.supportEmail}`}
                   style={{ color: '#2563eb', textDecoration: 'none' }}
                 >
-                  Contact support
+                  {content.supportLinkText}
                 </a>
               </p>
             </div>

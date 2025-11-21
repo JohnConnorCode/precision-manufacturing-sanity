@@ -16,10 +16,10 @@ export default function ParallaxImage({
   src,
   alt,
   className = '',
-  speed = 0.5,
-  scale = true,
-  opacity = false,
-  rotate = false
+  speed: _speed = 0.5,
+  scale: _scale = true,
+  opacity: _opacity = false,
+  rotate: _rotate = false
 }: ParallaxImageProps) {
   // Don't render if src is empty
   if (!src) return null;

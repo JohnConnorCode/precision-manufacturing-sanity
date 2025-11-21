@@ -22,6 +22,7 @@ export async function getAllServices(preview = false) {
       highlight,
       iconName,
       specs,
+      cardCtaText,
       image{
         asset->{url,_id},
         alt
@@ -1067,7 +1068,8 @@ export async function getIndustriesPage(preview = false) {
           },
           certifications[],
           expertise[],
-          icon
+          icon,
+          cardCtaText
         },
         whyChooseSection{
           title,
@@ -1207,6 +1209,35 @@ export async function getJobPostingBySlug(slug: string, preview = false) {
     closingDate
   }`
   return await getClient(preview).fetch(query, { slug })
+  } catch (error) {
+    return null
+  }
+}
+
+// Get error pages content
+export async function getErrorPages(preview = false) {
+  try {
+    const query = `*[_type == "errorPages"][0] {
+      notFound {
+        heading,
+        description,
+        popularLinksHeading,
+        popularLinks[] {
+          label,
+          href
+        },
+        errorCode
+      },
+      globalError {
+        heading,
+        description,
+        tryAgainButtonText,
+        supportMessagePrefix,
+        supportLinkText
+      }
+    }`
+
+    return await getClient(preview).fetch(query)
   } catch (error) {
     return null
   }

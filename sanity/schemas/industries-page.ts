@@ -238,6 +238,14 @@ export default {
                   type: 'string',
                   title: 'Icon Name',
                   description: 'Lucide icon name (e.g., "Plane", "Shield", "Zap")'
+                },
+                {
+                  name: 'cardCtaText',
+                  type: 'string',
+                  title: 'Card CTA Button Text',
+                  description: 'Text for the call-to-action button on industry cards (e.g., "Learn More About", "Explore", "View Details")',
+                  initialValue: 'Learn More About',
+                  validation: (Rule: any) => Rule.required().error('CTA button text is required for industry cards'),
                 }
               ],
               preview: {

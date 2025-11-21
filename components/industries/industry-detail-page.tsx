@@ -21,26 +21,15 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
   // Extract hero data
   const heroImage = industry.hero?.backgroundImage
     ? builder.image(industry.hero.backgroundImage).width(1920).height(1080).url()
-    : 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=2400&q=90';
+    : undefined;
 
-  const heroButtons = [
-    {
-      label: 'Request Quote',
-      href: '/contact',
-      variant: 'primary' as const,
-    },
-    {
-      label: 'View Capabilities',
-      href: '#capabilities',
-      variant: 'secondary' as const,
-    },
-  ];
+  const heroButtons = industry.hero?.buttons || [];
 
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <HeroSection
-        backgroundImage={heroImage}
+        backgroundImage={heroImage || ''}
         imageAlt={industry.hero?.backgroundImage?.alt || industry.title}
         height="large"
         alignment="center"
@@ -97,18 +86,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4">
-                {industry.slug?.current === 'aerospace'
-                  ? 'Aerospace Component Expertise'
-                  : industry.slug?.current === 'energy'
-                  ? 'Energy Sector Expertise'
-                  : `${industry.title} Expertise`}
+                {industry.expertiseSectionHeading || `${industry.title} Expertise`}
               </h2>
               <p className="text-lg text-zinc-600 max-w-3xl mx-auto">
-                {industry.slug?.current === 'aerospace'
-                  ? 'Specialized manufacturing capabilities for critical aerospace applications, from engine components to structural assemblies.'
-                  : industry.slug?.current === 'energy'
-                  ? 'Comprehensive manufacturing solutions for traditional and renewable energy sectors, meeting the most demanding operational requirements.'
-                  : 'Specialized manufacturing capabilities for critical applications.'}
+                {industry.expertiseSectionDescription || 'Specialized manufacturing capabilities for critical applications.'}
               </p>
             </motion.div>
 
@@ -174,7 +155,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                       {section.components && section.components.length > 0 && (
                         <div>
                           <h4 className="text-sm font-semibold text-zinc-900 uppercase tracking-wide mb-3">
-                            {industry.slug?.current === 'energy' ? 'Applications' : 'Typical Components'}
+                            {section.componentsLabel || 'Typical Components'}
                           </h4>
                           <ul className="space-y-2">
                             {section.components.map((component: string, idx: number) => (
@@ -206,7 +187,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                       {section.requirements && section.requirements.length > 0 && (
                         <div>
                           <h4 className="text-sm font-semibold text-zinc-900 uppercase tracking-wide mb-3">
-                            {industry.slug?.current === 'energy' ? 'Key Challenges' : 'Key Requirements'}
+                            {section.requirementsLabel || 'Key Requirements'}
                           </h4>
                           <ul className="space-y-2">
                             {section.requirements.map((requirement: string, idx: number) => (
@@ -240,18 +221,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4">
-                {industry.slug?.current === 'aerospace'
-                  ? 'Aerospace Certifications'
-                  : industry.slug?.current === 'energy'
-                  ? 'Industry Standards & Compliance'
-                  : 'Industry Certifications'}
+                {industry.certificationsSectionHeading || 'Industry Certifications'}
               </h2>
               <p className="text-lg text-zinc-600 max-w-3xl mx-auto">
-                {industry.slug?.current === 'aerospace'
-                  ? 'Full compliance with aerospace industry standards and regulations ensuring the highest quality and security requirements.'
-                  : industry.slug?.current === 'energy'
-                  ? 'Full compliance with energy sector regulations and quality standards ensuring reliability and safety.'
-                  : 'Industry-leading certifications ensuring the highest quality standards.'}
+                {industry.certificationsSectionDescription || 'Industry-leading certifications ensuring the highest quality standards.'}
               </p>
             </motion.div>
 
@@ -288,18 +261,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4">
-                {industry.slug?.current === 'aerospace'
-                  ? 'Aerospace Manufacturing Advantages'
-                  : industry.slug?.current === 'energy'
-                  ? 'Specialized Capabilities'
-                  : 'Manufacturing Capabilities'}
+                {industry.processBenefitsSectionHeading || 'Manufacturing Capabilities'}
               </h2>
               <p className="text-lg text-zinc-600 max-w-3xl mx-auto">
-                {industry.slug?.current === 'aerospace'
-                  ? 'Advanced capabilities and proven processes delivering superior results for critical aerospace applications.'
-                  : industry.slug?.current === 'energy'
-                  ? 'Advanced manufacturing capabilities specifically developed for the unique requirements of energy sector applications.'
-                  : 'Advanced capabilities delivering superior results for critical applications.'}
+                {industry.processBenefitsSectionDescription || 'Advanced capabilities delivering superior results for critical applications.'}
               </p>
             </motion.div>
 
@@ -345,28 +310,36 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
             className="text-center max-w-4xl mx-auto"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              {industry.slug?.current === 'aerospace'
-                ? 'Partner with Aerospace Experts'
-                : industry.slug?.current === 'energy'
-                ? 'Power Your Energy Projects'
-                : `Partner with ${industry.title} Experts`}
+              {industry.cta?.heading || `Partner with ${industry.title} Experts`}
             </h2>
             <p className="text-lg text-zinc-300 mb-8">
-              {industry.slug?.current === 'aerospace'
-                ? 'Trust your critical aerospace components to a proven manufacturing partner with decades of experience and industry-leading certifications.'
-                : industry.slug?.current === 'energy'
-                ? 'Partner with us for reliable, high-quality components that keep energy systems running efficiently and safely.'
-                : `Trust your critical ${industry.title.toLowerCase()} components to a proven manufacturing partner.`}
+              {industry.cta?.description || `Trust your critical ${industry.title.toLowerCase()} components to a proven manufacturing partner.`}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700">
-                <Link href="/contact">
-                  Request Aerospace Quote <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" asChild className="border-zinc-600 text-zinc-300 hover:bg-zinc-800 hover:text-white">
-                <Link href="/industries">View All Industries</Link>
-              </Button>
+              {industry.cta?.buttons?.filter((btn: any) => btn.enabled !== false).map((button: any, index: number) => (
+                <Button
+                  key={index}
+                  size="lg"
+                  asChild
+                  className={button.variant === 'primary' ? 'bg-blue-600 hover:bg-blue-700' : 'border-zinc-600 text-zinc-300 hover:bg-zinc-800 hover:text-white'}
+                  variant={button.variant === 'primary' ? 'default' : 'outline'}
+                >
+                  <Link href={button.href}>
+                    {button.text} <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              )) || (
+                <>
+                  <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700">
+                    <Link href="/contact">
+                      Request Quote <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button size="lg" variant="outline" asChild className="border-zinc-600 text-zinc-300 hover:bg-zinc-800 hover:text-white">
+                    <Link href="/industries">View All Industries</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </motion.div>
         </div>

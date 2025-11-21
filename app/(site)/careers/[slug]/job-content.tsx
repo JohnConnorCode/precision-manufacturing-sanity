@@ -22,9 +22,10 @@ import { PortableText } from '@portabletext/react';
 
 interface JobContentProps {
   job: any;
+  siteSettings: any;
 }
 
-export default function JobContent({ job }: JobContentProps) {
+export default function JobContent({ job, siteSettings }: JobContentProps) {
   const formattedDate = job.datePosted
     ? new Date(job.datePosted).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -241,7 +242,7 @@ export default function JobContent({ job }: JobContentProps) {
                     </p>
 
                     <a
-                      href={`mailto:${job.applicationEmail || 'hr@iismet.com'}?subject=Application for ${job.title}`}
+                      href={`mailto:${job.applicationEmail || siteSettings?.hrEmail}?subject=Application for ${job.title}`}
                       className="w-full"
                     >
                       <Button className={cn(styles.ctaPrimary, 'w-full group')}>
@@ -252,7 +253,7 @@ export default function JobContent({ job }: JobContentProps) {
                     </a>
 
                     <p className={cn(theme.typography.small, 'text-slate-500 mt-4')}>
-                      {job.applicationEmail || 'hr@iismet.com'}
+                      {job.applicationEmail || siteSettings?.hrEmail}
                     </p>
 
                     {job.applicationInstructions && (

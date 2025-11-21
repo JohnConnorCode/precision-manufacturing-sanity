@@ -10,7 +10,7 @@ export default function VisualEditingClient() {
     <VisualEditing
       zIndex={1000000}
       portal={false}
-      refresh={(payload) => {
+      refresh={(_payload) => {
         // Refresh the page when content changes in the Studio
         router.refresh()
         return false

@@ -8,7 +8,7 @@ import SectionHeader from '@/components/ui/section-header';
 import { colorStyleToCSS, getBackgroundColor, paddingToClass, ColorStyle } from '@/lib/sanity-styles';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import { usePrefersReducedMotion } from '@/lib/motion';
-import { getInitialState, getAnimateState, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { colors } from '@/lib/design-system';
 import { DotGridBackground } from '@/lib/background-patterns';
 
@@ -107,8 +107,8 @@ export default function CTA({ data }: CTAProps) {
   const defaultBgColor = backgroundStyle.backgroundColor || backgroundStyle.backgroundImage ? '' : colors.raw.slate950;
   const paddingClass = paddingToClass(data?.padding) || 'py-24';
 
-  const titleColor = colorStyleToCSS(data?.titleColor) || colors.raw.white;
-  const subtitleColor = colorStyleToCSS(data?.subtitleColor) || colors.raw.slate400;
+  const _titleColor = colorStyleToCSS(data?.titleColor) || colors.raw.white;
+  const _subtitleColor = colorStyleToCSS(data?.subtitleColor) || colors.raw.slate400;
 
   // Extract badge, certifications, and trust message from Sanity (ensure strings)
   const rawBadge = data?.badge || '';
