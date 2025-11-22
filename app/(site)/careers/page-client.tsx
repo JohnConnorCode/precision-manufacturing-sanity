@@ -259,9 +259,9 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                             <span className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded-full">
                               {position.location}
                             </span>
-                            {position.salaryRange && (
+                            {position.salaryRange && position.salaryRange.min && position.salaryRange.max && (
                               <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
-                                ${position.salaryRange.min?.toLocaleString()} - ${position.salaryRange.max?.toLocaleString()}/{position.salaryRange.period}
+                                ${position.salaryRange.min.toLocaleString()} - ${position.salaryRange.max.toLocaleString()}/{position.salaryRange.period}
                               </span>
                             )}
                           </div>

@@ -148,15 +148,17 @@ export default async function SiteLayout({
   } : null
 
   // Build structured data from Sanity CMS - 100% from siteSettings
+  const baseUrl = siteSettingsData?.company?.websiteUrl || 'https://iismet.com';
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Organization",
-        "@id": `${siteSettingsData?.company?.websiteUrl}/#organization`,
+        "@id": `${baseUrl}/#organization`,
         name: siteSettingsData?.company?.name,
         alternateName: siteSettingsData?.company?.alternateName,
-        url: siteSettingsData?.company?.websiteUrl,
+        url: baseUrl,
         logo: {
           "@type": "ImageObject",
           url: siteSettingsData?.company?.logoUrl,
@@ -193,27 +195,27 @@ export default async function SiteLayout({
       },
       {
         "@type": "WebSite",
-        "@id": `${siteSettingsData?.company?.websiteUrl}/#website`,
-        url: siteSettingsData?.company?.websiteUrl,
+        "@id": `${baseUrl}/#website`,
+        url: baseUrl,
         name: siteSettingsData?.company?.name,
         description: siteSettingsData?.company?.tagline,
         publisher: {
-          "@id": `${siteSettingsData?.company?.websiteUrl}/#organization`,
+          "@id": `${baseUrl}/#organization`,
         },
         potentialAction: {
           "@type": "SearchAction",
           target: {
             "@type": "EntryPoint",
-            urlTemplate: `${siteSettingsData?.company?.websiteUrl}/search?q={search_term_string}`,
+            urlTemplate: `${baseUrl}/search?q={search_term_string}`,
           },
           "query-input": "required name=search_term_string",
         },
       },
       {
         "@type": "LocalBusiness",
-        "@id": `${siteSettingsData?.company?.websiteUrl}/#localbusiness`,
+        "@id": `${baseUrl}/#localbusiness`,
         name: siteSettingsData?.company?.name,
-        image: `${siteSettingsData?.company?.websiteUrl}/facility.jpg`,
+        image: `${baseUrl}/facility.jpg`,
         priceRange: "$$$",
         address: {
           "@type": "PostalAddress",
@@ -228,7 +230,7 @@ export default async function SiteLayout({
           latitude: siteSettingsData?.company?.coordinates?.latitude,
           longitude: siteSettingsData?.company?.coordinates?.longitude,
         },
-        url: siteSettingsData?.company?.websiteUrl,
+        url: baseUrl,
         telephone: siteSettingsData?.contact?.phone,
         openingHoursSpecification: {
           "@type": "OpeningHoursSpecification",
