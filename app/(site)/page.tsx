@@ -23,6 +23,7 @@ export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function Home() {
   const { isEnabled: isDraft } = await draftMode();
+  const baseUrl = 'https://iismet.com';
 
   // Parallel data fetching - 4x faster than sequential
   const [servicesData, industriesData, homepageData, siteSettings] = await Promise.all([
@@ -61,7 +62,7 @@ export default async function Home() {
   const organizationData = {
     name: siteSettings?.company?.name,
     alternateName: siteSettings?.company?.alternateName,
-    url: siteSettings?.company?.websiteUrl,
+    url: siteSettings?.company?.websiteUrl || baseUrl,
     logo: siteSettings?.company?.logoUrl,
     description: siteSettings?.company?.description,
     foundingDate: siteSettings?.company?.foundingYear,
@@ -120,11 +121,11 @@ export default async function Home() {
 
 // Generate metadata for SEO - pulls from Sanity CMS with fallbacks
 export async function generateMetadata() {
+  const baseUrl = 'https://iismet.com';
   const [homepageData, siteSettings] = await Promise.all([
     getHomepage(),
     getSiteSettings()
   ]);
-  const baseUrl = 'https://iismet.com';
 
   // Pull SEO data from Sanity with fallbacks (fallbacks allowed for SEO resilience)
   const metadata = {
