@@ -550,7 +550,8 @@ export async function getHomepage(preview = false) {
         eyebrow,
         heading,
         headingWord1,
-        headingWord2
+        headingWord2,
+        description
       },
       cta {
         enabled,

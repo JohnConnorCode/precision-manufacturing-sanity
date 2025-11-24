@@ -58,4 +58,4 @@ screenshots/
 
 # Build artifacts
 /dist/
-/scripts/
+# /scripts/

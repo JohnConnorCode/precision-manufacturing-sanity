@@ -32,6 +32,7 @@ interface ServicesProps {
       heading?: string;
       headingWord1?: string;
       headingWord2?: string;
+      description?: string;
     };
     cta?: {
       enabled?: boolean;
@@ -55,7 +56,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
   const headingWord1 = sectionData?.headingWord1 || sectionData?.header?.headingWord1;
   const headingWord2 = sectionData?.headingWord2 || sectionData?.header?.headingWord2;
   const heading = sectionData?.header?.heading || sectionData?.heading;
-  const description = sectionData?.description;
+  const description = sectionData?.header?.description || sectionData?.description;
   const hasHeaderContent = Boolean(eyebrow || headingWord1 || headingWord2 || heading || description);
   const ctaLink = sectionData?.cta?.enabled !== false && sectionData?.cta?.href && sectionData?.cta?.text
     ? { href: sectionData.cta.href, text: sectionData.cta.text }
