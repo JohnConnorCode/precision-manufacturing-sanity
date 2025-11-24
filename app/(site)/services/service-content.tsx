@@ -54,18 +54,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         ? <PortableTextContent value={service.overview.descriptionRich} />
         : service.overview?.description);
 
-  const heroButtons = Array.isArray(service.hero?.buttons) && service.hero.buttons.length > 0
-    ? service.hero.buttons
-        .filter((button: any) => button?.enabled !== false && button?.text && button?.href)
-        .map((button: any) => ({
-          label: button.text,
-          href: button.href,
-          variant: (button.variant === 'secondary' ? 'secondary' : 'primary') as 'primary' | 'secondary',
-        }))
-    : [
-        { label: 'Get Quote', href: '/contact', variant: 'primary' as const },
-        { label: 'View Capabilities', href: '/services', variant: 'secondary' as const },
-      ];
+  // Hero buttons removed - no CTAs in hero section
 
   const capabilities = Array.isArray(service.capabilities)
     ? service.capabilities.filter((item: any) => item?.label && item?.value)
@@ -133,7 +122,6 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         description={heroDescription}
         titleSize={service.hero?.titleSize}
         descriptionSize={service.hero?.descriptionSize}
-        buttons={heroButtons}
       />
 
       {capabilities.length > 0 && (

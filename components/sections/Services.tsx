@@ -53,8 +53,8 @@ export default function Services({ data, sectionData }: ServicesProps) {
 
   // Section data from CMS (no hard-coded fallbacks)
   const eyebrow = sectionData?.header?.eyebrow || sectionData?.eyebrow;
-  const headingWord1 = sectionData?.headingWord1 || sectionData?.header?.headingWord1;
-  const headingWord2 = sectionData?.headingWord2 || sectionData?.header?.headingWord2;
+  const headingWord1 = sectionData?.header?.headingWord1 || sectionData?.headingWord1;
+  const headingWord2 = sectionData?.header?.headingWord2 || sectionData?.headingWord2;
   const heading = sectionData?.header?.heading || sectionData?.heading;
   const description = sectionData?.header?.description || sectionData?.description;
   const hasHeaderContent = Boolean(eyebrow || headingWord1 || headingWord2 || heading || description);

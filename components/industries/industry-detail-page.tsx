@@ -23,8 +23,6 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
     ? builder.image(industry.hero.backgroundImage).width(1920).height(1080).url()
     : undefined;
 
-  const heroButtons = industry.hero?.buttons || [];
-
   // Construct title with highlight from Sanity
   const heroTitle = industry.hero?.title && industry.hero?.titleHighlight ? (
     <span className="text-white">
@@ -60,7 +58,6 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
         title={heroTitle}
         subtitle={industry.hero?.subtitle}
         description={heroDescription}
-        buttons={heroButtons}
       />
 
       {/* Key Metrics Banner */}
