@@ -194,33 +194,6 @@ export default {
             { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' }, { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }
           ] },
         },
-        {
-          name: 'buttons',
-          type: 'array',
-          title: 'Hero Buttons',
-          description: 'Primary CTAs displayed in the hero section',
-          of: [
-            {
-              type: 'object',
-              fields: [
-                { name: 'text', type: 'string', title: 'Text', validation: (Rule: any) => Rule.required() },
-                { name: 'href', type: 'string', title: 'URL', validation: (Rule: any) => Rule.required() },
-                {
-                  name: 'variant',
-                  type: 'string',
-                  title: 'Variant',
-                  options: {
-                    list: [
-                      { title: 'Primary', value: 'primary' },
-                      { title: 'Secondary', value: 'secondary' }
-                    ]
-                  }
-                },
-                { name: 'enabled', type: 'boolean', title: 'Enabled', initialValue: true }
-              ]
-            }
-          ]
-        }
       ],
     },
     {
