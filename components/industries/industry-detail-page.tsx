@@ -25,6 +25,25 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
   const heroButtons = industry.hero?.buttons || [];
 
+  // Construct title with highlight from Sanity
+  const heroTitle = industry.hero?.title && industry.hero?.titleHighlight ? (
+    <span className="text-white">
+      {industry.hero.title}{' '}
+      <span className="bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">
+        {industry.hero.titleHighlight}
+      </span>
+    </span>
+  ) : (
+    <span className="text-white">{industry.title}</span>
+  );
+
+  // Use hero.description (plain text) or hero.descriptionRich (portable text)
+  const heroDescription = industry.hero?.description
+    ? industry.hero.description
+    : industry.hero?.descriptionRich
+    ? <PortableText value={industry.hero.descriptionRich} />
+    : undefined;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -38,13 +57,9 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
           text: industry.hero?.badge || industry.title.toUpperCase(),
           icon: Target,
         }}
-        title={<span className="text-white">{industry.title}</span>}
+        title={heroTitle}
         subtitle={industry.hero?.subtitle}
-        description={
-          industry.hero?.descriptionRich ? (
-            <PortableText value={industry.hero.descriptionRich} />
-          ) : undefined
-        }
+        description={heroDescription}
         buttons={heroButtons}
       />
 

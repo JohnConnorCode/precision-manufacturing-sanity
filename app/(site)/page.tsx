@@ -48,7 +48,7 @@ export default async function Home() {
     image: industry.image?.asset?.url || industry.imageUrl, // Extract URL from Sanity image object or imageUrl field (undefined if missing)
   }));
 
-  const heroData = homepageData?.heroEnhanced || homepageData?.hero || undefined;
+  const heroData = homepageData?.hero || undefined;
 
   const technicalSpecsData = Array.isArray(homepageData?.technicalSpecs)
     ? {
