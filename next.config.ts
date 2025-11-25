@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 import createMDX from '@next/mdx';
 
-// Force cache invalidation for industry pages - 2025-11-25
+// Force cache invalidation - removed hero buttons - 2025-11-25
 const nextConfig: NextConfig = {
   /* MDX Support */
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
