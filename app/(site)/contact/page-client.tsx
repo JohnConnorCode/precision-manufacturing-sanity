@@ -187,8 +187,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                 {/* Quick Actions */}
                 <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
                   <div className="flex items-start gap-4">
-                    <div className={cn(styles.iconContainer.blueLight, "flex-shrink-0 group-hover:bg-blue-100 transition-colors")}>
-                      <MessageCircle className="w-6 h-6 text-blue-600" />
+                    <div className={cn(styles.iconContainer.small, "flex-shrink-0")}>
+                      <MessageCircle className="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <h4 className={cn(theme.typography.h5, 'mb-2')}>Request a Quote</h4>
@@ -208,8 +208,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                 <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
                   <div className="flex items-start gap-4">
-                    <div className={cn(styles.iconContainer.blueLight, "flex-shrink-0 group-hover:bg-blue-100 transition-colors")}>
-                      <Phone className="w-6 h-6 text-blue-600" />
+                    <div className={cn(styles.iconContainer.small, "flex-shrink-0")}>
+                      <Phone className="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <h4 className={cn(theme.typography.h5, 'mb-2')}>{contactData.contactInfo?.consultationHeading || 'Technical Consultation'}</h4>
@@ -229,8 +229,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                 <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
                   <div className="flex items-start gap-4">
-                    <div className={cn(styles.iconContainer.blueLight, "flex-shrink-0 group-hover:bg-blue-100 transition-colors")}>
-                      <FileText className="w-6 h-6 text-blue-600" />
+                    <div className={cn(styles.iconContainer.small, "flex-shrink-0")}>
+                      <FileText className="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <h4 className={cn(theme.typography.h5, 'mb-2')}>General Inquiries</h4>
@@ -265,8 +265,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     viewport={{ once: true }}
                   >
                     <Card className={cn(styles.featureCard, 'p-6 text-center h-full')}>
-                      <div className={cn(styles.iconContainer.blueLight, "mx-auto mb-4")}>
-                        <Shield className="w-6 h-6 text-blue-600" />
+                      <div className={cn(styles.iconContainer.small, "mx-auto mb-4")}>
+                        <Shield className="w-5 h-5 text-white" />
                       </div>
                       <p className={cn(theme.typography.small, 'font-semibold text-slate-800')}>
                         {cert?.certification}

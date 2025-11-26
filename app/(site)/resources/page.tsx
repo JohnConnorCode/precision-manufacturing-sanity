@@ -87,12 +87,25 @@ export default async function ResourcesPage() {
         imageAlt={pageContent?.resourcesPage?.hero?.backgroundImage?.alt || ''}
         badge={pageContent?.resourcesPage?.hero?.badge ? { text: pageContent.resourcesPage.hero.badge } : undefined}
         title={
-          pageContent?.resourcesPage?.hero?.title ? (
-            <span className="text-white">{pageContent.resourcesPage.hero.title}</span>
-          ) : (
+          pageContent?.resourcesPage?.hero?.title ? (() => {
+            // Split title to highlight last word in blue gradient
+            const title = pageContent.resourcesPage.hero.title;
+            const words = title.split(' ');
+            if (words.length <= 1) {
+              return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{title}</span>;
+            }
+            const firstPart = words.slice(0, -1).join(' ');
+            const lastWord = words[words.length - 1];
+            return (
+              <span>
+                <span className="text-white">{firstPart} </span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{lastWord}</span>
+              </span>
+            );
+          })() : (
             <>
               <span className="text-white">Master</span>{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">Precision Manufacturing</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Precision Manufacturing</span>
             </>
           )
         }

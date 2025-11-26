@@ -47,7 +47,9 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
   const heroImage =
     service.hero?.backgroundImage?.asset?.url ||
     service.hero?.backgroundImage?.url ||
-    service.hero?.backgroundImageUrl;
+    service.hero?.backgroundImageUrl ||
+    service.image?.asset?.url ||
+    service.imageUrl;
   const heroDescription = service.hero?.descriptionRich
     ? <PortableTextContent value={service.hero.descriptionRich} />
     : (service.overview?.descriptionRich
@@ -117,7 +119,21 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         alignment="center"
         showScrollIndicator
         badge={{ text: service.hero?.badge || 'SERVICE', icon: Target }}
-        title={<span className="text-white">{heroTitle}</span>}
+        title={(() => {
+          // Split title to highlight last word in blue gradient
+          const words = heroTitle.split(' ');
+          if (words.length === 1) {
+            return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{heroTitle}</span>;
+          }
+          const firstPart = words.slice(0, -1).join(' ');
+          const lastWord = words[words.length - 1];
+          return (
+            <span>
+              <span className="text-white">{firstPart} </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{lastWord}</span>
+            </span>
+          );
+        })()}
         subtitle={service.hero?.subtitle}
         description={heroDescription}
         titleSize={service.hero?.titleSize}

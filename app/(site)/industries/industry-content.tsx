@@ -40,7 +40,21 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
           text: industry.hero?.badge || industry.title.toUpperCase(),
           icon: Target,
         }}
-        title={<span className="text-white">{industry.title}</span>}
+        title={(() => {
+          // Split title to highlight last word in blue gradient
+          const words = industry.title.split(' ');
+          if (words.length === 1) {
+            return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{industry.title}</span>;
+          }
+          const firstPart = words.slice(0, -1).join(' ');
+          const lastWord = words[words.length - 1];
+          return (
+            <span>
+              <span className="text-white">{firstPart} </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{lastWord}</span>
+            </span>
+          );
+        })()}
         subtitle={industry.hero?.subtitle}
         description={industry.hero?.description || industry.overview?.description}
         buttons={industry.hero?.buttons || []}
