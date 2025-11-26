@@ -478,7 +478,7 @@ export const EnhancedLogoShowcase = () => {
           <p className="text-xl text-slate-600">Enhanced Precision Target Logo</p>
           <button
             onClick={restartAnimation}
-            className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="mt-4 px-6 py-2 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-500 hover:to-indigo-500 transition-all"
           >
             Replay Animation
           </button>

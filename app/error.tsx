@@ -46,7 +46,7 @@ export default function Error({
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button
             onClick={() => reset()}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white"
           >
             Try again
           </Button>
@@ -63,7 +63,7 @@ export default function Error({
             Need help?{' '}
             <a
               href="/contact"
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-cyan-400 font-medium"
             >
               Contact support
             </a>

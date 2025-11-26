@@ -11,7 +11,7 @@ export default function NotFound() {
           The technical article you&apos;re looking for doesn&apos;t exist.
         </p>
         <Link href="/resources">
-          <Button className="bg-blue-600 hover:bg-blue-700">
+          <Button className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500">
             Browse All Resources
           </Button>
         </Link>

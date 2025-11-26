@@ -216,7 +216,7 @@ export default function Header({ data }: HeaderProps) {
           <div className="flex items-center space-x-4">
             {topBar?.showCertifications !== false && (
               <>
-                <Zap className="h-3 w-3 text-blue-600" aria-hidden="true" />
+                <Zap className="h-3 w-3 text-blue-400" aria-hidden="true" />
                 <span className={cn(theme.typography.badge, 'text-slate-400')}>{topBar?.certifications}</span>
               </>
             )}

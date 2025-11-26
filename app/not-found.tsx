@@ -10,7 +10,7 @@ export default function NotFound() {
       <div className="max-w-2xl w-full bg-white rounded-lg shadow-xl p-8 md:p-12 text-center">
         <div className="mb-8 flex justify-center">
           <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center">
-            <FileQuestion className="w-12 h-12 text-blue-600" />
+            <FileQuestion className="w-12 h-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
           </div>
         </div>
 
@@ -27,7 +27,7 @@ export default function NotFound() {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
           <Link href="/">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Button className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white">
               <Home className="w-4 h-4 mr-2" />
               Go to homepage
             </Button>
@@ -46,23 +46,23 @@ export default function NotFound() {
             Looking for something specific?
           </p>
           <div className="flex flex-wrap gap-3 justify-center text-sm">
-            <Link href="/services" className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link href="/services" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-cyan-400 font-medium">
               Services
             </Link>
             <span className="text-slate-300">•</span>
-            <Link href="/industries" className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link href="/industries" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-cyan-400 font-medium">
               Industries
             </Link>
             <span className="text-slate-300">•</span>
-            <Link href="/resources" className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link href="/resources" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-cyan-400 font-medium">
               Resources
             </Link>
             <span className="text-slate-300">•</span>
-            <Link href="/about" className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link href="/about" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-cyan-400 font-medium">
               About
             </Link>
             <span className="text-slate-300">•</span>
-            <Link href="/contact" className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link href="/contact" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-cyan-400 font-medium">
               Contact
             </Link>
           </div>

@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ArrowRight, CheckCircle, Shield, Award, Target } from 'lucide-react';
+import { ArrowRight, Award, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import imageUrlBuilder from '@sanity/image-url';
@@ -23,16 +23,20 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
     ? builder.image(industry.hero.backgroundImage).width(1920).height(1080).url()
     : undefined;
 
-  // Construct title with highlight from Sanity
-  const heroTitle = industry.hero?.title && industry.hero?.titleHighlight ? (
-    <span className="text-white">
-      {industry.hero.title}{' '}
-      <span className="bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">
-        {industry.hero.titleHighlight}
-      </span>
-    </span>
-  ) : (
-    <span className="text-white">{industry.title}</span>
+  // Build the title with gradient highlight on second part (matches reference site)
+  // Reference: "Aerospace" (white) + "Components" (blue gradient)
+  const heroTitle = (
+    <>
+      <span className="text-white">{industry.hero?.title || industry.title}</span>
+      {industry.hero?.titleHighlight && (
+        <>
+          {' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+            {industry.hero.titleHighlight}
+          </span>
+        </>
+      )}
+    </>
   );
 
   // Use hero.description (plain text) or hero.descriptionRich (portable text)
@@ -51,12 +55,8 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
         height="large"
         alignment="center"
         showScrollIndicator={true}
-        badge={{
-          text: industry.hero?.badge || industry.title.toUpperCase(),
-          icon: Target,
-        }}
+        badge={industry.hero?.badge ? { text: industry.hero.badge } : undefined}
         title={heroTitle}
-        subtitle={industry.hero?.subtitle}
         description={heroDescription}
       />
 
@@ -74,7 +74,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                   className="text-center"
                 >
-                  <div className="text-4xl font-bold text-blue-500 mb-2">{stat.value}</div>
+                  <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-2">{stat.value}</div>
                   <div className="text-lg font-semibold text-white mb-1">{stat.label}</div>
                   {stat.description && (
                     <div className="text-sm text-zinc-400">{stat.description}</div>
@@ -88,7 +88,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
       {/* Component Expertise / Sector Expertise */}
       {industry.expertise && industry.expertise.length > 0 && (
-        <section className="py-24 bg-white">
+        <section className="py-24 bg-zinc-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -97,15 +97,15 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
                 {industry.expertiseSectionHeading || `${industry.title} Expertise`}
               </h2>
-              <p className="text-lg text-zinc-600 max-w-3xl mx-auto">
+              <p className="text-lg text-zinc-400 max-w-3xl mx-auto">
                 {industry.expertiseSectionDescription || 'Specialized manufacturing capabilities for critical applications.'}
               </p>
             </motion.div>
 
-            <div className="space-y-12">
+            <div className="grid md:grid-cols-3 gap-8">
               {industry.expertise.map((section: any, index: number) => (
                 <motion.div
                   key={section._key || index}
@@ -114,104 +114,68 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
-                  <Card className="relative overflow-hidden p-8 shadow-lg">
-                    {/* Background Image */}
+                  <Card className="relative overflow-hidden min-h-[500px] border-0">
+                    {/* Background Image - VISIBLE */}
                     {(section.image || section.imageUrl) && (
-                      <div className="absolute inset-0 z-0">
-                        {section.image ? (
-                          <>
-                            {/* Blurred background layer */}
-                            <Image
-                              src={builder.image(section.image).width(800).quality(30).url()}
-                              alt=""
-                              fill
-                              className="object-cover blur-sm opacity-20"
-                            />
-                            {/* Sharp foreground layer */}
-                            <Image
-                              src={builder.image(section.image).width(800).quality(90).url()}
-                              alt={section.image.alt || section.title}
-                              fill
-                              className="object-cover opacity-10"
-                            />
-                          </>
-                        ) : section.imageUrl && (
-                          <>
-                            {/* Blurred background layer */}
-                            <Image
-                              src={section.imageUrl}
-                              alt=""
-                              fill
-                              className="object-cover blur-sm opacity-20"
-                            />
-                            {/* Sharp foreground layer */}
-                            <Image
-                              src={section.imageUrl}
-                              alt={section.title}
-                              fill
-                              className="object-cover opacity-10"
-                            />
-                          </>
-                        )}
+                      <div className="absolute inset-0">
+                        <Image
+                          src={section.image ? builder.image(section.image).width(800).quality(80).url() : section.imageUrl}
+                          alt={section.image?.alt || section.title}
+                          fill
+                          className="object-cover"
+                        />
+                        {/* Dark overlay for text readability */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50" />
                       </div>
                     )}
 
-                    {/* Content - positioned above background */}
-                    <div className="relative z-10">
-                      <h3 className="text-2xl md:text-3xl font-bold text-zinc-900 mb-4">
+                    {/* Content - WHITE TEXT */}
+                    <div className="relative z-10 p-8 h-full flex flex-col">
+                      <h3 className="text-2xl font-bold text-white mb-3">
                         {section.title}
                       </h3>
-                      <p className="text-lg text-zinc-600 mb-6">{section.description}</p>
+                      <p className="text-zinc-300 mb-6">{section.description}</p>
 
-                    <div className="grid md:grid-cols-3 gap-6">
-                      {section.components && section.components.length > 0 && (
-                        <div>
-                          <h4 className="text-sm font-semibold text-zinc-900 uppercase tracking-wide mb-3">
-                            {section.componentsLabel || 'Typical Components'}
-                          </h4>
-                          <ul className="space-y-2">
-                            {section.components.map((component: string, idx: number) => (
-                              <li key={idx} className="flex items-start text-zinc-600 text-sm">
-                                <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
-                                {component}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                      <div className="space-y-6 mt-auto">
+                        {section.components && section.components.length > 0 && (
+                          <div>
+                            <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-2">
+                              {section.componentsLabel || 'Typical Components'}
+                            </h4>
+                            <ul className="space-y-1">
+                              {section.components.map((component: string, idx: number) => (
+                                <li key={idx} className="text-zinc-300 text-sm">• {component}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
 
-                      {section.materials && section.materials.length > 0 && (
-                        <div>
-                          <h4 className="text-sm font-semibold text-zinc-900 uppercase tracking-wide mb-3">
-                            Materials
-                          </h4>
-                          <ul className="space-y-2">
-                            {section.materials.map((material: string, idx: number) => (
-                              <li key={idx} className="flex items-start text-zinc-600 text-sm">
-                                <Shield className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
-                                {material}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                        {section.materials && section.materials.length > 0 && (
+                          <div>
+                            <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-2">
+                              Materials
+                            </h4>
+                            <ul className="space-y-1">
+                              {section.materials.map((material: string, idx: number) => (
+                                <li key={idx} className="text-zinc-300 text-sm">• {material}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
 
-                      {section.requirements && section.requirements.length > 0 && (
-                        <div>
-                          <h4 className="text-sm font-semibold text-zinc-900 uppercase tracking-wide mb-3">
-                            {section.requirementsLabel || 'Key Requirements'}
-                          </h4>
-                          <ul className="space-y-2">
-                            {section.requirements.map((requirement: string, idx: number) => (
-                              <li key={idx} className="flex items-start text-zinc-600 text-sm">
-                                <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
-                                {requirement}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
+                        {section.requirements && section.requirements.length > 0 && (
+                          <div>
+                            <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-2">
+                              {section.requirementsLabel || 'Key Requirements'}
+                            </h4>
+                            <ul className="space-y-1">
+                              {section.requirements.map((requirement: string, idx: number) => (
+                                <li key={idx} className="text-zinc-300 text-sm">• {requirement}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </Card>
                 </motion.div>
@@ -250,7 +214,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
                   <Card className="p-6 h-full">
-                    <Award className="w-12 h-12 text-blue-600 mb-4" />
+                    <Award className="w-12 h-12 text-blue-500 mb-4" />
                     <h3 className="text-xl font-bold text-zinc-900 mb-3">{cert.title}</h3>
                     <p className="text-sm text-zinc-600 whitespace-pre-line">{cert.description}</p>
                   </Card>
@@ -297,7 +261,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                       <ul className="space-y-2">
                         {benefit.features.map((feature: any) => (
                           <li key={feature._key} className="flex items-start text-sm text-zinc-600">
-                            <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
+                            <CheckCircle className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
                             {feature.feature}
                           </li>
                         ))}
@@ -333,7 +297,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   key={index}
                   size="lg"
                   asChild
-                  className={button.variant === 'primary' ? 'bg-blue-600 hover:bg-blue-700' : 'border-zinc-600 text-zinc-300 hover:bg-zinc-800 hover:text-white'}
+                  className={button.variant === 'primary' ? 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' : 'border-zinc-600 text-zinc-300 hover:bg-zinc-800 hover:text-white'}
                   variant={button.variant === 'primary' ? 'default' : 'outline'}
                 >
                   <Link href={button.href}>
@@ -342,7 +306,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                 </Button>
               )) || (
                 <>
-                  <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700">
+                  <Button size="lg" asChild className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500">
                     <Link href="/contact">
                       Request Quote <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>

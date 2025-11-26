@@ -288,7 +288,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                           </div>
                         </div>
                         <div className="flex-shrink-0">
-                          <div className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold group-hover:bg-blue-700 transition-colors inline-flex items-center">
+                          <div className="px-6 py-3 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white rounded-lg font-semibold group-hover:from-blue-500 group-hover:to-indigo-500 transition-all inline-flex items-center">
                             View Details <ArrowRight className="ml-2 h-4 w-4" />
                           </div>
                         </div>
