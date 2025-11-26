@@ -115,6 +115,17 @@ const nextConfig: NextConfig = {
         destination: '/compliance/supplier-requirements',
         permanent: true,
       },
+      // Service slug redirects (old slugs to current published slugs)
+      {
+        source: '/services/precision-metrology',
+        destination: '/services/metrology',
+        permanent: true,
+      },
+      {
+        source: '/services/engineering-services',
+        destination: '/services/engineering',
+        permanent: true,
+      },
     ];
   },
 

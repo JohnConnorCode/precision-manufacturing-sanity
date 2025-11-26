@@ -191,36 +191,38 @@ export default async function ServicesPage() {
         />
       )}
 
-      {/* Capabilities Overview */}
-      <section id="capabilities" className={styles.sectionLight}>
-        <div className={theme.spacing.container}>
-          <AnimatedSection>
-            <div className={cn(styles.grid4Col, "mb-20")}>
-              {capabilities
-                .filter((capability: any) => capability?.enabled !== false)
-                .map((capability: any) => (
-                <div
-                  key={capability.label}
-                  className="text-center"
-                >
-                  <div className={styles.statValue}>
-                    {capability.value}
+      {/* Capabilities Overview - only show if there are enabled capabilities */}
+      {capabilities.filter((c: any) => c?.enabled !== false).length > 0 && (
+        <section id="capabilities" className="py-12 md:py-16 bg-gradient-to-b from-slate-50 to-white">
+          <div className={theme.spacing.container}>
+            <AnimatedSection>
+              <div className={styles.grid4Col}>
+                {capabilities
+                  .filter((capability: any) => capability?.enabled !== false)
+                  .map((capability: any) => (
+                  <div
+                    key={capability.label}
+                    className="text-center"
+                  >
+                    <div className={styles.statValue}>
+                      {capability.value}
+                    </div>
+                    <div className={cn(theme.typography.badge, "text-slate-700 mb-2")}>
+                      {capability.label}
+                    </div>
+                    <div className={theme.typography.small}>
+                      {capability.description}
+                    </div>
                   </div>
-                  <div className={cn(theme.typography.badge, "text-slate-700 mb-2")}>
-                    {capability.label}
-                  </div>
-                  <div className={theme.typography.small}>
-                    {capability.description}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
+                ))}
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
 
       {/* Services Grid */}
-      <section id="services" className={theme.spacing.section}>
+      <section id="services" className="py-12 md:py-16 lg:py-20">
         <div className={theme.spacing.container}>
           {(servicesPageData?.content?.sectionTitle || servicesPageData?.content?.sectionDescription) && (
             <AnimatedSection>
@@ -254,6 +256,7 @@ export default async function ServicesPage() {
                         alt={service.title}
                         className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                         speed={0.2}
+                        gradient="none"
                       />
                       <div className={`absolute inset-0 ${overlays.card}`} />
                       {/* Optional icon overlay can go here if provided by CMS */}

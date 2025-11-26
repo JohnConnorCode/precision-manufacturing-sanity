@@ -211,6 +211,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                           alt={component.category}
                           className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                           speed={0.2}
+                          gradient="none"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                       </div>
@@ -604,18 +605,55 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             viewport={{ once: true }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h2 className={cn(theme.typography.h2, 'mb-6 text-white')}>Ready to Get Started?</h2>
+            <h2 className={cn(theme.typography.h2, 'mb-6 text-white')}>
+              {industry.cta?.title || 'Ready to Get Started?'}
+            </h2>
             <p className={cn(theme.typography.lead, 'text-slate-300 mb-8')}>
-              Partner with IIS for {industry.title.toLowerCase()} solutions that meet the most demanding requirements.
+              {industry.cta?.description || `Partner with IIS for ${industry.title.toLowerCase()} solutions that meet the most demanding requirements.`}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className={styles.ctaPrimary}>
-                Schedule Consultation
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button size="lg" variant="outline" asChild className={cn(styles.ctaSecondary, 'border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white')}>
-                <Link href="/industries">View All Industries</Link>
-              </Button>
+              {industry.cta?.buttons && industry.cta.buttons.length > 0 ? (
+                industry.cta.buttons
+                  .filter((button: any) => button?.enabled !== false && button?.label && button?.href)
+                  .map((button: any, index: number) => {
+                    const isSecondary = button.variant === 'secondary' || index > 0;
+                    return isSecondary ? (
+                      <Button
+                        key={button._key || index}
+                        size="lg"
+                        variant="outline"
+                        asChild
+                        className={cn(styles.ctaSecondary, 'border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white')}
+                      >
+                        <Link href={button.href}>{button.label}</Link>
+                      </Button>
+                    ) : (
+                      <Button
+                        key={button._key || index}
+                        size="lg"
+                        className={styles.ctaPrimary}
+                        asChild
+                      >
+                        <Link href={button.href}>
+                          {button.label}
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    );
+                  })
+              ) : (
+                <>
+                  <Button size="lg" className={styles.ctaPrimary} asChild>
+                    <Link href="/contact">
+                      Request Quote
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button size="lg" variant="outline" asChild className={cn(styles.ctaSecondary, 'border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white')}>
+                    <Link href="/industries">View All Industries</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </motion.div>
         </div>

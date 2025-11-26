@@ -13,7 +13,7 @@ import { PortableTextContent } from '@/components/portable-text-components';
 import { theme, styles, cn } from '@/lib/theme';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
-import { ArrowRight, CheckCircle, Settings, Shield, Zap, Cog, Target, FileText, Award, Activity } from 'lucide-react';
+import { ArrowRight, CheckCircle, Settings, Shield, Zap, Cog, Target, FileText, Award, Activity, TrendingDown, Wrench } from 'lucide-react';
 
 const iconMap: Record<string, any> = {
   Settings,
@@ -24,6 +24,8 @@ const iconMap: Record<string, any> = {
   FileText,
   Award,
   Activity,
+  TrendingDown,
+  Wrench,
 };
 
 interface ServiceContentProps {
@@ -58,8 +60,17 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
   // Hero buttons removed - no CTAs in hero section
 
-  const capabilities = Array.isArray(service.capabilities)
+  // Stats-style capabilities (label/value pairs)
+  const capabilityStats = Array.isArray(service.capabilities)
     ? service.capabilities.filter((item: any) => item?.enabled !== false && item?.label && item?.value)
+    : [];
+  // Card-style capabilities (title/description with features)
+  const capabilityCards = Array.isArray(service.capabilities)
+    ? service.capabilities.filter((item: any) => item?.enabled !== false && item?.title && !item?.label)
+    : [];
+  // Benefits section
+  const benefits = Array.isArray(service.benefits)
+    ? service.benefits.filter((item: any) => item?.enabled !== false && item?.title)
     : [];
   const serviceOfferings = Array.isArray(service.services)
     ? service.services.filter((item: any) => item?.enabled !== false && item?.title)
@@ -102,6 +113,9 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
   const applicationsDescription = service.applicationsDescription;
   const applicationsListLabel = service.applicationsListLabel;
 
+  const capabilitiesHeading = service.capabilitiesSectionHeading || 'Our Capabilities';
+  const capabilitiesDescription = service.capabilitiesSectionDescription;
+
   const processHeading = service.processHeading;
   const processDescription = service.processDescription;
 
@@ -140,8 +154,8 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         descriptionSize={service.hero?.descriptionSize}
       />
 
-      {capabilities.length > 0 && (
-        <section className={styles.sectionLight}>
+      {capabilityStats.length > 0 && (
+        <section className="py-12 md:py-16 bg-gradient-to-b from-slate-50 to-white">
           <div className={theme.spacing.container}>
             <motion.div
               initial={initialState}
@@ -149,7 +163,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               viewport={viewportConfig}
               className={styles.grid4Col}
             >
-              {capabilities.map((capability: any, index: number) => {
+              {capabilityStats.map((capability: any, index: number) => {
                 const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
                 return (
                   <motion.div
@@ -172,8 +186,146 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         </section>
       )}
 
+      {/* Capability Cards Section - for services with rich capability data */}
+      {capabilityCards.length > 0 && (
+        <section className="py-12 md:py-16 lg:py-20">
+          <div className={theme.spacing.container}>
+            <motion.div
+              initial={initialState}
+              whileInView={createFade(0, 0.8)}
+              viewport={viewportConfig}
+              className="text-center mb-16"
+            >
+              <h2 className={cn(theme.typography.h2, 'mb-6')}>{capabilitiesHeading}</h2>
+              {capabilitiesDescription && (
+                <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
+                  {capabilitiesDescription}
+                </p>
+              )}
+            </motion.div>
+
+            <div className={styles.grid2Col}>
+              {capabilityCards.map((capability: any, index: number) => {
+                const CapIcon = iconMap[capability.iconName] || Settings;
+                const capImage = capability.image?.asset?.url || capability.imageUrl;
+                const capAlt = capability.image?.alt || capability.title;
+                const delay = getStaggerDelay(SECTION_CONFIGS.twoColumnGrid, index);
+
+                return (
+                  <motion.div
+                    key={capability.title}
+                    initial={initialState}
+                    whileInView={createFade(delay, 0.6)}
+                    viewport={viewportConfig}
+                  >
+                    <Card className={cn(styles.featureCard, 'group h-full overflow-hidden')}>
+                      {capImage && (
+                        <div className="relative h-48 overflow-hidden">
+                          <ParallaxImagePro
+                            src={capImage}
+                            alt={capAlt}
+                            className="w-full h-full group-hover:scale-105 transition-transform duration-500"
+                            speed={0.15}
+                            gradient="none"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                          <div className="absolute bottom-4 left-4">
+                            <CapIcon className="w-8 h-8 text-white" />
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="p-6">
+                        <h3 className={cn(theme.typography.h4, 'mb-3 group-hover:text-blue-600 transition-colors')}>
+                          {capability.title}
+                        </h3>
+                        <p className={cn(theme.typography.body, 'mb-4')}>
+                          {capability.description}
+                        </p>
+
+                        {capability.features && capability.features.length > 0 && (
+                          <div className="mb-4">
+                            <h4 className={cn(theme.typography.label, 'mb-2')}>
+                              {capability.featuresLabel || 'Features'}
+                            </h4>
+                            <div className="grid grid-cols-2 gap-1">
+                              {capability.features.map((f: any) => (
+                                <div key={f.feature} className={cn('flex items-center', theme.typography.small)}>
+                                  <CheckCircle className="w-3 h-3 text-blue-600 mr-1.5 flex-shrink-0" />
+                                  {f.feature}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {capability.capabilitiesList && capability.capabilitiesList.length > 0 && (
+                          <div>
+                            <h4 className={cn(theme.typography.label, 'mb-2')}>
+                              {capability.capabilitiesLabel || 'Benefits'}
+                            </h4>
+                            <div className="space-y-1">
+                              {capability.capabilitiesList.map((c: any) => (
+                                <div key={c.capability} className={cn('flex items-center', theme.typography.small)}>
+                                  <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2" />
+                                  {c.capability}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Benefits Section */}
+      {benefits.length > 0 && (
+        <section className="py-12 md:py-16 bg-gradient-to-b from-slate-50 to-white">
+          <div className={theme.spacing.container}>
+            <motion.div
+              initial={initialState}
+              whileInView={createFade(0, 0.8)}
+              viewport={viewportConfig}
+              className="text-center mb-12"
+            >
+              <h2 className={cn(theme.typography.h2, 'mb-4')}>Key Benefits</h2>
+            </motion.div>
+
+            <div className={styles.grid4Col}>
+              {benefits.map((benefit: any, index: number) => {
+                const BenefitIcon = iconMap[benefit.iconName] || Award;
+                const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
+
+                return (
+                  <motion.div
+                    key={benefit.title}
+                    initial={initialState}
+                    whileInView={createFade(delay, 0.6)}
+                    viewport={viewportConfig}
+                  >
+                    <Card className={cn(styles.featureCard, 'h-full text-center p-6')}>
+                      <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4', theme.colors.primary.gradient)}>
+                        <BenefitIcon className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className={cn(theme.typography.h5, 'mb-2')}>{benefit.title}</h3>
+                      <p className={theme.typography.small}>{benefit.description}</p>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
       {serviceOfferings.length > 0 && (
-        <section className={theme.spacing.section}>
+        <section className="py-12 md:py-16 lg:py-20">
           <div className={theme.spacing.container}>
             <motion.div
               initial={initialState}
@@ -209,6 +361,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                             alt={offeringAlt}
                             className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                             speed={0.2}
+                            gradient="none"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                           <div className="absolute bottom-4 left-4">
@@ -273,7 +426,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {materials.length > 0 && (
-        <section className={styles.sectionLight}>
+        <section className="py-12 md:py-16 bg-gradient-to-b from-slate-50 to-white">
           <div className={theme.spacing.container}>
             <motion.div
               initial={initialState}
@@ -320,7 +473,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {applications.length > 0 && (
-        <section className={styles.sectionLight}>
+        <section className="py-12 md:py-16 bg-gradient-to-b from-slate-50 to-white">
           <div className={theme.spacing.container}>
             <motion.div
               initial={initialState}
@@ -356,6 +509,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                             alt={appAlt}
                             className="w-full h-full"
                             speed={0.15}
+                            gradient="none"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                         </div>
@@ -395,16 +549,16 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {qualityStandards.length > 0 && (
-        <section className={theme.spacing.section}>
+        <section className="py-12 md:py-16 lg:py-20 bg-slate-900">
           <div className={theme.spacing.container}>
             <motion.div
               initial={initialState}
               whileInView={createFade(0, 0.8)}
               viewport={viewportConfig}
-              className="text-center mb-16"
+              className="text-center mb-12"
             >
-              <h2 className={cn(theme.typography.h2, 'mb-6')}>{qualityHeading}</h2>
-              <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
+              <h2 className={cn(theme.typography.h2, 'mb-4 text-white')}>{qualityHeading}</h2>
+              <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto text-slate-300')}>
                 {qualityDescription}
               </p>
             </motion.div>
@@ -423,7 +577,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                       className="flex items-start gap-3"
                     >
                       <StandardIcon className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                      <p className={cn(theme.typography.body, 'text-slate-100')}>
+                      <p className={cn(theme.typography.body, 'text-slate-200')}>
                         {standard.title}
                         {standard.description ? ` — ${standard.description}` : ''}
                       </p>
@@ -433,7 +587,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               </div>
 
               {qualityImageSrc && (
-                <div className="relative h-[360px] rounded-3xl overflow-hidden">
+                <div className="relative h-[360px] rounded-2xl overflow-hidden">
                   <ParallaxImagePro
                     src={qualityImageSrc}
                     alt={qualityImageAlt}
@@ -448,7 +602,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {processes.length > 0 && (
-        <section className={theme.spacing.section}>
+        <section className="py-12 md:py-16 lg:py-20">
           <div className={theme.spacing.container}>
             <motion.div
               initial={initialState}

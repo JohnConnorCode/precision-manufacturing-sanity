@@ -78,7 +78,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
       )}
 
       {/* Main Contact Section */}
-      <section className={styles.sectionLight}>
+      <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-b from-slate-50 to-white">
         <div className={theme.spacing.container}>
           <div className="max-w-6xl mx-auto">
             <motion.div
@@ -108,8 +108,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                   <div className="space-y-8">
                     {/* Address */}
                     <div className="flex items-start gap-5">
-                      <div className={cn(styles.iconContainer.large, "flex-shrink-0")}>
-                        <MapPin className="w-7 h-7 text-white" />
+                      <div className="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
+                        <MapPin className="w-6 h-6 text-white" />
                       </div>
                       <div>
                         <h4 className={cn(theme.typography.h5, 'mb-2')}>Headquarters</h4>
@@ -123,8 +123,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                     {/* Phone */}
                     <div className="flex items-start gap-5">
-                      <div className={cn(styles.iconContainer.large, "flex-shrink-0")}>
-                        <Phone className="w-7 h-7 text-white" />
+                      <div className="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
+                        <Phone className="w-6 h-6 text-white" />
                       </div>
                       <div>
                         <h4 className={cn(theme.typography.h5, 'mb-2')}>Phone</h4>
@@ -142,8 +142,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                     {/* Email */}
                     <div className="flex items-start gap-5">
-                      <div className={cn(styles.iconContainer.large, "flex-shrink-0")}>
-                        <Mail className="w-7 h-7 text-white" />
+                      <div className="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
+                        <Mail className="w-6 h-6 text-white" />
                       </div>
                       <div>
                         <h4 className={cn(theme.typography.h5, 'mb-2')}>Email</h4>
@@ -161,8 +161,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                     {/* Business Hours */}
                     <div className="flex items-start gap-5">
-                      <div className={cn(styles.iconContainer.large, "flex-shrink-0")}>
-                        <Clock className="w-7 h-7 text-white" />
+                      <div className="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
+                        <Clock className="w-6 h-6 text-white" />
                       </div>
                       <div>
                         <h4 className={cn(theme.typography.h5, 'mb-2')}>Business Hours</h4>
@@ -187,7 +187,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                 {/* Quick Actions */}
                 <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
                   <div className="flex items-start gap-4">
-                    <div className={cn(styles.iconContainer.small, "flex-shrink-0")}>
+                    <div className="w-10 h-10 rounded-lg bg-slate-900 flex items-center justify-center flex-shrink-0">
                       <MessageCircle className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -208,7 +208,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                 <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
                   <div className="flex items-start gap-4">
-                    <div className={cn(styles.iconContainer.small, "flex-shrink-0")}>
+                    <div className="w-10 h-10 rounded-lg bg-slate-900 flex items-center justify-center flex-shrink-0">
                       <Phone className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -229,7 +229,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                 <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
                   <div className="flex items-start gap-4">
-                    <div className={cn(styles.iconContainer.small, "flex-shrink-0")}>
+                    <div className="w-10 h-10 rounded-lg bg-slate-900 flex items-center justify-center flex-shrink-0">
                       <FileText className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -265,7 +265,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     viewport={{ once: true }}
                   >
                     <Card className={cn(styles.featureCard, 'p-6 text-center h-full')}>
-                      <div className={cn(styles.iconContainer.small, "mx-auto mb-4")}>
+                      <div className="w-10 h-10 rounded-lg bg-slate-900 flex items-center justify-center mx-auto mb-4">
                         <Shield className="w-5 h-5 text-white" />
                       </div>
                       <p className={cn(theme.typography.small, 'font-semibold text-slate-800')}>
