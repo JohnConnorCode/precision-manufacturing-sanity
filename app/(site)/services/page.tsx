@@ -9,6 +9,7 @@ import { getAllServices, getPageContent, getServicesPage } from '@/sanity/lib/qu
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import { overlays } from '@/lib/design-system';
 
 // Defensive converter: accepts strings, PT arrays, or simple objects
 function toPlainText(value: any): string {
@@ -254,7 +255,7 @@ export default async function ServicesPage() {
                         className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                         speed={0.2}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                      <div className={`absolute inset-0 ${overlays.card}`} />
                       {/* Optional icon overlay can go here if provided by CMS */}
                     </div>
                   )}
@@ -281,7 +282,8 @@ export default async function ServicesPage() {
                     <Button
                       asChild
                       variant="outline"
-                      className={cn(styles.ctaSecondary, "w-full group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900")}
+                      size="lg"
+                      className="w-full"
                     >
                       <Link href={service.href}>
                         {service.cardCtaText}

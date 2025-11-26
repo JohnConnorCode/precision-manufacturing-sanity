@@ -79,6 +79,7 @@ export default defineConfig({
         origin: getPreviewOrigin(),
         draftMode: {
           enable: '/api/draft',
+          disable: '/api/draft/disable',
         },
       },
       resolve: {

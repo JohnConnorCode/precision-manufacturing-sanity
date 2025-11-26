@@ -247,8 +247,8 @@ export default function Hero({ data }: HeroProps) {
                     initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      delay: 0.8 + (index * 0.05),
-                      duration: 0.4,
+                      delay: 0.8 + (index * 0.1),
+                      duration: 0.5,
                       ease: "easeOut"
                     }}
                     className="px-3 md:px-5 py-1.5 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold border backdrop-blur-md whitespace-nowrap"

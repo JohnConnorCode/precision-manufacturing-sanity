@@ -7,7 +7,7 @@ import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight, Users, Factory, Award, Target, Zap, Shield, Lightbulb } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImage from '@/components/ui/parallax-image';
-import { theme, styles } from '@/lib/theme';
+import { theme, styles, cn } from '@/lib/theme';
 import imageUrlBuilder from '@sanity/image-url';
 import { client } from '@/sanity/lib/client';
 
@@ -156,7 +156,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 viewport={{ once: true }}
               >
                 {data.story?.title && (
-                  <h2 className="text-4xl font-bold mb-6">{data.story.title}</h2>
+                  <h2 className={cn(theme.typography.h2, "mb-6")}>{data.story.title}</h2>
                 )}
                 <div className="space-y-4 text-slate-600 leading-relaxed">
                   {storyParagraphs.map((paragraph: string, index: number) => (
@@ -197,7 +197,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="text-center mb-16"
             >
               {data.timeline?.title && (
-                <h2 className="text-4xl font-bold mb-6">{data.timeline.title}</h2>
+                <h2 className={cn(theme.typography.h2, "mb-6")}>{data.timeline.title}</h2>
               )}
               {data.timeline?.description && (
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
@@ -250,7 +250,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="text-center mb-16"
             >
               {data.values?.title && (
-                <h2 className="text-4xl font-bold mb-6">{data.values.title}</h2>
+                <h2 className={cn(theme.typography.h2, "mb-6")}>{data.values.title}</h2>
               )}
               {data.values?.description && (
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
@@ -327,7 +327,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   viewport={{ once: true }}
                 >
                   {data.certifications?.title && (
-                    <h2 className="text-4xl font-bold mb-4">{data.certifications.title}</h2>
+                    <h2 className={cn(theme.typography.h2, "mb-4")}>{data.certifications.title}</h2>
                   )}
                   <div className="space-y-4">
                     {certifications.map((cert: any, index: number) => (
@@ -363,7 +363,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="text-center mb-16"
             >
               {data.leadership?.title && (
-                <h2 className="text-4xl font-bold mb-6">{data.leadership.title}</h2>
+                <h2 className={cn(theme.typography.h2, "mb-6")}>{data.leadership.title}</h2>
               )}
               {data.leadership?.description && (
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
@@ -431,7 +431,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="text-center max-w-4xl mx-auto"
             >
               {data.cta?.title && (
-                <h2 className="text-4xl font-bold mb-6">{data.cta.title}</h2>
+                <h2 className={cn(theme.typography.h2, "mb-6")}>{data.cta.title}</h2>
               )}
               {data.cta?.description && (
                 <p className="text-xl text-slate-600 mb-8">

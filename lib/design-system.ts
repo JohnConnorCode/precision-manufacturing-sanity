@@ -44,9 +44,11 @@ export const spacing = {
 
 // ==================== COLORS ====================
 export const colors = {
-  // Gradients
-  primaryGradient: 'from-blue-600 to-indigo-600',
-  primaryGradientHover: 'from-blue-500 to-indigo-500',
+  // Gradients - UNIFIED across all components
+  primaryGradient: 'from-blue-600 via-blue-500 to-indigo-600',        // Primary buttons
+  primaryGradientHover: 'from-blue-500 via-blue-400 to-indigo-500',   // Hover states
+  textGradient: 'from-blue-400 to-cyan-400',                          // Gradient text accents
+  subtleGradient: 'from-blue-600/20 to-indigo-600/20',                // Subtle backgrounds
 
   // Text colors
   textDark: 'text-slate-900',
@@ -165,10 +167,25 @@ export const motionVariants = {
 
 // ==================== SHADOW UTILITIES ====================
 export const shadows = {
-  card: 'shadow-lg',
-  cardHover: 'shadow-xl',
-  button: 'shadow-md',
   subtle: 'shadow-sm',
+  card: 'shadow-md',
+  cardHover: 'shadow-xl',
+  elevated: 'shadow-2xl',
+  button: 'shadow-lg shadow-blue-600/25',
+} as const;
+
+// ==================== IMAGE OVERLAYS ====================
+export const overlays = {
+  card: 'bg-gradient-to-t from-black/80 via-black/40 to-transparent',
+  hero: 'bg-gradient-to-t from-black/90 via-black/50 to-transparent',
+  subtle: 'bg-gradient-to-t from-black/60 via-black/20 to-transparent',
+} as const;
+
+// ==================== STANDARD CARD PATTERN ====================
+export const cardStyles = {
+  base: 'bg-white border border-slate-200 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300',
+  dark: 'bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300',
+  interactive: 'bg-white border border-slate-200 rounded-xl overflow-hidden shadow-md hover:shadow-xl hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300',
 } as const;
 
 // ==================== HELPER FUNCTIONS ====================

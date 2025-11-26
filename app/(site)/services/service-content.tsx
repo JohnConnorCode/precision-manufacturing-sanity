@@ -59,19 +59,19 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
   // Hero buttons removed - no CTAs in hero section
 
   const capabilities = Array.isArray(service.capabilities)
-    ? service.capabilities.filter((item: any) => item?.label && item?.value)
+    ? service.capabilities.filter((item: any) => item?.enabled !== false && item?.label && item?.value)
     : [];
   const serviceOfferings = Array.isArray(service.services)
-    ? service.services.filter((item: any) => item?.title)
+    ? service.services.filter((item: any) => item?.enabled !== false && item?.title)
     : [];
   const materials = Array.isArray(service.materials)
-    ? service.materials.filter((item: any) => item?.category)
+    ? service.materials.filter((item: any) => item?.enabled !== false && item?.category)
     : [];
   const applications = Array.isArray(service.applications)
-    ? service.applications.filter((item: any) => item?.title)
+    ? service.applications.filter((item: any) => item?.enabled !== false && item?.title)
     : [];
   const qualityStandards = Array.isArray(service.qualityStandards)
-    ? service.qualityStandards.filter((item: any) => item?.title || item?.description)
+    ? service.qualityStandards.filter((item: any) => item?.enabled !== false && (item?.title || item?.description))
     : [];
   const qualityImageSrc =
     service.qualityImage?.image?.asset?.url ||

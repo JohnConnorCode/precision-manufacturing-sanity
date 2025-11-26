@@ -17,13 +17,13 @@
 
 /**
  * Standard animation durations (in seconds)
- * Fast durations for immediate content visibility
+ * Balanced durations for premium feel without sluggishness
  */
 export const DURATIONS = {
   fast: 0.2,
-  normal: 0.3,
-  slow: 0.35,
-  slower: 0.4,
+  normal: 0.4,        // Aligned with lib/animations.ts
+  slow: 0.5,
+  slower: 0.6,
 } as const;
 
 /**
@@ -34,14 +34,14 @@ export const EASING = "easeOut" as const;
 
 /**
  * Stagger delays for different contexts (in seconds)
- * Minimal delays to prevent white screens
+ * Perceptible delays create premium, sequential reveal effect
  */
 export const STAGGER = {
   header: 0,          // No delay between header elements - show immediately
-  cards: 0.02,        // Minimal delay between cards
-  badges: 0.02,       // Minimal delay between badges
-  list: 0.02,         // Minimal delay between list items
-  metrics: 0.02,      // Minimal delay between metrics
+  cards: 0.08,        // Perceptible delay between cards (80ms)
+  badges: 0.1,        // Visible delay between badges (100ms)
+  list: 0.06,         // Subtle delay between list items (60ms)
+  metrics: 0.08,      // Perceptible delay between metrics (80ms)
 } as const;
 
 // ============================================================================

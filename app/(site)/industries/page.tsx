@@ -7,6 +7,7 @@ import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import * as Icons from 'lucide-react';
+import { colors, spacing, cardStyles } from '@/lib/design-system';
 
 // Dynamic icon component
 function DynamicIcon({ name, className }: { name: string; className?: string }) {
@@ -100,13 +101,13 @@ export default async function IndustriesPage() {
           industriesPageData?.hero?.heading ? (
             <span className="text-white">
               {industriesPageData.hero.heading.replace(industriesPageData.hero.headingHighlight || 'We Serve', '')}{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
+              <span className={`text-transparent bg-clip-text bg-gradient-to-r ${colors.textGradient}`}>
                 {industriesPageData.hero.headingHighlight || 'We Serve'}
               </span>
             </span>
           ) : (
             <span className="text-white">
-              Industries <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">We Serve</span>
+              Industries <span className={`text-transparent bg-clip-text bg-gradient-to-r ${colors.textGradient}`}>We Serve</span>
             </span>
           )
         }
@@ -121,7 +122,7 @@ export default async function IndustriesPage() {
 
       {/* Key Statistics */}
       {industriesPageData?.content?.overviewStats && industriesPageData.content.overviewStats.length > 0 && (
-        <section className="py-16 bg-slate-50">
+        <section className={`${spacing.section} bg-slate-50`}>
           <div className="container">
             <AnimatedSection>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -147,7 +148,7 @@ export default async function IndustriesPage() {
       )}
 
       {/* Industries Grid */}
-      <section id="industries" className="py-20">
+      <section id="industries" className={spacing.section}>
         <div className="container">
           <AnimatedSection>
             <div className="text-center mb-16">
@@ -165,7 +166,7 @@ export default async function IndustriesPage() {
               ?.filter((industry: any) => industry?.enabled !== false)
               ?.map((industry: any, index: number) => (
               <AnimatedSection key={industry.name} delay={index * 0.15}>
-                <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <div className={cardStyles.base}>
                   <div className="grid md:grid-cols-2 gap-0">
                     {/* Image */}
                     {industry.image?.asset?.url && (
@@ -221,7 +222,7 @@ export default async function IndustriesPage() {
                         )}
                       </div>
 
-                      <Button asChild variant="outline">
+                      <Button asChild variant="outline" size="lg">
                         <Link href={`/industries/${industry.slug?.current || industry.slug || industry.name.toLowerCase().replace(/\s+/g, '-')}`}>
                           {industry.cardCtaText || 'Learn More About'} {industry.name}
                           <ArrowRight className="ml-2 h-4 w-4" />
@@ -238,7 +239,7 @@ export default async function IndustriesPage() {
 
       {/* Why Choose IIS */}
       {industriesPageData?.content?.whyChooseUs && industriesPageData.content.whyChooseUs.length > 0 && (
-        <section className="py-20 bg-white">
+        <section className={`${spacing.section} bg-white`}>
           <div className="container">
             <AnimatedSection>
               <div className="text-center mb-16">
@@ -256,7 +257,7 @@ export default async function IndustriesPage() {
                 .filter((item: any) => item?.enabled !== false)
                 .map((item: any, index: number) => (
                 <AnimatedSection key={index} delay={index * 0.1}>
-                  <div className="p-8 border border-slate-200 rounded-lg hover:border-slate-300 transition-all duration-300 hover:shadow-lg h-full">
+                  <div className={`${cardStyles.base} p-8 h-full`}>
                     <div className="flex items-center mb-6">
                       <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4">
                         <DynamicIcon name={item.icon || 'Circle'} className="w-6 h-6 text-slate-700" />
@@ -284,7 +285,7 @@ export default async function IndustriesPage() {
 
       {/* Proven Results */}
       {industriesPageData?.content?.provenResults && industriesPageData.content.provenResults.length > 0 && (
-        <section className="py-20 bg-slate-900 text-white">
+        <section className={`${spacing.section} bg-slate-900 text-white`}>
           <div className="container">
             <AnimatedSection>
               <div className="text-center mb-16">
@@ -302,7 +303,7 @@ export default async function IndustriesPage() {
                 .filter((metric: any) => metric?.enabled !== false)
                 .map((metric: any, index: number) => (
                 <AnimatedSection key={index} delay={index * 0.1}>
-                  <div className="text-center border border-slate-700 rounded-lg p-6 hover:border-blue-500 transition-colors">
+                  <div className={`${cardStyles.dark} text-center p-6`}>
                     <div className="text-4xl md:text-5xl font-black text-blue-400 mb-2">
                       {metric.value}
                     </div>
@@ -317,7 +318,7 @@ export default async function IndustriesPage() {
       )}
 
       {/* Call to Action */}
-      <section className="py-20 bg-slate-50">
+      <section className={`${spacing.section} bg-slate-50`}>
         <div className="container">
           <AnimatedSection>
             <div className="text-center max-w-4xl mx-auto">
@@ -327,7 +328,7 @@ export default async function IndustriesPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 {industriesPageData?.cta?.primaryButton?.enabled !== false && (
-                  <Button size="lg" className="px-8 py-6 bg-slate-900 hover:bg-slate-800 text-white font-semibold" asChild>
+                  <Button size="lg" className={`bg-gradient-to-r ${colors.primaryGradient} hover:${colors.primaryGradientHover} text-white font-semibold`} asChild>
                     <Link href={industriesPageData?.cta?.primaryButton?.href || '/contact'}>
                       {industriesPageData?.cta?.primaryButton?.label || 'Schedule Consultation'}
                       <ArrowRight className="ml-2 h-4 w-4" />
@@ -335,7 +336,7 @@ export default async function IndustriesPage() {
                   </Button>
                 )}
                 {industriesPageData?.cta?.secondaryButton?.enabled !== false && (
-                  <Button size="lg" variant="outline" asChild className="px-8 py-6 font-semibold">
+                  <Button size="lg" variant="outline" asChild>
                     <Link href={industriesPageData?.cta?.secondaryButton?.href || '/services'}>
                       {industriesPageData?.cta?.secondaryButton?.label || 'View Our Services'}
                     </Link>
