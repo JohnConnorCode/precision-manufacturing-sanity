@@ -93,8 +93,8 @@ export default async function IndustriesPage() {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={industriesPageData?.hero?.backgroundImage?.asset?.url || ''}
-        imageAlt={industriesPageData?.hero?.backgroundImage?.alt || ''}
+        backgroundImage={industriesPageData?.hero?.backgroundImage?.asset?.url || industriesPageData?.hero?.backgroundImageUrl || ''}
+        imageAlt={industriesPageData?.hero?.backgroundImage?.alt || 'Industries hero background'}
         badge={industriesPageData?.hero?.badge || '🏭 CRITICAL INDUSTRY SOLUTIONS'}
         title={
           industriesPageData?.hero?.heading ? (

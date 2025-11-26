@@ -1200,6 +1200,7 @@ export async function getIndustriesPage(preview = false) {
           alt,
           hotspot
         },
+        backgroundImageUrl,
         buttons[]{
           _key,
           label,
