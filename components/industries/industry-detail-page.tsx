@@ -72,7 +72,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   key={stat._key || index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: "-100px" }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                   className="text-center"
                 >
@@ -95,8 +95,8 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4">
@@ -113,10 +113,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   key={section._key || index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: "-100px" }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
-                  <Card className="overflow-hidden h-full bg-white shadow-lg hover:shadow-xl transition-shadow">
+                  <Card className="overflow-hidden h-full bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
                     {/* Image at TOP */}
                     {(section.image || section.imageUrl) && (
                       <div className="relative h-48">
@@ -201,8 +201,8 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4">
@@ -219,10 +219,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   key={cert._key || index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: "-100px" }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
-                  <Card className="p-6 h-full">
+                  <Card className="p-6 h-full hover:shadow-lg transition-shadow duration-300">
                     <Award className="w-12 h-12 text-blue-500 mb-4" />
                     <h3 className="text-xl font-bold text-zinc-900 mb-3">{cert.title}</h3>
                     <p className="text-sm text-zinc-600 whitespace-pre-line">{cert.description}</p>
@@ -241,8 +241,8 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4">
@@ -259,10 +259,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   key={benefit._key || index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: "-100px" }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
-                  <Card className="p-8 h-full">
+                  <Card className="p-8 h-full hover:shadow-lg transition-shadow duration-300">
                     <h3 className="text-2xl font-bold text-zinc-900 mb-4">{benefit.title}</h3>
                     <p className="text-zinc-600 mb-6">{benefit.description}</p>
 
@@ -290,8 +290,8 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
             className="text-center max-w-4xl mx-auto"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">

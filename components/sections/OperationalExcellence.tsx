@@ -45,10 +45,10 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
   const benefits = data.benefits;
 
   return (
-    <section className="py-20 md:py-24 bg-slate-900 text-white">
-      <div className="container">
+    <section className="py-24 md:py-32 bg-slate-900 text-white">
+      <div className="max-w-7xl mx-auto px-6 md:px-8">
         {/* Section Header */}
-        <div className="mb-16">
+        <div className="mb-16 md:mb-20">
           <SectionHeader
             heading={heading}
             gradientWordPosition="last"
@@ -58,7 +58,7 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
         </div>
 
         {/* Benefits Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {benefits.filter((benefit: any) => benefit.enabled !== false).map((benefit, index) => {
             const headerDelay = SECTION_CONFIGS.listItems.headerCompletion;
             const benefitDelay = headerDelay + SECTION_CONFIGS.listItems.getDelay(index);
@@ -94,3 +94,5 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
     </section>
   );
 }
+
+export { OperationalExcellence };

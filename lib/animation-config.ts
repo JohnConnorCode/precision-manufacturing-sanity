@@ -208,8 +208,9 @@ export function getScaleAnimateState(
 
 /**
  * Create viewport configuration for scroll-triggered animations
+ * Default margin of -100px triggers animations before element enters viewport
  */
-export function getViewportConfig(once: boolean = true, margin: string = "0px") {
+export function getViewportConfig(once: boolean = true, margin: string = "-100px") {
   return {
     once,
     margin,

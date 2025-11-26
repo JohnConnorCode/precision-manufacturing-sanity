@@ -41,12 +41,12 @@ export default function Resources({ data }: ResourcesProps) {
   const showCta = Boolean(ctaData && (ctaData.title || ctaData.description));
 
   return (
-    <section className="relative py-24 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 overflow-hidden">
+    <section className="relative py-24 md:py-32 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 overflow-hidden">
       {/* Background Pattern */}
       <DotGridBackground color="rgb(59, 130, 246)" spacing={40} dotPosition={1} opacity={0.05} />
 
-      <div className="container relative z-10">
-        <div className="mb-16">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
+        <div className="mb-16 md:mb-20">
           <SectionHeader
             eyebrow={resourcesData.header.badge}
             heading={resourcesData.header.title}
@@ -57,7 +57,7 @@ export default function Resources({ data }: ResourcesProps) {
         </div>
 
         {/* Featured Series Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12">
           {resourcesData.featuredSeries.filter((series: any) => series.enabled !== false).map((series: ResourceSeries, index: number) => {
             const cardDelay = sectionHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
             const viewportConfig = getViewportConfig();
