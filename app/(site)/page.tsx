@@ -109,13 +109,13 @@ export default async function Home() {
       {homepageData?.servicesSection?.enabled !== false && (
         <Services data={formattedServices || undefined} sectionData={homepageData?.servicesSection || undefined} />
       )}
-      {technicalSpecsData?.enabled !== false && <TechnicalSpecs data={technicalSpecsData || undefined} />}
+      {technicalSpecsData?.enabled === true && <TechnicalSpecs data={technicalSpecsData || undefined} />}
       {homepageData?.industriesSection?.enabled !== false && (
         <Industries data={formattedIndustries || undefined} sectionData={homepageData?.industriesSection || undefined} />
       )}
       {homepageData?.imageShowcase?.enabled !== false && <ImageShowcase data={homepageData?.imageShowcase || undefined} />}
-      {homepageData?.operationalExcellence?.enabled !== false && <OperationalExcellence data={homepageData?.operationalExcellence || undefined} />}
-      {homepageData?.resourcesSection?.enabled !== false && <Resources data={homepageData?.resourcesSection || undefined} />}
+      {homepageData?.operationalExcellence?.enabled === true && <OperationalExcellence data={homepageData?.operationalExcellence || undefined} />}
+      {homepageData?.resourcesSection?.enabled === true && <Resources data={homepageData?.resourcesSection || undefined} />}
       {homepageData?.cta?.enabled !== false && <CTA data={homepageData?.cta || undefined} />}
     </>
   );

@@ -125,6 +125,30 @@ export default function Header({ data }: HeaderProps) {
 
   const isDark = themeMode === 'dark'
   const listJustify = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'
+
+  // Animation variants for nav items
+  const navContainerVariants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.3
+      }
+    }
+  }
+
+  const navItemVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut" as const
+      }
+    }
+  }
   const sizeClasses = density === 'compact' ? 'h-9 px-3 py-1.5' : 'h-10 px-4 py-2'
   const linkTone = isDark ? 'hover:bg-slate-900/30 text-slate-100' : 'hover:bg-slate-50 text-slate-700'
   const activeTone = isDark ? 'bg-slate-800/50' : 'bg-slate-100/50'
@@ -229,11 +253,17 @@ export default function Header({ data }: HeaderProps) {
       <header className={cn(headerClass, announcement?.enabled ? 'lg:top-20 top-10' : 'lg:top-10 top-0')} suppressHydrationWarning>
         <nav className="container flex h-20 items-center justify-between gap-4" suppressHydrationWarning>
           <Link href="/" className="flex items-center space-x-2 flex-shrink-0" aria-label="IIS - Integrated Inspection Systems Home">
-            <Logo className="h-12 sm:h-14 md:h-16 w-auto" logoData={data?.logo} />
+            <Logo className="h-12 sm:h-14 md:h-16 w-auto" logoData={data?.logo} animated={true} />
           </Link>
 
           {/* Desktop Navigation - Progressive Collapse Strategy */}
           <NavigationMenu className="hidden lg:flex flex-1">
+            <motion.div
+              variants={navContainerVariants}
+              initial="hidden"
+              animate="visible"
+              className="w-full"
+            >
             <NavigationMenuList className={listJustify}>
               {navigation.map((item: any, index: number) => {
                 const children = Array.isArray((item as any).children)
@@ -253,7 +283,8 @@ export default function Header({ data }: HeaderProps) {
                 const itemClasses = isPriority1 ? '' : 'hidden xl:flex'
 
                 return (
-                  <NavigationMenuItem key={item.name} className={itemClasses}>
+                  <motion.div key={item.name} variants={navItemVariants}>
+                  <NavigationMenuItem className={itemClasses}>
                     {hasChildren ? (
                       <>
                         <NavigationMenuTrigger
@@ -405,21 +436,28 @@ export default function Header({ data }: HeaderProps) {
                       )
                     )}
                   </NavigationMenuItem>
+                  </motion.div>
                 )
               })}
             </NavigationMenuList>
+            </motion.div>
           </NavigationMenu>
 
           {/* Desktop CTA - Premium Design */}
           {cta && cta.text && (
-          <div className="hidden lg:flex items-center space-x-4">
+          <motion.div
+            className="hidden lg:flex items-center space-x-4"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
+          >
             <Link href={cta.href || '/contact'}>
               <PremiumButton>
                 {cta.text}
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </PremiumButton>
             </Link>
-          </div>
+          </motion.div>
           )}
 
           {/* Mobile/More Menu - Shows below lg (1024px) OR as "More" button on lg-xl */}

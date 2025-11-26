@@ -175,7 +175,7 @@ const Footer = ({ data }: FooterProps) => {
           animate={isVisible ? "visible" : "hidden"}
         >
           <motion.div variants={itemVariants} className="space-y-4">
-            <Logo variant="light" showText={true} size="md" animated={false} logoData={data?.logo} />
+            <Logo variant="light" showText={true} size="md" animated={true} logoData={data?.logo} />
             <p className={cn(theme.typography.small, 'text-slate-400 max-w-xs')}>
               {footerData.company?.description}
             </p>
