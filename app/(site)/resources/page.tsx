@@ -134,13 +134,13 @@ export default async function ResourcesPage() {
                 >
                   <div className="flex items-start justify-between mb-4">
                     <span className={`text-xs font-medium px-3 py-1.5 rounded-lg border ${
-                      resource.difficulty === 'Beginner'
+                      resource.difficulty === 'beginner'
                         ? 'bg-green-500/10 text-green-400 border-green-500/20'
-                        : resource.difficulty === 'Intermediate'
+                        : resource.difficulty === 'intermediate'
                         ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
                         : 'bg-purple-500/10 text-purple-400 border-purple-500/20'
                     }`}>
-                      {resource.difficulty}
+                      {resource.difficulty ? resource.difficulty.charAt(0).toUpperCase() + resource.difficulty.slice(1) : 'General'}
                     </span>
                     <div className="flex items-center text-muted-foreground text-sm">
                       <Clock className="h-4 w-4 mr-1.5 text-blue-400" />

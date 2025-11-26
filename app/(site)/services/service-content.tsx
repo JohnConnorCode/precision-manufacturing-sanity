@@ -397,17 +397,21 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               <div className="space-y-4 text-center lg:text-left">
                 {qualityStandards.map((standard: any, index: number) => {
                   const delay = getStaggerDelay(SECTION_CONFIGS.twoColumnGrid, index);
+                  const StandardIcon = standard.iconName ? (iconMap[standard.iconName] || Shield) : Shield;
                   return (
-                    <motion.p
+                    <motion.div
                       key={`${standard.title}-${index}`}
                       initial={initialState}
                       whileInView={createFade(delay, 0.5)}
                       viewport={viewportConfig}
-                      className={cn(theme.typography.body, 'text-slate-100')}
+                      className="flex items-start gap-3"
                     >
-                      {standard.title}
-                      {standard.description ? ` — ${standard.description}` : ''}
-                    </motion.p>
+                      <StandardIcon className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <p className={cn(theme.typography.body, 'text-slate-100')}>
+                        {standard.title}
+                        {standard.description ? ` — ${standard.description}` : ''}
+                      </p>
+                    </motion.div>
                   );
                 })}
               </div>

@@ -222,7 +222,7 @@ export default async function IndustriesPage() {
                       </div>
 
                       <Button asChild variant="outline">
-                        <Link href={`/industries/${industry.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                        <Link href={`/industries/${industry.slug?.current || industry.slug || industry.name.toLowerCase().replace(/\s+/g, '-')}`}>
                           {industry.cardCtaText || 'Learn More About'} {industry.name}
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>

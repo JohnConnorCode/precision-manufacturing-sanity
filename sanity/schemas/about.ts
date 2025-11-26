@@ -457,12 +457,14 @@ export default {
                   title: 'name',
                   subtitle: 'title',
                   enabled: 'enabled',
+                  media: 'photo',
                 },
-                prepare({title, subtitle, enabled}: any) {
+                prepare({title, subtitle, enabled, media}: any) {
                   const status = enabled === false ? ' (Hidden)' : '';
                   return {
                     title: `${title || 'Team Member'}${status}`,
                     subtitle: subtitle || 'Position not set',
+                    media: media,
                   }
                 },
               },
@@ -473,6 +475,30 @@ export default {
                   title: 'Enabled',
                   description: 'Toggle off to hide this team member without deleting them',
                   initialValue: true,
+                },
+                {
+                  name: 'photo',
+                  type: 'image',
+                  title: 'Photo',
+                  description: 'Team member photo (recommended: square, min 400x400px)',
+                  options: {
+                    hotspot: true,
+                    metadata: ['blurhash', 'lqip', 'palette'],
+                  },
+                  fields: [
+                    {
+                      name: 'alt',
+                      type: 'string',
+                      title: 'Alternative Text',
+                      description: 'Describe the photo for accessibility',
+                    }
+                  ]
+                },
+                {
+                  name: 'photoUrl',
+                  type: 'url',
+                  title: 'Photo URL (optional)',
+                  description: 'Alternative: Use an external image URL instead of uploading',
                 },
                 {
                   name: 'name',

@@ -58,9 +58,9 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'Beginner': return 'text-green-400 bg-green-400/10 border-green-400/20';
-      case 'Intermediate': return 'text-blue-400 bg-blue-400/10 border-blue-400/20';
-      case 'Advanced': return 'text-purple-400 bg-purple-400/10 border-purple-400/20';
+      case 'beginner': return 'text-green-400 bg-green-400/10 border-green-400/20';
+      case 'intermediate': return 'text-blue-400 bg-blue-400/10 border-blue-400/20';
+      case 'advanced': return 'text-purple-400 bg-purple-400/10 border-purple-400/20';
       default: return 'text-slate-400 bg-slate-400/10 border-slate-400/20';
     }
   };
@@ -143,6 +143,24 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
             )}
           </div>
         </header>
+
+        {/* Featured Image */}
+        {resource.featuredImage?.asset?.url && (
+          <section className="py-8 px-4 opacity-0 animate-fade-up" style={{ animationDelay: '0.15s', animationFillMode: 'forwards' }}>
+            <div className="max-w-4xl mx-auto">
+              <img
+                src={resource.featuredImage.asset.url}
+                alt={resource.featuredImage.alt || resource.title}
+                className="w-full rounded-2xl shadow-lg object-cover max-h-[500px]"
+              />
+              {resource.featuredImage.caption && (
+                <p className="text-center text-sm text-muted-foreground mt-3">
+                  {resource.featuredImage.caption}
+                </p>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* Article Content */}
         <section className="py-8 px-4 opacity-0 animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>

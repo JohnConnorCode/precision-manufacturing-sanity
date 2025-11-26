@@ -23,7 +23,14 @@ function DynamicIcon({ name, className }: { name?: string; className?: string })
 
 interface IndustriesProps {
   data?: Industry[];
-  sectionData?: SectionHeaderData;
+  sectionData?: SectionHeaderData & {
+    header?: {
+      eyebrow?: string;
+      title?: string;
+      titleHighlight?: string;
+      description?: string;
+    };
+  };
 }
 
 export default function Industries({ data, sectionData }: IndustriesProps) {
@@ -34,10 +41,14 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
   const industriesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
   const displayIndustries = industriesData || [];
 
-  // Use section data from CMS with text fallbacks
-  const eyebrow = sectionData?.eyebrow;
-  const heading = sectionData?.heading;
-  const description = sectionData?.description;
+  // Use section data from CMS - prefer header object, fallback to direct fields
+  const eyebrow = sectionData?.header?.eyebrow || sectionData?.eyebrow;
+  const headerTitle = sectionData?.header?.title;
+  const headerTitleHighlight = sectionData?.header?.titleHighlight;
+  const heading = headerTitle && headerTitleHighlight
+    ? `${headerTitle} ${headerTitleHighlight}`
+    : sectionData?.heading;
+  const description = sectionData?.header?.description || sectionData?.description;
   const subdescription = sectionData?.subdescription;
   const hasHeaderContent = Boolean(eyebrow || heading || description);
 

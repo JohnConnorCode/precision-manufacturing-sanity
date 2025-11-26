@@ -223,6 +223,26 @@ export default {
       ],
     },
     {
+      name: 'locationImage',
+      type: 'image',
+      title: 'Location Image',
+      description: 'Image shown in the location/map section (recommended: 800x600px)',
+      group: 'additionalSections',
+      options: {
+        hotspot: true,
+        metadata: ['blurhash', 'lqip', 'palette'],
+      },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative Text',
+          description: 'Describe the image for accessibility',
+          validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility')
+        }
+      ]
+    },
+    {
       name: 'certifications',
       type: 'array',
       title: 'Certifications',

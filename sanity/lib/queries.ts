@@ -20,7 +20,7 @@ export async function getAllServices(preview = false) {
       description,
       order,
       highlight,
-      iconName,
+      icon,
       specs,
       cardCtaText,
       image{
@@ -151,6 +151,7 @@ export async function getServiceBySlug(slug: string, preview = false) {
       applications[] {
         title,
         description,
+        timeline,
         listLabel,
         challenges,
         image{asset->{url,_id}, alt, caption},
@@ -164,7 +165,11 @@ export async function getServiceBySlug(slug: string, preview = false) {
       materials,
       qualityStandardsHeading,
       qualityStandardsDescription,
-      qualityStandards,
+      qualityStandards[]{
+        title,
+        description,
+        iconName
+      },
       qualityImage{
         image{asset->{url,_id}, alt},
         imageUrl,
@@ -273,7 +278,10 @@ export async function getIndustryBySlug(slug: string, preview = false) {
         backgroundImage{asset->{url,_id}, alt},
         backgroundImageUrl,
         badge,
+        title,
+        titleHighlight,
         subtitle,
+        description,
         descriptionRich,
         titleSize,
         descriptionSize,
@@ -284,9 +292,17 @@ export async function getIndustryBySlug(slug: string, preview = false) {
           enabled
         }
       },
+      stats,
       statistics,
       overview,
+      marketOverview,
+      expertise,
+      expertiseSectionHeading,
+      expertiseSectionDescription,
       capabilities,
+      certifications,
+      certificationsSectionHeading,
+      certificationsSectionDescription,
       regulatory,
       applications,
       components{
@@ -300,6 +316,8 @@ export async function getIndustryBySlug(slug: string, preview = false) {
       },
       qualityStandards,
       processBenefits,
+      processBenefitsSectionHeading,
+      processBenefitsSectionDescription,
       cta{
         heading,
         description,
@@ -337,6 +355,12 @@ export async function getAllResources(preview = false) {
     publishDate,
     author,
     featured,
+    featuredImage{
+      asset->{url, _id},
+      alt,
+      caption,
+      attribution
+    },
     tags,
     seo
   }`
@@ -359,6 +383,12 @@ export async function getResourceBySlug(slug: string, preview = false) {
     publishDate,
     author,
     featured,
+    featuredImage{
+      asset->{url, _id},
+      alt,
+      caption,
+      attribution
+    },
     tags,
     seo
   }`
@@ -405,7 +435,8 @@ export async function getFeaturedResources(preview = false) {
     readTime,
     publishDate,
     author,
-    featured
+    featured,
+    featuredImage{asset->{url, _id}, alt, caption}
   }`
 
   return await getClient(preview).fetch(query)
@@ -426,7 +457,10 @@ export async function getAllTeamMembers(preview = false) {
     name,
     title,
     bio,
-    photo,
+    photo{
+      asset->{url, _id},
+      alt
+    },
     order,
     linkedin,
     email
@@ -565,7 +599,13 @@ export async function getHomepage(preview = false) {
       eyebrow,
       heading,
       description,
-      subdescription
+      subdescription,
+      header {
+        eyebrow,
+        title,
+        titleHighlight,
+        description
+      }
     },
     technicalSpecs {
       enabled,
@@ -583,7 +623,12 @@ export async function getHomepage(preview = false) {
     },
     imageShowcase {
       enabled,
-      header,
+      header {
+        eyebrow,
+        title,
+        titleHighlight,
+        description
+      },
       backgroundColor,
       titleColor,
       highlightColor,
@@ -722,16 +767,103 @@ export async function getFooter(preview = false) {
 export async function getAbout(preview = false) {
   try {
   const query = `*[_type == "about"][0] {
-    hero{ backgroundImage{asset->{url,_id}}, badge, badgeIconName, title, titleHighlight, description, buttons },
-    companyStats,
-    story{ title, paragraph1, paragraph2, paragraph3, image{asset->{url,_id}, alt} },
-    timeline,
-    values,
-    capabilities,
-    certifications,
-    leadership,
-    cta,
-    seo
+    hero{
+      backgroundImage{asset->{url,_id}, alt},
+      backgroundImageUrl,
+      badge,
+      badgeIconName,
+      title,
+      titleHighlight,
+      description,
+      buttons[]{
+        _key,
+        label,
+        href,
+        variant,
+        enabled
+      }
+    },
+    companyStats[]{
+      _key,
+      label,
+      value,
+      description,
+      enabled
+    },
+    story{
+      title,
+      paragraph1,
+      paragraph2,
+      paragraph3,
+      image{asset->{url,_id}, alt},
+      imageUrl
+    },
+    timeline{
+      title,
+      description,
+      milestones[]{
+        _key,
+        year,
+        title,
+        description,
+        enabled
+      }
+    },
+    values{
+      title,
+      description,
+      items[]{
+        _key,
+        title,
+        description,
+        iconName,
+        bullets,
+        enabled
+      }
+    },
+    capabilities[]{
+      _key,
+      title,
+      description,
+      items,
+      enabled
+    },
+    certifications[]{
+      _key,
+      certification,
+      enabled
+    },
+    leadership{
+      title,
+      description,
+      team[]{
+        _key,
+        enabled,
+        photo{asset->{url,_id}, alt},
+        photoUrl,
+        name,
+        title,
+        experience,
+        background,
+        focus
+      }
+    },
+    cta{
+      title,
+      description,
+      buttons[]{
+        _key,
+        label,
+        href,
+        variant,
+        enabled
+      }
+    },
+    seo{
+      metaTitle,
+      metaDescription,
+      ogImage{asset->{url,_id}, alt}
+    }
   }`
 
   return await getClient(preview).fetch(query)
@@ -747,6 +879,7 @@ export async function getContact(preview = false) {
     contactInfo,
     certifications,
     bottomStats,
+    locationImage{asset->{url, _id}, alt},
     seo
   }`
 
@@ -768,7 +901,13 @@ export async function getCareers(preview = false) {
       title,
       titleHighlight,
       description,
-      buttons
+      buttons[]{
+        _key,
+        label,
+        href,
+        variant,
+        enabled
+      }
     },
     whyWorkHere{
       heading,
@@ -782,24 +921,45 @@ export async function getCareers(preview = false) {
     benefits{
       title,
       description,
-      items[]{ title, description, iconName }
+      items[]{
+        _key,
+        title,
+        description,
+        iconName,
+        enabled
+      }
     },
     values{
       title,
       description,
-      items[]{ title, description, iconName }
+      items[]{
+        _key,
+        title,
+        description,
+        iconName,
+        enabled
+      }
     },
     opportunities{
       title,
-      description,
-      jobs[]{ title, department, type, description, qualifications, link, location }
+      description
     },
     cta{
       title,
       description,
-      buttons[]{ label, href, variant }
+      buttons[]{
+        _key,
+        label,
+        href,
+        variant,
+        enabled
+      }
     },
-    seo
+    seo{
+      metaTitle,
+      metaDescription,
+      ogImage{asset->{url,_id}, alt}
+    }
   }`
 
   return await getClient(preview).fetch(query)
@@ -938,7 +1098,7 @@ export async function getPageContent(preview = false) {
       cta{ heading, description, primaryButton, secondaryButton }
     },
     resourcesPage{
-      hero{ backgroundImage{asset->{url,_id}}, badge, title, subtitle, description, buttons },
+      hero{ backgroundImage{asset->{url,_id}}, badge, title, subtitle, description, buttons[]{ _key, label, href, variant, enabled } },
       header{ title, description, eyebrow }
     },
     sections
@@ -970,7 +1130,8 @@ export async function getServicesPage(preview = false) {
           _key,
           label,
           href,
-          variant
+          variant,
+          enabled
         }
       },
       content{
@@ -980,16 +1141,19 @@ export async function getServicesPage(preview = false) {
           _key,
           label,
           value,
-          description
+          description,
+          enabled
         },
         services[]{
           _key,
           title,
-          description
+          description,
+          enabled
         },
         qualityAssurance[]{
           _key,
-          title
+          title,
+          enabled
         }
       },
       cta{
@@ -999,7 +1163,8 @@ export async function getServicesPage(preview = false) {
           _key,
           label,
           href,
-          variant
+          variant,
+          enabled
         }
       },
       seo{
@@ -1039,7 +1204,8 @@ export async function getIndustriesPage(preview = false) {
           _key,
           label,
           href,
-          variant
+          variant,
+          enabled
         }
       },
       content{
@@ -1047,7 +1213,9 @@ export async function getIndustriesPage(preview = false) {
         overviewStats[]{
           _key,
           value,
-          label
+          label,
+          description,
+          enabled
         },
         industriesSection{
           title,
@@ -1056,6 +1224,7 @@ export async function getIndustriesPage(preview = false) {
         industries[]{
           _key,
           name,
+          slug,
           description,
           image{
             asset->{url, _id},
@@ -1070,7 +1239,8 @@ export async function getIndustriesPage(preview = false) {
           certifications[],
           expertise[],
           icon,
-          cardCtaText
+          cardCtaText,
+          enabled
         },
         whyChooseSection{
           title,
@@ -1081,7 +1251,8 @@ export async function getIndustriesPage(preview = false) {
           icon,
           title,
           description,
-          features[]
+          features[],
+          enabled
         },
         resultsSection{
           title,
@@ -1091,7 +1262,8 @@ export async function getIndustriesPage(preview = false) {
           _key,
           metric,
           value,
-          description
+          description,
+          enabled
         }
       },
       cta{
@@ -1099,11 +1271,13 @@ export async function getIndustriesPage(preview = false) {
         description,
         primaryButton{
           label,
-          href
+          href,
+          enabled
         },
         secondaryButton{
           label,
-          href
+          href,
+          enabled
         }
       },
       seo{
@@ -1158,25 +1332,25 @@ export async function getAllPageSlugs(preview = false) {
 export async function getAllJobPostings(preview = false) {
   try {
   const pub = preview ? '' : ' && published == true'
-  const query = `*[_type == "jobPosting"${pub}] | order(featured desc, order asc, postedDate desc) {
+  const query = `*[_type == "jobPosting"${pub}] | order(featured desc, order asc, datePosted desc) {
     _id,
     title,
     'slug': slug.current,
     department,
-    type,
+    employmentType,
     location,
     shortDescription,
-    description,
+    overview,
     responsibilities,
     qualifications,
     preferredQualifications,
     benefits,
     salaryRange,
-    applicationLink,
+    applicationEmail,
     applicationInstructions,
     published,
     featured,
-    postedDate,
+    datePosted,
     closingDate
   }`
   return await getClient(preview).fetch(query)
@@ -1193,20 +1367,20 @@ export async function getJobPostingBySlug(slug: string, preview = false) {
     title,
     'slug': slug.current,
     department,
-    type,
+    employmentType,
     location,
     shortDescription,
-    description,
+    overview,
     responsibilities,
     qualifications,
     preferredQualifications,
     benefits,
     salaryRange,
-    applicationLink,
+    applicationEmail,
     applicationInstructions,
     published,
     featured,
-    postedDate,
+    datePosted,
     closingDate
   }`
   return await getClient(preview).fetch(query, { slug })

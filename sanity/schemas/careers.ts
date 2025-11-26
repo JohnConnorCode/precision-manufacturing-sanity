@@ -268,35 +268,6 @@ export default {
         },
       ],
     },
-    // Legacy fields (deprecated but kept for backward compatibility)
-    {
-      name: 'heading',
-      type: 'string',
-      title: 'Heading (Legacy)',
-      description: '⚠️ Deprecated: Use opportunities.title instead',
-      group: 'opportunities',
-      hidden: true,
-    },
-    {
-      name: 'positions',
-      type: 'array',
-      title: 'Positions (Legacy)',
-      description: '⚠️ Deprecated: Use opportunities.jobs instead',
-      group: 'opportunities',
-      hidden: true,
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {name: 'title', type: 'string', title: 'Job Title'},
-            {name: 'description', type: 'text', title: 'Description'},
-            {name: 'location', type: 'string', title: 'Location'},
-            {name: 'type', type: 'string', title: 'Employment Type'},
-            {name: 'link', type: 'string', title: 'Application Link'},
-          ],
-        },
-      ],
-    },
     {
       name: 'opportunities',
       type: 'object',
@@ -318,79 +289,6 @@ export default {
           type: 'text',
           title: 'Section Description',
           rows: 2,
-        },
-        {
-          name: 'jobs',
-          type: 'array',
-          title: 'Job Listings',
-          of: [
-            {
-              type: 'object',
-              preview: {
-                select: {
-                  title: 'title',
-                  subtitle: 'department',
-                  enabled: 'enabled',
-                },
-                prepare({title, subtitle, enabled}: any) {
-                  const status = enabled === false ? ' (Hidden)' : '';
-                  return {
-                    title: `${title || 'Job Opening'}${status}`,
-                    subtitle: subtitle || 'No department',
-                  }
-                },
-              },
-              fields: [
-                {
-                  name: 'enabled',
-                  type: 'boolean',
-                  title: 'Enabled',
-                  description: 'Toggle off to hide this job posting without deleting it',
-                  initialValue: true,
-                },
-                {
-                  name: 'title',
-                  type: 'string',
-                  title: 'Job Title',
-                  validation: (Rule: any) => Rule.required(),
-                },
-                {
-                  name: 'department',
-                  type: 'string',
-                  title: 'Department',
-                },
-                {
-                  name: 'type',
-                  type: 'string',
-                  title: 'Employment Type',
-                  description: 'e.g., Full-time, Part-time, Contract',
-                },
-                {
-                  name: 'description',
-                  type: 'text',
-                  title: 'Job Description',
-                  rows: 3,
-                },
-                {
-                  name: 'qualifications',
-                  type: 'array',
-                  title: 'Qualifications',
-                  of: [
-                    {
-                      type: 'object',
-                      fields: [{name: 'qualification', type: 'string', title: 'Qualification'}],
-                    },
-                  ],
-                },
-                {
-                  name: 'link',
-                  type: 'string',
-                  title: 'Application Link or Email',
-                  description: 'Where to apply (URL or email)',
-                },
-              ],
-            },
-          ],
         },
       ],
     },

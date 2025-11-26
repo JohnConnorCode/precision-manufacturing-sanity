@@ -1,13 +1,28 @@
 import { createClient } from 'next-sanity'
 
-// Determine studio URL dynamically for both local and production environments
+/**
+ * Get the Studio URL for both local and production environments.
+ *
+ * Priority:
+ * 1. NEXT_PUBLIC_SANITY_STUDIO_URL (explicit override)
+ * 2. NEXT_PUBLIC_SITE_URL + /studio (production)
+ * 3. VERCEL_URL + /studio (Vercel deployments)
+ * 4. Fallback to localhost
+ */
 const getStudioUrl = () => {
-  if (process.env.NEXT_PUBLIC_STUDIO_URL) {
-    return process.env.NEXT_PUBLIC_STUDIO_URL
+  // Explicit studio URL override
+  if (process.env.NEXT_PUBLIC_SANITY_STUDIO_URL && process.env.NEXT_PUBLIC_SANITY_STUDIO_URL !== 'http://localhost:3000/studio') {
+    return process.env.NEXT_PUBLIC_SANITY_STUDIO_URL
   }
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
+  // Production site URL
+  if (process.env.NEXT_PUBLIC_SITE_URL && process.env.NEXT_PUBLIC_SITE_URL !== 'http://localhost:3000') {
     return new URL('/studio', process.env.NEXT_PUBLIC_SITE_URL).toString()
   }
+  // Vercel deployments
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}/studio`
+  }
+  // Local development fallback
   return 'http://localhost:3000/studio'
 }
 

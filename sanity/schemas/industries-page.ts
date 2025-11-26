@@ -178,6 +178,17 @@ export default {
                   validation: (Rule: any) => Rule.required()
                 },
                 {
+                  name: 'slug',
+                  type: 'slug',
+                  title: 'URL Slug',
+                  description: 'URL-friendly version of the name. Click Generate or enter manually.',
+                  options: {
+                    source: 'name',
+                    maxLength: 96
+                  },
+                  validation: (Rule: any) => Rule.required().error('Slug is required for URL')
+                },
+                {
                   name: 'description',
                   type: 'text',
                   title: 'Description',

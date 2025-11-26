@@ -1,14 +1,27 @@
 import { definePlugin } from 'sanity';
-import { EyeOpenIcon } from '@sanity/icons';
+
+/**
+ * Get the base URL for preview, supporting both local and production environments.
+ * Uses the same logic as sanity.config.ts for consistency.
+ */
+function getBaseUrl(): string {
+  // Explicit site URL (set in Vercel for production)
+  if (process.env.NEXT_PUBLIC_SITE_URL && process.env.NEXT_PUBLIC_SITE_URL !== 'http://localhost:3000') {
+    return process.env.NEXT_PUBLIC_SITE_URL
+  }
+  // Vercel deployments
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`
+  }
+  // Local development fallback
+  return 'http://localhost:3000'
+}
 
 export const previewPane = definePlugin({
   name: 'preview-pane',
   document: {
     productionUrl: async (prev, { document }) => {
-      const baseUrl =
-        process.env.NEXT_PUBLIC_SITE_URL ||
-        process.env.NEXT_PUBLIC_SERVER_URL ||
-        'http://localhost:3000';
+      const baseUrl = getBaseUrl();
       const slug = (document as any).slug?.current;
       const secret = process.env.NEXT_PUBLIC_PREVIEW_SECRET_TOKEN;
 

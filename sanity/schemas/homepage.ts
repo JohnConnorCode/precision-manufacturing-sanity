@@ -677,6 +677,44 @@ export default {
           fieldset: 'content',
         },
         {
+          name: 'header',
+          type: 'object',
+          title: 'Section Header (Advanced)',
+          description: 'Advanced header configuration with gradient title support',
+          fieldset: 'content',
+          options: {
+            collapsible: true,
+            collapsed: false,
+          },
+          fields: [
+            {
+              name: 'eyebrow',
+              type: 'string',
+              title: 'Eyebrow',
+              description: 'Small text above the main heading (e.g., "SPECIALIZED SECTOR EXPERTISE")',
+            },
+            {
+              name: 'title',
+              type: 'string',
+              title: 'Title (First Part)',
+              description: 'First part of the heading (e.g., "INDUSTRY")',
+            },
+            {
+              name: 'titleHighlight',
+              type: 'string',
+              title: 'Title Highlight (Gradient)',
+              description: 'Second part of heading with gradient styling (e.g., "LEADERS")',
+            },
+            {
+              name: 'description',
+              type: 'text',
+              title: 'Description',
+              description: 'Description text below the heading',
+              rows: 3,
+            },
+          ],
+        },
+        {
           name: 'headingColor',
           type: 'string',
           title: 'Heading Color',

@@ -6,7 +6,7 @@ export default {
     prepare() {
       return {
         title: 'Page Content',
-        subtitle: 'Legacy page content settings (deprecated)',
+        subtitle: 'Shared page content and settings',
       }
     },
   },

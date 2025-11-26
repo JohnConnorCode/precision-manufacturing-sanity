@@ -38,7 +38,7 @@ export default async function Home() {
     ...service,
     description: service.shortDescription || portableTextToPlainText(service.description),
     href: `/services/${service.slug?.current || service.slug}`,
-    image: service.imageUrl || service.image?.asset?.url, // Use external URL first to preserve reference imagery
+    image: service.image?.asset?.url || service.imageUrl, // Prefer Sanity image (with hotspot controls) over external URL
   }));
 
   const formattedIndustries = industriesData?.map((industry: any) => ({
@@ -50,13 +50,15 @@ export default async function Home() {
 
   const heroData = homepageData?.hero || undefined;
 
-  const technicalSpecsData = Array.isArray(homepageData?.technicalSpecs)
-    ? {
-        title: homepageData?.stats?.title || 'Precision By The Numbers',
-        subtitle: homepageData?.stats?.subtitle || 'Industry-leading capabilities backed by decades of aerospace and defense manufacturing expertise',
-        specs: homepageData.technicalSpecs
-      }
-    : homepageData?.technicalSpecs;
+  // Always use stats for header, technicalSpecs for the spec items
+  const technicalSpecsData = {
+    title: homepageData?.stats?.title || 'Precision By The Numbers',
+    subtitle: homepageData?.stats?.subtitle || 'Industry-leading capabilities backed by decades of aerospace and defense manufacturing expertise',
+    enabled: homepageData?.technicalSpecs?.enabled,
+    specs: Array.isArray(homepageData?.technicalSpecs)
+      ? homepageData.technicalSpecs
+      : homepageData?.technicalSpecs?.specs
+  };
 
   // Organization data for structured markup - 100% from Sanity CMS
   const organizationData = {

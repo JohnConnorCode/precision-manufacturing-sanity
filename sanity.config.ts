@@ -15,6 +15,28 @@ import { presentationTool } from 'sanity/presentation'
 import { locate } from './sanity/locate'
 import StudioLogo from './sanity/components/StudioLogo'
 
+/**
+ * Get the preview URL origin based on environment.
+ * Works for both local development and production deployment.
+ *
+ * Priority:
+ * 1. NEXT_PUBLIC_SITE_URL (explicit override)
+ * 2. VERCEL_URL (Vercel production/preview deployments)
+ * 3. Fallback to localhost for local development
+ */
+function getPreviewOrigin(): string {
+  // Explicit site URL takes priority (set in Vercel env vars for production)
+  if (process.env.NEXT_PUBLIC_SITE_URL && process.env.NEXT_PUBLIC_SITE_URL !== 'http://localhost:3000') {
+    return process.env.NEXT_PUBLIC_SITE_URL
+  }
+  // Vercel deployments (production and preview)
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`
+  }
+  // Local development fallback
+  return 'http://localhost:3000'
+}
+
 // Define singleton document types (v3 best practice)
 const singletonTypes = new Set([
   'homepage',
@@ -54,7 +76,7 @@ export default defineConfig({
   plugins: [
     presentationTool({
       previewUrl: {
-        origin: 'http://localhost:3000',  // Hardcoded for local development
+        origin: getPreviewOrigin(),
         draftMode: {
           enable: '/api/draft',
         },

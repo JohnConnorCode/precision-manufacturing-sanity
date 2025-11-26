@@ -227,9 +227,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
 
           {jobPostings.length > 0 ? (
             <div className="space-y-6">
-              {jobPostings
-                .filter((position: any) => position?.enabled !== false)
-                .map((position: any, index: number) => (
+              {jobPostings.map((position: any, index: number) => (
                 <motion.div
                   key={position._id}
                   initial={{ opacity: 0, y: 20 }}
@@ -243,6 +241,11 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
                             <h3 className={cn(theme.typography.h4, "mb-0 group-hover:text-blue-600 transition-colors")}>{position.title}</h3>
+                            {position.featured && (
+                              <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full border border-amber-200">
+                                Featured
+                              </span>
+                            )}
                           </div>
                           {position.department && (
                             <p className={cn(theme.typography.small, "text-slate-500 mb-3")}>
@@ -254,14 +257,14 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                           </p>
                           <div className="flex flex-wrap gap-2">
                             <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
-                              {position.type}
+                              {position.employmentType}
                             </span>
                             <span className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded-full">
                               {position.location}
                             </span>
-                            {position.salaryRange && position.salaryRange.min && position.salaryRange.max && (
+                            {position.salaryRange && (
                               <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
-                                ${position.salaryRange.min.toLocaleString()} - ${position.salaryRange.max.toLocaleString()}/{position.salaryRange.period}
+                                {position.salaryRange}
                               </span>
                             )}
                           </div>

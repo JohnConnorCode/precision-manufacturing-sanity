@@ -162,15 +162,6 @@ export default {
       placeholder: '$65,000 - $85,000/year'
     },
     {
-      name: 'description',
-      type: 'array',
-      title: 'Full Job Description (Advanced)',
-      description: 'Optional - Rich text description with formatting (legacy field)',
-      group: 'content',
-      hidden: true,
-      of: [{ type: 'block' }]
-    },
-    {
       name: 'applicationEmail',
       type: 'string',
       title: 'Application Email',

@@ -1,6 +1,6 @@
-import { client } from '@/sanity/lib/client';
 import { notFound } from 'next/navigation';
 import IndustryDetailPage from '@/components/industries/industry-detail-page';
+import { getIndustryBySlug } from '@/sanity/lib/queries';
 
 interface IndustryPageProps {
   params: Promise<{
@@ -10,29 +10,6 @@ interface IndustryPageProps {
 
 // Enable ISR with 1 hour revalidation
 export const revalidate = 3600;
-
-async function getIndustryBySlug(slug: string) {
-  const query = `*[_type == "industry" && slug.current == $slug && published == true][0]{
-    _id,
-    title,
-    slug,
-    shortDescription,
-    hero,
-    stats,
-    marketOverview,
-    expertise,
-    certifications,
-    capabilities,
-    components,
-    applications,
-    qualityStandards,
-    processBenefits,
-    regulatory,
-    seo
-  }`;
-
-  return await client.fetch(query, { slug });
-}
 
 export async function generateMetadata({ params }: IndustryPageProps) {
   const { slug } = await params;

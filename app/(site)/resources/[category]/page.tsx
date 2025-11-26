@@ -121,9 +121,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                 >
                   <div className="flex items-start justify-between mb-4">
                     <span className={`text-xs font-medium px-3 py-1 rounded-full border ${
-                      resource.difficulty === 'Beginner'
+                      resource.difficulty === 'beginner'
                         ? 'bg-green-400/10 text-green-400 border-green-400/20'
-                        : resource.difficulty === 'Intermediate'
+                        : resource.difficulty === 'intermediate'
                         ? 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20'
                         : 'bg-red-400/10 text-red-400 border-red-400/20'
                     }`}>

@@ -65,9 +65,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
   const valuesItems = Array.isArray(data.values?.items) ? data.values.items : [];
   const capabilities = Array.isArray(data.capabilities) ? data.capabilities : [];
   const certifications = Array.isArray(data.certifications?.items) ? data.certifications.items : (Array.isArray(data.certifications) ? data.certifications : []);
-  const leadershipMembers = Array.isArray(data.leadership?.members)
-    ? data.leadership.members
-    : (Array.isArray(data.leadership?.team) ? data.leadership.team : []);
+  const leadershipMembers = Array.isArray(data.leadership?.team) ? data.leadership.team : [];
   const ctaButtons = Array.isArray(data.cta?.buttons) ? data.cta.buttons.filter((btn: any) => btn?.enabled !== false && btn?.label && btn?.href) : [];
 
   return (
@@ -363,34 +361,46 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {leadershipMembers
                 .filter((leader: any) => leader?.enabled !== false)
-                .map((leader: any, index: number) => (
-                <motion.div
-                  key={`${leader?.name}-${index}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
-                >
-                  <Card className="p-8 border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-lg h-full">
-                    <div className="mb-6">
-                      <h3 className="text-2xl font-bold mb-2">{leader?.name}</h3>
-                      <div className="text-lg font-semibold text-slate-700 mb-1">{leader?.title}</div>
-                      {leader?.experience && (
-                        <div className="text-sm text-slate-500">{leader.experience}</div>
-                      )}
-                    </div>
-                    {leader?.background && (
-                      <p className="text-slate-600 mb-4">{leader.background}</p>
-                    )}
-                    {leader?.focus && (
-                      <div className="border-l-4 border-slate-300 pl-4">
-                        <div className="text-sm font-semibold text-slate-800 mb-1">Focus Area</div>
-                        <div className="text-sm text-slate-600">{leader.focus}</div>
-                      </div>
-                    )}
-                  </Card>
-                </motion.div>
-              ))}
+                .map((leader: any, index: number) => {
+                  const photoUrl = urlFor(leader?.photo) || leader?.photoUrl || '';
+                  return (
+                    <motion.div
+                      key={`${leader?.name}-${index}`}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1, duration: 0.6 }}
+                      viewport={{ once: true }}
+                    >
+                      <Card className="p-8 border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-lg h-full">
+                        <div className="flex items-start gap-6 mb-6">
+                          {photoUrl && (
+                            <img
+                              src={photoUrl}
+                              alt={leader?.photo?.alt || `Photo of ${leader?.name}`}
+                              className="w-24 h-24 rounded-full object-cover shadow-md flex-shrink-0"
+                            />
+                          )}
+                          <div className="flex-1">
+                            <h3 className="text-2xl font-bold mb-2">{leader?.name}</h3>
+                            <div className="text-lg font-semibold text-slate-700 mb-1">{leader?.title}</div>
+                            {leader?.experience && (
+                              <div className="text-sm text-slate-500">{leader.experience}</div>
+                            )}
+                          </div>
+                        </div>
+                        {leader?.background && (
+                          <p className="text-slate-600 mb-4">{leader.background}</p>
+                        )}
+                        {leader?.focus && (
+                          <div className="border-l-4 border-slate-300 pl-4">
+                            <div className="text-sm font-semibold text-slate-800 mb-1">Focus Area</div>
+                            <div className="text-sm text-slate-600">{leader.focus}</div>
+                          </div>
+                        )}
+                      </Card>
+                    </motion.div>
+                  );
+                })}
             </div>
           </div>
         </section>
