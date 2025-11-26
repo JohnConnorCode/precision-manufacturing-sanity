@@ -210,7 +210,7 @@ export function getScaleAnimateState(
 /**
  * Create viewport configuration for scroll-triggered animations
  */
-export function getViewportConfig(once: boolean = true, margin: string = "-100px") {
+export function getViewportConfig(once: boolean = true, margin: string = "0px") {
   return {
     once,
     margin,
