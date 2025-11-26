@@ -1085,6 +1085,7 @@ export async function getPageContent(preview = false) {
     servicesPage{
       hero{
         backgroundImage{asset->{url,_id}},
+        backgroundImageUrl,
         badge, title, subtitle, description, buttons
       },
       qualityIntro,
@@ -1093,12 +1094,12 @@ export async function getPageContent(preview = false) {
       cta{heading, description, primaryButton, secondaryButton}
     },
     industriesPage{
-      hero{ backgroundImage{asset->{url,_id}}, badge, title, subtitle, description, buttons },
+      hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, title, subtitle, description, buttons },
       header{ title, description },
       cta{ heading, description, primaryButton, secondaryButton }
     },
     resourcesPage{
-      hero{ backgroundImage{asset->{url,_id}}, badge, title, subtitle, description, buttons[]{ _key, label, href, variant, enabled } },
+      hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, title, subtitle, description, descriptionRich, titleSize, descriptionSize, buttons[]{ _key, label, href, variant, enabled } },
       header{ title, description, eyebrow }
     },
     sections
@@ -1126,6 +1127,7 @@ export async function getServicesPage(preview = false) {
           alt,
           hotspot
         },
+        backgroundImageUrl,
         buttons[]{
           _key,
           label,
