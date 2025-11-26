@@ -17,13 +17,13 @@
 
 /**
  * Standard animation durations (in seconds)
- * Reduced for snappier, more responsive feel
+ * Fast durations for immediate content visibility
  */
 export const DURATIONS = {
-  fast: 0.3,
-  normal: 0.4,
-  slow: 0.5,
-  slower: 0.6,
+  fast: 0.2,
+  normal: 0.3,
+  slow: 0.35,
+  slower: 0.4,
 } as const;
 
 /**
@@ -34,14 +34,14 @@ export const EASING = "easeOut" as const;
 
 /**
  * Stagger delays for different contexts (in seconds)
- * Reduced for faster, more dynamic animations
+ * Minimal delays to prevent white screens
  */
 export const STAGGER = {
-  header: 0.1,        // Delay between header elements (reduced from 0.2)
-  cards: 0.05,        // Delay between card items (reduced from 0.08)
-  badges: 0.05,       // Delay between badge items (reduced from 0.08)
-  list: 0.1,          // Delay between list items (reduced from 0.15)
-  metrics: 0.04,      // Delay between metric items (reduced from 0.06)
+  header: 0,          // No delay between header elements - show immediately
+  cards: 0.02,        // Minimal delay between cards
+  badges: 0.02,       // Minimal delay between badges
+  list: 0.02,         // Minimal delay between list items
+  metrics: 0.02,      // Minimal delay between metrics
 } as const;
 
 // ============================================================================
@@ -50,37 +50,36 @@ export const STAGGER = {
 
 /**
  * Sequential animation timing for section headers
- * Each element has a delay and duration, creating a cascading effect
- * Optimized for faster, more responsive feel
+ * All elements animate together with no delay for immediate visibility
  */
 export const HEADER_SEQUENCE = {
   eyebrow: {
     delay: 0,
     duration: DURATIONS.normal,
-    completesAt: 0.4, // When this animation finishes
+    completesAt: 0.3,
   },
   word1: {
-    delay: STAGGER.header,
+    delay: 0,
     duration: DURATIONS.normal,
-    completesAt: 0.5, // delay (0.1) + duration (0.4)
+    completesAt: 0.3,
   },
   word2: {
-    delay: STAGGER.header * 2,
+    delay: 0,
     duration: DURATIONS.normal,
-    completesAt: 0.6, // delay (0.2) + duration (0.4)
+    completesAt: 0.3,
   },
   description: {
-    delay: STAGGER.header * 3,
+    delay: 0,
     duration: DURATIONS.normal,
-    completesAt: 0.7, // delay (0.3) + duration (0.4)
+    completesAt: 0.3,
   },
 } as const;
 
 /**
  * When the entire header section completes animating
- * Content starts immediately after (reduced from 1.2s to 0.7s)
+ * Content starts immediately (no waiting)
  */
-export const HEADER_COMPLETION_TIME = HEADER_SEQUENCE.description.completesAt;
+export const HEADER_COMPLETION_TIME = 0;
 
 // ============================================================================
 // HERO SECTION SPECIFIC TIMING
