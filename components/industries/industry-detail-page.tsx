@@ -18,9 +18,11 @@ interface IndustryDetailPageProps {
 }
 
 export default function IndustryDetailPage({ industry }: IndustryDetailPageProps) {
-  // Extract hero data
+  // Extract hero data - use hero.backgroundImage or fall back to main image
   const heroImage = industry.hero?.backgroundImage
     ? builder.image(industry.hero.backgroundImage).width(1920).height(1080).url()
+    : industry.image
+    ? builder.image(industry.image).width(1920).height(1080).url()
     : undefined;
 
   // Build the title with gradient highlight on second part (matches reference site)
@@ -88,7 +90,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
       {/* Component Expertise / Sector Expertise */}
       {industry.expertise && industry.expertise.length > 0 && (
-        <section className="py-24 bg-zinc-900">
+        <section className="py-24 bg-zinc-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -97,10 +99,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4">
                 {industry.expertiseSectionHeading || `${industry.title} Expertise`}
               </h2>
-              <p className="text-lg text-zinc-400 max-w-3xl mx-auto">
+              <p className="text-lg text-zinc-600 max-w-3xl mx-auto">
                 {industry.expertiseSectionDescription || 'Specialized manufacturing capabilities for critical applications.'}
               </p>
             </motion.div>
@@ -114,37 +116,38 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
-                  <Card className="relative overflow-hidden min-h-[500px] border-0">
-                    {/* Background Image - VISIBLE */}
+                  <Card className="overflow-hidden h-full bg-white shadow-lg hover:shadow-xl transition-shadow">
+                    {/* Image at TOP */}
                     {(section.image || section.imageUrl) && (
-                      <div className="absolute inset-0">
+                      <div className="relative h-48">
                         <Image
-                          src={section.image ? builder.image(section.image).width(800).quality(80).url() : section.imageUrl}
+                          src={section.image ? builder.image(section.image).width(800).height(400).quality(80).url() : section.imageUrl}
                           alt={section.image?.alt || section.title}
                           fill
                           className="object-cover"
                         />
-                        {/* Dark overlay for text readability */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50" />
                       </div>
                     )}
 
-                    {/* Content - WHITE TEXT */}
-                    <div className="relative z-10 p-8 h-full flex flex-col">
-                      <h3 className="text-2xl font-bold text-white mb-3">
+                    {/* Content BELOW - Dark text on light background */}
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-zinc-900 mb-2">
                         {section.title}
                       </h3>
-                      <p className="text-zinc-300 mb-6">{section.description}</p>
+                      <p className="text-zinc-600 text-sm mb-4">{section.description}</p>
 
-                      <div className="space-y-6 mt-auto">
+                      <div className="space-y-4">
                         {section.components && section.components.length > 0 && (
                           <div>
-                            <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-2">
+                            <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-2">
                               {section.componentsLabel || 'Typical Components'}
                             </h4>
                             <ul className="space-y-1">
                               {section.components.map((component: string, idx: number) => (
-                                <li key={idx} className="text-zinc-300 text-sm">• {component}</li>
+                                <li key={idx} className="text-zinc-700 text-sm flex items-start">
+                                  <span className="text-blue-500 mr-2">•</span>
+                                  {component}
+                                </li>
                               ))}
                             </ul>
                           </div>
@@ -152,12 +155,15 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
                         {section.materials && section.materials.length > 0 && (
                           <div>
-                            <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-2">
+                            <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-2">
                               Materials
                             </h4>
                             <ul className="space-y-1">
                               {section.materials.map((material: string, idx: number) => (
-                                <li key={idx} className="text-zinc-300 text-sm">• {material}</li>
+                                <li key={idx} className="text-zinc-700 text-sm flex items-start">
+                                  <span className="text-blue-500 mr-2">•</span>
+                                  {material}
+                                </li>
                               ))}
                             </ul>
                           </div>
@@ -165,12 +171,15 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
                         {section.requirements && section.requirements.length > 0 && (
                           <div>
-                            <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-2">
+                            <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-2">
                               {section.requirementsLabel || 'Key Requirements'}
                             </h4>
                             <ul className="space-y-1">
                               {section.requirements.map((requirement: string, idx: number) => (
-                                <li key={idx} className="text-zinc-300 text-sm">• {requirement}</li>
+                                <li key={idx} className="text-zinc-700 text-sm flex items-start">
+                                  <span className="text-blue-500 mr-2">•</span>
+                                  {requirement}
+                                </li>
                               ))}
                             </ul>
                           </div>
