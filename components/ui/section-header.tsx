@@ -30,10 +30,15 @@ interface SectionHeaderProps {
   heading?: string;
 
   /**
-   * Which word to apply gradient to when using single heading
+   * Which word(s) to apply gradient to when using single heading
+   * - 'first': gradient on first word
+   * - 'last': gradient on last word
+   * - 'last-2': gradient on last 2 words (keeps them together)
+   * - 'last-3': gradient on last 3 words (keeps them together)
+   * - number: gradient starts at this word index
    * @default 'last'
    */
-  gradientWordPosition?: 'first' | 'last' | number;
+  gradientWordPosition?: 'first' | 'last' | 'last-2' | 'last-3' | number;
 
   /**
    * Description text below heading
@@ -119,6 +124,12 @@ export default function SectionHeader({
     } else if (gradientWordPosition === 'last') {
       displayWord1 = words.slice(0, -1).join(' ');
       displayWord2 = words[words.length - 1];
+    } else if (gradientWordPosition === 'last-2' && words.length >= 2) {
+      displayWord1 = words.slice(0, -2).join(' ');
+      displayWord2 = words.slice(-2).join('\u00A0'); // Non-breaking space keeps words together
+    } else if (gradientWordPosition === 'last-3' && words.length >= 3) {
+      displayWord1 = words.slice(0, -3).join(' ');
+      displayWord2 = words.slice(-3).join('\u00A0'); // Non-breaking space keeps words together
     } else if (typeof gradientWordPosition === 'number') {
       const index = gradientWordPosition;
       displayWord1 = words.slice(0, index).join(' ');

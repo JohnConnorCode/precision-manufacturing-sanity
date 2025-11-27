@@ -1,25 +1,16 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Card } from '@/components/ui/card';
 import * as Icons from 'lucide-react';
 import Link from 'next/link';
-import ParallaxImage from '@/components/ui/parallax-image';
-import SectionHeader from '@/components/ui/section-header';
-import { spacing, colors } from '@/lib/design-system';
-import { useTheme } from '@/lib/contexts/ThemeContext';
-import { hexToRgba } from '@/lib/theme-utils';
+import Image from 'next/image';
 import { usePrefersReducedMotion } from '@/lib/motion';
-import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { Industry, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
 
-// Dynamic icon component - supports ALL Lucide icons
 function DynamicIcon({ name, className }: { name?: string; className?: string }) {
   const Icon = name ? (Icons as any)[name] || Icons.Circle : Icons.Circle;
   return <Icon className={className} />;
 }
-
-// NO fallback industries - use ONLY Sanity data
 
 interface IndustriesProps {
   data?: Industry[];
@@ -34,14 +25,11 @@ interface IndustriesProps {
 }
 
 export default function Industries({ data, sectionData }: IndustriesProps) {
-  const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  // Use CMS data with text fallbacks for section headers
   const industriesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
-  const displayIndustries = industriesData || [];
+  if (!industriesData || industriesData.length === 0) return null;
 
-  // Use section data from CMS - prefer header object, fallback to direct fields
   const eyebrow = sectionData?.header?.eyebrow || sectionData?.eyebrow;
   const headerTitle = sectionData?.header?.title;
   const headerTitleHighlight = sectionData?.header?.titleHighlight;
@@ -49,116 +37,132 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
     ? `${headerTitle} ${headerTitleHighlight}`
     : sectionData?.heading;
   const description = sectionData?.header?.description || sectionData?.description;
-  const subdescription = sectionData?.subdescription;
-  const hasHeaderContent = Boolean(eyebrow || heading || description);
 
   return (
-    <section className={`${spacing.section} ${colors.bgLight}`}>
-      <div className={spacing.containerWide}>
-        {hasHeaderContent && (
-          <SectionHeader
-            eyebrow={eyebrow}
-            heading={heading}
-            gradientWordPosition="last"
-            description={description}
-          />
-        )}
+    <section className="py-24 md:py-32 bg-slate-50">
+      <div className="container">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-16 md:mb-20"
+        >
+          {eyebrow && (
+            <p className="text-sm font-semibold text-blue-600 uppercase tracking-[0.2em] mb-4">
+              {eyebrow}
+            </p>
+          )}
+          {heading && (
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
+              {heading.split(' ').map((word, i, arr) => (
+                i === arr.length - 1 ? (
+                  <span key={i} className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                    {word}
+                  </span>
+                ) : (
+                  <span key={i}>{word} </span>
+                )
+              ))}
+            </h2>
+          )}
+          {description && (
+            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
+              {description}
+            </p>
+          )}
+        </motion.div>
 
-        {subdescription && (
-          <p className="text-base md:text-lg text-slate-600 text-center max-w-3xl mx-auto mb-6">
-            {subdescription}
-          </p>
-        )}
-
-        <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid}`}>
-          {displayIndustries.map((industry: Industry, index: number) => {
-            const headerDelay = SECTION_CONFIGS.threeColumnGrid.headerCompletion;
-            const cardDelay = headerDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
-            const viewportConfig = getViewportConfig();
-
-            // Get image URL - handle both Sanity image objects and direct URLs
+        {/* Industries Grid - Dramatic Full-Height Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {industriesData.slice(0, 3).map((industry, index) => {
             const imageUrl = typeof industry.image === 'string'
               ? industry.image
               : (industry.image as any)?.asset?.url || null;
-            const displayImage = imageUrl;
-
-            const card = (
-              <motion.div
-                whileHover={{ scale: 1.02, y: -4 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="h-full"
-              >
-                <Card
-                  className="overflow-hidden h-full transition-all duration-300 border-slate-200/60 hover:border-blue-500/30 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15),0_10px_20px_-5px_rgba(0,0,0,0.1)]"
-                  style={{
-                    '--hover-border': hexToRgba(theme.colors.primary, 0.5),
-                  } as React.CSSProperties}
-                >
-                    <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
-                      <ParallaxImage
-                        src={displayImage}
-                        alt={industry.title}
-                        className="w-full h-full group-hover:scale-110 transition-transform duration-700"
-                        speed={0.2}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/50 to-transparent" />
-
-                      {/* Icon and title overlay on image */}
-                      <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <div className="flex items-start gap-3 mb-3">
-                          <div
-                            className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 shadow-lg shadow-blue-600/30 group-hover:shadow-xl group-hover:shadow-blue-600/40 group-hover:scale-105"
-                            style={{ backgroundColor: theme.colors.primary }}
-                          >
-                            <DynamicIcon name={industry.iconName} className="h-6 w-6 text-white" />
-                          </div>
-                          <h3 className="text-xl font-bold text-white leading-tight pt-2 tracking-tight">
-                            {industry.title}
-                          </h3>
-                        </div>
-
-                        {/* Feature badges on image */}
-                        <div className="flex flex-wrap gap-2">
-                          {industry.features?.map((feature: any, index: number) => {
-                            // Handle both string and object formats
-                            const featureText = typeof feature === 'string' ? feature : feature.feature;
-                            return (
-                              <span
-                                key={index}
-                                className="text-[10px] font-semibold text-white/90 bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-md uppercase tracking-wider border border-white/10"
-                              >
-                                {featureText}
-                              </span>
-                            );
-                          }) || null}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-6 bg-white">
-                      <p className={`text-sm ${colors.textMedium} leading-relaxed`}>
-                        {industry.description}
-                      </p>
-                    </div>
-                </Card>
-              </motion.div>
-            );
 
             return (
               <motion.div
                 key={industry.title}
-                initial={getInitialState(prefersReducedMotion)}
-                whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
-                viewport={viewportConfig}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: prefersReducedMotion ? 0 : 0.8,
+                  delay: prefersReducedMotion ? 0 : index * 0.15,
+                }}
+                viewport={{ once: true, margin: "-50px" }}
                 className="group"
               >
-                {industry.href ? (
-                  <Link href={industry.href} className="block">
-                    {card}
-                  </Link>
-                ) : (
-                  card
-                )}
+                <Link href={industry.href || '#'} className="block">
+                  <div className="relative h-[500px] md:h-[600px] rounded-3xl overflow-hidden">
+                    {/* Background Image */}
+                    {imageUrl && (
+                      <Image
+                        src={imageUrl}
+                        alt={industry.title}
+                        fill
+                        className="object-cover transition-all duration-700 ease-out group-hover:scale-110"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    )}
+
+                    {/* Dramatic Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-500" />
+
+                    {/* Floating Icon */}
+                    <motion.div
+                      className="absolute top-6 left-6"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-xl shadow-blue-500/25">
+                        <DynamicIcon name={industry.iconName} className="w-7 h-7 text-white" />
+                      </div>
+                    </motion.div>
+
+                    {/* Content */}
+                    <div className="absolute bottom-0 left-0 right-0 p-8">
+                      {/* Feature Tags */}
+                      {industry.features && industry.features.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {industry.features.slice(0, 3).map((feature: any, i: number) => {
+                            const featureText = typeof feature === 'string' ? feature : feature.feature;
+                            return (
+                              <span
+                                key={i}
+                                className="px-3 py-1 text-xs font-semibold text-white/90 bg-white/10 backdrop-blur-md rounded-full border border-white/20"
+                              >
+                                {featureText}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
+
+                      {/* Title */}
+                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 group-hover:translate-x-2 transition-transform duration-300">
+                        {industry.title}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-slate-300 text-sm md:text-base line-clamp-2 mb-6">
+                        {industry.description}
+                      </p>
+
+                      {/* CTA */}
+                      <div className="flex items-center gap-2 text-blue-400 font-semibold">
+                        <span>Learn More</span>
+                        <Icons.ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
+                      </div>
+                    </div>
+
+                    {/* Hover Border Glow */}
+                    <div className="absolute inset-0 rounded-3xl border-2 border-transparent group-hover:border-blue-500/40 transition-colors duration-500 pointer-events-none" />
+
+                    {/* Corner Accent */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                </Link>
               </motion.div>
             );
           })}

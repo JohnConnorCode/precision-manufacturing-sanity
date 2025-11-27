@@ -166,7 +166,7 @@ export default function HeroSection({
         {backgroundImage && typeof backgroundImage === 'string' && backgroundImage.trim() && (
           <Image
             src={backgroundImage}
-            alt={imageAlt}
+            alt={imageAlt || 'Hero background'}
             fill
             className="object-cover object-center animate-fade-in"
             priority={true}

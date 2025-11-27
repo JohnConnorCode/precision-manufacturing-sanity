@@ -317,75 +317,63 @@ export default function Header({ data }: HeaderProps) {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                           align="start"
-                          sideOffset={20}
+                          sideOffset={12}
                           className={cn(
-                            'min-w-[340px] p-3 rounded-2xl shadow-2xl',
-                            'backdrop-blur-2xl backdrop-saturate-150',
-                            'border border-white/20',
-                            'animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200',
+                            'min-w-[280px] py-3 px-2 rounded-xl shadow-lg',
+                            'border',
+                            'animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-150',
                             isDark
-                              ? 'bg-slate-900/95 border-slate-700/50 shadow-slate-950/50'
-                              : 'bg-white/95 border-slate-200/60 shadow-slate-200/50'
+                              ? 'bg-slate-900 border-slate-700'
+                              : 'bg-white border-slate-200'
                           )}
                         >
-                          {/* Parent item as first dropdown option */}
+                          {/* Parent "View All" link */}
                           {hasRealHref && (
                             <DropdownMenuItem asChild>
                               <Link
                                 href={href}
                                 className={cn(
-                                  'flex items-center select-none rounded-lg p-3 mb-1 no-underline outline-none transition-all cursor-pointer',
-                                  'border-b',
+                                  'flex items-center justify-between select-none rounded-lg px-4 py-3 mx-1 mb-2 no-underline outline-none transition-colors cursor-pointer',
+                                  'border-b border-slate-100',
                                   isDark
-                                    ? 'hover:bg-blue-600/20 focus:bg-blue-600/20 text-blue-400 border-slate-700/50'
-                                    : 'hover:bg-blue-50 focus:bg-blue-50 text-blue-600 border-slate-200/60'
+                                    ? 'hover:bg-slate-800 text-blue-400 border-slate-700'
+                                    : 'hover:bg-blue-50 text-blue-600'
                                 )}
                               >
-                                <div className="flex-1">
-                                  <div className={cn('text-sm font-bold', isDark ? 'text-blue-400' : 'text-blue-600')}>
-                                    <span className="inline-flex items-center">
-                                      {IconFor(item?.iconName)}
-                                      View All {item.name}
-                                    </span>
-                                  </div>
-                                  {item.description && (
-                                    <div className={cn('text-xs mt-0.5', isDark ? 'text-slate-400' : 'text-slate-500')}>
-                                      {item.description}
-                                    </div>
-                                  )}
-                                </div>
-                                <ArrowRight className="h-4 w-4 opacity-60" />
+                                <span className="text-sm font-semibold">View All {item.name}</span>
+                                <ArrowRight className="h-4 w-4" />
                               </Link>
                             </DropdownMenuItem>
                           )}
                           {/* Child items */}
-                          {children.map((child: any) => (
-                            <DropdownMenuItem key={child.name} asChild>
-                              <Link
-                                href={(child.href && child.href !== '#') ? child.href : href}
-                                target={child?.openInNewTab ? '_blank' : undefined}
-                                rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
-                                className={cn(
-                                  'block select-none rounded-lg p-3 no-underline outline-none transition-all cursor-pointer',
-                                  isDark
-                                    ? 'hover:bg-slate-800/70 focus:bg-slate-800/70 text-slate-100'
-                                    : 'hover:bg-slate-100/80 focus:bg-slate-100/80 text-slate-900'
-                                )}
-                              >
-                                <div className={cn('text-sm font-semibold', isDark ? 'text-slate-100' : 'text-slate-900')}>
-                                  <span className="inline-flex items-center">
-                                    {IconFor(child?.iconName)}
+                          <div className="space-y-0.5">
+                            {children.map((child: any) => (
+                              <DropdownMenuItem key={child.name} asChild>
+                                <Link
+                                  href={(child.href && child.href !== '#') ? child.href : href}
+                                  target={child?.openInNewTab ? '_blank' : undefined}
+                                  rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
+                                  className={cn(
+                                    'block select-none px-4 py-3 mx-1 no-underline outline-none cursor-pointer',
+                                    'relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-gradient-to-r after:from-blue-600 after:via-blue-500 after:to-indigo-600',
+                                    'after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left',
+                                    isDark
+                                      ? 'text-slate-100 hover:text-blue-400'
+                                      : 'text-slate-700 hover:text-blue-600'
+                                  )}
+                                >
+                                  <div className={cn('text-[15px] font-medium', isDark ? 'text-inherit' : 'text-inherit')}>
                                     {child.name}
-                                  </span>
-                                </div>
-                                {child.description && (
-                                  <div className={cn('text-xs mt-1 leading-relaxed', isDark ? 'text-slate-400' : 'text-slate-500')}>
-                                    {child.description}
                                   </div>
-                                )}
-                              </Link>
-                            </DropdownMenuItem>
-                          ))}
+                                  {child.description && (
+                                    <div className={cn('text-sm mt-1 leading-relaxed', isDark ? 'text-slate-400' : 'text-slate-500')}>
+                                      {child.description}
+                                    </div>
+                                  )}
+                                </Link>
+                              </DropdownMenuItem>
+                            ))}
+                          </div>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     ) : (

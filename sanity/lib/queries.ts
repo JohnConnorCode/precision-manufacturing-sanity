@@ -21,6 +21,7 @@ export async function getAllServices(preview = false) {
       order,
       highlight,
       icon,
+      iconName,
       specs,
       cardCtaText,
       image{

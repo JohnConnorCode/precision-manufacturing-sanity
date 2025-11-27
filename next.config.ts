@@ -3,6 +3,8 @@ import createMDX from '@next/mdx';
 
 // Force cache invalidation - removed hero buttons - 2025-11-25
 const nextConfig: NextConfig = {
+  /* Fix workspace root detection for monorepo structure */
+  outputFileTracingRoot: __dirname,
   /* MDX Support */
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   /* Performance optimizations */

@@ -4,12 +4,8 @@ import { motion } from 'framer-motion';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { ArrowRight, FileText, Shield, Award, Activity, Clock, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
-import SectionHeader from '@/components/ui/section-header';
-import { colorStyleToCSS, getBackgroundColor, paddingToClass, ColorStyle } from '@/lib/sanity-styles';
-import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import { usePrefersReducedMotion } from '@/lib/motion';
-import { getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
-import { colors } from '@/lib/design-system';
+import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 
 interface CTAData {
   title?: string;
@@ -28,34 +24,11 @@ interface CTAData {
     enabled?: boolean;
   }>;
   trustMessage?: string;
-  // Style fields from Sanity
-  theme?: {
-    backgroundColor?: ColorStyle;
-    backgroundGradient?: {
-      enabled?: boolean;
-      fromColor?: ColorStyle;
-      toColor?: ColorStyle;
-      direction?: string;
-    };
-    textColor?: ColorStyle;
-    accentColor?: ColorStyle;
-  };
-  titleColor?: ColorStyle;
-  subtitleColor?: ColorStyle;
-  buttonStyles?: {
-    primaryButton?: {
-      textColor?: ColorStyle;
-      backgroundColor?: ColorStyle;
-      borderColor?: ColorStyle;
-      hoverBackgroundColor?: ColorStyle;
-    };
-    secondaryButton?: {
-      textColor?: ColorStyle;
-      backgroundColor?: ColorStyle;
-      borderColor?: ColorStyle;
-      hoverBackgroundColor?: ColorStyle;
-    };
-  };
+  // Style fields from page builder
+  theme?: string;
+  titleColor?: string;
+  subtitleColor?: string;
+  buttonStyles?: unknown;
   padding?: string;
 }
 
@@ -66,57 +39,22 @@ interface CTAProps {
 export default function CTA({ data }: CTAProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  // Use ONLY CMS data - NO fallbacks
   if (!data?.title || !data?.buttons || data.buttons.length === 0) {
     return null;
   }
 
-  // Ensure title and subtitle are plain strings (handle stega encoding from Presentation Tool)
-  const rawTitle = data.title;
-  const title = (typeof rawTitle === 'string' ? rawTitle : String(rawTitle));
+  const title = typeof data.title === 'string' ? data.title : String(data.title);
   const rawSubtitle = data.subtitle;
   const subtitleString = portableTextToPlainText(rawSubtitle) || (typeof rawSubtitle === 'string' ? rawSubtitle : String(rawSubtitle || ''));
-  const subtitleSegments = subtitleString
-    ? subtitleString.split(/\n{2,}/).map(segment => segment.trim()).filter(Boolean)
-    : [];
 
-  let highlightText = '';
-  let secondaryTitle = '';
-  let subtitleBody = '';
-
-  if (subtitleSegments.length > 1) {
-    highlightText = subtitleSegments[0];
-    const remainder = subtitleSegments.slice(1).join(' ').trim();
-    if (remainder.includes('—')) {
-      const [headline, ...bodyParts] = remainder.split('—');
-      secondaryTitle = headline.trim();
-      subtitleBody = bodyParts.join('—').trim();
-    } else {
-      secondaryTitle = remainder;
-    }
-  } else if (subtitleSegments.length === 1) {
-    subtitleBody = subtitleSegments[0];
-  }
-
-  const sectionDescription = (!highlightText && !secondaryTitle) ? subtitleBody : '';
   const buttons = (Array.isArray(data.buttons) ? data.buttons : []).filter(button => button.enabled !== false);
 
-  // Extract styles from Sanity data
-  const backgroundStyle = getBackgroundColor(data?.theme);
-  const defaultBgColor = backgroundStyle.backgroundColor || backgroundStyle.backgroundImage ? '' : colors.raw.slate950;
-  const paddingClass = paddingToClass(data?.padding) || 'py-24';
-
-  const _titleColor = colorStyleToCSS(data?.titleColor) || colors.raw.white;
-  const _subtitleColor = colorStyleToCSS(data?.subtitleColor) || colors.raw.slate400;
-
-  // Extract badge, certifications, and trust message from Sanity (ensure strings)
   const rawBadge = data?.badge || '';
   const badge = typeof rawBadge === 'string' ? rawBadge : String(rawBadge || '');
   const certifications = Array.isArray(data?.certifications) ? data.certifications : [];
   const rawTrustMessage = data?.trustMessage || '';
   const trustMessage = typeof rawTrustMessage === 'string' ? rawTrustMessage : String(rawTrustMessage || '');
 
-  // Icon lookup for certification badges
   const iconMap: Record<string, LucideIcon> = {
     Clock,
     Shield,
@@ -124,184 +62,152 @@ export default function CTA({ data }: CTAProps) {
     Activity,
   };
 
-  return (
-    <section
-      className={`relative ${paddingClass} overflow-hidden`}
-      style={{
-        ...backgroundStyle,
-        ...(defaultBgColor && { backgroundColor: defaultBgColor }),
-      }}
-    >
-      {/* Animated technical background */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Animated circuit grid pattern */}
-        <svg className="absolute inset-0 w-full h-full opacity-[0.08]" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="circuit-grid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-blue-400"/>
-              <circle cx="0" cy="0" r="2" fill="currentColor" className="text-blue-500"/>
-              <circle cx="60" cy="0" r="2" fill="currentColor" className="text-blue-500"/>
-              <circle cx="0" cy="60" r="2" fill="currentColor" className="text-blue-500"/>
-            </pattern>
-            <linearGradient id="circuit-fade" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="white" stopOpacity="1"/>
-              <stop offset="50%" stopColor="white" stopOpacity="0.5"/>
-              <stop offset="100%" stopColor="white" stopOpacity="0"/>
-            </linearGradient>
-            <mask id="circuit-mask">
-              <rect width="100%" height="100%" fill="url(#circuit-fade)"/>
-            </mask>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#circuit-grid)" mask="url(#circuit-mask)"/>
-        </svg>
+  // Split title for styling - keep last 2 words together for "Manufacturing Project"
+  const words = title.split(' ');
+  const firstPart = words.slice(0, -2).join(' ');
+  const lastPart = words.slice(-2).join('\u00A0'); // Non-breaking space
 
-        {/* Animated horizontal scan line */}
+  return (
+    <section className="relative py-32 md:py-40 overflow-hidden">
+      {/* Dramatic Background */}
+      <div className="absolute inset-0 bg-slate-950">
+        {/* Gradient layers */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-950/40 via-slate-950 to-indigo-950/40" />
+
+        {/* Animated gradient orbs */}
+        <div className="absolute top-0 left-1/4 w-[800px] h-[800px] bg-blue-600/8 rounded-full blur-[150px]" />
+        <div className="absolute bottom-0 right-1/4 w-[800px] h-[800px] bg-indigo-600/8 rounded-full blur-[150px]" />
+
+        {/* Animated scan line */}
         <motion.div
-          className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent"
-          initial={{ top: '0%', opacity: 0 }}
-          animate={{
-            top: ['0%', '100%', '0%'],
-            opacity: [0, 0.6, 0]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: 'linear'
-          }}
+          className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"
+          initial={{ top: '0%' }}
+          animate={{ top: ['0%', '100%', '0%'] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
         />
 
-        {/* Pulsing corner accents */}
-        <motion.div
-          className="absolute top-0 left-0 w-32 h-32"
-          animate={{ opacity: [0.1, 0.3, 0.1] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <svg className="w-full h-full text-blue-500" viewBox="0 0 100 100">
-            <path d="M 0 30 L 0 0 L 30 0" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5"/>
-            <path d="M 0 50 L 0 0 L 50 0" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3"/>
-          </svg>
-        </motion.div>
-        <motion.div
-          className="absolute bottom-0 right-0 w-32 h-32 rotate-180"
-          animate={{ opacity: [0.1, 0.3, 0.1] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-        >
-          <svg className="w-full h-full text-blue-500" viewBox="0 0 100 100">
-            <path d="M 0 30 L 0 0 L 30 0" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5"/>
-            <path d="M 0 50 L 0 0 L 50 0" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3"/>
-          </svg>
-        </motion.div>
+        {/* Grid pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
 
-        {/* Accent glow effects */}
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-blue-600/8 rounded-full filter blur-[100px]" />
-        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/8 rounded-full filter blur-[100px]" />
+        {/* Corner accents */}
+        <svg className="absolute top-0 left-0 w-48 h-48 text-blue-500/10" viewBox="0 0 100 100">
+          <path d="M 0 40 L 0 0 L 40 0" fill="none" stroke="currentColor" strokeWidth="1" />
+          <path d="M 0 60 L 0 0 L 60 0" fill="none" stroke="currentColor" strokeWidth="0.5" />
+        </svg>
+        <svg className="absolute bottom-0 right-0 w-48 h-48 text-blue-500/10 rotate-180" viewBox="0 0 100 100">
+          <path d="M 0 40 L 0 0 L 40 0" fill="none" stroke="currentColor" strokeWidth="1" />
+          <path d="M 0 60 L 0 0 L 60 0" fill="none" stroke="currentColor" strokeWidth="0.5" />
+        </svg>
       </div>
 
       <div className="container relative z-10">
         <motion.div
-          initial={getInitialState(prefersReducedMotion)}
-          whileInView={getAnimateState(0, 0.5, prefersReducedMotion)}
-          viewport={getViewportConfig()}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.8 }}
+          viewport={{ once: true }}
           className="max-w-4xl mx-auto text-center"
         >
-          {/* Section Header with gradient text - prevent word wrap on larger screens */}
-          <SectionHeader
-            eyebrow={badge}
-            heading={title}
-            gradientWordPosition="last"
-            description={sectionDescription}
-            centered={true}
-            className="[&_h2]:text-white [&_p]:text-slate-300 [&_p]:text-lg mb-6"
-          />
-
-          {highlightText && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-full border border-blue-600/30 bg-white/5 backdrop-blur-sm">
-              <ArrowRight className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
-              <span className="text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">
-                {highlightText}
-              </span>
-            </div>
-          )}
-
-          {secondaryTitle && (
-            <motion.h2
-              initial={getInitialState(prefersReducedMotion)}
-              whileInView={getAnimateState(0.1, 0.6, prefersReducedMotion)}
-              viewport={getViewportConfig()}
-              className="text-4xl md:text-5xl font-bold text-white mb-4"
+          {/* Badge */}
+          {badge && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center px-4 py-2 mb-8 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-sm"
             >
-              {secondaryTitle}
-            </motion.h2>
+              <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
+                {badge}
+              </span>
+            </motion.div>
           )}
 
-          {subtitleBody && (highlightText || secondaryTitle) && (
-            <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
-              {subtitleBody}
+          {/* Title with gradient on last 2 words */}
+          <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-8 leading-tight">
+            {firstPart && <span>{firstPart} </span>}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-500">
+              {lastPart}
+            </span>
+          </h2>
+
+          {/* Subtitle */}
+          {subtitleString && (
+            <p className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
+              {subtitleString}
             </p>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             {buttons.map((button, index) => {
               const mappedVariant: 'default' | 'secondary' =
                 button.variant === 'primary' ? 'default'
                 : button.variant === 'outline' ? 'secondary'
-                : (button.variant as 'default' | 'secondary')
-              return (
-              <Link key={index} href={button.href}>
-                <PremiumButton size="lg" variant={mappedVariant}>
-                  {index === 1 && <FileText className="mr-2 h-5 w-5" />}
-                  {button.text}
-                  {index === 0 && <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />}
-                </PremiumButton>
-              </Link>
-            )})}
-          </div>
-
-          {/* Certification badges with subtle animation */}
-          {certifications.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
-              {certifications.filter((cert: any) => cert.enabled !== false).map((cert, index) => {
-              const Icon = iconMap[cert.icon] || Activity;
-              const isFirstBadge = index === 0 && cert.icon === 'Clock';
+                : (button.variant as 'default' | 'secondary');
 
               return (
-                <motion.div
-                  key={cert._key || `cert-${index}`}
-                  initial={getInitialState(prefersReducedMotion)}
-                  whileInView={getAnimateState(0.1 + (index * 0.1), 0.5, prefersReducedMotion)}
-                  viewport={getViewportConfig()}
-                  className="group flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-colors"
-                >
-                  {isFirstBadge ? (
-                    <div className="relative">
-                      <div className="w-2 h-2 bg-green-500 rounded-full" />
-                      <motion.div
-                        className="absolute inset-0 w-2 h-2 bg-green-500 rounded-full"
-                        animate={{ scale: [1, 2, 1], opacity: [1, 0, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      />
-                    </div>
-                  ) : (
-                    <Icon className="w-4 h-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500" />
-                  )}
-                  <span className="text-sm font-medium text-slate-300">{cert.text}</span>
-                </motion.div>
+                <Link key={index} href={button.href}>
+                  <PremiumButton size="lg" variant={mappedVariant}>
+                    {index === 1 && <FileText className="mr-2 h-5 w-5" />}
+                    {button.text}
+                    {index === 0 && <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />}
+                  </PremiumButton>
+                </Link>
               );
             })}
+          </div>
+
+          {/* Certification Badges */}
+          {certifications.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+              {certifications.filter((cert: any) => cert.enabled !== false).map((cert, index) => {
+                const Icon = iconMap[cert.icon] || Activity;
+                const isFirstBadge = index === 0 && cert.icon === 'Clock';
+
+                return (
+                  <motion.div
+                    key={cert._key || `cert-${index}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: prefersReducedMotion ? 0 : 0.5,
+                      delay: prefersReducedMotion ? 0 : 0.2 + index * 0.1
+                    }}
+                    viewport={{ once: true }}
+                    className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-slate-900/50 border border-slate-800/50 hover:border-slate-700 transition-colors"
+                  >
+                    {isFirstBadge ? (
+                      <div className="relative">
+                        <div className="w-2 h-2 bg-green-500 rounded-full" />
+                        <motion.div
+                          className="absolute inset-0 w-2 h-2 bg-green-500 rounded-full"
+                          animate={{ scale: [1, 2, 1], opacity: [1, 0, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                      </div>
+                    ) : (
+                      <Icon className="w-4 h-4 text-blue-400" />
+                    )}
+                    <span className="text-sm font-medium text-slate-300">{cert.text}</span>
+                  </motion.div>
+                );
+              })}
             </div>
           )}
 
-          {/* Client trust indicator */}
+          {/* Trust Message */}
           {trustMessage && (
             <motion.div
               initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1, transition: { delay: prefersReducedMotion ? 0 : 0.5, duration: prefersReducedMotion ? 0 : 1 } }}
-              viewport={getViewportConfig()}
-              className="mt-12 flex justify-center"
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.8, delay: 0.5 }}
+              viewport={{ once: true }}
+              className="mt-12"
             >
-              <div className="text-xs text-slate-500">
+              <p className="text-xs text-slate-600">
                 {trustMessage}
-              </div>
+              </p>
             </motion.div>
           )}
         </motion.div>

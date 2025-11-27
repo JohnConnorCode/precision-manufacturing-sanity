@@ -2,12 +2,8 @@
 
 import { motion } from 'framer-motion';
 import * as Icons from 'lucide-react';
-import SectionHeader from '@/components/ui/section-header';
-import { useTheme } from '@/lib/contexts/ThemeContext';
 import { usePrefersReducedMotion } from '@/lib/motion';
-import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 
-// Dynamic icon component
 function DynamicIcon({ name, className }: { name: string; className?: string }) {
   const Icon = (Icons as any)[name] || Icons.Circle;
   return <Icon className={className} />;
@@ -17,6 +13,7 @@ interface Benefit {
   iconName?: string;
   title: string;
   description: string;
+  enabled?: boolean;
 }
 
 interface OperationalExcellenceData {
@@ -29,65 +26,119 @@ interface OperationalExcellenceProps {
   data?: OperationalExcellenceData;
 }
 
-// NO fallback benefits - use ONLY Sanity data
-
 export default function OperationalExcellence({ data }: OperationalExcellenceProps) {
-  const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  // Use CMS data, return null if no benefits data
   if (!data?.benefits || data.benefits.length === 0) {
     return null;
   }
 
   const heading = data?.heading;
   const description = data?.description;
-  const benefits = data.benefits;
+  const benefits = data.benefits.filter((b: Benefit) => b.enabled !== false);
 
   return (
-    <section className="py-24 md:py-32 bg-slate-900 text-white">
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
-        {/* Section Header */}
-        <SectionHeader
-            heading={heading}
-            gradientWordPosition="last"
-            description={description}
-            className="[&_h2]:text-white [&_p]:text-slate-300"
-          />
+    <section className="relative py-32 md:py-40 overflow-hidden">
+      {/* Dramatic Dark Background with Gradient */}
+      <div className="absolute inset-0 bg-slate-950">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-950/30 via-slate-950 to-indigo-950/30" />
+        {/* Animated gradient orbs */}
+        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+      </div>
 
-        {/* Benefits Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          {benefits.filter((benefit: any) => benefit.enabled !== false).map((benefit, index) => {
-            const headerDelay = SECTION_CONFIGS.listItems.headerCompletion;
-            const benefitDelay = headerDelay + SECTION_CONFIGS.listItems.getDelay(index);
-            const viewportConfig = getViewportConfig();
+      {/* Grid Pattern Overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:64px_64px]" />
 
-            return (
-              <motion.div
-                key={index}
-                initial={getInitialState(prefersReducedMotion)}
-                whileInView={getAnimateState(benefitDelay, 0.6, prefersReducedMotion)}
-                viewport={viewportConfig}
-                className="text-center"
-              >
-              {/* Icon */}
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full text-white mb-6" style={{ backgroundColor: theme.colors.primary }}>
-                <DynamicIcon name={benefit.iconName || 'Circle'} className="w-8 h-8" />
+      <div className="container relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-20"
+        >
+          {heading && (
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+              {heading.split(' ').map((word, i, arr) => (
+                i === arr.length - 1 ? (
+                  <span key={i} className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+                    {word}
+                  </span>
+                ) : (
+                  <span key={i}>{word} </span>
+                )
+              ))}
+            </h2>
+          )}
+          {description && (
+            <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto">
+              {description}
+            </p>
+          )}
+        </motion.div>
+
+        {/* Benefits - Horizontal Cards with Dramatic Design */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {benefits.map((benefit, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.7,
+                delay: prefersReducedMotion ? 0 : index * 0.15,
+              }}
+              viewport={{ once: true, margin: "-50px" }}
+              className="group"
+            >
+              <div className="relative h-full p-8 rounded-3xl bg-gradient-to-br from-slate-900/80 to-slate-900/40 border border-slate-800/50 backdrop-blur-sm hover:border-blue-500/30 transition-all duration-500">
+                {/* Glow Effect on Hover */}
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                {/* Icon with Gradient Background */}
+                <div className="relative mb-6">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-xl shadow-blue-500/20 group-hover:shadow-blue-500/40 group-hover:scale-105 transition-all duration-300">
+                    <DynamicIcon name={benefit.iconName || 'Circle'} className="w-8 h-8 text-white" />
+                  </div>
+                </div>
+
+                {/* Title */}
+                <h3 className="relative text-xl md:text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors duration-300">
+                  {benefit.title}
+                </h3>
+
+                {/* Description */}
+                <p className="relative text-slate-400 leading-relaxed">
+                  {benefit.description}
+                </p>
+
+                {/* Decorative Corner Line */}
+                <div className="absolute top-0 right-0 w-20 h-px bg-gradient-to-l from-blue-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute top-0 right-0 w-px h-20 bg-gradient-to-b from-blue-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-
-              {/* Title */}
-              <h3 className="text-xl md:text-2xl font-bold mb-4">
-                {benefit.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-slate-300 leading-relaxed">
-                {benefit.description}
-              </p>
-              </motion.div>
-            );
-          })}
+            </motion.div>
+          ))}
         </div>
+
+        {/* Trust Badges / Certifications Row */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="mt-20 pt-12 border-t border-slate-800"
+        >
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+            {['AS9100D Certified', 'ISO 9001:2015', 'ITAR Registered'].map((cert, i) => (
+              <div key={i} className="flex items-center gap-3 text-slate-500 hover:text-blue-400 transition-colors duration-300">
+                <Icons.Shield className="w-5 h-5" />
+                <span className="text-sm font-semibold uppercase tracking-wider">{cert}</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ import industry from './industry'
 import resource from './resource'
 import teamMember from './team-member'
 import jobPosting from './job-posting'
+import caseStudy from './case-study'
 
 // Globals
 import siteSettings from './site-settings'
@@ -66,6 +67,7 @@ export const schemaTypes = [
   resource,
   teamMember,
   jobPosting,
+  caseStudy,
 
   // Globals
   siteSettings,
