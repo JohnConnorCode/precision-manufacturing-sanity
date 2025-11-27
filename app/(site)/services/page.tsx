@@ -5,7 +5,7 @@ import HeroSection from '@/components/ui/hero-section';
 import { typography, spacing, styles, overlays, cn } from '@/lib/design-system';
 import { ArrowRight, Award } from 'lucide-react';
 import Link from 'next/link';
-import ParallaxImagePro from '@/components/ui/parallax-image-pro';
+import Image from 'next/image';
 import { getAllServices, getPageContent, getServicesPage } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
@@ -262,15 +262,14 @@ export default async function ServicesPage() {
                 <Card className={cn(styles.featureCard, "group h-full overflow-hidden")}>
                   {imageUrl && (
                     <div className="relative h-64 overflow-hidden">
-                      <ParallaxImagePro
+                      <Image
                         src={imageUrl}
                         alt={service.title}
-                        className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                        speed={0.2}
-                        gradient="none"
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                       />
                       <div className={`absolute inset-0 ${overlays.card}`} />
-                      {/* Optional icon overlay can go here if provided by CMS */}
                     </div>
                   )}
 
@@ -346,12 +345,13 @@ export default async function ServicesPage() {
 
               {qualityImageUrl && (
                 <AnimatedSection delay={0.2}>
-                  <div className="relative">
-                    <ParallaxImagePro
+                  <div className="relative h-96 rounded-lg overflow-hidden">
+                    <Image
                       src={qualityImageUrl}
                       alt={qualityImageAlt || ''}
-                      className="w-full h-96 rounded-lg"
-                      speed={0.2}
+                      fill
+                      className="object-cover rounded-lg"
+                      sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   </div>
                 </AnimatedSection>

@@ -154,7 +154,7 @@ export default function Header({ data }: HeaderProps) {
   const linkTone = isDark ? `text-slate-100 ${gradientBorder}` : `text-slate-700 ${gradientBorder}`
   const activeTone = isDark ? activeGradientBorder : activeGradientBorder
   const triggerTone = isDark ? `bg-transparent text-slate-100 ${gradientBorder}` : `bg-transparent text-slate-700 ${gradientBorder}`
-  const dropdownTone = isDark ? 'bg-slate-900/95 border border-slate-800' : 'bg-white/95 border border-slate-200/50'
+  const _dropdownTone = isDark ? 'bg-slate-900/95 border border-slate-800' : 'bg-white/95 border border-slate-200/50'
 
   const headerClass = cn(
     'fixed z-[140] w-full transition-all duration-300 lg:top-10 top-0',
@@ -289,90 +289,106 @@ export default function Header({ data }: HeaderProps) {
                 return (
                   <motion.li key={item.name} variants={navItemVariants} className={itemClasses}>
                     {hasChildren ? (
-                      /* Click-based dropdown for items with children */
-                      <div className="flex items-center">
-                        {/* If item has both children AND a real href, make name clickable */}
-                        {hasRealHref && (
-                          <Link
-                            href={href}
-                            className={cn(
-                              'inline-flex items-center justify-center rounded-md',
-                              sizeClasses,
-                              'text-sm font-medium transition-all',
-                              linkTone,
-                              pathname === href && activeTone
-                            )}
+                      /* Click-based dropdown - entire item opens dropdown */
+                      <DropdownMenu>
+                        <DropdownMenuTrigger
+                          className={cn(
+                            'group inline-flex items-center justify-center rounded-lg bg-transparent text-sm font-medium transition-all duration-200',
+                            sizeClasses,
+                            triggerTone,
+                            'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50',
+                            'hover:bg-slate-100/60 data-[state=open]:bg-slate-100/80',
+                            isDark && 'hover:bg-slate-800/60 data-[state=open]:bg-slate-800/80'
+                          )}
+                          aria-label={`${item.name} menu`}
+                        >
+                          <span className="inline-flex items-center">
+                            {IconFor(item?.iconName)}
+                            {item.name}
+                          </span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="ml-1.5 h-3.5 w-3.5 transition-transform duration-300 ease-out group-data-[state=open]:rotate-180"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
                           >
-                            <span className="inline-flex items-center">
-                              {IconFor(item?.iconName)}
-                              {item.name}
-                            </span>
-                          </Link>
-                        )}
-                        <DropdownMenu>
-                          <DropdownMenuTrigger
-                            className={cn(
-                              'group inline-flex items-center justify-center rounded-md bg-transparent text-sm font-medium transition-colors',
-                              hasRealHref ? 'px-1.5 ml-0' : sizeClasses,
-                              triggerTone,
-                              'focus:outline-none'
-                            )}
-                            aria-label={`${item.name} submenu`}
-                          >
-                            {!hasRealHref && (
-                              <span className="inline-flex items-center">
-                                {IconFor(item?.iconName)}
-                                {item.name}
-                              </span>
-                            )}
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className={cn('h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-180', hasRealHref ? '' : 'ml-1')}
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent
-                            align="start"
-                            sideOffset={8}
-                            className={cn(
-                              'min-w-[280px] backdrop-blur-xl rounded-xl shadow-xl',
-                              dropdownTone
-                            )}
-                          >
-                            {children.map((child: any) => (
-                              <DropdownMenuItem key={child.name} asChild>
-                                <Link
-                                  href={(child.href && child.href !== '#') ? child.href : href}
-                                  target={child?.openInNewTab ? '_blank' : undefined}
-                                  rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
-                                  className={cn(
-                                    'block select-none rounded-lg p-3 no-underline outline-none transition-all cursor-pointer',
-                                    isDark
-                                      ? 'hover:bg-slate-800/60 focus:bg-slate-800/60 text-slate-100'
-                                      : 'hover:bg-slate-100/80 focus:bg-slate-100 text-slate-900'
-                                  )}
-                                >
-                                  <div className={cn('text-sm font-semibold', isDark ? 'text-slate-100' : 'text-slate-900')}>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="start"
+                          sideOffset={12}
+                          className={cn(
+                            'min-w-[300px] p-2 rounded-xl shadow-2xl',
+                            'backdrop-blur-2xl backdrop-saturate-150',
+                            'border border-white/20',
+                            'animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200',
+                            isDark
+                              ? 'bg-slate-900/90 border-slate-700/50 shadow-slate-950/50'
+                              : 'bg-white/90 border-slate-200/60 shadow-slate-200/50'
+                          )}
+                        >
+                          {/* Parent item as first dropdown option */}
+                          {hasRealHref && (
+                            <DropdownMenuItem asChild>
+                              <Link
+                                href={href}
+                                className={cn(
+                                  'flex items-center select-none rounded-lg p-3 mb-1 no-underline outline-none transition-all cursor-pointer',
+                                  'border-b',
+                                  isDark
+                                    ? 'hover:bg-blue-600/20 focus:bg-blue-600/20 text-blue-400 border-slate-700/50'
+                                    : 'hover:bg-blue-50 focus:bg-blue-50 text-blue-600 border-slate-200/60'
+                                )}
+                              >
+                                <div className="flex-1">
+                                  <div className={cn('text-sm font-bold', isDark ? 'text-blue-400' : 'text-blue-600')}>
                                     <span className="inline-flex items-center">
-                                      {IconFor(child?.iconName)}
-                                      {child.name}
+                                      {IconFor(item?.iconName)}
+                                      View All {item.name}
                                     </span>
                                   </div>
-                                  {child.description && (
-                                    <div className={cn('text-xs mt-1', isDark ? 'text-slate-400' : 'text-slate-500')}>
-                                      {child.description}
+                                  {item.description && (
+                                    <div className={cn('text-xs mt-0.5', isDark ? 'text-slate-400' : 'text-slate-500')}>
+                                      {item.description}
                                     </div>
                                   )}
-                                </Link>
-                              </DropdownMenuItem>
-                            ))}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
+                                </div>
+                                <ArrowRight className="h-4 w-4 opacity-60" />
+                              </Link>
+                            </DropdownMenuItem>
+                          )}
+                          {/* Child items */}
+                          {children.map((child: any) => (
+                            <DropdownMenuItem key={child.name} asChild>
+                              <Link
+                                href={(child.href && child.href !== '#') ? child.href : href}
+                                target={child?.openInNewTab ? '_blank' : undefined}
+                                rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
+                                className={cn(
+                                  'block select-none rounded-lg p-3 no-underline outline-none transition-all cursor-pointer',
+                                  isDark
+                                    ? 'hover:bg-slate-800/70 focus:bg-slate-800/70 text-slate-100'
+                                    : 'hover:bg-slate-100/80 focus:bg-slate-100/80 text-slate-900'
+                                )}
+                              >
+                                <div className={cn('text-sm font-semibold', isDark ? 'text-slate-100' : 'text-slate-900')}>
+                                  <span className="inline-flex items-center">
+                                    {IconFor(child?.iconName)}
+                                    {child.name}
+                                  </span>
+                                </div>
+                                {child.description && (
+                                  <div className={cn('text-xs mt-1 leading-relaxed', isDark ? 'text-slate-400' : 'text-slate-500')}>
+                                    {child.description}
+                                  </div>
+                                )}
+                              </Link>
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     ) : (
                       itemVariant.startsWith('button-') ? (
                         <Link href={href} target={target} rel={rel}>

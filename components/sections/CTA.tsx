@@ -10,7 +10,6 @@ import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/li
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { colors } from '@/lib/design-system';
-import { DotGridBackground } from '@/lib/background-patterns';
 
 interface CTAData {
   title?: string;
@@ -133,19 +132,69 @@ export default function CTA({ data }: CTAProps) {
         ...(defaultBgColor && { backgroundColor: defaultBgColor }),
       }}
     >
-      {/* Animated background pattern */}
-      <div className="absolute inset-0">
-        {/* Animated dot grid background */}
-        <DotGridBackground
-          color="rgba(59, 130, 246, 0.5)"
-          spacing={40}
-          dotPosition={1}
-          opacity={0.1}
+      {/* Animated technical background */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Animated circuit grid pattern */}
+        <svg className="absolute inset-0 w-full h-full opacity-[0.08]" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="circuit-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-blue-400"/>
+              <circle cx="0" cy="0" r="2" fill="currentColor" className="text-blue-500"/>
+              <circle cx="60" cy="0" r="2" fill="currentColor" className="text-blue-500"/>
+              <circle cx="0" cy="60" r="2" fill="currentColor" className="text-blue-500"/>
+            </pattern>
+            <linearGradient id="circuit-fade" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="white" stopOpacity="1"/>
+              <stop offset="50%" stopColor="white" stopOpacity="0.5"/>
+              <stop offset="100%" stopColor="white" stopOpacity="0"/>
+            </linearGradient>
+            <mask id="circuit-mask">
+              <rect width="100%" height="100%" fill="url(#circuit-fade)"/>
+            </mask>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#circuit-grid)" mask="url(#circuit-mask)"/>
+        </svg>
+
+        {/* Animated horizontal scan line */}
+        <motion.div
+          className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent"
+          initial={{ top: '0%', opacity: 0 }}
+          animate={{
+            top: ['0%', '100%', '0%'],
+            opacity: [0, 0.6, 0]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: 'linear'
+          }}
         />
 
+        {/* Pulsing corner accents */}
+        <motion.div
+          className="absolute top-0 left-0 w-32 h-32"
+          animate={{ opacity: [0.1, 0.3, 0.1] }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <svg className="w-full h-full text-blue-500" viewBox="0 0 100 100">
+            <path d="M 0 30 L 0 0 L 30 0" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5"/>
+            <path d="M 0 50 L 0 0 L 50 0" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3"/>
+          </svg>
+        </motion.div>
+        <motion.div
+          className="absolute bottom-0 right-0 w-32 h-32 rotate-180"
+          animate={{ opacity: [0.1, 0.3, 0.1] }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+        >
+          <svg className="w-full h-full text-blue-500" viewBox="0 0 100 100">
+            <path d="M 0 30 L 0 0 L 30 0" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5"/>
+            <path d="M 0 50 L 0 0 L 50 0" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3"/>
+          </svg>
+        </motion.div>
+
         {/* Accent glow effects */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full filter blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-600/10 rounded-full filter blur-3xl" />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-blue-600/8 rounded-full filter blur-[100px]" />
+        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/8 rounded-full filter blur-[100px]" />
       </div>
 
       <div className="container relative z-10">
@@ -155,14 +204,14 @@ export default function CTA({ data }: CTAProps) {
           viewport={getViewportConfig()}
           className="max-w-4xl mx-auto text-center"
         >
-          {/* Section Header with gradient text */}
+          {/* Section Header with gradient text - prevent word wrap on larger screens */}
           <SectionHeader
             eyebrow={badge}
             heading={title}
             gradientWordPosition="last"
             description={sectionDescription}
             centered={true}
-            className="[&_h2]:text-white [&_p]:text-slate-300 [&_p]:text-lg mb-6"
+            className="[&_h2]:text-white [&_h2]:md:whitespace-nowrap [&_p]:text-slate-300 [&_p]:text-lg mb-6"
           />
 
           {highlightText && (
