@@ -199,7 +199,7 @@ const Footer = ({ data }: FooterProps) => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{footerData.servicesHeading}</h4>
+            <h4 className="font-semibold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{footerData.servicesHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.servicesLinks.map((link) => (
                 <li key={link.label}>
@@ -212,7 +212,7 @@ const Footer = ({ data }: FooterProps) => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{footerData.resourcesHeading}</h4>
+            <h4 className="font-semibold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{footerData.resourcesHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.resourcesLinks.map((link) => (
                 <li key={link.label}>
@@ -225,7 +225,7 @@ const Footer = ({ data }: FooterProps) => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{footerData.quickLinksHeading}</h4>
+            <h4 className="font-semibold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{footerData.quickLinksHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.quickLinks.map((link) => (
                 <li key={link.label}>
@@ -238,7 +238,7 @@ const Footer = ({ data }: FooterProps) => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{footerData.contactHeading}</h4>
+            <h4 className="font-semibold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{footerData.contactHeading}</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start space-x-2">
                 <Mail className="h-4 w-4 text-slate-400 mt-0.5" />

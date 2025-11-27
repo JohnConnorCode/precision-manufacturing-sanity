@@ -150,7 +150,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
             <span className="text-sm font-medium text-blue-400">Help Center</span>
           </div>
           <h1 className={cn(typography.heroHeading, 'text-white mb-3')}>
-            Troubleshooting <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Guide</span>
+            Troubleshooting <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">Guide</span>
           </h1>
           <p className={cn(typography.descriptionLight)}>
             Self-service solutions for common issues and system status monitoring

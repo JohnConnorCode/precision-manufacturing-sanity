@@ -99,7 +99,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
 
             <h1 className={cn(typography.heroHeading, 'text-white mb-6')}>
               {categoryData.title.split(' ').slice(0, -1).join(' ')}{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
                 {categoryData.title.split(' ').slice(-1)}
               </span>
             </h1>

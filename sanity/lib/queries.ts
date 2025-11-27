@@ -1392,6 +1392,98 @@ export async function getJobPostingBySlug(slug: string, preview = false) {
   }
 }
 
+// Get Metbase page content
+export async function getMetbase(preview = false) {
+  try {
+    const query = `*[_type == "metbase"][0] {
+      hero{
+        backgroundImage{asset->{url,_id}, alt},
+        badge,
+        badgeIconName,
+        title,
+        titleHighlight,
+        subtitle,
+        description,
+        buttons[]{
+          _key,
+          label,
+          href,
+          variant,
+          enabled
+        }
+      },
+      overview{
+        title,
+        description,
+        highlights[]{
+          _key,
+          enabled,
+          text,
+          iconName
+        }
+      },
+      features{
+        title,
+        description,
+        items[]{
+          _key,
+          enabled,
+          title,
+          description,
+          iconName
+        }
+      },
+      analysisTool{
+        title,
+        description,
+        image{asset->{url,_id}, alt, caption},
+        capabilities[]{
+          _key,
+          enabled,
+          text
+        }
+      },
+      systemIntegration{
+        title,
+        description,
+        image{asset->{url,_id}, alt, caption},
+        benefits[]{
+          _key,
+          enabled,
+          title,
+          description,
+          iconName
+        }
+      },
+      closedLoop{
+        title,
+        description,
+        image{asset->{url,_id}, alt, caption}
+      },
+      cta{
+        title,
+        description,
+        buttons[]{
+          _key,
+          label,
+          href,
+          variant,
+          enabled
+        }
+      },
+      seo{
+        metaTitle,
+        metaDescription,
+        ogImage{asset->{url,_id}, alt}
+      }
+    }`
+
+    return await getClient(preview).fetch(query)
+  } catch (error) {
+    return null
+  }
+}
+
 // Get error pages content
 export async function getErrorPages(preview = false) {
   try {

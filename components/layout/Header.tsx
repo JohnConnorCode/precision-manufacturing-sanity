@@ -150,9 +150,12 @@ export default function Header({ data }: HeaderProps) {
     }
   }
   const sizeClasses = density === 'compact' ? 'h-9 px-3 py-1.5' : 'h-10 px-4 py-2'
-  const linkTone = isDark ? 'hover:bg-slate-900/30 text-slate-100' : 'hover:bg-slate-50 text-slate-700'
-  const activeTone = isDark ? 'bg-slate-800/50' : 'bg-slate-100/50'
-  const triggerTone = isDark ? 'bg-transparent hover:bg-slate-900/40 text-slate-100' : 'bg-transparent hover:bg-slate-50 text-slate-700'
+  // Gradient bottom border for hover/active states (replaces background highlighting)
+  const gradientBorder = 'relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-blue-600 after:via-blue-500 after:to-indigo-600 after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300'
+  const activeGradientBorder = 'after:opacity-100'
+  const linkTone = isDark ? `text-slate-100 ${gradientBorder}` : `text-slate-700 ${gradientBorder}`
+  const activeTone = isDark ? activeGradientBorder : activeGradientBorder
+  const triggerTone = isDark ? `bg-transparent text-slate-100 ${gradientBorder}` : `bg-transparent text-slate-700 ${gradientBorder}`
   const dropdownTone = isDark ? 'bg-slate-900/95 border border-slate-800' : 'bg-white/95 border border-slate-200/50'
 
   const headerClass = cn(
@@ -292,8 +295,7 @@ export default function Header({ data }: HeaderProps) {
                             triggerTone,
                             'font-medium',
                             sizeClasses,
-                            'data-[state=open]:bg-slate-50',
-                            isDark && 'data-[state=open]:bg-slate-900/40'
+                            'data-[state=open]:after:opacity-100'
                           )}
                           aria-label={`${item.name} menu`}
                         >

@@ -137,14 +137,14 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
           // Split title to highlight last word in blue gradient
           const words = heroTitle.split(' ');
           if (words.length === 1) {
-            return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{heroTitle}</span>;
+            return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{heroTitle}</span>;
           }
           const firstPart = words.slice(0, -1).join(' ');
           const lastWord = words[words.length - 1];
           return (
             <span>
               <span className="text-white">{firstPart} </span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{lastWord}</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
             </span>
           );
         })()}
@@ -222,9 +222,9 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     whileInView={createFade(delay, 0.6)}
                     viewport={viewportConfig}
                   >
-                    <Card className={cn(styles.featureCard, 'group h-full overflow-hidden')}>
+                    <Card className="bg-white border border-slate-200/60 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 transition-all duration-300 group h-full overflow-hidden">
                       {capImage && (
-                        <div className="relative h-48 overflow-hidden">
+                        <div className="relative h-52 overflow-hidden">
                           <Image
                             src={capImage}
                             alt={capAlt}
@@ -239,7 +239,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         </div>
                       )}
 
-                      <div className="p-6">
+                      <div className="p-6 md:p-8">
                         <h3 className={cn(typography.h4, 'mb-3 group-hover:text-blue-600 transition-colors')}>
                           {capability.title}
                         </h3>
@@ -357,7 +357,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     whileInView={createFade(delay, 0.6)}
                     viewport={viewportConfig}
                   >
-                    <Card className={cn(styles.featureCard, 'group h-full overflow-hidden')}>
+                    <Card className="bg-white border border-slate-200/60 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 transition-all duration-300 group h-full overflow-hidden">
                       {offeringImage && (
                         <div className="relative h-64 overflow-hidden">
                           <Image
@@ -374,7 +374,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         </div>
                       )}
 
-                      <div className="p-8">
+                      <div className="p-6 md:p-8">
                         <h3 className={cn(typography.h4, 'mb-4 group-hover:text-blue-600 transition-colors')}>
                           {offering.title}
                         </h3>

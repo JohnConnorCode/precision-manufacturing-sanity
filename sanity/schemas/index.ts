@@ -18,6 +18,7 @@ import careersPage from './careers'
 import termsPage from './terms'
 import supplierRequirementsPage from './supplier-requirements'
 import errorPages from './error-pages'
+import metbasePage from './metbase'
 import uiText from './ui-text'
 import pageContent from './page-content'
 import page from './page'
@@ -79,6 +80,7 @@ export const schemaTypes = [
   termsPage,
   supplierRequirementsPage,
   errorPages,
+  metbasePage,
   uiText,
   pageContent,
   page,

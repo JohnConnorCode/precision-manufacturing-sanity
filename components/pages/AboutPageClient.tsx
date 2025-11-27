@@ -80,7 +80,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               data.hero?.titleHighlight ? (
                 <span className="text-white">
                   {data.hero.title}{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
                     {data.hero.titleHighlight}
                   </span>
                 </span>
@@ -88,14 +88,14 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 // Split title to highlight last word in blue gradient
                 const words = data.hero.title.split(' ');
                 if (words.length === 1) {
-                  return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{data.hero.title}</span>;
+                  return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{data.hero.title}</span>;
                 }
                 const firstPart = words.slice(0, -1).join(' ');
                 const lastWord = words[words.length - 1];
                 return (
                   <span>
                     <span className="text-white">{firstPart} </span>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{lastWord}</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
                   </span>
                 );
               })()
@@ -206,34 +206,32 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               )}
             </motion.div>
 
-            <div className="relative">
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-slate-300 h-full" />
-              <div className="space-y-12">
-                {timelineMilestones
-                  .filter((milestone: any) => milestone?.enabled !== false)
-                  .map((milestone: any, index: number) => (
-                  <motion.div
-                    key={`${milestone?.title}-${index}`}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                    viewport={{ once: true }}
-                    className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
-                  >
-                    <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}`}>
-                      <Card className="p-6 border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-lg">
-                        {milestone?.year && (
-                          <div className="text-2xl font-bold text-slate-900 mb-2">{milestone.year}</div>
-                        )}
-                        <h3 className="text-xl font-semibold mb-3">{milestone?.title}</h3>
-                        <p className="text-slate-600">{milestone?.description}</p>
-                      </Card>
+            <div className="space-y-6">
+              {timelineMilestones
+                .filter((milestone: any) => milestone?.enabled !== false)
+                .map((milestone: any, index: number) => (
+                <motion.div
+                  key={`${milestone?.title}-${index}`}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
+                  viewport={{ once: true }}
+                  className="flex gap-6 items-start group"
+                >
+                  {/* Year Badge */}
+                  <div className="flex-shrink-0 w-24 pt-2">
+                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                      {milestone?.year}
                     </div>
-                    <div className="w-4 h-4 bg-slate-900 rounded-full border-4 border-white shadow-lg relative z-10" />
-                    <div className="w-1/2" />
-                  </motion.div>
-                ))}
-              </div>
+                  </div>
+
+                  {/* Content Card */}
+                  <Card className="flex-1 p-6 border-l-4 border-blue-500 hover:border-blue-600 transition-all duration-300 hover:shadow-lg group-hover:translate-x-1">
+                    <h3 className="text-xl font-bold mb-2 text-slate-900">{milestone?.title}</h3>
+                    <p className="text-slate-600 leading-relaxed">{milestone?.description}</p>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
@@ -264,20 +262,27 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 .filter((value: any) => value?.enabled !== false)
                 .map((value: any, index: number) => {
                   const Icon = iconMap[value?.iconName || ''] || Award;
+                  const gradients = [
+                    'from-blue-600 to-indigo-600',
+                    'from-indigo-600 to-purple-600',
+                    'from-cyan-600 to-blue-600',
+                    'from-purple-600 to-pink-600',
+                  ];
+                  const gradient = gradients[index % gradients.length];
                   return (
                     <motion.div
                       key={`${value?.title}-${index}`}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.6 }}
+                      transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
                       viewport={{ once: true }}
                     >
-                      <Card className="p-8 border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-lg h-full">
-                        <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-6">
-                          <Icon className="w-6 h-6 text-slate-700" />
+                      <Card className="p-8 border-l-4 border-blue-500 hover:border-blue-600 transition-all duration-300 hover:shadow-xl h-full group">
+                        <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                          <Icon className="w-8 h-8 text-white" />
                         </div>
-                        <h3 className="text-2xl font-bold mb-4">{value?.title}</h3>
-                        <p className="text-slate-600">{value?.description}</p>
+                        <h3 className="text-2xl font-bold mb-4 text-slate-900">{value?.title}</h3>
+                        <p className="text-slate-600 text-lg leading-relaxed">{value?.description}</p>
                       </Card>
                     </motion.div>
                   );
@@ -327,23 +332,24 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   viewport={{ once: true }}
                 >
                   {data.certifications?.title && (
-                    <h2 className={cn(typography.h2, "mb-4")}>{data.certifications.title}</h2>
+                    <h2 className={cn(typography.h3, "mb-6")}>{data.certifications.title}</h2>
                   )}
-                  <div className="space-y-4">
+                  <div className="flex flex-wrap gap-3 mb-6">
                     {certifications.map((cert: any, index: number) => (
-                      <Card key={`${cert?.certification}-${index}`} className="p-5 border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow">
-                        <div className="flex items-center">
-                          <Shield className="w-5 h-5 text-blue-600 mr-3" />
-                          <span className="text-slate-700 font-semibold">{cert?.certification}</span>
-                        </div>
-                      </Card>
+                      <div
+                        key={`${cert?.certification}-${index}`}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-200"
+                      >
+                        <Shield className="w-4 h-4 text-blue-600" />
+                        <span className="text-sm font-semibold text-slate-700">{cert?.certification}</span>
+                      </div>
                     ))}
                   </div>
                   {data.certifications?.commitmentTitle && (
-                    <div className="mt-6 border-l-4 border-slate-300 pl-4">
-                      <h3 className="text-lg font-semibold mb-2">{data.certifications.commitmentTitle}</h3>
+                    <Card className="p-6 border-l-4 border-blue-500 bg-blue-50/50">
+                      <h3 className="text-lg font-bold mb-2 text-slate-900">{data.certifications.commitmentTitle}</h3>
                       <p className="text-slate-600">{data.certifications.commitmentDescription}</p>
-                    </div>
+                    </Card>
                   )}
                 </motion.div>
               )}
@@ -372,7 +378,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               )}
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               {leadershipMembers
                 .filter((leader: any) => leader?.enabled !== false)
                 .map((leader: any, index: number) => {
@@ -382,35 +388,42 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                       key={`${leader?.name}-${index}`}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.6 }}
+                      transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
                       viewport={{ once: true }}
                     >
-                      <Card className="p-8 border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-lg h-full">
-                        <div className="flex items-start gap-6 mb-6">
-                          {photoUrl && (
+                      <Card className="overflow-hidden border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-xl h-full group">
+                        {/* Large Photo Header */}
+                        <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                          {photoUrl ? (
                             <img
                               src={photoUrl}
                               alt={leader?.photo?.alt || `Photo of ${leader?.name}`}
-                              className="w-24 h-24 rounded-full object-cover shadow-md flex-shrink-0"
+                              className="w-32 h-32 rounded-full object-cover shadow-xl border-4 border-white group-hover:scale-105 transition-transform duration-300"
                             />
+                          ) : (
+                            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-xl border-4 border-white">
+                              <Users className="w-16 h-16 text-white" />
+                            </div>
                           )}
-                          <div className="flex-1">
-                            <h3 className="text-2xl font-bold mb-2">{leader?.name}</h3>
-                            <div className="text-lg font-semibold text-slate-700 mb-1">{leader?.title}</div>
-                            {leader?.experience && (
-                              <div className="text-sm text-slate-500">{leader.experience}</div>
-                            )}
-                          </div>
                         </div>
-                        {leader?.background && (
-                          <p className="text-slate-600 mb-4">{leader.background}</p>
-                        )}
-                        {leader?.focus && (
-                          <div className="border-l-4 border-slate-300 pl-4">
-                            <div className="text-sm font-semibold text-slate-800 mb-1">Focus Area</div>
-                            <div className="text-sm text-slate-600">{leader.focus}</div>
-                          </div>
-                        )}
+
+                        {/* Content */}
+                        <div className="p-8 text-center">
+                          <h3 className="text-2xl font-bold mb-1 text-slate-900">{leader?.name}</h3>
+                          <div className="text-lg font-semibold text-blue-600 mb-2">{leader?.title}</div>
+                          {leader?.experience && (
+                            <div className="text-sm text-slate-500 mb-4">{leader.experience}</div>
+                          )}
+                          {leader?.background && (
+                            <p className="text-slate-600 text-sm leading-relaxed mb-4">{leader.background}</p>
+                          )}
+                          {leader?.focus && (
+                            <div className="bg-slate-50 rounded-lg p-4 text-left">
+                              <div className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Focus Area</div>
+                              <div className="text-sm text-slate-700">{leader.focus}</div>
+                            </div>
+                          )}
+                        </div>
                       </Card>
                     </motion.div>
                   );

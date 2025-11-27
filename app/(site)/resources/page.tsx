@@ -95,20 +95,20 @@ export default async function ResourcesPage() {
             const title = pageContent.resourcesPage.hero.title;
             const words = title.split(' ');
             if (words.length <= 1) {
-              return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{title}</span>;
+              return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{title}</span>;
             }
             const firstPart = words.slice(0, -1).join(' ');
             const lastWord = words[words.length - 1];
             return (
               <span>
                 <span className="text-white">{firstPart} </span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{lastWord}</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
               </span>
             );
           })() : (
             <>
               <span className="text-white">Master</span>{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Precision Manufacturing</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">Precision Manufacturing</span>
             </>
           )
         }
@@ -135,7 +135,7 @@ export default async function ResourcesPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {formattedResources.map((resource: any, index: number) => (
-              <AnimatedSection key={resource._id} delay={index * 0.1}>
+              <AnimatedSection key={resource._id} delay={Math.min(index * 0.05, 0.3)}>
                 <Link
                   href={`/resources/${resource.category}/${resource.slug}`}
                   className="block h-full group"

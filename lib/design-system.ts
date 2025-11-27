@@ -84,7 +84,7 @@ export const colors = {
   // Gradients - UNIFIED across all components
   primaryGradient: 'from-blue-600 via-blue-500 to-indigo-600',        // Primary buttons
   primaryGradientHover: 'from-blue-500 via-blue-400 to-indigo-500',   // Hover states
-  textGradient: 'from-blue-400 to-cyan-400',                          // Gradient text accents
+  textGradient: 'from-blue-600 via-blue-500 to-indigo-600',            // Gradient text accents
   subtleGradient: 'from-blue-600/20 to-indigo-600/20',                // Subtle backgrounds
 
   // Text colors

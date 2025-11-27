@@ -33,7 +33,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
       {industry.hero?.titleHighlight && (
         <>
           {' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
             {industry.hero.titleHighlight}
           </span>
         </>
@@ -76,7 +76,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                   className="text-center"
                 >
-                  <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-2">{stat.value}</div>
+                  <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 mb-2">{stat.value}</div>
                   <div className="text-lg font-semibold text-white mb-1">{stat.label}</div>
                   {stat.description && (
                     <div className="text-sm text-zinc-400">{stat.description}</div>
@@ -107,88 +107,98 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {industry.expertise.map((section: any, index: number) => (
-                <motion.div
-                  key={section._key || index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                >
-                  <Card className="overflow-hidden h-full bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    {/* Image at TOP */}
-                    {(section.image || section.imageUrl) && (
-                      <div className="relative h-48">
-                        <Image
-                          src={section.image ? builder.image(section.image).width(800).height(400).quality(80).url() : section.imageUrl}
-                          alt={section.image?.alt || section.title}
-                          fill
-                          className="object-cover"
-                        />
+            <div className="space-y-20">
+              {industry.expertise.map((section: any, index: number) => {
+                const isEven = index % 2 === 0;
+                return (
+                  <motion.div
+                    key={section._key || index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.7 }}
+                    className="group"
+                  >
+                    <div className={`grid lg:grid-cols-2 gap-12 items-center ${isEven ? '' : 'lg:grid-flow-dense'}`}>
+                      {/* Image Side */}
+                      <div className={`relative ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
+                        {(section.image || section.imageUrl) && (
+                          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
+                            <Image
+                              src={section.image ? builder.image(section.image).width(800).height(600).quality(85).url() : section.imageUrl}
+                              alt={section.image?.alt || section.title}
+                              fill
+                              className="object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                          </div>
+                        )}
                       </div>
-                    )}
 
-                    {/* Content BELOW - Dark text on light background */}
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-zinc-900 mb-2">
-                        {section.title}
-                      </h3>
-                      <p className="text-zinc-600 text-sm mb-4">{section.description}</p>
+                      {/* Content Side */}
+                      <div className={`${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
+                        <h3 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-4">
+                          {section.title}
+                        </h3>
+                        <p className="text-lg text-zinc-600 mb-8 leading-relaxed">{section.description}</p>
 
-                      <div className="space-y-4">
-                        {section.components && section.components.length > 0 && (
-                          <div>
-                            <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-2">
-                              {section.componentsLabel || 'Typical Components'}
-                            </h4>
-                            <ul className="space-y-1">
-                              {section.components.map((component: string, idx: number) => (
-                                <li key={idx} className="text-zinc-700 text-sm flex items-start">
-                                  <span className="text-blue-500 mr-2">•</span>
-                                  {component}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
+                        <div className="grid sm:grid-cols-2 gap-6">
+                          {section.components && section.components.length > 0 && (
+                            <div className="bg-white rounded-xl p-5 shadow-sm border border-zinc-100">
+                              <h4 className="text-sm font-bold text-zinc-900 uppercase tracking-wide mb-3 flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                                {section.componentsLabel || 'Typical Components'}
+                              </h4>
+                              <ul className="space-y-2">
+                                {section.components.map((component: string, idx: number) => (
+                                  <li key={idx} className="text-zinc-600 text-sm flex items-start">
+                                    <CheckCircle className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
+                                    {component}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
 
-                        {section.materials && section.materials.length > 0 && (
-                          <div>
-                            <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-2">
-                              Materials
-                            </h4>
-                            <ul className="space-y-1">
-                              {section.materials.map((material: string, idx: number) => (
-                                <li key={idx} className="text-zinc-700 text-sm flex items-start">
-                                  <span className="text-blue-500 mr-2">•</span>
-                                  {material}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
+                          {section.materials && section.materials.length > 0 && (
+                            <div className="bg-white rounded-xl p-5 shadow-sm border border-zinc-100">
+                              <h4 className="text-sm font-bold text-zinc-900 uppercase tracking-wide mb-3 flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
+                                Materials
+                              </h4>
+                              <ul className="space-y-2">
+                                {section.materials.map((material: string, idx: number) => (
+                                  <li key={idx} className="text-zinc-600 text-sm flex items-start">
+                                    <CheckCircle className="w-4 h-4 text-indigo-500 mr-2 flex-shrink-0 mt-0.5" />
+                                    {material}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
 
-                        {section.requirements && section.requirements.length > 0 && (
-                          <div>
-                            <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-2">
-                              {section.requirementsLabel || 'Key Requirements'}
-                            </h4>
-                            <ul className="space-y-1">
-                              {section.requirements.map((requirement: string, idx: number) => (
-                                <li key={idx} className="text-zinc-700 text-sm flex items-start">
-                                  <span className="text-blue-500 mr-2">•</span>
-                                  {requirement}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
+                          {section.requirements && section.requirements.length > 0 && (
+                            <div className={`bg-white rounded-xl p-5 shadow-sm border border-zinc-100 ${!section.components || !section.materials ? '' : 'sm:col-span-2'}`}>
+                              <h4 className="text-sm font-bold text-zinc-900 uppercase tracking-wide mb-3 flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-cyan-500"></span>
+                                {section.requirementsLabel || 'Key Requirements'}
+                              </h4>
+                              <ul className={`space-y-2 ${section.requirements.length > 4 ? 'grid sm:grid-cols-2 gap-x-6 gap-y-2 space-y-0' : ''}`}>
+                                {section.requirements.map((requirement: string, idx: number) => (
+                                  <li key={idx} className="text-zinc-600 text-sm flex items-start">
+                                    <CheckCircle className="w-4 h-4 text-cyan-500 mr-2 flex-shrink-0 mt-0.5" />
+                                    {requirement}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </Card>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -306,7 +316,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   key={index}
                   size="lg"
                   asChild
-                  className={button.variant === 'primary' ? 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' : 'border-zinc-600 text-zinc-300 hover:bg-zinc-800 hover:text-white'}
+                  className={button.variant === 'primary' ? 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' : 'border-blue-500/50 text-blue-400 hover:bg-blue-500/10 hover:text-blue-300 hover:border-blue-400'}
                   variant={button.variant === 'primary' ? 'default' : 'outline'}
                 >
                   <Link href={button.href}>
@@ -320,7 +330,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                       Request Quote <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
-                  <Button size="lg" variant="outline" asChild className="border-zinc-600 text-zinc-300 hover:bg-zinc-800 hover:text-white">
+                  <Button size="lg" variant="outline" asChild className="border-blue-500/50 text-blue-400 hover:bg-blue-500/10 hover:text-blue-300 hover:border-blue-400">
                     <Link href="/industries">View All Industries</Link>
                   </Button>
                 </>

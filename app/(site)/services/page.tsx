@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { PremiumButton } from '@/components/ui/premium-button';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
 import { typography, spacing, styles, overlays, cn } from '@/lib/design-system';
@@ -177,16 +178,27 @@ export default async function ServicesPage() {
           imageAlt={heroImageAlt}
           badge={heroBadge ? { text: heroBadge } : undefined}
           title={
-            heroHeading ? (
-              <span className="text-white">{heroHeading}</span>
-            ) : (
-              ''
-            )
+            heroHeading ? (() => {
+              // Split title to highlight last word in gradient (matches detail pages)
+              const words = heroHeading.split(' ');
+              if (words.length === 1) {
+                return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{heroHeading}</span>;
+              }
+              const firstPart = words.slice(0, -1).join(' ');
+              const lastWord = words[words.length - 1];
+              return (
+                <span>
+                  <span className="text-white">{firstPart} </span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
+                </span>
+              );
+            })() : ''
           }
           description={heroDescription}
           buttons={heroButtons}
           height="large"
           alignment="center"
+          showScrollIndicator
         />
       )}
 
@@ -366,18 +378,26 @@ export default async function ServicesPage() {
                 )}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   {ctaButtons.map((button: any, index: number) => (
-                    <Button
-                      key={`${button.label}-${index}`}
-                      size="lg"
-                      className={button.variant === 'secondary' ? styles.ctaSecondary : styles.ctaPrimary}
-                      variant={button.variant === 'secondary' ? 'outline' : 'default'}
-                      asChild
-                    >
-                      <Link href={button.href}>
-                        {button.label || button.text}
-                        {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
+                    button.variant === 'secondary' ? (
+                      <Button
+                        key={`${button.label}-${index}`}
+                        size="lg"
+                        className={styles.ctaSecondary}
+                        variant="outline"
+                        asChild
+                      >
+                        <Link href={button.href}>
+                          {button.label || button.text}
+                        </Link>
+                      </Button>
+                    ) : (
+                      <Link key={`${button.label}-${index}`} href={button.href}>
+                        <PremiumButton size="lg">
+                          {button.label || button.text}
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </PremiumButton>
                       </Link>
-                    </Button>
+                    )
                   ))}
                 </div>
               </div>

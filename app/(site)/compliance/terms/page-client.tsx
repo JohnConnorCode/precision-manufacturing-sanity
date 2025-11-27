@@ -66,7 +66,7 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
       {/* Subtle Parallax Background */}
       <motion.div
         style={{ y: parallaxY }}
-        className="fixed inset-0 pointer-events-none opacity-50"
+        className="absolute inset-0 pointer-events-none opacity-50"
       >
         <div className="absolute inset-0 bg-gradient-to-b from-slate-100 to-white" />
       </motion.div>

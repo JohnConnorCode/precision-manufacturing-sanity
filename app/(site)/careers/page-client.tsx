@@ -66,21 +66,21 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
           data?.hero?.titleHighlight ? (
             <span className="text-white">
               {data?.hero?.title}{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{data?.hero?.titleHighlight}</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{data?.hero?.titleHighlight}</span>
             </span>
           ) : (() => {
             // Split title to highlight last word in blue gradient
             const title = data?.hero?.title || '';
             const words = title.split(' ');
             if (words.length <= 1) {
-              return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{title}</span>;
+              return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{title}</span>;
             }
             const firstPart = words.slice(0, -1).join(' ');
             const lastWord = words[words.length - 1];
             return (
               <span>
                 <span className="text-white">{firstPart} </span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{lastWord}</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
               </span>
             );
           })()

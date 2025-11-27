@@ -63,7 +63,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
               <span className="text-white">
                 {contactData.hero.title}{' '}
                 {contactData.hero.titleHighlight && (
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
                     {contactData.hero.titleHighlight}
                   </span>
                 )}
@@ -108,9 +108,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                   <div className="space-y-8">
                     {/* Address */}
                     <div className="flex items-start gap-5">
-                      <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0">
-                        <MapPin className="w-6 h-6 text-white" />
-                      </div>
+                      <MapPin className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
                       <div>
                         <h4 className={cn(typography.h5, 'mb-2')}>Headquarters</h4>
                         <p className={cn(typography.body, 'text-slate-600 leading-relaxed')}>
@@ -123,9 +121,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                     {/* Phone */}
                     <div className="flex items-start gap-5">
-                      <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0">
-                        <Phone className="w-6 h-6 text-white" />
-                      </div>
+                      <Phone className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
                       <div>
                         <h4 className={cn(typography.h5, 'mb-2')}>Phone</h4>
                         <a
@@ -142,9 +138,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                     {/* Email */}
                     <div className="flex items-start gap-5">
-                      <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0">
-                        <Mail className="w-6 h-6 text-white" />
-                      </div>
+                      <Mail className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
                       <div>
                         <h4 className={cn(typography.h5, 'mb-2')}>Email</h4>
                         <a
@@ -161,9 +155,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                     {/* Business Hours */}
                     <div className="flex items-start gap-5">
-                      <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0">
-                        <Clock className="w-6 h-6 text-white" />
-                      </div>
+                      <Clock className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
                       <div>
                         <h4 className={cn(typography.h5, 'mb-2')}>Business Hours</h4>
                         <p className={cn(typography.body, 'text-slate-600')}>
@@ -187,8 +179,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                 {/* Quick Actions */}
                 <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0">
-                      <MessageCircle className="w-6 h-6 text-white" />
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                      <MessageCircle className="w-5 h-5 text-blue-600" />
                     </div>
                     <div>
                       <h4 className={cn(typography.h5, 'mb-2')}>Request a Quote</h4>
@@ -208,8 +200,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                 <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-6 h-6 text-white" />
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-5 h-5 text-blue-600" />
                     </div>
                     <div>
                       <h4 className={cn(typography.h5, 'mb-2')}>{contactData.contactInfo?.consultationHeading || 'Technical Consultation'}</h4>
@@ -229,8 +221,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
                 <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0">
-                      <FileText className="w-6 h-6 text-white" />
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                      <FileText className="w-5 h-5 text-blue-600" />
                     </div>
                     <div>
                       <h4 className={cn(typography.h5, 'mb-2')}>General Inquiries</h4>
@@ -252,30 +244,6 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
               </motion.div>
             </div>
 
-            {/* Certifications & Capabilities */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-              {Array.isArray(contactData.certifications) && contactData.certifications
-                .filter((cert: any) => cert?.enabled !== false)
-                .map((cert: any, index: number) => (
-                  <motion.div
-                    key={cert?.certification}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                    viewport={{ once: true }}
-                  >
-                    <Card className={cn(styles.featureCard, 'p-6 text-center h-full')}>
-                      <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center mx-auto mb-4">
-                        <Shield className="w-6 h-6 text-white" />
-                      </div>
-                      <p className={cn(typography.small, 'font-semibold text-slate-800')}>
-                        {cert?.certification}
-                      </p>
-                    </Card>
-                  </motion.div>
-                ))}
-            </div>
-
             {/* Map Section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -285,20 +253,18 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
             >
               <Card className="overflow-hidden shadow-2xl">
                 <div className="relative h-[500px]">
-                  {contactData.locationImage?.asset?.url && (
                   <ParallaxImagePro
-                    src={contactData.locationImage.asset.url}
-                    alt={contactData.locationImage.alt || "Location"}
+                    src={contactData.locationImage?.asset?.url || 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1920&q=80'}
+                    alt={contactData.locationImage?.alt || "Precision manufacturing facility"}
                     className="w-full h-full object-cover"
                     speed={0.1}
                   />
-                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
                     <div className="max-w-md bg-black/50 backdrop-blur-sm rounded-lg p-6 border border-white/10">
                       <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
-                          <Building2 className="w-5 h-5 text-white" />
+                        <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                          <Building2 className="w-4 h-4 text-white" />
                         </div>
                         <h3 className={cn(typography.h4, 'text-white drop-shadow-lg')}>Visit Our Facility</h3>
                       </div>
