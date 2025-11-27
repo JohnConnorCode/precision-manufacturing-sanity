@@ -38,8 +38,8 @@ export const spacing = {
   containerWide: 'max-w-7xl mx-auto px-6 md:px-8',
 
   // Section margins
-  headingBottom: 'mb-16 md:mb-20',
-  headingBottomCompact: 'mb-12',
+  headingBottom: 'mb-8 md:mb-12',
+  headingBottomCompact: 'mb-6',
 } as const;
 
 // ==================== COLORS ====================

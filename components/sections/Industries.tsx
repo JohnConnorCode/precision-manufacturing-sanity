@@ -65,7 +65,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
         )}
 
         {subdescription && (
-          <p className="text-base md:text-lg text-slate-600 text-center max-w-3xl mx-auto mb-12">
+          <p className="text-base md:text-lg text-slate-600 text-center max-w-3xl mx-auto mb-6">
             {subdescription}
           </p>
         )}

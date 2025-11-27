@@ -3,9 +3,9 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ArrowRight, CheckCircle, Award, TrendingUp, Shield, Target } from 'lucide-react';
+import { ArrowRight, CheckCircle, Award, TrendingUp, Target } from 'lucide-react';
 import Link from 'next/link';
-import ParallaxImagePro from '@/components/ui/parallax-image-pro';
+import Image from 'next/image';
 import { theme, styles, cn } from '@/lib/theme';
 import HeroSection from '@/components/ui/hero-section';
 import React from 'react';
@@ -57,7 +57,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         })()}
         subtitle={industry.hero?.subtitle}
         description={industry.hero?.description || industry.overview?.description}
-        buttons={industry.hero?.buttons || []}
+        buttons={(industry.hero?.buttons || []).filter((btn: any) => btn?.enabled !== false && btn?.label && btn?.href)}
       />
 
       {/* Market Overview */}
@@ -177,7 +177,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         </section>
       )}
 
-      {/* Components Section */}
+      {/* Components Section - Full Width Alternating Layout */}
       {industry.components && industry.components.length > 0 && (
         <section className={styles.sectionLight}>
           <div className={theme.spacing.container}>
@@ -194,80 +194,86 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
               </p>
             </motion.div>
 
-            <div className={styles.grid2Col}>
+            <div className="space-y-20">
               {industry.components.map((component: any, index: number) => (
                 <motion.div
                   key={component.category}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  transition={{ delay: index * 0.1, duration: 0.8 }}
                   viewport={{ once: true }}
+                  className={cn(
+                    'grid lg:grid-cols-2 gap-12 items-center',
+                    index % 2 === 0 ? '' : 'lg:grid-flow-dense'
+                  )}
                 >
-                  <Card className={cn(styles.featureCard, 'group h-full overflow-hidden')}>
-                    {component.image && (
-                      <div className="relative h-64 overflow-hidden">
-                        <ParallaxImagePro
-                          src={component.image}
-                          alt={component.category}
-                          className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                          speed={0.2}
-                          gradient="none"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  {/* Content */}
+                  <div className={index % 2 === 0 ? '' : 'lg:col-start-2'}>
+                    <h3 className={cn(theme.typography.h3, 'mb-4')}>{component.category}</h3>
+                    <p className={cn(theme.typography.lead, 'mb-8 text-slate-600')}>
+                      {component.description}
+                    </p>
+
+                    {component.parts && component.parts.length > 0 && (
+                      <div className="mb-8">
+                        <h4 className={cn(theme.typography.h5, 'mb-4')}>Component Parts</h4>
+                        <div className="grid gap-3">
+                          {component.parts.map((part: any) => (
+                            <div key={part.part} className="flex items-center">
+                              <CheckCircle className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0" />
+                              <span className={cn(theme.typography.body)}>{part.part}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
 
-                    <div className="p-8">
-                      <h3 className={cn(theme.typography.h4, 'mb-4 group-hover:text-blue-600 transition-colors')}>
-                        {component.category}
-                      </h3>
-                      <p className={cn(theme.typography.body, 'mb-6')}>
-                        {component.description}
-                      </p>
-
-                      {component.parts && component.parts.length > 0 && (
-                        <div className="mb-6">
-                          <h4 className={cn(theme.typography.label, 'mb-3')}>Component Parts</h4>
-                          <div className="grid grid-cols-1 gap-2">
-                            {component.parts.map((part: any) => (
-                              <div key={part.part} className="flex items-center text-sm text-slate-600">
-                                <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2" />
-                                {part.part}
-                              </div>
-                            ))}
-                          </div>
+                    {component.materials && component.materials.length > 0 && (
+                      <div className="mb-8">
+                        <h4 className={cn(theme.typography.h5, 'mb-4')}>Materials</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {component.materials.map((material: any) => (
+                            <span
+                              key={material.material}
+                              className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-medium"
+                            >
+                              {material.material}
+                            </span>
+                          ))}
                         </div>
-                      )}
+                      </div>
+                    )}
 
-                      {component.materials && component.materials.length > 0 && (
-                        <div className="mb-6">
-                          <h4 className={cn(theme.typography.label, 'mb-3')}>Materials</h4>
-                          <div className="space-y-1">
-                            {component.materials.map((material: any) => (
-                              <div key={material.material} className="flex items-center text-sm text-slate-600">
-                                <Shield className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
-                                {material.material}
-                              </div>
-                            ))}
-                          </div>
+                    {component.requirements && component.requirements.length > 0 && (
+                      <div>
+                        <h4 className={cn(theme.typography.h5, 'mb-4')}>Requirements</h4>
+                        <div className="grid gap-2">
+                          {component.requirements.map((requirement: any) => (
+                            <div key={requirement.requirement} className="flex items-start">
+                              <Target className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0 mt-0.5" />
+                              <span className={cn(theme.typography.body, 'text-slate-600')}>{requirement.requirement}</span>
+                            </div>
+                          ))}
                         </div>
-                      )}
+                      </div>
+                    )}
+                  </div>
 
-                      {component.requirements && component.requirements.length > 0 && (
-                        <div>
-                          <h4 className={cn(theme.typography.label, 'mb-3')}>Requirements</h4>
-                          <div className="space-y-1">
-                            {component.requirements.map((requirement: any) => (
-                              <div key={requirement.requirement} className="flex items-center text-sm text-slate-600">
-                                <Target className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
-                                {requirement.requirement}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </Card>
+                  {/* Image */}
+                  <div className={index % 2 === 0 ? '' : 'lg:col-start-1 lg:row-start-1'}>
+                    {component.image && (
+                      <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl">
+                        <Image
+                          src={component.image}
+                          alt={component.category}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                      </div>
+                    )}
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -364,11 +370,12 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                   <div className={index % 2 === 0 ? '' : 'lg:col-start-1 lg:row-start-1'}>
                     {item.imageUrl && (
                       <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-                        <ParallaxImagePro
+                        <Image
                           src={item.imageUrl}
                           alt={item.title}
-                          className="w-full h-full object-cover"
-                          speed={0.15}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 50vw"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                       </div>
@@ -612,48 +619,34 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
               {industry.cta?.description || `Partner with IIS for ${industry.title.toLowerCase()} solutions that meet the most demanding requirements.`}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {industry.cta?.buttons && industry.cta.buttons.length > 0 ? (
-                industry.cta.buttons
-                  .filter((button: any) => button?.enabled !== false && button?.label && button?.href)
-                  .map((button: any, index: number) => {
-                    const isSecondary = button.variant === 'secondary' || index > 0;
-                    return isSecondary ? (
-                      <Button
-                        key={button._key || index}
-                        size="lg"
-                        variant="outline"
-                        asChild
-                        className={cn(styles.ctaSecondary, 'border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white')}
-                      >
-                        <Link href={button.href}>{button.label}</Link>
-                      </Button>
-                    ) : (
-                      <Button
-                        key={button._key || index}
-                        size="lg"
-                        className={styles.ctaPrimary}
-                        asChild
-                      >
-                        <Link href={button.href}>
-                          {button.label}
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Link>
-                      </Button>
-                    );
-                  })
-              ) : (
-                <>
-                  <Button size="lg" className={styles.ctaPrimary} asChild>
-                    <Link href="/contact">
-                      Request Quote
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                  <Button size="lg" variant="outline" asChild className={cn(styles.ctaSecondary, 'border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white')}>
-                    <Link href="/industries">View All Industries</Link>
-                  </Button>
-                </>
-              )}
+              {(industry.cta?.buttons || [])
+                .filter((button: any) => button?.enabled !== false && button?.label && button?.href)
+                .map((button: any, index: number) => {
+                  const isSecondary = button.variant === 'secondary' || index > 0;
+                  return isSecondary ? (
+                    <Button
+                      key={button._key || index}
+                      size="lg"
+                      variant="outline"
+                      asChild
+                      className={cn(styles.ctaSecondary, 'border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white')}
+                    >
+                      <Link href={button.href}>{button.label}</Link>
+                    </Button>
+                  ) : (
+                    <Button
+                      key={button._key || index}
+                      size="lg"
+                      className={styles.ctaPrimary}
+                      asChild
+                    >
+                      <Link href={button.href}>
+                        {button.label}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  );
+                })}
             </div>
           </motion.div>
         </div>

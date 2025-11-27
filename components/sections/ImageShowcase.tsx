@@ -63,7 +63,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         )}
 
         {/* Large Feature Images */}
-        <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} mb-20`}>
+        <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} mb-12`}>
           {showcaseImages.filter((item: ShowcaseImage) => item.enabled !== false).map((item: ShowcaseImage, index: number) => {
             const imageHeaderDelay = SECTION_CONFIGS.threeColumnGrid.headerCompletion;
             const imageDelay = imageHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
@@ -138,7 +138,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
 
         {/* Stats Grid */}
         {stats.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-20">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">
             {stats.filter((stat: ShowcaseStat) => stat.enabled !== false).map((stat: ShowcaseStat, index: number) => {
             const iconKey = stat.iconName || (stat as any).icon;
             const Icon = (iconKey && iconMap[iconKey]) || Award;

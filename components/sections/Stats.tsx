@@ -54,14 +54,12 @@ export default function Stats({ data }: StatsProps) {
 
       <div className="container relative z-10">
         {/* Section Header */}
-        <div className="mb-12">
-          <SectionHeader
-            eyebrow={subtitle}
-            heading={title}
-            gradientWordPosition="last"
-            className="[&_p]:uppercase"
-          />
-        </div>
+        <SectionHeader
+          eyebrow={subtitle}
+          heading={title}
+          gradientWordPosition="last"
+          className="[&_p]:uppercase"
+        />
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">

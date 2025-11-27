@@ -46,15 +46,13 @@ export default function Resources({ data }: ResourcesProps) {
       <DotGridBackground color="rgb(59, 130, 246)" spacing={40} dotPosition={1} opacity={0.05} />
 
       <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
-        <div className="mb-16 md:mb-20">
-          <SectionHeader
+        <SectionHeader
             eyebrow={resourcesData.header.badge}
             heading={resourcesData.header.title}
             gradientWordPosition="last"
             description={resourcesData.header.description}
             className="[&_h2]:text-white [&_p]:text-slate-300 [&_p]:text-xl"
           />
-        </div>
 
         {/* Featured Series Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12">
@@ -122,8 +120,8 @@ export default function Resources({ data }: ResourcesProps) {
                           <span>{series.readTime}</span>
                         </div>
                         <div className={`px-2 py-1 rounded-full text-xs ${
-                          (series.level || series.difficulty) === 'Beginner' ? 'bg-green-400/10 text-green-400 border border-green-400/20' :
-                          (series.level || series.difficulty) === 'Intermediate' ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/20' :
+                          (series.level || series.difficulty)?.toLowerCase() === 'beginner' ? 'bg-green-400/10 text-green-400 border border-green-400/20' :
+                          (series.level || series.difficulty)?.toLowerCase() === 'intermediate' ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/20' :
                           'bg-red-400/10 text-red-400 border border-red-400/20'
                         }`}>
                           {series.level || series.difficulty}

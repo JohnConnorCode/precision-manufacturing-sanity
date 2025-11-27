@@ -78,7 +78,7 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
-        <div className="mb-16 md:mb-20 max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <SectionHeader
             heading={title}
             gradientWordPosition="last"

@@ -15,10 +15,10 @@ interface ArticleContentProps {
 
 export function ArticleContent({ resource, category, categoryInfo, relatedResources }: ArticleContentProps) {
   const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'Beginner': return 'text-green-400 bg-green-400/10 border-green-400/20';
-      case 'Intermediate': return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
-      case 'Advanced': return 'text-red-400 bg-red-400/10 border-red-400/20';
+    switch (difficulty?.toLowerCase()) {
+      case 'beginner': return 'text-green-400 bg-green-400/10 border-green-400/20';
+      case 'intermediate': return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
+      case 'advanced': return 'text-red-400 bg-red-400/10 border-red-400/20';
       default: return 'text-slate-400 bg-slate-400/10 border-slate-400/20';
     }
   };

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { PremiumButton } from '@/components/ui/premium-button';
-import ParallaxImagePro from '@/components/ui/parallax-image-pro';
+import Image from 'next/image';
 import SectionHeader from '@/components/ui/section-header';
 import HeroSection from '@/components/ui/hero-section';
 import { PortableTextContent } from '@/components/portable-text-components';
@@ -113,7 +113,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
   const applicationsDescription = service.applicationsDescription;
   const applicationsListLabel = service.applicationsListLabel;
 
-  const capabilitiesHeading = service.capabilitiesSectionHeading || 'Our Capabilities';
+  const capabilitiesHeading = service.capabilitiesSectionHeading;
   const capabilitiesDescription = service.capabilitiesSectionDescription;
 
   const processHeading = service.processHeading;
@@ -190,19 +190,23 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       {capabilityCards.length > 0 && (
         <section className="py-12 md:py-16 lg:py-20">
           <div className={theme.spacing.container}>
-            <motion.div
-              initial={initialState}
-              whileInView={createFade(0, 0.8)}
-              viewport={viewportConfig}
-              className="text-center mb-16"
-            >
-              <h2 className={cn(theme.typography.h2, 'mb-6')}>{capabilitiesHeading}</h2>
-              {capabilitiesDescription && (
-                <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
-                  {capabilitiesDescription}
-                </p>
-              )}
-            </motion.div>
+            {(capabilitiesHeading || capabilitiesDescription) && (
+              <motion.div
+                initial={initialState}
+                whileInView={createFade(0, 0.8)}
+                viewport={viewportConfig}
+                className="text-center mb-16"
+              >
+                {capabilitiesHeading && (
+                  <h2 className={cn(theme.typography.h2, 'mb-6')}>{capabilitiesHeading}</h2>
+                )}
+                {capabilitiesDescription && (
+                  <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
+                    {capabilitiesDescription}
+                  </p>
+                )}
+              </motion.div>
+            )}
 
             <div className={styles.grid2Col}>
               {capabilityCards.map((capability: any, index: number) => {
@@ -221,12 +225,12 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     <Card className={cn(styles.featureCard, 'group h-full overflow-hidden')}>
                       {capImage && (
                         <div className="relative h-48 overflow-hidden">
-                          <ParallaxImagePro
+                          <Image
                             src={capImage}
                             alt={capAlt}
-                            className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                            speed={0.15}
-                            gradient="none"
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            sizes="(max-width: 768px) 100vw, 50vw"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                           <div className="absolute bottom-4 left-4">
@@ -356,12 +360,12 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     <Card className={cn(styles.featureCard, 'group h-full overflow-hidden')}>
                       {offeringImage && (
                         <div className="relative h-64 overflow-hidden">
-                          <ParallaxImagePro
+                          <Image
                             src={offeringImage}
                             alt={offeringAlt}
-                            className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                            speed={0.2}
-                            gradient="none"
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            sizes="(max-width: 768px) 100vw, 50vw"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                           <div className="absolute bottom-4 left-4">
@@ -503,13 +507,13 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                   >
                     <Card className={cn(styles.featureCard, 'h-full overflow-hidden')}>
                       {appImage && (
-                        <div className="relative h-56">
-                          <ParallaxImagePro
+                        <div className="relative h-56 overflow-hidden">
+                          <Image
                             src={appImage}
                             alt={appAlt}
-                            className="w-full h-full"
-                            speed={0.15}
-                            gradient="none"
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 33vw"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                         </div>
@@ -588,12 +592,14 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
               {qualityImageSrc && (
                 <div className="relative h-[360px] rounded-2xl overflow-hidden">
-                  <ParallaxImagePro
+                  <Image
                     src={qualityImageSrc}
                     alt={qualityImageAlt}
-                    className="h-full w-full"
-                    gradient="dark"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/20 to-slate-950/60" />
                 </div>
               )}
             </div>

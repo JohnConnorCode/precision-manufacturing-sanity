@@ -80,7 +80,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
         )}
 
         {subdescription && (
-          <p className="text-base md:text-lg text-slate-600 text-center max-w-4xl mx-auto mb-12">
+          <p className="text-base md:text-lg text-slate-600 text-center max-w-4xl mx-auto mb-6">
             {subdescription}
           </p>
         )}
@@ -99,22 +99,13 @@ export default function Services({ data, sectionData }: ServicesProps) {
                 initial={getInitialState(prefersReducedMotion)}
                 whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
                 viewport={viewportConfig}
-                className="group perspective-1000"
+                className="group"
               >
                 <Link href={service.href} className="block h-full">
                   <motion.div
-                    whileHover={{
-                      y: -8,
-                      rotateX: 5,
-                      rotateY: 5,
-                      transition: {
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 25
-                      }
-                    }}
+                    whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    style={{ transformStyle: "preserve-3d" }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
                   >
                     <Card
                       className={`h-full overflow-hidden transition-all duration-300 hover:shadow-xl border-slate-200 bg-white relative ${

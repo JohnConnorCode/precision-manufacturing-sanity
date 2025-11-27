@@ -48,14 +48,12 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
     <section className="py-24 md:py-32 bg-slate-900 text-white">
       <div className="max-w-7xl mx-auto px-6 md:px-8">
         {/* Section Header */}
-        <div className="mb-16 md:mb-20">
-          <SectionHeader
+        <SectionHeader
             heading={heading}
             gradientWordPosition="last"
             description={description}
             className="[&_h2]:text-white [&_p]:text-slate-300"
           />
-        </div>
 
         {/* Benefits Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">

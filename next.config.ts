@@ -50,12 +50,8 @@ const nextConfig: NextConfig = {
         source: '/studio/:path*',
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'ALLOWALL'
-          },
-          {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' https://*.sanity.studio https://*.vercel.app"
+            value: "frame-ancestors 'self' https://*.sanity.studio https://*.sanity.io https://sanity.io https://*.vercel.app"
           },
         ],
       },
@@ -65,7 +61,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' https://*.sanity.studio https://*.vercel.app"
+            value: "frame-ancestors 'self' https://*.sanity.studio https://*.sanity.io https://sanity.io https://*.vercel.app"
           },
         ],
       },
@@ -95,7 +91,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' https://*.sanity.studio https://*.vercel.app"
+            value: "frame-ancestors 'self' https://*.sanity.studio https://*.sanity.io https://sanity.io https://*.vercel.app"
           },
         ],
       },
