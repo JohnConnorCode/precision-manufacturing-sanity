@@ -194,7 +194,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              className="text-center mb-12"
             >
               {data.timeline?.title && (
                 <h2 className={cn(typography.h2, "mb-6")}>{data.timeline.title}</h2>
@@ -206,28 +206,23 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               )}
             </motion.div>
 
-            <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {timelineMilestones
                 .filter((milestone: any) => milestone?.enabled !== false)
                 .map((milestone: any, index: number) => (
                 <motion.div
                   key={`${milestone?.title}-${index}`}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
                   viewport={{ once: true }}
-                  className="flex gap-6 items-start group"
                 >
-                  {/* Year Badge */}
-                  <div className="flex-shrink-0 w-24 pt-2">
-                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                  <Card className={cn(styles.featureCard, "h-full group")}>
+                    {/* Year Badge */}
+                    <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 mb-4">
                       {milestone?.year}
                     </div>
-                  </div>
-
-                  {/* Content Card */}
-                  <Card className="flex-1 p-6 border-l-4 border-blue-500 hover:border-blue-600 transition-all duration-300 hover:shadow-lg group-hover:translate-x-1">
-                    <h3 className="text-xl font-bold mb-2 text-slate-900">{milestone?.title}</h3>
+                    <h3 className="text-xl font-bold mb-2 text-slate-900 group-hover:text-blue-600 transition-colors">{milestone?.title}</h3>
                     <p className="text-slate-600 leading-relaxed">{milestone?.description}</p>
                   </Card>
                 </motion.div>
@@ -245,7 +240,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              className="text-center mb-12"
             >
               {data.values?.title && (
                 <h2 className={cn(typography.h2, "mb-6")}>{data.values.title}</h2>
@@ -277,7 +272,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                       transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
                       viewport={{ once: true }}
                     >
-                      <Card className="p-8 border-l-4 border-blue-500 hover:border-blue-600 transition-all duration-300 hover:shadow-xl h-full group">
+                      <Card className={cn(styles.featureCard, "h-full group")}>
                         <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                           <Icon className="w-8 h-8 text-white" />
                         </div>
@@ -295,6 +290,19 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
       {(capabilities.length > 0 || certifications.length > 0) && (
         <section id="capabilities" className={styles.sectionLight}>
           <div className={spacing.container}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className={cn(typography.h2, "mb-4")}>Capabilities & Certifications</h2>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Advanced manufacturing capabilities backed by rigorous quality certifications
+              </p>
+            </motion.div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {capabilities.length > 0 && (
                 <motion.div
@@ -346,7 +354,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                     ))}
                   </div>
                   {data.certifications?.commitmentTitle && (
-                    <Card className="p-6 border-l-4 border-blue-500 bg-blue-50/50">
+                    <Card className={cn(styles.featureCard, "bg-gradient-to-br from-blue-50 to-indigo-50/50")}>
                       <h3 className="text-lg font-bold mb-2 text-slate-900">{data.certifications.commitmentTitle}</h3>
                       <p className="text-slate-600">{data.certifications.commitmentDescription}</p>
                     </Card>
@@ -366,7 +374,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              className="text-center mb-12"
             >
               {data.leadership?.title && (
                 <h2 className={cn(typography.h2, "mb-6")}>{data.leadership.title}</h2>

@@ -258,14 +258,13 @@ export default function Header({ data }: HeaderProps) {
           </Link>
 
           {/* Desktop Navigation - Click-based Dropdowns */}
-          <nav className="hidden lg:flex flex-1">
+          <nav className="hidden lg:flex items-center justify-center flex-1">
             <motion.div
               variants={navContainerVariants}
               initial="hidden"
               animate="visible"
-              className="w-full"
             >
-            <ul className={cn('flex flex-1 list-none items-center space-x-1', listJustify)}>
+            <ul className={cn('flex list-none items-center space-x-2', listJustify)}>
               {navigation.map((item: any, index: number) => {
                 const children = Array.isArray((item as any).children)
                   ? (item as any).children.filter((c: any) => c && (c.href || c.name))
@@ -318,15 +317,15 @@ export default function Header({ data }: HeaderProps) {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                           align="start"
-                          sideOffset={12}
+                          sideOffset={20}
                           className={cn(
-                            'min-w-[300px] p-2 rounded-xl shadow-2xl',
+                            'min-w-[340px] p-3 rounded-2xl shadow-2xl',
                             'backdrop-blur-2xl backdrop-saturate-150',
                             'border border-white/20',
                             'animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200',
                             isDark
-                              ? 'bg-slate-900/90 border-slate-700/50 shadow-slate-950/50'
-                              : 'bg-white/90 border-slate-200/60 shadow-slate-200/50'
+                              ? 'bg-slate-900/95 border-slate-700/50 shadow-slate-950/50'
+                              : 'bg-white/95 border-slate-200/60 shadow-slate-200/50'
                           )}
                         >
                           {/* Parent item as first dropdown option */}

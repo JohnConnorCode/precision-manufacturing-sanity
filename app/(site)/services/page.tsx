@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
-import { typography, spacing, styles, overlays, cn } from '@/lib/design-system';
+import { typography, spacing, styles, cn } from '@/lib/design-system';
 import { ArrowRight, Award } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -259,7 +259,7 @@ export default async function ServicesPage() {
 
               return (
               <AnimatedSection key={service.title} delay={index * 0.1}>
-                <Card className={cn(styles.featureCard, "group h-full overflow-hidden")}>
+                <Card className="bg-white border border-slate-200/60 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 transition-all duration-300 group h-full overflow-hidden">
                   {imageUrl && (
                     <div className="relative h-64 overflow-hidden">
                       <Image
@@ -269,7 +269,7 @@ export default async function ServicesPage() {
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
-                      <div className={`absolute inset-0 ${overlays.card}`} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     </div>
                   )}
 
@@ -313,46 +313,49 @@ export default async function ServicesPage() {
       </section>
 
       {(qualityIntro || qualityAssurance.length > 0) && (
-        <section className={styles.sectionLight}>
+        <section className="py-24 md:py-32 lg:py-20 bg-slate-900">
           <div className={spacing.container}>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <AnimatedSection>
-                <div>
-                  {qualityHeading && (
-                    <h2 className={cn(typography.subsectionTitle, "mb-6")}>{qualityHeading}</h2>
-                  )}
-                  {qualityIntro && (
-                    <p className={cn(typography.description, "mb-8")}>
-                      {qualityIntro}
-                    </p>
-                  )}
+            <AnimatedSection>
+              <div className="text-center mb-12">
+                {qualityHeading && (
+                  <h2 className={cn(typography.subsectionTitle, "mb-4 text-white")}>{qualityHeading}</h2>
+                )}
+                {qualityIntro && (
+                  <p className={cn(typography.description, "max-w-3xl mx-auto text-slate-300")}>
+                    {qualityIntro}
+                  </p>
+                )}
+              </div>
+            </AnimatedSection>
 
-                  <div className="space-y-4">
-                    {qualityAssurance
-                      .filter((item: any) => item?.enabled !== false)
-                      .map((item: any) => (
-                      <div
-                        key={item.title}
-                        className="flex items-center"
-                      >
-                        <Award className="w-5 h-5 text-slate-600 mr-3" />
-                        <span className={typography.body}>{item.title}</span>
-                      </div>
-                    ))}
-                  </div>
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-center">
+              <AnimatedSection>
+                <div className="space-y-4 text-center lg:text-left">
+                  {qualityAssurance
+                    .filter((item: any) => item?.enabled !== false)
+                    .map((item: any) => (
+                    <div
+                      key={item.title}
+                      className="flex items-start gap-3"
+                    >
+                      <Award className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <span className={cn(typography.body, "text-slate-200")}>{item.title}</span>
+                    </div>
+                  ))}
                 </div>
               </AnimatedSection>
 
               {qualityImageUrl && (
                 <AnimatedSection delay={0.2}>
-                  <div className="relative h-96 rounded-lg overflow-hidden">
+                  <div className="relative h-[360px] rounded-2xl overflow-hidden">
                     <Image
                       src={qualityImageUrl}
                       alt={qualityImageAlt || ''}
                       fill
-                      className="object-cover rounded-lg"
+                      className="object-cover"
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/20 to-slate-950/60" />
                   </div>
                 </AnimatedSection>
               )}

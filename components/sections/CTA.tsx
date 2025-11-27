@@ -211,7 +211,7 @@ export default function CTA({ data }: CTAProps) {
             gradientWordPosition="last"
             description={sectionDescription}
             centered={true}
-            className="[&_h2]:text-white [&_h2]:md:whitespace-nowrap [&_p]:text-slate-300 [&_p]:text-lg mb-6"
+            className="[&_h2]:text-white [&_p]:text-slate-300 [&_p]:text-lg mb-6"
           />
 
           {highlightText && (
