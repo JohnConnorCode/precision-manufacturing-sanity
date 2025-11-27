@@ -304,7 +304,7 @@ export default async function SiteLayout({
           theme="dark"
         />
         <CMSIndicator />
-        {isDraft && process.env.NEXT_PUBLIC_ENABLE_VISUAL_EDITING === 'true' ? <VisualEditingClient /> : null}
+        {isDraft && <VisualEditingClient />}
         {isDraft ? <PreviewBanner /> : null}
       </div>
     </>
