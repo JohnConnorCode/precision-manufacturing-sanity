@@ -150,9 +150,9 @@ export default function Header({ data }: HeaderProps) {
     }
   }
   const sizeClasses = density === 'compact' ? 'h-9 px-3 py-1.5' : 'h-10 px-4 py-2'
-  // Gradient bottom border for hover/active states (replaces background highlighting)
-  const gradientBorder = 'relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-blue-600 after:via-blue-500 after:to-indigo-600 after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300'
-  const activeGradientBorder = 'after:opacity-100'
+  // Gradient bottom border for hover/active states - animates width from center
+  const gradientBorder = 'relative after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-blue-600 after:via-blue-500 after:to-indigo-600 hover:after:w-full after:transition-all after:duration-300 after:ease-out'
+  const activeGradientBorder = 'after:w-full'
   const linkTone = isDark ? `text-slate-100 ${gradientBorder}` : `text-slate-700 ${gradientBorder}`
   const activeTone = isDark ? activeGradientBorder : activeGradientBorder
   const triggerTone = isDark ? `bg-transparent text-slate-100 ${gradientBorder}` : `bg-transparent text-slate-700 ${gradientBorder}`
@@ -285,25 +285,61 @@ export default function Header({ data }: HeaderProps) {
                 const isPriority1 = index === 0 || index === 1 || index === 5 // Services, Industries, Contact
                 const itemClasses = isPriority1 ? '' : 'hidden xl:flex'
 
+                // Check if item has a real href (not just '#')
+                const hasRealHref = href && href !== '/' && href !== '#'
+
                 return (
                   <motion.div key={item.name} variants={navItemVariants}>
                   <NavigationMenuItem className={itemClasses}>
                     {hasChildren ? (
                       <>
-                        <NavigationMenuTrigger
-                          className={cn(
-                            triggerTone,
-                            'font-medium',
-                            sizeClasses,
-                            'data-[state=open]:after:opacity-100'
-                          )}
-                          aria-label={`${item.name} menu`}
-                        >
-                          <span className="inline-flex items-center">
-                            {IconFor(item?.iconName)}
-                            {item.name}
-                          </span>
-                        </NavigationMenuTrigger>
+                        {/* If item has both children AND a real href, make name clickable */}
+                        {hasRealHref ? (
+                          <div className="flex items-center">
+                            <NavigationMenuLink asChild>
+                              <Link
+                                href={href}
+                                className={cn(
+                                  'inline-flex items-center justify-center rounded-md',
+                                  sizeClasses,
+                                  'text-sm font-medium transition-all',
+                                  linkTone,
+                                  pathname === href && activeTone
+                                )}
+                              >
+                                <span className="inline-flex items-center">
+                                  {IconFor(item?.iconName)}
+                                  {item.name}
+                                </span>
+                              </Link>
+                            </NavigationMenuLink>
+                            <NavigationMenuTrigger
+                              className={cn(
+                                triggerTone,
+                                'font-medium px-1.5 ml-0',
+                                'data-[state=open]:after:w-full'
+                              )}
+                              aria-label={`${item.name} submenu`}
+                            >
+                              <span className="sr-only">Open {item.name} menu</span>
+                            </NavigationMenuTrigger>
+                          </div>
+                        ) : (
+                          <NavigationMenuTrigger
+                            className={cn(
+                              triggerTone,
+                              'font-medium',
+                              sizeClasses,
+                              'data-[state=open]:after:w-full'
+                            )}
+                            aria-label={`${item.name} menu`}
+                          >
+                            <span className="inline-flex items-center">
+                              {IconFor(item?.iconName)}
+                              {item.name}
+                            </span>
+                          </NavigationMenuTrigger>
+                        )}
                         <NavigationMenuContent>
                           <motion.ul
                             initial={{ opacity: 0, y: -10 }}

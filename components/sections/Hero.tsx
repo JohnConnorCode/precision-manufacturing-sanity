@@ -102,7 +102,8 @@ export default function Hero({ data }: HeroProps) {
   const word2 = data?.word2?.trim() || '';
   const word3 = data?.word3?.trim() || '';
 
-  const heroFontSize = data?.heroFontSize || 'text-[3rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[4.5rem] xl:text-[5rem]';
+  // 25% smaller hero font size for better balance
+  const heroFontSize = data?.heroFontSize || 'text-[2.25rem] sm:text-[2.625rem] md:text-[3rem] lg:text-[3.375rem] xl:text-[3.75rem]';
   const tagline = data?.tagline?.trim() || '';
 
   // Handle both string badges and object badges from Sanity

@@ -39,6 +39,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '*.apicdn.sanity.io',
       },
+      {
+        protocol: 'https',
+        hostname: 'iismet.com',
+      },
     ],
   },
 

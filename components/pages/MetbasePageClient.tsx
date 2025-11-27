@@ -300,9 +300,10 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
   const ctaButtons = (pageData.cta?.buttons || [])
     .filter((btn) => btn?.enabled !== false && btn?.label && btn?.href);
 
-  const analysisImage = urlFor(pageData.analysisTool?.image);
-  const integrationImage = urlFor(pageData.systemIntegration?.image);
-  const closedLoopImage = urlFor(pageData.closedLoop?.image);
+  // Use Sanity images if available, otherwise use original iismet.com images as fallbacks
+  const analysisImage = urlFor(pageData.analysisTool?.image) || 'https://iismet.com/wp-content/uploads/2021/02/MBA-Bell-Curve-1024x540.jpg';
+  const integrationImage = urlFor(pageData.systemIntegration?.image) || 'https://iismet.com/wp-content/uploads/2021/02/MBA-scatter-plot-1024x565.jpg';
+  const closedLoopImage = urlFor(pageData.closedLoop?.image) || 'https://iismet.com/wp-content/uploads/2021/02/Metbase-Closed-loop-system-2-1024x727.jpg';
 
   return (
     <div className="min-h-screen bg-background">
