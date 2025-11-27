@@ -1,8 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { AlertCircle, CheckCircle2, XCircle, RefreshCw, Copy, Check, Eye, EyeOff } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { AlertCircle, CheckCircle2, XCircle, RefreshCw, Copy, Check, Eye, EyeOff, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { typography, spacing, cn } from '@/lib/design-system'
 
 interface HealthStatus {
   timestamp: string
@@ -46,7 +50,6 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
       setHealth(data)
       setLastRefresh(new Date())
 
-      // Load environment variables info (what's configured)
       setEnvVars({
         'SMTP_HOST': process.env.NEXT_PUBLIC_SMTP_HOST ? '✓ Configured' : null,
         'SMTP_USER': process.env.NEXT_PUBLIC_SMTP_USER ? '✓ Configured' : null,
@@ -74,245 +77,303 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
 
   const StatusIcon = ({ ok }: { ok: boolean }) =>
     ok ? (
-      <CheckCircle2 className="w-5 h-5 text-green-600" />
+      <CheckCircle2 className="w-5 h-5 text-green-500" />
     ) : (
-      <XCircle className="w-5 h-5 text-red-600" />
+      <XCircle className="w-5 h-5 text-red-500" />
     )
 
-  const HealthBar = ({ ok }: { ok: boolean }) => (
-    <div className={`h-2 rounded-full ${ok ? 'bg-green-600' : 'bg-red-600'}`} />
-  )
-
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 py-12 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-16 px-4">
+      <div className={spacing.containerWide}>
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-12"
+        >
+          <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-4xl font-bold mb-2">System Status Dashboard</h1>
-              <p className="text-zinc-400">Real-time monitoring for IIS precision manufacturing website</p>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600/10 border border-blue-600/20 mb-4">
+                <span className="text-sm font-medium text-blue-400">Admin Dashboard</span>
+              </div>
+              <h1 className={cn(typography.heroHeading, 'text-white mb-3')}>
+                System <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Status</span>
+              </h1>
+              <p className={cn(typography.descriptionLight)}>
+                Real-time monitoring for IIS precision manufacturing website
+              </p>
             </div>
-            <button
+            <Button
               onClick={refreshHealth}
               disabled={loading}
-              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold"
+              className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/25"
             >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={cn('w-4 h-4 mr-2', loading && 'animate-spin')} />
               {loading ? 'Checking...' : 'Refresh Status'}
-            </button>
+            </Button>
           </div>
           {lastRefresh && (
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-slate-500">
               Last updated: {lastRefresh.toLocaleTimeString()}
             </p>
           )}
-        </div>
+        </motion.div>
 
         {error && (
-          <div className="bg-red-950 border border-red-800 rounded-lg p-4 mb-6 flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-semibold text-red-200">Error checking system status</p>
-              <p className="text-red-300 text-sm mt-1">{error}</p>
-            </div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <Card className="bg-red-500/10 border-red-500/20 p-6">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold text-red-300">Error checking system status</p>
+                  <p className="text-red-400 text-sm mt-1">{error}</p>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
         )}
 
         {health && (
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* Overall Status Card */}
-            <div className={`rounded-lg p-6 border-2 ${health.healthy ? 'bg-green-950 border-green-800' : 'bg-yellow-950 border-yellow-800'}`}>
-              <div className="flex items-center gap-4">
-                {health.healthy ? (
-                  <CheckCircle2 className="w-8 h-8 text-green-400 flex-shrink-0" />
-                ) : (
-                  <AlertCircle className="w-8 h-8 text-yellow-400 flex-shrink-0" />
-                )}
-                <div className="flex-1">
-                  <p className={`text-2xl font-bold ${health.healthy ? 'text-green-200' : 'text-yellow-200'}`}>
-                    {health.healthy ? '✓ All Systems Operational' : '⚠ Some Systems Need Attention'}
-                  </p>
-                  <p className={`text-sm ${health.healthy ? 'text-green-300' : 'text-yellow-300'}`}>
-                    {health.healthy
-                      ? 'Website is running smoothly'
-                      : 'Please review the items below and take appropriate action'}
-                  </p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <Card className={cn(
+                'p-8 border-2',
+                health.healthy
+                  ? 'bg-green-500/10 border-green-500/30'
+                  : 'bg-amber-500/10 border-amber-500/30'
+              )}>
+                <div className="flex items-center gap-4">
+                  {health.healthy ? (
+                    <div className="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center">
+                      <CheckCircle2 className="w-8 h-8 text-green-400" />
+                    </div>
+                  ) : (
+                    <div className="w-14 h-14 rounded-2xl bg-amber-500/20 flex items-center justify-center">
+                      <AlertCircle className="w-8 h-8 text-amber-400" />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <p className={cn(typography.h3, health.healthy ? 'text-green-300' : 'text-amber-300')}>
+                      {health.healthy ? '✓ All Systems Operational' : '⚠ Some Systems Need Attention'}
+                    </p>
+                    <p className={cn(typography.small, health.healthy ? 'text-green-400' : 'text-amber-400')}>
+                      {health.healthy
+                        ? 'Website is running smoothly'
+                        : 'Please review the items below and take appropriate action'}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <HealthBar ok={health.healthy} />
-            </div>
+              </Card>
+            </motion.div>
 
             {/* Grid Layout */}
             <div className="grid lg:grid-cols-2 gap-6">
               {/* Sanity Connection */}
-              <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
-                <div className="flex items-center gap-3 mb-4">
-                  <StatusIcon ok={health.sanity.connected} />
-                  <h3 className="text-lg font-semibold text-white">Sanity CMS</h3>
-                </div>
-                <p className={`text-sm mb-3 ${health.sanity.connected ? 'text-green-400' : 'text-red-400'}`}>
-                  {health.sanity.message}
-                </p>
-                <div className="text-xs text-zinc-500">
-                  Response time: <span className="text-zinc-300 font-mono">{health.sanity.responseTime}ms</span>
-                </div>
-                {!health.sanity.connected && (
-                  <div className="mt-3 p-3 bg-red-950 border border-red-800 rounded text-sm text-red-200">
-                    ⚠️ Cannot connect to Sanity. Check internet connection or contact support.
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <Card className="p-6 bg-slate-900/50 border-slate-800">
+                  <div className="flex items-center gap-3 mb-4">
+                    <StatusIcon ok={health.sanity.connected} />
+                    <h3 className={cn(typography.h5, 'text-white')}>Sanity CMS</h3>
                   </div>
-                )}
-              </div>
+                  <p className={cn(typography.small, health.sanity.connected ? 'text-green-400' : 'text-red-400', 'mb-3')}>
+                    {health.sanity.message}
+                  </p>
+                  <div className="text-xs text-slate-500">
+                    Response time: <span className="text-slate-300 font-mono">{health.sanity.responseTime}ms</span>
+                  </div>
+                  {!health.sanity.connected && (
+                    <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-300">
+                      ⚠️ Cannot connect to Sanity. Check internet connection or contact support.
+                    </div>
+                  )}
+                </Card>
+              </motion.div>
 
               {/* Email Configuration */}
-              <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
-                <div className="flex items-center gap-3 mb-4">
-                  <StatusIcon ok={health.email.configured} />
-                  <h3 className="text-lg font-semibold text-white">Email System</h3>
-                </div>
-                <p className={`text-sm mb-3 ${health.email.configured ? 'text-green-400' : 'text-yellow-400'}`}>
-                  {health.email.message}
-                </p>
-                {!health.email.configured && (
-                  <div className="mt-3 p-3 bg-yellow-950 border border-yellow-800 rounded text-sm text-yellow-200">
-                    ⚠️ Email not configured. Contact form submissions cannot be emailed. Set up SendGrid SMTP credentials.
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                <Card className="p-6 bg-slate-900/50 border-slate-800">
+                  <div className="flex items-center gap-3 mb-4">
+                    <StatusIcon ok={health.email.configured} />
+                    <h3 className={cn(typography.h5, 'text-white')}>Email System</h3>
                   </div>
-                )}
-              </div>
+                  <p className={cn(typography.small, health.email.configured ? 'text-green-400' : 'text-amber-400', 'mb-3')}>
+                    {health.email.message}
+                  </p>
+                  {!health.email.configured && (
+                    <div className="mt-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg text-sm text-amber-300">
+                      ⚠️ Email not configured. Contact form submissions cannot be emailed.
+                    </div>
+                  )}
+                </Card>
+              </motion.div>
             </div>
 
             {/* API Endpoints */}
-            <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <StatusIcon ok={health.apis.navigation && health.apis.footer && health.apis.siteSettings} />
-                Content APIs
-              </h3>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-zinc-800 rounded">
-                  <div className="flex items-center gap-3">
-                    <StatusIcon ok={health.apis.navigation} />
-                    <span>Navigation API</span>
-                  </div>
-                  <code className="text-xs bg-zinc-950 px-3 py-1 rounded text-blue-400">/api/cms/navigation</code>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-zinc-800 rounded">
-                  <div className="flex items-center gap-3">
-                    <StatusIcon ok={health.apis.footer} />
-                    <span>Footer API</span>
-                  </div>
-                  <code className="text-xs bg-zinc-950 px-3 py-1 rounded text-blue-400">/api/cms/footer</code>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-zinc-800 rounded">
-                  <div className="flex items-center gap-3">
-                    <StatusIcon ok={health.apis.siteSettings} />
-                    <span>Site Settings API</span>
-                  </div>
-                  <code className="text-xs bg-zinc-950 px-3 py-1 rounded text-blue-400">/api/cms/site-settings</code>
-                </div>
-              </div>
-            </div>
-
-            {/* Environment Variables */}
-            <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-white">Configuration</h3>
-                <button
-                  onClick={() => setShowEnv(!showEnv)}
-                  className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  {showEnv ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  {showEnv ? 'Hide' : 'Show'}
-                </button>
-              </div>
-
-              {showEnv ? (
-                <div className="space-y-2">
-                  {Object.entries(envVars).map(([key, value]) => (
-                    <div
-                      key={key}
-                      className="flex items-center justify-between p-3 bg-zinc-800 rounded font-mono text-sm"
-                    >
-                      <div>
-                        <span className="text-yellow-400">{key}</span>
-                        <span className="text-zinc-500 mx-2">=</span>
-                        <span className={value === null ? 'text-red-400' : 'text-green-400'}>
-                          {String(value) || '(not set)'}
-                        </span>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <Card className="p-6 bg-slate-900/50 border-slate-800">
+                <h3 className={cn(typography.h5, 'text-white mb-6 flex items-center gap-2')}>
+                  <StatusIcon ok={health.apis.navigation && health.apis.footer && health.apis.siteSettings} />
+                  Content APIs
+                </h3>
+                <div className="space-y-3">
+                  {[
+                    { ok: health.apis.navigation, name: 'Navigation API', endpoint: '/api/cms/navigation' },
+                    { ok: health.apis.footer, name: 'Footer API', endpoint: '/api/cms/footer' },
+                    { ok: health.apis.siteSettings, name: 'Site Settings API', endpoint: '/api/cms/site-settings' },
+                  ].map((api) => (
+                    <div key={api.name} className="flex items-center justify-between p-4 bg-slate-800/50 rounded-xl">
+                      <div className="flex items-center gap-3">
+                        <StatusIcon ok={api.ok} />
+                        <span className="text-slate-300">{api.name}</span>
                       </div>
-                      {typeof value === 'string' && (
-                        <button
-                          onClick={() => copyToClipboard(value, key)}
-                          className="text-zinc-500 hover:text-zinc-300 transition-colors"
-                          title="Copy to clipboard"
-                        >
-                          {copiedText === key ? (
-                            <Check className="w-4 h-4 text-green-400" />
-                          ) : (
-                            <Copy className="w-4 h-4" />
-                          )}
-                        </button>
-                      )}
+                      <code className="text-xs bg-slate-900 px-3 py-1.5 rounded-lg text-blue-400">{api.endpoint}</code>
                     </div>
                   ))}
                 </div>
-              ) : (
-                <p className="text-sm text-zinc-400">Click &quot;Show&quot; to view environment variables</p>
-              )}
-            </div>
+              </Card>
+            </motion.div>
+
+            {/* Configuration */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <Card className="p-6 bg-slate-900/50 border-slate-800">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className={cn(typography.h5, 'text-white')}>Configuration</h3>
+                  <Button
+                    onClick={() => setShowEnv(!showEnv)}
+                    variant="ghost"
+                    className="text-blue-400 hover:text-blue-300"
+                  >
+                    {showEnv ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
+                    {showEnv ? 'Hide' : 'Show'}
+                  </Button>
+                </div>
+
+                {showEnv ? (
+                  <div className="space-y-2">
+                    {Object.entries(envVars).map(([key, value]) => (
+                      <div
+                        key={key}
+                        className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg font-mono text-sm"
+                      >
+                        <div>
+                          <span className="text-amber-400">{key}</span>
+                          <span className="text-slate-500 mx-2">=</span>
+                          <span className={value === null ? 'text-red-400' : 'text-green-400'}>
+                            {String(value) || '(not set)'}
+                          </span>
+                        </div>
+                        {typeof value === 'string' && (
+                          <button
+                            onClick={() => copyToClipboard(value, key)}
+                            className="text-slate-500 hover:text-slate-300 transition-colors"
+                          >
+                            {copiedText === key ? (
+                              <Check className="w-4 h-4 text-green-400" />
+                            ) : (
+                              <Copy className="w-4 h-4" />
+                            )}
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className={cn(typography.small, 'text-slate-500')}>
+                    Click &quot;Show&quot; to view environment variables
+                  </p>
+                )}
+              </Card>
+            </motion.div>
 
             {/* Quick Links */}
-            <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
-              <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <Link
-                  href="/troubleshooting"
-                  className="p-4 bg-zinc-800 hover:bg-zinc-700 rounded transition-colors text-center text-sm font-medium text-blue-400"
-                >
-                  📋 Troubleshooting Guide
-                </Link>
-                <Link
-                  href="/api/health/integrations"
-                  className="p-4 bg-zinc-800 hover:bg-zinc-700 rounded transition-colors text-center text-sm font-medium text-blue-400"
-                >
-                  🔍 Health Check API
-                </Link>
-                <Link
-                  href="/contact"
-                  className="p-4 bg-zinc-800 hover:bg-zinc-700 rounded transition-colors text-center text-sm font-medium text-blue-400"
-                >
-                  💬 Contact Form
-                </Link>
-              </div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <Card className="p-6 bg-slate-900/50 border-slate-800">
+                <h3 className={cn(typography.h5, 'text-white mb-6')}>Quick Links</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {[
+                    { href: '/troubleshooting', label: '📋 Troubleshooting Guide' },
+                    { href: '/api/health/integrations', label: '🔍 Health Check API' },
+                    { href: '/contact', label: '💬 Contact Form' },
+                  ].map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="group p-4 bg-slate-800/50 hover:bg-slate-700/50 rounded-xl transition-all duration-300 text-center"
+                    >
+                      <span className="text-sm font-medium text-blue-400 group-hover:text-blue-300 inline-flex items-center gap-2">
+                        {link.label}
+                        <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </Card>
+            </motion.div>
 
             {/* Support Info */}
-            <div className="bg-blue-950 border border-blue-800 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-blue-200 mb-3">Need Help?</h3>
-              <div className="space-y-2 text-sm text-blue-100">
-                <p>
-                  <strong>Email:</strong>{' '}
-                  <a href={`mailto:${siteSettings?.contact?.supportEmail || 'officemgr@iismet.com'}`} className="text-blue-400 hover:underline">
-                    {siteSettings?.contact?.supportEmail || 'officemgr@iismet.com'}
-                  </a>
-                </p>
-                <p>
-                  <strong>Phone:</strong>{' '}
-                  <a href={`tel:${siteSettings?.contact?.phone?.replace(/\D/g, '')}`} className="text-blue-400 hover:underline">
-                    {siteSettings?.contact?.phone}
-                  </a>
-                </p>
-                <p className="text-xs text-blue-300 mt-3">
-                  💡 <strong>Tip:</strong> Use this page to diagnose issues before contacting support. Share the timestamp and status information when reporting problems.
-                </p>
-              </div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+            >
+              <Card className="p-8 bg-gradient-to-br from-blue-600/10 to-indigo-600/10 border-blue-600/20">
+                <h3 className={cn(typography.h4, 'text-blue-300 mb-4')}>Need Help?</h3>
+                <div className="space-y-3 text-sm text-blue-100">
+                  <p>
+                    <strong>Email:</strong>{' '}
+                    <a href={`mailto:${siteSettings?.contact?.supportEmail || 'officemgr@iismet.com'}`} className="text-blue-400 hover:text-blue-300 transition-colors">
+                      {siteSettings?.contact?.supportEmail || 'officemgr@iismet.com'}
+                    </a>
+                  </p>
+                  <p>
+                    <strong>Phone:</strong>{' '}
+                    <a href={`tel:${siteSettings?.contact?.phone?.replace(/\D/g, '')}`} className="text-blue-400 hover:text-blue-300 transition-colors">
+                      {siteSettings?.contact?.phone}
+                    </a>
+                  </p>
+                  <p className="text-xs text-blue-300 mt-4 p-3 bg-blue-600/10 rounded-lg">
+                    💡 <strong>Tip:</strong> Use this page to diagnose issues before contacting support.
+                  </p>
+                </div>
+              </Card>
+            </motion.div>
           </div>
         )}
 
         {loading && !health && (
-          <div className="flex flex-col items-center justify-center py-12">
-            <RefreshCw className="w-12 h-12 text-blue-600 animate-spin mb-4" />
-            <p className="text-zinc-400">Checking system health...</p>
+          <div className="flex flex-col items-center justify-center py-20">
+            <RefreshCw className="w-12 h-12 text-blue-500 animate-spin mb-4" />
+            <p className={cn(typography.body, 'text-slate-400')}>Checking system health...</p>
           </div>
         )}
       </div>
