@@ -2,8 +2,7 @@ import { getServiceBySlug, getAllServices } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 import { ServiceContent } from '../service-content';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/theme';
-import { theme } from '@/lib/theme';
+import { typography, cn } from '@/lib/design-system';
 import Link from 'next/link';
 
 interface ServicePageProps {
@@ -61,8 +60,8 @@ export default async function ServicePage({ params }: ServicePageProps) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className={cn(theme.typography.h1, 'mb-4')}>Service Not Found</h1>
-          <p className={cn(theme.typography.body, 'text-slate-600 mb-8')}>
+          <h1 className={cn(typography.h1, 'mb-4')}>Service Not Found</h1>
+          <p className={cn(typography.body, 'text-slate-600 mb-8')}>
             The service you&apos;re looking for could not be found.
           </p>
           <Button asChild>

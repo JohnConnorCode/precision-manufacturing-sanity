@@ -17,7 +17,7 @@ import {
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { theme } from '@/lib/theme';
+import { typography } from '@/lib/design-system';
 import { throttleRAF } from '@/lib/performance';
 
 interface HeaderProps {
@@ -241,7 +241,7 @@ export default function Header({ data }: HeaderProps) {
             {topBar?.showCertifications !== false && (
               <>
                 <Zap className="h-3 w-3 text-blue-400" aria-hidden="true" />
-                <span className={cn(theme.typography.badge, 'text-slate-400')}>{topBar?.certifications}</span>
+                <span className={cn(typography.badge, 'text-slate-400')}>{topBar?.certifications}</span>
               </>
             )}
           </div>

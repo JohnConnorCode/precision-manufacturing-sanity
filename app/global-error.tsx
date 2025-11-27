@@ -31,14 +31,14 @@ export default function GlobalError({
         if (response.ok) {
           const data = await response.json()
           if (data?.globalError) {
-            setContent({
-              heading: data.globalError.heading || content.heading,
-              description: data.globalError.description || content.description,
-              tryAgainButtonText: data.globalError.tryAgainButtonText || content.tryAgainButtonText,
-              supportMessagePrefix: data.globalError.supportMessagePrefix || content.supportMessagePrefix,
-              supportLinkText: data.globalError.supportLinkText || content.supportLinkText,
-              supportEmail: data.siteSettings?.contact?.supportEmail || content.supportEmail
-            })
+            setContent(prev => ({
+              heading: data.globalError.heading || prev.heading,
+              description: data.globalError.description || prev.description,
+              tryAgainButtonText: data.globalError.tryAgainButtonText || prev.tryAgainButtonText,
+              supportMessagePrefix: data.globalError.supportMessagePrefix || prev.supportMessagePrefix,
+              supportLinkText: data.globalError.supportLinkText || prev.supportLinkText,
+              supportEmail: data.siteSettings?.contact?.supportEmail || prev.supportEmail
+            }))
           }
         }
       } catch (err) {

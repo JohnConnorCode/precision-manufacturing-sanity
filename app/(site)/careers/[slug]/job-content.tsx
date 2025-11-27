@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { theme, styles, cn } from '@/lib/theme';
+import { typography, spacing, styles, cn } from '@/lib/design-system';
 import {
   Mail,
   MapPin,
@@ -38,7 +38,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <section className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 py-20">
-        <div className={theme.spacing.container}>
+        <div className={spacing.container}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -61,7 +61,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
               </span>
             </div>
 
-            <h1 className={cn(theme.typography.h1, 'text-white mb-6')}>{job.title}</h1>
+            <h1 className={cn(typography.h1, 'text-white mb-6')}>{job.title}</h1>
 
             <div className="flex flex-wrap gap-6 text-slate-400">
               {job.location && (
@@ -89,7 +89,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
 
       {/* Main Content */}
       <section className={styles.sectionLight}>
-        <div className={theme.spacing.container}>
+        <div className={spacing.container}>
           <div className="grid lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
             {/* Main Content Column */}
             <div className="lg:col-span-2 space-y-12">
@@ -101,8 +101,8 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                   transition={{ duration: 0.6 }}
                   viewport={{ once: true }}
                 >
-                  <h2 className={cn(theme.typography.h3, 'mb-4')}>Overview</h2>
-                  <div className={cn(theme.typography.body, 'text-slate-600 leading-relaxed prose prose-slate max-w-none')}>
+                  <h2 className={cn(typography.h3, 'mb-4')}>Overview</h2>
+                  <div className={cn(typography.body, 'text-slate-600 leading-relaxed prose prose-slate max-w-none')}>
                     <PortableText
                       value={job.overview}
                       components={{
@@ -137,14 +137,14 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                   transition={{ duration: 0.6, delay: 0.1 }}
                   viewport={{ once: true }}
                 >
-                  <h2 className={cn(theme.typography.h3, 'mb-6')}>Key Responsibilities</h2>
+                  <h2 className={cn(typography.h3, 'mb-6')}>Key Responsibilities</h2>
                   <div className="space-y-4">
                     {job.responsibilities.map((item: any, index: number) => (
                       <div key={index} className="flex items-start gap-4">
                         <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <CheckCircle className="w-4 h-4 text-blue-600" />
                         </div>
-                        <p className={cn(theme.typography.body, 'text-slate-700')}>
+                        <p className={cn(typography.body, 'text-slate-700')}>
                           {item.responsibility || item}
                         </p>
                       </div>
@@ -162,12 +162,12 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                   viewport={{ once: true }}
                 >
                   <Card className={cn(styles.featureCard, 'p-8 border-l-4 border-blue-600')}>
-                    <h2 className={cn(theme.typography.h3, 'mb-6')}>Required Qualifications</h2>
+                    <h2 className={cn(typography.h3, 'mb-6')}>Required Qualifications</h2>
                     <div className="space-y-3">
                       {job.qualifications.map((item: any, index: number) => (
                         <div key={index} className="flex items-start gap-3">
                           <Award className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                          <p className={cn(theme.typography.body, 'text-slate-700')}>
+                          <p className={cn(typography.body, 'text-slate-700')}>
                             {item.qualification || item}
                           </p>
                         </div>
@@ -185,12 +185,12 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                   transition={{ duration: 0.6, delay: 0.3 }}
                   viewport={{ once: true }}
                 >
-                  <h2 className={cn(theme.typography.h3, 'mb-6')}>Preferred Qualifications</h2>
+                  <h2 className={cn(typography.h3, 'mb-6')}>Preferred Qualifications</h2>
                   <div className="space-y-3">
                     {job.preferredQualifications.map((item: any, index: number) => (
                       <div key={index} className="flex items-start gap-3">
                         <div className="w-2 h-2 rounded-full bg-blue-600 mt-2 flex-shrink-0" />
-                        <p className={cn(theme.typography.body, 'text-slate-600')}>
+                        <p className={cn(typography.body, 'text-slate-600')}>
                           {item.qualification || item}
                         </p>
                       </div>
@@ -207,13 +207,13 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                   transition={{ duration: 0.6, delay: 0.4 }}
                   viewport={{ once: true }}
                 >
-                  <h2 className={cn(theme.typography.h3, 'mb-6')}>Benefits & Perks</h2>
+                  <h2 className={cn(typography.h3, 'mb-6')}>Benefits & Perks</h2>
                   <div className="grid md:grid-cols-2 gap-4">
                     {job.benefits.map((item: any, index: number) => (
                       <Card key={index} className={cn(styles.featureCard, 'p-6')}>
                         <div className="flex items-center gap-3">
                           <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                          <p className={cn(theme.typography.body, 'font-medium text-slate-800')}>
+                          <p className={cn(typography.body, 'font-medium text-slate-800')}>
                             {item.benefit || item}
                           </p>
                         </div>
@@ -236,8 +236,8 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                 >
                   <Card className={cn(styles.featureCard, 'p-8 text-center')}>
                     <Briefcase className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-                    <h3 className={cn(theme.typography.h4, 'mb-4')}>Apply for this Position</h3>
-                    <p className={cn(theme.typography.small, 'text-slate-600 mb-6')}>
+                    <h3 className={cn(typography.h4, 'mb-4')}>Apply for this Position</h3>
+                    <p className={cn(typography.small, 'text-slate-600 mb-6')}>
                       Send your resume and cover letter to:
                     </p>
 
@@ -252,16 +252,16 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                       </Button>
                     </a>
 
-                    <p className={cn(theme.typography.small, 'text-slate-500 mt-4')}>
+                    <p className={cn(typography.small, 'text-slate-500 mt-4')}>
                       {job.applicationEmail || siteSettings?.hrEmail}
                     </p>
 
                     {job.applicationInstructions && (
                       <div className="mt-6 pt-6 border-t border-slate-200">
-                        <h4 className={cn(theme.typography.label, 'mb-3 text-left')}>
+                        <h4 className={cn(typography.label, 'mb-3 text-left')}>
                           Application Instructions
                         </h4>
-                        <p className={cn(theme.typography.small, 'text-slate-600 text-left')}>
+                        <p className={cn(typography.small, 'text-slate-600 text-left')}>
                           {job.applicationInstructions}
                         </p>
                       </div>
@@ -277,15 +277,15 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                   viewport={{ once: true }}
                 >
                   <Card className={cn(styles.featureCard, 'p-6')}>
-                    <h3 className={cn(theme.typography.h5, 'mb-4')}>Job Details</h3>
+                    <h3 className={cn(typography.h5, 'mb-4')}>Job Details</h3>
                     <div className="space-y-4">
                       <div className="flex items-start gap-3">
                         <Briefcase className="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className={cn(theme.typography.small, 'text-slate-500 mb-1')}>
+                          <p className={cn(typography.small, 'text-slate-500 mb-1')}>
                             Department
                           </p>
-                          <p className={cn(theme.typography.body, 'font-medium')}>
+                          <p className={cn(typography.body, 'font-medium')}>
                             {job.department}
                           </p>
                         </div>
@@ -294,10 +294,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                       <div className="flex items-start gap-3">
                         <Clock className="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className={cn(theme.typography.small, 'text-slate-500 mb-1')}>
+                          <p className={cn(typography.small, 'text-slate-500 mb-1')}>
                             Employment Type
                           </p>
-                          <p className={cn(theme.typography.body, 'font-medium')}>
+                          <p className={cn(typography.body, 'font-medium')}>
                             {job.employmentType}
                           </p>
                         </div>
@@ -307,10 +307,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                         <div className="flex items-start gap-3">
                           <MapPin className="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5" />
                           <div>
-                            <p className={cn(theme.typography.small, 'text-slate-500 mb-1')}>
+                            <p className={cn(typography.small, 'text-slate-500 mb-1')}>
                               Location
                             </p>
-                            <p className={cn(theme.typography.body, 'font-medium')}>
+                            <p className={cn(typography.body, 'font-medium')}>
                               {job.location}
                             </p>
                           </div>
@@ -321,10 +321,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                         <div className="flex items-start gap-3">
                           <DollarSign className="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5" />
                           <div>
-                            <p className={cn(theme.typography.small, 'text-slate-500 mb-1')}>
+                            <p className={cn(typography.small, 'text-slate-500 mb-1')}>
                               Salary Range
                             </p>
-                            <p className={cn(theme.typography.body, 'font-medium')}>
+                            <p className={cn(typography.body, 'font-medium')}>
                               {job.salaryRange}
                             </p>
                           </div>
@@ -343,8 +343,8 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                 >
                   <Card className={cn(styles.featureCard, 'p-6 bg-slate-50')}>
                     <FileText className="w-10 h-10 text-blue-600 mb-4" />
-                    <h3 className={cn(theme.typography.h5, 'mb-3')}>Browse More Positions</h3>
-                    <p className={cn(theme.typography.small, 'text-slate-600 mb-4')}>
+                    <h3 className={cn(typography.h5, 'mb-3')}>Browse More Positions</h3>
+                    <p className={cn(typography.small, 'text-slate-600 mb-4')}>
                       Explore other career opportunities at IIS
                     </p>
                     <Link href="/careers">

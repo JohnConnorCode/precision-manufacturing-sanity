@@ -84,16 +84,15 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
 
             const card = (
               <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
+                whileHover={{ scale: 1.02, y: -4 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="h-full"
               >
                 <Card
-                  className={`overflow-hidden hover:shadow-xl transition-all duration-300 ${colors.borderLight}`}
+                  className="overflow-hidden h-full transition-all duration-300 border-slate-200/60 hover:border-blue-500/30 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15),0_10px_20px_-5px_rgba(0,0,0,0.1)]"
                   style={{
                     '--hover-border': hexToRgba(theme.colors.primary, 0.5),
                   } as React.CSSProperties}
-                  onMouseEnter={(e) => e.currentTarget.style.borderColor = hexToRgba(theme.colors.primary, 0.5)}
-                  onMouseLeave={(e) => e.currentTarget.style.borderColor = ''}
                 >
                     <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
                       <ParallaxImage
@@ -108,14 +107,12 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                       <div className="absolute bottom-0 left-0 right-0 p-6">
                         <div className="flex items-start gap-3 mb-3">
                           <div
-                            className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors"
+                            className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 shadow-lg shadow-blue-600/30 group-hover:shadow-xl group-hover:shadow-blue-600/40 group-hover:scale-105"
                             style={{ backgroundColor: theme.colors.primary }}
-                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = theme.colors.secondary}
-                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = theme.colors.primary}
                           >
                             <DynamicIcon name={industry.iconName} className="h-6 w-6 text-white" />
                           </div>
-                          <h3 className="text-xl font-bold text-white leading-tight pt-2">
+                          <h3 className="text-xl font-bold text-white leading-tight pt-2 tracking-tight">
                             {industry.title}
                           </h3>
                         </div>
@@ -128,7 +125,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                             return (
                               <span
                                 key={index}
-                                className="text-[10px] font-semibold text-white/90 bg-white/10 backdrop-blur-sm px-2 py-1 rounded uppercase tracking-wider"
+                                className="text-[10px] font-semibold text-white/90 bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-md uppercase tracking-wider border border-white/10"
                               >
                                 {featureText}
                               </span>

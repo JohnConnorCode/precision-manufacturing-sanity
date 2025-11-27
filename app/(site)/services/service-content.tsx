@@ -10,7 +10,7 @@ import Image from 'next/image';
 import SectionHeader from '@/components/ui/section-header';
 import HeroSection from '@/components/ui/hero-section';
 import { PortableTextContent } from '@/components/portable-text-components';
-import { theme, styles, cn } from '@/lib/theme';
+import { typography, spacing, styles, cn } from '@/lib/design-system';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { ArrowRight, CheckCircle, Settings, Shield, Zap, Cog, Target, FileText, Award, Activity, TrendingDown, Wrench } from 'lucide-react';
@@ -101,7 +101,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
   const servicesDescriptionNode = service.servicesDescriptionRich
     ? <PortableTextContent value={service.servicesDescriptionRich} />
     : (service.servicesDescription
-        ? <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>{service.servicesDescription}</p>
+        ? <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>{service.servicesDescription}</p>
         : service.overview?.descriptionRich
           ? <PortableTextContent value={service.overview.descriptionRich} />
           : null);
@@ -155,8 +155,8 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       />
 
       {capabilityStats.length > 0 && (
-        <section className="py-12 md:py-16 bg-gradient-to-b from-slate-50 to-white">
-          <div className={theme.spacing.container}>
+        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+          <div className={spacing.container}>
             <motion.div
               initial={initialState}
               whileInView={createFade(0, 0.8)}
@@ -174,10 +174,10 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     className="text-center"
                   >
                     <div className={styles.statValue}>{capability.value}</div>
-                    <div className={cn(theme.typography.badge, 'text-slate-700 mb-2')}>
+                    <div className={cn(typography.badge, 'text-slate-700 mb-2')}>
                       {capability.label}
                     </div>
-                    <div className={theme.typography.small}>{capability.description}</div>
+                    <div className={typography.small}>{capability.description}</div>
                   </motion.div>
                 );
               })}
@@ -188,8 +188,8 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
       {/* Capability Cards Section - for services with rich capability data */}
       {capabilityCards.length > 0 && (
-        <section className="py-12 md:py-16 lg:py-20">
-          <div className={theme.spacing.container}>
+        <section className="py-24 md:py-32 lg:py-20">
+          <div className={spacing.container}>
             {(capabilitiesHeading || capabilitiesDescription) && (
               <motion.div
                 initial={initialState}
@@ -198,10 +198,10 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                 className="text-center mb-16"
               >
                 {capabilitiesHeading && (
-                  <h2 className={cn(theme.typography.h2, 'mb-6')}>{capabilitiesHeading}</h2>
+                  <h2 className={cn(typography.h2, 'mb-6')}>{capabilitiesHeading}</h2>
                 )}
                 {capabilitiesDescription && (
-                  <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
+                  <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                     {capabilitiesDescription}
                   </p>
                 )}
@@ -240,21 +240,21 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                       )}
 
                       <div className="p-6">
-                        <h3 className={cn(theme.typography.h4, 'mb-3 group-hover:text-blue-600 transition-colors')}>
+                        <h3 className={cn(typography.h4, 'mb-3 group-hover:text-blue-600 transition-colors')}>
                           {capability.title}
                         </h3>
-                        <p className={cn(theme.typography.body, 'mb-4')}>
+                        <p className={cn(typography.body, 'mb-4')}>
                           {capability.description}
                         </p>
 
                         {capability.features && capability.features.length > 0 && (
                           <div className="mb-4">
-                            <h4 className={cn(theme.typography.label, 'mb-2')}>
+                            <h4 className={cn(typography.label, 'mb-2')}>
                               {capability.featuresLabel || 'Features'}
                             </h4>
                             <div className="grid grid-cols-2 gap-1">
                               {capability.features.map((f: any) => (
-                                <div key={f.feature} className={cn('flex items-center', theme.typography.small)}>
+                                <div key={f.feature} className={cn('flex items-center', typography.small)}>
                                   <CheckCircle className="w-3 h-3 text-blue-600 mr-1.5 flex-shrink-0" />
                                   {f.feature}
                                 </div>
@@ -265,12 +265,12 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
                         {capability.capabilitiesList && capability.capabilitiesList.length > 0 && (
                           <div>
-                            <h4 className={cn(theme.typography.label, 'mb-2')}>
+                            <h4 className={cn(typography.label, 'mb-2')}>
                               {capability.capabilitiesLabel || 'Benefits'}
                             </h4>
                             <div className="space-y-1">
                               {capability.capabilitiesList.map((c: any) => (
-                                <div key={c.capability} className={cn('flex items-center', theme.typography.small)}>
+                                <div key={c.capability} className={cn('flex items-center', typography.small)}>
                                   <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2" />
                                   {c.capability}
                                 </div>
@@ -290,15 +290,15 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
       {/* Benefits Section */}
       {benefits.length > 0 && (
-        <section className="py-12 md:py-16 bg-gradient-to-b from-slate-50 to-white">
-          <div className={theme.spacing.container}>
+        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+          <div className={spacing.container}>
             <motion.div
               initial={initialState}
               whileInView={createFade(0, 0.8)}
               viewport={viewportConfig}
               className="text-center mb-12"
             >
-              <h2 className={cn(theme.typography.h2, 'mb-4')}>Key Benefits</h2>
+              <h2 className={cn(typography.h2, 'mb-4')}>Key Benefits</h2>
             </motion.div>
 
             <div className={styles.grid4Col}>
@@ -314,11 +314,11 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     viewport={viewportConfig}
                   >
                     <Card className={cn(styles.featureCard, 'h-full text-center p-6')}>
-                      <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4', theme.colors.primary.gradient)}>
+                      <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
                         <BenefitIcon className="w-6 h-6 text-white" />
                       </div>
-                      <h3 className={cn(theme.typography.h5, 'mb-2')}>{benefit.title}</h3>
-                      <p className={theme.typography.small}>{benefit.description}</p>
+                      <h3 className={cn(typography.h5, 'mb-2')}>{benefit.title}</h3>
+                      <p className={typography.small}>{benefit.description}</p>
                     </Card>
                   </motion.div>
                 );
@@ -329,16 +329,16 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {serviceOfferings.length > 0 && (
-        <section className="py-12 md:py-16 lg:py-20">
-          <div className={theme.spacing.container}>
+        <section className="py-24 md:py-32 lg:py-20">
+          <div className={spacing.container}>
             <motion.div
               initial={initialState}
               whileInView={createFade(0, 0.8)}
               viewport={viewportConfig}
               className="text-center mb-16"
             >
-              <h2 className={cn(theme.typography.h2, 'mb-6')}>{servicesHeading}</h2>
-              <div className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
+              <h2 className={cn(typography.h2, 'mb-6')}>{servicesHeading}</h2>
+              <div className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 {servicesDescriptionNode}
               </div>
             </motion.div>
@@ -375,27 +375,27 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                       )}
 
                       <div className="p-8">
-                        <h3 className={cn(theme.typography.h4, 'mb-4 group-hover:text-blue-600 transition-colors')}>
+                        <h3 className={cn(typography.h4, 'mb-4 group-hover:text-blue-600 transition-colors')}>
                           {offering.title}
                         </h3>
                         {offering.descriptionRich ? (
-                          <div className={cn(theme.typography.body, 'mb-6')}>
+                          <div className={cn(typography.body, 'mb-6')}>
                             <PortableTextContent value={offering.descriptionRich} />
                           </div>
                         ) : (
-                          <p className={cn(theme.typography.body, 'mb-6')}>
+                          <p className={cn(typography.body, 'mb-6')}>
                             {offering.description}
                           </p>
                         )}
 
                         {offering.features && offering.features.length > 0 && (
                           <div className="mb-6">
-                            <h4 className={cn(theme.typography.label, 'mb-3')}>
+                            <h4 className={cn(typography.label, 'mb-3')}>
                               {offering.featuresLabel || 'Key Features'}
                             </h4>
                             <div className="grid grid-cols-1 gap-2">
                               {offering.features.map((feature: any) => (
-                                <div key={feature.feature} className={cn('flex items-center', theme.typography.small)}>
+                                <div key={feature.feature} className={cn('flex items-center', typography.small)}>
                                   <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
                                   {feature.feature}
                                 </div>
@@ -406,12 +406,12 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
                         {offering.capabilities && offering.capabilities.length > 0 && (
                           <div className="mb-6">
-                            <h4 className={cn(theme.typography.label, 'mb-3')}>
+                            <h4 className={cn(typography.label, 'mb-3')}>
                               {offering.capabilitiesLabel || 'Capabilities'}
                             </h4>
                             <div className="space-y-1">
                               {offering.capabilities.map((capability: any) => (
-                                <div key={capability.capability} className={cn('flex items-center', theme.typography.small)}>
+                                <div key={capability.capability} className={cn('flex items-center', typography.small)}>
                                   <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2" />
                                   {capability.capability}
                                 </div>
@@ -430,16 +430,16 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {materials.length > 0 && (
-        <section className="py-12 md:py-16 bg-gradient-to-b from-slate-50 to-white">
-          <div className={theme.spacing.container}>
+        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+          <div className={spacing.container}>
             <motion.div
               initial={initialState}
               whileInView={createFade(0, 0.8)}
               viewport={viewportConfig}
               className="text-center mb-16"
             >
-              <h2 className={cn(theme.typography.h2, 'mb-6')}>{materialsHeading}</h2>
-              <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
+              <h2 className={cn(typography.h2, 'mb-6')}>{materialsHeading}</h2>
+              <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 {materialsDescription}
               </p>
             </motion.div>
@@ -455,7 +455,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     viewport={viewportConfig}
                   >
                     <Card className={cn(styles.featureCard, 'h-full')}>
-                      <h3 className={cn(theme.typography.h5, 'mb-3')}>{material.category}</h3>
+                      <h3 className={cn(typography.h5, 'mb-3')}>{material.category}</h3>
 
                       {material.types && material.types.length > 0 && (
                         <div className="mb-4 space-y-1">
@@ -477,16 +477,16 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {applications.length > 0 && (
-        <section className="py-12 md:py-16 bg-gradient-to-b from-slate-50 to-white">
-          <div className={theme.spacing.container}>
+        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+          <div className={spacing.container}>
             <motion.div
               initial={initialState}
               whileInView={createFade(0, 0.8)}
               viewport={viewportConfig}
               className="text-center mb-16"
             >
-              <h2 className={cn(theme.typography.h2, 'mb-6')}>{applicationsHeading}</h2>
-              <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
+              <h2 className={cn(typography.h2, 'mb-6')}>{applicationsHeading}</h2>
+              <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 {applicationsDescription}
               </p>
             </motion.div>
@@ -519,19 +519,19 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         </div>
                       )}
                       <div className="p-6">
-                        <h3 className={cn(theme.typography.h4, 'mb-3')}>{app.title}</h3>
-                        <p className={cn(theme.typography.body, 'mb-4')}>{app.description}</p>
+                        <h3 className={cn(typography.h4, 'mb-3')}>{app.title}</h3>
+                        <p className={cn(typography.body, 'mb-4')}>{app.description}</p>
                         {app.timeline && (
                           <div className="mb-4">
-                            <p className={cn(theme.typography.label, 'text-xs uppercase tracking-[0.3em] text-slate-500 mb-1')}>
+                            <p className={cn(typography.label, 'text-xs uppercase tracking-[0.3em] text-slate-500 mb-1')}>
                               Timeline:
                             </p>
-                            <p className={cn(theme.typography.body, 'text-slate-700')}>{app.timeline}</p>
+                            <p className={cn(typography.body, 'text-slate-700')}>{app.timeline}</p>
                           </div>
                         )}
                         {app.challenges && app.challenges.length > 0 && (
                           <div>
-                            <h4 className={cn(theme.typography.label, 'mb-2 text-sm')}>{listLabel}</h4>
+                            <h4 className={cn(typography.label, 'mb-2 text-sm')}>{listLabel}</h4>
                             <div className="space-y-1">
                               {app.challenges.map((item: any) => (
                                 <div key={item.challenge} className="flex items-center text-sm text-slate-600">
@@ -553,16 +553,16 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {qualityStandards.length > 0 && (
-        <section className="py-12 md:py-16 lg:py-20 bg-slate-900">
-          <div className={theme.spacing.container}>
+        <section className="py-24 md:py-32 lg:py-20 bg-slate-900">
+          <div className={spacing.container}>
             <motion.div
               initial={initialState}
               whileInView={createFade(0, 0.8)}
               viewport={viewportConfig}
               className="text-center mb-12"
             >
-              <h2 className={cn(theme.typography.h2, 'mb-4 text-white')}>{qualityHeading}</h2>
-              <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto text-slate-300')}>
+              <h2 className={cn(typography.h2, 'mb-4 text-white')}>{qualityHeading}</h2>
+              <p className={cn(typography.lead, 'max-w-3xl mx-auto text-slate-300')}>
                 {qualityDescription}
               </p>
             </motion.div>
@@ -581,7 +581,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                       className="flex items-start gap-3"
                     >
                       <StandardIcon className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                      <p className={cn(theme.typography.body, 'text-slate-200')}>
+                      <p className={cn(typography.body, 'text-slate-200')}>
                         {standard.title}
                         {standard.description ? ` — ${standard.description}` : ''}
                       </p>
@@ -608,16 +608,16 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {processes.length > 0 && (
-        <section className="py-12 md:py-16 lg:py-20">
-          <div className={theme.spacing.container}>
+        <section className="py-24 md:py-32 lg:py-20">
+          <div className={spacing.container}>
             <motion.div
               initial={initialState}
               whileInView={createFade(0, 0.8)}
               viewport={viewportConfig}
               className="text-center mb-16"
             >
-              <h2 className={cn(theme.typography.h2, 'mb-6')}>{processHeading}</h2>
-              <p className={cn(theme.typography.lead, 'max-w-3xl mx-auto')}>
+              <h2 className={cn(typography.h2, 'mb-6')}>{processHeading}</h2>
+              <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 {processDescription}
               </p>
             </motion.div>
@@ -633,16 +633,16 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     viewport={viewportConfig}
                   >
                     <Card className={cn(styles.featureCard, 'h-full')}>
-                      <div className={cn('w-12 h-12 text-white rounded-lg flex items-center justify-center text-xl font-bold mb-4', theme.colors.primary.gradient)}>
+                      <div className={cn('w-12 h-12 text-white rounded-lg flex items-center justify-center text-xl font-bold mb-4', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
                         {String(index + 1).padStart(2, '0')}
                       </div>
-                      <h3 className={cn(theme.typography.h5, 'mb-3')}>{process.title}</h3>
+                      <h3 className={cn(typography.h5, 'mb-3')}>{process.title}</h3>
                       {process.descriptionRich ? (
-                        <div className={cn(theme.typography.small, 'mb-4')}>
+                        <div className={cn(typography.small, 'mb-4')}>
                           <PortableTextContent value={process.descriptionRich} />
                         </div>
                       ) : (
-                        <p className={cn(theme.typography.small, 'mb-4')}>{process.description}</p>
+                        <p className={cn(typography.small, 'mb-4')}>{process.description}</p>
                       )}
 
                     </Card>
@@ -655,7 +655,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       <section className={styles.sectionDark}>
-        <div className={theme.spacing.container}>
+        <div className={spacing.container}>
           <div className="text-center max-w-4xl mx-auto">
             <SectionHeader
               eyebrow={ctaData.badge}

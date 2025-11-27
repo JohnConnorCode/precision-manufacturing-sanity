@@ -1,25 +1,62 @@
 /**
- * IIS Precision Manufacturing - Design System
- * Unified design constants for consistent homepage UX
+ * IIS Precision Manufacturing - Premium Design System
+ * SINGLE SOURCE OF TRUTH for all styling across the application
+ *
+ * Design Philosophy:
+ * - Clean, sophisticated, and modern
+ * - Subtle animations that delight without distracting
+ * - Deep shadows and soft edges for depth
+ * - Consistent spacing rhythm throughout
+ * - Premium typography with careful hierarchy
  */
 
 // ==================== TYPOGRAPHY ====================
 export const typography = {
-  // Section headings
-  sectionHeading: 'text-4xl md:text-5xl lg:text-6xl font-black',
+  // Display - For hero headlines and maximum impact
+  display: 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-[-0.02em] leading-[0.9]',
 
-  // Eyebrow/subtitle text
-  eyebrow: 'text-sm font-bold uppercase tracking-[0.2em]',
+  // Section headings - Clean and authoritative
+  sectionHeading: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]',
 
-  // Description text
-  description: 'text-lg md:text-xl',
-  descriptionMuted: 'text-lg md:text-xl text-slate-600',
+  // Page hero headings
+  heroHeading: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-[-0.02em] leading-[1.05]',
 
-  // Card titles
-  cardTitle: 'text-xl md:text-2xl font-bold',
+  // Eyebrow/subtitle text - Elegant and understated
+  eyebrow: 'text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] text-blue-600',
 
-  // Body text
-  body: 'text-base text-slate-600',
+  // Description text - Comfortable reading
+  description: 'text-lg md:text-xl leading-relaxed',
+  descriptionMuted: 'text-lg md:text-xl text-slate-600 leading-relaxed',
+  descriptionLight: 'text-lg md:text-xl text-slate-300 leading-relaxed',
+
+  // Card titles - Clear hierarchy
+  cardTitle: 'text-xl md:text-2xl font-bold tracking-tight',
+
+  // Subsection titles
+  subsectionTitle: 'text-2xl md:text-3xl font-bold tracking-tight',
+
+  // Body text - Optimized for readability
+  body: 'text-base text-slate-600 leading-relaxed',
+  bodyLight: 'text-base text-slate-300 leading-relaxed',
+  small: 'text-sm text-slate-500 leading-relaxed',
+
+  // Labels and badges
+  label: 'text-sm font-semibold tracking-wide',
+  badge: 'text-[11px] font-semibold uppercase tracking-[0.1em]',
+
+  // Quotes and callouts
+  quote: 'text-xl md:text-2xl font-medium italic text-slate-700 leading-relaxed',
+
+  // Stats and numbers
+  stat: 'text-4xl md:text-5xl lg:text-6xl font-black tabular-nums',
+
+  // Legacy aliases (backwards compatibility)
+  h1: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight',
+  h2: 'text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight',
+  h3: 'text-2xl sm:text-3xl md:text-4xl font-semibold leading-snug',
+  h4: 'text-xl sm:text-2xl md:text-3xl font-semibold leading-snug',
+  h5: 'text-lg sm:text-xl md:text-2xl font-medium leading-snug',
+  lead: 'text-lg md:text-xl text-slate-600 leading-relaxed',
 } as const;
 
 // ==================== SPACING ====================
@@ -100,12 +137,18 @@ export const colors = {
 } as const;
 
 // ==================== BORDER RADIUS ====================
+// Only 4 values - no mixing!
 export const borderRadius = {
-  card: 'rounded-2xl',
-  button: 'rounded-md',
-  badge: 'rounded-sm',
-  pill: 'rounded-full',
-  input: 'rounded-lg',
+  sm: 'rounded-lg',       // Inputs, small buttons
+  md: 'rounded-xl',       // Cards, standard elements (USE THIS MOST)
+  lg: 'rounded-2xl',      // Feature cards, CTAs, hero elements
+  full: 'rounded-full',   // Pills, badges, avatars
+  // Legacy aliases (prefer the semantic names above)
+  card: 'rounded-xl',     // Use 'md' instead
+  button: 'rounded-lg',   // Use 'sm' instead
+  badge: 'rounded-full',  // Use 'full' instead
+  pill: 'rounded-full',   // Use 'full' instead
+  input: 'rounded-lg',    // Use 'sm' instead
 } as const;
 
 // ==================== ANIMATIONS ====================
@@ -166,12 +209,32 @@ export const motionVariants = {
 } as const;
 
 // ==================== SHADOW UTILITIES ====================
+// Premium shadow system with layered depth
 export const shadows = {
+  // Subtle - For inputs, minimal cards
   subtle: 'shadow-sm',
-  card: 'shadow-md',
-  cardHover: 'shadow-xl',
-  elevated: 'shadow-2xl',
-  button: 'shadow-lg shadow-blue-600/25',
+
+  // Card - Default card shadow with depth
+  card: 'shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)]',
+
+  // Card hover - Elevated state with soft spread
+  cardHover: 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15),0_10px_20px_-5px_rgba(0,0,0,0.1)]',
+
+  // Elevated - Maximum elevation for modals, dropdowns
+  elevated: 'shadow-[0_25px_60px_-12px_rgba(0,0,0,0.25),0_15px_30px_-8px_rgba(0,0,0,0.15)]',
+
+  // Button shadows with brand color glow
+  button: 'shadow-[0_4px_14px_0_rgba(37,99,235,0.25)]',
+  buttonHover: 'shadow-[0_6px_20px_0_rgba(37,99,235,0.35)]',
+
+  // Glow effects for premium elements
+  glowBlue: 'shadow-[0_0_40px_rgba(37,99,235,0.3)]',
+  glowIndigo: 'shadow-[0_0_40px_rgba(79,70,229,0.3)]',
+  glowSoft: 'shadow-[0_0_60px_rgba(37,99,235,0.15)]',
+
+  // Inner shadows for depth
+  inner: 'shadow-inner',
+  innerSubtle: 'shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)]',
 } as const;
 
 // ==================== IMAGE OVERLAYS ====================
@@ -181,11 +244,121 @@ export const overlays = {
   subtle: 'bg-gradient-to-t from-black/60 via-black/20 to-transparent',
 } as const;
 
-// ==================== STANDARD CARD PATTERN ====================
+// ==================== UNIFIED HOVER PATTERNS ====================
+// ONE hover pattern everywhere - no variations!
+export const hover = {
+  // Standard card hover - scale + shadow
+  card: 'hover:scale-[1.02] hover:shadow-xl transition-all duration-300',
+  // Button hover - slight scale
+  button: 'hover:scale-[1.02] active:scale-[0.98] transition-all duration-200',
+  // Link hover - color change only
+  link: 'hover:text-blue-600 transition-colors duration-200',
+  // Subtle hover - just shadow
+  subtle: 'hover:shadow-lg transition-shadow duration-300',
+} as const;
+
+// ==================== STANDARD CARD PATTERNS ====================
+// Unified card styles - use these everywhere!
 export const cardStyles = {
-  base: 'bg-white border border-slate-200 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300',
-  dark: 'bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300',
-  interactive: 'bg-white border border-slate-200 rounded-xl overflow-hidden shadow-md hover:shadow-xl hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300',
+  // Light mode cards
+  base: 'bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-300',
+  // Dark mode cards
+  dark: 'bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300',
+  // Glass effect cards (for dark backgrounds)
+  glass: 'bg-white/10 backdrop-blur-md border border-white/20 rounded-xl',
+  // Interactive (same as base but explicit)
+  interactive: 'bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-300',
+} as const;
+
+// ==================== COMPONENT CLASSES ====================
+// Ready-to-use component class strings
+export const components = {
+  // Buttons
+  buttonPrimary: 'inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow-lg shadow-blue-600/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300',
+  buttonSecondary: 'inline-flex items-center justify-center px-6 py-3 bg-white border border-slate-200 text-slate-900 font-semibold rounded-lg hover:bg-slate-50 hover:shadow-lg transition-all duration-300',
+  buttonGhost: 'inline-flex items-center justify-center px-6 py-3 text-slate-600 font-medium hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all duration-200',
+
+  // Badges
+  badge: 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium',
+  badgeBlue: 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700',
+  badgeDark: 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300',
+
+  // Icon containers
+  iconBox: 'w-12 h-12 rounded-xl flex items-center justify-center',
+  iconBoxPrimary: 'w-12 h-12 rounded-xl flex items-center justify-center bg-blue-600 text-white',
+  iconBoxLight: 'w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 text-blue-600',
+} as const;
+
+// ==================== GRID LAYOUTS ====================
+export const grids = {
+  // Standard responsive grids
+  auto: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8',
+  cols2: 'grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8',
+  cols3: 'grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8',
+  cols4: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8',
+} as const;
+
+// ==================== SECTION STYLES ====================
+export const sections = {
+  light: 'py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white',
+  dark: 'py-24 md:py-32 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950',
+  white: 'py-24 md:py-32 bg-white',
+} as const;
+
+// ==================== COMPOSITE STYLES ====================
+// Ready-to-use style combinations (migrate from theme.ts)
+export const styles = {
+  // Grid layouts (shorthand)
+  grid2Col: grids.cols2,
+  grid3Col: grids.cols3,
+  grid4Col: grids.cols4,
+  gridAuto: grids.auto,
+
+  // Section styles
+  sectionLight: sections.light,
+  sectionDark: sections.dark,
+
+  // Stat value (gradient text)
+  statValue: 'text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600',
+
+  // Feature card (white bg with padding and group hover) - Premium shadow styling
+  featureCard: 'bg-white border border-slate-200/60 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:border-slate-300/80 transition-all duration-300 p-6 md:p-8 group',
+
+  // CTA buttons
+  ctaPrimary: 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:via-blue-400 hover:to-indigo-500 text-white font-semibold shadow-lg shadow-blue-600/25 hover:shadow-xl transition-all duration-300 px-8 py-4',
+  ctaSecondary: 'border-2 border-slate-300 hover:border-blue-500 text-slate-700 hover:text-blue-600 font-medium transition-all duration-300 px-8 py-4',
+
+  // Page header (dark hero background)
+  pageHeader: 'relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 pt-24 pb-20 md:pt-32 md:pb-24 lg:pt-40 lg:pb-28',
+
+  // Heading shortcuts (with color)
+  heading: {
+    section: 'text-4xl md:text-5xl lg:text-6xl font-black text-slate-900',
+    sectionWhite: 'text-4xl md:text-5xl lg:text-6xl font-black text-white',
+    subsection: 'text-2xl md:text-3xl font-bold text-slate-900',
+    subsectionWhite: 'text-2xl md:text-3xl font-bold text-white',
+    card: 'text-xl md:text-2xl font-bold text-slate-900',
+    cardWhite: 'text-xl md:text-2xl font-bold text-white',
+  },
+
+  // Icon containers
+  iconContainer: {
+    small: 'w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white',
+    medium: 'w-12 h-12 rounded-lg bg-blue-600/10 flex items-center justify-center text-blue-600',
+    large: 'w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-blue-600/30',
+  },
+} as const;
+
+// ==================== FORM STYLES ====================
+export const forms = {
+  input: 'bg-slate-950/50 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-600 rounded-lg',
+  textarea: 'bg-slate-950/50 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-600 resize-none rounded-lg',
+  label: 'text-slate-300 text-sm font-medium',
+  select: {
+    trigger: 'bg-slate-950/50 border-slate-700 text-white focus:border-blue-600',
+    content: 'bg-slate-900 border-slate-700 text-white',
+    item: 'text-white hover:bg-slate-800',
+  },
 } as const;
 
 // ==================== HELPER FUNCTIONS ====================
@@ -193,7 +366,7 @@ export const cardStyles = {
 /**
  * Combine multiple design system classes
  */
-export function cn(...classes: (string | undefined | false)[]): string {
+export function cn(...classes: (string | undefined | false | null)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 

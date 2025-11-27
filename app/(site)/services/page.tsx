@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
-import { theme, styles, cn } from '@/lib/theme';
+import { typography, spacing, styles, overlays, cn } from '@/lib/design-system';
 import { ArrowRight, Award } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImagePro from '@/components/ui/parallax-image-pro';
@@ -9,7 +9,6 @@ import { getAllServices, getPageContent, getServicesPage } from '@/sanity/lib/qu
 import AnimatedSection from '@/components/ui/animated-section';
 import type { Metadata } from 'next';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
-import { overlays } from '@/lib/design-system';
 
 // Defensive converter: accepts strings, PT arrays, or simple objects
 function toPlainText(value: any): string {
@@ -193,8 +192,8 @@ export default async function ServicesPage() {
 
       {/* Capabilities Overview - only show if there are enabled capabilities */}
       {capabilities.filter((c: any) => c?.enabled !== false).length > 0 && (
-        <section id="capabilities" className="py-12 md:py-16 bg-gradient-to-b from-slate-50 to-white">
-          <div className={theme.spacing.container}>
+        <section id="capabilities" className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+          <div className={spacing.container}>
             <AnimatedSection>
               <div className={styles.grid4Col}>
                 {capabilities
@@ -207,10 +206,10 @@ export default async function ServicesPage() {
                     <div className={styles.statValue}>
                       {capability.value}
                     </div>
-                    <div className={cn(theme.typography.badge, "text-slate-700 mb-2")}>
+                    <div className={cn(typography.badge, "text-slate-700 mb-2")}>
                       {capability.label}
                     </div>
-                    <div className={theme.typography.small}>
+                    <div className={typography.small}>
                       {capability.description}
                     </div>
                   </div>
@@ -222,18 +221,18 @@ export default async function ServicesPage() {
       )}
 
       {/* Services Grid */}
-      <section id="services" className="py-12 md:py-16 lg:py-20">
-        <div className={theme.spacing.container}>
+      <section id="services" className="py-24 md:py-32 lg:py-20">
+        <div className={spacing.container}>
           {(servicesPageData?.content?.sectionTitle || servicesPageData?.content?.sectionDescription) && (
             <AnimatedSection>
               <div className="text-center mb-16">
                 {servicesPageData?.content?.sectionTitle && (
-                  <h2 className={cn(theme.typography.h2, "mb-6")}>
+                  <h2 className={cn(typography.subsectionTitle, "mb-6")}>
                     {servicesPageData.content.sectionTitle}
                   </h2>
                 )}
                 {servicesPageData?.content?.sectionDescription && (
-                  <p className={cn(theme.typography.lead, "max-w-3xl mx-auto")}>
+                  <p className={cn(typography.description, "max-w-3xl mx-auto")}>
                     {servicesPageData.content.sectionDescription}
                   </p>
                 )}
@@ -264,17 +263,17 @@ export default async function ServicesPage() {
                   )}
 
                   <div className="p-8">
-                    <h3 className={cn(theme.typography.h4, "mb-4 group-hover:text-blue-600 transition-colors")}>
+                    <h3 className={cn(typography.cardTitle, "mb-4 group-hover:text-blue-600 transition-colors")}>
                       {service.title}
                     </h3>
-                    <p className={cn(theme.typography.body, "mb-6")}>
+                    <p className={cn(typography.body, "mb-6")}>
                       {service.description}
                     </p>
 
                     {Array.isArray(service.specs) && service.specs.length > 0 && (
                       <div className="grid grid-cols-2 gap-2 mb-6">
                         {service.specs.slice(0,4).map((spec: any, idx: number) => (
-                          <div key={idx} className={cn("flex items-center", theme.typography.small)}>
+                          <div key={idx} className={cn("flex items-center", typography.small)}>
                             <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2" />
                             {toPlainText(spec)}
                           </div>
@@ -304,15 +303,15 @@ export default async function ServicesPage() {
 
       {(qualityIntro || qualityAssurance.length > 0) && (
         <section className={styles.sectionLight}>
-          <div className={theme.spacing.container}>
+          <div className={spacing.container}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <AnimatedSection>
                 <div>
                   {qualityHeading && (
-                    <h2 className={cn(theme.typography.h2, "mb-6")}>{qualityHeading}</h2>
+                    <h2 className={cn(typography.subsectionTitle, "mb-6")}>{qualityHeading}</h2>
                   )}
                   {qualityIntro && (
-                    <p className={cn(theme.typography.lead, "mb-8")}>
+                    <p className={cn(typography.description, "mb-8")}>
                       {qualityIntro}
                     </p>
                   )}
@@ -326,7 +325,7 @@ export default async function ServicesPage() {
                         className="flex items-center"
                       >
                         <Award className="w-5 h-5 text-slate-600 mr-3" />
-                        <span className={theme.typography.body}>{item.title}</span>
+                        <span className={typography.body}>{item.title}</span>
                       </div>
                     ))}
                   </div>
@@ -351,17 +350,17 @@ export default async function ServicesPage() {
       )}
 
       {showCta && (
-        <section className={theme.spacing.section}>
-          <div className={theme.spacing.container}>
+        <section className={spacing.section}>
+          <div className={spacing.container}>
             <AnimatedSection>
               <div className="text-center max-w-4xl mx-auto">
                 {ctaHeading && (
-                  <h2 className={cn(theme.typography.h2, "mb-6")}>
+                  <h2 className={cn(typography.subsectionTitle, "mb-6")}>
                     {ctaHeading}
                   </h2>
                 )}
                 {ctaDescription && (
-                  <p className={cn(theme.typography.lead, "mb-8")}>
+                  <p className={cn(typography.description, "mb-8")}>
                     {ctaDescription}
                   </p>
                 )}

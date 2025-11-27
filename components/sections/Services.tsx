@@ -9,7 +9,6 @@ import SectionHeader from '@/components/ui/section-header';
 import { spacing, colors, borderRadius } from '@/lib/design-system';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useTheme } from '@/lib/contexts/ThemeContext';
-import { getPrimaryColorStyle, hexToRgba } from '@/lib/theme-utils';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { Service, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
 import { DotGridBackground } from '@/lib/background-patterns';
@@ -103,15 +102,15 @@ export default function Services({ data, sectionData }: ServicesProps) {
               >
                 <Link href={service.href} className="block h-full">
                   <motion.div
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{ scale: 1.02, y: -4 }}
                     whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    className="h-full"
                   >
                     <Card
-                      className={`h-full overflow-hidden transition-all duration-300 hover:shadow-xl border-slate-200 bg-white relative ${
-                        service.highlight ? 'ring-2' : ''
+                      className={`h-full overflow-hidden transition-all duration-300 border-slate-200/60 hover:border-blue-500/30 bg-white relative shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15),0_10px_20px_-5px_rgba(0,0,0,0.1)] ${
+                        service.highlight ? 'ring-2 ring-blue-500/30' : ''
                       }`}
-                      style={service.highlight ? { borderColor: hexToRgba(theme.colors.primary, 0.2) } : undefined}
                     >
                     {/* Image Header */}
                     <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
@@ -121,32 +120,30 @@ export default function Services({ data, sectionData }: ServicesProps) {
                             src={service.image}
                             alt={service.title}
                             fill
-                            className="object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 ease-out"
+                            className="object-cover opacity-90 group-hover:scale-110 group-hover:opacity-100 transition-all duration-700 ease-out"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                         </>
                       )}
 
                       {/* Floating Icon with Premium Effect */}
                       <div className="absolute bottom-4 left-4">
                         <div
-                          className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:rotate-2 transition-all duration-300"
-                          style={{
-                            ...getPrimaryColorStyle(theme.colors),
-                          }}
+                          className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/30 group-hover:shadow-xl group-hover:shadow-blue-600/40 group-hover:scale-105 transition-all duration-300"
+                          style={{ backgroundColor: theme.colors.primary }}
                         >
-                          <Icon className="h-6 w-6" style={getPrimaryColorStyle(theme.colors)} />
+                          <Icon className="h-6 w-6 text-white" />
                         </div>
                       </div>
 
                       {service.highlight && (
                         <div className="absolute top-4 right-4">
                           <span
-                            className="px-3 py-1 text-white text-xs font-semibold rounded-full"
+                            className="px-3 py-1.5 text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-lg"
                             style={{ backgroundColor: theme.colors.primary }}
                           >
-                            FEATURED
+                            Featured
                           </span>
                         </div>
                       )}
@@ -154,40 +151,29 @@ export default function Services({ data, sectionData }: ServicesProps) {
 
                     {/* Content */}
                     <div className="p-6">
-                      <h3
-                        className="text-xl font-bold mb-2 text-slate-900 transition-colors duration-300"
-                        style={{ '--hover-color': theme.colors.primary } as React.CSSProperties}
-                        onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.primary}
-                        onMouseLeave={(e) => e.currentTarget.style.color = ''}
-                      >
+                      <h3 className="text-lg font-bold mb-2 text-slate-900 group-hover:text-blue-600 transition-colors duration-300 tracking-tight">
                         {service.title}
                       </h3>
-                      <p className="text-sm text-slate-800 mb-4 leading-relaxed">
+                      <p className="text-sm text-slate-600 mb-4 leading-relaxed">
                         {service.description}
                       </p>
 
                       <ul className="space-y-2 mb-5">
-                        {(service.specs || []).map((spec, specIndex: number) => {
+                        {(service.specs || []).slice(0, 3).map((spec, specIndex: number) => {
                           // Handle both string and object formats
                           const specText = typeof spec === 'string' ? spec : (spec.text || spec.spec);
                           return (
-                            <li key={specIndex} className="flex items-start text-xs text-slate-800">
-                              <CheckCircle className="h-3 w-3 mr-2 mt-0.5 flex-shrink-0" style={getPrimaryColorStyle(theme.colors)} />
+                            <li key={specIndex} className="flex items-start text-xs text-slate-600">
+                              <CheckCircle className="h-3.5 w-3.5 mr-2 mt-0.5 flex-shrink-0 text-blue-600" />
                               <span>{specText}</span>
                             </li>
                           );
                         })}
                       </ul>
 
-                      <div
-                        className="flex items-center font-semibold text-sm transition-colors duration-300"
-                        style={{ color: theme.colors.primary }}
-                        onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.secondary}
-                        onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.primary}
-                      >
-                        <div className="group-hover:translate-x-1 transition-transform duration-300">
-                          <ArrowRight className="w-4 h-4" />
-                        </div>
+                      <div className="flex items-center font-semibold text-sm text-blue-600 group-hover:text-blue-700 transition-colors duration-300">
+                        <span className="mr-2">Learn more</span>
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                       </div>
                     </div>
                   </Card>

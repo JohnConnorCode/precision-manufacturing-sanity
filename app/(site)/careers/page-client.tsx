@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight, Users, Briefcase, Award, Heart, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
-import { theme, styles, cn } from '@/lib/theme';
+import { typography, spacing, styles, cn } from '@/lib/design-system';
 import imageUrlBuilder from '@sanity/image-url';
 import { client } from '@/sanity/lib/client';
 
@@ -98,8 +98,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       />
 
       {/* About Working Here */}
-      <section className={theme.spacing.section}>
-        <div className={theme.spacing.container}>
+      <section className={spacing.section}>
+        <div className={spacing.container}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -107,14 +107,14 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className={cn(theme.typography.h2, "mb-6")}>{data?.whyWorkHere?.heading || 'Why Work at IIS?'}</h2>
-              <p className={cn(theme.typography.lead, "mb-6")}>
+              <h2 className={cn(typography.h2, "mb-6")}>{data?.whyWorkHere?.heading || 'Why Work at IIS?'}</h2>
+              <p className={cn(typography.lead, "mb-6")}>
                 {data?.whyWorkHere?.paragraph1 || 'Join a team committed to excellence in precision manufacturing.'}
               </p>
-              <p className={cn(theme.typography.body, "text-slate-600 mb-8")}>
+              <p className={cn(typography.body, "text-slate-600 mb-8")}>
                 {data?.whyWorkHere?.paragraph2 || 'We offer competitive compensation and comprehensive benefits.'}
               </p>
-              <p className={cn(theme.typography.body, "text-slate-600")}>
+              <p className={cn(typography.body, "text-slate-600")}>
                 {data?.whyWorkHere?.paragraph3 || 'Grow your career with ongoing training and development opportunities.'}
               </p>
             </motion.div>
@@ -143,7 +143,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
 
       {/* Benefits Section */}
       <section className={styles.sectionLight}>
-        <div className={theme.spacing.container}>
+        <div className={spacing.container}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -151,8 +151,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className={cn(theme.typography.h2, "mb-6")}>{data?.benefits?.title || 'Comprehensive Benefits Package'}</h2>
-            <p className={cn(theme.typography.lead, "max-w-3xl mx-auto")}>
+            <h2 className={cn(typography.h2, "mb-6")}>{data?.benefits?.title || 'Comprehensive Benefits Package'}</h2>
+            <p className={cn(typography.lead, "max-w-3xl mx-auto")}>
               {data?.benefits?.description || 'We take care of our team members with industry-leading benefits and perks.'}
             </p>
           </motion.div>
@@ -178,8 +178,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                         </div>
                       </div>
                       <div className="ml-4">
-                        <h3 className={cn(theme.typography.h4, "mb-2")}>{benefit.title}</h3>
-                        <p className={cn(theme.typography.body, "text-slate-600")}>{benefit.description}</p>
+                        <h3 className={cn(typography.h4, "mb-2")}>{benefit.title}</h3>
+                        <p className={cn(typography.body, "text-slate-600")}>{benefit.description}</p>
                       </div>
                     </div>
                   </Card>
@@ -191,8 +191,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       </section>
 
       {/* Company Values */}
-      <section className={theme.spacing.section}>
-        <div className={theme.spacing.container}>
+      <section className={spacing.section}>
+        <div className={spacing.container}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -200,8 +200,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className={cn(theme.typography.h2, "mb-6")}>{data?.values?.title || 'Our Values'}</h2>
-            <p className={cn(theme.typography.lead, "max-w-3xl mx-auto")}>
+            <h2 className={cn(typography.h2, "mb-6")}>{data?.values?.title || 'Our Values'}</h2>
+            <p className={cn(typography.lead, "max-w-3xl mx-auto")}>
               {data?.values?.description || 'The principles that guide everything we do.'}
             </p>
           </motion.div>
@@ -218,8 +218,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                 viewport={{ once: true }}
               >
                 <Card className={cn(styles.featureCard)}>
-                  <h3 className={cn(theme.typography.h4, "mb-3")}>{value.title}</h3>
-                  <p className={cn(theme.typography.body, "text-slate-600")}>{value.description}</p>
+                  <h3 className={cn(typography.h4, "mb-3")}>{value.title}</h3>
+                  <p className={cn(typography.body, "text-slate-600")}>{value.description}</p>
                 </Card>
               </motion.div>
             ))}
@@ -229,7 +229,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
 
       {/* Current Opportunities */}
       <section id="opportunities" className={styles.sectionLight}>
-        <div className={theme.spacing.container}>
+        <div className={spacing.container}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -237,8 +237,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className={cn(theme.typography.h2, "mb-6")}>{data?.opportunities?.title || 'Current Opportunities'}</h2>
-            <p className={cn(theme.typography.lead, "max-w-3xl mx-auto")}>
+            <h2 className={cn(typography.h2, "mb-6")}>{data?.opportunities?.title || 'Current Opportunities'}</h2>
+            <p className={cn(typography.lead, "max-w-3xl mx-auto")}>
               {data?.opportunities?.description || 'Explore open positions and join our team.'}
             </p>
           </motion.div>
@@ -258,7 +258,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <h3 className={cn(theme.typography.h4, "mb-0 group-hover:text-blue-600 transition-colors")}>{position.title}</h3>
+                            <h3 className={cn(typography.h4, "mb-0 group-hover:text-blue-600 transition-colors")}>{position.title}</h3>
                             {position.featured && (
                               <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full border border-amber-200">
                                 Featured
@@ -266,11 +266,11 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                             )}
                           </div>
                           {position.department && (
-                            <p className={cn(theme.typography.small, "text-slate-500 mb-3")}>
+                            <p className={cn(typography.small, "text-slate-500 mb-3")}>
                               {position.department}
                             </p>
                           )}
-                          <p className={cn(theme.typography.body, "text-slate-600 mb-3")}>
+                          <p className={cn(typography.body, "text-slate-600 mb-3")}>
                             {position.shortDescription}
                           </p>
                           <div className="flex flex-wrap gap-2">
@@ -300,10 +300,10 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             </div>
           ) : (
             <Card className="p-12 text-center">
-              <p className={cn(theme.typography.lead, "text-slate-600 mb-4")}>
+              <p className={cn(typography.lead, "text-slate-600 mb-4")}>
                 No open positions at this time.
               </p>
-              <p className={cn(theme.typography.body, "text-slate-500")}>
+              <p className={cn(typography.body, "text-slate-500")}>
                 Check back soon or contact us to express your interest in future opportunities.
               </p>
             </Card>
@@ -312,8 +312,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       </section>
 
       {/* CTA Section */}
-      <section className={theme.spacing.section}>
-        <div className={theme.spacing.container}>
+      <section className={spacing.section}>
+        <div className={spacing.container}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -321,8 +321,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             viewport={{ once: true }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h2 className={cn(theme.typography.h2, "mb-6")}>{data?.cta?.title || 'Ready to Join Us?'}</h2>
-            <p className={cn(theme.typography.lead, "mb-8")}>
+            <h2 className={cn(typography.h2, "mb-6")}>{data?.cta?.title || 'Ready to Join Us?'}</h2>
+            <p className={cn(typography.lead, "mb-8")}>
               {data?.cta?.description || 'Take the next step in your career. We look forward to hearing from you.'}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

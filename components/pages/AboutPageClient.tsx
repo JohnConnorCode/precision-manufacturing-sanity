@@ -7,7 +7,7 @@ import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight, Users, Factory, Award, Target, Zap, Shield, Lightbulb } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImage from '@/components/ui/parallax-image';
-import { theme, styles, cn } from '@/lib/theme';
+import { typography, spacing, styles, cn } from '@/lib/design-system';
 import imageUrlBuilder from '@sanity/image-url';
 import { client } from '@/sanity/lib/client';
 
@@ -110,7 +110,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
 
       {Array.isArray(data.companyStats) && data.companyStats.length > 0 && (
         <section id="stats" className={`${styles.sectionLight} bg-slate-900/5`}>
-          <div className={theme.spacing.container}>
+          <div className={spacing.container}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -146,8 +146,8 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
       )}
 
       {(data.story?.title || storyParagraphs.length > 0 || storyImage) && (
-        <section className={theme.spacing.section}>
-          <div className={theme.spacing.container}>
+        <section className={spacing.section}>
+          <div className={spacing.container}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -156,7 +156,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 viewport={{ once: true }}
               >
                 {data.story?.title && (
-                  <h2 className={cn(theme.typography.h2, "mb-6")}>{data.story.title}</h2>
+                  <h2 className={cn(typography.h2, "mb-6")}>{data.story.title}</h2>
                 )}
                 <div className="space-y-4 text-slate-600 leading-relaxed">
                   {storyParagraphs.map((paragraph: string, index: number) => (
@@ -188,7 +188,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
 
       {timelineMilestones.length > 0 && (
         <section className={styles.sectionLight}>
-          <div className={theme.spacing.container}>
+          <div className={spacing.container}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -197,7 +197,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="text-center mb-16"
             >
               {data.timeline?.title && (
-                <h2 className={cn(theme.typography.h2, "mb-6")}>{data.timeline.title}</h2>
+                <h2 className={cn(typography.h2, "mb-6")}>{data.timeline.title}</h2>
               )}
               {data.timeline?.description && (
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
@@ -241,7 +241,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
 
       {valuesItems.length > 0 && (
         <section className={styles.sectionLight}>
-          <div className={theme.spacing.container}>
+          <div className={spacing.container}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -250,7 +250,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="text-center mb-16"
             >
               {data.values?.title && (
-                <h2 className={cn(theme.typography.h2, "mb-6")}>{data.values.title}</h2>
+                <h2 className={cn(typography.h2, "mb-6")}>{data.values.title}</h2>
               )}
               {data.values?.description && (
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
@@ -289,7 +289,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
 
       {(capabilities.length > 0 || certifications.length > 0) && (
         <section id="capabilities" className={styles.sectionLight}>
-          <div className={theme.spacing.container}>
+          <div className={spacing.container}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {capabilities.length > 0 && (
                 <motion.div
@@ -327,7 +327,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   viewport={{ once: true }}
                 >
                   {data.certifications?.title && (
-                    <h2 className={cn(theme.typography.h2, "mb-4")}>{data.certifications.title}</h2>
+                    <h2 className={cn(typography.h2, "mb-4")}>{data.certifications.title}</h2>
                   )}
                   <div className="space-y-4">
                     {certifications.map((cert: any, index: number) => (
@@ -353,8 +353,8 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
       )}
 
       {leadershipMembers.length > 0 && (
-        <section className={theme.spacing.section}>
-          <div className={theme.spacing.container}>
+        <section className={spacing.section}>
+          <div className={spacing.container}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -363,7 +363,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="text-center mb-16"
             >
               {data.leadership?.title && (
-                <h2 className={cn(theme.typography.h2, "mb-6")}>{data.leadership.title}</h2>
+                <h2 className={cn(typography.h2, "mb-6")}>{data.leadership.title}</h2>
               )}
               {data.leadership?.description && (
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
@@ -421,8 +421,8 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
       )}
 
       {(data.cta?.title || data.cta?.description || ctaButtons.length > 0) && (
-        <section className={theme.spacing.section}>
-          <div className={theme.spacing.container}>
+        <section className={spacing.section}>
+          <div className={spacing.container}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -431,7 +431,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="text-center max-w-4xl mx-auto"
             >
               {data.cta?.title && (
-                <h2 className={cn(theme.typography.h2, "mb-6")}>{data.cta.title}</h2>
+                <h2 className={cn(typography.h2, "mb-6")}>{data.cta.title}</h2>
               )}
               {data.cta?.description && (
                 <p className="text-xl text-slate-600 mb-8">

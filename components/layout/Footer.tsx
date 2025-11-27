@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Linkedin, Twitter, Facebook, Mail, Phone, MapPin, Zap } from 'lucide-react';
 import Logo from '@/components/ui/logo';
-import { theme, cn } from '@/lib/theme';
+import { typography, cn } from '@/lib/design-system';
 import { motion } from 'framer-motion';
 
 interface FooterProps {
@@ -176,7 +176,7 @@ const Footer = ({ data }: FooterProps) => {
         >
           <motion.div variants={itemVariants} className="space-y-4">
             <Logo variant="light" showText={true} size="md" animated={true} logoData={data?.logo} />
-            <p className={cn(theme.typography.small, 'text-slate-400 max-w-xs')}>
+            <p className={cn(typography.small, 'text-slate-400 max-w-xs')}>
               {footerData.company?.description}
             </p>
             <div className="flex space-x-4">
@@ -274,12 +274,12 @@ const Footer = ({ data }: FooterProps) => {
           transition={{ delay: 0.8, duration: 0.6 }}
         >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className={cn(theme.typography.small, 'text-slate-500')}>
+            <p className={cn(typography.small, 'text-slate-500')}>
               {footerData.copyright?.replace('{year}', new Date().getFullYear().toString())}
             </p>
             <div className="flex items-center space-x-6">
               <Zap className="h-3 w-3 text-blue-400" />
-              <div className={cn(theme.typography.badge, 'text-slate-500')}>
+              <div className={cn(typography.badge, 'text-slate-500')}>
                 <span>Founded {footerData.company?.foundedYear}</span>
                 <span className="mx-2">•</span>
                 <span>{footerData.company?.certifications}</span>
