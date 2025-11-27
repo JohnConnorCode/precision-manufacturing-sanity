@@ -7,13 +7,11 @@ import { Menu, Phone, Mail, Zap, ArrowRight, Home, Info, Wrench, Building2, Book
 import Logo from '@/components/ui/logo';
 import { PremiumButton } from '@/components/ui/premium-button';
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
@@ -83,7 +81,7 @@ export default function Header({ data }: HeaderProps) {
   const align: 'left' | 'center' | 'right' = navStyles.alignment || 'left'
   const themeMode: 'auto' | 'light' | 'dark' = navStyles.theme || 'auto'
   const density: 'comfortable' | 'compact' = navStyles.density || 'comfortable'
-  const dropdownStyle: 'card' | 'columns' = navStyles.dropdownStyle || 'card'
+  const _dropdownStyle: 'card' | 'columns' = navStyles.dropdownStyle || 'card'
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
@@ -259,15 +257,15 @@ export default function Header({ data }: HeaderProps) {
             <Logo className="h-12 sm:h-14 md:h-16 w-auto" logoData={data?.logo} animated={true} />
           </Link>
 
-          {/* Desktop Navigation - Progressive Collapse Strategy */}
-          <NavigationMenu className="hidden lg:flex flex-1">
+          {/* Desktop Navigation - Click-based Dropdowns */}
+          <nav className="hidden lg:flex flex-1">
             <motion.div
               variants={navContainerVariants}
               initial="hidden"
               animate="visible"
               className="w-full"
             >
-            <NavigationMenuList className={listJustify}>
+            <ul className={cn('flex flex-1 list-none items-center space-x-1', listJustify)}>
               {navigation.map((item: any, index: number) => {
                 const children = Array.isArray((item as any).children)
                   ? (item as any).children.filter((c: any) => c && (c.href || c.name))
@@ -289,171 +287,112 @@ export default function Header({ data }: HeaderProps) {
                 const hasRealHref = href && href !== '/' && href !== '#'
 
                 return (
-                  <motion.div key={item.name} variants={navItemVariants}>
-                  <NavigationMenuItem className={itemClasses}>
+                  <motion.li key={item.name} variants={navItemVariants} className={itemClasses}>
                     {hasChildren ? (
-                      <>
+                      /* Click-based dropdown for items with children */
+                      <div className="flex items-center">
                         {/* If item has both children AND a real href, make name clickable */}
-                        {hasRealHref ? (
-                          <div className="flex items-center">
-                            <NavigationMenuLink asChild>
-                              <Link
-                                href={href}
-                                className={cn(
-                                  'inline-flex items-center justify-center rounded-md',
-                                  sizeClasses,
-                                  'text-sm font-medium transition-all',
-                                  linkTone,
-                                  pathname === href && activeTone
-                                )}
-                              >
-                                <span className="inline-flex items-center">
-                                  {IconFor(item?.iconName)}
-                                  {item.name}
-                                </span>
-                              </Link>
-                            </NavigationMenuLink>
-                            <NavigationMenuTrigger
-                              className={cn(
-                                triggerTone,
-                                'font-medium px-1.5 ml-0',
-                                'data-[state=open]:after:w-full'
-                              )}
-                              aria-label={`${item.name} submenu`}
-                            >
-                              <span className="sr-only">Open {item.name} menu</span>
-                            </NavigationMenuTrigger>
-                          </div>
-                        ) : (
-                          <NavigationMenuTrigger
+                        {hasRealHref && (
+                          <Link
+                            href={href}
                             className={cn(
-                              triggerTone,
-                              'font-medium',
+                              'inline-flex items-center justify-center rounded-md',
                               sizeClasses,
-                              'data-[state=open]:after:w-full'
+                              'text-sm font-medium transition-all',
+                              linkTone,
+                              pathname === href && activeTone
                             )}
-                            aria-label={`${item.name} menu`}
                           >
                             <span className="inline-flex items-center">
                               {IconFor(item?.iconName)}
                               {item.name}
                             </span>
-                          </NavigationMenuTrigger>
+                          </Link>
                         )}
-                        <NavigationMenuContent>
-                          <motion.ul
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger
                             className={cn(
-                              'grid backdrop-blur-xl rounded-xl shadow-xl',
-                              dropdownTone,
-                              dropdownStyle === 'columns'
-                                ? 'grid-cols-2 md:grid-cols-3 w-[720px] gap-4 p-6'
-                                : 'w-[500px] gap-2 p-4'
+                              'group inline-flex items-center justify-center rounded-md bg-transparent text-sm font-medium transition-colors',
+                              hasRealHref ? 'px-1.5 ml-0' : sizeClasses,
+                              triggerTone,
+                              'focus:outline-none'
                             )}
+                            aria-label={`${item.name} submenu`}
                           >
-                            {dropdownStyle === 'columns'
-                              ? (() => {
-                                  const groups: Array<{ title: string; items: any[] }> = []
-                                  const misc: any[] = []
-                                  for (const ch of children) {
-                                    if (Array.isArray(ch.children) && ch.children.length > 0) {
-                                      groups.push({ title: ch.name, items: ch.children })
-                                    } else {
-                                      misc.push(ch)
-                                    }
-                                  }
-                                  if (misc.length > 0) groups.push({ title: 'More', items: misc })
-                                  return groups.map((group) => (
-                                    <li key={group.title} className="min-w-0">
-                                      <div className="px-1 pb-2">
-                                        <div className={cn('text-xs uppercase tracking-wide mb-2', isDark ? 'text-slate-400' : 'text-slate-500')}>
-                                          {group.title}
-                                        </div>
-                                        <div className="flex flex-col gap-2">
-                                          {group.items.map((gitem: any) => (
-                                            <Link
-                                              key={gitem.name}
-                                              href={(gitem.href && gitem.href !== '#') ? gitem.href : href}
-                                              target={gitem?.openInNewTab ? '_blank' : undefined}
-                                              rel={gitem?.openInNewTab ? 'noopener noreferrer' : undefined}
-                                              className={cn(
-                                                'rounded-md px-3 py-2 transition-colors',
-                                                isDark ? 'hover:bg-slate-800/60 text-slate-100' : 'hover:bg-slate-100/80 text-slate-900'
-                                              )}
-                                            >
-                                              <div className="text-sm font-semibold flex items-center">
-                                                {IconFor(gitem?.iconName)}
-                                                {gitem.name}
-                                              </div>
-                                              {gitem.description && (
-                                                <div className={cn('text-xs mt-0.5', isDark ? 'text-slate-400' : 'text-slate-500')}>
-                                                  {gitem.description}
-                                                </div>
-                                              )}
-                                            </Link>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    </li>
-                                  ))
-                                })()
-                              : children.map((child: any) => (
-                                  <li key={child.name}>
-                                    <NavigationMenuLink asChild>
-                                      <Link
-                                        href={(child.href && child.href !== '#') ? child.href : href}
-                                        target={child?.openInNewTab ? '_blank' : undefined}
-                                        rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
-                                        className={cn(
-                                          'block select-none rounded-lg p-4 no-underline outline-none transition-all group h-full',
-                                          isDark
-                                            ? 'hover:bg-slate-800/60 focus:bg-slate-800/60 text-slate-100'
-                                            : 'hover:bg-slate-100/80 focus:bg-slate-100 text-slate-900'
-                                        )}
-                                        aria-label={child.name}
-                                      >
-                                        <div className={cn('text-sm font-semibold', isDark ? 'text-slate-100 group-hover:text-white' : 'text-slate-900 group-hover:text-slate-700')}>
-                                          <span className="inline-flex items-center">
-                                            {IconFor(child?.iconName)}
-                                            {child.name}
-                                          </span>
-                                        </div>
-                                        {child.description && (
-                                          <div className={cn('text-xs mt-1', isDark ? 'text-slate-400' : 'text-slate-500')}>
-                                            {child.description}
-                                          </div>
-                                        )}
-                                      </Link>
-                                    </NavigationMenuLink>
-                                  </li>
-                                ))}
-                          </motion.ul>
-                        </NavigationMenuContent>
-                      </>
-                    ) : (
-                      itemVariant.startsWith('button-') ? (
-                        <NavigationMenuLink asChild>
-                          <Link href={href} target={target} rel={rel}>
-                            <PremiumButton
-                              variant={itemVariant === 'button-primary' ? 'default' : 'secondary'}
-                              size={density === 'compact' ? 'sm' : 'default'}
-                            >
+                            {!hasRealHref && (
                               <span className="inline-flex items-center">
                                 {IconFor(item?.iconName)}
                                 {item.name}
                               </span>
-                            </PremiumButton>
-                          </Link>
-                        </NavigationMenuLink>
-                      ) : (
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href={href}
-                            target={target}
-                            rel={rel}
+                            )}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className={cn('h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-180', hasRealHref ? '' : 'ml-1')}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent
+                            align="start"
+                            sideOffset={8}
                             className={cn(
-                              'inline-flex w-max items-center justify-center rounded-md',
+                              'min-w-[280px] backdrop-blur-xl rounded-xl shadow-xl',
+                              dropdownTone
+                            )}
+                          >
+                            {children.map((child: any) => (
+                              <DropdownMenuItem key={child.name} asChild>
+                                <Link
+                                  href={(child.href && child.href !== '#') ? child.href : href}
+                                  target={child?.openInNewTab ? '_blank' : undefined}
+                                  rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
+                                  className={cn(
+                                    'block select-none rounded-lg p-3 no-underline outline-none transition-all cursor-pointer',
+                                    isDark
+                                      ? 'hover:bg-slate-800/60 focus:bg-slate-800/60 text-slate-100'
+                                      : 'hover:bg-slate-100/80 focus:bg-slate-100 text-slate-900'
+                                  )}
+                                >
+                                  <div className={cn('text-sm font-semibold', isDark ? 'text-slate-100' : 'text-slate-900')}>
+                                    <span className="inline-flex items-center">
+                                      {IconFor(child?.iconName)}
+                                      {child.name}
+                                    </span>
+                                  </div>
+                                  {child.description && (
+                                    <div className={cn('text-xs mt-1', isDark ? 'text-slate-400' : 'text-slate-500')}>
+                                      {child.description}
+                                    </div>
+                                  )}
+                                </Link>
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    ) : (
+                      itemVariant.startsWith('button-') ? (
+                        <Link href={href} target={target} rel={rel}>
+                          <PremiumButton
+                            variant={itemVariant === 'button-primary' ? 'default' : 'secondary'}
+                            size={density === 'compact' ? 'sm' : 'default'}
+                          >
+                            <span className="inline-flex items-center">
+                              {IconFor(item?.iconName)}
+                              {item.name}
+                            </span>
+                          </PremiumButton>
+                        </Link>
+                      ) : (
+                        <Link
+                          href={href}
+                          target={target}
+                          rel={rel}
+                          className={cn(
+                            'inline-flex w-max items-center justify-center rounded-md',
                               sizeClasses,
                               'text-sm font-medium transition-all',
                               linkTone,
@@ -470,16 +409,14 @@ export default function Header({ data }: HeaderProps) {
                               </span>
                             )}
                           </Link>
-                        </NavigationMenuLink>
                       )
                     )}
-                  </NavigationMenuItem>
-                  </motion.div>
+                  </motion.li>
                 )
               })}
-            </NavigationMenuList>
+            </ul>
             </motion.div>
-          </NavigationMenu>
+          </nav>
 
           {/* Desktop CTA - Premium Design */}
           {cta && cta.text && (
