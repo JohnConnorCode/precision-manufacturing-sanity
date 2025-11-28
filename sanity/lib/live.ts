@@ -1,14 +1,14 @@
 /**
- * Sanity Live Mode Configuration
+ * Sanity Live Mode Configuration - next-sanity v11+
  *
- * This sets up live editing for Sanity Presentation Tool.
- * Uses defineLive() from next-sanity v9+ to handle:
+ * Uses the new /live export for proper Presentation Tool integration.
+ * This handles:
  * - Stega encoding for click-to-edit in preview
- * - WebSocket connections for live updates
+ * - Live content updates via WebSocket
  * - Draft mode handling
  */
 
-import { defineLive } from 'next-sanity'
+import { defineLive } from 'next-sanity/live'
 import { client } from './client'
 
 // Get the studio URL dynamically
@@ -29,6 +29,13 @@ const getStudioUrl = () => {
   return 'http://localhost:3000/studio'
 }
 
+// Get the token - required for draft content
+const token = process.env.SANITY_API_READ_TOKEN
+
+if (!token) {
+  console.warn('Missing SANITY_API_READ_TOKEN - draft mode will not work')
+}
+
 export const { sanityFetch, SanityLive } = defineLive({
   client: client.withConfig({
     stega: {
@@ -36,12 +43,6 @@ export const { sanityFetch, SanityLive } = defineLive({
       studioUrl: getStudioUrl(),
     },
   }),
-  // Server token for fetching draft content
-  serverToken: process.env.SANITY_API_READ_TOKEN,
-  // Browser token for live updates (optional, enables mutations)
-  browserToken: process.env.SANITY_API_READ_TOKEN,
-  // Fetch options for live mode
-  fetchOptions: {
-    revalidate: 0, // Disable caching for live editing
-  },
+  serverToken: token,
+  browserToken: token,
 })
