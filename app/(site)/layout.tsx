@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google'
 import "../globals.css";
 import SiteChrome from "@/components/layout/SiteChrome";
 import CMSIndicator from "@/components/cms-indicator";
-import VisualEditingClient from '@/components/VisualEditingClient'
+import { SanityLive } from '@/sanity/lib/live'
 import { AdminToolbar } from "@/components/admin-toolbar";
 import { Analytics } from "@vercel/analytics/react";
 import PreviewBanner from "@/components/preview-banner";
@@ -304,7 +304,7 @@ export default async function SiteLayout({
           theme="dark"
         />
         <CMSIndicator />
-        {isDraft && <VisualEditingClient />}
+        <SanityLive />
         {isDraft ? <PreviewBanner /> : null}
       </div>
     </>
