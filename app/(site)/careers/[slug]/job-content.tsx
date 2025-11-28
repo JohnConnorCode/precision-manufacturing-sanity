@@ -61,7 +61,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
               </span>
             </div>
 
-            <h1 className={cn(typography.h1, 'text-white mb-6')}>{job.title}</h1>
+            <h1 className={cn(typography.h1, 'text-white mb-6 uppercase')}>{job.title}</h1>
 
             <div className="flex flex-wrap gap-6 text-slate-400">
               {job.location && (

@@ -97,7 +97,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600/10 border border-blue-600/20 mb-4">
                 <span className="text-sm font-medium text-blue-400">Admin Dashboard</span>
               </div>
-              <h1 className={cn(typography.heroHeading, 'text-white mb-3')}>
+              <h1 className={cn(typography.heroHeading, 'text-white mb-3 uppercase')}>
                 System <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">Status</span>
               </h1>
               <p className={cn(typography.descriptionLight)}>

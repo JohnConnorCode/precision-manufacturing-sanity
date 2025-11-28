@@ -227,7 +227,7 @@ export default function HeroSection({
             transition={{ delay: 0.4, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
             className={cn(
               titleSize ? titleSizeClasses[titleSize] : 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
-              'font-extrabold mb-6 tracking-tight'
+              'font-extrabold mb-6 tracking-tight uppercase'
             )}
             style={{ color: defaultTitleColor }}
           >

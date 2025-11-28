@@ -149,7 +149,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
             <HelpCircle className="h-4 w-4 text-blue-400" />
             <span className="text-sm font-medium text-blue-400">Help Center</span>
           </div>
-          <h1 className={cn(typography.heroHeading, 'text-white mb-3')}>
+          <h1 className={cn(typography.heroHeading, 'text-white mb-3 uppercase')}>
             Troubleshooting <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">Guide</span>
           </h1>
           <p className={cn(typography.descriptionLight)}>

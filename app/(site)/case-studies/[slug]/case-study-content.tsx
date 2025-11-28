@@ -94,7 +94,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
             </div>
 
             {/* Title */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 max-w-4xl">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 max-w-4xl uppercase">
               {data.title}
             </h1>
 

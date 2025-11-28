@@ -91,7 +91,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
               </div>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-black mb-6 text-white leading-tight">
+            <h1 className="text-4xl md:text-5xl font-black mb-6 text-white leading-tight uppercase">
               {resource.title}
             </h1>
 

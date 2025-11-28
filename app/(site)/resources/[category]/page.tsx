@@ -97,7 +97,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
               <span className="text-sm font-medium text-blue-400">Resources</span>
             </div>
 
-            <h1 className={cn(typography.heroHeading, 'text-white mb-6')}>
+            <h1 className={cn(typography.heroHeading, 'text-white mb-6 uppercase')}>
               {categoryData.title.split(' ').slice(0, -1).join(' ')}{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
                 {categoryData.title.split(' ').slice(-1)}
