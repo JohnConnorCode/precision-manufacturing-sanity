@@ -93,9 +93,9 @@ export default defineConfig({
     presentationTool({
       previewUrl: {
         origin: getPreviewOrigin(),
-        draftMode: {
-          enable: '/api/draft',
-          disable: '/api/draft/disable',
+        preview: '/',
+        previewMode: {
+          enable: '/api/draft-mode/enable',
         },
       },
       resolve: {
