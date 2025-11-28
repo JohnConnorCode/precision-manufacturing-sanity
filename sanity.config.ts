@@ -20,19 +20,35 @@ import StudioLogo from './sanity/components/StudioLogo'
  * Works for both local development and production deployment.
  *
  * Priority:
- * 1. NEXT_PUBLIC_SITE_URL (explicit override)
- * 2. VERCEL_URL (Vercel production/preview deployments)
- * 3. Fallback to localhost for local development
+ * 1. Browser window.location.origin (when running in Sanity Studio in browser)
+ * 2. NEXT_PUBLIC_SITE_URL (explicit override, not localhost)
+ * 3. NEXT_PUBLIC_VERCEL_URL (Vercel's automatic URL - NEXT_PUBLIC_ prefix makes it available client-side)
+ * 4. Fallback to localhost for local development
  */
 function getPreviewOrigin(): string {
+  // In browser (Sanity Studio), use current window origin
+  // This ensures the iframe preview uses the same domain as the Studio
+  if (typeof window !== 'undefined') {
+    // Extract the base URL (remove /studio path if present)
+    const origin = window.location.origin
+    return origin
+  }
+
   // Explicit site URL takes priority (set in Vercel env vars for production)
   if (process.env.NEXT_PUBLIC_SITE_URL && process.env.NEXT_PUBLIC_SITE_URL !== 'http://localhost:3000') {
     return process.env.NEXT_PUBLIC_SITE_URL
   }
-  // Vercel deployments (production and preview)
+
+  // Vercel deployments - use NEXT_PUBLIC_VERCEL_URL if available
+  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
+    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  }
+
+  // Server-side Vercel URL fallback
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`
   }
+
   // Local development fallback
   return 'http://localhost:3000'
 }
