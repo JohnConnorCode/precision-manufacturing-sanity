@@ -6,6 +6,7 @@ import "../globals.css";
 import SiteChrome from "@/components/layout/SiteChrome";
 import CMSIndicator from "@/components/cms-indicator";
 import { SanityLive } from '@/sanity/lib/live'
+import VisualEditingClient from '@/components/VisualEditingClient'
 import { AdminToolbar } from "@/components/admin-toolbar";
 import { Analytics } from "@vercel/analytics/react";
 import PreviewBanner from "@/components/preview-banner";
@@ -305,6 +306,7 @@ export default async function SiteLayout({
         />
         <CMSIndicator />
         <SanityLive />
+        {isDraft && <VisualEditingClient />}
         {isDraft ? <PreviewBanner /> : null}
       </div>
     </>
