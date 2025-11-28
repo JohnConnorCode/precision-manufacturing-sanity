@@ -101,19 +101,13 @@ export default function CTA({ data }: CTAProps) {
       </div>
 
       <div className="container relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: prefersReducedMotion ? 0 : 0.8 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto text-center"
-        >
+        <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           {badge && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: 0.1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0 }}
               viewport={{ once: true }}
               className="inline-flex items-center px-4 py-2 mb-8 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-sm"
             >
@@ -124,22 +118,40 @@ export default function CTA({ data }: CTAProps) {
           )}
 
           {/* Title with gradient on last 2 words */}
-          <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-8 leading-tight">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.7, delay: prefersReducedMotion ? 0 : 0.1 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-8 leading-tight"
+          >
             {firstPart && <span>{firstPart} </span>}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-500">
               {lastPart}
             </span>
-          </h2>
+          </motion.h2>
 
           {/* Subtitle */}
           {subtitleString && (
-            <p className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 0.2 }}
+              viewport={{ once: true }}
+              className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto"
+            >
               {subtitleString}
-            </p>
+            </motion.p>
           )}
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 0.3 }}
+            viewport={{ once: true }}
+            className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+          >
             {buttons.map((button, index) => {
               const mappedVariant: 'default' | 'secondary' =
                 button.variant === 'primary' ? 'default'
@@ -156,7 +168,7 @@ export default function CTA({ data }: CTAProps) {
                 </Link>
               );
             })}
-          </div>
+          </motion.div>
 
           {/* Certification Badges */}
           {certifications.length > 0 && (
@@ -172,7 +184,7 @@ export default function CTA({ data }: CTAProps) {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{
                       duration: prefersReducedMotion ? 0 : 0.5,
-                      delay: prefersReducedMotion ? 0 : 0.2 + index * 0.1
+                      delay: prefersReducedMotion ? 0 : 0.4 + index * 0.1
                     }}
                     viewport={{ once: true }}
                     className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-slate-900/50 border border-slate-800/50 hover:border-slate-700 transition-colors"
@@ -201,7 +213,7 @@ export default function CTA({ data }: CTAProps) {
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.8, delay: 0.5 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.8, delay: prefersReducedMotion ? 0 : 0.7 }}
               viewport={{ once: true }}
               className="mt-12"
             >
@@ -210,7 +222,7 @@ export default function CTA({ data }: CTAProps) {
               </p>
             </motion.div>
           )}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -173,7 +173,7 @@ export default function Hero({ data }: HeroProps) {
                     filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
                   }}
                 >
-                  {word1}
+                  {word1.toUpperCase()}
                 </motion.span>
               )}
               {/* Word 2 */}
@@ -188,7 +188,7 @@ export default function Hero({ data }: HeroProps) {
                     filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
                   }}
                 >
-                  {word2}
+                  {word2.toUpperCase()}
                 </motion.span>
               )}
               {/* Word 3 with gradient */}
@@ -213,7 +213,7 @@ export default function Hero({ data }: HeroProps) {
                         }
                   }
                 >
-                  {word3}
+                  {word3.toUpperCase()}
                 </motion.span>
               )}
             </div>
