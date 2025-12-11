@@ -303,65 +303,88 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {capabilities.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="space-y-6">
-                    {capabilities.map((capability: any, index: number) => (
-                      <Card key={`${capability?.title}-${index}`} className="p-6 border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-lg">
-                        <h3 className="text-xl font-bold mb-3">{capability?.title}</h3>
+            {/* Capabilities Grid - Full Width */}
+            {capabilities.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                {capabilities.map((capability: any, index: number) => {
+                  const gradients = [
+                    'from-blue-600 to-indigo-600',
+                    'from-indigo-600 to-purple-600',
+                    'from-cyan-600 to-blue-600',
+                    'from-purple-600 to-pink-600',
+                  ];
+                  const gradient = gradients[index % gradients.length];
+                  return (
+                    <motion.div
+                      key={`${capability?.title}-${index}`}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
+                      viewport={{ once: true }}
+                    >
+                      <Card className="p-6 border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-lg h-full group">
+                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                          <Factory className="w-6 h-6 text-white" />
+                        </div>
+                        <h3 className="text-lg font-bold mb-3 text-slate-900">{capability?.title}</h3>
                         {capability?.description && (
-                          <p className="text-slate-600 mb-4">{capability.description}</p>
+                          <p className="text-sm text-slate-600 mb-4">{capability.description}</p>
                         )}
                         <div className="space-y-2">
-                          {(capability?.items || []).map((item: any) => (
-                            <div key={item?.item} className="flex items-center text-sm text-slate-600">
-                              <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mr-2" />
-                              {item?.item}
+                          {(capability?.items || []).slice(0, 5).map((item: any, itemIndex: number) => (
+                            <div key={`${item?.item}-${itemIndex}`} className="flex items-start text-sm text-slate-600">
+                              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2 mt-1.5 flex-shrink-0" />
+                              <span>{item?.item}</span>
                             </div>
                           ))}
                         </div>
                       </Card>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
+                    </motion.div>
+                  );
+                })}
+              </div>
+            )}
 
-              {certifications.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8 }}
-                  viewport={{ once: true }}
-                >
+            {/* Certifications Section */}
+            {certifications.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 md:p-12"
+              >
+                <div className="text-center mb-8">
                   {data.certifications?.title && (
-                    <h2 className={cn(typography.h3, "mb-6")}>{data.certifications.title}</h2>
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{data.certifications.title}</h3>
                   )}
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    {certifications.map((cert: any, index: number) => (
-                      <div
-                        key={`${cert?.certification}-${index}`}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-200"
-                      >
-                        <Shield className="w-4 h-4 text-blue-600" />
-                        <span className="text-sm font-semibold text-slate-700">{cert?.certification}</span>
-                      </div>
-                    ))}
+                  <p className="text-slate-400">Industry-recognized quality standards</p>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+                  {certifications.map((cert: any, index: number) => (
+                    <motion.div
+                      key={`${cert?.certification}-${index}`}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: Math.min(index * 0.05, 0.3), duration: 0.4 }}
+                      viewport={{ once: true }}
+                      className="flex flex-col items-center text-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300"
+                    >
+                      <Shield className="w-8 h-8 text-blue-400 mb-2" />
+                      <span className="text-sm font-semibold text-white">{cert?.certification}</span>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {data.certifications?.commitmentTitle && (
+                  <div className="text-center max-w-2xl mx-auto">
+                    <h4 className="text-lg font-bold text-white mb-2">{data.certifications.commitmentTitle}</h4>
+                    <p className="text-slate-400">{data.certifications.commitmentDescription}</p>
                   </div>
-                  {data.certifications?.commitmentTitle && (
-                    <Card className={cn(styles.featureCard, "bg-gradient-to-br from-blue-50 to-indigo-50/50")}>
-                      <h3 className="text-lg font-bold mb-2 text-slate-900">{data.certifications.commitmentTitle}</h3>
-                      <p className="text-slate-600">{data.certifications.commitmentDescription}</p>
-                    </Card>
-                  )}
-                </motion.div>
-              )}
-            </div>
+                )}
+              </motion.div>
+            )}
           </div>
         </section>
       )}
