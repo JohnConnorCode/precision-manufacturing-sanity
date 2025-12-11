@@ -125,17 +125,6 @@ const nextConfig: NextConfig = {
         destination: '/compliance/supplier-requirements',
         permanent: true,
       },
-      // Fix wrong navigation URLs - nav links have wrong slugs
-      {
-        source: '/services/precision-metrology',
-        destination: '/services/metrology',
-        permanent: true,
-      },
-      {
-        source: '/services/engineering-services',
-        destination: '/services/engineering',
-        permanent: true,
-      },
     ];
   },
 
