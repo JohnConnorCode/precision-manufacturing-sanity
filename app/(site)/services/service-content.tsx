@@ -13,9 +13,9 @@ import { PortableTextContent } from '@/components/portable-text-components';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
-import { ArrowRight, CheckCircle, Settings, Shield, Zap, Cog, Target, FileText, Award, Activity, TrendingDown, Wrench } from 'lucide-react';
+import { ArrowRight, CheckCircle, Settings, Shield, Zap, Cog, Target, FileText, Award, Activity, TrendingDown, Wrench, LucideIcon } from 'lucide-react';
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   Settings,
   Shield,
   Zap,
@@ -28,13 +28,193 @@ const iconMap: Record<string, any> = {
   Wrench,
 };
 
+// Sanity image source type
+interface SanityImageSource {
+  asset?: { _ref?: string; url?: string };
+  url?: string;
+  alt?: string;
+}
+
+// Portable text block type
+interface PortableTextBlock {
+  _type: string;
+  _key?: string;
+  [key: string]: unknown;
+}
+
+// Feature item type
+interface FeatureItem {
+  feature?: string;
+}
+
+// Capability list item type
+interface CapabilityListItem {
+  capability?: string;
+}
+
+// Capability stat type (label/value pairs)
+interface CapabilityStat {
+  enabled?: boolean;
+  label?: string;
+  value?: string;
+  description?: string;
+}
+
+// Capability card type (title/description with features)
+interface CapabilityCard {
+  enabled?: boolean;
+  title?: string;
+  description?: string;
+  iconName?: string;
+  image?: SanityImageSource;
+  imageUrl?: string;
+  featuresLabel?: string;
+  features?: FeatureItem[];
+  capabilitiesLabel?: string;
+  capabilitiesList?: CapabilityListItem[];
+}
+
+// Benefit type
+interface Benefit {
+  enabled?: boolean;
+  title?: string;
+  description?: string;
+  iconName?: string;
+}
+
+// Service offering type
+interface ServiceOffering {
+  enabled?: boolean;
+  title?: string;
+  description?: string;
+  descriptionRich?: PortableTextBlock[];
+  iconName?: string;
+  image?: SanityImageSource;
+  imageUrl?: string;
+  featuresLabel?: string;
+  features?: FeatureItem[];
+  capabilitiesLabel?: string;
+  capabilities?: CapabilityListItem[];
+}
+
+// Material type item
+interface MaterialType {
+  type?: string;
+}
+
+// Material category type
+interface MaterialCategory {
+  enabled?: boolean;
+  category?: string;
+  types?: MaterialType[];
+}
+
+// Application challenge type
+interface ApplicationChallenge {
+  challenge?: string;
+}
+
+// Application type
+interface ApplicationItem {
+  enabled?: boolean;
+  title?: string;
+  description?: string;
+  timeline?: string;
+  listLabel?: string;
+  image?: SanityImageSource;
+  imageUrl?: string;
+  challenges?: ApplicationChallenge[];
+}
+
+// Quality standard type
+interface QualityStandard {
+  enabled?: boolean;
+  title?: string;
+  description?: string;
+  iconName?: string;
+}
+
+// Process type
+interface ProcessItem {
+  title?: string;
+  description?: string;
+  descriptionRich?: PortableTextBlock[];
+}
+
+// CTA button type
+interface CTAButton {
+  enabled?: boolean;
+  text?: string;
+  href?: string;
+  variant?: 'primary' | 'secondary';
+}
+
+// Title size type matching HeroSection
+type TitleSize = 'base' | 'xs' | 'sm' | 'lg' | 'xl' | '2xl' | '3xl';
+// Description size type matching HeroSection
+type DescriptionSize = 'base' | 'xs' | 'sm' | 'lg' | 'xl';
+
+// Full service data type
+interface ServiceData {
+  title: string;
+  hero?: {
+    title?: string;
+    subtitle?: string;
+    badge?: string;
+    backgroundImage?: SanityImageSource;
+    backgroundImageUrl?: string;
+    descriptionRich?: PortableTextBlock[];
+    titleSize?: TitleSize;
+    descriptionSize?: DescriptionSize;
+  };
+  image?: SanityImageSource;
+  imageUrl?: string;
+  overview?: {
+    description?: string;
+    descriptionRich?: PortableTextBlock[];
+  };
+  capabilities?: (CapabilityStat | CapabilityCard)[];
+  benefits?: Benefit[];
+  services?: ServiceOffering[];
+  servicesHeading?: string;
+  servicesDescription?: string;
+  servicesDescriptionRich?: PortableTextBlock[];
+  materials?: MaterialCategory[];
+  materialsHeading?: string;
+  materialsDescription?: string;
+  applications?: ApplicationItem[];
+  applicationsHeading?: string;
+  applicationsDescription?: string;
+  applicationsListLabel?: string;
+  capabilitiesSectionHeading?: string;
+  capabilitiesSectionDescription?: string;
+  qualityStandards?: QualityStandard[];
+  qualityStandardsHeading?: string;
+  qualityStandardsDescription?: string;
+  qualityImage?: {
+    image?: SanityImageSource;
+    imageUrl?: string;
+    url?: string;
+    alt?: string;
+  };
+  processes?: ProcessItem[];
+  processHeading?: string;
+  processDescription?: string;
+  cta?: {
+    badge?: string;
+    title?: string;
+    description?: string;
+    buttons?: CTAButton[];
+  };
+}
+
 interface ServiceContentProps {
-  serviceData: any;
+  serviceData: ServiceData;
   slug: string;
 }
 
 export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps) {
-  const service = serviceData as any;
+  const service = serviceData;
   const router = useRouter();
   const prefersReducedMotion = usePrefersReducedMotion();
   const viewportConfig = getViewportConfig();
@@ -51,7 +231,8 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
     service.hero?.backgroundImage?.url ||
     service.hero?.backgroundImageUrl ||
     service.image?.asset?.url ||
-    service.imageUrl;
+    service.imageUrl ||
+    '';
   const heroDescription = service.hero?.descriptionRich
     ? <PortableTextContent value={service.hero.descriptionRich} />
     : (service.overview?.descriptionRich
@@ -62,27 +243,29 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
   // Stats-style capabilities (label/value pairs)
   const capabilityStats = Array.isArray(service.capabilities)
-    ? service.capabilities.filter((item: any) => item?.enabled !== false && item?.label && item?.value)
+    ? service.capabilities.filter((item: CapabilityStat | CapabilityCard): item is CapabilityStat =>
+        item?.enabled !== false && 'label' in item && 'value' in item && !!item.label && !!item.value)
     : [];
   // Card-style capabilities (title/description with features)
   const capabilityCards = Array.isArray(service.capabilities)
-    ? service.capabilities.filter((item: any) => item?.enabled !== false && item?.title && !item?.label)
+    ? service.capabilities.filter((item: CapabilityStat | CapabilityCard): item is CapabilityCard =>
+        item?.enabled !== false && 'title' in item && !!item.title && !('label' in item))
     : [];
   // Benefits section
   const benefits = Array.isArray(service.benefits)
-    ? service.benefits.filter((item: any) => item?.enabled !== false && item?.title)
+    ? service.benefits.filter((item: Benefit) => item?.enabled !== false && item?.title)
     : [];
   const serviceOfferings = Array.isArray(service.services)
-    ? service.services.filter((item: any) => item?.enabled !== false && item?.title)
+    ? service.services.filter((item: ServiceOffering) => item?.enabled !== false && item?.title)
     : [];
   const materials = Array.isArray(service.materials)
-    ? service.materials.filter((item: any) => item?.enabled !== false && item?.category)
+    ? service.materials.filter((item: MaterialCategory) => item?.enabled !== false && item?.category)
     : [];
   const applications = Array.isArray(service.applications)
-    ? service.applications.filter((item: any) => item?.enabled !== false && item?.title)
+    ? service.applications.filter((item: ApplicationItem) => item?.enabled !== false && item?.title)
     : [];
   const qualityStandards = Array.isArray(service.qualityStandards)
-    ? service.qualityStandards.filter((item: any) => item?.enabled !== false && (item?.title || item?.description))
+    ? service.qualityStandards.filter((item: QualityStandard) => item?.enabled !== false && (item?.title || item?.description))
     : [];
   const qualityImageSrc =
     service.qualityImage?.image?.asset?.url ||
@@ -94,7 +277,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
     service.qualityImage?.alt ||
     `${service.title} quality standards`;
   const processes = Array.isArray(service.processes)
-    ? service.processes.filter((item: any) => item?.title)
+    ? service.processes.filter((item: ProcessItem) => item?.title)
     : [];
 
   const servicesHeading = service.servicesHeading || `${heroTitle} Services`;
@@ -163,7 +346,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               viewport={viewportConfig}
               className={styles.grid4Col}
             >
-              {capabilityStats.map((capability: any, index: number) => {
+              {capabilityStats.map((capability: CapabilityStat, index: number) => {
                 const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
                 return (
                   <motion.div
@@ -209,10 +392,10 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
             )}
 
             <div className={styles.grid2Col}>
-              {capabilityCards.map((capability: any, index: number) => {
-                const CapIcon = iconMap[capability.iconName] || Settings;
+              {capabilityCards.map((capability: CapabilityCard, index: number) => {
+                const CapIcon = capability.iconName ? (iconMap[capability.iconName] || Settings) : Settings;
                 const capImage = capability.image?.asset?.url || capability.imageUrl;
-                const capAlt = capability.image?.alt || capability.title;
+                const capAlt = capability.image?.alt || capability.title || 'Capability';
                 const delay = getStaggerDelay(SECTION_CONFIGS.twoColumnGrid, index);
 
                 return (
@@ -253,7 +436,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                               {capability.featuresLabel || 'Features'}
                             </h4>
                             <div className="grid grid-cols-2 gap-1">
-                              {capability.features.map((f: any) => (
+                              {capability.features.map((f: FeatureItem) => (
                                 <div key={f.feature} className={cn('flex items-center', typography.small)}>
                                   <CheckCircle className="w-3 h-3 text-blue-600 mr-1.5 flex-shrink-0" />
                                   {f.feature}
@@ -269,7 +452,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                               {capability.capabilitiesLabel || 'Benefits'}
                             </h4>
                             <div className="space-y-1">
-                              {capability.capabilitiesList.map((c: any) => (
+                              {capability.capabilitiesList.map((c: CapabilityListItem) => (
                                 <div key={c.capability} className={cn('flex items-center', typography.small)}>
                                   <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2" />
                                   {c.capability}
@@ -302,8 +485,8 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
             </motion.div>
 
             <div className={styles.grid4Col}>
-              {benefits.map((benefit: any, index: number) => {
-                const BenefitIcon = iconMap[benefit.iconName] || Award;
+              {benefits.map((benefit: Benefit, index: number) => {
+                const BenefitIcon = benefit.iconName ? (iconMap[benefit.iconName] || Award) : Award;
                 const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
 
                 return (
@@ -344,10 +527,10 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
             </motion.div>
 
             <div className={styles.grid2Col}>
-              {serviceOfferings.map((offering: any, index: number) => {
-                const OfferingIcon = iconMap[offering.iconName] || Settings;
+              {serviceOfferings.map((offering: ServiceOffering, index: number) => {
+                const OfferingIcon = offering.iconName ? (iconMap[offering.iconName] || Settings) : Settings;
                 const offeringImage = offering.image?.asset?.url || offering.imageUrl;
-                const offeringAlt = offering.image?.alt || offering.title;
+                const offeringAlt = offering.image?.alt || offering.title || 'Service offering';
                 const delay = getStaggerDelay(SECTION_CONFIGS.twoColumnGrid, index);
 
                 return (
@@ -394,7 +577,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                               {offering.featuresLabel || 'Key Features'}
                             </h4>
                             <div className="grid grid-cols-1 gap-2">
-                              {offering.features.map((feature: any) => (
+                              {offering.features.map((feature: FeatureItem) => (
                                 <div key={feature.feature} className={cn('flex items-center', typography.small)}>
                                   <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
                                   {feature.feature}
@@ -410,7 +593,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                               {offering.capabilitiesLabel || 'Capabilities'}
                             </h4>
                             <div className="space-y-1">
-                              {offering.capabilities.map((capability: any) => (
+                              {offering.capabilities.map((capability: CapabilityListItem) => (
                                 <div key={capability.capability} className={cn('flex items-center', typography.small)}>
                                   <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2" />
                                   {capability.capability}
@@ -445,7 +628,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
             </motion.div>
 
             <div className={styles.grid4Col}>
-              {materials.map((material: any, index: number) => {
+              {materials.map((material: MaterialCategory, index: number) => {
                 const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
                 return (
                   <motion.div
@@ -459,7 +642,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
                       {material.types && material.types.length > 0 && (
                         <div className="mb-4 space-y-1">
-                          {material.types.map((type: any) => (
+                          {material.types.map((type: MaterialType) => (
                             <div key={type.type} className="flex items-center text-xs text-slate-600">
                               <div className="w-1 h-1 bg-blue-500 rounded-full mr-2" />
                               {type.type}
@@ -492,9 +675,9 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {applications.map((app: any, index: number) => {
+              {applications.map((app: ApplicationItem, index: number) => {
                 const appImage = app.image?.asset?.url || app.imageUrl;
-                const appAlt = app.image?.alt || app.title;
+                const appAlt = app.image?.alt || app.title || 'Application';
                 const delay = getStaggerDelay(SECTION_CONFIGS.threeColumnGrid, index);
                 const listLabel = app.listLabel || applicationsListLabel;
 
@@ -533,7 +716,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                           <div>
                             <h4 className={cn(typography.label, 'mb-2 text-sm')}>{listLabel}</h4>
                             <div className="space-y-1">
-                              {app.challenges.map((item: any) => (
+                              {app.challenges.map((item: ApplicationChallenge) => (
                                 <div key={item.challenge} className="flex items-center text-sm text-slate-600">
                                   <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2" />
                                   {item.challenge}
@@ -569,7 +752,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
             <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-center">
               <div className="space-y-4 text-center lg:text-left">
-                {qualityStandards.map((standard: any, index: number) => {
+                {qualityStandards.map((standard: QualityStandard, index: number) => {
                   const delay = getStaggerDelay(SECTION_CONFIGS.twoColumnGrid, index);
                   const StandardIcon = standard.iconName ? (iconMap[standard.iconName] || Shield) : Shield;
                   return (
@@ -623,7 +806,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
             </motion.div>
 
             <div className={styles.grid4Col}>
-              {processes.map((process: any, index: number) => {
+              {processes.map((process: ProcessItem, index: number) => {
                 const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
                 return (
                   <motion.div
@@ -658,16 +841,16 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         <div className={spacing.container}>
           <div className="text-center max-w-4xl mx-auto">
             <SectionHeader
-              eyebrow={ctaData.badge}
-              heading={ctaData.title || 'Ready to Get Started?'}
+              eyebrow={ctaData?.badge}
+              heading={ctaData?.title || 'Ready to Get Started?'}
               gradientWordPosition="last"
-              description={ctaData.description}
+              description={ctaData?.description}
               className="[&_h2]:text-white [&_p]:text-slate-300 mb-8"
             />
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {(ctaData.buttons || [])
-                .filter((button: any) => button?.enabled !== false && button?.text && button?.href)
-                .map((button: any, index: number) => {
+              {(ctaData?.buttons || [])
+                .filter((button: CTAButton) => button?.enabled !== false && button?.text && button?.href)
+                .map((button: CTAButton, index: number) => {
                   const key = `${button.text}-${index}`;
                   const variant = button.variant === 'secondary' ? 'secondary' : 'default';
                   if (index === 0) {
@@ -685,7 +868,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                   }
 
                   return (
-                    <Link key={key} href={button.href}>
+                    <Link key={key} href={button.href!}>
                       <PremiumButton size="lg" variant={variant}>
                         {button.text}
                       </PremiumButton>

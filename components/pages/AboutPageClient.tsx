@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
-import { ArrowRight, Users, Factory, Award, Target, Zap, Shield, Lightbulb } from 'lucide-react';
+import { ArrowRight, Users, Factory, Award, Target, Zap, Shield, Lightbulb, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import ParallaxImage from '@/components/ui/parallax-image';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
@@ -13,7 +13,7 @@ import { client } from '@/sanity/lib/client';
 
 const builder = imageUrlBuilder(client);
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   Award,
   Zap,
   Target,
@@ -23,7 +23,13 @@ const iconMap: Record<string, any> = {
   Lightbulb,
 };
 
-const urlFor = (source?: any) => {
+// Sanity image source type
+interface SanityImageSource {
+  asset?: { _ref?: string; url?: string };
+  alt?: string;
+}
+
+const urlFor = (source?: string | SanityImageSource) => {
   if (!source) return '';
   if (typeof source === 'string') return source;
   if (source?.asset) {
@@ -36,8 +42,133 @@ const urlFor = (source?: any) => {
   return '';
 };
 
+// Type definitions for About page CMS data
+interface HeroButton {
+  enabled?: boolean;
+  label?: string;
+  href?: string;
+  variant?: 'primary' | 'secondary';
+}
+
+interface CompanyStat {
+  enabled?: boolean;
+  value?: string;
+  label?: string;
+  description?: string;
+}
+
+interface Milestone {
+  enabled?: boolean;
+  year?: string;
+  title?: string;
+  description?: string;
+}
+
+interface ValueItem {
+  enabled?: boolean;
+  iconName?: string;
+  title?: string;
+  description?: string;
+}
+
+interface CapabilityItem {
+  item?: string;
+}
+
+interface Capability {
+  title?: string;
+  description?: string;
+  items?: CapabilityItem[];
+}
+
+interface Certification {
+  certification?: string;
+}
+
+interface LeadershipMember {
+  enabled?: boolean;
+  name?: string;
+  title?: string;
+  experience?: string;
+  background?: string;
+  focus?: string;
+  photo?: SanityImageSource;
+  photoUrl?: string;
+}
+
+interface CTAButton {
+  enabled?: boolean;
+  label?: string;
+  href?: string;
+  variant?: 'primary' | 'secondary';
+}
+
+interface AboutPageData {
+  hero?: {
+    backgroundImage?: string | SanityImageSource;
+    backgroundImageUrl?: string;
+    imageAlt?: string;
+    badge?: string;
+    badgeIconName?: string;
+    title?: string;
+    titleHighlight?: string;
+    description?: string;
+    buttons?: HeroButton[];
+  };
+  companyStats?: CompanyStat[];
+  story?: {
+    title?: string;
+    paragraphs?: string[];
+    paragraph1?: string;
+    paragraph2?: string;
+    paragraph3?: string;
+    image?: SanityImageSource;
+    imageUrl?: string;
+    imageAlt?: string;
+  };
+  timeline?: {
+    title?: string;
+    description?: string;
+    milestones?: Milestone[];
+  };
+  values?: {
+    title?: string;
+    description?: string;
+    items?: ValueItem[];
+  };
+  capabilities?: Capability[];
+  certifications?: {
+    title?: string;
+    items?: Certification[];
+    commitmentTitle?: string;
+    commitmentDescription?: string;
+  } | Certification[];
+  leadership?: {
+    title?: string;
+    description?: string;
+    team?: LeadershipMember[];
+  };
+  cta?: {
+    title?: string;
+    description?: string;
+    buttons?: CTAButton[];
+  };
+}
+
+interface CertificationsObject {
+  title?: string;
+  items?: Certification[];
+  commitmentTitle?: string;
+  commitmentDescription?: string;
+}
+
+// Type guard to check if certifications is the object form (not array)
+function isCertificationsObject(cert: CertificationsObject | Certification[] | undefined): cert is CertificationsObject {
+  return !!cert && !Array.isArray(cert);
+}
+
 interface AboutPageClientProps {
-  data?: any | null;
+  data?: AboutPageData | null;
 }
 
 export default function AboutPageClient({ data }: AboutPageClientProps) {
@@ -46,27 +177,34 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
   }
 
   const heroImage = urlFor(data.hero?.backgroundImage) || data.hero?.backgroundImageUrl || '';
-  const heroAlt = data.hero?.imageAlt || data.hero?.backgroundImage?.alt || '';
+  const heroAlt = (() => {
+    if (data.hero?.imageAlt) return data.hero.imageAlt;
+    const bg = data.hero?.backgroundImage;
+    if (bg && typeof bg === 'object' && bg.alt) return bg.alt;
+    return '';
+  })();
   const heroButtons = (Array.isArray(data.hero?.buttons) ? data.hero.buttons : [])
-    .filter((btn: any) => btn?.enabled !== false && btn?.label && btn?.href)
-    .map((btn: any) => ({
-      label: btn.label,
-      href: btn.href,
+    .filter((btn: HeroButton) => btn?.enabled !== false && btn?.label && btn?.href)
+    .map((btn: HeroButton) => ({
+      label: btn.label!,
+      href: btn.href!,
       variant: btn.variant as 'primary' | 'secondary' | undefined,
     }));
   const BadgeIcon = iconMap[data.hero?.badgeIconName || ''] || Factory;
 
   const storyParagraphs = Array.isArray(data.story?.paragraphs) && data.story.paragraphs.length > 0
     ? data.story.paragraphs
-    : [data.story?.paragraph1, data.story?.paragraph2, data.story?.paragraph3].filter(Boolean);
+    : [data.story?.paragraph1, data.story?.paragraph2, data.story?.paragraph3].filter((p): p is string => !!p);
   const storyImage = urlFor(data.story?.image) || data.story?.imageUrl || '';
 
   const timelineMilestones = Array.isArray(data.timeline?.milestones) ? data.timeline.milestones : [];
   const valuesItems = Array.isArray(data.values?.items) ? data.values.items : [];
   const capabilities = Array.isArray(data.capabilities) ? data.capabilities : [];
-  const certifications = Array.isArray(data.certifications?.items) ? data.certifications.items : (Array.isArray(data.certifications) ? data.certifications : []);
+  const certifications = isCertificationsObject(data.certifications)
+    ? (data.certifications.items || [])
+    : (Array.isArray(data.certifications) ? data.certifications : []);
   const leadershipMembers = Array.isArray(data.leadership?.team) ? data.leadership.team : [];
-  const ctaButtons = Array.isArray(data.cta?.buttons) ? data.cta.buttons.filter((btn: any) => btn?.enabled !== false && btn?.label && btn?.href) : [];
+  const ctaButtons = Array.isArray(data.cta?.buttons) ? data.cta.buttons.filter((btn: CTAButton) => btn?.enabled !== false && btn?.label && btn?.href) : [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -119,8 +257,8 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="grid grid-cols-2 md:grid-cols-4 gap-8"
             >
               {data.companyStats
-                .filter((stat: any) => stat?.enabled !== false)
-                .map((stat: any, index: number) => (
+                .filter((stat: CompanyStat) => stat?.enabled !== false)
+                .map((stat: CompanyStat, index: number) => (
                 <motion.div
                   key={`${stat?.label}-${index}`}
                   initial={{ opacity: 0, y: 20 }}
@@ -208,8 +346,8 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {timelineMilestones
-                .filter((milestone: any) => milestone?.enabled !== false)
-                .map((milestone: any, index: number) => (
+                .filter((milestone: Milestone) => milestone?.enabled !== false)
+                .map((milestone: Milestone, index: number) => (
                 <motion.div
                   key={`${milestone?.title}-${index}`}
                   initial={{ opacity: 0, y: 20 }}
@@ -254,8 +392,8 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {valuesItems
-                .filter((value: any) => value?.enabled !== false)
-                .map((value: any, index: number) => {
+                .filter((value: ValueItem) => value?.enabled !== false)
+                .map((value: ValueItem, index: number) => {
                   const Icon = iconMap[value?.iconName || ''] || Award;
                   const gradients = [
                     'from-blue-600 to-indigo-600',
@@ -306,7 +444,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
             {/* Capabilities Grid - Full Width */}
             {capabilities.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                {capabilities.map((capability: any, index: number) => {
+                {capabilities.map((capability: Capability, index: number) => {
                   const gradients = [
                     'from-blue-600 to-indigo-600',
                     'from-indigo-600 to-purple-600',
@@ -331,7 +469,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                           <p className="text-sm text-slate-600 mb-4">{capability.description}</p>
                         )}
                         <div className="space-y-2">
-                          {(capability?.items || []).slice(0, 5).map((item: any, itemIndex: number) => (
+                          {(capability?.items || []).slice(0, 5).map((item: CapabilityItem, itemIndex: number) => (
                             <div key={`${item?.item}-${itemIndex}`} className="flex items-start text-sm text-slate-600">
                               <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2 mt-1.5 flex-shrink-0" />
                               <span>{item?.item}</span>
@@ -355,14 +493,14 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 md:p-12"
               >
                 <div className="text-center mb-8">
-                  {data.certifications?.title && (
+                  {isCertificationsObject(data.certifications) && data.certifications.title && (
                     <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{data.certifications.title}</h3>
                   )}
                   <p className="text-slate-400">Industry-recognized quality standards</p>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-                  {certifications.map((cert: any, index: number) => (
+                  {certifications.map((cert: Certification, index: number) => (
                     <motion.div
                       key={`${cert?.certification}-${index}`}
                       initial={{ opacity: 0, scale: 0.9 }}
@@ -377,7 +515,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   ))}
                 </div>
 
-                {data.certifications?.commitmentTitle && (
+                {isCertificationsObject(data.certifications) && data.certifications.commitmentTitle && (
                   <div className="text-center max-w-2xl mx-auto">
                     <h4 className="text-lg font-bold text-white mb-2">{data.certifications.commitmentTitle}</h4>
                     <p className="text-slate-400">{data.certifications.commitmentDescription}</p>
@@ -411,8 +549,8 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               {leadershipMembers
-                .filter((leader: any) => leader?.enabled !== false)
-                .map((leader: any, index: number) => {
+                .filter((leader: LeadershipMember) => leader?.enabled !== false)
+                .map((leader: LeadershipMember, index: number) => {
                   const photoUrl = urlFor(leader?.photo) || leader?.photoUrl || '';
                   return (
                     <motion.div
@@ -484,7 +622,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               )}
               {ctaButtons.length > 0 && (
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  {ctaButtons.map((button: any, index: number) => (
+                  {ctaButtons.map((button: CTAButton, index: number) => (
                     <Button
                       key={`${button.label}-${index}`}
                       size="lg"
@@ -492,7 +630,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                       variant={button.variant === 'secondary' ? 'outline' : 'default'}
                       asChild
                     >
-                      <Link href={button.href}>
+                      <Link href={button.href!}>
                         {button.label}
                         {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
                       </Link>

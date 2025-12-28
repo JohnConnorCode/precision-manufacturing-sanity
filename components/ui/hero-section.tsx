@@ -115,13 +115,13 @@ export default function HeroSection({
   };
 
   const titleSizeClasses: Record<string, string> = {
-    xs: 'text-xl sm:text-2xl md:text-3xl lg:text-4xl',
-    sm: 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl',
-    base: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
-    lg: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl',
-    xl: 'text-5xl sm:text-6xl md:text-7xl',
-    '2xl': 'text-6xl sm:text-7xl',
-    '3xl': 'text-7xl',
+    xs: 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl',
+    sm: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
+    base: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl',
+    lg: 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[5.5rem]',
+    xl: 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6rem]',
+    '2xl': 'text-6xl sm:text-7xl md:text-8xl lg:text-[6rem]',
+    '3xl': 'text-7xl sm:text-8xl md:text-[6rem] lg:text-[7rem]',
   };
   const descSizeClasses: Record<string, string> = {
     xs: 'text-sm',
@@ -226,7 +226,7 @@ export default function HeroSection({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
             className={cn(
-              titleSize ? titleSizeClasses[titleSize] : 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
+              titleSize ? titleSizeClasses[titleSize] : 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl',
               'font-extrabold mb-6 tracking-tight uppercase'
             )}
             style={{ color: defaultTitleColor }}
@@ -274,7 +274,7 @@ export default function HeroSection({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.0, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
               className={cn(
-                'flex flex-col sm:flex-row gap-4',
+                'flex flex-col sm:flex-row gap-5 sm:gap-6',
                 alignment === 'center' && 'justify-center',
                 alignment === 'left' && 'justify-start',
                 alignment === 'right' && 'justify-end'
@@ -306,8 +306,10 @@ export default function HeroSection({
                     size="lg"
                     variant={isPrimary ? 'default' : 'outline'}
                     className={cn(
-                      'group h-12 md:h-14 px-8 md:px-10 text-base font-semibold shadow-lg transition-all',
-                      isPrimary ? 'hover:shadow-xl' : 'backdrop-blur-sm hover:opacity-90'
+                      'group h-12 md:h-14 px-8 md:px-10 text-base font-semibold shadow-lg transition-all duration-300',
+                      isPrimary
+                        ? 'hover:shadow-2xl hover:shadow-blue-500/30 hover:scale-105 active:scale-[0.98]'
+                        : 'backdrop-blur-sm hover:bg-white/10 hover:scale-105 active:scale-[0.98]'
                     )}
                     style={buttonStyle}
                     asChild

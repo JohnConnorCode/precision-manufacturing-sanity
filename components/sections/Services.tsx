@@ -70,7 +70,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
   const subdescription = sectionData?.subdescription;
 
   return (
-    <section className={`relative ${spacing.section} overflow-hidden ${colors.bgLight}`}>
+    <section className={`relative ${spacing.section} overflow-hidden ${colors.bgLight} dark:bg-slate-950`}>
       {/* Subtle Background Pattern */}
       <DotGridBackground spacing={40} dotPosition={1} />
 
@@ -86,7 +86,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
         )}
 
         {subdescription && (
-          <p className="text-base md:text-lg text-slate-600 text-center max-w-4xl mx-auto mb-6">
+          <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 text-center max-w-4xl mx-auto mb-6">
             {subdescription}
           </p>
         )}
@@ -114,7 +114,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                   >
                     <Card
-                      className="h-full min-h-[480px] overflow-hidden transition-all duration-300 hover:shadow-2xl border-0 bg-white relative shadow-lg"
+                      className="h-full min-h-[480px] overflow-hidden transition-all duration-300 hover:shadow-2xl border-0 bg-white dark:bg-slate-900 relative shadow-lg dark:shadow-slate-950/50"
                     >
                     {/* Image Header */}
                     <div className="relative h-52 overflow-hidden">
@@ -148,22 +148,22 @@ export default function Services({ data, sectionData }: ServicesProps) {
                     {/* Content */}
                     <div className="p-6 flex flex-col flex-1">
                       <h3
-                        className="text-lg font-bold mb-3 text-slate-900 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2"
+                        className="text-lg font-bold mb-3 text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 line-clamp-2"
                       >
                         {service.title}
                       </h3>
-                      <p className="text-sm text-slate-600 mb-4 leading-relaxed line-clamp-3">
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 leading-relaxed line-clamp-3">
                         {service.description}
                       </p>
 
                       {/* Specs with subtle background */}
-                      <div className="bg-slate-50 rounded-xl p-4 mb-5 flex-1">
+                      <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 mb-5 flex-1">
                         <ul className="space-y-2">
                           {(service.specs || []).slice(0, 3).map((spec, specIndex: number) => {
                             // Handle both string and object formats
                             const specText = typeof spec === 'string' ? spec : (spec.text || spec.spec);
                             return (
-                              <li key={specIndex} className="flex items-start text-xs text-slate-700">
+                              <li key={specIndex} className="flex items-start text-xs text-slate-700 dark:text-slate-300">
                                 <CheckCircle className="h-3.5 w-3.5 mr-2 mt-0.5 flex-shrink-0" style={getPrimaryColorStyle(theme.colors)} />
                                 <span className="leading-relaxed">{specText}</span>
                               </li>

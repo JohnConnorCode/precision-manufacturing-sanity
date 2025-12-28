@@ -87,13 +87,53 @@ export const colors = {
   textGradient: 'from-blue-600 via-blue-500 to-indigo-600',            // Gradient text accents
   subtleGradient: 'from-blue-600/20 to-indigo-600/20',                // Subtle backgrounds
 
-  // Text colors
+  // Text colors (static - use semantic tokens below for dark mode)
   textDark: 'text-slate-900',
   textMedium: 'text-slate-600',
   textLight: 'text-slate-400',
   textWhite: 'text-white',
 
-  // Borders
+  // Dark mode aware semantic tokens
+  text: {
+    primary: 'text-slate-900 dark:text-white',
+    secondary: 'text-slate-600 dark:text-slate-300',
+    muted: 'text-slate-400 dark:text-slate-400', // slate-400 provides better contrast (~7:1 on dark backgrounds)
+    inverse: 'text-white dark:text-slate-900',
+  },
+
+  bg: {
+    primary: 'bg-white dark:bg-slate-950',
+    secondary: 'bg-slate-50 dark:bg-slate-900',
+    card: 'bg-white dark:bg-slate-900/50',
+    elevated: 'bg-slate-100 dark:bg-slate-800',
+    muted: 'bg-slate-50 dark:bg-slate-800/50',
+  },
+
+  border: {
+    default: 'border-slate-200 dark:border-slate-800',
+    subtle: 'border-slate-100 dark:border-slate-700',
+    accent: 'border-blue-600/20 dark:border-blue-500/20',
+  },
+
+  // Footer-specific tokens (always dark, independent of theme)
+  footer: {
+    bg: 'bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950',
+    border: 'border-blue-600/10',
+    text: {
+      heading: 'text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600',
+      primary: 'text-white',
+      secondary: 'text-slate-400',
+      muted: 'text-slate-500',
+    },
+    link: 'text-slate-400 hover:text-blue-500 transition-colors duration-300',
+    linkAnimated: 'text-slate-400 hover:text-blue-500 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-blue-500 hover:after:w-full after:transition-all after:duration-300 transition-colors duration-300',
+    icon: 'text-slate-400',
+    iconHover: 'text-slate-400 hover:text-blue-400 transition-all duration-300',
+    // Premium social icon with glow effect
+    socialIcon: 'text-slate-400 hover:text-blue-400 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] transition-all duration-300 cursor-pointer',
+  },
+
+  // Borders (static - use semantic tokens above for dark mode)
   borderLight: 'border-slate-200',
   borderMedium: 'border-slate-300',
   borderAccent: 'border-blue-600/20',
@@ -209,32 +249,32 @@ export const motionVariants = {
 } as const;
 
 // ==================== SHADOW UTILITIES ====================
-// Premium shadow system with layered depth
+// Premium dual-layer shadow system for world-class depth
 export const shadows = {
   // Subtle - For inputs, minimal cards
   subtle: 'shadow-sm',
 
-  // Card - Default card shadow with depth
-  card: 'shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)]',
+  // Card - Dual layer: ambient (soft) + directional (depth)
+  card: 'shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_6px_rgba(0,0,0,0.04),0_12px_24px_-4px_rgba(0,0,0,0.08)]',
 
-  // Card hover - Elevated state with soft spread
-  cardHover: 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15),0_10px_20px_-5px_rgba(0,0,0,0.1)]',
+  // Card hover - Elevated with brand glow undertone
+  cardHover: 'shadow-[0_4px_8px_rgba(0,0,0,0.04),0_12px_24px_rgba(0,0,0,0.06),0_24px_48px_-8px_rgba(37,99,235,0.12)]',
 
-  // Elevated - Maximum elevation for modals, dropdowns
-  elevated: 'shadow-[0_25px_60px_-12px_rgba(0,0,0,0.25),0_15px_30px_-8px_rgba(0,0,0,0.15)]',
+  // Elevated - Maximum elevation for modals, dropdowns (triple layer)
+  elevated: 'shadow-[0_4px_6px_rgba(0,0,0,0.05),0_16px_32px_rgba(0,0,0,0.1),0_32px_64px_-16px_rgba(0,0,0,0.15)]',
 
-  // Button shadows with brand color glow
-  button: 'shadow-[0_4px_14px_0_rgba(37,99,235,0.25)]',
-  buttonHover: 'shadow-[0_6px_20px_0_rgba(37,99,235,0.35)]',
+  // Button shadows with brand color glow (dual layer)
+  button: 'shadow-[0_2px_4px_rgba(0,0,0,0.1),0_4px_16px_rgba(37,99,235,0.25)]',
+  buttonHover: 'shadow-[0_4px_8px_rgba(0,0,0,0.1),0_8px_24px_rgba(37,99,235,0.35)]',
 
-  // Glow effects for premium elements
-  glowBlue: 'shadow-[0_0_40px_rgba(37,99,235,0.3)]',
-  glowIndigo: 'shadow-[0_0_40px_rgba(79,70,229,0.3)]',
-  glowSoft: 'shadow-[0_0_60px_rgba(37,99,235,0.15)]',
+  // Premium glow effects
+  glowBlue: 'shadow-[0_0_20px_rgba(37,99,235,0.2),0_0_40px_rgba(37,99,235,0.15)]',
+  glowIndigo: 'shadow-[0_0_20px_rgba(79,70,229,0.2),0_0_40px_rgba(79,70,229,0.15)]',
+  glowSoft: 'shadow-[0_0_30px_rgba(37,99,235,0.1),0_0_60px_rgba(37,99,235,0.08)]',
 
   // Inner shadows for depth
   inner: 'shadow-inner',
-  innerSubtle: 'shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)]',
+  innerSubtle: 'shadow-[inset_0_2px_4px_rgba(0,0,0,0.04)]',
 } as const;
 
 // ==================== IMAGE OVERLAYS ====================
@@ -245,29 +285,29 @@ export const overlays = {
 } as const;
 
 // ==================== UNIFIED HOVER PATTERNS ====================
-// ONE hover pattern everywhere - no variations!
+// Premium hover patterns with micro-interactions
 export const hover = {
-  // Standard card hover - scale + shadow
-  card: 'hover:scale-[1.02] hover:shadow-xl transition-all duration-300',
-  // Button hover - slight scale
-  button: 'hover:scale-[1.02] active:scale-[0.98] transition-all duration-200',
-  // Link hover - color change only
-  link: 'hover:text-blue-600 transition-colors duration-200',
-  // Subtle hover - just shadow
-  subtle: 'hover:shadow-lg transition-shadow duration-300',
+  // Standard card hover - scale + rotation + shadow
+  card: 'hover:scale-[1.02] hover:rotate-[0.5deg] hover:shadow-[0_4px_8px_rgba(0,0,0,0.04),0_12px_24px_rgba(0,0,0,0.06),0_24px_48px_-8px_rgba(37,99,235,0.12)] transition-all duration-300',
+  // Button hover - satisfying scale
+  button: 'hover:scale-105 active:scale-[0.98] transition-all duration-200',
+  // Link hover - color + underline animation
+  link: 'hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200',
+  // Subtle hover - gentle lift
+  subtle: 'hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300',
 } as const;
 
 // ==================== STANDARD CARD PATTERNS ====================
-// Unified card styles - use these everywhere!
+// Unified card styles with premium hover effects
 export const cardStyles = {
-  // Light mode cards
-  base: 'bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-300',
+  // Light mode cards - dual shadow, micro-rotation on hover
+  base: 'bg-white border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_6px_rgba(0,0,0,0.04),0_12px_24px_-4px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.04),0_12px_24px_rgba(0,0,0,0.06),0_24px_48px_-8px_rgba(37,99,235,0.12)] hover:scale-[1.02] hover:rotate-[0.5deg] hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-300',
   // Dark mode cards
-  dark: 'bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300',
+  dark: 'bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl overflow-hidden shadow-lg hover:shadow-[0_4px_8px_rgba(0,0,0,0.2),0_24px_48px_-8px_rgba(37,99,235,0.15)] hover:scale-[1.02] hover:rotate-[0.5deg] transition-all duration-300',
   // Glass effect cards (for dark backgrounds)
-  glass: 'bg-white/10 backdrop-blur-md border border-white/20 rounded-xl',
+  glass: 'bg-white/10 backdrop-blur-md border border-white/20 rounded-xl hover:bg-white/15 hover:scale-[1.02] transition-all duration-300',
   // Interactive (same as base but explicit)
-  interactive: 'bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-300',
+  interactive: 'bg-white border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_6px_rgba(0,0,0,0.04),0_12px_24px_-4px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.04),0_12px_24px_rgba(0,0,0,0.06),0_24px_48px_-8px_rgba(37,99,235,0.12)] hover:scale-[1.02] hover:rotate-[0.5deg] transition-all duration-300',
 } as const;
 
 // ==================== COMPONENT CLASSES ====================

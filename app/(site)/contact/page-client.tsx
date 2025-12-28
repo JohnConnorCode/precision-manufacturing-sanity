@@ -15,19 +15,63 @@ import {
   Building2,
   MessageCircle,
   FileText,
+  LucideIcon,
 } from 'lucide-react';
 import ParallaxImagePro from '@/components/ui/parallax-image-pro';
 
 // Icon mapping for stats
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   pulse: Activity,
   Activity,
   Award,
   Shield,
 };
 
+interface BottomStat {
+  enabled?: boolean;
+  iconName?: string;
+  text?: string;
+  animated?: boolean;
+}
+
+interface ContactData {
+  hero?: {
+    backgroundImage?: { asset?: { url?: string }; alt?: string } | string;
+    backgroundImageUrl?: string;
+    imageAlt?: string;
+    buttonLabel?: string;
+    buttonHref?: string;
+    badgeIconName?: string;
+    badge?: string;
+    title?: string;
+    titleHighlight?: string;
+    description?: string;
+  };
+  contactInfo: {
+    heading?: string;
+    description?: string;
+    addressLine1?: string;
+    addressLine2?: string;
+    addressLine3?: string;
+    phone?: string;
+    phoneLink?: string;
+    phoneDescription?: string;
+    email?: string;
+    emailDescription?: string;
+    hoursLine1?: string;
+    hoursLine2?: string;
+    submitButtonText?: string;
+    consultationHeading?: string;
+  };
+  locationImage?: {
+    asset?: { url?: string };
+    alt?: string;
+  };
+  bottomStats?: BottomStat[];
+}
+
 interface ContactPageClientProps {
-  data?: any | null;
+  data?: ContactData | null;
 }
 
 export default function ContactPageClient({ data }: ContactPageClientProps) {
@@ -37,11 +81,12 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
     return null;
   }
 
-  const heroBackgroundImage =
-    contactData.hero?.backgroundImage?.asset?.url ||
-    (typeof contactData.hero?.backgroundImage === 'string' ? contactData.hero.backgroundImage : '') ||
-    contactData.hero?.backgroundImageUrl ||
-    '';
+  const heroBackgroundImage = (() => {
+    const bg = contactData.hero?.backgroundImage;
+    if (typeof bg === 'string') return bg;
+    if (bg && typeof bg === 'object' && bg.asset?.url) return bg.asset.url;
+    return contactData.hero?.backgroundImageUrl || '';
+  })();
   const heroButtons = contactData.hero?.buttonLabel && contactData.hero?.buttonHref
     ? [{
         label: contactData.hero.buttonLabel,
@@ -49,6 +94,11 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
         variant: 'primary' as const
       }]
     : [];
+  const heroImageAlt = (() => {
+    const bg = contactData.hero?.backgroundImage;
+    if (typeof bg === 'object' && bg?.alt) return bg.alt;
+    return contactData.hero?.imageAlt || '';
+  })();
   const HeroBadgeIcon = iconMap[contactData.hero?.badgeIconName || 'Activity'] || Activity;
 
   return (
@@ -56,7 +106,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
       {contactData.hero && (
         <HeroSection
           backgroundImage={heroBackgroundImage}
-          imageAlt={contactData.hero.imageAlt || contactData.hero.backgroundImage?.alt || ''}
+          imageAlt={heroImageAlt}
           badge={contactData.hero.badge ? { text: contactData.hero.badge, icon: HeroBadgeIcon } : undefined}
           title={
             contactData.hero.title ? (
@@ -295,9 +345,9 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
               className="flex flex-wrap justify-center gap-12"
             >
               {contactData.bottomStats
-                .filter((stat: any) => stat?.enabled !== false)
-                .map((stat: any, index: number) => {
-                  const IconComponent = iconMap[stat?.iconName] || Activity;
+                .filter((stat: BottomStat) => stat?.enabled !== false)
+                .map((stat: BottomStat, index: number) => {
+                  const IconComponent = iconMap[stat?.iconName || ''] || Activity;
                   return (
                     <div key={`${stat?.text}-${index}`} className="flex items-center gap-3">
                       {stat?.animated ? (

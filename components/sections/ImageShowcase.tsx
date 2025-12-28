@@ -43,14 +43,14 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
   const showcaseImages = rawImages.filter((img: ShowcaseImage) => {
     if (!img) return false;
     const directSrc = typeof img.src === 'string' ? img.src.trim() : '';
-    const assetSrc = (img as any).image?.asset?.url;
+    const assetSrc = img.image?.asset?.url;
     return Boolean(directSrc || assetSrc);
   });
 
   const stats = Array.isArray(data.stats) ? data.stats : [];
 
   return (
-    <section className={`relative ${spacing.section} ${colors.bgLight} overflow-hidden`}>
+    <section className={`relative ${spacing.section} ${colors.bgLight} dark:bg-slate-950 overflow-hidden`}>
       <div className={`${spacing.containerWide} relative z-10`}>
         {/* Section Header */}
         {hasHeader && header && (
@@ -70,18 +70,18 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
             const viewportConfig = getViewportConfig();
             const imageSrc = (typeof item.src === 'string' && item.src.trim().length > 0)
               ? item.src
-              : (item as any).image?.asset?.url;
+              : item.image?.asset?.url;
 
             if (!imageSrc) {
               return null;
             }
 
-            const altText = item.alt || (item as any).image?.alt || item.title || 'Showcase image';
+            const altText = item.alt || item.image?.alt || item.title || 'Showcase image';
             const card = (
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
-                className={`relative overflow-hidden ${borderRadius.card} bg-slate-100 shadow-lg hover:shadow-xl transition-all duration-300`}
+                className={`relative overflow-hidden ${borderRadius.card} bg-slate-100 dark:bg-slate-900 shadow-lg dark:shadow-slate-950/50 hover:shadow-xl transition-all duration-300`}
               >
                 <div className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
                   {imageSrc && (
@@ -140,7 +140,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         {stats.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">
             {stats.filter((stat: ShowcaseStat) => stat.enabled !== false).map((stat: ShowcaseStat, index: number) => {
-            const iconKey = stat.iconName || (stat as any).icon;
+            const iconKey = stat.iconName || stat.icon;
             const Icon = (iconKey && iconMap[iconKey]) || Award;
             const statsHeaderDelay = SECTION_CONFIGS.fourColumnGrid.headerCompletion;
             const statDelay = statsHeaderDelay + SECTION_CONFIGS.fourColumnGrid.getDelay(index);
@@ -152,13 +152,13 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                 initial={getScaleInitialState(prefersReducedMotion)}
                 whileInView={getScaleAnimateState(statDelay, 0.6, prefersReducedMotion)}
                 viewport={viewportConfig}
-                className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                className="text-center p-6 bg-white dark:bg-slate-900 rounded-2xl shadow-lg dark:shadow-slate-950/50 hover:shadow-xl transition-all duration-300"
               >
                 <Icon className="h-8 w-8 mx-auto mb-3" style={{ color: theme.colors.primary }} />
-                <div className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">
+                <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-1">
                   {stat.value}
                 </div>
-                <div className="text-sm text-slate-600 font-medium">
+                <div className="text-sm text-slate-600 dark:text-slate-400 font-medium">
                   {stat.label}
                 </div>
               </motion.div>

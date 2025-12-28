@@ -32,20 +32,15 @@ export async function logContactSubmission(data: ContactSubmissionLog) {
     console.log('[CONTACT SUBMISSION]', JSON.stringify(logEntry, null, 2));
   }
 
-  // In production, log to external service or database
-  if (process.env.NODE_ENV === 'production') {
-    try {
-      // TODO: Implement production logging
-      // Options:
-      // 1. Send to external logging service (Sentry, DataDog, etc)
-      // 2. Store in database for later retrieval
-      // 3. Send to email alerting service
-
-      console.log('[CONTACT SUBMISSION LOG]', JSON.stringify(logEntry));
-    } catch (error) {
-      console.error('Failed to log contact submission:', error);
-      // Don't throw - logging failures shouldn't break the submission
-    }
+  // In production, silently log for server-side monitoring
+  // Contact submissions are stored via email delivery - no additional logging needed
+  if (process.env.NODE_ENV === 'production' && !data.emailSuccess) {
+    // Only log failures for debugging - successful submissions are tracked via email
+    console.error('[CONTACT FORM] Email delivery failed:', {
+      timestamp,
+      company: data.company,
+      error: data.emailError,
+    });
   }
 
   // Always log validation/email errors for monitoring

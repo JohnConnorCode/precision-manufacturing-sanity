@@ -14,25 +14,189 @@ import { client } from '@/sanity/lib/client';
 
 const builder = imageUrlBuilder(client);
 
+// Sanity image source type
+interface SanityImageSource {
+  asset?: { _ref?: string; url?: string };
+  alt?: string;
+}
+
+// Hero button type
+interface HeroButton {
+  _key?: string;
+  enabled?: boolean;
+  label?: string;
+  href?: string;
+  variant?: 'primary' | 'secondary';
+}
+
+// Key driver item
+interface KeyDriver {
+  driver?: string;
+}
+
+// Challenge item
+interface Challenge {
+  challenge?: string;
+}
+
+// Technical detail item
+interface TechnicalDetail {
+  detail?: string;
+}
+
+// Capability type
+interface CapabilityItem {
+  title?: string;
+  description?: string;
+  technicalDetails?: TechnicalDetail[];
+}
+
+// Component part/material/requirement types
+interface ComponentPart {
+  part?: string;
+}
+
+interface ComponentMaterial {
+  material?: string;
+}
+
+interface ComponentRequirement {
+  requirement?: string;
+}
+
+// Component category type
+interface ComponentCategory {
+  category?: string;
+  description?: string;
+  image?: string;
+  parts?: ComponentPart[];
+  materials?: ComponentMaterial[];
+  requirements?: ComponentRequirement[];
+}
+
+// Expertise item type
+interface ExpertiseItem {
+  title?: string;
+  description?: string;
+  imageUrl?: string;
+  components?: string[];
+  materials?: string[];
+  requirements?: string[];
+}
+
+// Certification type
+interface Certification {
+  name?: string;
+  description?: string;
+  scope?: string;
+}
+
+// Standard type
+interface Standard {
+  name?: string;
+  description?: string;
+}
+
+// Application requirement type
+interface ApplicationRequirement {
+  requirement?: string;
+}
+
+// Application type
+interface Application {
+  name?: string;
+  description?: string;
+  requirements?: ApplicationRequirement[];
+}
+
+// Quality standard type
+interface QualityStandard {
+  standard?: string;
+}
+
+// Process benefit feature type
+interface ProcessBenefitFeature {
+  feature?: string;
+}
+
+// Process benefit type
+interface ProcessBenefit {
+  title?: string;
+  description?: string;
+  features?: ProcessBenefitFeature[];
+}
+
+// CTA button type
+interface CTAButton {
+  _key?: string;
+  enabled?: boolean;
+  label?: string;
+  href?: string;
+  variant?: 'primary' | 'secondary';
+}
+
+// Full industry data type
+interface IndustryData {
+  title: string;
+  hero?: {
+    backgroundImage?: SanityImageSource | string;
+    badge?: string;
+    subtitle?: string;
+    description?: string;
+    buttons?: HeroButton[];
+  };
+  overview?: {
+    description?: string;
+    marketSize?: string;
+    keyDrivers?: (KeyDriver | string)[];
+    challenges?: (Challenge | string)[];
+  };
+  capabilities?: CapabilityItem[];
+  components?: ComponentCategory[];
+  expertise?: ExpertiseItem[];
+  regulatory?: {
+    certifications?: Certification[];
+    standards?: Standard[];
+  };
+  applications?: Application[];
+  qualityStandards?: (QualityStandard | string)[];
+  processBenefits?: ProcessBenefit[];
+  cta?: {
+    title?: string;
+    description?: string;
+    buttons?: CTAButton[];
+  };
+}
+
 interface IndustryContentProps {
-  industryData: any;
+  industryData: IndustryData;
   slug: string;
 }
 
 export function IndustryContent({ industryData }: IndustryContentProps) {
-  const industry = industryData as any;
+  const industry = industryData;
 
   // Extract hero image properly from Sanity
-  const heroImage = industry.hero?.backgroundImage?.asset
-    ? builder.image(industry.hero.backgroundImage).width(1920).height(1080).url()
-    : industry.hero?.backgroundImage;
+  const heroImage = (() => {
+    const bg = industry.hero?.backgroundImage;
+    if (!bg) return '';
+    if (typeof bg === 'string') return bg;
+    if (bg.asset) {
+      return builder.image(bg).width(1920).height(1080).url();
+    }
+    return '';
+  })();
 
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <HeroSection
         backgroundImage={heroImage}
-        imageAlt={industry.hero?.backgroundImage?.alt || industry.title}
+        imageAlt={(() => {
+          const bg = industry.hero?.backgroundImage;
+          if (bg && typeof bg === 'object' && bg.alt) return bg.alt;
+          return industry.title;
+        })()}
         height="large"
         alignment="center"
         showScrollIndicator={true}
@@ -57,7 +221,9 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         })()}
         subtitle={industry.hero?.subtitle}
         description={industry.hero?.description || industry.overview?.description}
-        buttons={(industry.hero?.buttons || []).filter((btn: any) => btn?.enabled !== false && btn?.label && btn?.href)}
+        buttons={(industry.hero?.buttons || [])
+          .filter((btn: HeroButton) => btn?.enabled !== false && btn?.label && btn?.href)
+          .map(btn => ({ label: btn.label!, href: btn.href!, variant: btn.variant }))}
       />
 
       {/* Market Overview */}
@@ -89,10 +255,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                   <div>
                     <h3 className={cn(typography.h4, 'mb-4')}>Key Market Drivers</h3>
                     <div className="space-y-3">
-                      {industry.overview.keyDrivers.map((item: any, index: number) => (
+                      {industry.overview.keyDrivers.map((item: KeyDriver | string, index: number) => (
                         <div key={index} className="flex items-start">
                           <CheckCircle className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0 mt-0.5" />
-                          <span className={cn(typography.body)}>{item.driver || item}</span>
+                          <span className={cn(typography.body)}>{typeof item === 'string' ? item : item.driver}</span>
                         </div>
                       ))}
                     </div>
@@ -110,12 +276,12 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                 >
                   <h3 className={cn(typography.h3, 'mb-6')}>Key Challenges</h3>
                   <div className="space-y-4">
-                    {industry.overview.challenges.map((item: any, index: number) => (
+                    {industry.overview.challenges.map((item: Challenge | string, index: number) => (
                       <div key={index} className="flex items-start">
                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
                           <span className="text-red-600 font-bold text-sm">{index + 1}</span>
                         </div>
-                        <span className={cn(typography.body)}>{item.challenge || item}</span>
+                        <span className={cn(typography.body)}>{typeof item === 'string' ? item : item.challenge}</span>
                       </div>
                     ))}
                   </div>
@@ -144,9 +310,9 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             </motion.div>
 
             <div className={styles.grid2Col}>
-              {industry.capabilities.map((capability: any, index: number) => (
+              {industry.capabilities.map((capability: CapabilityItem, index: number) => (
                 <motion.div
-                  key={capability.title}
+                  key={capability.title || `capability-${index}`}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
@@ -160,7 +326,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       <div>
                         <h4 className={cn(typography.label, 'mb-3')}>Technical Details</h4>
                         <div className="space-y-2">
-                          {capability.technicalDetails.map((detail: any) => (
+                          {capability.technicalDetails.map((detail: TechnicalDetail) => (
                             <div key={detail.detail} className="flex items-center text-sm text-slate-600">
                               <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
                               {detail.detail}
@@ -195,7 +361,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             </motion.div>
 
             <div className="space-y-20">
-              {industry.components.map((component: any, index: number) => (
+              {industry.components.map((component: ComponentCategory, index: number) => (
                 <motion.div
                   key={component.category}
                   initial={{ opacity: 0, y: 20 }}
@@ -218,7 +384,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       <div className="mb-8">
                         <h4 className={cn(typography.h5, 'mb-4')}>Component Parts</h4>
                         <div className="grid gap-3">
-                          {component.parts.map((part: any) => (
+                          {component.parts.map((part: ComponentPart) => (
                             <div key={part.part} className="flex items-center">
                               <CheckCircle className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0" />
                               <span className={cn(typography.body)}>{part.part}</span>
@@ -232,7 +398,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       <div className="mb-8">
                         <h4 className={cn(typography.h5, 'mb-4')}>Materials</h4>
                         <div className="flex flex-wrap gap-2">
-                          {component.materials.map((material: any) => (
+                          {component.materials.map((material: ComponentMaterial) => (
                             <span
                               key={material.material}
                               className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-medium"
@@ -248,7 +414,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       <div>
                         <h4 className={cn(typography.h5, 'mb-4')}>Requirements</h4>
                         <div className="grid gap-2">
-                          {component.requirements.map((requirement: any) => (
+                          {component.requirements.map((requirement: ComponentRequirement) => (
                             <div key={requirement.requirement} className="flex items-start">
                               <Target className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0 mt-0.5" />
                               <span className={cn(typography.body, 'text-slate-600')}>{requirement.requirement}</span>
@@ -265,7 +431,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl">
                         <Image
                           src={component.image}
-                          alt={component.category}
+                          alt={component.category || 'Component'}
                           fill
                           className="object-cover"
                           sizes="(max-width: 768px) 100vw, 50vw"
@@ -299,9 +465,9 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             </motion.div>
 
             <div className="space-y-24">
-              {industry.expertise.map((item: any, index: number) => (
+              {industry.expertise.map((item: ExpertiseItem, index: number) => (
                 <motion.div
-                  key={item.title}
+                  key={item.title || `expertise-${index}`}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.8 }}
@@ -372,7 +538,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                         <Image
                           src={item.imageUrl}
-                          alt={item.title}
+                          alt={item.title || 'Application'}
                           fill
                           className="object-cover"
                           sizes="(max-width: 768px) 100vw, 50vw"
@@ -417,7 +583,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                     <Award className="w-12 h-12 text-blue-600 mb-4" />
                     <h3 className={cn(typography.h4, 'mb-6')}>Certifications</h3>
                     <div className="space-y-4">
-                      {industry.regulatory.certifications.map((cert: any) => (
+                      {industry.regulatory.certifications.map((cert: Certification) => (
                         <div key={cert.name} className="border-l-4 border-blue-600 pl-4">
                           <h4 className={cn(typography.label, 'mb-1')}>{cert.name}</h4>
                           <p className="text-sm text-slate-600 mb-1">{cert.description}</p>
@@ -442,7 +608,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                     <CheckCircle className="w-12 h-12 text-blue-600 mb-4" />
                     <h3 className={cn(typography.h4, 'mb-6')}>Standards</h3>
                     <div className="space-y-3">
-                      {industry.regulatory.standards.map((standard: any) => (
+                      {industry.regulatory.standards.map((standard: Standard) => (
                         <div key={standard.name} className="flex items-start">
                           <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0" />
                           <div>
@@ -478,7 +644,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             </motion.div>
 
             <div className={styles.grid3Col}>
-              {industry.applications.map((application: any, index: number) => (
+              {industry.applications.map((application: Application, index: number) => (
                 <motion.div
                   key={application.name}
                   initial={{ opacity: 0, y: 20 }}
@@ -494,7 +660,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       <div>
                         <h4 className={cn(typography.label, 'mb-2 text-sm')}>Requirements</h4>
                         <div className="space-y-1">
-                          {application.requirements.map((req: any) => (
+                          {application.requirements.map((req: ApplicationRequirement) => (
                             <div key={req.requirement} className="flex items-center text-xs text-slate-600">
                               <CheckCircle className="w-3 h-3 text-blue-600 mr-2 flex-shrink-0" />
                               {req.requirement}
@@ -529,9 +695,9 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             </motion.div>
 
             <div className={styles.grid4Col}>
-              {industry.qualityStandards.map((item: any, index: number) => (
+              {industry.qualityStandards.map((item: QualityStandard | string, index: number) => (
                 <motion.div
-                  key={item.standard || item}
+                  key={typeof item === 'string' ? item : item.standard}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05, duration: 0.6 }}
@@ -540,7 +706,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                   <Card className={cn(styles.featureCard, 'h-full text-center')}>
                     <CheckCircle className="w-8 h-8 text-blue-600 mx-auto mb-3" />
                     <p className={cn(typography.small, 'font-medium')}>
-                      {item.standard || item}
+                      {typeof item === 'string' ? item : item.standard}
                     </p>
                   </Card>
                 </motion.div>
@@ -568,7 +734,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             </motion.div>
 
             <div className={styles.grid2Col}>
-              {industry.processBenefits.map((benefit: any, index: number) => (
+              {industry.processBenefits.map((benefit: ProcessBenefit, index: number) => (
                 <motion.div
                   key={benefit.title}
                   initial={{ opacity: 0, y: 20 }}
@@ -585,7 +751,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       <div>
                         <h4 className={cn(typography.label, 'mb-3')}>Key Features</h4>
                         <div className="space-y-2">
-                          {benefit.features.map((feature: any) => (
+                          {benefit.features.map((feature: ProcessBenefitFeature) => (
                             <div key={feature.feature} className="flex items-center text-sm text-slate-600">
                               <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
                               {feature.feature}
@@ -620,8 +786,8 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {(industry.cta?.buttons || [])
-                .filter((button: any) => button?.enabled !== false && button?.label && button?.href)
-                .map((button: any, index: number) => {
+                .filter((button: CTAButton) => button?.enabled !== false && button?.label && button?.href)
+                .map((button: CTAButton, index: number) => {
                   const isSecondary = button.variant === 'secondary' || index > 0;
                   return isSecondary ? (
                     <Button
@@ -631,7 +797,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       asChild
                       className={cn(styles.ctaSecondary, 'border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white')}
                     >
-                      <Link href={button.href}>{button.label}</Link>
+                      <Link href={button.href!}>{button.label}</Link>
                     </Button>
                   ) : (
                     <Button
@@ -640,7 +806,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       className={styles.ctaPrimary}
                       asChild
                     >
-                      <Link href={button.href}>
+                      <Link href={button.href!}>
                         {button.label}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>

@@ -558,6 +558,25 @@ export async function getHomepage(preview = false) {
         }
       }
     },
+    clientLogos {
+      enabled,
+      eyebrow,
+      animationSpeed,
+      grayscale,
+      logos[] {
+        _key,
+        enabled,
+        name,
+        href,
+        logo {
+          asset->{
+            _id,
+            url
+          },
+          alt
+        }
+      }
+    },
     stats {
       enabled,
       title,

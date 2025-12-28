@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getAllServices, getPageContent, getServicesPage } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
+import { NoServicesState } from '@/components/ui/empty-state';
 import type { Metadata } from 'next';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 
@@ -252,6 +253,9 @@ export default async function ServicesPage() {
             </AnimatedSection>
           )}
 
+          {formattedServices.length === 0 ? (
+            <NoServicesState />
+          ) : (
           <div className={styles.grid2Col}>
             {formattedServices.map((service: any, index: number) => {
               // Extract image URL safely
@@ -309,6 +313,7 @@ export default async function ServicesPage() {
             );
             })}
           </div>
+          )}
         </div>
       </section>
 

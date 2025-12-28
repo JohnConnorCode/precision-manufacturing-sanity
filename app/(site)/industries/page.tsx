@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { getAllIndustries, getIndustriesPage } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
+import { NoIndustriesState } from '@/components/ui/empty-state';
 import type { Metadata } from 'next';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import * as Icons from 'lucide-react';
@@ -161,6 +162,9 @@ export default async function IndustriesPage() {
             </div>
           </AnimatedSection>
 
+          {(!industriesPageData?.content?.industries || industriesPageData.content.industries.filter((i: any) => i?.enabled !== false).length === 0) ? (
+            <NoIndustriesState />
+          ) : (
           <div className="space-y-12">
             {industriesPageData?.content?.industries
               ?.filter((industry: any) => industry?.enabled !== false)
@@ -234,6 +238,7 @@ export default async function IndustriesPage() {
               </AnimatedSection>
             ))}
           </div>
+          )}
         </div>
       </section>
 

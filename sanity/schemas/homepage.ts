@@ -13,6 +13,7 @@ export default {
   },
   groups: [
     {name: 'hero', title: 'Hero', default: true},
+    {name: 'logos', title: 'Client Logos'},
     {name: 'services', title: 'Services & Industries'},
     {name: 'metrics', title: 'Stats & Specs'},
     {name: 'showcase', title: 'Image Showcase'},
@@ -334,6 +335,125 @@ export default {
               title: 'Button Link',
             },
           ],
+        },
+      ],
+    },
+    {
+      name: 'clientLogos',
+      type: 'object',
+      title: 'Client Logos Section',
+      description: 'Showcase trusted clients and partners with an animated logo carousel.',
+      group: 'logos',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fieldsets: [
+        {name: 'visibility', title: '👁️ Section Visibility', options: {collapsible: false}},
+        {name: 'content', title: 'Section Content'},
+        {name: 'styling', title: 'Styling'},
+      ],
+      fields: [
+        {
+          name: 'enabled',
+          type: 'boolean',
+          title: 'Show Client Logos Section',
+          description: 'Toggle to show/hide the Client Logos section',
+          fieldset: 'visibility',
+          initialValue: true,
+        },
+        {
+          name: 'eyebrow',
+          type: 'string',
+          title: 'Eyebrow Text',
+          description: 'Small text above logos (e.g., "TRUSTED BY INDUSTRY LEADERS")',
+          fieldset: 'content',
+          initialValue: 'TRUSTED BY INDUSTRY LEADERS',
+        },
+        {
+          name: 'logos',
+          type: 'array',
+          title: 'Client Logos',
+          fieldset: 'content',
+          of: [
+            {
+              type: 'object',
+              preview: {
+                select: {
+                  title: 'name',
+                  media: 'logo',
+                  enabled: 'enabled',
+                },
+                prepare({title, media, enabled}: any) {
+                  const status = enabled === false ? ' (HIDDEN)' : '';
+                  return {
+                    title: `${title || 'Client Logo'}${status}`,
+                    media,
+                  }
+                },
+              },
+              fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Toggle off to hide this logo',
+                  initialValue: true,
+                },
+                {
+                  name: 'name',
+                  type: 'string',
+                  title: 'Client Name',
+                  description: 'Company name (used for alt text)',
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: 'logo',
+                  type: 'image',
+                  title: 'Logo Image',
+                  description: 'Client logo (SVG or PNG with transparent background recommended)',
+                  options: {
+                    hotspot: true,
+                  },
+                  fields: [
+                    {
+                      name: 'alt',
+                      type: 'string',
+                      title: 'Alt Text',
+                    }
+                  ]
+                },
+                {
+                  name: 'href',
+                  type: 'url',
+                  title: 'Website URL',
+                  description: 'Optional link to client website',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: 'animationSpeed',
+          type: 'string',
+          title: 'Animation Speed',
+          fieldset: 'styling',
+          options: {
+            list: [
+              { title: 'Slow (60s)', value: 'slow' },
+              { title: 'Medium (40s)', value: 'medium' },
+              { title: 'Fast (25s)', value: 'fast' },
+            ],
+          },
+          initialValue: 'medium',
+        },
+        {
+          name: 'grayscale',
+          type: 'boolean',
+          title: 'Grayscale Logos',
+          description: 'Display logos in grayscale with color on hover',
+          fieldset: 'styling',
+          initialValue: true,
         },
       ],
     },

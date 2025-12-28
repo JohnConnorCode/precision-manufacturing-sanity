@@ -710,3 +710,97 @@
     background-color: rgba(148, 163, 184, 0.5);
   }
 }
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+@media print {
+  /* Reset backgrounds for printing */
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Hide non-essential elements */
+  header,
+  footer,
+  nav,
+  .no-print,
+  button,
+  [role="navigation"],
+  [data-radix-popper-content-wrapper] {
+    display: none !important;
+  }
+
+  /* Ensure content is visible */
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  /* Page breaks */
+  h1, h2, h3, h4 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  p, blockquote, ul, ol, dl, table, pre {
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  /* Show link URLs */
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    color: #666;
+  }
+
+  /* Hide internal navigation links */
+  a[href^="#"]:after,
+  a[href^="/"]:after {
+    content: "";
+  }
+
+  /* Table styling for print */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+
+  /* Ensure sections have proper spacing */
+  section {
+    padding: 1rem 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Reset gradients */
+  .bg-gradient-to-b,
+  .bg-gradient-to-r,
+  .bg-gradient-to-t,
+  .bg-gradient-to-br {
+    background: white !important;
+  }
+
+  /* Page margins */
+  @page {
+    margin: 2cm;
+  }
+
+  /* First page */
+  @page :first {
+    margin-top: 3cm;
+  }
+}

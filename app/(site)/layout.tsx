@@ -80,7 +80,8 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "verification-token-here",
+    // Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION in .env.local after adding site to Google Search Console
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },
 };
 

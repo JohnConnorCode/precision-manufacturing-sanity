@@ -144,9 +144,6 @@ export default function Hero({ data }: HeroProps) {
       {/* Premium Background Slider */}
       <HeroSliderFixed slides={finalSlides} />
 
-      {finalSlides[0]?.src && (
-        <img src={finalSlides[0].src} alt={finalSlides[0].alt} className="sr-only" loading="eager" />
-      )}
 
       {/* Overlay if enabled */}
       {overlayStyle && <div style={overlayStyle} />}

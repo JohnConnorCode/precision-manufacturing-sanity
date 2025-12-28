@@ -35,6 +35,9 @@
     "lib/get-cms-data-payload.ts",
     "lib/archive/**/*",
     "scripts/cms-health.ts",
-    "scripts/archive/**/*"
+    "scripts/archive/**/*",
+    "e2e/admin-collections-complete.spec.ts",
+    "e2e/detail-pages-validation.spec.ts",
+    "e2e/homepage-content-validation.spec.ts"
   ]
 }

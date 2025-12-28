@@ -50,9 +50,9 @@ const nextConfig: NextConfig = {
 
   /* Security headers */
   async headers() {
-    // Permissive frame-ancestors for Sanity Studio integration
-    // Allows embedding from Sanity dashboard, studio, and Vercel previews
-    const frameAncestors = "frame-ancestors 'self' https://*.sanity.studio https://*.sanity.io https://sanity.io https://www.sanity.io https://*.vercel.app https://vercel.live *";
+    // Strict frame-ancestors for Sanity Studio integration
+    // Only allows embedding from trusted Sanity and Vercel domains
+    const frameAncestors = "frame-ancestors 'self' https://*.sanity.studio https://*.sanity.io https://sanity.io https://www.sanity.io https://*.vercel.app https://vercel.live";
 
     return [
       {

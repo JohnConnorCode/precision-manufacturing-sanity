@@ -5,9 +5,30 @@ import { motion } from 'framer-motion';
 import { Home, ArrowLeft, Search, Phone } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
 
+interface PopularLink {
+  href: string;
+  label: string;
+}
+
+interface SiteSettings {
+  contact?: {
+    phone?: string;
+  };
+}
+
+interface ErrorPages {
+  notFound?: {
+    heading?: string;
+    description?: string;
+    popularLinksHeading?: string;
+    popularLinks?: PopularLink[];
+    errorCode?: string;
+  };
+}
+
 interface NotFoundContentProps {
-  siteSettings: any
-  errorPages: any
+  siteSettings: SiteSettings | null;
+  errorPages: ErrorPages | null;
 }
 
 export default function NotFoundContent({ siteSettings, errorPages }: NotFoundContentProps) {
@@ -117,7 +138,7 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
                 { href: '/contact', label: 'Request Quote' },
                 { href: '/about', label: 'About IIS' },
                 { href: '/industries/defense', label: 'Defense Manufacturing' },
-              ]).map((link: any) => (
+              ]).map((link: PopularLink) => (
                 <Link
                   key={link.href}
                   href={link.href}

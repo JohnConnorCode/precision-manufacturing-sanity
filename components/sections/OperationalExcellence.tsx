@@ -5,7 +5,9 @@ import * as Icons from 'lucide-react';
 import { usePrefersReducedMotion } from '@/lib/motion';
 
 function DynamicIcon({ name, className }: { name: string; className?: string }) {
-  const Icon = (Icons as any)[name] || Icons.Circle;
+  // Get the icon from lucide-react, fallback to Circle
+  const iconExport = name ? (Icons as Record<string, unknown>)[name] : null;
+  const Icon = (typeof iconExport === 'function' ? iconExport : Icons.Circle) as React.ComponentType<{ className?: string }>;
   return <Icon className={className} />;
 }
 

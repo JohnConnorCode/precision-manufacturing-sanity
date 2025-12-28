@@ -6,6 +6,7 @@ import { getAllResources, getPageContent } from '@/sanity/lib/queries';
 import { PortableTextContent } from '@/components/portable-text-components';
 import AnimatedSection from '@/components/ui/animated-section';
 import SectionHeader from '@/components/ui/section-header';
+import { NoResourcesState } from '@/components/ui/empty-state';
 import { typography, spacing, cn } from '@/lib/design-system';
 import type { Metadata } from 'next';
 
@@ -133,6 +134,11 @@ export default async function ResourcesPage() {
             />
           </AnimatedSection>
 
+          {formattedResources.length === 0 ? (
+            <div className="col-span-full">
+              <NoResourcesState />
+            </div>
+          ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {formattedResources.map((resource: any, index: number) => (
               <AnimatedSection key={resource._id} delay={Math.min(index * 0.05, 0.3)}>
@@ -174,6 +180,7 @@ export default async function ResourcesPage() {
               </AnimatedSection>
             ))}
           </div>
+          )}
         </div>
       </section>
     </div>

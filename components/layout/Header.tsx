@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Phone, Mail, Zap, ArrowRight, Home, Info, Wrench, Building2, BookOpen, FileText, Briefcase, Layers, Shield, PhoneCall, Mail as MailIcon } from 'lucide-react';
+import { Menu, Phone, Mail, Zap, ArrowRight, Home, Info, Wrench, Building2, BookOpen, FileText, Briefcase, Layers, Shield, PhoneCall, Mail as MailIcon, LucideIcon } from 'lucide-react';
 import Logo from '@/components/ui/logo';
 import { PremiumButton } from '@/components/ui/premium-button';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +18,36 @@ import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { typography } from '@/lib/design-system';
 import { throttleRAF } from '@/lib/performance';
+
+// Child menu item type
+interface ChildMenuItem {
+  name: string;
+  href: string;
+  description?: string;
+  iconName?: string;
+  openInNewTab?: boolean;
+}
+
+// Main menu item type
+interface MenuItem {
+  name: string;
+  href: string;
+  description?: string;
+  children?: ChildMenuItem[];
+  showInHeader?: boolean;
+  iconName?: string;
+  openInNewTab?: boolean;
+  style?: {
+    variant?: string;
+    badgeText?: string;
+  };
+}
+
+// Navigation styles type
+interface NavStyles {
+  alignment?: 'left' | 'center' | 'right';
+  density?: 'comfortable' | 'compact';
+}
 
 interface HeaderProps {
   data?: {
@@ -30,22 +61,13 @@ interface HeaderProps {
       showCertifications?: boolean;
       certifications?: string;
     };
-    menuItems?: Array<{
-      name: string;
-      href: string;
-      description?: string;
-      children?: Array<{
-        name: string;
-        href: string;
-        description?: string;
-      }>;
-      showInHeader?: boolean;
-    }>;
+    menuItems?: MenuItem[];
     cta?: {
       text: string;
       href: string;
     };
     moreButtonText?: string;
+    styles?: NavStyles;
     announcement?: {
       enabled?: boolean
       message?: string
@@ -74,20 +96,25 @@ export default function Header({ data }: HeaderProps) {
   const announcement = data?.announcement;
   // Filter out items hidden via CMS flags
   const rawNavigation = data?.menuItems;
-  const navigation = (rawNavigation || []).filter((item: any) => item?.showInHeader !== false);
+  const navigation = (rawNavigation || []).filter((item: MenuItem) => item?.showInHeader !== false);
   const cta = data?.cta;
   const moreButtonText = data?.moreButtonText;
-  const navStyles = (data as any)?.styles || {}
-  const align: 'left' | 'center' | 'right' = navStyles.alignment || 'left'
-  const themeMode: 'auto' | 'light' | 'dark' = navStyles.theme || 'auto'
-  const density: 'comfortable' | 'compact' = navStyles.density || 'comfortable'
-  const _dropdownStyle: 'card' | 'columns' = navStyles.dropdownStyle || 'card'
+  const navStyles = data?.styles || {};
+  const align: 'left' | 'center' | 'right' = navStyles.alignment || 'left';
+  const density: 'comfortable' | 'compact' = navStyles.density || 'comfortable';
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const pathname = usePathname();
+
+  // Track client-side mounting for theme toggle hydration
+  const [mounted, setMounted] = useState(false);
+
   // Use static ID to prevent hydration mismatch (only one mobile menu per page)
   const mobileSheetId = 'mobile-navigation-sheet';
+
+  // Prevent hydration mismatch for theme
+  useEffect(() => setMounted(true), []);
 
   // Check announcement dates client-side only to avoid hydration errors
   useEffect(() => {
@@ -121,7 +148,6 @@ export default function Header({ data }: HeaderProps) {
     return () => window.removeEventListener('scroll', throttledScroll);
   }, []);
 
-  const isDark = themeMode === 'dark'
   const listJustify = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'
 
   // Animation variants for nav items
@@ -148,26 +174,24 @@ export default function Header({ data }: HeaderProps) {
     }
   }
   const sizeClasses = density === 'compact' ? 'h-9 px-3 py-1.5' : 'h-10 px-4 py-2'
+
   // Gradient bottom border for hover/active states - animates width from center
   const gradientBorder = 'relative after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-blue-600 after:via-blue-500 after:to-indigo-600 hover:after:w-full after:transition-all after:duration-300 after:ease-out'
   const activeGradientBorder = 'after:w-full'
-  const linkTone = isDark ? `text-slate-100 ${gradientBorder}` : `text-slate-700 ${gradientBorder}`
-  const activeTone = isDark ? activeGradientBorder : activeGradientBorder
-  const triggerTone = isDark ? `bg-transparent text-slate-100 ${gradientBorder}` : `bg-transparent text-slate-700 ${gradientBorder}`
-  const _dropdownTone = isDark ? 'bg-slate-900/95 border border-slate-800' : 'bg-white/95 border border-slate-200/50'
+
+  // Use Tailwind dark: variants instead of conditional logic
+  const linkTone = `text-slate-700 dark:text-slate-100 ${gradientBorder}`
+  const activeTone = activeGradientBorder
+  const triggerTone = `bg-transparent text-slate-700 dark:text-slate-100 ${gradientBorder}`
 
   const headerClass = cn(
     'fixed z-[140] w-full transition-all duration-300 lg:top-10 top-0',
-    isDark
-      ? (isScrolled
-          ? 'bg-slate-950/95 backdrop-blur-xl shadow-lg border-b-2 border-slate-800'
-          : 'bg-slate-950/90 backdrop-blur-xl border-b border-slate-800')
-      : (isScrolled
-          ? 'bg-white/95 backdrop-blur-xl shadow-lg border-b-2 border-blue-600/20'
-          : 'bg-white/90 backdrop-blur-xl border-b border-slate-200/50')
+    isScrolled
+      ? 'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl shadow-lg border-b-2 border-blue-600/20 dark:border-slate-800'
+      : 'bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800'
   )
 
-  const iconMap: Record<string, any> = {
+  const iconMap: Record<string, LucideIcon> = {
     home: Home,
     about: Info,
     info: Info,
@@ -265,9 +289,9 @@ export default function Header({ data }: HeaderProps) {
               animate="visible"
             >
             <ul className={cn('flex list-none items-center space-x-2', listJustify)}>
-              {navigation.map((item: any, index: number) => {
-                const children = Array.isArray((item as any).children)
-                  ? (item as any).children.filter((c: any) => c && (c.href || c.name))
+              {navigation.map((item: MenuItem, index: number) => {
+                const children = Array.isArray(item.children)
+                  ? item.children.filter((c: ChildMenuItem) => c && (c.href || c.name))
                   : []
                 const hasChildren = children.length > 0
                 const href = (item.href && item.href !== '#') ? item.href : '/'
@@ -296,8 +320,8 @@ export default function Header({ data }: HeaderProps) {
                             sizeClasses,
                             triggerTone,
                             'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50',
-                            'hover:bg-slate-100/60 data-[state=open]:bg-slate-100/80',
-                            isDark && 'hover:bg-slate-800/60 data-[state=open]:bg-slate-800/80'
+                            'hover:bg-slate-100/60 dark:hover:bg-slate-800/60',
+                            'data-[state=open]:bg-slate-100/80 dark:data-[state=open]:bg-slate-800/80'
                           )}
                           aria-label={`${item.name} menu`}
                         >
@@ -322,9 +346,7 @@ export default function Header({ data }: HeaderProps) {
                             'min-w-[280px] py-3 px-2 rounded-xl shadow-lg',
                             'border',
                             'animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-150',
-                            isDark
-                              ? 'bg-slate-900 border-slate-700'
-                              : 'bg-white border-slate-200'
+                            'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700'
                           )}
                         >
                           {/* Parent "View All" link */}
@@ -334,10 +356,8 @@ export default function Header({ data }: HeaderProps) {
                                 href={href}
                                 className={cn(
                                   'flex items-center justify-between select-none rounded-lg px-4 py-3 mx-1 mb-2 no-underline outline-none transition-colors cursor-pointer',
-                                  'border-b border-slate-100',
-                                  isDark
-                                    ? 'hover:bg-slate-800 text-blue-400 border-slate-700'
-                                    : 'hover:bg-blue-50 text-blue-600'
+                                  'border-b border-slate-100 dark:border-slate-700',
+                                  'hover:bg-blue-50 dark:hover:bg-slate-800 text-blue-600 dark:text-blue-400'
                                 )}
                               >
                                 <span className="text-sm font-semibold">View All {item.name}</span>
@@ -347,7 +367,7 @@ export default function Header({ data }: HeaderProps) {
                           )}
                           {/* Child items */}
                           <div className="space-y-0.5">
-                            {children.map((child: any) => (
+                            {children.map((child: ChildMenuItem) => (
                               <DropdownMenuItem key={child.name} asChild>
                                 <Link
                                   href={(child.href && child.href !== '#') ? child.href : href}
@@ -357,16 +377,14 @@ export default function Header({ data }: HeaderProps) {
                                     'block select-none px-4 py-3 mx-1 no-underline outline-none cursor-pointer',
                                     'relative after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:bg-gradient-to-r after:from-blue-600 after:via-blue-500 after:to-indigo-600',
                                     'after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left',
-                                    isDark
-                                      ? 'text-slate-100 hover:text-blue-400'
-                                      : 'text-slate-700 hover:text-blue-600'
+                                    'text-slate-700 dark:text-slate-100 hover:text-blue-600 dark:hover:text-blue-400'
                                   )}
                                 >
-                                  <div className={cn('text-[15px] font-medium', isDark ? 'text-inherit' : 'text-inherit')}>
+                                  <div className="text-[15px] font-medium">
                                     {child.name}
                                   </div>
                                   {child.description && (
-                                    <div className={cn('text-sm mt-1 leading-relaxed', isDark ? 'text-slate-400' : 'text-slate-500')}>
+                                    <div className="text-sm mt-1 leading-relaxed text-slate-500 dark:text-slate-400">
                                       {child.description}
                                     </div>
                                   )}
@@ -421,29 +439,33 @@ export default function Header({ data }: HeaderProps) {
             </motion.div>
           </nav>
 
-          {/* Desktop CTA - Premium Design */}
-          {cta && cta.text && (
+          {/* Desktop CTA + Theme Toggle */}
           <motion.div
-            className="hidden lg:flex items-center space-x-4"
+            className="hidden lg:flex items-center space-x-2"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
           >
-            <Link href={cta.href || '/contact'}>
-              <PremiumButton>
-                {cta.text}
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </PremiumButton>
-            </Link>
+            {/* Theme Toggle */}
+            {mounted && <ThemeToggle />}
+
+            {/* CTA Button */}
+            {cta && cta.text && (
+              <Link href={cta.href || '/contact'}>
+                <PremiumButton>
+                  {cta.text}
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </PremiumButton>
+              </Link>
+            )}
           </motion.div>
-          )}
 
           {/* Mobile/More Menu - Shows below lg (1024px) OR as "More" button on lg-xl */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             {/* Mobile hamburger (below lg) */}
             <button
               type="button"
-              className="lg:hidden relative w-12 h-12 flex items-center justify-center rounded-lg hover:bg-slate-100/80 active:bg-slate-200/60 transition-all duration-200"
+              className="lg:hidden relative w-12 h-12 flex items-center justify-center rounded-lg hover:bg-slate-100/80 dark:hover:bg-slate-800/80 active:bg-slate-200/60 dark:active:bg-slate-700/60 transition-all duration-200"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-haspopup="dialog"
               aria-expanded={mobileMenuOpen}
@@ -458,7 +480,7 @@ export default function Header({ data }: HeaderProps) {
                     y: mobileMenuOpen ? 8 : 0,
                   }}
                   transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                  className="w-full h-0.5 bg-slate-900 rounded-full origin-center"
+                  className="w-full h-0.5 bg-slate-900 dark:bg-slate-100 rounded-full origin-center"
                 />
                 <motion.span
                   animate={{
@@ -466,7 +488,7 @@ export default function Header({ data }: HeaderProps) {
                     x: mobileMenuOpen ? -10 : 0,
                   }}
                   transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                  className="w-full h-0.5 bg-slate-900 rounded-full"
+                  className="w-full h-0.5 bg-slate-900 dark:bg-slate-100 rounded-full"
                 />
                 <motion.span
                   animate={{
@@ -474,7 +496,7 @@ export default function Header({ data }: HeaderProps) {
                     y: mobileMenuOpen ? -8 : 0,
                   }}
                   transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                  className="w-full h-0.5 bg-slate-900 rounded-full origin-center"
+                  className="w-full h-0.5 bg-slate-900 dark:bg-slate-100 rounded-full origin-center"
                 />
               </div>
             </button>
@@ -483,7 +505,7 @@ export default function Header({ data }: HeaderProps) {
             {moreButtonText && (
             <button
               type="button"
-              className="hidden lg:flex xl:hidden items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all hover:bg-slate-100/80 active:bg-slate-200/60"
+              className="hidden lg:flex xl:hidden items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all hover:bg-slate-100/80 dark:hover:bg-slate-800/80 active:bg-slate-200/60 dark:active:bg-slate-700/60"
               aria-label="More menu options"
               aria-haspopup="dialog"
               aria-expanded={mobileMenuOpen}
@@ -497,49 +519,52 @@ export default function Header({ data }: HeaderProps) {
             <SheetContent
               id={mobileSheetId}
               side="right"
-              className={cn(
-                'w-full sm:w-[400px] border-l',
-                isDark
-                  ? 'bg-slate-900 border-slate-700'
-                  : 'bg-white border-slate-200'
-              )}
+              className="w-full sm:w-[400px] border-l bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
             >
               <nav className="flex flex-col h-full pt-12 pb-6">
                 <div className="flex-1 overflow-y-auto px-4">
+                  {/* Theme Toggle in Mobile Menu */}
+                  <div className="mb-6 pb-4 border-b border-slate-200 dark:border-slate-700">
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-3">Appearance</p>
+                    {mounted && <ThemeToggle variant="dropdown" />}
+                  </div>
+
                   <div className="space-y-2">
-                    {navigation.map((item: any) => {
+                    {navigation.map((item: MenuItem, index: number) => {
                       const children = Array.isArray(item.children) ? item.children : []
                       const href = (item.href && item.href !== '#') ? item.href : '/'
                       const itemVariant = item?.style?.variant || 'link'
                       const target = item?.openInNewTab ? '_blank' : undefined
                       const rel = item?.openInNewTab ? 'noopener noreferrer' : undefined
                       return (
-                        <div key={item.name} className="py-1">
+                        <motion.div
+                          key={item.name}
+                          className="py-1"
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{
+                            duration: 0.3,
+                            delay: 0.1 + index * 0.05,
+                            ease: [0.25, 0.1, 0.25, 1]
+                          }}
+                        >
                           {children.length > 0 ? (
                             <div className="space-y-1">
-                              <div className={cn(
-                                "px-3 py-2.5 font-bold text-lg",
-                                isDark ? 'text-white' : 'text-slate-900'
-                              )}>
+                              <div className="px-3 py-2.5 font-bold text-lg text-slate-900 dark:text-white">
                                 <span className="inline-flex items-center gap-3">
                                   {IconFor(item?.iconName)}
                                   {item.name}
                                 </span>
                               </div>
-                              <div className="space-y-1 pl-4 ml-3 border-l-2 border-slate-300">
-                                {children.map((child: any) => (
+                              <div className="space-y-1 pl-4 ml-3 border-l-2 border-slate-300 dark:border-slate-600">
+                                {children.map((child: ChildMenuItem) => (
                                   <Link
                                     key={child.name}
                                     href={(child.href && child.href !== '#') ? child.href : href}
                                     target={child?.openInNewTab ? '_blank' : undefined}
                                     rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className={cn(
-                                      "flex items-center gap-3 px-3 py-2.5 rounded-lg text-base font-medium transition-colors",
-                                      isDark
-                                        ? 'text-slate-200 hover:text-white hover:bg-slate-800'
-                                        : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
-                                    )}
+                                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-base font-medium transition-colors text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                                   >
                                     {IconFor(child?.iconName)}
                                     {child.name}
@@ -564,24 +589,27 @@ export default function Header({ data }: HeaderProps) {
                               onClick={() => setMobileMenuOpen(false)}
                               className={cn(
                                 "flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-lg transition-colors",
-                                isDark
-                                  ? 'text-white hover:bg-slate-800'
-                                  : 'text-slate-900 hover:bg-slate-100',
-                                pathname === href && (isDark ? 'bg-slate-800' : 'bg-slate-100')
+                                "text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800",
+                                pathname === href && 'bg-slate-100 dark:bg-slate-800'
                               )}
                             >
                               {IconFor(item?.iconName)}
                               {item.name}
                             </Link>
                           )}
-                        </div>
+                        </motion.div>
                       )
                     })}
                   </div>
                 </div>
 
                 {/* CTA Button at bottom */}
-                <div className="px-4 pt-6 border-t border-slate-200">
+                <motion.div
+                  className="px-4 pt-6 border-t border-slate-200 dark:border-slate-700"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                >
                   {cta && (
                   <Link href={cta?.href || '/contact'} onClick={() => setMobileMenuOpen(false)} className="block">
                     <PremiumButton className="w-full h-12 text-base font-semibold">
@@ -597,12 +625,7 @@ export default function Header({ data }: HeaderProps) {
                     {topBar?.showPhone !== false && (
                       <a
                         href={topBar?.phoneLink}
-                        className={cn(
-                          "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
-                          isDark
-                            ? 'text-slate-200 hover:text-white hover:bg-slate-800'
-                            : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
-                        )}
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                         aria-label={`Call ${topBar?.phone}`}
                       >
                         <Phone className="h-5 w-5" />
@@ -612,12 +635,7 @@ export default function Header({ data }: HeaderProps) {
                     {topBar?.showEmail !== false && (
                       <a
                         href={topBar?.emailLink}
-                        className={cn(
-                          "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
-                          isDark
-                            ? 'text-slate-200 hover:text-white hover:bg-slate-800'
-                            : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
-                        )}
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                         aria-label={`Email ${topBar?.email}`}
                       >
                         <Mail className="h-5 w-5" />
@@ -626,7 +644,7 @@ export default function Header({ data }: HeaderProps) {
                     )}
                   </div>
                   )}
-                </div>
+                </motion.div>
               </nav>
             </SheetContent>
           </Sheet>

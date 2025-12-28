@@ -48,7 +48,7 @@ export default function Stats({ data }: StatsProps) {
   }
 
   return (
-    <section className="py-20 md:py-24 bg-gradient-to-b from-slate-100 to-white relative overflow-hidden">
+    <section className="py-20 md:py-24 bg-gradient-to-b from-slate-100 to-white dark:from-slate-900 dark:to-slate-950 relative overflow-hidden">
       {/* Background Pattern */}
       <DotGridBackground />
 
@@ -78,7 +78,7 @@ export default function Stats({ data }: StatsProps) {
               >
               <div className="relative inline-block mb-3">
                 <div className="absolute inset-0 rounded-full blur-xl opacity-20" style={getGradientStyle(theme.colors)} />
-                <div className="relative bg-white rounded-2xl p-6 shadow-lg">
+                <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg dark:shadow-slate-950/50">
                   <AnimatedCounter
                     value={stat.value}
                     decimals={stat.decimals}
@@ -89,7 +89,7 @@ export default function Stats({ data }: StatsProps) {
                   />
                 </div>
               </div>
-              <p className="text-sm font-semibold text-slate-600 uppercase tracking-wider">
+              <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 {stat.label}
               </p>
               </motion.div>

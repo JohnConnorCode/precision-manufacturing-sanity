@@ -1,5 +1,6 @@
 import { draftMode } from 'next/headers';
 import Hero from '@/components/sections/Hero';
+import ClientLogos from '@/components/sections/ClientLogos';
 import TechnicalSpecs from '@/components/sections/TechnicalSpecs';
 import Services from '@/components/sections/Services';
 import Industries from '@/components/sections/Industries';
@@ -17,6 +18,31 @@ import {
 } from '@/lib/structured-data';
 import { getAllServices, getAllIndustries, getHomepage, getSiteSettings } from '@/sanity/lib/queries';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import type { SanityImage } from '@/lib/types/cms';
+
+// Types for Sanity data
+interface SanityServiceData {
+  title: string;
+  slug?: { current?: string } | string;
+  shortDescription?: string;
+  description?: unknown;
+  image?: SanityImage;
+  imageUrl?: string;
+  iconName?: string;
+  specs?: (string | { text?: string; spec?: string })[];
+  highlight?: boolean;
+}
+
+interface SanityIndustryData {
+  title: string;
+  slug?: { current?: string } | string;
+  shortDescription?: string;
+  description?: unknown;
+  image?: SanityImage;
+  imageUrl?: string;
+  iconName?: string;
+  features?: (string | { feature?: string })[];
+}
 
 // Use ISR for automatic updates when Sanity content changes
 export const revalidate = 60; // Revalidate every 60 seconds
@@ -27,25 +53,25 @@ export default async function Home() {
 
   // Parallel data fetching - 4x faster than sequential
   const [servicesData, industriesData, homepageData, siteSettings] = await Promise.all([
-    getAllServices(isDraft),
-    getAllIndustries(isDraft),
+    getAllServices(isDraft) as Promise<SanityServiceData[] | null>,
+    getAllIndustries(isDraft) as Promise<SanityIndustryData[] | null>,
     getHomepage(isDraft),
     getSiteSettings(isDraft)
   ]);
 
   // Format data for display
-  const formattedServices = servicesData?.map((service: any) => ({
+  const formattedServices = servicesData?.map((service) => ({
     ...service,
     description: service.shortDescription || portableTextToPlainText(service.description),
-    href: `/services/${service.slug?.current || service.slug}`,
-    image: service.image?.asset?.url || service.imageUrl, // Prefer Sanity image (with hotspot controls) over external URL
+    href: `/services/${typeof service.slug === 'string' ? service.slug : service.slug?.current}`,
+    image: service.image?.asset?.url || service.imageUrl,
   }));
 
-  const formattedIndustries = industriesData?.map((industry: any) => ({
+  const formattedIndustries = industriesData?.map((industry) => ({
     ...industry,
     description: industry.shortDescription || portableTextToPlainText(industry.description),
-    href: `/industries/${industry.slug?.current || industry.slug}`,
-    image: industry.image?.asset?.url || industry.imageUrl, // Extract URL from Sanity image object or imageUrl field (undefined if missing)
+    href: `/industries/${typeof industry.slug === 'string' ? industry.slug : industry.slug?.current}`,
+    image: industry.image?.asset?.url || industry.imageUrl,
   }));
 
   const heroData = homepageData?.hero || undefined;
@@ -106,7 +132,7 @@ export default async function Home() {
       ]} />
 
       {heroData?.enabled !== false && <Hero data={heroData} />}
-      {/* Stats section removed - using TechnicalSpecs instead */}
+      {homepageData?.clientLogos?.enabled !== false && <ClientLogos data={homepageData?.clientLogos} />}
       {homepageData?.servicesSection?.enabled !== false && (
         <Services data={formattedServices || undefined} sectionData={homepageData?.servicesSection || undefined} />
       )}

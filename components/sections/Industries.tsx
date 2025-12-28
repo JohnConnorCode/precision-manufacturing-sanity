@@ -8,7 +8,9 @@ import { usePrefersReducedMotion } from '@/lib/motion';
 import { Industry, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
 
 function DynamicIcon({ name, className }: { name?: string; className?: string }) {
-  const Icon = name ? (Icons as any)[name] || Icons.Circle : Icons.Circle;
+  // Get the icon from lucide-react, fallback to Circle
+  const iconExport = name ? (Icons as Record<string, unknown>)[name] : null;
+  const Icon = (typeof iconExport === 'function' ? iconExport : Icons.Circle) as React.ComponentType<{ className?: string }>;
   return <Icon className={className} />;
 }
 
@@ -39,7 +41,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
   const description = sectionData?.header?.description || sectionData?.description;
 
   return (
-    <section className="py-24 md:py-32 bg-slate-50">
+    <section className="py-24 md:py-32 bg-slate-50 dark:bg-slate-950">
       <div className="container">
         {/* Header */}
         <motion.div
@@ -55,7 +57,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
             </p>
           )}
           {heading && (
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6">
               {heading.split(' ').map((word, i, arr) => (
                 i === arr.length - 1 ? (
                   <span key={i} className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
@@ -68,7 +70,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
             </h2>
           )}
           {description && (
-            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
               {description}
             </p>
           )}
@@ -79,7 +81,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
           {industriesData.slice(0, 3).map((industry, index) => {
             const imageUrl = typeof industry.image === 'string'
               ? industry.image
-              : (industry.image as any)?.asset?.url || null;
+              : (industry.image as { asset?: { url?: string } } | undefined)?.asset?.url || null;
 
             return (
               <motion.div
@@ -125,8 +127,8 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                       {/* Feature Tags */}
                       {industry.features && industry.features.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-4">
-                          {industry.features.slice(0, 3).map((feature: any, i: number) => {
-                            const featureText = typeof feature === 'string' ? feature : feature.feature;
+                          {industry.features.slice(0, 3).map((feature, i: number) => {
+                            const featureText = typeof feature === 'string' ? feature : (feature as { feature?: string }).feature;
                             return (
                               <span
                                 key={i}

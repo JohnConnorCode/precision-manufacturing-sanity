@@ -9,14 +9,14 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      // Base styling - clean, professional
-      "rounded-xl border bg-white text-slate-900",
+      // Base styling - clean, professional with dark mode
+      "rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-white",
       // Premium shadow system - subtle at rest, elevated on hover
-      "shadow-sm hover:shadow-xl",
+      "shadow-sm hover:shadow-xl dark:shadow-slate-950/50",
       // Smooth transition for all states
       "transition-all duration-300 ease-out",
       // Subtle border that refines on hover
-      "border-slate-200/80 hover:border-slate-300/80",
+      "border-slate-200/80 dark:border-slate-800 hover:border-slate-300/80 dark:hover:border-slate-700",
       // Micro-interaction: gentle lift on hover
       "hover:-translate-y-0.5",
       className
@@ -97,10 +97,10 @@ const CardInteractive = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-xl border bg-white text-slate-900",
-      "shadow-sm hover:shadow-2xl",
+      "rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-white",
+      "shadow-sm hover:shadow-2xl dark:shadow-slate-950/50",
       "transition-all duration-300 ease-out",
-      "border-slate-200/60 hover:border-blue-500/30",
+      "border-slate-200/60 dark:border-slate-800 hover:border-blue-500/30 dark:hover:border-blue-500/30",
       "hover:-translate-y-1 hover:scale-[1.01]",
       "cursor-pointer",
       // Subtle blue glow on hover
@@ -122,10 +122,10 @@ const CardFeature = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-2xl border bg-white text-slate-900",
-      "shadow-md hover:shadow-2xl",
+      "rounded-2xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-white",
+      "shadow-md hover:shadow-2xl dark:shadow-slate-950/50",
       "transition-all duration-400 ease-out",
-      "border-slate-200/50 hover:border-blue-500/20",
+      "border-slate-200/50 dark:border-slate-800 hover:border-blue-500/20",
       "hover:-translate-y-1.5",
       // Premium inner glow
       "relative overflow-hidden",

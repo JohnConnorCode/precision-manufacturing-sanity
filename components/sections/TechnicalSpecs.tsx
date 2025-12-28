@@ -1,6 +1,6 @@
 "use client";
 
-import { Gauge, Cpu, Shield, Target, Award, Clock, Activity, Zap, CheckCircle2, Calendar } from 'lucide-react';
+import { Gauge, Cpu, Shield, Target, Award, Clock, Activity, Zap, CheckCircle2, Calendar, LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
@@ -30,7 +30,7 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   // Icon mapping for CMS data
-  const iconMap: Record<string, any> = {
+  const iconMap: Record<string, LucideIcon> = {
     Gauge,
     Cpu,
     Shield,

@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Linkedin, Twitter, Facebook, Mail, Phone, MapPin, Zap } from 'lucide-react';
 import Logo from '@/components/ui/logo';
-import { typography, cn } from '@/lib/design-system';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { typography, colors, cn } from '@/lib/design-system';
 import { motion } from 'framer-motion';
 
 interface FooterProps {
@@ -64,7 +65,14 @@ interface FooterProps {
 const Footer = ({ data }: FooterProps) => {
   // 100% CMS controlled - no hardcoded fallbacks
   // Map Sanity field names (text) to expected field names (label)
-  const mapLinks = (links: any[] | undefined) => {
+  interface FooterLink {
+    text?: string;
+    label?: string;
+    href?: string;
+    enabled?: boolean;
+  }
+
+  const mapLinks = (links: FooterLink[] | undefined) => {
     if (!links) return [];
     return links
       .filter(link => link?.enabled !== false)
@@ -166,7 +174,7 @@ const Footer = ({ data }: FooterProps) => {
   };
 
   return (
-    <footer key="site-footer" className="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white border-t border-blue-600/10" suppressHydrationWarning>
+    <footer key="site-footer" className={cn(colors.footer.bg, colors.footer.text.primary, 'border-t', colors.footer.border)} suppressHydrationWarning>
       <div className="container py-12 md:py-16">
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8"
@@ -176,34 +184,34 @@ const Footer = ({ data }: FooterProps) => {
         >
           <motion.div variants={itemVariants} className="space-y-4">
             <Logo variant="light" showText={true} size="md" animated={true} logoData={data?.logo} />
-            <p className={cn(typography.small, 'text-slate-400 max-w-xs')}>
+            <p className={cn(typography.small, colors.footer.text.secondary, 'max-w-xs')}>
               {footerData.company?.description}
             </p>
             <div className="flex space-x-4">
               {footerData.social.linkedin && footerData.social.linkedin !== '#' && footerData.social.linkedin !== '' && (
-                <Link href={footerData.social.linkedin} aria-label="LinkedIn">
-                  <Linkedin className="h-5 w-5 text-slate-400 hover:text-blue-600 transition-colors" />
+                <Link href={footerData.social.linkedin} aria-label="LinkedIn" className="group">
+                  <Linkedin className={cn('h-5 w-5', colors.footer.socialIcon, 'group-hover:scale-110')} />
                 </Link>
               )}
               {footerData.social.twitter && footerData.social.twitter !== '#' && footerData.social.twitter !== '' && (
-                <Link href={footerData.social.twitter} aria-label="Twitter">
-                  <Twitter className="h-5 w-5 text-slate-400 hover:text-blue-600 transition-colors" />
+                <Link href={footerData.social.twitter} aria-label="Twitter" className="group">
+                  <Twitter className={cn('h-5 w-5', colors.footer.socialIcon, 'group-hover:scale-110')} />
                 </Link>
               )}
               {footerData.social.facebook && footerData.social.facebook !== '#' && footerData.social.facebook !== '' && (
-                <Link href={footerData.social.facebook} aria-label="Facebook">
-                  <Facebook className="h-5 w-5 text-slate-400 hover:text-blue-600 transition-colors" />
+                <Link href={footerData.social.facebook} aria-label="Facebook" className="group">
+                  <Facebook className={cn('h-5 w-5', colors.footer.socialIcon, 'group-hover:scale-110')} />
                 </Link>
               )}
             </div>
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{footerData.servicesHeading}</h4>
+            <h4 className={cn('font-semibold mb-3', colors.footer.text.heading)}>{footerData.servicesHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.servicesLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-slate-400 hover:text-blue-600 transition-colors">
+                  <Link href={link.href} className={cn(colors.footer.linkAnimated, 'inline-block')}>
                     {link.label}
                   </Link>
                 </li>
@@ -212,11 +220,11 @@ const Footer = ({ data }: FooterProps) => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{footerData.resourcesHeading}</h4>
+            <h4 className={cn('font-semibold mb-3', colors.footer.text.heading)}>{footerData.resourcesHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.resourcesLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-slate-400 hover:text-blue-600 transition-colors">
+                  <Link href={link.href} className={cn(colors.footer.linkAnimated, 'inline-block')}>
                     {link.label}
                   </Link>
                 </li>
@@ -225,11 +233,11 @@ const Footer = ({ data }: FooterProps) => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{footerData.quickLinksHeading}</h4>
+            <h4 className={cn('font-semibold mb-3', colors.footer.text.heading)}>{footerData.quickLinksHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.quickLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-slate-400 hover:text-blue-600 transition-colors">
+                  <Link href={link.href} className={cn(colors.footer.linkAnimated, 'inline-block')}>
                     {link.label}
                   </Link>
                 </li>
@@ -238,23 +246,23 @@ const Footer = ({ data }: FooterProps) => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{footerData.contactHeading}</h4>
+            <h4 className={cn('font-semibold mb-3', colors.footer.text.heading)}>{footerData.contactHeading}</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start space-x-2">
-                <Mail className="h-4 w-4 text-slate-400 mt-0.5" />
-                <a href={`mailto:${footerData.contact.email}`} className="text-slate-400 hover:text-blue-600 transition-colors">
+                <Mail className={cn('h-4 w-4 mt-0.5', colors.footer.icon)} />
+                <a href={`mailto:${footerData.contact.email}`} className={colors.footer.link}>
                   {footerData.contact.email}
                 </a>
               </li>
               <li className="flex items-start space-x-2">
-                <Phone className="h-4 w-4 text-slate-400 mt-0.5" />
-                <a href={footerData.contact.phoneLink} className="text-slate-400 hover:text-blue-600 transition-colors">
+                <Phone className={cn('h-4 w-4 mt-0.5', colors.footer.icon)} />
+                <a href={footerData.contact.phoneLink} className={colors.footer.link}>
                   {footerData.contact.phone}
                 </a>
               </li>
               <li className="flex items-start space-x-2">
-                <MapPin className="h-4 w-4 text-slate-400 mt-0.5" />
-                <span className="text-slate-400">
+                <MapPin className={cn('h-4 w-4 mt-0.5', colors.footer.icon)} />
+                <span className={colors.footer.text.secondary}>
                   {footerData.contact.address?.split('\n').map((line, i) => (
                     <span key={i}>
                       {line}
@@ -268,18 +276,20 @@ const Footer = ({ data }: FooterProps) => {
         </motion.div>
 
         <motion.div
-          className="mt-8 pt-8 border-t border-blue-600/10"
+          className={cn('mt-8 pt-8 border-t', colors.footer.border)}
           initial={{ opacity: 0 }}
           animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
           transition={{ delay: 0.8, duration: 0.6 }}
         >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className={cn(typography.small, 'text-slate-500')}>
+            <p className={cn(typography.small, colors.footer.text.muted)}>
               {footerData.copyright?.replace('{year}', new Date().getFullYear().toString())}
             </p>
             <div className="flex items-center space-x-6">
+              {/* Theme Toggle */}
+              <ThemeToggle variant="dropdown" />
               <Zap className="h-3 w-3 text-blue-400" />
-              <div className={cn(typography.badge, 'text-slate-500')}>
+              <div className={cn(typography.badge, colors.footer.text.muted)}>
                 <span>Founded {footerData.company?.foundedYear}</span>
                 <span className="mx-2">•</span>
                 <span>{footerData.company?.certifications}</span>

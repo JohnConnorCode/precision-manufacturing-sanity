@@ -135,12 +135,7 @@ export interface ResourcesData {
 
 export interface ShowcaseImage {
   src?: string;
-  image?: {
-    asset?: {
-      url?: string;
-    };
-    alt?: string;
-  };
+  image?: SanityImage;
   alt?: string;
   title: string;
   category: string;
@@ -148,10 +143,14 @@ export interface ShowcaseImage {
   enabled?: boolean;
 }
 
+export interface ShowcaseImageWithAsset extends ShowcaseImage {
+  image?: SanityImage;
+}
+
 export interface ShowcaseStat {
   _key?: string;
   iconName?: string;
-  icon?: string;
+  icon?: string;  // Legacy field name
   value: string;
   label: string;
   enabled?: boolean;
@@ -330,4 +329,145 @@ export interface TechnicalSpecsData {
   title?: string;
   subtitle?: string;
   specs?: TechnicalSpec[];
+}
+
+// ============================================================================
+// SANITY IMAGE TYPES
+// ============================================================================
+
+export interface SanityImageAsset {
+  _id?: string;
+  url?: string;
+}
+
+export interface SanityImage {
+  asset?: SanityImageAsset;
+  alt?: string;
+  caption?: string;
+  hotspot?: {
+    x: number;
+    y: number;
+    height: number;
+    width: number;
+  };
+  crop?: {
+    top: number;
+    bottom: number;
+    left: number;
+    right: number;
+  };
+}
+
+// ============================================================================
+// CLIENT LOGOS SECTION
+// ============================================================================
+
+export interface ClientLogo {
+  _key?: string;
+  enabled?: boolean;
+  name: string;
+  logo?: SanityImage;
+  href?: string;
+}
+
+export interface ClientLogosData {
+  enabled?: boolean;
+  eyebrow?: string;
+  logos?: ClientLogo[];
+  animationSpeed?: 'slow' | 'medium' | 'fast';
+  grayscale?: boolean;
+}
+
+// ============================================================================
+// NAVIGATION TYPES
+// ============================================================================
+
+export interface NavLink {
+  label: string;
+  href: string;
+  enabled?: boolean;
+}
+
+export interface NavDropdown {
+  label: string;
+  type: 'services' | 'industries' | 'resources' | 'custom';
+  enabled?: boolean;
+  items?: NavLink[];
+}
+
+export interface NavigationData {
+  topBar?: {
+    enabled?: boolean;
+    message?: string;
+    link?: NavLink;
+  };
+  menuItems?: (NavLink | NavDropdown)[];
+  cta?: NavLink;
+}
+
+// ============================================================================
+// SITE SETTINGS
+// ============================================================================
+
+export interface SiteSettings {
+  company?: {
+    name?: string;
+    alternateName?: string;
+    websiteUrl?: string;
+    logoUrl?: string;
+    description?: string;
+    foundingYear?: string;
+  };
+  contact?: {
+    phone?: string;
+    email?: string;
+    address?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    country?: string;
+  };
+  social?: {
+    linkedin?: string;
+    twitter?: string;
+    facebook?: string;
+  };
+}
+
+// ============================================================================
+// HOMEPAGE DATA
+// ============================================================================
+
+export interface HomepageData {
+  hero?: HeroData;
+  clientLogos?: ClientLogosData;
+  stats?: StatsData;
+  servicesSection?: SectionHeader & {
+    header?: SectionHeader;
+    cta?: {
+      enabled?: boolean;
+      text?: string;
+      href?: string;
+      variant?: string;
+    };
+  };
+  industriesSection?: SectionHeader & {
+    header?: {
+      eyebrow?: string;
+      title?: string;
+      titleHighlight?: string;
+      description?: string;
+    };
+  };
+  technicalSpecs?: TechnicalSpecsData;
+  imageShowcase?: ImageShowcaseData;
+  operationalExcellence?: OperationalExcellenceData;
+  resourcesSection?: ResourcesData;
+  cta?: CTAData;
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    metaKeywords?: string;
+    ogImage?: SanityImage;
+  };
 }
