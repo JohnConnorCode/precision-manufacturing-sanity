@@ -26,9 +26,12 @@ export default function LogoSVG({
 
   const { width, height } = sizeMap[size];
 
-  // Color based on variant
-  const strokeColor = variant === 'light' ? '#ffffff' : '#000000';
-  const fillColor = variant === 'light' ? '#ffffff' : '#000000';
+  // Color based on variant - use CSS classes for automatic dark mode support
+  // When variant is 'dark', show black in light mode, when 'light', show white
+  // Using currentColor allows CSS to control the actual color via text color classes
+  const colorClass = variant === 'light'
+    ? 'text-white'
+    : 'text-slate-900 dark:text-white';
 
   // Scale text size with logo size
   const textSizeClass = size === 'sm'
@@ -106,8 +109,8 @@ export default function LogoSVG({
   } as const;
 
   return (
-    <div className={`flex items-center ${logoTextGap}`}>
-      {/* SVG Logo */}
+    <div className={`flex items-center ${logoTextGap} ${colorClass}`}>
+      {/* SVG Logo - uses currentColor for automatic dark mode support */}
       <motion.svg
         width={width}
         height={height}
@@ -121,7 +124,7 @@ export default function LogoSVG({
         {/* Gaussian Bell Curve - mathematically accurate smooth path */}
         <motion.path
           d="M 50 550 C 80 540, 110 515, 140 470 C 170 425, 200 360, 230 270 C 260 180, 290 115, 320 75 C 350 35, 375 20, 400 20 C 425 20, 450 35, 480 75 C 510 115, 540 180, 570 270 C 600 360, 630 425, 660 470 C 690 515, 720 540, 750 550"
-          stroke={strokeColor}
+          stroke="currentColor"
           strokeWidth="12"
           fill="none"
           strokeLinecap="round"
@@ -135,7 +138,7 @@ export default function LogoSVG({
           y1="550"
           x2="760"
           y2="550"
-          stroke={strokeColor}
+          stroke="currentColor"
           strokeWidth="12"
           strokeLinecap="round"
           variants={animated ? curveVariants : undefined}
@@ -149,7 +152,7 @@ export default function LogoSVG({
           fontSize="180"
           fontWeight="900"
           fontFamily="Georgia, serif"
-          fill={fillColor}
+          fill="currentColor"
           variants={animated ? textVariants : undefined}
         >
           IIS
@@ -170,8 +173,8 @@ export default function LogoSVG({
               variants={animated ? wordVariants : undefined}
               className={
                 i === 2
-                  ? `${textSizeClass} font-extrabold tracking-[0.15em] leading-none ${variant === 'light' ? 'text-blue-400' : 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 bg-clip-text text-transparent'}`
-                  : `${textSizeClass} font-extrabold tracking-[0.15em] leading-none ${variant === 'light' ? 'text-white' : 'text-slate-800'}`
+                  ? `${textSizeClass} font-extrabold tracking-[0.15em] leading-none ${variant === 'light' ? 'text-blue-400' : 'text-blue-600 dark:text-blue-400'}`
+                  : `${textSizeClass} font-extrabold tracking-[0.15em] leading-none ${variant === 'light' ? 'text-white' : 'text-slate-800 dark:text-white'}`
               }
             >
               {word}

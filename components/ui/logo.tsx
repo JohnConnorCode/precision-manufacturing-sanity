@@ -109,10 +109,10 @@ export default function Logo({
                   i === 2
                     ? effectiveVariant === 'light'
                       ? 'text-blue-400'
-                      : 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 bg-clip-text text-transparent'
+                      : 'text-blue-600 dark:text-blue-400'
                     : effectiveVariant === 'light'
                     ? 'text-white'
-                    : 'text-slate-800'
+                    : 'text-slate-800 dark:text-white'
                 }`}
               >
                 {word}
@@ -147,10 +147,10 @@ export default function Logo({
                   i === 2
                     ? effectiveVariant === 'light'
                       ? 'text-blue-400'
-                      : 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 bg-clip-text text-transparent'
+                      : 'text-blue-600 dark:text-blue-400'
                     : effectiveVariant === 'light'
                     ? 'text-white'
-                    : 'text-slate-800'
+                    : 'text-slate-800 dark:text-white'
                 }`}
               >
                 {word}
