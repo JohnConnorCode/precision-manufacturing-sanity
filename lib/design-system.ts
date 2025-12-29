@@ -16,47 +16,47 @@ export const typography = {
   display: 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-[-0.02em] leading-[0.9]',
 
   // Section headings - Clean and authoritative
-  sectionHeading: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]',
+  sectionHeading: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-slate-900 dark:text-white',
 
   // Page hero headings
-  heroHeading: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-[-0.02em] leading-[1.05]',
+  heroHeading: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-[-0.02em] leading-[1.05] text-slate-900 dark:text-white',
 
   // Eyebrow/subtitle text - Elegant and understated
   eyebrow: 'text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] text-blue-600',
 
   // Description text - Comfortable reading
-  description: 'text-lg md:text-xl leading-relaxed',
-  descriptionMuted: 'text-lg md:text-xl text-slate-600 leading-relaxed',
+  description: 'text-lg md:text-xl leading-relaxed text-slate-700 dark:text-slate-300',
+  descriptionMuted: 'text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed',
   descriptionLight: 'text-lg md:text-xl text-slate-300 leading-relaxed',
 
   // Card titles - Clear hierarchy
-  cardTitle: 'text-xl md:text-2xl font-bold tracking-tight',
+  cardTitle: 'text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white',
 
   // Subsection titles
-  subsectionTitle: 'text-2xl md:text-3xl font-bold tracking-tight',
+  subsectionTitle: 'text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white',
 
   // Body text - Optimized for readability
-  body: 'text-base text-slate-600 leading-relaxed',
+  body: 'text-base text-slate-600 dark:text-slate-300 leading-relaxed',
   bodyLight: 'text-base text-slate-300 leading-relaxed',
-  small: 'text-sm text-slate-500 leading-relaxed',
+  small: 'text-sm text-slate-500 dark:text-slate-400 leading-relaxed',
 
   // Labels and badges
   label: 'text-sm font-semibold tracking-wide',
   badge: 'text-[11px] font-semibold uppercase tracking-[0.1em]',
 
   // Quotes and callouts
-  quote: 'text-xl md:text-2xl font-medium italic text-slate-700 leading-relaxed',
+  quote: 'text-xl md:text-2xl font-medium italic text-slate-700 dark:text-slate-300 leading-relaxed',
 
   // Stats and numbers
   stat: 'text-4xl md:text-5xl lg:text-6xl font-black tabular-nums',
 
   // Legacy aliases (backwards compatibility)
-  h1: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight',
-  h2: 'text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight',
-  h3: 'text-2xl sm:text-3xl md:text-4xl font-semibold leading-snug',
-  h4: 'text-xl sm:text-2xl md:text-3xl font-semibold leading-snug',
-  h5: 'text-lg sm:text-xl md:text-2xl font-medium leading-snug',
-  lead: 'text-lg md:text-xl text-slate-600 leading-relaxed',
+  h1: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white',
+  h2: 'text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white',
+  h3: 'text-2xl sm:text-3xl md:text-4xl font-semibold leading-snug text-slate-900 dark:text-white',
+  h4: 'text-xl sm:text-2xl md:text-3xl font-semibold leading-snug text-slate-900 dark:text-white',
+  h5: 'text-lg sm:text-xl md:text-2xl font-medium leading-snug text-slate-900 dark:text-white',
+  lead: 'text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed',
 } as const;
 
 // ==================== SPACING ====================
