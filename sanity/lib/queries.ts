@@ -48,7 +48,21 @@ export async function getAllServices(preview = false) {
         description,
         descriptionRich
       },
-      capabilities,
+      capabilities[]{
+        _key,
+        enabled,
+        title,
+        description,
+        iconName,
+        image{asset->{url,_id}, alt},
+        imageUrl,
+        featuresLabel,
+        features,
+        capabilitiesLabel,
+        capabilitiesList,
+        label,
+        value
+      },
       services[]{
         title,
         description,
@@ -129,7 +143,21 @@ export async function getServiceBySlug(slug: string, preview = false) {
         description,
         descriptionRich
       },
-      capabilities,
+      capabilities[]{
+        _key,
+        enabled,
+        title,
+        description,
+        iconName,
+        image{asset->{url,_id}, alt},
+        imageUrl,
+        featuresLabel,
+        features,
+        capabilitiesLabel,
+        capabilitiesList,
+        label,
+        value
+      },
       services[]{
         title,
         description,
