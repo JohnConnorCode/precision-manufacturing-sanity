@@ -289,7 +289,7 @@ export default async function SiteLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className={`${fontClass} antialiased`}>
+      <div className={`${fontClass} antialiased bg-white dark:bg-slate-950 text-slate-900 dark:text-white min-h-screen`}>
         <SiteChrome
           navigationData={navigationData}
           footerData={footerData}

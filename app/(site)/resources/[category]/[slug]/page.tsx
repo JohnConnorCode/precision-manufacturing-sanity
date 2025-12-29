@@ -75,20 +75,20 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
     .join(' ');
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white dark:bg-slate-950">
       {/* Breadcrumb Navigation */}
-      <nav className="py-6 px-4 border-b border-slate-200 bg-white/80 backdrop-blur-sm">
+      <nav className="py-6 px-4 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto">
-          <Link href="/resources" className="inline-flex items-center text-slate-500 hover:text-blue-600 transition-colors mb-2 group">
+          <Link href="/resources" className="inline-flex items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mb-2 group">
             <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
             Back to Resources
           </Link>
-          <div className="text-sm text-slate-500">
-            <Link href="/resources" className="hover:text-blue-600 transition-colors">Resources</Link>
+          <div className="text-sm text-slate-500 dark:text-slate-400">
+            <Link href="/resources" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Resources</Link>
             <span className="mx-2">/</span>
-            <Link href={`/resources/${category}`} className="hover:text-blue-600 transition-colors">{categoryDisplayName}</Link>
+            <Link href={`/resources/${category}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{categoryDisplayName}</Link>
             <span className="mx-2">/</span>
-            <span className="text-slate-900 font-medium">{resource.title}</span>
+            <span className="text-slate-900 dark:text-white font-medium">{resource.title}</span>
           </div>
         </div>
       </nav>
@@ -96,13 +96,13 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
       {/* Article Header */}
       <article>
         <AnimatedSection>
-          <header className="py-16 md:py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
+          <header className="py-16 md:py-20 px-4 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
             <div className="max-w-4xl mx-auto">
               <div className="flex flex-wrap items-center gap-4 mb-6">
                 <span className={`px-3 py-1.5 rounded-full text-sm font-semibold border ${getDifficultyColor(resource.difficulty)}`}>
                   {resource.difficulty ? resource.difficulty.charAt(0).toUpperCase() + resource.difficulty.slice(1) : 'General'}
                 </span>
-                <div className="flex items-center gap-4 text-slate-500 text-sm">
+                <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm">
                   <span className="flex items-center gap-1.5">
                     <Clock className="w-4 h-4 text-blue-500" />
                     {resource.readTime}

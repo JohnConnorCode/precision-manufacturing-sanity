@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
 import LogoSVG from './logo-svg';
 
 interface LogoData {
@@ -34,15 +35,25 @@ export default function Logo({
   animated = true,
   logoData
 }: LogoProps) {
-  const _isHovered = useState(false);
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch
+  useEffect(() => setMounted(true), []);
 
   // Determine which logo type to render
   const logoType = logoData?.logoType || 'svg';
 
-  // Determine variant based on Sanity data or props
+  // Determine variant based on Sanity data, props, OR current theme
   let effectiveVariant: 'dark' | 'light' = variant === 'light' ? 'light' : 'dark';
-  if (logoType === 'svg' && logoData?.svgColor && logoData.svgColor !== 'auto') {
-    effectiveVariant = logoData.svgColor as 'dark' | 'light';
+
+  // If svgColor is 'auto' or not set, use the current theme to determine variant
+  const svgColorSetting = logoData?.svgColor || 'auto';
+  if (svgColorSetting === 'auto') {
+    // In dark mode, use light variant (white logo). In light mode, use dark variant (black logo)
+    effectiveVariant = mounted && resolvedTheme === 'dark' ? 'light' : 'dark';
+  } else if (svgColorSetting === 'dark' || svgColorSetting === 'light') {
+    effectiveVariant = svgColorSetting;
   }
 
   // Determine whether to show text
