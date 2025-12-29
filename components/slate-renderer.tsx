@@ -30,7 +30,7 @@ export function SlateRenderer({ content }: SlateRendererProps) {
       if (node.bold) text = <strong key={index}>{text}</strong>;
       if (node.italic) text = <em key={index}>{text}</em>;
       if (node.underline) text = <u key={index}>{text}</u>;
-      if (node.code) text = <code key={index} className="bg-slate-100 text-slate-900 px-1.5 py-0.5 rounded text-sm">{text}</code>;
+      if (node.code) text = <code key={index} className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-200 px-1.5 py-0.5 rounded text-sm">{text}</code>;
 
       return text;
     }
@@ -53,7 +53,7 @@ export function SlateRenderer({ content }: SlateRendererProps) {
         return <h6 key={index} className="text-base font-bold mb-2 text-foreground mt-4">{children}</h6>;
       case 'blockquote':
         return (
-          <blockquote key={index} className="border-l-4 border-blue-600 pl-6 py-2 my-6 italic text-muted-foreground bg-blue-50/50">
+          <blockquote key={index} className="border-l-4 border-blue-600 pl-6 py-2 my-6 italic text-muted-foreground bg-blue-50/50 dark:bg-blue-950/50">
             {children}
           </blockquote>
         );
