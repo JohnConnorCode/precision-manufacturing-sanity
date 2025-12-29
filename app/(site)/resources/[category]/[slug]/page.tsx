@@ -177,16 +177,16 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
             <div className="max-w-4xl mx-auto">
               <Card className="p-8 md:p-12">
                 {resource.content ? (
-                  <div className="prose prose-slate prose-lg max-w-none
+                  <div className="prose prose-slate prose-lg max-w-none dark:prose-invert
                     prose-headings:font-bold prose-headings:tracking-tight
                     prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
                     prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-                    prose-p:leading-relaxed prose-p:text-slate-600
-                    prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
-                    prose-strong:text-slate-900 prose-strong:font-semibold
-                    prose-ul:my-4 prose-li:text-slate-600
-                    prose-blockquote:border-l-blue-600 prose-blockquote:bg-slate-50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg
-                    prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-slate-800
+                    prose-p:leading-relaxed prose-p:text-slate-600 dark:prose-p:text-slate-300
+                    prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+                    prose-strong:text-slate-900 dark:prose-strong:text-white prose-strong:font-semibold
+                    prose-ul:my-4 prose-li:text-slate-600 dark:prose-li:text-slate-300
+                    prose-blockquote:border-l-blue-600 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-800 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg
+                    prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-slate-800 dark:prose-code:text-slate-200
                     prose-pre:bg-slate-900 prose-pre:text-slate-100">
                     <PortableTextContent value={resource.content} />
                   </div>
