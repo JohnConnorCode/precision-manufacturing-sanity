@@ -1,13 +1,11 @@
-import Link from 'next/link';
-import { Clock, ArrowRight } from 'lucide-react';
 import HeroSection from '@/components/ui/hero-section';
-import { Card } from '@/components/ui/card';
+import ResourceCard from '@/components/ui/resource-card';
 import { getAllResources, getPageContent } from '@/sanity/lib/queries';
 import { PortableTextContent } from '@/components/portable-text-components';
 import AnimatedSection from '@/components/ui/animated-section';
 import SectionHeader from '@/components/ui/section-header';
 import { NoResourcesState } from '@/components/ui/empty-state';
-import { typography, spacing, cn } from '@/lib/design-system';
+import { spacing } from '@/lib/design-system';
 import type { Metadata } from 'next';
 
 // Enable ISR with 60 second revalidation
@@ -142,41 +140,10 @@ export default async function ResourcesPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {formattedResources.map((resource: any, index: number) => (
               <AnimatedSection key={resource._id} delay={Math.min(index * 0.05, 0.3)}>
-                <Link
-                  href={`/resources/${resource.category}/${resource.slug}`}
-                  className="block h-full group"
-                >
-                  <Card className="h-full p-6 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/30">
-                    <div className="flex items-start justify-between mb-4">
-                      <span className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${
-                        resource.difficulty === 'beginner'
-                          ? 'bg-green-500/10 text-green-600 border-green-500/20'
-                          : resource.difficulty === 'intermediate'
-                          ? 'bg-blue-500/10 text-blue-600 border-blue-500/20'
-                          : 'bg-purple-500/10 text-purple-600 border-purple-500/20'
-                      }`}>
-                        {resource.difficulty ? resource.difficulty.charAt(0).toUpperCase() + resource.difficulty.slice(1) : 'General'}
-                      </span>
-                      <div className="flex items-center text-slate-500 text-sm">
-                        <Clock className="h-4 w-4 mr-1.5 text-blue-500" />
-                        <span>{resource.readTime}</span>
-                      </div>
-                    </div>
-
-                    <h3 className={cn(typography.cardTitle, 'mb-3 group-hover:text-blue-600 transition-colors')}>
-                      {resource.title}
-                    </h3>
-
-                    <p className={cn(typography.small, 'mb-4 line-clamp-3 leading-relaxed')}>
-                      {resource.excerpt}
-                    </p>
-
-                    <div className="flex items-center text-blue-600 text-sm font-semibold mt-auto">
-                      Read Article
-                      <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </Card>
-                </Link>
+                <ResourceCard
+                  resource={resource}
+                  priority={index < 6}
+                />
               </AnimatedSection>
             ))}
           </div>
