@@ -267,13 +267,13 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   viewport={{ once: true }}
                   className="text-center"
                 >
-                  <div className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
+                  <div className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2">
                     {stat?.value}
                   </div>
-                  <div className="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-2">
+                  <div className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide mb-2">
                     {stat?.label}
                   </div>
-                  <div className="text-sm text-slate-500">
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
                     {stat?.description}
                   </div>
                 </motion.div>
@@ -296,7 +296,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 {data.story?.title && (
                   <h2 className={cn(typography.h2, "mb-6")}>{data.story.title}</h2>
                 )}
-                <div className="space-y-4 text-slate-600 leading-relaxed">
+                <div className="space-y-4 text-slate-600 dark:text-slate-400 leading-relaxed">
                   {storyParagraphs.map((paragraph: string, index: number) => (
                     <p key={index}>{paragraph}</p>
                   ))}
@@ -338,7 +338,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 <h2 className={cn(typography.h2, "mb-6")}>{data.timeline.title}</h2>
               )}
               {data.timeline?.description && (
-                <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
                   {data.timeline.description}
                 </p>
               )}
@@ -360,8 +360,8 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                     <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 mb-4">
                       {milestone?.year}
                     </div>
-                    <h3 className="text-xl font-bold mb-2 text-slate-900 group-hover:text-blue-600 transition-colors">{milestone?.title}</h3>
-                    <p className="text-slate-600 leading-relaxed">{milestone?.description}</p>
+                    <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">{milestone?.title}</h3>
+                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{milestone?.description}</p>
                   </Card>
                 </motion.div>
               ))}
@@ -384,7 +384,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 <h2 className={cn(typography.h2, "mb-6")}>{data.values.title}</h2>
               )}
               {data.values?.description && (
-                <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
                   {data.values.description}
                 </p>
               )}
@@ -414,8 +414,8 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                         <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                           <Icon className="w-8 h-8 text-white" />
                         </div>
-                        <h3 className="text-2xl font-bold mb-4 text-slate-900">{value?.title}</h3>
-                        <p className="text-slate-600 text-lg leading-relaxed">{value?.description}</p>
+                        <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">{value?.title}</h3>
+                        <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">{value?.description}</p>
                       </Card>
                     </motion.div>
                   );
@@ -436,7 +436,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="text-center mb-12"
             >
               <h2 className={cn(typography.h2, "mb-4")}>Capabilities & Certifications</h2>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
                 Advanced manufacturing capabilities backed by rigorous quality certifications
               </p>
             </motion.div>
@@ -460,17 +460,17 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                       transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
                       viewport={{ once: true }}
                     >
-                      <Card className="p-6 border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-lg h-full group">
+                      <Card className="p-6 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 hover:shadow-lg h-full group">
                         <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                           <Factory className="w-6 h-6 text-white" />
                         </div>
-                        <h3 className="text-lg font-bold mb-3 text-slate-900">{capability?.title}</h3>
+                        <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-white">{capability?.title}</h3>
                         {capability?.description && (
-                          <p className="text-sm text-slate-600 mb-4">{capability.description}</p>
+                          <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">{capability.description}</p>
                         )}
                         <div className="space-y-2">
                           {(capability?.items || []).slice(0, 5).map((item: CapabilityItem, itemIndex: number) => (
-                            <div key={`${item?.item}-${itemIndex}`} className="flex items-start text-sm text-slate-600">
+                            <div key={`${item?.item}-${itemIndex}`} className="flex items-start text-sm text-slate-600 dark:text-slate-400">
                               <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2 mt-1.5 flex-shrink-0" />
                               <span>{item?.item}</span>
                             </div>
@@ -541,7 +541,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 <h2 className={cn(typography.h2, "mb-6")}>{data.leadership.title}</h2>
               )}
               {data.leadership?.description && (
-                <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
                   {data.leadership.description}
                 </p>
               )}
@@ -560,17 +560,17 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                       transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
                       viewport={{ once: true }}
                     >
-                      <Card className="overflow-hidden border-slate-200 hover:border-slate-300 transition-all duration-300 hover:shadow-xl h-full group">
+                      <Card className="overflow-hidden border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 hover:shadow-xl h-full group">
                         {/* Large Photo Header */}
-                        <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                        <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
                           {photoUrl ? (
                             <img
                               src={photoUrl}
                               alt={leader?.photo?.alt || `Photo of ${leader?.name}`}
-                              className="w-32 h-32 rounded-full object-cover shadow-xl border-4 border-white group-hover:scale-105 transition-transform duration-300"
+                              className="w-32 h-32 rounded-full object-cover shadow-xl border-4 border-white dark:border-slate-600 group-hover:scale-105 transition-transform duration-300"
                             />
                           ) : (
-                            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-xl border-4 border-white">
+                            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-xl border-4 border-white dark:border-slate-600">
                               <Users className="w-16 h-16 text-white" />
                             </div>
                           )}
@@ -578,18 +578,18 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
 
                         {/* Content */}
                         <div className="p-8 text-center">
-                          <h3 className="text-2xl font-bold mb-1 text-slate-900">{leader?.name}</h3>
-                          <div className="text-lg font-semibold text-blue-600 mb-2">{leader?.title}</div>
+                          <h3 className="text-2xl font-bold mb-1 text-slate-900 dark:text-white">{leader?.name}</h3>
+                          <div className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-2">{leader?.title}</div>
                           {leader?.experience && (
-                            <div className="text-sm text-slate-500 mb-4">{leader.experience}</div>
+                            <div className="text-sm text-slate-500 dark:text-slate-400 mb-4">{leader.experience}</div>
                           )}
                           {leader?.background && (
-                            <p className="text-slate-600 text-sm leading-relaxed mb-4">{leader.background}</p>
+                            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">{leader.background}</p>
                           )}
                           {leader?.focus && (
-                            <div className="bg-slate-50 rounded-lg p-4 text-left">
-                              <div className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Focus Area</div>
-                              <div className="text-sm text-slate-700">{leader.focus}</div>
+                            <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 text-left">
+                              <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Focus Area</div>
+                              <div className="text-sm text-slate-700 dark:text-slate-300">{leader.focus}</div>
                             </div>
                           )}
                         </div>
@@ -616,7 +616,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 <h2 className={cn(typography.h2, "mb-6")}>{data.cta.title}</h2>
               )}
               {data.cta?.description && (
-                <p className="text-xl text-slate-600 mb-8">
+                <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
                   {data.cta.description}
                 </p>
               )}
