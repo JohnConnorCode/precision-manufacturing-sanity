@@ -19,15 +19,15 @@ const buttonVariants = cva(
 
         // Outline - Clean border with subtle fill on hover
         outline:
-          "border-2 border-slate-300 bg-white text-slate-900 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50/50 active:scale-[0.98]",
+          "border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/30 active:scale-[0.98]",
 
         // Secondary - Subtle background with depth
         secondary:
-          "bg-slate-100 text-slate-900 hover:bg-slate-200/80 shadow-sm hover:shadow-md active:scale-[0.98]",
+          "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200/80 dark:hover:bg-slate-700 shadow-sm hover:shadow-md active:scale-[0.98]",
 
         // Ghost - Minimal, text-only feel
         ghost:
-          "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 active:scale-[0.98]",
+          "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800 active:scale-[0.98]",
 
         // Link - Underline style
         link:

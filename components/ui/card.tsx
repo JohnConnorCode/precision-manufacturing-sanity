@@ -45,7 +45,7 @@ const CardTitle = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "text-xl font-bold leading-tight tracking-tight text-slate-900",
+      "text-xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white",
       className
     )}
     {...props}
@@ -59,7 +59,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("text-sm text-slate-600 leading-relaxed", className)}
+    className={cn("text-sm text-slate-600 dark:text-slate-400 leading-relaxed", className)}
     {...props}
   />
 ))
@@ -170,8 +170,8 @@ const CardHighlight = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-xl border-2 bg-white text-slate-900",
-      "shadow-lg hover:shadow-2xl",
+      "rounded-xl border-2 bg-white dark:bg-slate-900 text-slate-900 dark:text-white",
+      "shadow-lg hover:shadow-2xl dark:shadow-slate-950/50",
       "transition-all duration-300 ease-out",
       "hover:-translate-y-1",
       // Dynamic accent border
@@ -195,9 +195,9 @@ const CardMinimal = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-lg bg-slate-50 text-slate-900",
+      "rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white",
       "transition-all duration-200",
-      "hover:bg-slate-100",
+      "hover:bg-slate-100 dark:hover:bg-slate-700",
       className
     )}
     {...props}

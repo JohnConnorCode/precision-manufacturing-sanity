@@ -90,7 +90,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
       {/* Component Expertise / Sector Expertise */}
       {industry.expertise && industry.expertise.length > 0 && (
-        <section className="py-24 bg-zinc-50">
+        <section className="py-24 bg-zinc-50 dark:bg-zinc-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -99,10 +99,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               transition={{ duration: 0.6 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
                 {industry.expertiseSectionHeading || `${industry.title} Expertise`}
               </h2>
-              <p className="text-lg text-zinc-600 max-w-3xl mx-auto">
+              <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto">
                 {industry.expertiseSectionDescription || 'Specialized manufacturing capabilities for critical applications.'}
               </p>
             </motion.div>
@@ -137,21 +137,21 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
                       {/* Content Side */}
                       <div className={`${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-                        <h3 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-4">
+                        <h3 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-4">
                           {section.title}
                         </h3>
-                        <p className="text-lg text-zinc-600 mb-8 leading-relaxed">{section.description}</p>
+                        <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed">{section.description}</p>
 
                         <div className="grid sm:grid-cols-2 gap-6">
                           {section.components && section.components.length > 0 && (
-                            <div className="bg-white rounded-xl p-5 shadow-sm border border-zinc-100">
-                              <h4 className="text-sm font-bold text-zinc-900 uppercase tracking-wide mb-3 flex items-center gap-2">
+                            <div className="bg-white dark:bg-zinc-800 rounded-xl p-5 shadow-sm border border-zinc-100 dark:border-zinc-700">
+                              <h4 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-3 flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-blue-500"></span>
                                 {section.componentsLabel || 'Typical Components'}
                               </h4>
                               <ul className="space-y-2">
                                 {section.components.map((component: string, idx: number) => (
-                                  <li key={idx} className="text-zinc-600 text-sm flex items-start">
+                                  <li key={idx} className="text-zinc-600 dark:text-zinc-400 text-sm flex items-start">
                                     <CheckCircle className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
                                     {component}
                                   </li>
@@ -161,14 +161,14 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                           )}
 
                           {section.materials && section.materials.length > 0 && (
-                            <div className="bg-white rounded-xl p-5 shadow-sm border border-zinc-100">
-                              <h4 className="text-sm font-bold text-zinc-900 uppercase tracking-wide mb-3 flex items-center gap-2">
+                            <div className="bg-white dark:bg-zinc-800 rounded-xl p-5 shadow-sm border border-zinc-100 dark:border-zinc-700">
+                              <h4 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-3 flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
                                 Materials
                               </h4>
                               <ul className="space-y-2">
                                 {section.materials.map((material: string, idx: number) => (
-                                  <li key={idx} className="text-zinc-600 text-sm flex items-start">
+                                  <li key={idx} className="text-zinc-600 dark:text-zinc-400 text-sm flex items-start">
                                     <CheckCircle className="w-4 h-4 text-indigo-500 mr-2 flex-shrink-0 mt-0.5" />
                                     {material}
                                   </li>
@@ -178,14 +178,14 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                           )}
 
                           {section.requirements && section.requirements.length > 0 && (
-                            <div className={`bg-white rounded-xl p-5 shadow-sm border border-zinc-100 ${!section.components || !section.materials ? '' : 'sm:col-span-2'}`}>
-                              <h4 className="text-sm font-bold text-zinc-900 uppercase tracking-wide mb-3 flex items-center gap-2">
+                            <div className={`bg-white dark:bg-zinc-800 rounded-xl p-5 shadow-sm border border-zinc-100 dark:border-zinc-700 ${!section.components || !section.materials ? '' : 'sm:col-span-2'}`}>
+                              <h4 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-3 flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-cyan-500"></span>
                                 {section.requirementsLabel || 'Key Requirements'}
                               </h4>
                               <ul className={`space-y-2 ${section.requirements.length > 4 ? 'grid sm:grid-cols-2 gap-x-6 gap-y-2 space-y-0' : ''}`}>
                                 {section.requirements.map((requirement: string, idx: number) => (
-                                  <li key={idx} className="text-zinc-600 text-sm flex items-start">
+                                  <li key={idx} className="text-zinc-600 dark:text-zinc-400 text-sm flex items-start">
                                     <CheckCircle className="w-4 h-4 text-cyan-500 mr-2 flex-shrink-0 mt-0.5" />
                                     {requirement}
                                   </li>
@@ -206,7 +206,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
       {/* Certifications */}
       {industry.certifications && industry.certifications.length > 0 && (
-        <section className="py-24 bg-zinc-50">
+        <section className="py-24 bg-zinc-50 dark:bg-zinc-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -215,10 +215,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               transition={{ duration: 0.6 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
                 {industry.certificationsSectionHeading || 'Industry Certifications'}
               </h2>
-              <p className="text-lg text-zinc-600 max-w-3xl mx-auto">
+              <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto">
                 {industry.certificationsSectionDescription || 'Industry-leading certifications ensuring the highest quality standards.'}
               </p>
             </motion.div>
@@ -234,8 +234,8 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                 >
                   <Card className="p-6 h-full hover:shadow-lg transition-shadow duration-300">
                     <Award className="w-12 h-12 text-blue-500 mb-4" />
-                    <h3 className="text-xl font-bold text-zinc-900 mb-3">{cert.title}</h3>
-                    <p className="text-sm text-zinc-600 whitespace-pre-line">{cert.description}</p>
+                    <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-3">{cert.title}</h3>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 whitespace-pre-line">{cert.description}</p>
                   </Card>
                 </motion.div>
               ))}
@@ -246,7 +246,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
       {/* Process Benefits / Manufacturing Advantages / Specialized Capabilities */}
       {industry.processBenefits && industry.processBenefits.length > 0 && (
-        <section className="py-24 bg-white">
+        <section className="py-24 bg-white dark:bg-zinc-950">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -255,10 +255,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               transition={{ duration: 0.6 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
                 {industry.processBenefitsSectionHeading || 'Manufacturing Capabilities'}
               </h2>
-              <p className="text-lg text-zinc-600 max-w-3xl mx-auto">
+              <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto">
                 {industry.processBenefitsSectionDescription || 'Advanced capabilities delivering superior results for critical applications.'}
               </p>
             </motion.div>
@@ -273,13 +273,13 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
                   <Card className="p-8 h-full hover:shadow-lg transition-shadow duration-300">
-                    <h3 className="text-2xl font-bold text-zinc-900 mb-4">{benefit.title}</h3>
-                    <p className="text-zinc-600 mb-6">{benefit.description}</p>
+                    <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">{benefit.title}</h3>
+                    <p className="text-zinc-600 dark:text-zinc-400 mb-6">{benefit.description}</p>
 
                     {benefit.features && benefit.features.length > 0 && (
                       <ul className="space-y-2">
                         {benefit.features.map((feature: any) => (
-                          <li key={feature._key} className="flex items-start text-sm text-zinc-600">
+                          <li key={feature._key} className="flex items-start text-sm text-zinc-600 dark:text-zinc-400">
                             <CheckCircle className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
                             {feature.feature}
                           </li>
