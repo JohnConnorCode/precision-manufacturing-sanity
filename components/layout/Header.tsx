@@ -160,8 +160,10 @@ export default function Header({ data }: HeaderProps) {
 
     const handleHeroScroll = () => {
       const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
-      // Header is ~80px tall, transition when hero bottom passes header
-      setIsOverHero(heroBottom > 80);
+      // Desktop: header extends to 120px (40px top bar + 80px header)
+      // Mobile: header extends to 80px
+      // Use 120px threshold to ensure smooth transition on both
+      setIsOverHero(heroBottom > 120);
     };
 
     // Use requestAnimationFrame throttling
@@ -280,9 +282,17 @@ export default function Header({ data }: HeaderProps) {
         </aside>
       )}
 
-      {/* Top Info Bar - Scrolls with page, elegant dark design */}
+      {/* Top Info Bar - Fixed position on desktop, elegant dark design */}
       {topBar && (
-      <aside className="hidden lg:block w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50" role="complementary" aria-label="Contact information">
+      <aside
+        className={cn(
+          "hidden lg:block w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50",
+          "fixed z-[150]", // Fixed position, between announcement (z-160) and header (z-140)
+          showAnnouncement && announcement?.enabled ? "top-10" : "top-0"
+        )}
+        role="complementary"
+        aria-label="Contact information"
+      >
         <div className="container flex h-10 items-center justify-between text-sm">
           <div className="flex items-center space-x-6">
             {topBar?.showPhone !== false && (
@@ -311,7 +321,19 @@ export default function Header({ data }: HeaderProps) {
       )}
 
       {/* Main Navigation */}
-      <header className={cn(headerClass, showAnnouncement && announcement?.enabled && 'top-10')} suppressHydrationWarning>
+      <header
+        className={cn(
+          headerClass,
+          // Desktop: header always below top info bar (top-10 = 40px)
+          // Then add extra offset if announcement is also shown (top-20 = 80px)
+          topBar ? (
+            showAnnouncement && announcement?.enabled ? 'lg:top-20' : 'lg:top-10'
+          ) : (
+            showAnnouncement && announcement?.enabled ? 'top-10' : ''
+          )
+        )}
+        suppressHydrationWarning
+      >
         <nav className="container flex h-20 items-center justify-between gap-4" suppressHydrationWarning>
           <Link href="/" className="flex items-center space-x-2 flex-shrink-0" aria-label="IIS - Integrated Inspection Systems Home">
             <Logo
