@@ -42,6 +42,9 @@ interface HeroSectionProps {
   titleSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl';
   descriptionSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl';
 
+  // Header integration - set to true for dark heroes that support transparent header
+  darkHero?: boolean;
+
   // Style props from Sanity
   titleColor?: ColorStyle;
   titleHighlightColor?: ColorStyle;
@@ -85,6 +88,7 @@ export default function HeroSection({
   showScrollIndicator = false,
   titleSize,
   descriptionSize,
+  darkHero = true, // Default to true for backwards compatibility
   titleColor,
   titleHighlightColor,
   descriptionColor,
@@ -153,11 +157,14 @@ export default function HeroSection({
   const BadgeIcon = badge?.icon;
 
   return (
-    <section data-hero-section="true" className={cn(
-      'relative flex items-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]',
-      heightClasses[height],
-      className
-    )}>
+    <section
+      {...(darkHero && { 'data-hero-section': 'dark' })}
+      className={cn(
+        'relative flex items-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]',
+        heightClasses[height],
+        className
+      )}
+    >
       {/* Parallax Background Image */}
       <motion.div
         className="absolute inset-0 w-full h-[120%] -top-[10%]"

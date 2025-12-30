@@ -149,16 +149,17 @@ export default function Header({ data }: HeaderProps) {
     return () => window.removeEventListener('scroll', throttledScroll);
   }, []);
 
-  // Hero section detection - transparent header over dark hero sections
+  // Hero section detection - transparent header ONLY over DARK hero sections
+  // Light heroes don't support transparent header due to contrast issues
   useEffect(() => {
-    const heroSection = document.querySelector('[data-hero-section]');
-    if (!heroSection) {
+    const darkHeroSection = document.querySelector('[data-hero-section="dark"]');
+    if (!darkHeroSection) {
       setIsOverHero(false);
       return;
     }
 
     const handleHeroScroll = () => {
-      const heroBottom = heroSection.getBoundingClientRect().bottom;
+      const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
       // Header is ~80px tall, transition when hero bottom passes header
       setIsOverHero(heroBottom > 80);
     };
@@ -494,10 +495,13 @@ export default function Header({ data }: HeaderProps) {
             {cta && cta.text && (
               <Link href={cta.href || '/contact'}>
                 <PremiumButton
-                  className={inHeroMode
-                    ? 'bg-white text-slate-900 hover:bg-white/90 border-white/20'
-                    : ''
-                  }
+                  className={inHeroMode ? 'border border-white/20' : ''}
+                  style={inHeroMode ? {
+                    background: 'white',
+                    color: '#0f172a',
+                    boxShadow: '0 10px 25px -5px rgba(255, 255, 255, 0.2)',
+                  } : undefined}
+                  shimmer={!inHeroMode}
                 >
                   {cta.text}
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
