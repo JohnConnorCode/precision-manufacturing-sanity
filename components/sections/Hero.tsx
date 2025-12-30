@@ -81,8 +81,8 @@ export default function Hero({ data }: HeroProps) {
 
           // Get alt text - handle both string and object types
           const imageAlt = typeof slide.image === 'string'
-            ? ''
-            : slide.image?.alt || '';
+            ? 'Precision manufacturing facility'
+            : slide.image?.alt || 'Manufacturing equipment';
 
           return {
             src: imageUrl || '',
@@ -140,7 +140,7 @@ export default function Hero({ data }: HeroProps) {
   const _secondaryButtonStyles = getButtonStyles(data?.buttonStyles?.secondaryButton);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 lg:pt-0">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]">
       {/* Premium Background Slider */}
       <HeroSliderFixed slides={finalSlides} />
 
