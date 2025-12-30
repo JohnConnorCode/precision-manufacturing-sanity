@@ -303,12 +303,14 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
             >
               <Card className="overflow-hidden shadow-2xl">
                 <div className="relative h-[500px]">
-                  <ParallaxImagePro
-                    src={contactData.locationImage?.asset?.url || 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1920&q=80'}
-                    alt={contactData.locationImage?.alt || "Precision manufacturing facility"}
-                    className="w-full h-full object-cover"
-                    speed={0.1}
-                  />
+                  {contactData.locationImage?.asset?.url && (
+                    <ParallaxImagePro
+                      src={contactData.locationImage.asset.url}
+                      alt={contactData.locationImage?.alt || "Precision manufacturing facility"}
+                      className="w-full h-full object-cover"
+                      speed={0.1}
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
                     <div className="max-w-md bg-black/50 backdrop-blur-sm rounded-lg p-6 border border-white/10">

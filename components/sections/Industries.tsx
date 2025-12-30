@@ -111,17 +111,6 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                     {/* Dramatic Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-500" />
 
-                    {/* Floating Icon */}
-                    <motion.div
-                      className="absolute top-6 left-6"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-xl shadow-blue-500/25">
-                        <DynamicIcon name={industry.iconName} className="w-7 h-7 text-white" />
-                      </div>
-                    </motion.div>
-
                     {/* Content */}
                     <div className="absolute bottom-0 left-0 right-0 p-8">
                       {/* Feature Tags */}

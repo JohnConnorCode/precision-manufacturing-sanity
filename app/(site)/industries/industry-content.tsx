@@ -272,7 +272,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1, duration: 0.8 }}
                   viewport={{ once: true }}
-                  className="bg-slate-50 p-8 rounded-lg"
+                  className="bg-slate-50 dark:bg-slate-900 p-8 rounded-lg"
                 >
                   <h3 className={cn(typography.h3, 'mb-6')}>Key Challenges</h3>
                   <div className="space-y-4">
@@ -327,7 +327,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                         <h4 className={cn(typography.label, 'mb-3')}>Technical Details</h4>
                         <div className="space-y-2">
                           {capability.technicalDetails.map((detail: TechnicalDetail) => (
-                            <div key={detail.detail} className="flex items-center text-sm text-slate-600">
+                            <div key={detail.detail} className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                               <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
                               {detail.detail}
                             </div>
@@ -376,7 +376,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                   {/* Content */}
                   <div className={index % 2 === 0 ? '' : 'lg:col-start-2'}>
                     <h3 className={cn(typography.h3, 'mb-4')}>{component.category}</h3>
-                    <p className={cn(typography.lead, 'mb-8 text-slate-600')}>
+                    <p className={cn(typography.lead, 'mb-8 text-slate-600 dark:text-slate-400')}>
                       {component.description}
                     </p>
 
@@ -401,7 +401,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                           {component.materials.map((material: ComponentMaterial) => (
                             <span
                               key={material.material}
-                              className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-medium"
+                              className="px-4 py-2 bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-lg text-sm font-medium"
                             >
                               {material.material}
                             </span>
@@ -417,7 +417,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                           {component.requirements.map((requirement: ComponentRequirement) => (
                             <div key={requirement.requirement} className="flex items-start">
                               <Target className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0 mt-0.5" />
-                              <span className={cn(typography.body, 'text-slate-600')}>{requirement.requirement}</span>
+                              <span className={cn(typography.body, 'text-slate-600 dark:text-slate-400')}>{requirement.requirement}</span>
                             </div>
                           ))}
                         </div>
@@ -425,9 +425,9 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                     )}
                   </div>
 
-                  {/* Image */}
+                  {/* Image - only show Sanity CDN images, not external stock photos */}
                   <div className={index % 2 === 0 ? '' : 'lg:col-start-1 lg:row-start-1'}>
-                    {component.image && (
+                    {component.image && typeof component.image === 'string' && component.image.includes('cdn.sanity.io') && (
                       <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl">
                         <Image
                           src={component.image}
@@ -480,7 +480,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                   {/* Content */}
                   <div className={index % 2 === 0 ? '' : 'lg:col-start-2'}>
                     <h3 className={cn(typography.h3, 'mb-6')}>{item.title}</h3>
-                    <p className={cn(typography.body, 'mb-8 text-slate-600')}>
+                    <p className={cn(typography.body, 'mb-8 text-slate-600 dark:text-slate-400')}>
                       {item.description}
                     </p>
 
@@ -507,7 +507,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                           {item.materials.map((material: string) => (
                             <span
                               key={material}
-                              className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-medium"
+                              className="px-4 py-2 bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-lg text-sm font-medium"
                             >
                               {material}
                             </span>
@@ -524,7 +524,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                           {item.requirements.map((req: string) => (
                             <div key={req} className="flex items-start">
                               <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0" />
-                              <span className={cn(typography.small, 'text-slate-600')}>{req}</span>
+                              <span className={cn(typography.small, 'text-slate-600 dark:text-slate-400')}>{req}</span>
                             </div>
                           ))}
                         </div>
@@ -532,9 +532,9 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                     )}
                   </div>
 
-                  {/* Image */}
+                  {/* Image - only show if it's a Sanity CDN image, not external stock photos */}
                   <div className={index % 2 === 0 ? '' : 'lg:col-start-1 lg:row-start-1'}>
-                    {item.imageUrl && (
+                    {item.imageUrl && item.imageUrl.includes('cdn.sanity.io') && (
                       <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                         <Image
                           src={item.imageUrl}
@@ -586,9 +586,9 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       {industry.regulatory.certifications.map((cert: Certification) => (
                         <div key={cert.name} className="border-l-4 border-blue-600 pl-4">
                           <h4 className={cn(typography.label, 'mb-1')}>{cert.name}</h4>
-                          <p className="text-sm text-slate-600 mb-1">{cert.description}</p>
+                          <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">{cert.description}</p>
                           {cert.scope && (
-                            <p className="text-xs text-slate-500">{cert.scope}</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-500">{cert.scope}</p>
                           )}
                         </div>
                       ))}
@@ -613,7 +613,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                           <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0" />
                           <div>
                             <h4 className={cn(typography.label, 'mb-1')}>{standard.name}</h4>
-                            <p className="text-sm text-slate-600">{standard.description}</p>
+                            <p className="text-sm text-slate-600 dark:text-slate-400">{standard.description}</p>
                           </div>
                         </div>
                       ))}
@@ -661,7 +661,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                         <h4 className={cn(typography.label, 'mb-2 text-sm')}>Requirements</h4>
                         <div className="space-y-1">
                           {application.requirements.map((req: ApplicationRequirement) => (
-                            <div key={req.requirement} className="flex items-center text-xs text-slate-600">
+                            <div key={req.requirement} className="flex items-center text-xs text-slate-600 dark:text-slate-400">
                               <CheckCircle className="w-3 h-3 text-blue-600 mr-2 flex-shrink-0" />
                               {req.requirement}
                             </div>
@@ -752,7 +752,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                         <h4 className={cn(typography.label, 'mb-3')}>Key Features</h4>
                         <div className="space-y-2">
                           {benefit.features.map((feature: ProcessBenefitFeature) => (
-                            <div key={feature.feature} className="flex items-center text-sm text-slate-600">
+                            <div key={feature.feature} className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                               <CheckCircle className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
                               {feature.feature}
                             </div>

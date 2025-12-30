@@ -120,12 +120,12 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                     className="group"
                   >
                     <div className={`grid lg:grid-cols-2 gap-12 items-center ${isEven ? '' : 'lg:grid-flow-dense'}`}>
-                      {/* Image Side */}
+                      {/* Image Side - only show Sanity CDN images, not external stock photos */}
                       <div className={`relative ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
-                        {(section.image || section.imageUrl) && (
+                        {section.image && (
                           <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                             <Image
-                              src={section.image ? builder.image(section.image).width(800).height(600).quality(85).url() : section.imageUrl}
+                              src={builder.image(section.image).width(800).height(600).quality(85).url()}
                               alt={section.image?.alt || section.title}
                               fill
                               className="object-cover transition-transform duration-700 group-hover:scale-105"
