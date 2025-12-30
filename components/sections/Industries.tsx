@@ -1,18 +1,11 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import * as Icons from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { Industry, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
-
-function DynamicIcon({ name, className }: { name?: string; className?: string }) {
-  // Get the icon from lucide-react, fallback to Circle
-  const iconExport = name ? (Icons as Record<string, unknown>)[name] : null;
-  const Icon = (typeof iconExport === 'function' ? iconExport : Icons.Circle) as React.ComponentType<{ className?: string }>;
-  return <Icon className={className} />;
-}
 
 interface IndustriesProps {
   data?: Industry[];
@@ -143,7 +136,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                       {/* CTA */}
                       <div className="flex items-center gap-2 text-blue-400 font-semibold">
                         <span>Learn More</span>
-                        <Icons.ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
                       </div>
                     </div>
 
