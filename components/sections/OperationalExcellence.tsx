@@ -18,10 +18,18 @@ interface Benefit {
   enabled?: boolean;
 }
 
+interface Certification {
+  _key?: string;
+  label: string;
+  iconName?: string;
+  enabled?: boolean;
+}
+
 interface OperationalExcellenceData {
   heading?: string;
   description?: string;
   benefits?: Benefit[];
+  certifications?: Certification[];
 }
 
 interface OperationalExcellenceProps {
@@ -124,23 +132,27 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
           ))}
         </div>
 
-        {/* Trust Badges / Certifications Row */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="mt-20 pt-12 border-t border-slate-800"
-        >
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-            {['AS9100D Certified', 'ISO 9001:2015', 'ITAR Registered'].map((cert, i) => (
-              <div key={i} className="flex items-center gap-3 text-slate-500 hover:text-blue-400 transition-colors duration-300">
-                <Icons.Shield className="w-5 h-5" />
-                <span className="text-sm font-semibold uppercase tracking-wider">{cert}</span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+        {/* Trust Badges / Certifications Row - CMS Controlled */}
+        {data?.certifications && data.certifications.filter(c => c?.enabled !== false).length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="mt-20 pt-12 border-t border-slate-800"
+          >
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+              {data.certifications
+                .filter(cert => cert?.enabled !== false && cert?.label)
+                .map((cert, i) => (
+                  <div key={cert._key || i} className="flex items-center gap-3 text-slate-500 hover:text-blue-400 transition-colors duration-300">
+                    <DynamicIcon name={cert.iconName || 'Shield'} className="w-5 h-5" />
+                    <span className="text-sm font-semibold uppercase tracking-wider">{cert.label}</span>
+                  </div>
+                ))}
+            </div>
+          </motion.div>
+        )}
       </div>
     </section>
   );

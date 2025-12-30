@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from 'framer-motion'
+import { usePrefersReducedMotion } from '@/lib/motion'
 
 interface PrecisionLoaderProps {
   size?: 'sm' | 'md' | 'lg'
@@ -8,10 +9,26 @@ interface PrecisionLoaderProps {
 }
 
 export function PrecisionLoader({ size = 'md', className = '' }: PrecisionLoaderProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
   const sizes = {
     sm: 'w-8 h-8',
     md: 'w-12 h-12',
     lg: 'w-16 h-16'
+  }
+
+  // For reduced motion users, show a static loader indicator
+  if (prefersReducedMotion) {
+    return (
+      <div className={`relative ${sizes[size]} ${className}`}>
+        <div className="absolute inset-0 rounded-full border-2 border-slate-700">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-blue-600 rounded-full" />
+        </div>
+        <div className="absolute inset-2 rounded-full border border-blue-600/30" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-1 h-1 bg-white rounded-full" />
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -134,6 +151,7 @@ export function ProgressRing({
   label,
   className = ''
 }: ProgressRingProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
   const radius = (size - strokeWidth) / 2
   const circumference = radius * 2 * Math.PI
   const offset = circumference - (value / maxValue) * circumference
@@ -161,10 +179,10 @@ export function ProgressRing({
           strokeWidth={strokeWidth}
           className="stroke-blue-600 fill-none"
           strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
+          initial={{ strokeDashoffset: prefersReducedMotion ? offset : circumference }}
           animate={{ strokeDashoffset: offset }}
           transition={{
-            duration: 1.5,
+            duration: prefersReducedMotion ? 0 : 1.5,
             ease: "easeInOut"
           }}
           strokeLinecap="round"

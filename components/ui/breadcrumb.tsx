@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 export interface BreadcrumbItem {
   label: string;
@@ -25,6 +26,8 @@ export function Breadcrumb({
   showHomeIcon = true,
   variant = 'default',
 }: BreadcrumbProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
+
   if (!items || items.length === 0) return null;
 
   const variantStyles = {
@@ -86,9 +89,9 @@ export function Breadcrumb({
               {/* Breadcrumb item */}
               {isLast || !item.href ? (
                 <motion.span
-                  initial={{ opacity: 0 }}
+                  initial={{ opacity: prefersReducedMotion ? 1 : 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: prefersReducedMotion ? 0 : index * 0.1 }}
                   className={cn(
                     'font-medium truncate max-w-[200px]',
                     isLast ? styles.active : styles.text
@@ -107,9 +110,9 @@ export function Breadcrumb({
                 </motion.span>
               ) : (
                 <motion.div
-                  initial={{ opacity: 0 }}
+                  initial={{ opacity: prefersReducedMotion ? 1 : 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: prefersReducedMotion ? 0 : index * 0.1 }}
                 >
                   <Link
                     href={item.href}

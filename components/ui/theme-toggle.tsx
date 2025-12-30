@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { Sun, Moon, Monitor } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { usePrefersReducedMotion } from '@/lib/motion'
 
 interface ThemeToggleProps {
   variant?: 'icon' | 'dropdown'
@@ -14,6 +15,7 @@ interface ThemeToggleProps {
 export function ThemeToggle({ variant = 'icon', className }: ThemeToggleProps) {
   const { theme, setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const prefersReducedMotion = usePrefersReducedMotion()
 
   useEffect(() => setMounted(true), [])
 
@@ -49,10 +51,10 @@ export function ThemeToggle({ variant = 'icon', className }: ThemeToggleProps) {
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={isDark ? 'dark' : 'light'}
-            initial={{ y: -10, opacity: 0, rotate: -90 }}
+            initial={prefersReducedMotion ? { opacity: 1 } : { y: -10, opacity: 0, rotate: -90 }}
             animate={{ y: 0, opacity: 1, rotate: 0 }}
-            exit={{ y: 10, opacity: 0, rotate: 90 }}
-            transition={{ duration: 0.15 }}
+            exit={prefersReducedMotion ? { opacity: 0 } : { y: 10, opacity: 0, rotate: 90 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.15 }}
           >
             {isDark ? (
               <Moon className="h-5 w-5 text-slate-400" />

@@ -6,7 +6,8 @@ import { Cog, Cpu, Gauge, Users, ArrowRight, CheckCircle, LucideIcon, Target, Za
 import Link from 'next/link';
 import Image from 'next/image';
 import SectionHeader from '@/components/ui/section-header';
-import { spacing, colors, borderRadius } from '@/lib/design-system';
+import { PremiumButton } from '@/components/ui/premium-button';
+import { spacing, colors } from '@/lib/design-system';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getPrimaryColorStyle } from '@/lib/theme-utils';
@@ -46,6 +47,7 @@ interface ServicesProps {
       href?: string;
       variant?: string;
     };
+    cardCtaText?: string;
   };
 }
 
@@ -68,6 +70,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
     ? { href: sectionData.cta.href, text: sectionData.cta.text }
     : null;
   const subdescription = sectionData?.subdescription;
+  const cardCtaText = sectionData?.cardCtaText || 'View Details';
 
   return (
     <section className={`relative ${spacing.section} overflow-hidden ${colors.bgLight} dark:bg-slate-950`}>
@@ -172,12 +175,12 @@ export default function Services({ data, sectionData }: ServicesProps) {
                         </ul>
                       </div>
 
-                      {/* Learn More Link */}
+                      {/* Card CTA Link - Text controlled via Sanity CMS */}
                       <div
                         className="flex items-center font-semibold text-sm transition-all duration-300 mt-auto"
                         style={{ color: theme.colors.primary }}
                       >
-                        <span className="group-hover:mr-2 transition-all duration-300">Learn More</span>
+                        <span className="group-hover:mr-2 transition-all duration-300">{cardCtaText}</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                       </div>
                     </div>
@@ -197,12 +200,11 @@ export default function Services({ data, sectionData }: ServicesProps) {
             viewport={getViewportConfig()}
             className="text-center mt-16 md:mt-20"
           >
-            <Link
-              href={ctaLink.href}
-              className={`inline-flex items-center h-12 px-8 bg-gradient-to-r ${colors.primaryGradient} hover:${colors.primaryGradientHover} text-white font-semibold ${borderRadius.button} transition-all duration-300 shadow-lg hover:shadow-xl`}
-            >
-              {ctaLink.text}
-              <ArrowRight className="ml-2 h-5 w-5" />
+            <Link href={ctaLink.href}>
+              <PremiumButton size="lg">
+                {ctaLink.text}
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </PremiumButton>
             </Link>
           </motion.div>
         )}

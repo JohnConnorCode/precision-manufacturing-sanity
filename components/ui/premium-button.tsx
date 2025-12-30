@@ -4,6 +4,7 @@ import * as React from "react"
 import { motion, HTMLMotionProps } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { cva, type VariantProps } from "class-variance-authority"
+import { usePrefersReducedMotion } from "@/lib/motion"
 
 const premiumButtonVariants = cva(
   "relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 disabled:pointer-events-none disabled:opacity-50 overflow-hidden group",
@@ -61,6 +62,7 @@ export const PremiumButton = React.forwardRef<
   ...props
 }, ref) => {
   const [ripples, setRipples] = React.useState<{ x: number; y: number; id: number }[]>([])
+  const prefersReducedMotion = usePrefersReducedMotion()
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (loading) return;
@@ -84,32 +86,32 @@ export const PremiumButton = React.forwardRef<
     <motion.button
       ref={ref}
       className={cn(premiumButtonVariants({ variant, size, className }))}
-      whileHover={{
+      whileHover={prefersReducedMotion ? {} : {
         scale: 1.01,
         transition: {
           duration: 0.2,
           ease: "easeOut"
         }
       }}
-      whileTap={{ scale: 0.99 }}
+      whileTap={prefersReducedMotion ? {} : { scale: 0.99 }}
       onClick={handleClick}
       disabled={disabled || loading}
       {...props}
     >
-      {/* Shimmer effect */}
-      {shimmer && (
+      {/* Shimmer effect - subtle, respects reduced motion */}
+      {shimmer && !prefersReducedMotion && (
         <motion.div
           className="absolute inset-0 -top-[2px] -bottom-[2px] opacity-0 group-hover:opacity-100"
           initial={{ x: "-100%", skewX: "-12deg" }}
           whileHover={{
             x: "200%",
             transition: {
-              duration: 0.8,
+              duration: 1,
               ease: "easeOut"
             }
           }}
         >
-          <div className="h-full w-[50%] bg-gradient-to-r from-transparent via-white/30 to-transparent blur-sm" />
+          <div className="h-full w-[50%] bg-gradient-to-r from-transparent via-white/15 to-transparent blur-sm" />
         </motion.div>
       )}
 

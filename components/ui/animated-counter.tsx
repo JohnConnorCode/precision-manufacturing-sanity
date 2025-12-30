@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
+import { usePrefersReducedMotion } from '@/lib/motion'
 
 interface AnimatedCounterProps {
   value: number
@@ -25,6 +26,7 @@ export function AnimatedCounter({
   start = true
 }: AnimatedCounterProps) {
   const ref = useRef(null)
+  const prefersReducedMotion = usePrefersReducedMotion()
   const motionValue = useMotionValue(0)
   const springValue = useSpring(motionValue, {
     damping: 100,
@@ -50,9 +52,9 @@ export function AnimatedCounter({
     <span ref={ref} className={className} style={style}>
       {prefix}
       <motion.span
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
       >
         {displayValue}
       </motion.span>
@@ -73,17 +75,19 @@ interface StatsCounterProps {
 }
 
 export function StatsCounter({ stats, className = "" }: StatsCounterProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
+
   return (
     <div className={`grid grid-cols-2 md:grid-cols-4 gap-8 ${className}`}>
       {stats.map((stat, index) => (
         <motion.div
           key={stat.label}
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{
-            duration: 0.6,
-            delay: index * 0.1,
+            duration: prefersReducedMotion ? 0 : 0.6,
+            delay: prefersReducedMotion ? 0 : index * 0.1,
             ease: [0.25, 0.1, 0.25, 1]
           }}
           className="text-center"

@@ -297,5 +297,62 @@ export default {
       title: 'Copyright Text',
       group: 'legal',
     },
+    {
+      name: 'certificationBadges',
+      type: 'array',
+      title: 'Certification Badges',
+      description: 'Certification badges displayed in the footer (AS9100D, ISO 9001, ITAR, etc.)',
+      group: 'company',
+      of: [
+        {
+          type: 'object',
+          name: 'certificationBadge',
+          title: 'Certification Badge',
+          preview: {
+            select: {
+              title: 'label',
+              enabled: 'enabled',
+            },
+            prepare(selection: any) {
+              const { title, enabled } = selection
+              const status = enabled === false ? ' (Hidden)' : ''
+              return {
+                title: `${title || 'Certification'}${status}`,
+              }
+            }
+          },
+          fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Toggle off to hide this badge without deleting it',
+              initialValue: true,
+            },
+            {
+              name: 'label',
+              type: 'string',
+              title: 'Label',
+              description: 'Certification name (e.g., "AS9100D", "ISO 9001:2015")',
+              validation: (Rule: any) => Rule.required().error('Label is required'),
+            },
+            {
+              name: 'iconName',
+              type: 'string',
+              title: 'Icon Name',
+              description: 'Lucide icon name (e.g., "Shield", "Award", "CheckCircle")',
+              initialValue: 'Shield',
+            },
+            {
+              name: 'iconColor',
+              type: 'string',
+              title: 'Icon Color',
+              description: 'Tailwind color class for the icon (e.g., "text-blue-400", "text-green-400")',
+              initialValue: 'text-blue-400',
+            },
+          ],
+        },
+      ],
+    },
   ],
 }

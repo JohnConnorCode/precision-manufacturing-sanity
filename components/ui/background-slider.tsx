@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface BackgroundSliderProps {
   images: string[];
@@ -16,24 +17,28 @@ export default function BackgroundSlider({
   className = ''
 }: BackgroundSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
+    // For reduced motion users, don't auto-slide
+    if (prefersReducedMotion) return;
+
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, interval);
 
     return () => clearInterval(timer);
-  }, [images.length, interval]);
+  }, [images.length, interval, prefersReducedMotion]);
 
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
-          initial={{ opacity: 0 }}
+          initial={{ opacity: prefersReducedMotion ? 1 : 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
+          exit={{ opacity: prefersReducedMotion ? 1 : 0 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 1.5, ease: "easeInOut" }}
           className="absolute inset-0"
         >
           {images[currentIndex] && (
@@ -54,18 +59,20 @@ export default function BackgroundSlider({
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-900/80 to-slate-950/90" />
 
-      {/* Animated gradient overlay */}
-      <motion.div
-        className="absolute inset-0"
-        animate={{
-          background: [
-            "radial-gradient(circle at 20% 50%, transparent 0%, rgba(15, 23, 42, 0.4) 100%)",
-            "radial-gradient(circle at 80% 50%, transparent 0%, rgba(15, 23, 42, 0.4) 100%)",
-            "radial-gradient(circle at 20% 50%, transparent 0%, rgba(15, 23, 42, 0.4) 100%)",
-          ]
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-      />
+      {/* Animated gradient overlay - disabled for reduced motion */}
+      {!prefersReducedMotion && (
+        <motion.div
+          className="absolute inset-0"
+          animate={{
+            background: [
+              "radial-gradient(circle at 20% 50%, transparent 0%, rgba(15, 23, 42, 0.4) 100%)",
+              "radial-gradient(circle at 80% 50%, transparent 0%, rgba(15, 23, 42, 0.4) 100%)",
+              "radial-gradient(circle at 20% 50%, transparent 0%, rgba(15, 23, 42, 0.4) 100%)",
+            ]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+        />
+      )}
     </div>
   );
 }

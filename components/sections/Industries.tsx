@@ -16,6 +16,7 @@ interface IndustriesProps {
       titleHighlight?: string;
       description?: string;
     };
+    cardCtaText?: string;
   };
 }
 
@@ -32,6 +33,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
     ? `${headerTitle} ${headerTitleHighlight}`
     : sectionData?.heading;
   const description = sectionData?.header?.description || sectionData?.description;
+  const cardCtaText = sectionData?.cardCtaText || 'Explore Solutions';
 
   return (
     <section className="py-24 md:py-32 bg-slate-50 dark:bg-slate-950">
@@ -89,7 +91,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                 className="group"
               >
                 <Link href={industry.href || '#'} className="block">
-                  <div className="relative h-[500px] md:h-[600px] rounded-3xl overflow-hidden">
+                  <div className="relative aspect-[3/4] md:aspect-[2/3] rounded-3xl overflow-hidden">
                     {/* Background Image */}
                     {imageUrl && (
                       <Image
@@ -133,9 +135,9 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                         {industry.description}
                       </p>
 
-                      {/* CTA */}
+                      {/* CTA - Text controlled via Sanity CMS */}
                       <div className="flex items-center gap-2 text-blue-400 font-semibold">
-                        <span>Learn More</span>
+                        <span>{cardCtaText}</span>
                         <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
                       </div>
                     </div>

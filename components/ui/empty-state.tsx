@@ -5,6 +5,7 @@ import { LucideIcon, FileX2, Inbox, FolderOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface EmptyStateProps {
   icon?: LucideIcon;
@@ -65,6 +66,21 @@ export default function EmptyState({
   variant = 'default',
   className
 }: EmptyStateProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
+
+  // Variants with reduced motion support
+  const iconAnimations = prefersReducedMotion
+    ? { initial: { opacity: 1 }, animate: { opacity: 1 } }
+    : iconVariants;
+
+  const contentAnimations = prefersReducedMotion
+    ? { initial: { opacity: 1 }, animate: { opacity: 1 } }
+    : contentVariants;
+
+  const pulseAnimations = prefersReducedMotion
+    ? { initial: { opacity: 0.1 }, animate: { opacity: 0.1 } }
+    : pulseRingVariants;
+
   const containerClasses = cn(
     'flex flex-col items-center justify-center text-center py-16 px-6',
     variant === 'card' && 'bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm',
@@ -76,9 +92,9 @@ export default function EmptyState({
     <div className={containerClasses}>
       {/* Animated Icon Container */}
       <div className="relative mb-8">
-        {/* Pulse rings */}
+        {/* Pulse rings - disabled for reduced motion */}
         <motion.div
-          variants={pulseRingVariants}
+          variants={pulseAnimations}
           initial="initial"
           animate="animate"
           className="absolute inset-0 rounded-full bg-blue-500/20 dark:bg-blue-400/20"
@@ -87,7 +103,7 @@ export default function EmptyState({
 
         {/* Icon background */}
         <motion.div
-          variants={iconVariants}
+          variants={iconAnimations}
           initial="initial"
           animate="animate"
           className="relative w-24 h-24 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center shadow-lg"
@@ -101,7 +117,7 @@ export default function EmptyState({
 
       {/* Content */}
       <motion.div
-        variants={contentVariants}
+        variants={contentAnimations}
         initial="initial"
         animate="animate"
         className="max-w-md"

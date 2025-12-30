@@ -64,70 +64,124 @@ export default function ClientLogos({ data }: ClientLogosProps) {
         )}
       </div>
 
-      {/* Logo Carousel */}
+      {/* Logo Display - Static grid for reduced motion, carousel otherwise */}
       <div className="relative">
-        {/* Gradient Masks */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-slate-50 dark:from-slate-900 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent z-10 pointer-events-none" />
+        {prefersReducedMotion ? (
+          /* Static Grid for Reduced Motion Users */
+          <div className="container">
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+              {logos.map((logo) => {
+                const logoUrl = logo.logo?.asset?.url;
+                if (!logoUrl) return null;
 
-        {/* Scrolling Container */}
-        <motion.div
-          className="flex items-center gap-12 md:gap-20"
-          animate={prefersReducedMotion ? {} : {
-            x: [0, -50 * logos.length + '%'],
-          }}
-          transition={prefersReducedMotion ? {} : {
-            x: {
-              duration: duration,
-              repeat: Infinity,
-              ease: 'linear',
-            },
-          }}
-        >
-          {duplicatedLogos.map((logo, index) => {
-            const logoUrl = logo.logo?.asset?.url;
-            if (!logoUrl) return null;
+                const LogoImage = (
+                  <div
+                    className={cn(
+                      "h-10 md:h-14 w-auto px-4 md:px-6",
+                      "transition-all duration-300",
+                      data.grayscale && "grayscale opacity-50 hover:grayscale-0 hover:opacity-100"
+                    )}
+                  >
+                    <Image
+                      src={logoUrl}
+                      alt={logo.logo?.alt || `${logo.name} logo`}
+                      width={160}
+                      height={56}
+                      className="h-full w-auto object-contain"
+                    />
+                  </div>
+                );
 
-            const LogoImage = (
-              <div
-                className={cn(
-                  "flex-shrink-0 h-10 md:h-14 w-auto px-4 md:px-6",
-                  "transition-all duration-300",
-                  data.grayscale && "grayscale opacity-50 hover:grayscale-0 hover:opacity-100"
-                )}
-              >
-                <Image
-                  src={logoUrl}
-                  alt={logo.logo?.alt || `${logo.name} logo`}
-                  width={160}
-                  height={56}
-                  className="h-full w-auto object-contain"
-                />
-              </div>
-            );
+                if (logo.href) {
+                  return (
+                    <a
+                      key={logo._key || logo.name}
+                      href={logo.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block"
+                      aria-label={`Visit ${logo.name} website`}
+                    >
+                      {LogoImage}
+                    </a>
+                  );
+                }
 
-            if (logo.href) {
-              return (
-                <a
-                  key={`${logo._key || logo.name}-${index}`}
-                  href={logo.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                  aria-label={`Visit ${logo.name} website`}
-                >
-                  {LogoImage}
-                </a>
-              );
-            }
+                return (
+                  <div key={logo._key || logo.name}>
+                    {LogoImage}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          /* Animated Carousel for Standard Users */
+          <>
+            {/* Gradient Masks */}
+            <div className="absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-slate-50 dark:from-slate-900 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent z-10 pointer-events-none" />
 
-            return (
-              <div key={`${logo._key || logo.name}-${index}`}>
-                {LogoImage}
-              </div>
-            );
-          })}
-        </motion.div>
+            {/* Scrolling Container */}
+            <motion.div
+              className="flex items-center gap-12 md:gap-20"
+              animate={{
+                x: [0, -50 * logos.length + '%'],
+              }}
+              transition={{
+                x: {
+                  duration: duration,
+                  repeat: Infinity,
+                  ease: 'linear',
+                },
+              }}
+            >
+              {duplicatedLogos.map((logo, index) => {
+                const logoUrl = logo.logo?.asset?.url;
+                if (!logoUrl) return null;
+
+                const LogoImage = (
+                  <div
+                    className={cn(
+                      "flex-shrink-0 h-10 md:h-14 w-auto px-4 md:px-6",
+                      "transition-all duration-300",
+                      data.grayscale && "grayscale opacity-50 hover:grayscale-0 hover:opacity-100"
+                    )}
+                  >
+                    <Image
+                      src={logoUrl}
+                      alt={logo.logo?.alt || `${logo.name} logo`}
+                      width={160}
+                      height={56}
+                      className="h-full w-auto object-contain"
+                    />
+                  </div>
+                );
+
+                if (logo.href) {
+                  return (
+                    <a
+                      key={`${logo._key || logo.name}-${index}`}
+                      href={logo.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block"
+                      aria-label={`Visit ${logo.name} website`}
+                    >
+                      {LogoImage}
+                    </a>
+                  );
+                }
+
+                return (
+                  <div key={`${logo._key || logo.name}-${index}`}>
+                    {LogoImage}
+                  </div>
+                );
+              })}
+            </motion.div>
+          </>
+        )}
       </div>
     </section>
   );

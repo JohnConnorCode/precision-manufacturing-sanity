@@ -2,7 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Linkedin, Twitter, Facebook, Mail, Phone, MapPin, Zap } from 'lucide-react';
+import { Linkedin, Twitter, Facebook, Mail, Phone, MapPin, Award, Shield, CheckCircle, Zap, LucideIcon } from 'lucide-react';
+
+// Icon mapping for CMS-driven certification badges
+const iconMap: Record<string, LucideIcon> = {
+  Shield,
+  Award,
+  CheckCircle,
+  Zap,
+};
 import Logo from '@/components/ui/logo';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { typography, colors, cn } from '@/lib/design-system';
@@ -59,6 +67,13 @@ interface FooterProps {
       showCompanyText?: boolean;
       enableAnimation?: boolean;
     };
+    certificationBadges?: Array<{
+      _key?: string;
+      enabled?: boolean;
+      label?: string;
+      iconName?: string;
+      iconColor?: string;
+    }>;
   } | null;
 }
 
@@ -204,6 +219,29 @@ const Footer = ({ data }: FooterProps) => {
                 </Link>
               )}
             </div>
+
+            {/* Certification Badges - CMS Controlled */}
+            {data?.certificationBadges && data.certificationBadges.filter(b => b?.enabled !== false).length > 0 && (
+              <div className="mt-6 pt-4 border-t border-slate-700/50">
+                <p className={cn('text-xs uppercase tracking-wider mb-3', colors.footer.text.muted)}>Certifications</p>
+                <div className="flex flex-wrap gap-3">
+                  {data.certificationBadges
+                    .filter(badge => badge?.enabled !== false && badge?.label)
+                    .map((badge) => {
+                      const Icon = iconMap[badge.iconName || 'Shield'] || Shield;
+                      return (
+                        <div
+                          key={badge._key || badge.label}
+                          className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-800/50 dark:bg-slate-700/30 rounded-md border border-slate-700/50"
+                        >
+                          <Icon className={cn('h-3.5 w-3.5', badge.iconColor || 'text-blue-400')} />
+                          <span className={cn('text-xs font-medium', colors.footer.text.secondary)}>{badge.label}</span>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            )}
           </motion.div>
 
           <motion.div variants={itemVariants}>

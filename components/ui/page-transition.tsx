@@ -3,6 +3,7 @@
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface PageTransitionProps {
   children: ReactNode;
@@ -28,12 +29,19 @@ const pageVariants: Variants = {
   },
 };
 
+const reducedMotionVariants: Variants = {
+  initial: { opacity: 1 },
+  animate: { opacity: 1 },
+  exit: { opacity: 1 },
+};
+
 /**
  * Page transition wrapper for smooth fade transitions between pages
  * Uses Framer Motion AnimatePresence for exit animations
  */
 export function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
     <AnimatePresence mode="wait" initial={false}>
@@ -42,7 +50,7 @@ export function PageTransition({ children }: PageTransitionProps) {
         initial="initial"
         animate="animate"
         exit="exit"
-        variants={pageVariants}
+        variants={prefersReducedMotion ? reducedMotionVariants : pageVariants}
       >
         {children}
       </motion.div>

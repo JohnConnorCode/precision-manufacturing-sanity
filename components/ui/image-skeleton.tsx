@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image, { ImageProps } from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface ImageWithSkeletonProps extends ImageProps {
   skeletonClassName?: string;
@@ -19,6 +20,9 @@ export default function ImageWithSkeleton({
 }: ImageWithSkeletonProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  const animDuration = prefersReducedMotion ? 0 : fadeInDuration;
 
   return (
     <div className="relative w-full h-full">
@@ -28,23 +32,26 @@ export default function ImageWithSkeleton({
             key="skeleton"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: fadeInDuration / 2 }}
+            transition={{ duration: animDuration / 2 }}
             className={cn(
               "absolute inset-0 bg-gradient-to-br from-slate-200 to-slate-100",
-              "animate-pulse rounded-lg",
+              !prefersReducedMotion && "animate-pulse",
+              "rounded-lg",
               skeletonClassName
             )}
           >
-            {/* Shimmer effect */}
-            <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            {/* Shimmer effect - disabled for reduced motion */}
+            {!prefersReducedMotion && (
+              <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            )}
           </motion.div>
         )}
       </AnimatePresence>
 
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isLoading ? 0 : 1 }}
-        transition={{ duration: fadeInDuration }}
+        initial={{ opacity: prefersReducedMotion ? 1 : 0 }}
+        animate={{ opacity: isLoading ? (prefersReducedMotion ? 1 : 0) : 1 }}
+        transition={{ duration: animDuration }}
         className="relative w-full h-full"
       >
         <Image

@@ -27,16 +27,6 @@ interface ResourceCardProps {
   priority?: boolean;
 }
 
-// Category-based fallback images (Sanity CDN URLs from our uploads)
-const categoryFallbacks: Record<string, string> = {
-  'quality-compliance': 'https://cdn.sanity.io/images/vgacjlhu/production/626b6993a19cc0106d6973953c57d3dce9be1cde-1600x1067.jpg',
-  'manufacturing-processes': 'https://cdn.sanity.io/images/vgacjlhu/production/62192017e5b279a2d53aa7c59612439e42e0d671-1600x1200.jpg',
-  'material-science': 'https://cdn.sanity.io/images/vgacjlhu/production/2a122961ef2b11ad6e28d0007058e3687eb48d4e-1600x1067.jpg',
-  'industry-applications': 'https://cdn.sanity.io/images/vgacjlhu/production/9fb5b1eeaaec1f332d4ca4e2a515d9db4b46ef46-1600x1067.jpg',
-  'calculators-tools': 'https://cdn.sanity.io/images/vgacjlhu/production/62192017e5b279a2d53aa7c59612439e42e0d671-1600x1200.jpg',
-};
-
-const defaultFallback = 'https://cdn.sanity.io/images/vgacjlhu/production/62192017e5b279a2d53aa7c59612439e42e0d671-1600x1200.jpg';
 
 // Difficulty badge styles
 const difficultyStyles = {
@@ -46,10 +36,8 @@ const difficultyStyles = {
 };
 
 export default function ResourceCard({ resource, priority = false }: ResourceCardProps) {
-  const imageUrl = resource.featuredImage?.asset?.url
-    || categoryFallbacks[resource.category]
-    || defaultFallback;
-
+  const imageUrl = resource.featuredImage?.asset?.url;
+  const hasImage = Boolean(imageUrl);
   const imageAlt = resource.featuredImage?.alt || resource.title;
   const difficulty = resource.difficulty || 'intermediate';
 
@@ -72,18 +60,25 @@ export default function ResourceCard({ resource, priority = false }: ResourceCar
       >
         {/* Image Container */}
         <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
-          <Image
-            src={imageUrl}
-            alt={imageAlt}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className={cn(
-              "object-cover",
-              "transition-transform duration-500 ease-out",
-              "group-hover:scale-105"
-            )}
-            priority={priority}
-          />
+          {hasImage && imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={imageAlt}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className={cn(
+                "object-cover",
+                "transition-transform duration-500 ease-out",
+                "group-hover:scale-105"
+              )}
+              priority={priority}
+            />
+          ) : (
+            /* Placeholder when no image */
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900">
+              <BookOpen className="w-12 h-12 text-slate-300 dark:text-slate-600" />
+            </div>
+          )}
 
           {/* Gradient overlay for better text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

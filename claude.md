@@ -6,6 +6,107 @@
 
 ---
 
+## ⚠️ ABSOLUTE RULES - NO EXCEPTIONS
+
+These rules are NON-NEGOTIABLE. Violations must be fixed immediately.
+
+### Rule 1: ALL CONTENT MUST BE IN SANITY CMS
+
+**Every single piece of user-visible content MUST be stored in and fetched from Sanity CMS:**
+
+| Content Type | Must Be In Sanity? | Example |
+|--------------|-------------------|---------|
+| Page headings | ✅ YES | "About Our Company" |
+| Body text | ✅ YES | Paragraphs, descriptions |
+| Button labels | ✅ YES | "Get a Quote", "Learn More" |
+| Image URLs | ✅ YES | All images from Sanity CDN |
+| Image alt text | ✅ YES | Stored with each image |
+| Link URLs | ✅ YES | CTAs, navigation links |
+| Stats/numbers | ✅ YES | "50+ Years", "99.9%" |
+| Icon names | ✅ YES | Stored as strings, rendered from Lucide |
+| SEO metadata | ✅ YES | Title, description, OG images |
+| Feature lists | ✅ YES | Bullet points, specs |
+
+**❌ NEVER acceptable:**
+```typescript
+// WRONG - Hardcoded content
+const defaultContent = {
+  title: "Our Services",
+  description: "We provide excellence..."
+};
+
+// WRONG - Inline strings
+<h1>Welcome to Precision Manufacturing</h1>
+
+// WRONG - Hardcoded arrays
+const features = ["Feature 1", "Feature 2", "Feature 3"];
+```
+
+**✅ ONLY acceptable pattern:**
+```typescript
+// Content fetched from Sanity
+const data = await getPageContent('about');
+
+// Component uses Sanity data - fallbacks are EMERGENCY ONLY
+<h1>{data?.title}</h1>
+<p>{data?.description}</p>
+```
+
+### Rule 2: NO "DEFAULT CONTENT" OBJECTS
+
+**Creating `defaultContent` or `fallbackData` objects is PROHIBITED.**
+
+If a page/component has no CMS data:
+1. Create the Sanity schema
+2. Create the document in Sanity Studio
+3. Fetch and display the CMS data
+
+Do NOT create hardcoded fallback content as a "temporary solution."
+
+### Rule 3: ALL IMAGES FROM SANITY CDN
+
+**Every image URL must come from `cdn.sanity.io`:**
+
+✅ `https://cdn.sanity.io/images/vgacjlhu/production/...`
+❌ `https://images.unsplash.com/...`
+❌ `/images/local-file.jpg`
+❌ Any hardcoded image URL
+
+### Rule 4: ACCESSIBILITY IS MANDATORY
+
+**All animations must respect `prefersReducedMotion`:**
+
+```typescript
+import { usePrefersReducedMotion } from '@/lib/motion';
+
+function AnimatedComponent() {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  return (
+    <motion.div
+      animate={prefersReducedMotion ? {} : { scale: 1.05 }}
+    >
+      {/* content */}
+    </motion.div>
+  );
+}
+```
+
+### Rule 5: B2B PROFESSIONAL ANIMATIONS ONLY
+
+**This is a precision manufacturing site for aerospace/defense clients. Keep animations:**
+- Subtle and professional (no flashy effects)
+- Purposeful (guide attention, not distract)
+- Performant (60fps, GPU-accelerated properties only)
+
+**❌ Banned effects:**
+- Scan lines, glitch effects
+- Excessive shimmer/sparkle
+- Bouncing elements
+- Multiple simultaneous animations on one element
+
+---
+
 ## 0. SANITY API TOKEN MANAGEMENT
 
 ### Current API Token (Read/Write Access)

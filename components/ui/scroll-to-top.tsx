@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface ScrollToTopProps {
   threshold?: number;
@@ -18,6 +19,7 @@ export default function ScrollToTop({
 }: ScrollToTopProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,16 +57,16 @@ export default function ScrollToTop({
     <AnimatePresence>
       {isVisible && (
         <motion.button
-          initial={{ opacity: 0, y: 20, scale: 0.8 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 20, scale: 0.8 }}
-          transition={{
+          initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.8 }}
+          transition={prefersReducedMotion ? { duration: 0.15 } : {
             type: "spring",
             stiffness: 260,
             damping: 20,
           }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
+          whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
           onClick={scrollToTop}
           className={cn(
             "fixed bottom-8 right-8 z-50",
@@ -104,36 +106,8 @@ export default function ScrollToTop({
             />
           </svg>
 
-          {/* Arrow icon */}
-          <motion.div
-            animate={{
-              y: [0, -3, 0],
-            }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeInOut",
-            }}
-          >
-            <ArrowUp className="w-5 h-5 relative z-10" />
-          </motion.div>
-
-          {/* Pulse effect */}
-          <motion.div
-            className="absolute inset-0 rounded-full bg-white"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{
-              scale: [1, 2],
-              opacity: [0.3, 0],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeOut",
-            }}
-          />
+          {/* Arrow icon - simple, no bounce */}
+          <ArrowUp className="w-5 h-5 relative z-10" />
         </motion.button>
       )}
     </AnimatePresence>

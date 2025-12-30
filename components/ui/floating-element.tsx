@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface FloatingElementProps {
   children: ReactNode;
@@ -18,6 +19,13 @@ export default function FloatingElement({
   distance = 30,
   className = ''
 }: FloatingElementProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
+
+  // For users who prefer reduced motion, render a static element
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
       className={className}

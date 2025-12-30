@@ -743,6 +743,14 @@ export default {
             },
           ],
         },
+        {
+          name: 'cardCtaText',
+          type: 'string',
+          title: 'Service Card CTA Text',
+          description: 'Text shown on each service card link (e.g., "View Details", "Learn More")',
+          fieldset: 'content',
+          initialValue: 'View Details',
+        },
       ],
     },
     {
@@ -868,6 +876,14 @@ export default {
             ]
           },
           initialValue: 'text-blue-600',
+        },
+        {
+          name: 'cardCtaText',
+          type: 'string',
+          title: 'Industry Card CTA Text',
+          description: 'Text shown on each industry card link (e.g., "Explore Solutions", "Learn More")',
+          fieldset: 'content',
+          initialValue: 'Explore Solutions',
         },
       ],
     },
@@ -1395,6 +1411,56 @@ export default {
               title: 'Expert Team',
               description: 'Highly trained machinists, engineers, and quality professionals with decades of precision manufacturing experience.'
             }
+          ],
+        },
+        {
+          name: 'certifications',
+          type: 'array',
+          title: 'Certifications',
+          description: 'Certifications displayed at the bottom of the section',
+          of: [
+            {
+              type: 'object',
+              preview: {
+                select: {
+                  title: 'label',
+                  enabled: 'enabled',
+                },
+                prepare({title, enabled}: any) {
+                  const status = enabled === false ? ' (Hidden)' : '';
+                  return {
+                    title: `${title || 'Certification'}${status}`,
+                  }
+                },
+              },
+              fields: [
+                {
+                  name: 'enabled',
+                  type: 'boolean',
+                  title: 'Enabled',
+                  description: 'Toggle off to hide',
+                  initialValue: true,
+                },
+                {
+                  name: 'label',
+                  type: 'string',
+                  title: 'Label',
+                  description: 'Certification name (e.g., "AS9100D Certified")',
+                },
+                {
+                  name: 'iconName',
+                  type: 'string',
+                  title: 'Icon Name',
+                  description: 'Lucide icon name (e.g., "Shield")',
+                  initialValue: 'Shield',
+                },
+              ],
+            },
+          ],
+          initialValue: [
+            { label: 'AS9100D Certified', iconName: 'Shield', enabled: true },
+            { label: 'ISO 9001:2015', iconName: 'Shield', enabled: true },
+            { label: 'ITAR Registered', iconName: 'Shield', enabled: true },
           ],
         },
       ],

@@ -138,172 +138,53 @@ interface MetbasePageClientProps {
   } | null;
 }
 
-// Default content based on the original iismet.com page
-const defaultData = {
-  hero: {
-    badge: 'Proprietary Software',
-    badgeIconName: 'Database',
-    title: 'Metbase',
-    titleHighlight: 'Software',
-    subtitle: "Integrated Inspection Systems, Inc.'s proprietary database solution",
-    description: 'A powerful in-house database system providing ISO 9001 & AS9100 compliance for complete traceability and retrievability of inspection data and robotic programming.',
-    buttons: [
-      { _key: 'def-hero-btn-1', label: 'Contact Us', href: '/contact', variant: 'primary' as const, enabled: true },
-      { _key: 'def-hero-btn-2', label: 'Our Services', href: '/services', variant: 'secondary' as const, enabled: true },
-    ],
-  },
-  overview: {
-    title: 'What is Metbase?',
-    description: 'Metbase is our proprietary database software developed in-house to meet the rigorous demands of precision manufacturing. It provides complete ISO 9001 & AS9100 compliance for traceability and retrievability of inspection data and all robotic programming.',
-    highlights: [
-      { _key: 'def-hl-1', text: 'ISO 9001 & AS9100 Compliant', iconName: 'Shield', enabled: true },
-      { _key: 'def-hl-2', text: 'Full Traceability', iconName: 'GitBranch', enabled: true },
-      { _key: 'def-hl-3', text: '15+ Years Historical Data', iconName: 'History', enabled: true },
-      { _key: 'def-hl-4', text: 'Custom Reporting', iconName: 'FileText', enabled: true },
-    ],
-  },
-  features: {
-    title: 'Core Capabilities',
-    description: 'Metbase delivers comprehensive data management and analysis tools for precision manufacturing.',
-    items: [
-      {
-        _key: 'def-feat-1',
-        title: 'Revision Control',
-        description: 'Full forward and backward revision control on all CMM and CNC programs, ensuring complete version history and audit trails.',
-        iconName: 'GitBranch',
-        enabled: true,
-      },
-      {
-        _key: 'def-feat-2',
-        title: 'Historical Data Access',
-        description: 'Access over 15 years of historical inspection and manufacturing data for trend analysis and quality assurance.',
-        iconName: 'History',
-        enabled: true,
-      },
-      {
-        _key: 'def-feat-3',
-        title: 'Custom Reporting',
-        description: 'Generate detailed custom reports tailored to your specific requirements and compliance needs.',
-        iconName: 'FileText',
-        enabled: true,
-      },
-      {
-        _key: 'def-feat-4',
-        title: 'Automatic Data Export',
-        description: 'Seamless automatic exports from CMM operations for streamlined data collection and analysis.',
-        iconName: 'Download',
-        enabled: true,
-      },
-      {
-        _key: 'def-feat-5',
-        title: 'Statistical Analysis',
-        description: 'External line fitting and comprehensive statistical analysis tools for engineering insights and process optimization.',
-        iconName: 'LineChart',
-        enabled: true,
-      },
-      {
-        _key: 'def-feat-6',
-        title: 'Data Mining',
-        description: 'Advanced data mining functionality to extract valuable engineering insights from your manufacturing data.',
-        iconName: 'Database',
-        enabled: true,
-      },
-    ],
-  },
-  analysisTool: {
-    title: 'Metbase Analysis Tool',
-    description: 'Our analysis tool is primarily designed for customer capability studies and machining process monitoring. It generates various on-the-fly analytical charts from datasets, enabling real-time decision making and quality control.',
-    capabilities: [
-      { _key: 'def-cap-1', text: 'Bell curve distribution analysis', enabled: true },
-      { _key: 'def-cap-2', text: 'Scatter plot generation', enabled: true },
-      { _key: 'def-cap-3', text: 'Process capability studies (Cp, Cpk)', enabled: true },
-      { _key: 'def-cap-4', text: 'Real-time SPC charts', enabled: true },
-      { _key: 'def-cap-5', text: 'Trend analysis and forecasting', enabled: true },
-    ],
-  },
-  systemIntegration: {
-    title: 'Seamless System Integration',
-    description: 'Metbase connects multiple pieces of equipment, enabling machines to communicate and share data seamlessly. A notable capability includes obtaining custom CMM alignments that are transferable to CNC machines, with built-in safeguards preventing serial/lot number mixups.',
-    benefits: [
-      {
-        _key: 'def-ben-1',
-        title: 'Equipment Connectivity',
-        description: 'Connect CMM, CNC, and other equipment for unified data management.',
-        iconName: 'Link2',
-        enabled: true,
-      },
-      {
-        _key: 'def-ben-2',
-        title: 'Alignment Transfer',
-        description: 'Transfer custom CMM alignments directly to CNC machines.',
-        iconName: 'RefreshCw',
-        enabled: true,
-      },
-      {
-        _key: 'def-ben-3',
-        title: 'Error Prevention',
-        description: 'Built-in safeguards prevent serial and lot number mixups.',
-        iconName: 'Shield',
-        enabled: true,
-      },
-    ],
-  },
-  closedLoop: {
-    title: 'Closed-Loop Manufacturing System',
-    description: 'Metbase creates a relational database linking all equipment and data, facilitating continuous process improvement. This closed-loop system ensures that every measurement, adjustment, and outcome is tracked and connected, enabling true continuous improvement in your manufacturing processes.',
-  },
-  cta: {
-    title: 'Experience the Power of Metbase',
-    description: 'Learn how our proprietary database software can transform your manufacturing data management and quality control processes.',
-    buttons: [
-      { _key: 'def-cta-btn-1', label: 'Request a Demo', href: '/contact', variant: 'primary' as const, enabled: true },
-      { _key: 'def-cta-btn-2', label: 'Learn More', href: '/services', variant: 'secondary' as const, enabled: true },
-    ],
-  },
-};
+// NO DEFAULT CONTENT - All content must come from Sanity CMS
+// See CLAUDE.md Rule 2: NO "DEFAULT CONTENT" OBJECTS
 
 export default function MetbasePageClient({ data }: MetbasePageClientProps) {
-  // Merge with defaults
-  const pageData = {
-    hero: { ...defaultData.hero, ...data?.hero },
-    overview: { ...defaultData.overview, ...data?.overview },
-    features: { ...defaultData.features, ...data?.features },
-    analysisTool: { ...defaultData.analysisTool, ...data?.analysisTool },
-    systemIntegration: { ...defaultData.systemIntegration, ...data?.systemIntegration },
-    closedLoop: { ...defaultData.closedLoop, ...data?.closedLoop },
-    cta: { ...defaultData.cta, ...data?.cta },
-  };
+  // Use Sanity data directly - NO fallbacks to hardcoded content
+  // All content must be managed in Sanity Studio
+  if (!data) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Content Not Found</h1>
+          <p className="text-slate-600 dark:text-slate-400">Please add MetBase content in Sanity Studio.</p>
+        </div>
+      </div>
+    );
+  }
 
-  const heroImage = urlFor(pageData.hero?.backgroundImage) || '';
-  const heroAlt = pageData.hero?.backgroundImage?.alt || 'Metbase Database Software';
-  const heroButtons = (pageData.hero?.buttons || [])
+  const heroImage = urlFor(data.hero?.backgroundImage) || '';
+  const heroAlt = data.hero?.backgroundImage?.alt || 'Metbase Database Software';
+  const heroButtons = (data.hero?.buttons || [])
     .filter((btn) => btn?.enabled !== false && btn?.label && btn?.href)
     .map((btn) => ({
       label: btn.label || '',
       href: btn.href || '',
       variant: btn.variant,
     }));
-  const BadgeIcon = iconMap[pageData.hero?.badgeIconName || 'Database'] || Database;
+  const BadgeIcon = iconMap[data.hero?.badgeIconName || 'Database'] || Database;
 
-  const overviewHighlights = (pageData.overview?.highlights || defaultData.overview.highlights)
+  const overviewHighlights = (data.overview?.highlights || [])
     .filter((h) => h?.enabled !== false);
 
-  const featureItems = (pageData.features?.items || defaultData.features.items)
+  const featureItems = (data.features?.items || [])
     .filter((f) => f?.enabled !== false);
 
-  const analysisCapabilities = (pageData.analysisTool?.capabilities || defaultData.analysisTool.capabilities)
+  const analysisCapabilities = (data.analysisTool?.capabilities || [])
     .filter((c) => c?.enabled !== false);
 
-  const integrationBenefits = (pageData.systemIntegration?.benefits || defaultData.systemIntegration.benefits)
+  const integrationBenefits = (data.systemIntegration?.benefits || [])
     .filter((b) => b?.enabled !== false);
 
-  const ctaButtons = (pageData.cta?.buttons || [])
+  const ctaButtons = (data.cta?.buttons || [])
     .filter((btn) => btn?.enabled !== false && btn?.label && btn?.href);
 
-  // Use Sanity images if available, otherwise use original iismet.com images as fallbacks
-  const analysisImage = urlFor(pageData.analysisTool?.image) || 'https://iismet.com/wp-content/uploads/2021/02/MBA-Bell-Curve-1024x540.jpg';
-  const integrationImage = urlFor(pageData.systemIntegration?.image) || 'https://iismet.com/wp-content/uploads/2021/02/MBA-scatter-plot-1024x565.jpg';
-  const closedLoopImage = urlFor(pageData.closedLoop?.image) || 'https://iismet.com/wp-content/uploads/2021/02/Metbase-Closed-loop-system-2-1024x727.jpg';
+  // All images from Sanity CDN - NO external URLs
+  const analysisImage = urlFor(data.analysisTool?.image) || '';
+  const integrationImage = urlFor(data.systemIntegration?.image) || '';
+  const closedLoopImage = urlFor(data.closedLoop?.image) || '';
 
   return (
     <div className="min-h-screen bg-background">
@@ -311,24 +192,24 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
       <HeroSection
         backgroundImage={heroImage}
         imageAlt={heroAlt}
-        badge={pageData.hero?.badge ? { text: pageData.hero.badge, icon: BadgeIcon } : undefined}
+        badge={data.hero?.badge ? { text: data.hero.badge, icon: BadgeIcon } : undefined}
         title={
-          pageData.hero?.title ? (
-            pageData.hero?.titleHighlight ? (
+          data.hero?.title ? (
+            data.hero?.titleHighlight ? (
               <span className="text-white">
-                {pageData.hero.title}{' '}
+                {data.hero.title}{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
-                  {pageData.hero.titleHighlight}
+                  {data.hero.titleHighlight}
                 </span>
               </span>
             ) : (
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
-                {pageData.hero.title}
+                {data.hero.title}
               </span>
             )
           ) : ''
         }
-        description={pageData.hero?.description}
+        description={data.hero?.description}
         buttons={heroButtons}
         height="large"
         alignment="center"
@@ -344,9 +225,9 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className={cn(typography.h2, "mb-6")}>{pageData.overview?.title}</h2>
+              <h2 className={cn(typography.h2, "mb-6")}>{data.overview?.title}</h2>
               <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
-                {pageData.overview?.description}
+                {data.overview?.description}
               </p>
 
               <div className="grid grid-cols-2 gap-4">
@@ -406,9 +287,9 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className={cn(typography.h2, "mb-6")}>{pageData.features?.title}</h2>
+            <h2 className={cn(typography.h2, "mb-6")}>{data.features?.title}</h2>
             <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-              {pageData.features?.description}
+              {data.features?.description}
             </p>
           </motion.div>
 
@@ -461,9 +342,9 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                 <BarChart3 className="w-4 h-4" />
                 Analysis Tool
               </div>
-              <h2 className={cn(typography.h2, "mb-6")}>{pageData.analysisTool?.title}</h2>
+              <h2 className={cn(typography.h2, "mb-6")}>{data.analysisTool?.title}</h2>
               <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
-                {pageData.analysisTool?.description}
+                {data.analysisTool?.description}
               </p>
 
               <div className="space-y-3">
@@ -496,14 +377,14 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                 <div className="rounded-xl overflow-hidden shadow-2xl">
                   <Image
                     src={analysisImage}
-                    alt={pageData.analysisTool?.image?.alt || 'Metbase Analysis Chart'}
+                    alt={data.analysisTool?.image?.alt || 'Metbase Analysis Chart'}
                     width={600}
                     height={400}
                     className="w-full h-auto"
                   />
-                  {pageData.analysisTool?.image?.caption && (
+                  {data.analysisTool?.image?.caption && (
                     <div className="bg-slate-100 dark:bg-slate-800 px-4 py-2 text-sm text-slate-600 dark:text-slate-400">
-                      {pageData.analysisTool.image.caption}
+                      {data.analysisTool.image.caption}
                     </div>
                   )}
                 </div>
@@ -530,9 +411,9 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className={cn(typography.h2, "mb-6")}>{pageData.systemIntegration?.title}</h2>
+            <h2 className={cn(typography.h2, "mb-6")}>{data.systemIntegration?.title}</h2>
             <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-              {pageData.systemIntegration?.description}
+              {data.systemIntegration?.description}
             </p>
           </motion.div>
 
@@ -570,7 +451,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
               <div className="rounded-xl overflow-hidden shadow-xl">
                 <Image
                   src={integrationImage}
-                  alt={pageData.systemIntegration?.image?.alt || 'System Integration Diagram'}
+                  alt={data.systemIntegration?.image?.alt || 'System Integration Diagram'}
                   width={900}
                   height={500}
                   className="w-full h-auto"
@@ -596,7 +477,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                 <div className="rounded-xl overflow-hidden shadow-2xl">
                   <Image
                     src={closedLoopImage}
-                    alt={pageData.closedLoop?.image?.alt || 'Closed-Loop System Diagram'}
+                    alt={data.closedLoop?.image?.alt || 'Closed-Loop System Diagram'}
                     width={600}
                     height={400}
                     className="w-full h-auto"
@@ -624,9 +505,9 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                 <RefreshCw className="w-4 h-4" />
                 Closed-Loop System
               </div>
-              <h2 className={cn(typography.h2, "mb-6")}>{pageData.closedLoop?.title}</h2>
+              <h2 className={cn(typography.h2, "mb-6")}>{data.closedLoop?.title}</h2>
               <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
-                {pageData.closedLoop?.description}
+                {data.closedLoop?.description}
               </p>
             </motion.div>
           </div>
@@ -643,9 +524,9 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
             viewport={{ once: true }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h2 className={cn(typography.h2, "mb-6")}>{pageData.cta?.title}</h2>
+            <h2 className={cn(typography.h2, "mb-6")}>{data.cta?.title}</h2>
             <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
-              {pageData.cta?.description}
+              {data.cta?.description}
             </p>
             {ctaButtons.length > 0 && (
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

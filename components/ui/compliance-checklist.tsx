@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X, AlertCircle, ChevronDown, ChevronRight, Download, Search, TrendingUp } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
 import AnimatedSection from '@/components/ui/animated-section';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface ChecklistItem {
   id: string;
@@ -270,6 +271,7 @@ const initialSections: ChecklistSection[] = [
 ];
 
 export default function ComplianceChecklist() {
+  const prefersReducedMotion = usePrefersReducedMotion()
   const [sections, setSections] = useState<ChecklistSection[]>(initialSections);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['context']));
   const [searchTerm, setSearchTerm] = useState('');
@@ -426,9 +428,9 @@ export default function ComplianceChecklist() {
             <div className="w-full bg-slate-700 rounded-full h-3 overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-green-600 to-emerald-600"
-                initial={{ width: 0 }}
+                initial={{ width: prefersReducedMotion ? `${overallProgress}%` : 0 }}
                 animate={{ width: `${overallProgress}%` }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: 'easeOut' }}
               />
             </div>
           </div>
@@ -476,8 +478,9 @@ export default function ComplianceChecklist() {
               <motion.div
                 key={section.id}
                 className="border border-slate-700 rounded-xl overflow-hidden"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : 20 }}
                 animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
               >
                 <div
                   className="bg-slate-800/50 p-4 cursor-pointer hover:bg-slate-800/70 transition-colors"
@@ -513,10 +516,10 @@ export default function ComplianceChecklist() {
                 <AnimatePresence>
                   {expandedSections.has(section.id) && section.items.length > 0 && (
                     <motion.div
-                      initial={{ height: 0 }}
+                      initial={{ height: prefersReducedMotion ? 'auto' : 0 }}
                       animate={{ height: 'auto' }}
-                      exit={{ height: 0 }}
-                      transition={{ duration: 0.3 }}
+                      exit={{ height: prefersReducedMotion ? 'auto' : 0 }}
+                      transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
                       className="border-t border-slate-700"
                     >
                       <div className="p-4 space-y-3">

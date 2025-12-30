@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface SlideData {
   src: string;
@@ -26,11 +27,7 @@ export default function HeroSliderFixed({
   const [isClient, setIsClient] = useState(false);
   const [_imagesLoaded, setImagesLoaded] = useState(false);
   const [firstImageLoaded, setFirstImageLoaded] = useState(false);
-  const { scrollY } = useScroll();
-
-  // Smooth parallax effect
-  const y = useTransform(scrollY, [0, 1000], [0, -150]);
-  const scale = useTransform(scrollY, [0, 1000], [1, 1.15]);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Ensure client-side rendering
   useEffect(() => {
@@ -151,49 +148,49 @@ export default function HeroSliderFixed({
         <motion.div
           key={`slide-${index}`}
           className="absolute inset-0 w-full h-[115%] -top-[7.5%] pointer-events-none"
-          style={{ y, scale }}
           initial={{ opacity: 0 }}
           animate={{
             opacity: index === currentIndex && firstImageLoaded ? 1 : 0,
             transition: {
               opacity: {
-                duration: 1.5,
+                duration: prefersReducedMotion ? 0.3 : 1.5,
                 ease: "easeInOut"
               }
             }
           }}
         >
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full overflow-hidden">
             {slide.src && (
-              <Image
-                src={slide.src}
-                alt={slide.alt}
-                fill
-                className={cn(
-                  "object-cover",
-                  getFocalPosition(slide.focal)
-                )}
-                priority={index === 0}
-                quality={85}
-                sizes="100vw"
-                loading={index === 0 ? "eager" : "lazy"}
-              />
-            )}
-
-            {/* Subtle Ken Burns effect only on current image */}
-            {index === currentIndex && (
               <motion.div
                 className="absolute inset-0"
-                animate={{
-                  scale: [1, 1.08],
-                }}
-                transition={{
-                  scale: {
-                    duration: interval / 1000,
-                    ease: "linear"
+                animate={
+                  prefersReducedMotion ? {} : (index === currentIndex ? {
+                    scale: [1, 1.05],
+                  } : {})
+                }
+                transition={
+                  prefersReducedMotion ? {} : {
+                    scale: {
+                      duration: interval / 1000,
+                      ease: "linear"
+                    }
                   }
-                }}
-              />
+                }
+              >
+                <Image
+                  src={slide.src}
+                  alt={slide.alt}
+                  fill
+                  className={cn(
+                    "object-cover",
+                    getFocalPosition(slide.focal)
+                  )}
+                  priority={index === 0}
+                  quality={85}
+                  sizes="100vw"
+                  loading={index === 0 ? "eager" : "lazy"}
+                />
+              </motion.div>
             )}
           </div>
         </motion.div>

@@ -178,32 +178,7 @@ export default function ParallaxSliderPro({
           }}
         />
 
-        {/* Scan lines */}
-        <motion.div
-          className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-blue-600/20 to-transparent"
-          animate={{
-            top: ['-10%', '110%'],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: 'linear',
-            repeatDelay: 2
-          }}
-        />
-
-        <motion.div
-          className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent"
-          animate={{
-            top: ['110%', '-10%'],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: 'linear',
-            repeatDelay: 3
-          }}
-        />
+        {/* Scan lines removed - too distracting for B2B manufacturing site */}
       </div>
 
       {/* Slide indicators with labels */}
