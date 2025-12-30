@@ -340,9 +340,9 @@ export const grids = {
 
 // ==================== SECTION STYLES ====================
 export const sections = {
-  light: 'py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white',
+  light: 'py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950',
   dark: 'py-24 md:py-32 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950',
-  white: 'py-24 md:py-32 bg-white',
+  white: 'py-24 md:py-32 bg-white dark:bg-slate-950',
 } as const;
 
 // ==================== COMPOSITE STYLES ====================
@@ -362,7 +362,7 @@ export const styles = {
   statValue: 'text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600',
 
   // Feature card (white bg with padding and group hover) - Premium shadow styling
-  featureCard: 'bg-white border border-slate-200/60 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:border-slate-300/80 transition-all duration-300 p-6 md:p-8 group',
+  featureCard: 'bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 p-6 md:p-8 group',
 
   // CTA buttons
   ctaPrimary: 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:via-blue-400 hover:to-indigo-500 text-white font-semibold shadow-lg shadow-blue-600/25 hover:shadow-xl transition-all duration-300 px-8 py-4',

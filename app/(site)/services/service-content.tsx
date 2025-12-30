@@ -338,7 +338,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       />
 
       {capabilityStats.length > 0 && (
-        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
             <motion.div
               initial={initialState}
@@ -357,7 +357,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     className="text-center"
                   >
                     <div className={styles.statValue}>{capability.value}</div>
-                    <div className={cn(typography.badge, 'text-slate-700 mb-2')}>
+                    <div className={cn(typography.badge, 'text-slate-700 dark:text-slate-300 mb-2')}>
                       {capability.label}
                     </div>
                     <div className={typography.small}>{capability.description}</div>
@@ -405,7 +405,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     whileInView={createFade(delay, 0.6)}
                     viewport={viewportConfig}
                   >
-                    <Card className="bg-white border border-slate-200/60 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 transition-all duration-300 group h-full overflow-hidden">
+                    <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 group h-full overflow-hidden">
                       {capImage && (
                         <div className="relative h-52 overflow-hidden">
                           <Image
@@ -473,7 +473,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
       {/* Benefits Section */}
       {benefits.length > 0 && (
-        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
             <motion.div
               initial={initialState}
@@ -540,7 +540,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     whileInView={createFade(delay, 0.6)}
                     viewport={viewportConfig}
                   >
-                    <Card className="bg-white border border-slate-200/60 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 transition-all duration-300 group h-full overflow-hidden">
+                    <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 group h-full overflow-hidden">
                       {offeringImage && (
                         <div className="relative h-64 overflow-hidden">
                           <Image
@@ -613,7 +613,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {materials.length > 0 && (
-        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
             <motion.div
               initial={initialState}
@@ -643,7 +643,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                       {material.types && material.types.length > 0 && (
                         <div className="mb-4 space-y-1">
                           {material.types.map((type: MaterialType) => (
-                            <div key={type.type} className="flex items-center text-xs text-slate-600">
+                            <div key={type.type} className="flex items-center text-xs text-slate-600 dark:text-slate-400">
                               <div className="w-1 h-1 bg-blue-500 rounded-full mr-2" />
                               {type.type}
                             </div>
@@ -660,7 +660,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {applications.length > 0 && (
-        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
             <motion.div
               initial={initialState}
@@ -706,10 +706,10 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         <p className={cn(typography.body, 'mb-4')}>{app.description}</p>
                         {app.timeline && (
                           <div className="mb-4">
-                            <p className={cn(typography.label, 'text-xs uppercase tracking-[0.3em] text-slate-500 mb-1')}>
+                            <p className={cn(typography.label, 'text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400 mb-1')}>
                               Timeline:
                             </p>
-                            <p className={cn(typography.body, 'text-slate-700')}>{app.timeline}</p>
+                            <p className={cn(typography.body, 'text-slate-700 dark:text-slate-300')}>{app.timeline}</p>
                           </div>
                         )}
                         {app.challenges && app.challenges.length > 0 && (
@@ -717,7 +717,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                             <h4 className={cn(typography.label, 'mb-2 text-sm')}>{listLabel}</h4>
                             <div className="space-y-1">
                               {app.challenges.map((item: ApplicationChallenge) => (
-                                <div key={item.challenge} className="flex items-center text-sm text-slate-600">
+                                <div key={item.challenge} className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                                   <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2" />
                                   {item.challenge}
                                 </div>

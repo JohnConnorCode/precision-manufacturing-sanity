@@ -62,13 +62,13 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
   }
 
   return (
-    <div ref={containerRef} className="relative min-h-screen bg-slate-50">
+    <div ref={containerRef} className="relative min-h-screen bg-slate-50 dark:bg-slate-950">
       {/* Subtle Parallax Background */}
       <motion.div
         style={{ y: parallaxY }}
         className="absolute inset-0 pointer-events-none opacity-50"
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-100 to-white" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-100 to-white dark:from-slate-900 dark:to-slate-950" />
       </motion.div>
 
       <div className="container relative z-10 py-24 max-w-6xl">
@@ -79,18 +79,18 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-black mb-4 text-slate-900">
+          <h1 className="text-5xl md:text-6xl font-black mb-4 text-slate-900 dark:text-white">
             {termsData.header.title}
           </h1>
-          <p className="text-lg text-slate-600">
+          <p className="text-lg text-slate-600 dark:text-slate-400">
             {termsData.header.subtitle}
           </p>
           <div className="mt-6 flex justify-center gap-6">
-            <span className="text-sm font-medium text-slate-500">
+            <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Effective: {termsData.header.effectiveDate}
             </span>
-            <span className="text-slate-400">|</span>
-            <span className="text-sm font-medium text-slate-500">
+            <span className="text-slate-400 dark:text-slate-600">|</span>
+            <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
               {termsData.header.version}
             </span>
           </div>
@@ -107,20 +107,20 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.02 }}
-                className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-lg dark:hover:shadow-slate-950/50 transition-shadow duration-300"
               >
                 <div className="p-8">
                   <div className="flex items-start gap-6">
                     <div className="flex-shrink-0">
-                      <div className="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center">
-                        <Icon className="w-6 h-6 text-slate-700" />
+                      <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                        <Icon className="w-6 h-6 text-slate-700 dark:text-slate-300" />
                       </div>
                     </div>
                     <div className="flex-1">
-                      <h2 className="text-xl font-bold mb-3 text-slate-900">
+                      <h2 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">
                         {section.title}
                       </h2>
-                      <p className="text-slate-600 leading-relaxed">
+                      <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
                         {section.content}
                       </p>
                     </div>

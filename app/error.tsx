@@ -22,7 +22,7 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 to-white px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950 px-4">
       {/* Background pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.03)_0%,_transparent_50%)]" />
 
@@ -53,8 +53,8 @@ export default function Error({
           </p>
 
           {process.env.NODE_ENV === 'development' && error.message && (
-            <div className="mb-6 p-4 bg-slate-50 rounded-xl border border-slate-200 text-left">
-              <p className="text-xs font-mono text-slate-600 break-all">
+            <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-left">
+              <p className="text-xs font-mono text-slate-600 dark:text-slate-400 break-all">
                 {error.message}
               </p>
             </div>
@@ -77,7 +77,7 @@ export default function Error({
             </Button>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-slate-200">
+          <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
             <p className={cn(typography.small, 'text-slate-500')}>
               Need help?{' '}
               <a

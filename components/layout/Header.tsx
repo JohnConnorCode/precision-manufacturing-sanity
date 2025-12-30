@@ -185,7 +185,7 @@ export default function Header({ data }: HeaderProps) {
   const triggerTone = `bg-transparent text-slate-700 dark:text-slate-100 ${gradientBorder}`
 
   const headerClass = cn(
-    'fixed z-[140] w-full transition-all duration-300 lg:top-10 top-0',
+    'fixed z-[140] w-full transition-all duration-300 top-0',
     isScrolled
       ? 'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl shadow-lg border-b-2 border-blue-600/20 dark:border-slate-800'
       : 'bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800'
@@ -244,9 +244,9 @@ export default function Header({ data }: HeaderProps) {
         </aside>
       )}
 
-      {/* Top Info Bar - Hidden on mobile */}
+      {/* Top Info Bar - Scrolls with page, elegant dark design */}
       {topBar && (
-      <aside className={cn('hidden lg:block fixed z-[150] w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-blue-600/10', announcement?.enabled ? 'top-10' : 'top-0')} role="complementary" aria-label="Contact information">
+      <aside className="hidden lg:block w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50" role="complementary" aria-label="Contact information">
         <div className="container flex h-10 items-center justify-between text-sm">
           <div className="flex items-center space-x-6">
             {topBar?.showPhone !== false && (
@@ -275,7 +275,7 @@ export default function Header({ data }: HeaderProps) {
       )}
 
       {/* Main Navigation */}
-      <header className={cn(headerClass, announcement?.enabled ? 'lg:top-20 top-10' : 'lg:top-10 top-0')} suppressHydrationWarning>
+      <header className={cn(headerClass, showAnnouncement && announcement?.enabled && 'top-10')} suppressHydrationWarning>
         <nav className="container flex h-20 items-center justify-between gap-4" suppressHydrationWarning>
           <Link href="/" className="flex items-center space-x-2 flex-shrink-0" aria-label="IIS - Integrated Inspection Systems Home">
             <Logo className="h-12 sm:h-14 md:h-16 w-auto" logoData={data?.logo} animated={true} />

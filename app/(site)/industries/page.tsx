@@ -123,7 +123,7 @@ export default async function IndustriesPage() {
 
       {/* Key Statistics */}
       {industriesPageData?.content?.overviewStats && industriesPageData.content.overviewStats.length > 0 && (
-        <section className={`${spacing.section} bg-slate-50`}>
+        <section className={`${spacing.section} bg-slate-50 dark:bg-slate-900`}>
           <div className="container">
             <AnimatedSection>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -131,13 +131,13 @@ export default async function IndustriesPage() {
                   .filter((stat: any) => stat?.enabled !== false)
                   .map((stat: any, index: number) => (
                   <div key={index} className="text-center">
-                    <div className="text-4xl md:text-5xl font-black text-blue-600 mb-2">
+                    <div className="text-4xl md:text-5xl font-black text-blue-600 dark:text-blue-400 mb-2">
                       {stat.value}
                     </div>
-                    <div className="text-sm md:text-base text-slate-900 font-semibold uppercase tracking-wide mb-2">
+                    <div className="text-sm md:text-base text-slate-900 dark:text-white font-semibold uppercase tracking-wide mb-2">
                       {stat.label}
                     </div>
-                    <div className="text-sm text-slate-600">
+                    <div className="text-sm text-slate-600 dark:text-slate-400">
                       {stat.description}
                     </div>
                   </div>
@@ -156,7 +156,7 @@ export default async function IndustriesPage() {
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
                 {industriesPageData?.content?.industriesSection?.title || 'Core Industries'}
               </h2>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
                 {industriesPageData?.content?.industriesSection?.description || 'Specialized manufacturing solutions for the most demanding industries, backed by decades of experience and industry-leading certifications.'}
               </p>
             </div>
@@ -186,7 +186,7 @@ export default async function IndustriesPage() {
                     {/* Content */}
                     <div className="p-8">
                       <h3 className="text-3xl font-bold mb-4">{industry.name}</h3>
-                      <p className="text-slate-600 mb-6 leading-relaxed">
+                      <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
                         {industry.description}
                       </p>
 
@@ -194,12 +194,12 @@ export default async function IndustriesPage() {
                         {/* Certifications */}
                         {industry.certifications && industry.certifications.length > 0 && (
                           <div>
-                            <h4 className="font-semibold text-sm uppercase tracking-wide text-slate-900 mb-3">
+                            <h4 className="font-semibold text-sm uppercase tracking-wide text-slate-900 dark:text-white mb-3">
                               Certifications
                             </h4>
                             <ul className="space-y-2">
                               {industry.certifications.map((cert: string, i: number) => (
-                                <li key={i} className="text-sm text-slate-600 flex items-start">
+                                <li key={i} className="text-sm text-slate-600 dark:text-slate-400 flex items-start">
                                   <span className="text-blue-600 mr-2">•</span>
                                   {cert}
                                 </li>
@@ -211,12 +211,12 @@ export default async function IndustriesPage() {
                         {/* Expertise */}
                         {industry.expertise && industry.expertise.length > 0 && (
                           <div>
-                            <h4 className="font-semibold text-sm uppercase tracking-wide text-slate-900 mb-3">
+                            <h4 className="font-semibold text-sm uppercase tracking-wide text-slate-900 dark:text-white mb-3">
                               Expertise
                             </h4>
                             <ul className="space-y-2">
                               {industry.expertise.map((exp: string, i: number) => (
-                                <li key={i} className="text-sm text-slate-600 flex items-start">
+                                <li key={i} className="text-sm text-slate-600 dark:text-slate-400 flex items-start">
                                   <span className="text-blue-600 mr-2">•</span>
                                   {exp}
                                 </li>
@@ -244,14 +244,14 @@ export default async function IndustriesPage() {
 
       {/* Why Choose IIS */}
       {industriesPageData?.content?.whyChooseUs && industriesPageData.content.whyChooseUs.length > 0 && (
-        <section className={`${spacing.section} bg-white`}>
+        <section className={`${spacing.section} bg-white dark:bg-slate-950`}>
           <div className="container">
             <AnimatedSection>
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-bold mb-6">
                   {industriesPageData?.content?.whyChooseSection?.title || 'Why Industry Leaders Choose Us'}
                 </h2>
-                <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
                   {industriesPageData?.content?.whyChooseSection?.description || 'Proven capabilities and unwavering commitment to quality make us the preferred manufacturing partner for critical applications.'}
                 </p>
               </div>
@@ -264,16 +264,16 @@ export default async function IndustriesPage() {
                 <AnimatedSection key={index} delay={index * 0.1}>
                   <div className={`${cardStyles.base} p-8 h-full`}>
                     <div className="flex items-center mb-6">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4">
-                        <DynamicIcon name={item.icon || 'Circle'} className="w-6 h-6 text-slate-700" />
+                      <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center mr-4">
+                        <DynamicIcon name={item.icon || 'Circle'} className="w-6 h-6 text-slate-700 dark:text-slate-300" />
                       </div>
                       <h3 className="text-2xl font-bold">{item.title}</h3>
                     </div>
-                    <p className="text-slate-600 mb-6 leading-relaxed">{item.description}</p>
+                    <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">{item.description}</p>
                     {item.features && item.features.length > 0 && (
                       <div className="space-y-3">
                         {item.features.map((feature: string, i: number) => (
-                          <div key={i} className="flex items-center text-sm text-slate-600">
+                          <div key={i} className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                             <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mr-3" />
                             {feature}
                           </div>
@@ -323,12 +323,12 @@ export default async function IndustriesPage() {
       )}
 
       {/* Call to Action */}
-      <section className={`${spacing.section} bg-slate-50`}>
+      <section className={`${spacing.section} bg-slate-50 dark:bg-slate-900`}>
         <div className="container">
           <AnimatedSection>
             <div className="text-center max-w-4xl mx-auto">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">{industriesPageData?.cta?.heading || 'Partner with Industry Experts'}</h2>
-              <p className="text-xl text-slate-600 mb-8">
+              <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
                 {industriesPageData?.cta?.description || "Join the industry leaders who trust us with their most critical manufacturing requirements. Let's discuss your specific needs."}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

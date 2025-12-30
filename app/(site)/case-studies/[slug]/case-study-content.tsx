@@ -45,7 +45,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
   const theme = useTheme();
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white dark:bg-slate-950">
       {/* Hero Section */}
       <section className="relative min-h-[70vh] flex items-end">
         {/* Background Image */}
@@ -165,10 +165,10 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <h2 className="text-sm font-bold uppercase tracking-widest text-slate-500 mb-4">
+                <h2 className="text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-4">
                   The Challenge
                 </h2>
-                <p className="text-lg md:text-xl text-slate-700 leading-relaxed">
+                <p className="text-lg md:text-xl text-slate-700 dark:text-slate-300 leading-relaxed">
                   {data.challenge}
                 </p>
               </motion.div>
@@ -185,7 +185,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                 <h2 className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: theme.colors.primary }}>
                   Our Solution
                 </h2>
-                <p className="text-lg md:text-xl text-slate-700 leading-relaxed">
+                <p className="text-lg md:text-xl text-slate-700 dark:text-slate-300 leading-relaxed">
                   {data.solution}
                 </p>
               </motion.div>
@@ -196,13 +196,13 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
 
       {/* Gallery */}
       {data.galleryImages && data.galleryImages.length > 0 && (
-        <section className="py-16 bg-slate-50">
+        <section className="py-16 bg-slate-50 dark:bg-slate-900">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-2xl md:text-3xl font-bold text-slate-900 mb-10 text-center"
+              className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-10 text-center"
             >
               Project Gallery
             </motion.h2>
@@ -269,12 +269,12 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                 >
-                  <h3 className="text-lg font-bold text-slate-900 mb-6">Technologies Used</h3>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Technologies Used</h3>
                   <div className="flex flex-wrap gap-3">
                     {data.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="px-4 py-2 bg-slate-100 text-slate-700 rounded-full text-sm font-medium"
+                        className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-full text-sm font-medium"
                       >
                         {tech}
                       </span>
@@ -291,7 +291,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 }}
                 >
-                  <h3 className="text-lg font-bold text-slate-900 mb-6">Relevant Certifications</h3>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Relevant Certifications</h3>
                   <div className="flex flex-wrap gap-3">
                     {data.certifications.map((cert) => (
                       <span
@@ -312,17 +312,17 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
       )}
 
       {/* CTA Section */}
-      <section className="py-20 md:py-28 bg-slate-50">
+      <section className="py-20 md:py-28 bg-slate-50 dark:bg-slate-900">
         <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">
               Ready to Start Your Project?
             </h2>
-            <p className="text-lg text-slate-600 mb-10 max-w-2xl mx-auto">
+            <p className="text-lg text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto">
               Let&apos;s discuss how our precision manufacturing capabilities can help you achieve similar results.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -336,7 +336,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
               </Link>
               <Link
                 href="/services"
-                className="inline-flex items-center justify-center px-8 py-4 font-semibold text-slate-700 bg-white border-2 border-slate-200 rounded-lg hover:border-slate-300 transition-all duration-300"
+                className="inline-flex items-center justify-center px-8 py-4 font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-lg hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300"
               >
                 View Our Services
               </Link>

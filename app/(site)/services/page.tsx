@@ -205,7 +205,7 @@ export default async function ServicesPage() {
 
       {/* Capabilities Overview - only show if there are enabled capabilities */}
       {capabilities.filter((c: any) => c?.enabled !== false).length > 0 && (
-        <section id="capabilities" className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+        <section id="capabilities" className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
             <AnimatedSection>
               <div className={styles.grid4Col}>
@@ -219,7 +219,7 @@ export default async function ServicesPage() {
                     <div className={styles.statValue}>
                       {capability.value}
                     </div>
-                    <div className={cn(typography.badge, "text-slate-700 mb-2")}>
+                    <div className={cn(typography.badge, "text-slate-700 dark:text-slate-300 mb-2")}>
                       {capability.label}
                     </div>
                     <div className={typography.small}>
@@ -263,7 +263,7 @@ export default async function ServicesPage() {
 
               return (
               <AnimatedSection key={service.title} delay={index * 0.1}>
-                <Card className="bg-white border border-slate-200/60 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 transition-all duration-300 group h-full overflow-hidden">
+                <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 group h-full overflow-hidden">
                   {imageUrl && (
                     <div className="relative h-64 overflow-hidden">
                       <Image

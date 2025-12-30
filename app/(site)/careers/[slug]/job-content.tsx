@@ -102,7 +102,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                   viewport={{ once: true }}
                 >
                   <h2 className={cn(typography.h3, 'mb-4')}>Overview</h2>
-                  <div className={cn(typography.body, 'text-slate-600 leading-relaxed prose prose-slate max-w-none')}>
+                  <div className={cn(typography.body, 'text-slate-600 dark:text-slate-400 leading-relaxed prose prose-slate dark:prose-invert max-w-none')}>
                     <PortableText
                       value={job.overview}
                       components={{
@@ -141,10 +141,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                   <div className="space-y-4">
                     {job.responsibilities.map((item: any, index: number) => (
                       <div key={index} className="flex items-start gap-4">
-                        <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <CheckCircle className="w-4 h-4 text-blue-600" />
                         </div>
-                        <p className={cn(typography.body, 'text-slate-700')}>
+                        <p className={cn(typography.body, 'text-slate-700 dark:text-slate-300')}>
                           {item.responsibility || item}
                         </p>
                       </div>
@@ -167,7 +167,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                       {job.qualifications.map((item: any, index: number) => (
                         <div key={index} className="flex items-start gap-3">
                           <Award className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                          <p className={cn(typography.body, 'text-slate-700')}>
+                          <p className={cn(typography.body, 'text-slate-700 dark:text-slate-300')}>
                             {item.qualification || item}
                           </p>
                         </div>
@@ -190,7 +190,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                     {job.preferredQualifications.map((item: any, index: number) => (
                       <div key={index} className="flex items-start gap-3">
                         <div className="w-2 h-2 rounded-full bg-blue-600 mt-2 flex-shrink-0" />
-                        <p className={cn(typography.body, 'text-slate-600')}>
+                        <p className={cn(typography.body, 'text-slate-600 dark:text-slate-400')}>
                           {item.qualification || item}
                         </p>
                       </div>
@@ -213,7 +213,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                       <Card key={index} className={cn(styles.featureCard, 'p-6')}>
                         <div className="flex items-center gap-3">
                           <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                          <p className={cn(typography.body, 'font-medium text-slate-800')}>
+                          <p className={cn(typography.body, 'font-medium text-slate-800 dark:text-slate-200')}>
                             {item.benefit || item}
                           </p>
                         </div>
@@ -237,7 +237,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                   <Card className={cn(styles.featureCard, 'p-8 text-center')}>
                     <Briefcase className="w-12 h-12 text-blue-600 mx-auto mb-4" />
                     <h3 className={cn(typography.h4, 'mb-4')}>Apply for this Position</h3>
-                    <p className={cn(typography.small, 'text-slate-600 mb-6')}>
+                    <p className={cn(typography.small, 'text-slate-600 dark:text-slate-400 mb-6')}>
                       Send your resume and cover letter to:
                     </p>
 
@@ -257,11 +257,11 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                     </p>
 
                     {job.applicationInstructions && (
-                      <div className="mt-6 pt-6 border-t border-slate-200">
+                      <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
                         <h4 className={cn(typography.label, 'mb-3 text-left')}>
                           Application Instructions
                         </h4>
-                        <p className={cn(typography.small, 'text-slate-600 text-left')}>
+                        <p className={cn(typography.small, 'text-slate-600 dark:text-slate-400 text-left')}>
                           {job.applicationInstructions}
                         </p>
                       </div>
@@ -341,10 +341,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                   transition={{ duration: 0.6, delay: 0.2 }}
                   viewport={{ once: true }}
                 >
-                  <Card className={cn(styles.featureCard, 'p-6 bg-slate-50')}>
+                  <Card className={cn(styles.featureCard, 'p-6 bg-slate-50 dark:bg-slate-800')}>
                     <FileText className="w-10 h-10 text-blue-600 mb-4" />
                     <h3 className={cn(typography.h5, 'mb-3')}>Browse More Positions</h3>
-                    <p className={cn(typography.small, 'text-slate-600 mb-4')}>
+                    <p className={cn(typography.small, 'text-slate-600 dark:text-slate-400 mb-4')}>
                       Explore other career opportunities at IIS
                     </p>
                     <Link href="/careers">
