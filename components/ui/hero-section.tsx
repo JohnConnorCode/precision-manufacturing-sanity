@@ -153,7 +153,7 @@ export default function HeroSection({
   const BadgeIcon = badge?.icon;
 
   return (
-    <section className={cn(
+    <section data-hero-section="true" className={cn(
       'relative flex items-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]',
       heightClasses[height],
       className

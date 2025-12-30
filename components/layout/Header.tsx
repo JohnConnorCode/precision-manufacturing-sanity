@@ -103,6 +103,7 @@ export default function Header({ data }: HeaderProps) {
   const align: 'left' | 'center' | 'right' = navStyles.alignment || 'left';
   const density: 'comfortable' | 'compact' = navStyles.density || 'comfortable';
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isOverHero, setIsOverHero] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const pathname = usePathname();
@@ -148,6 +149,30 @@ export default function Header({ data }: HeaderProps) {
     return () => window.removeEventListener('scroll', throttledScroll);
   }, []);
 
+  // Hero section detection - transparent header over dark hero sections
+  useEffect(() => {
+    const heroSection = document.querySelector('[data-hero-section]');
+    if (!heroSection) {
+      setIsOverHero(false);
+      return;
+    }
+
+    const handleHeroScroll = () => {
+      const heroBottom = heroSection.getBoundingClientRect().bottom;
+      // Header is ~80px tall, transition when hero bottom passes header
+      setIsOverHero(heroBottom > 80);
+    };
+
+    // Use requestAnimationFrame throttling
+    const throttledHeroScroll = throttleRAF(handleHeroScroll);
+
+    // Set initial state
+    handleHeroScroll();
+
+    window.addEventListener('scroll', throttledHeroScroll, { passive: true });
+    return () => window.removeEventListener('scroll', throttledHeroScroll);
+  }, [pathname]); // Re-check on route change
+
   const listJustify = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'
 
   // Animation variants for nav items
@@ -179,16 +204,26 @@ export default function Header({ data }: HeaderProps) {
   const gradientBorder = 'relative after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-blue-600 after:via-blue-500 after:to-indigo-600 hover:after:w-full after:transition-all after:duration-300 after:ease-out'
   const activeGradientBorder = 'after:w-full'
 
+  // Hero mode: transparent header with white text when over dark hero sections
+  const inHeroMode = isOverHero && !isScrolled;
+
   // Use Tailwind dark: variants instead of conditional logic
-  const linkTone = `text-slate-700 dark:text-slate-100 ${gradientBorder}`
-  const activeTone = activeGradientBorder
-  const triggerTone = `bg-transparent text-slate-700 dark:text-slate-100 ${gradientBorder}`
+  // When over hero, use white text; otherwise use standard colors
+  const linkTone = inHeroMode
+    ? `text-white/90 hover:text-white ${gradientBorder}`
+    : `text-slate-700 dark:text-slate-100 ${gradientBorder}`;
+  const activeTone = activeGradientBorder;
+  const triggerTone = inHeroMode
+    ? `bg-transparent text-white/90 hover:text-white ${gradientBorder}`
+    : `bg-transparent text-slate-700 dark:text-slate-100 ${gradientBorder}`;
 
   const headerClass = cn(
-    'fixed z-[140] w-full transition-all duration-300 top-0',
-    isScrolled
-      ? 'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl shadow-lg border-b-2 border-blue-600/20 dark:border-slate-800'
-      : 'bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800'
+    'fixed z-[140] w-full transition-all duration-500 top-0',
+    inHeroMode
+      ? 'bg-slate-950/20 backdrop-blur-sm border-b border-white/10'
+      : isScrolled
+        ? 'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl shadow-lg border-b-2 border-blue-600/20 dark:border-slate-800'
+        : 'bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800'
   )
 
   const iconMap: Record<string, LucideIcon> = {
@@ -278,7 +313,12 @@ export default function Header({ data }: HeaderProps) {
       <header className={cn(headerClass, showAnnouncement && announcement?.enabled && 'top-10')} suppressHydrationWarning>
         <nav className="container flex h-20 items-center justify-between gap-4" suppressHydrationWarning>
           <Link href="/" className="flex items-center space-x-2 flex-shrink-0" aria-label="IIS - Integrated Inspection Systems Home">
-            <Logo className="h-12 sm:h-14 md:h-16 w-auto" logoData={data?.logo} animated={true} />
+            <Logo
+              className="h-12 sm:h-14 md:h-16 w-auto"
+              logoData={data?.logo}
+              animated={true}
+              variant={inHeroMode ? 'light' : 'default'}
+            />
           </Link>
 
           {/* Desktop Navigation - Click-based Dropdowns */}
@@ -449,10 +489,15 @@ export default function Header({ data }: HeaderProps) {
             {/* Theme Toggle */}
             {mounted && <ThemeToggle />}
 
-            {/* CTA Button */}
+            {/* CTA Button - Inverted colors when over hero */}
             {cta && cta.text && (
               <Link href={cta.href || '/contact'}>
-                <PremiumButton>
+                <PremiumButton
+                  className={inHeroMode
+                    ? 'bg-white text-slate-900 hover:bg-white/90 border-white/20'
+                    : ''
+                  }
+                >
                   {cta.text}
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </PremiumButton>
@@ -480,7 +525,10 @@ export default function Header({ data }: HeaderProps) {
                     y: mobileMenuOpen ? 8 : 0,
                   }}
                   transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                  className="w-full h-0.5 bg-slate-900 dark:bg-slate-100 rounded-full origin-center"
+                  className={cn(
+                    "w-full h-0.5 rounded-full origin-center",
+                    inHeroMode ? "bg-white" : "bg-slate-900 dark:bg-slate-100"
+                  )}
                 />
                 <motion.span
                   animate={{
@@ -488,7 +536,10 @@ export default function Header({ data }: HeaderProps) {
                     x: mobileMenuOpen ? -10 : 0,
                   }}
                   transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                  className="w-full h-0.5 bg-slate-900 dark:bg-slate-100 rounded-full"
+                  className={cn(
+                    "w-full h-0.5 rounded-full",
+                    inHeroMode ? "bg-white" : "bg-slate-900 dark:bg-slate-100"
+                  )}
                 />
                 <motion.span
                   animate={{
@@ -496,7 +547,10 @@ export default function Header({ data }: HeaderProps) {
                     y: mobileMenuOpen ? -8 : 0,
                   }}
                   transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                  className="w-full h-0.5 bg-slate-900 dark:bg-slate-100 rounded-full origin-center"
+                  className={cn(
+                    "w-full h-0.5 rounded-full origin-center",
+                    inHeroMode ? "bg-white" : "bg-slate-900 dark:bg-slate-100"
+                  )}
                 />
               </div>
             </button>

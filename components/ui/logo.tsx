@@ -45,15 +45,21 @@ export default function Logo({
   const logoType = logoData?.logoType || 'svg';
 
   // Determine variant based on Sanity data, props, OR current theme
-  let effectiveVariant: 'dark' | 'light' = variant === 'light' ? 'light' : 'dark';
+  // Priority: explicit prop 'light' > Sanity svgColor setting > theme auto-detection
+  let effectiveVariant: 'dark' | 'light' = 'dark';
 
-  // If svgColor is 'auto' or not set, use the current theme to determine variant
-  const svgColorSetting = logoData?.svgColor || 'auto';
-  if (svgColorSetting === 'auto') {
-    // In dark mode, use light variant (white logo). In light mode, use dark variant (black logo)
-    effectiveVariant = mounted && resolvedTheme === 'dark' ? 'light' : 'dark';
-  } else if (svgColorSetting === 'dark' || svgColorSetting === 'light') {
-    effectiveVariant = svgColorSetting;
+  // If variant prop is explicitly 'light', always use it (for hero mode transparent header)
+  if (variant === 'light') {
+    effectiveVariant = 'light';
+  } else {
+    // Otherwise, check Sanity settings or auto-detect from theme
+    const svgColorSetting = logoData?.svgColor || 'auto';
+    if (svgColorSetting === 'auto') {
+      // In dark mode, use light variant (white logo). In light mode, use dark variant (black logo)
+      effectiveVariant = mounted && resolvedTheme === 'dark' ? 'light' : 'dark';
+    } else if (svgColorSetting === 'dark' || svgColorSetting === 'light') {
+      effectiveVariant = svgColorSetting;
+    }
   }
 
   // Determine whether to show text
