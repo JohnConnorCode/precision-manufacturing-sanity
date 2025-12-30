@@ -154,7 +154,7 @@ export default function HeroSection({
 
   return (
     <section className={cn(
-      'relative flex items-center overflow-hidden',
+      'relative flex items-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]',
       heightClasses[height],
       className
     )}>
@@ -173,6 +173,8 @@ export default function HeroSection({
             loading="eager"
             quality={95}
             sizes="100vw"
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAgEDAwUBAAAAAAAAAAAAAQIDAAQRBRIhBhMiMUFR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAZEQACAwEAAAAAAAAAAAAAAAABAgADESH/2gAMAwEAAhEDEEA/AKOl6jHp2copied"
           />
         )}
 
