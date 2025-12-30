@@ -360,8 +360,9 @@ export default function Header({ data }: HeaderProps) {
                             sizeClasses,
                             triggerTone,
                             'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50',
-                            'hover:bg-slate-100/60 dark:hover:bg-slate-800/60',
-                            'data-[state=open]:bg-slate-100/80 dark:data-[state=open]:bg-slate-800/80'
+                            inHeroMode
+                              ? 'hover:bg-white/10 data-[state=open]:bg-white/15'
+                              : 'hover:bg-slate-100/60 dark:hover:bg-slate-800/60 data-[state=open]:bg-slate-100/80 dark:data-[state=open]:bg-slate-800/80'
                           )}
                           aria-label={`${item.name} menu`}
                         >
@@ -510,7 +511,12 @@ export default function Header({ data }: HeaderProps) {
             {/* Mobile hamburger (below lg) */}
             <button
               type="button"
-              className="lg:hidden relative w-12 h-12 flex items-center justify-center rounded-lg hover:bg-slate-100/80 dark:hover:bg-slate-800/80 active:bg-slate-200/60 dark:active:bg-slate-700/60 transition-all duration-200"
+              className={cn(
+                "lg:hidden relative w-12 h-12 flex items-center justify-center rounded-lg transition-all duration-200",
+                inHeroMode
+                  ? "hover:bg-white/10 active:bg-white/20"
+                  : "hover:bg-slate-100/80 dark:hover:bg-slate-800/80 active:bg-slate-200/60 dark:active:bg-slate-700/60"
+              )}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-haspopup="dialog"
               aria-expanded={mobileMenuOpen}
@@ -559,7 +565,12 @@ export default function Header({ data }: HeaderProps) {
             {moreButtonText && (
             <button
               type="button"
-              className="hidden lg:flex xl:hidden items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all hover:bg-slate-100/80 dark:hover:bg-slate-800/80 active:bg-slate-200/60 dark:active:bg-slate-700/60"
+              className={cn(
+                "hidden lg:flex xl:hidden items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
+                inHeroMode
+                  ? "text-white/90 hover:text-white hover:bg-white/10 active:bg-white/20"
+                  : "hover:bg-slate-100/80 dark:hover:bg-slate-800/80 active:bg-slate-200/60 dark:active:bg-slate-700/60"
+              )}
               aria-label="More menu options"
               aria-haspopup="dialog"
               aria-expanded={mobileMenuOpen}
