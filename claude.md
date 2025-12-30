@@ -292,21 +292,7 @@ function DynamicIcon({ name, ...props }: { name: string }) {
 
 **The Solution - ALWAYS use one of these patterns:**
 
-#### Option 1: SafeMotion Components (PREFERRED)
-```typescript
-import { SafeMotion } from '@/components/ui/safe-motion';
-
-// Instead of motion.div, use SafeMotion.div
-<SafeMotion.div
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.5 }}
->
-  {children}
-</SafeMotion.div>
-```
-
-#### Option 2: Manual mounted State
+#### Option 1: useMounted Hook (PREFERRED)
 ```typescript
 import { useMounted } from '@/components/ui/safe-motion';
 
