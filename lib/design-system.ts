@@ -87,10 +87,10 @@ export const colors = {
   textGradient: 'from-blue-600 via-blue-500 to-indigo-600',            // Gradient text accents
   subtleGradient: 'from-blue-600/20 to-indigo-600/20',                // Subtle backgrounds
 
-  // Text colors (static - use semantic tokens below for dark mode)
-  textDark: 'text-slate-900',
-  textMedium: 'text-slate-600',
-  textLight: 'text-slate-400',
+  // Text colors (with dark mode support)
+  textDark: 'text-slate-900 dark:text-white',
+  textMedium: 'text-slate-600 dark:text-slate-300',
+  textLight: 'text-slate-400 dark:text-slate-500',
   textWhite: 'text-white',
 
   // Dark mode aware semantic tokens
@@ -133,15 +133,15 @@ export const colors = {
     socialIcon: 'text-slate-400 hover:text-blue-400 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] transition-all duration-300 cursor-pointer',
   },
 
-  // Borders (static - use semantic tokens above for dark mode)
-  borderLight: 'border-slate-200',
-  borderMedium: 'border-slate-300',
-  borderAccent: 'border-blue-600/20',
+  // Borders (with dark mode support)
+  borderLight: 'border-slate-200 dark:border-slate-800',
+  borderMedium: 'border-slate-300 dark:border-slate-700',
+  borderAccent: 'border-blue-600/20 dark:border-blue-500/20',
 
-  // Backgrounds
-  bgLight: 'bg-gradient-to-b from-slate-50 to-white',
+  // Backgrounds (with dark mode support)
+  bgLight: 'bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950',
   bgDark: 'bg-slate-950',
-  bgWhite: 'bg-white',
+  bgWhite: 'bg-white dark:bg-slate-950',
 
   // Raw color values for inline styles and CSS
   raw: {
@@ -313,20 +313,20 @@ export const cardStyles = {
 // ==================== COMPONENT CLASSES ====================
 // Ready-to-use component class strings
 export const components = {
-  // Buttons
+  // Buttons (with dark mode support)
   buttonPrimary: 'inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow-lg shadow-blue-600/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300',
-  buttonSecondary: 'inline-flex items-center justify-center px-6 py-3 bg-white border border-slate-200 text-slate-900 font-semibold rounded-lg hover:bg-slate-50 hover:shadow-lg transition-all duration-300',
-  buttonGhost: 'inline-flex items-center justify-center px-6 py-3 text-slate-600 font-medium hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all duration-200',
+  buttonSecondary: 'inline-flex items-center justify-center px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:shadow-lg transition-all duration-300',
+  buttonGhost: 'inline-flex items-center justify-center px-6 py-3 text-slate-600 dark:text-slate-300 font-medium hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all duration-200',
 
-  // Badges
+  // Badges (with dark mode support)
   badge: 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium',
-  badgeBlue: 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700',
+  badgeBlue: 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300',
   badgeDark: 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300',
 
   // Icon containers
   iconBox: 'w-12 h-12 rounded-xl flex items-center justify-center',
   iconBoxPrimary: 'w-12 h-12 rounded-xl flex items-center justify-center bg-blue-600 text-white',
-  iconBoxLight: 'w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 text-blue-600',
+  iconBoxLight: 'w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400',
 } as const;
 
 // ==================== GRID LAYOUTS ====================
@@ -366,18 +366,18 @@ export const styles = {
 
   // CTA buttons
   ctaPrimary: 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:via-blue-400 hover:to-indigo-500 text-white font-semibold shadow-lg shadow-blue-600/25 hover:shadow-xl transition-all duration-300 px-8 py-4',
-  ctaSecondary: 'border-2 border-slate-300 hover:border-blue-500 text-slate-700 hover:text-blue-600 font-medium transition-all duration-300 px-8 py-4',
+  ctaSecondary: 'border-2 border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all duration-300 px-8 py-4',
 
   // Page header (dark hero background)
   pageHeader: 'relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 pt-24 pb-20 md:pt-32 md:pb-24 lg:pt-40 lg:pb-28',
 
-  // Heading shortcuts (with color)
+  // Heading shortcuts (with color + dark mode)
   heading: {
-    section: 'text-4xl md:text-5xl lg:text-6xl font-black text-slate-900',
+    section: 'text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white',
     sectionWhite: 'text-4xl md:text-5xl lg:text-6xl font-black text-white',
-    subsection: 'text-2xl md:text-3xl font-bold text-slate-900',
+    subsection: 'text-2xl md:text-3xl font-bold text-slate-900 dark:text-white',
     subsectionWhite: 'text-2xl md:text-3xl font-bold text-white',
-    card: 'text-xl md:text-2xl font-bold text-slate-900',
+    card: 'text-xl md:text-2xl font-bold text-slate-900 dark:text-white',
     cardWhite: 'text-xl md:text-2xl font-bold text-white',
   },
 

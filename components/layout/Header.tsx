@@ -347,9 +347,9 @@ export default function Header({ data }: HeaderProps) {
           {/* Desktop Navigation - Click-based Dropdowns */}
           <nav className="hidden lg:flex items-center justify-center flex-1">
             <motion.div
-              variants={navContainerVariants}
-              initial="hidden"
-              animate="visible"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: mounted ? 1 : 0 }}
+              transition={{ duration: 0.3 }}
             >
             <ul className={cn('flex list-none items-center space-x-2', listJustify)}>
               {navigation.map((item: MenuItem, index: number) => {
@@ -373,7 +373,13 @@ export default function Header({ data }: HeaderProps) {
                 const hasRealHref = href && href !== '/' && href !== '#'
 
                 return (
-                  <motion.li key={item.name} variants={navItemVariants} className={itemClasses}>
+                  <motion.li
+                    key={item.name}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : -10 }}
+                    transition={{ duration: 0.4, delay: mounted ? 0.1 + index * 0.05 : 0, ease: "easeOut" }}
+                    className={itemClasses}
+                  >
                     {hasChildren ? (
                       /* Click-based dropdown - entire item opens dropdown */
                       <DropdownMenu>
@@ -507,8 +513,8 @@ export default function Header({ data }: HeaderProps) {
           <motion.div
             className="hidden lg:flex items-center space-x-2"
             initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
+            animate={{ opacity: mounted ? 1 : 0, x: mounted ? 0 : 20 }}
+            transition={{ duration: 0.5, delay: mounted ? 0.6 : 0, ease: "easeOut" }}
           >
             {/* Theme Toggle */}
             {mounted && <ThemeToggle />}
