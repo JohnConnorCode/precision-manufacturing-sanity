@@ -178,8 +178,8 @@ export default function Header({ data }: HeaderProps) {
 
   const listJustify = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'
 
-  // Animation variants for nav items
-  const navContainerVariants = {
+  // Animation variants for nav items (kept for potential future use)
+  const _navContainerVariants = {
     hidden: { opacity: 1 },
     visible: {
       opacity: 1,
@@ -190,7 +190,7 @@ export default function Header({ data }: HeaderProps) {
     }
   }
 
-  const navItemVariants = {
+  const _navItemVariants = {
     hidden: { opacity: 0, y: -10 },
     visible: {
       opacity: 1,

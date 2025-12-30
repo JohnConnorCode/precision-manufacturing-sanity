@@ -280,6 +280,84 @@ function DynamicIcon({ name, ...props }: { name: string }) {
 
 ## 2. ANIMATIONS - CONSISTENCY GUIDELINES
 
+### ⚠️ CRITICAL: HYDRATION-SAFE ANIMATIONS
+
+**This is WHY animations keep breaking:** Framer Motion + Next.js SSR causes hydration mismatches.
+
+**The Problem:**
+1. SSR renders elements with `initial` state (opacity: 0, y: 20, etc.)
+2. Client hydrates, but if ANY state differs (scroll, theme, etc.), hydration fails
+3. Failed hydration = elements STUCK at opacity: 0 forever
+4. This happens silently - no console errors
+
+**The Solution - ALWAYS use one of these patterns:**
+
+#### Option 1: SafeMotion Components (PREFERRED)
+```typescript
+import { SafeMotion } from '@/components/ui/safe-motion';
+
+// Instead of motion.div, use SafeMotion.div
+<SafeMotion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5 }}
+>
+  {children}
+</SafeMotion.div>
+```
+
+#### Option 2: Manual mounted State
+```typescript
+import { useMounted } from '@/components/ui/safe-motion';
+
+function Component() {
+  const mounted = useMounted();
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : 20 }}
+      transition={{ duration: 0.5, delay: mounted ? 0.2 : 0 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+```
+
+#### Option 3: whileInView (Safe for scroll-triggered)
+```typescript
+// whileInView is SAFE because it triggers AFTER hydration
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+>
+  {children}
+</motion.div>
+```
+
+**❌ DANGEROUS - DO NOT USE in components with state:**
+```typescript
+// This WILL break if component has scroll/theme/any client state
+<motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}  // BAD - no mounted check!
+>
+```
+
+**Components that MUST use SafeMotion or mounted check:**
+- Header/Navigation (has scroll state, theme state)
+- Any component with useState that differs from SSR
+- Hero sections (if they have client-side state)
+
+**Safe to use regular motion with animate:**
+- Static components with NO client state
+- Components that ONLY use whileInView
+- Hover/tap animations (whileHover, whileTap)
+
+---
+
 ### Standard Animation Patterns
 
 **Use these EXACT Framer Motion patterns for consistency:**
@@ -858,14 +936,15 @@ When making ANY change, verify:
 
 ## 11. COMMON PITFALLS TO AVOID
 
-1. ❌ Hardcoding content instead of using Sanity
-2. ❌ Forgetting `hotspot: true` on images
-3. ❌ Using `animate` instead of `whileInView` for scroll animations
-4. ❌ Mixing `'use client'` with `async` functions
-5. ❌ Testing only HTTP status codes
-6. ❌ Using inconsistent spacing/colors/typography
-7. ❌ Skipping alt text validation
-8. ❌ Not validating required fields in schemas
+1. ❌ **ANIMATION HYDRATION BUG** - Using `motion.div animate={{...}}` without `mounted` check in stateful components (Header, etc.) - causes elements to stay invisible! Use `SafeMotion` or `useMounted()` hook.
+2. ❌ Hardcoding content instead of using Sanity
+3. ❌ Forgetting `hotspot: true` on images
+4. ❌ Using `animate` instead of `whileInView` for scroll animations
+5. ❌ Mixing `'use client'` with `async` functions
+6. ❌ Testing only HTTP status codes
+7. ❌ Using inconsistent spacing/colors/typography
+8. ❌ Skipping alt text validation
+9. ❌ Not validating required fields in schemas
 
 ---
 
