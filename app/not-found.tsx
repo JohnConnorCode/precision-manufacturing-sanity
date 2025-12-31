@@ -17,7 +17,7 @@ export default function NotFound() {
   ]
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 to-white px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950 px-4">
       {/* Background pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.03)_0%,_transparent_50%)]" />
 
@@ -83,7 +83,7 @@ export default function NotFound() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="border-t border-slate-200 pt-8"
+            className="border-t border-slate-200 dark:border-slate-800 pt-8"
           >
             <p className={cn(typography.small, 'text-slate-500 mb-4')}>
               Looking for something specific?
@@ -93,7 +93,7 @@ export default function NotFound() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="group inline-flex items-center gap-1 px-4 py-2 rounded-full bg-slate-100 hover:bg-blue-600 text-slate-600 hover:text-white text-sm font-medium transition-all duration-300"
+                  className="group inline-flex items-center gap-1 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 text-slate-600 dark:text-slate-300 hover:text-white text-sm font-medium transition-all duration-300"
                 >
                   {link.label}
                   <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
@@ -106,7 +106,7 @@ export default function NotFound() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="mt-8 pt-6 border-t border-slate-200"
+            className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800"
           >
             <p className={cn(typography.small, 'text-slate-400')}>
               © {new Date().getFullYear()} IIS Precision Manufacturing

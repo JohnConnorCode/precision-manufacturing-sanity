@@ -67,6 +67,7 @@ interface ContactData {
     asset?: { url?: string };
     alt?: string;
   };
+  locationDescription?: string;
   bottomStats?: BottomStat[];
 }
 
@@ -321,7 +322,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                         <h3 className={cn(typography.h4, 'text-white drop-shadow-lg')}>Visit Our Facility</h3>
                       </div>
                       <p className={cn(typography.body, 'mb-4 text-white drop-shadow-md')}>
-                        Located in Clackamas, Oregon, our state-of-the-art facility features advanced CNC machining, metrology, and inspection capabilities.
+                        {contactData.locationDescription || 'Located in Clackamas, Oregon, our state-of-the-art facility features advanced CNC machining, metrology, and inspection capabilities.'}
                       </p>
                       <p className={cn(typography.small, 'text-white font-semibold drop-shadow-md')}>
                         {contactData.contactInfo.addressLine1}, {contactData.contactInfo.addressLine2}

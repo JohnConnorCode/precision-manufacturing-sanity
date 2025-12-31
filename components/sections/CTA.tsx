@@ -217,7 +217,7 @@ export default function CTA({ data }: CTAProps) {
               viewport={{ once: true }}
               className="mt-12"
             >
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-slate-500">
                 {trustMessage}
               </p>
             </motion.div>

@@ -34,7 +34,7 @@ export default function ImageWithSkeleton({
             exit={{ opacity: 0 }}
             transition={{ duration: animDuration / 2 }}
             className={cn(
-              "absolute inset-0 bg-gradient-to-br from-slate-200 to-slate-100",
+              "absolute inset-0 bg-gradient-to-br from-slate-200 to-slate-100 dark:from-slate-700 dark:to-slate-800",
               !prefersReducedMotion && "animate-pulse",
               "rounded-lg",
               skeletonClassName
@@ -67,7 +67,7 @@ export default function ImageWithSkeleton({
       </motion.div>
 
       {hasError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-100 rounded-lg">
+        <div className="absolute inset-0 flex items-center justify-center bg-slate-100 dark:bg-slate-800 rounded-lg">
           <div className="text-center p-4">
             <svg
               className="w-12 h-12 text-slate-400 mx-auto mb-2"

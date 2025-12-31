@@ -243,6 +243,15 @@ export default {
       ]
     },
     {
+      name: 'locationDescription',
+      type: 'text',
+      title: 'Location Description',
+      description: 'Description text shown in the facility/location card',
+      group: 'additionalSections',
+      rows: 3,
+      initialValue: 'Located in Clackamas, Oregon, our state-of-the-art facility features advanced CNC machining, metrology, and inspection capabilities.',
+    },
+    {
       name: 'certifications',
       type: 'array',
       title: 'Certifications',

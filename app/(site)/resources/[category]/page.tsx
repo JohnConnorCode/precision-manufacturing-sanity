@@ -118,12 +118,12 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
       </section>
 
       {/* Resources Grid */}
-      <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+      <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
         <div className={spacing.containerWide}>
           {formattedResources.length === 0 ? (
             <AnimatedSection>
               <div className="text-center py-16">
-                <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-6">
                   <BookOpen className="w-8 h-8 text-slate-400" />
                 </div>
                 <h3 className={cn(typography.h3, 'mb-4')}>No resources found</h3>
