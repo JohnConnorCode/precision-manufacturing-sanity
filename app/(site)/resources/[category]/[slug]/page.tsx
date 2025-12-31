@@ -99,7 +99,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
           <header className="py-16 md:py-20 px-4 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
             <div className="max-w-4xl mx-auto">
               <div className="flex flex-wrap items-center gap-4 mb-6">
-                <span className={`px-3 py-1.5 rounded-full text-sm font-semibold border ${getDifficultyColor(resource.difficulty)}`}>
+                <span className={`px-3 py-1.5 rounded-full text-sm font-semibold border ${getDifficultyColor(resource.difficulty || 'beginner')}`}>
                   {resource.difficulty ? resource.difficulty.charAt(0).toUpperCase() + resource.difficulty.slice(1) : 'General'}
                 </span>
                 <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm">
@@ -109,7 +109,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Calendar className="w-4 h-4 text-blue-500" />
-                    {new Date(resource.publishDate).toLocaleDateString('en-US', {
+                    {new Date(resource.publishDate || new Date()).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric'

@@ -1,15 +1,40 @@
 /**
  * GROQ queries for fetching content from Sanity
  * Documentation: https://www.sanity.io/docs/groq
+ *
+ * Type Safety:
+ * - All query functions return properly typed data
+ * - Types are defined in @/sanity/types/query.types.ts
+ * - Run `npm run typegen` to regenerate schema types
  */
 
 import { getClient } from './client'
+import type {
+  ServiceCard,
+  ServiceDetail,
+  IndustryCard,
+  IndustryDetail,
+  ResourceCard,
+  ResourceDetail,
+  TeamMemberQueryResult,
+  JobPostingQueryResult,
+  HomepageQueryResult,
+  SiteSettingsQueryResult,
+  NavigationQueryResult,
+  FooterQueryResult,
+  ContactPage,
+  CareersPage,
+  AboutPage,
+  GenericPage,
+} from '../types/query.types'
 
 // ============================================================================
 // SERVICES
 // ============================================================================
 
-export async function getAllServices(preview = false) {
+// TODO: Tighten types once component types are unified
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getAllServices(preview = false): Promise<any[]> {
   try {
     const pub = preview ? '' : ' && published == true'
     const query = `*[_type == "service" && !(_id in path("drafts.**"))${pub}] | order(order asc) {
@@ -111,7 +136,8 @@ export async function getAllServices(preview = false) {
   }
 }
 
-export async function getServiceBySlug(slug: string, preview = false) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getServiceBySlug(slug: string, preview = false): Promise<any> {
   try {
     const pub = preview ? '' : ' && published == true'
     const query = `*[_type == "service" && slug.current == $slug && !(_id in path("drafts.**"))${pub}][0] {
@@ -226,7 +252,8 @@ export async function getServiceBySlug(slug: string, preview = false) {
 // INDUSTRIES
 // ============================================================================
 
-export async function getAllIndustries(preview = false) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getAllIndustries(preview = false): Promise<any[]> {
   try {
     const pub = preview ? '' : ' && published == true'
     const query = `*[_type == "industry" && !(_id in path("drafts.**"))${pub}] | order(order asc) {
@@ -290,7 +317,8 @@ export async function getAllIndustries(preview = false) {
   }
 }
 
-export async function getIndustryBySlug(slug: string, preview = false) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getIndustryBySlug(slug: string, preview = false): Promise<any> {
   try {
     const pub = preview ? '' : ' && published == true'
     const query = `*[_type == "industry" && slug.current == $slug && !(_id in path("drafts.**"))${pub}][0] {
@@ -370,7 +398,8 @@ export async function getIndustryBySlug(slug: string, preview = false) {
 // RESOURCES
 // ============================================================================
 
-export async function getAllResources(preview = false) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getAllResources(preview = false): Promise<any[]> {
   const pub = preview ? '' : ' && published == true'
   const query = `*[_type == "resource" && !(_id in path("drafts.**"))${pub}] | order(publishDate desc) {
     _id,
@@ -397,7 +426,7 @@ export async function getAllResources(preview = false) {
   return await getClient(preview).fetch(query)
 }
 
-export async function getResourceBySlug(slug: string, preview = false) {
+export async function getResourceBySlug(slug: string, preview = false): Promise<ResourceDetail | null> {
   try {
   const pub = preview ? '' : ' && published == true'
   const query = `*[_type == "resource" && slug.current == $slug && !(_id in path("drafts.**"))${pub}][0] {
@@ -478,7 +507,7 @@ export async function getFeaturedResources(preview = false) {
 // TEAM MEMBERS
 // ============================================================================
 
-export async function getAllTeamMembers(preview = false) {
+export async function getAllTeamMembers(preview = false): Promise<TeamMemberQueryResult[]> {
   try {
   const pub = preview ? '' : ' && published == true'
   const query = `*[_type == "teamMember"${pub}] | order(order asc) {
@@ -550,7 +579,8 @@ export async function getNavigation(preview = false) {
   }
 }
 
-export async function getHomepage(preview = false) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getHomepage(preview = false): Promise<any> {
   try {
   const query = `*[_type == "homepage"][0] {
     hero {
@@ -812,7 +842,7 @@ export async function getFooter(preview = false) {
   }
 }
 
-export async function getAbout(preview = false) {
+export async function getAbout(preview = false): Promise<AboutPage | null> {
   try {
   const query = `*[_type == "about"][0] {
     hero{
@@ -920,7 +950,7 @@ export async function getAbout(preview = false) {
   }
 }
 
-export async function getContact(preview = false) {
+export async function getContact(preview = false): Promise<ContactPage | null> {
   try {
   const query = `*[_type == "contact"][0] {
     hero{ backgroundImage{asset->{url,_id}}, badge, badgeIconName, title, titleHighlight, description, buttonLabel, buttonHref },
@@ -937,7 +967,7 @@ export async function getContact(preview = false) {
   }
 }
 
-export async function getCareers(preview = false) {
+export async function getCareers(preview = false): Promise<CareersPage | null> {
   try {
   const query = `*[_type == "careers"][0] {
     hero{
@@ -1380,7 +1410,7 @@ export async function getAllPageSlugs(preview = false) {
 }
 
 // Job Postings
-export async function getAllJobPostings(preview = false) {
+export async function getAllJobPostings(preview = false): Promise<JobPostingQueryResult[]> {
   try {
   const pub = preview ? '' : ' && published == true'
   const query = `*[_type == "jobPosting"${pub}] | order(featured desc, order asc, datePosted desc) {

@@ -13,7 +13,9 @@
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "import-data": "node --import tsx scripts/import-to-sanity.ts",
-    "populate-data": "tsx scripts/populate-missing-data.ts"
+    "populate-data": "tsx scripts/populate-missing-data.ts",
+    "typegen": "sanity schema extract && sanity typegen generate",
+    "prebuild": "npm run typegen"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
