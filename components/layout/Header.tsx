@@ -275,14 +275,10 @@ export default function Header({ data }: HeaderProps) {
         </aside>
       )}
 
-      {/* Top Info Bar - Fixed position on desktop, elegant dark design */}
+      {/* Top Info Bar - Static position, elegant dark design */}
       {topBar && (
       <aside
-        className={cn(
-          "hidden lg:block w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50",
-          "fixed z-[150]", // Fixed position, between announcement (z-160) and header (z-140)
-          showAnnouncement && announcement?.enabled ? "top-10" : "top-0"
-        )}
+        className="hidden lg:block w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50"
         role="complementary"
         aria-label="Contact information"
       >
@@ -315,16 +311,7 @@ export default function Header({ data }: HeaderProps) {
 
       {/* Main Navigation */}
       <header
-        className={cn(
-          headerClass,
-          // Desktop: header always below top info bar (top-10 = 40px)
-          // Then add extra offset if announcement is also shown (top-20 = 80px)
-          topBar ? (
-            showAnnouncement && announcement?.enabled ? 'lg:top-20' : 'lg:top-10'
-          ) : (
-            showAnnouncement && announcement?.enabled ? 'top-10' : ''
-          )
-        )}
+        className={headerClass}
         suppressHydrationWarning
       >
         <nav className="container flex h-20 items-center justify-between gap-4" suppressHydrationWarning>

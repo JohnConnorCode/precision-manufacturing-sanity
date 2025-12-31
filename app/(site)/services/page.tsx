@@ -208,26 +208,39 @@ export default async function ServicesPage() {
         <section id="capabilities" className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
             <AnimatedSection>
-              <div className={styles.grid4Col}>
-                {capabilities
-                  .filter((capability: any) => capability?.enabled !== false)
-                  .map((capability: any) => (
-                  <div
-                    key={capability.label}
-                    className="text-center"
-                  >
-                    <div className={styles.statValue}>
-                      {capability.value}
-                    </div>
-                    <div className={cn(typography.badge, "text-slate-700 dark:text-slate-300 mb-2")}>
-                      {capability.label}
-                    </div>
-                    <div className={typography.small}>
-                      {capability.description}
-                    </div>
+              {(() => {
+                const filteredCaps = capabilities.filter((c: any) => c?.enabled !== false);
+                const count = filteredCaps.length;
+                return (
+                  <div className={cn(
+                    'grid gap-6 md:gap-8',
+                    count === 1 && 'grid-cols-1 max-w-md mx-auto',
+                    count === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
+                    count === 3 && 'grid-cols-1 md:grid-cols-3',
+                    count === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+                    count === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
+                    count === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+                    count > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
+                  )}>
+                    {filteredCaps.map((capability: any) => (
+                      <div
+                        key={capability.label}
+                        className="text-center"
+                      >
+                        <div className={styles.statValue}>
+                          {capability.value}
+                        </div>
+                        <div className={cn(typography.badge, "text-slate-700 dark:text-slate-300 mb-2")}>
+                          {capability.label}
+                        </div>
+                        <div className={typography.small}>
+                          {capability.description}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                );
+              })()}
             </AnimatedSection>
           </div>
         </section>

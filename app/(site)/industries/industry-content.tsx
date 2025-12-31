@@ -643,7 +643,17 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
               </p>
             </motion.div>
 
-            <div className={styles.grid3Col}>
+            {/* Dynamic grid based on item count to prevent orphans */}
+            <div className={cn(
+              'grid gap-6 md:gap-8',
+              industry.applications.length === 1 && 'grid-cols-1 max-w-md mx-auto',
+              industry.applications.length === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
+              industry.applications.length === 3 && 'grid-cols-1 md:grid-cols-3',
+              industry.applications.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+              industry.applications.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
+              industry.applications.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+              industry.applications.length > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+            )}>
               {industry.applications.map((application: Application, index: number) => (
                 <motion.div
                   key={application.name}
@@ -694,7 +704,17 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
               </p>
             </motion.div>
 
-            <div className={styles.grid4Col}>
+            {/* Dynamic grid based on item count to prevent orphans */}
+            <div className={cn(
+              'grid gap-6 md:gap-8',
+              industry.qualityStandards.length === 1 && 'grid-cols-1 max-w-md mx-auto',
+              industry.qualityStandards.length === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
+              industry.qualityStandards.length === 3 && 'grid-cols-1 md:grid-cols-3',
+              industry.qualityStandards.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+              industry.qualityStandards.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
+              industry.qualityStandards.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+              industry.qualityStandards.length > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
+            )}>
               {industry.qualityStandards.map((item: QualityStandard | string, index: number) => (
                 <motion.div
                   key={typeof item === 'string' ? item : item.standard}

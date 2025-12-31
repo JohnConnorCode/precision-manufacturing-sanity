@@ -340,11 +340,21 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       {capabilityStats.length > 0 && (
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
+            {/* Dynamic grid based on item count to prevent orphans */}
             <motion.div
               initial={initialState}
               whileInView={createFade(0, 0.8)}
               viewport={viewportConfig}
-              className={styles.grid4Col}
+              className={cn(
+                'grid gap-6 md:gap-8',
+                capabilityStats.length === 1 && 'grid-cols-1 max-w-md mx-auto',
+                capabilityStats.length === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
+                capabilityStats.length === 3 && 'grid-cols-1 md:grid-cols-3',
+                capabilityStats.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+                capabilityStats.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
+                capabilityStats.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+                capabilityStats.length > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
+              )}
             >
               {capabilityStats.map((capability: CapabilityStat, index: number) => {
                 const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
@@ -484,7 +494,17 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               <h2 className={cn(typography.h2, 'mb-4')}>Key Benefits</h2>
             </motion.div>
 
-            <div className={styles.grid4Col}>
+            {/* Dynamic grid based on item count to prevent orphans */}
+            <div className={cn(
+              'grid gap-6 md:gap-8',
+              benefits.length === 1 && 'grid-cols-1 max-w-md mx-auto',
+              benefits.length === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
+              benefits.length === 3 && 'grid-cols-1 md:grid-cols-3',
+              benefits.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+              benefits.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
+              benefits.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+              benefits.length > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
+            )}>
               {benefits.map((benefit: Benefit, index: number) => {
                 const BenefitIcon = benefit.iconName ? (iconMap[benefit.iconName] || Award) : Award;
                 const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
@@ -627,7 +647,17 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               </p>
             </motion.div>
 
-            <div className={styles.grid4Col}>
+            {/* Dynamic grid based on item count to prevent orphans */}
+            <div className={cn(
+              'grid gap-6 md:gap-8',
+              materials.length === 1 && 'grid-cols-1 max-w-md mx-auto',
+              materials.length === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
+              materials.length === 3 && 'grid-cols-1 md:grid-cols-3',
+              materials.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+              materials.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
+              materials.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+              materials.length > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
+            )}>
               {materials.map((material: MaterialCategory, index: number) => {
                 const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
                 return (
@@ -805,7 +835,17 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               </p>
             </motion.div>
 
-            <div className={styles.grid4Col}>
+            {/* Dynamic grid based on item count to prevent orphans */}
+            <div className={cn(
+              'grid gap-6 md:gap-8',
+              processes.length === 1 && 'grid-cols-1 max-w-md mx-auto',
+              processes.length === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
+              processes.length === 3 && 'grid-cols-1 md:grid-cols-3',
+              processes.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+              processes.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
+              processes.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+              processes.length > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
+            )}>
               {processes.map((process: ProcessItem, index: number) => {
                 const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
                 return (
