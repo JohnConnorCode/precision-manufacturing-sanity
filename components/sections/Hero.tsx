@@ -162,7 +162,8 @@ export default function Hero({ data }: HeroProps) {
               {word1 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
@@ -177,7 +178,8 @@ export default function Hero({ data }: HeroProps) {
               {word2 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.25, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
@@ -192,7 +194,8 @@ export default function Hero({ data }: HeroProps) {
               {word3 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={
@@ -218,7 +221,8 @@ export default function Hero({ data }: HeroProps) {
             {/* Tagline */}
             <motion.h1
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
               className="text-lg sm:text-xl md:text-2xl font-light leading-[1.3] tracking-normal mb-8"
               style={{ color: descriptionColor }}
@@ -243,7 +247,8 @@ export default function Hero({ data }: HeroProps) {
                   <motion.span
                     key={`${badge}-${index}`}
                     initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{
                       delay: 0.8 + (index * 0.1),
                       duration: 0.5,
@@ -262,7 +267,8 @@ export default function Hero({ data }: HeroProps) {
             {primaryCta && (
               <motion.div
                 initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ delay: 1.0, duration: 0.5, ease: "easeOut" }}
               >
                 <Button
@@ -294,7 +300,8 @@ export default function Hero({ data }: HeroProps) {
       {/* Smooth Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
         transition={{ delay: 1.4, duration: 0.5, ease: "easeOut" }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >

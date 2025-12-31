@@ -149,10 +149,24 @@ export default function Header({ data }: HeaderProps) {
     return () => window.removeEventListener('scroll', throttledScroll);
   }, []);
 
-  // Disable transparent header mode - causes visual issues in dark mode
-  // Keep the state but always set to false for now
+  // Hero section detection - transparent header over dark hero sections
   useEffect(() => {
-    setIsOverHero(false);
+    const darkHeroSection = document.querySelector('[data-hero-section="dark"]');
+    if (!darkHeroSection) {
+      setIsOverHero(false);
+      return;
+    }
+
+    const handleHeroScroll = () => {
+      const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
+      setIsOverHero(heroBottom > 120);
+    };
+
+    const throttledHeroScroll = throttleRAF(handleHeroScroll);
+    handleHeroScroll();
+
+    window.addEventListener('scroll', throttledHeroScroll, { passive: true });
+    return () => window.removeEventListener('scroll', throttledHeroScroll);
   }, [pathname]);
 
   const listJustify = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'
