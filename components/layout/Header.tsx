@@ -149,32 +149,11 @@ export default function Header({ data }: HeaderProps) {
     return () => window.removeEventListener('scroll', throttledScroll);
   }, []);
 
-  // Hero section detection - transparent header ONLY over DARK hero sections
-  // Light heroes don't support transparent header due to contrast issues
+  // Disable transparent header mode - causes visual issues in dark mode
+  // Keep the state but always set to false for now
   useEffect(() => {
-    const darkHeroSection = document.querySelector('[data-hero-section="dark"]');
-    if (!darkHeroSection) {
-      setIsOverHero(false);
-      return;
-    }
-
-    const handleHeroScroll = () => {
-      const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
-      // Desktop: header extends to 120px (40px top bar + 80px header)
-      // Mobile: header extends to 80px
-      // Use 120px threshold to ensure smooth transition on both
-      setIsOverHero(heroBottom > 120);
-    };
-
-    // Use requestAnimationFrame throttling
-    const throttledHeroScroll = throttleRAF(handleHeroScroll);
-
-    // Set initial state
-    handleHeroScroll();
-
-    window.addEventListener('scroll', throttledHeroScroll, { passive: true });
-    return () => window.removeEventListener('scroll', throttledHeroScroll);
-  }, [pathname]); // Re-check on route change
+    setIsOverHero(false);
+  }, [pathname]);
 
   const listJustify = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'
 
