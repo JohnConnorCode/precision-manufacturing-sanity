@@ -103,7 +103,8 @@ export default function Header({ data }: HeaderProps) {
   const align: 'left' | 'center' | 'right' = navStyles.alignment || 'left';
   const density: 'comfortable' | 'compact' = navStyles.density || 'comfortable';
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isOverHero, setIsOverHero] = useState(true);
+  const [isOverHero, setIsOverHero] = useState(false); // Start false to prevent flash on non-hero pages
+  const [heroDetected, setHeroDetected] = useState(false); // Track if initial hero detection is done
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const pathname = usePathname();
@@ -154,6 +155,7 @@ export default function Header({ data }: HeaderProps) {
     const darkHeroSection = document.querySelector('[data-hero-section="dark"]');
     if (!darkHeroSection) {
       setIsOverHero(false);
+      setHeroDetected(true);
       return;
     }
 
@@ -164,6 +166,7 @@ export default function Header({ data }: HeaderProps) {
 
     const throttledHeroScroll = throttleRAF(handleHeroScroll);
     handleHeroScroll();
+    setHeroDetected(true); // Mark detection complete after first check
 
     window.addEventListener('scroll', throttledHeroScroll, { passive: true });
     return () => window.removeEventListener('scroll', throttledHeroScroll);
@@ -214,7 +217,9 @@ export default function Header({ data }: HeaderProps) {
     : `bg-transparent text-slate-700 dark:text-slate-100 ${gradientBorder}`;
 
   const headerClass = cn(
-    'fixed z-[140] w-full transition-all duration-500 top-0',
+    'fixed z-[140] w-full top-0',
+    // Only apply transitions after initial hero detection to prevent flash
+    heroDetected ? 'transition-all duration-300' : '',
     inHeroMode
       ? 'bg-slate-950/20 backdrop-blur-sm border-b border-white/10'
       : isScrolled
@@ -317,7 +322,7 @@ export default function Header({ data }: HeaderProps) {
         <nav className="container flex h-20 items-center justify-between gap-4" suppressHydrationWarning>
           <Link href="/" className="flex items-center space-x-2 flex-shrink-0" aria-label="IIS - Integrated Inspection Systems Home">
             <Logo
-              className="h-12 sm:h-14 md:h-16 w-auto"
+              className="h-10 sm:h-11 md:h-12 w-auto"
               logoData={data?.logo}
               animated={true}
               variant={inHeroMode ? 'light' : 'default'}
@@ -627,7 +632,7 @@ export default function Header({ data }: HeaderProps) {
                         >
                           {children.length > 0 ? (
                             <div className="space-y-1">
-                              <div className="px-3 py-2.5 font-bold text-lg text-slate-900 dark:text-white">
+                              <div className="px-3 py-2.5 font-semibold text-base text-slate-900 dark:text-white">
                                 <span className="inline-flex items-center gap-3">
                                   {IconFor(item?.iconName)}
                                   {item.name}
@@ -665,7 +670,7 @@ export default function Header({ data }: HeaderProps) {
                               rel={rel}
                               onClick={() => setMobileMenuOpen(false)}
                               className={cn(
-                                "flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-lg transition-colors",
+                                "flex items-center gap-3 px-3 py-2.5 rounded-lg font-semibold text-base transition-colors",
                                 "text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800",
                                 pathname === href && 'bg-slate-100 dark:bg-slate-800'
                               )}

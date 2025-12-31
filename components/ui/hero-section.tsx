@@ -209,7 +209,8 @@ export default function HeroSection({
           {badge && (
             <motion.div
               initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ delay: 0.2, duration: 0.6 }}
               className="mb-8"
             >
@@ -232,7 +233,8 @@ export default function HeroSection({
           {/* Title */}
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: 0.4, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
             className={cn(
               titleSize ? titleSizeClasses[titleSize] : 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl',
@@ -251,7 +253,8 @@ export default function HeroSection({
           {subtitle && (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ delay: 0.6, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
               className="text-xl sm:text-2xl md:text-3xl mb-4 font-light"
               style={{ color: defaultSubtitleColor }}
@@ -264,7 +267,8 @@ export default function HeroSection({
           {description && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ delay: 0.8, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
               className={cn(
                 descriptionSize ? descSizeClasses[descriptionSize] : 'text-base md:text-lg',
@@ -280,7 +284,8 @@ export default function HeroSection({
           {buttons.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ delay: 1.0, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
               className={cn(
                 'flex flex-col sm:flex-row gap-5 sm:gap-6',
@@ -339,7 +344,8 @@ export default function HeroSection({
       {showScrollIndicator && (
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
           transition={{ delay: 2, duration: 1 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
         >
