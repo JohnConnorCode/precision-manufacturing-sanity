@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { cn } from '@/lib/utils';
+import { SafeMotion } from '@/components/ui/safe-motion';
 
 interface ClientLogo {
   _key?: string;
@@ -52,15 +53,12 @@ export default function ClientLogos({ data }: ClientLogosProps) {
     <section className="py-12 md:py-16 bg-slate-50 dark:bg-slate-900 overflow-hidden">
       <div className="container mb-8">
         {data.eyebrow && (
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+          <SafeMotion
+            y={10}
             className="text-center text-xs md:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]"
           >
             {data.eyebrow}
-          </motion.p>
+          </SafeMotion>
         )}
       </div>
 

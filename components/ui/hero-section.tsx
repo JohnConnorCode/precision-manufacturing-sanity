@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 import { colorStyleToCSS, getOverlayStyles, ColorStyle } from '@/lib/sanity-styles';
+import { SafeMotion } from '@/components/ui/safe-motion';
 
 interface HeroButton {
   label: string;
@@ -208,13 +209,7 @@ export default function HeroSection({
         )}>
           {/* Badge */}
           {badge && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className="mb-8"
-            >
+            <SafeMotion y={-20} delay={0.2} className="mb-8">
               <span
                 className="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium backdrop-blur-sm"
                 style={{
@@ -228,15 +223,14 @@ export default function HeroSection({
                 {BadgeIcon && <BadgeIcon className="w-3 h-3 mr-2" />}
                 {badge.text}
               </span>
-            </motion.div>
+            </SafeMotion>
           )}
 
           {/* Title */}
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+          <SafeMotion
+            y={40}
+            delay={0.4}
+            duration={0.8}
             className={cn(
               titleSize ? titleSizeClasses[titleSize] : 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
               'font-extrabold mb-6 tracking-tight uppercase'
@@ -248,29 +242,27 @@ export default function HeroSection({
             ) : (
               title
             )}
-          </motion.h1>
+          </SafeMotion>
 
           {/* Subtitle */}
           {subtitle && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+            <SafeMotion
+              y={30}
+              delay={0.6}
+              duration={0.8}
               className="text-xl sm:text-2xl md:text-3xl mb-4 font-light"
               style={{ color: defaultSubtitleColor }}
             >
               {subtitle}
-            </motion.div>
+            </SafeMotion>
           )}
 
           {/* Description */}
           {description && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.8, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+            <SafeMotion
+              y={20}
+              delay={0.8}
+              duration={0.8}
               className={cn(
                 descriptionSize ? descSizeClasses[descriptionSize] : 'text-base md:text-lg',
                 'mb-10 max-w-3xl'
@@ -278,16 +270,15 @@ export default function HeroSection({
               style={{ color: defaultDescColor }}
             >
               {description}
-            </motion.div>
+            </SafeMotion>
           )}
 
           {/* Buttons */}
           {buttons.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 1.0, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+            <SafeMotion
+              y={20}
+              delay={1.0}
+              duration={0.8}
               className={cn(
                 'flex flex-col sm:flex-row gap-5 sm:gap-6',
                 alignment === 'center' && 'justify-center',
@@ -336,20 +327,14 @@ export default function HeroSection({
                   </Button>
                 );
               })}
-            </motion.div>
+            </SafeMotion>
           )}
         </div>
       </motion.div>
 
       {/* Scroll Indicator */}
       {showScrollIndicator && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 2, duration: 1 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
-        >
+        <SafeMotion y={0} delay={2} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{
@@ -361,7 +346,7 @@ export default function HeroSection({
           >
             <ChevronDown className="h-6 w-6" />
           </motion.div>
-        </motion.div>
+        </SafeMotion>
       )}
     </section>
   );

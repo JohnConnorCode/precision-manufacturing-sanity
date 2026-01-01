@@ -4,6 +4,35 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Animation Fallback - Ensures content is visible if Framer Motion fails */
+@keyframes ensureVisible {
+  to {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Apply fallback to any element with opacity:0 inline style */
+/* This catches Framer Motion initial states that fail to animate */
+[style*="opacity: 0"],
+[style*="opacity:0"],
+[style*="opacity:0;"],
+[style*="opacity: 0;"] {
+  animation: ensureVisible 0.3s ease-out 1s forwards !important;
+}
+
+/* Reduced motion users - make everything visible immediately */
+@media (prefers-reduced-motion: reduce) {
+  [style*="opacity: 0"],
+  [style*="opacity:0"],
+  [style*="opacity:0;"],
+  [style*="opacity: 0;"] {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
 @layer base {
   :root {
     /* Brand Colors - Professional Aerospace */

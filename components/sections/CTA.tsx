@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { ArrowRight, FileText, Shield, Award, Activity, Clock, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
-import { usePrefersReducedMotion } from '@/lib/motion';
+import { SafeMotion, stagger } from '@/components/ui/safe-motion';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 
 interface CTAData {
@@ -37,8 +37,6 @@ interface CTAProps {
 }
 
 export default function CTA({ data }: CTAProps) {
-  const prefersReducedMotion = usePrefersReducedMotion();
-
   if (!data?.title || !data?.buttons || data.buttons.length === 0) {
     return null;
   }
@@ -104,52 +102,39 @@ export default function CTA({ data }: CTAProps) {
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           {badge && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0 }}
-              viewport={{ once: true }}
+            <SafeMotion
+              y={20}
               className="inline-flex items-center px-4 py-2 mb-8 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-sm"
             >
               <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
                 {badge}
               </span>
-            </motion.div>
+            </SafeMotion>
           )}
 
           {/* Title with gradient on last 2 words */}
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.7, delay: prefersReducedMotion ? 0 : 0.1 }}
-            viewport={{ once: true }}
-            className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-8 leading-tight"
-          >
-            {firstPart && <span>{firstPart} </span>}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-500">
-              {lastPart}
-            </span>
-          </motion.h2>
+          <SafeMotion y={30} delay={0.1}>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-8 leading-tight">
+              {firstPart && <span>{firstPart} </span>}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-500">
+                {lastPart}
+              </span>
+            </h2>
+          </SafeMotion>
 
           {/* Subtitle */}
           {subtitleString && (
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 0.2 }}
-              viewport={{ once: true }}
-              className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto"
-            >
-              {subtitleString}
-            </motion.p>
+            <SafeMotion y={20} delay={0.2}>
+              <p className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
+                {subtitleString}
+              </p>
+            </SafeMotion>
           )}
 
           {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 0.3 }}
-            viewport={{ once: true }}
+          <SafeMotion
+            y={20}
+            delay={0.3}
             className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
           >
             {buttons.map((button, index) => {
@@ -168,7 +153,7 @@ export default function CTA({ data }: CTAProps) {
                 </Link>
               );
             })}
-          </motion.div>
+          </SafeMotion>
 
           {/* Certification Badges */}
           {certifications.length > 0 && (
@@ -178,15 +163,10 @@ export default function CTA({ data }: CTAProps) {
                 const isFirstBadge = index === 0 && cert.icon === 'Clock';
 
                 return (
-                  <motion.div
+                  <SafeMotion
                     key={cert._key || `cert-${index}`}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: prefersReducedMotion ? 0 : 0.5,
-                      delay: prefersReducedMotion ? 0 : 0.4 + index * 0.1
-                    }}
-                    viewport={{ once: true }}
+                    y={20}
+                    delay={stagger(index, 100, 400)}
                     className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-slate-900/50 border border-slate-800/50 hover:border-slate-700 transition-colors"
                   >
                     {isFirstBadge ? (
@@ -202,7 +182,7 @@ export default function CTA({ data }: CTAProps) {
                       <Icon className="w-4 h-4 text-blue-400" />
                     )}
                     <span className="text-sm font-medium text-slate-300">{cert.text}</span>
-                  </motion.div>
+                  </SafeMotion>
                 );
               })}
             </div>
@@ -210,17 +190,11 @@ export default function CTA({ data }: CTAProps) {
 
           {/* Trust Message */}
           {trustMessage && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.8, delay: prefersReducedMotion ? 0 : 0.7 }}
-              viewport={{ once: true }}
-              className="mt-12"
-            >
+            <SafeMotion y={0} delay={0.7} className="mt-12">
               <p className="text-xs text-slate-500">
                 {trustMessage}
               </p>
-            </motion.div>
+            </SafeMotion>
           )}
         </div>
       </div>

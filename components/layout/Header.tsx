@@ -132,73 +132,53 @@ export default function Header({ data }: HeaderProps) {
     setShowAnnouncement(shouldShow);
   }, [announcement]);
 
-  // Scroll handler - determines when header should be solid vs transparent
+  // Combined scroll handler for both header state and hero detection
+  // Using a single listener prevents race conditions and ensures cleanup
   useEffect(() => {
     let rafId: number | null = null;
+    let heroElement: Element | null = null;
 
     const handleScroll = () => {
       if (rafId) return;
       rafId = requestAnimationFrame(() => {
-        setIsScrolled(window.scrollY > 10);
+        // Update scroll state
+        const scrollY = window.scrollY;
+        setIsScrolled(scrollY > 10);
+
+        // Update hero state if hero exists
+        if (heroElement) {
+          const heroBottom = heroElement.getBoundingClientRect().bottom;
+          setIsOverHero(heroBottom > 120);
+        }
         rafId = null;
       });
     };
 
-    // Set initial state
+    // Find hero element (with retry for hydration)
+    const findHero = () => {
+      heroElement = document.querySelector('[data-hero-section="dark"]');
+      if (heroElement) {
+        const heroBottom = heroElement.getBoundingClientRect().bottom;
+        setIsOverHero(heroBottom > 120);
+      } else {
+        setIsOverHero(false);
+      }
+      setHeroDetected(true);
+    };
+
+    // Set initial states
     setIsScrolled(window.scrollY > 10);
+    findHero();
+
+    // Retry hero detection after hydration
+    const retryTimeout = setTimeout(findHero, 150);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      clearTimeout(retryTimeout);
       if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, []);
-
-  // Hero section detection - transparent header over dark hero sections
-  useEffect(() => {
-    let rafId: number | null = null;
-    let retryTimeout: NodeJS.Timeout | null = null;
-
-    const setupHeroDetection = () => {
-      const darkHeroSection = document.querySelector('[data-hero-section="dark"]');
-      if (!darkHeroSection) {
-        setIsOverHero(false);
-        setHeroDetected(true);
-        return false;
-      }
-
-      const handleHeroScroll = () => {
-        if (rafId) return;
-        rafId = requestAnimationFrame(() => {
-          const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
-          setIsOverHero(heroBottom > 120);
-          rafId = null;
-        });
-      };
-
-      // Set initial state immediately
-      const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
-      setIsOverHero(heroBottom > 120);
-      setHeroDetected(true);
-
-      window.addEventListener('scroll', handleHeroScroll, { passive: true });
-      return true;
-    };
-
-    // Try immediately
-    const found = setupHeroDetection();
-
-    // Retry after short delay if no hero found (for hydration timing)
-    if (!found) {
-      retryTimeout = setTimeout(() => {
-        setupHeroDetection();
-      }, 100);
-    }
-
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      if (retryTimeout) clearTimeout(retryTimeout);
-      // Note: scroll listener cleanup handled by component unmount
     };
   }, [pathname]);
 
@@ -363,11 +343,7 @@ export default function Header({ data }: HeaderProps) {
 
           {/* Desktop Navigation - Click-based Dropdowns */}
           <nav className="hidden lg:flex items-center justify-center flex-1">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: mounted ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
+            <div>
             <ul className={cn('flex list-none items-center space-x-2', listJustify)}>
               {navigation.map((item: MenuItem, index: number) => {
                 const children = Array.isArray(item.children)
@@ -390,11 +366,8 @@ export default function Header({ data }: HeaderProps) {
                 const hasRealHref = href && href !== '/' && href !== '#'
 
                 return (
-                  <motion.li
+                  <li
                     key={item.name}
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : -10 }}
-                    transition={{ duration: 0.4, delay: mounted ? 0.1 + index * 0.05 : 0, ease: "easeOut" }}
                     className={itemClasses}
                   >
                     {hasChildren ? (
@@ -519,20 +492,15 @@ export default function Header({ data }: HeaderProps) {
                           </Link>
                       )
                     )}
-                  </motion.li>
+                  </li>
                 )
               })}
             </ul>
-            </motion.div>
+            </div>
           </nav>
 
           {/* Desktop CTA + Theme Toggle */}
-          <motion.div
-            className="hidden lg:flex items-center space-x-2"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: mounted ? 1 : 0, x: mounted ? 0 : 20 }}
-            transition={{ duration: 0.5, delay: mounted ? 0.6 : 0, ease: "easeOut" }}
-          >
+          <div className="hidden lg:flex items-center space-x-2">
             {/* Theme Toggle */}
             {mounted && <ThemeToggle />}
 
@@ -553,7 +521,7 @@ export default function Header({ data }: HeaderProps) {
                 </PremiumButton>
               </Link>
             )}
-          </motion.div>
+          </div>
 
           {/* Mobile/More Menu - Shows below lg (1024px) OR as "More" button on lg-xl */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>

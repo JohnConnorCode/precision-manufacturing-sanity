@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { SafeMotion, stagger } from '@/components/ui/safe-motion';
 import { useRef } from 'react';
 import {
   FileText, Shield, DollarSign, Package, AlertCircle,
@@ -101,12 +102,10 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
           {termsData.sections.map((section: any, index: number) => {
             const Icon = iconMap[(section as any).iconName] || FileText;
             return (
-              <motion.div
+              <SafeMotion
                 key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.02 }}
+                y={20}
+                delay={stagger(index, 20)}
                 className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-lg dark:hover:shadow-slate-950/50 transition-shadow duration-300"
               >
                 <div className="p-8">
@@ -126,19 +125,13 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </SafeMotion>
             );
           })}
         </div>
 
         {/* Contact Section - Professional */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mt-16 bg-slate-900 rounded-2xl p-12 text-center"
-        >
+        <SafeMotion y={30} className="mt-16 bg-slate-900 rounded-2xl p-12 text-center">
           <h3 className="text-2xl font-bold mb-4 text-white">
             {termsData.contact.heading}
           </h3>
@@ -161,7 +154,7 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
               <span>{termsData.contact.department}</span>
             </div>
           </div>
-        </motion.div>
+        </SafeMotion>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { SafeMotion } from '@/components/ui/safe-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
@@ -95,12 +96,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
             <div className="lg:col-span-2 space-y-12">
               {/* Overview */}
               {job.overview && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                >
+                <SafeMotion y={20}>
                   <h2 className={cn(typography.h3, 'mb-4')}>Overview</h2>
                   <div className={cn(typography.body, 'text-slate-600 dark:text-slate-400 leading-relaxed prose prose-slate dark:prose-invert max-w-none')}>
                     <PortableText
@@ -126,17 +122,12 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                       }}
                     />
                   </div>
-                </motion.div>
+                </SafeMotion>
               )}
 
               {/* Responsibilities */}
               {job.responsibilities && job.responsibilities.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  viewport={{ once: true }}
-                >
+                <SafeMotion y={20} delay={0.1}>
                   <h2 className={cn(typography.h3, 'mb-6')}>Key Responsibilities</h2>
                   <div className="space-y-4">
                     {job.responsibilities.map((item: any, index: number) => (
@@ -150,17 +141,12 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                       </div>
                     ))}
                   </div>
-                </motion.div>
+                </SafeMotion>
               )}
 
               {/* Required Qualifications */}
               {job.qualifications && job.qualifications.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  viewport={{ once: true }}
-                >
+                <SafeMotion y={20} delay={0.2}>
                   <Card className={cn(styles.featureCard, 'p-8 border-l-4 border-blue-600')}>
                     <h2 className={cn(typography.h3, 'mb-6')}>Required Qualifications</h2>
                     <div className="space-y-3">
@@ -174,17 +160,12 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                       ))}
                     </div>
                   </Card>
-                </motion.div>
+                </SafeMotion>
               )}
 
               {/* Preferred Qualifications */}
               {job.preferredQualifications && job.preferredQualifications.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                  viewport={{ once: true }}
-                >
+                <SafeMotion y={20} delay={0.3}>
                   <h2 className={cn(typography.h3, 'mb-6')}>Preferred Qualifications</h2>
                   <div className="space-y-3">
                     {job.preferredQualifications.map((item: any, index: number) => (
@@ -196,17 +177,12 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                       </div>
                     ))}
                   </div>
-                </motion.div>
+                </SafeMotion>
               )}
 
               {/* Benefits */}
               {job.benefits && job.benefits.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  viewport={{ once: true }}
-                >
+                <SafeMotion y={20} delay={0.4}>
                   <h2 className={cn(typography.h3, 'mb-6')}>Benefits & Perks</h2>
                   <div className="grid md:grid-cols-2 gap-4">
                     {job.benefits.map((item: any, index: number) => (
@@ -220,7 +196,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                       </Card>
                     ))}
                   </div>
-                </motion.div>
+                </SafeMotion>
               )}
             </div>
 
@@ -228,12 +204,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
             <div className="lg:col-span-1">
               <div className="sticky top-24 space-y-6">
                 {/* Apply Card */}
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                >
+                <SafeMotion y={20}>
                   <Card className={cn(styles.featureCard, 'p-8 text-center')}>
                     <Briefcase className="w-12 h-12 text-blue-600 mx-auto mb-4" />
                     <h3 className={cn(typography.h4, 'mb-4')}>Apply for this Position</h3>
@@ -267,15 +238,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                       </div>
                     )}
                   </Card>
-                </motion.div>
+                </SafeMotion>
 
                 {/* Job Details */}
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  viewport={{ once: true }}
-                >
+                <SafeMotion y={20} delay={0.1}>
                   <Card className={cn(styles.featureCard, 'p-6')}>
                     <h3 className={cn(typography.h5, 'mb-4')}>Job Details</h3>
                     <div className="space-y-4">
@@ -332,15 +298,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                       )}
                     </div>
                   </Card>
-                </motion.div>
+                </SafeMotion>
 
                 {/* More Opportunities */}
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  viewport={{ once: true }}
-                >
+                <SafeMotion y={20} delay={0.2}>
                   <Card className={cn(styles.featureCard, 'p-6 bg-slate-50 dark:bg-slate-800')}>
                     <FileText className="w-10 h-10 text-blue-600 mb-4" />
                     <h3 className={cn(typography.h5, 'mb-3')}>Browse More Positions</h3>
@@ -353,7 +314,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                       </Button>
                     </Link>
                   </Card>
-                </motion.div>
+                </SafeMotion>
               </div>
             </div>
           </div>

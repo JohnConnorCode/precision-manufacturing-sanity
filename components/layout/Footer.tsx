@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Linkedin, Twitter, Facebook, Mail, Phone, MapPin, Award, Shield, CheckCircle, Zap, LucideIcon } from 'lucide-react';
 
@@ -14,7 +13,6 @@ const iconMap: Record<string, LucideIcon> = {
 import Logo from '@/components/ui/logo';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { typography, colors, cn } from '@/lib/design-system';
-import { motion } from 'framer-motion';
 
 interface FooterProps {
   data?: {
@@ -129,75 +127,14 @@ const Footer = ({ data }: FooterProps) => {
     },
     copyright: data?.copyright
   };
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const footer = document.querySelector('footer');
-    if (footer) {
-      observer.observe(footer);
-    }
-
-    return () => {
-      if (footer) {
-        observer.unobserve(footer);
-      }
-    };
-  }, []);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut" as const
-      }
-    }
-  };
-
-  const _logoVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut" as const
-      }
-    }
-  };
+  // No entrance animations - content is always visible
+  // This prevents jank and ensures reliability on refresh
 
   return (
     <footer key="site-footer" className={cn(colors.footer.bg, colors.footer.text.primary, 'border-t', colors.footer.border)} suppressHydrationWarning>
       <div className="container py-12 md:py-16">
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isVisible ? "visible" : "hidden"}
-        >
-          <motion.div variants={itemVariants} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+          <div className="space-y-4">
             <Logo variant="light" showText={true} size="md" animated={true} logoData={data?.logo} />
             <p className={cn(typography.small, colors.footer.text.secondary, 'max-w-xs')}>
               {footerData.company?.description}
@@ -242,9 +179,9 @@ const Footer = ({ data }: FooterProps) => {
                 </div>
               </div>
             )}
-          </motion.div>
+          </div>
 
-          <motion.div variants={itemVariants}>
+          <div>
             <h4 className={cn('font-semibold mb-3', colors.footer.text.heading)}>{footerData.servicesHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.servicesLinks.map((link) => (
@@ -255,9 +192,9 @@ const Footer = ({ data }: FooterProps) => {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
-          <motion.div variants={itemVariants}>
+          <div>
             <h4 className={cn('font-semibold mb-3', colors.footer.text.heading)}>{footerData.resourcesHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.resourcesLinks.map((link) => (
@@ -268,9 +205,9 @@ const Footer = ({ data }: FooterProps) => {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
-          <motion.div variants={itemVariants}>
+          <div>
             <h4 className={cn('font-semibold mb-3', colors.footer.text.heading)}>{footerData.quickLinksHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.quickLinks.map((link) => (
@@ -281,9 +218,9 @@ const Footer = ({ data }: FooterProps) => {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
-          <motion.div variants={itemVariants}>
+          <div>
             <h4 className={cn('font-semibold mb-3', colors.footer.text.heading)}>{footerData.contactHeading}</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start space-x-2">
@@ -310,15 +247,10 @@ const Footer = ({ data }: FooterProps) => {
                 </span>
               </li>
             </ul>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        <motion.div
-          className={cn('mt-8 pt-8 border-t', colors.footer.border)}
-          initial={{ opacity: 0 }}
-          animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-        >
+        <div className={cn('mt-8 pt-8 border-t', colors.footer.border)}>
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className={cn(typography.small, colors.footer.text.muted)}>
               {footerData.copyright?.replace('{year}', new Date().getFullYear().toString())}
@@ -334,7 +266,7 @@ const Footer = ({ data }: FooterProps) => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );

@@ -1,10 +1,9 @@
 "use client";
 
-import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePrefersReducedMotion } from '@/lib/motion';
+import { SafeMotion, stagger } from '@/components/ui/safe-motion';
 import { Industry, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
 
 interface IndustriesProps {
@@ -21,8 +20,6 @@ interface IndustriesProps {
 }
 
 export default function Industries({ data, sectionData }: IndustriesProps) {
-  const prefersReducedMotion = usePrefersReducedMotion();
-
   const industriesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
   if (!industriesData || industriesData.length === 0) return null;
 
@@ -39,13 +36,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
     <section className="py-24 md:py-32 bg-slate-50 dark:bg-slate-950">
       <div className="container">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: prefersReducedMotion ? 0 : 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16 md:mb-20"
-        >
+        <SafeMotion y={20} className="text-center mb-16 md:mb-20">
           {eyebrow && (
             <p className="text-sm font-semibold text-blue-600 uppercase tracking-[0.2em] mb-4">
               {eyebrow}
@@ -69,9 +60,9 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
               {description}
             </p>
           )}
-        </motion.div>
+        </SafeMotion>
 
-        {/* Industries Grid - Dramatic Full-Height Cards */}
+        {/* Industries Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {industriesData.slice(0, 3).map((industry, index) => {
             const imageUrl = typeof industry.image === 'string'
@@ -79,20 +70,14 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
               : (industry.image as { asset?: { url?: string } } | undefined)?.asset?.url || null;
 
             return (
-              <motion.div
+              <SafeMotion
                 key={industry.title}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: prefersReducedMotion ? 0 : 0.8,
-                  delay: prefersReducedMotion ? 0 : index * 0.15,
-                }}
-                viewport={{ once: true, margin: "-50px" }}
+                y={30}
+                delay={stagger(index)}
                 className="group"
               >
                 <Link href={industry.href || '#'} className="block">
                   <div className="relative aspect-[3/4] md:aspect-[2/3] rounded-3xl overflow-hidden">
-                    {/* Background Image */}
                     {imageUrl && (
                       <Image
                         src={imageUrl}
@@ -102,13 +87,8 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                         sizes="(max-width: 768px) 100vw, 33vw"
                       />
                     )}
-
-                    {/* Dramatic Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-500" />
-
-                    {/* Content */}
                     <div className="absolute bottom-0 left-0 right-0 p-8">
-                      {/* Feature Tags */}
                       {industry.features && industry.features.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-4">
                           {industry.features.slice(0, 3).map((feature, i: number) => {
@@ -124,32 +104,22 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                           })}
                         </div>
                       )}
-
-                      {/* Title */}
                       <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 group-hover:translate-x-2 transition-transform duration-300">
                         {industry.title}
                       </h3>
-
-                      {/* Description */}
                       <p className="text-slate-300 text-sm md:text-base line-clamp-2 mb-6">
                         {industry.description}
                       </p>
-
-                      {/* CTA - Text controlled via Sanity CMS */}
                       <div className="flex items-center gap-2 text-blue-400 font-semibold">
                         <span>{cardCtaText}</span>
                         <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
                       </div>
                     </div>
-
-                    {/* Hover Border Glow */}
                     <div className="absolute inset-0 rounded-3xl border-2 border-transparent group-hover:border-blue-500/40 transition-colors duration-500 pointer-events-none" />
-
-                    {/* Corner Accent */}
                     <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
                 </Link>
-              </motion.div>
+              </SafeMotion>
             );
           })}
         </div>

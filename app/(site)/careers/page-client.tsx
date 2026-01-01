@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { SafeMotion, stagger } from '@/components/ui/safe-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
@@ -101,12 +101,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       <section className={spacing.section}>
         <div className={spacing.container}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
+            <SafeMotion x={-20}>
               <h2 className={cn(typography.h2, "mb-6")}>{data?.whyWorkHere?.heading || 'Why Work at IIS?'}</h2>
               <p className={cn(typography.lead, "mb-6")}>
                 {data?.whyWorkHere?.paragraph1 || 'Join a team committed to excellence in precision manufacturing.'}
@@ -117,15 +112,9 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               <p className={cn(typography.body, "text-slate-600")}>
                 {data?.whyWorkHere?.paragraph3 || 'Grow your career with ongoing training and development opportunities.'}
               </p>
-            </motion.div>
+            </SafeMotion>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
+            <SafeMotion x={20} delay={0.1} className="relative">
               {(() => {
                 const imageUrl = urlFor(data?.whyWorkHere?.image) || (data as any)?.whyWorkHere?.imageUrl;
                 return imageUrl && (
@@ -136,7 +125,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                   />
                 );
               })()}
-            </motion.div>
+            </SafeMotion>
           </div>
         </div>
       </section>
@@ -144,18 +133,12 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       {/* Benefits Section */}
       <section className={styles.sectionLight}>
         <div className={spacing.container}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
+          <SafeMotion y={20} className="text-center mb-16">
             <h2 className={cn(typography.h2, "mb-6")}>{data?.benefits?.title || 'Comprehensive Benefits Package'}</h2>
             <p className={cn(typography.lead, "max-w-3xl mx-auto")}>
               {data?.benefits?.description || 'We take care of our team members with industry-leading benefits and perks.'}
             </p>
-          </motion.div>
+          </SafeMotion>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {(data?.benefits?.items || [])
@@ -163,13 +146,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               .map((benefit: any, index: number) => {
               const Icon = iconMap[benefit.iconName] || Users;
               return (
-                <motion.div
-                  key={benefit.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
-                >
+                <SafeMotion key={benefit.title} y={20} delay={stagger(index)}>
                   <Card className={cn(styles.featureCard, "h-full")}>
                     <div className="flex items-start">
                       <div className="flex-shrink-0">
@@ -183,7 +160,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                       </div>
                     </div>
                   </Card>
-                </motion.div>
+                </SafeMotion>
               );
             })}
           </div>
@@ -193,35 +170,23 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       {/* Company Values */}
       <section className={spacing.section}>
         <div className={spacing.container}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
+          <SafeMotion y={20} className="text-center mb-16">
             <h2 className={cn(typography.h2, "mb-6")}>{data?.values?.title || 'Our Values'}</h2>
             <p className={cn(typography.lead, "max-w-3xl mx-auto")}>
               {data?.values?.description || 'The principles that guide everything we do.'}
             </p>
-          </motion.div>
+          </SafeMotion>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {(data?.values?.items || [])
               .filter((value: any) => value?.enabled !== false)
               .map((value: any, index: number) => (
-              <motion.div
-                key={value.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-              >
+              <SafeMotion key={value.title} y={20} delay={stagger(index)}>
                 <Card className={cn(styles.featureCard)}>
                   <h3 className={cn(typography.h4, "mb-3")}>{value.title}</h3>
                   <p className={cn(typography.body, "text-slate-600")}>{value.description}</p>
                 </Card>
-              </motion.div>
+              </SafeMotion>
             ))}
           </div>
         </div>
@@ -230,29 +195,17 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       {/* Current Opportunities */}
       <section id="opportunities" className={styles.sectionLight}>
         <div className={spacing.container}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
+          <SafeMotion y={20} className="text-center mb-16">
             <h2 className={cn(typography.h2, "mb-6")}>{data?.opportunities?.title || 'Current Opportunities'}</h2>
             <p className={cn(typography.lead, "max-w-3xl mx-auto")}>
               {data?.opportunities?.description || 'Explore open positions and join our team.'}
             </p>
-          </motion.div>
+          </SafeMotion>
 
           {jobPostings.length > 0 ? (
             <div className="space-y-6">
               {jobPostings.map((position: any, index: number) => (
-                <motion.div
-                  key={position._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
-                >
+                <SafeMotion key={position._id} y={20} delay={stagger(index)}>
                   <Link href={`/careers/${position.slug?.current || position.slug}`} className="block">
                     <Card className={cn(styles.featureCard, "group hover:shadow-xl transition-shadow cursor-pointer")}>
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -295,7 +248,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                       </div>
                     </Card>
                   </Link>
-                </motion.div>
+                </SafeMotion>
               ))}
             </div>
           ) : (
@@ -314,13 +267,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       {/* CTA Section */}
       <section className={spacing.section}>
         <div className={spacing.container}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center max-w-4xl mx-auto"
-          >
+          <SafeMotion y={20} className="text-center max-w-4xl mx-auto">
             <h2 className={cn(typography.h2, "mb-6")}>{data?.cta?.title || 'Ready to Join Us?'}</h2>
             <p className={cn(typography.lead, "mb-8")}>
               {data?.cta?.description || 'Take the next step in your career. We look forward to hearing from you.'}
@@ -342,7 +289,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                 </Button>
               ))}
             </div>
-          </motion.div>
+          </SafeMotion>
         </div>
       </section>
     </div>
