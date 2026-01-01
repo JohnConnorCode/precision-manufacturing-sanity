@@ -45,9 +45,12 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
   const theme = useTheme();
 
   return (
-    <main className="min-h-screen bg-white dark:bg-slate-950">
+    <div className="min-h-screen bg-white dark:bg-slate-950">
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex items-end">
+      <section
+        data-hero-section="dark"
+        className="relative min-h-[70vh] flex items-end -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]"
+      >
         {/* Background Image */}
         {data.heroImage && (
           <div className="absolute inset-0">
@@ -344,6 +347,6 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
           </motion.div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

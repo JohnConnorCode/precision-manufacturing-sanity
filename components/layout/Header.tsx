@@ -152,24 +152,39 @@ export default function Header({ data }: HeaderProps) {
 
   // Hero section detection - transparent header over dark hero sections
   useEffect(() => {
-    const darkHeroSection = document.querySelector('[data-hero-section="dark"]');
-    if (!darkHeroSection) {
-      setIsOverHero(false);
-      setHeroDetected(true);
-      return;
-    }
+    // Small delay to ensure hero component has rendered
+    const detectHero = () => {
+      const darkHeroSection = document.querySelector('[data-hero-section="dark"]');
+      if (!darkHeroSection) {
+        setIsOverHero(false);
+        setHeroDetected(true);
+        return null;
+      }
 
-    const handleHeroScroll = () => {
-      const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
-      setIsOverHero(heroBottom > 120);
+      const handleHeroScroll = () => {
+        const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
+        setIsOverHero(heroBottom > 120);
+      };
+
+      const throttledHeroScroll = throttleRAF(handleHeroScroll);
+      handleHeroScroll();
+      setHeroDetected(true);
+
+      window.addEventListener('scroll', throttledHeroScroll, { passive: true });
+      return () => window.removeEventListener('scroll', throttledHeroScroll);
     };
 
-    const throttledHeroScroll = throttleRAF(handleHeroScroll);
-    handleHeroScroll();
-    setHeroDetected(true); // Mark detection complete after first check
+    // Try immediately, then retry after a short delay if no hero found
+    let cleanup = detectHero();
 
-    window.addEventListener('scroll', throttledHeroScroll, { passive: true });
-    return () => window.removeEventListener('scroll', throttledHeroScroll);
+    if (!cleanup) {
+      const retryTimeout = setTimeout(() => {
+        cleanup = detectHero();
+      }, 100);
+      return () => clearTimeout(retryTimeout);
+    }
+
+    return cleanup;
   }, [pathname]);
 
   const listJustify = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'
