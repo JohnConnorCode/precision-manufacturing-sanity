@@ -17,6 +17,7 @@ import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { typography } from '@/lib/design-system';
+import { throttleRAF } from '@/lib/performance';
 
 // Child menu item type
 interface ChildMenuItem {
@@ -102,8 +103,7 @@ export default function Header({ data }: HeaderProps) {
   const align: 'left' | 'center' | 'right' = navStyles.alignment || 'left';
   const density: 'comfortable' | 'compact' = navStyles.density || 'comfortable';
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isOverHero, setIsOverHero] = useState(false); // Start false to prevent flash on non-hero pages
-  const [heroDetected, setHeroDetected] = useState(false); // Track if initial hero detection is done
+  const [isOverHero, setIsOverHero] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const pathname = usePathname();
@@ -132,54 +132,41 @@ export default function Header({ data }: HeaderProps) {
     setShowAnnouncement(shouldShow);
   }, [announcement]);
 
-  // Combined scroll handler for both header state and hero detection
-  // Using a single listener prevents race conditions and ensures cleanup
+  // Optimized scroll handler with requestAnimationFrame throttling
+  // This reduces re-renders from ~60/sec to ~16/sec (60fps)
   useEffect(() => {
-    let rafId: number | null = null;
-    let heroElement: Element | null = null;
-
     const handleScroll = () => {
-      if (rafId) return;
-      rafId = requestAnimationFrame(() => {
-        // Update scroll state
-        const scrollY = window.scrollY;
-        setIsScrolled(scrollY > 10);
-
-        // Update hero state if hero exists
-        if (heroElement) {
-          const heroBottom = heroElement.getBoundingClientRect().bottom;
-          setIsOverHero(heroBottom > 120);
-        }
-        rafId = null;
-      });
+      setIsScrolled(window.scrollY > 10);
     };
 
-    // Find hero element (with retry for hydration)
-    const findHero = () => {
-      heroElement = document.querySelector('[data-hero-section="dark"]');
-      if (heroElement) {
-        const heroBottom = heroElement.getBoundingClientRect().bottom;
-        setIsOverHero(heroBottom > 120);
-      } else {
-        setIsOverHero(false);
-      }
-      setHeroDetected(true);
+    // Use requestAnimationFrame throttling for optimal scroll performance
+    const throttledScroll = throttleRAF(handleScroll);
+
+    // Set initial state
+    handleScroll();
+
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+    return () => window.removeEventListener('scroll', throttledScroll);
+  }, []);
+
+  // Hero section detection - transparent header over dark hero sections
+  useEffect(() => {
+    const darkHeroSection = document.querySelector('[data-hero-section="dark"]');
+    if (!darkHeroSection) {
+      setIsOverHero(false);
+      return;
+    }
+
+    const handleHeroScroll = () => {
+      const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
+      setIsOverHero(heroBottom > 120);
     };
 
-    // Set initial states
-    setIsScrolled(window.scrollY > 10);
-    findHero();
+    const throttledHeroScroll = throttleRAF(handleHeroScroll);
+    handleHeroScroll();
 
-    // Retry hero detection after hydration
-    const retryTimeout = setTimeout(findHero, 150);
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(retryTimeout);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
+    window.addEventListener('scroll', throttledHeroScroll, { passive: true });
+    return () => window.removeEventListener('scroll', throttledHeroScroll);
   }, [pathname]);
 
   const listJustify = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'
@@ -227,11 +214,7 @@ export default function Header({ data }: HeaderProps) {
     : `bg-transparent text-slate-700 dark:text-slate-100 ${gradientBorder}`;
 
   const headerClass = cn(
-    'fixed z-[140] w-full',
-    // Position below top bar on desktop initially, move to top-0 when scrolled past top bar
-    isScrolled ? 'top-0' : 'lg:top-10 top-0',
-    // Only apply transitions after initial hero detection to prevent flash
-    heroDetected ? 'transition-all duration-300' : '',
+    'fixed z-[140] w-full transition-all duration-500 top-0',
     inHeroMode
       ? 'bg-slate-950/20 backdrop-blur-sm border-b border-white/10'
       : isScrolled
@@ -292,10 +275,14 @@ export default function Header({ data }: HeaderProps) {
         </aside>
       )}
 
-      {/* Top Info Bar - Static position, elegant dark design */}
+      {/* Top Info Bar - Fixed position on desktop, elegant dark design */}
       {topBar && (
       <aside
-        className="hidden lg:block w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50"
+        className={cn(
+          "hidden lg:block w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50",
+          "fixed z-[150]", // Fixed position, between announcement (z-160) and header (z-140)
+          showAnnouncement && announcement?.enabled ? "top-10" : "top-0"
+        )}
         role="complementary"
         aria-label="Contact information"
       >
@@ -328,13 +315,22 @@ export default function Header({ data }: HeaderProps) {
 
       {/* Main Navigation */}
       <header
-        className={headerClass}
+        className={cn(
+          headerClass,
+          // Desktop: header always below top info bar (top-10 = 40px)
+          // Then add extra offset if announcement is also shown (top-20 = 80px)
+          topBar ? (
+            showAnnouncement && announcement?.enabled ? 'lg:top-20' : 'lg:top-10'
+          ) : (
+            showAnnouncement && announcement?.enabled ? 'top-10' : ''
+          )
+        )}
         suppressHydrationWarning
       >
         <nav className="container flex h-20 items-center justify-between gap-4" suppressHydrationWarning>
           <Link href="/" className="flex items-center space-x-2 flex-shrink-0" aria-label="IIS - Integrated Inspection Systems Home">
             <Logo
-              className="h-10 sm:h-11 md:h-12 w-auto"
+              className="h-12 sm:h-14 md:h-16 w-auto"
               logoData={data?.logo}
               animated={true}
               variant={inHeroMode ? 'light' : 'default'}
@@ -343,7 +339,11 @@ export default function Header({ data }: HeaderProps) {
 
           {/* Desktop Navigation - Click-based Dropdowns */}
           <nav className="hidden lg:flex items-center justify-center flex-1">
-            <div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: mounted ? 1 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
             <ul className={cn('flex list-none items-center space-x-2', listJustify)}>
               {navigation.map((item: MenuItem, index: number) => {
                 const children = Array.isArray(item.children)
@@ -366,8 +366,11 @@ export default function Header({ data }: HeaderProps) {
                 const hasRealHref = href && href !== '/' && href !== '#'
 
                 return (
-                  <li
+                  <motion.li
                     key={item.name}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : -10 }}
+                    transition={{ duration: 0.4, delay: mounted ? 0.1 + index * 0.05 : 0, ease: "easeOut" }}
                     className={itemClasses}
                   >
                     {hasChildren ? (
@@ -492,15 +495,20 @@ export default function Header({ data }: HeaderProps) {
                           </Link>
                       )
                     )}
-                  </li>
+                  </motion.li>
                 )
               })}
             </ul>
-            </div>
+            </motion.div>
           </nav>
 
           {/* Desktop CTA + Theme Toggle */}
-          <div className="hidden lg:flex items-center space-x-2">
+          <motion.div
+            className="hidden lg:flex items-center space-x-2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: mounted ? 1 : 0, x: mounted ? 0 : 20 }}
+            transition={{ duration: 0.5, delay: mounted ? 0.6 : 0, ease: "easeOut" }}
+          >
             {/* Theme Toggle */}
             {mounted && <ThemeToggle />}
 
@@ -521,7 +529,7 @@ export default function Header({ data }: HeaderProps) {
                 </PremiumButton>
               </Link>
             )}
-          </div>
+          </motion.div>
 
           {/* Mobile/More Menu - Shows below lg (1024px) OR as "More" button on lg-xl */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -632,7 +640,7 @@ export default function Header({ data }: HeaderProps) {
                         >
                           {children.length > 0 ? (
                             <div className="space-y-1">
-                              <div className="px-3 py-2.5 font-semibold text-base text-slate-900 dark:text-white">
+                              <div className="px-3 py-2.5 font-bold text-lg text-slate-900 dark:text-white">
                                 <span className="inline-flex items-center gap-3">
                                   {IconFor(item?.iconName)}
                                   {item.name}
@@ -670,7 +678,7 @@ export default function Header({ data }: HeaderProps) {
                               rel={rel}
                               onClick={() => setMobileMenuOpen(false)}
                               className={cn(
-                                "flex items-center gap-3 px-3 py-2.5 rounded-lg font-semibold text-base transition-colors",
+                                "flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-lg transition-colors",
                                 "text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800",
                                 pathname === href && 'bg-slate-100 dark:bg-slate-800'
                               )}

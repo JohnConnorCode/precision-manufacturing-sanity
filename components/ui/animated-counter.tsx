@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
 import { usePrefersReducedMotion } from '@/lib/motion'
-import { SafeMotion, stagger } from '@/components/ui/safe-motion'
 
 interface AnimatedCounterProps {
   value: number
@@ -81,11 +80,16 @@ export function StatsCounter({ stats, className = "" }: StatsCounterProps) {
   return (
     <div className={`grid grid-cols-2 md:grid-cols-4 gap-8 ${className}`}>
       {stats.map((stat, index) => (
-        <SafeMotion
+        <motion.div
           key={stat.label}
-          y={prefersReducedMotion ? 0 : 30}
-          delay={stagger(index, 100)}
-          disabled={prefersReducedMotion}
+          initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{
+            duration: prefersReducedMotion ? 0 : 0.6,
+            delay: prefersReducedMotion ? 0 : index * 0.1,
+            ease: [0.25, 0.1, 0.25, 1]
+          }}
           className="text-center"
         >
           <div className="text-4xl md:text-5xl font-black mb-2">
@@ -100,7 +104,7 @@ export function StatsCounter({ stats, className = "" }: StatsCounterProps) {
           <div className="text-sm text-slate-400 uppercase tracking-wider">
             {stat.label}
           </div>
-        </SafeMotion>
+        </motion.div>
       ))}
     </div>
   )

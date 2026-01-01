@@ -1,3 +1,4 @@
+ 
 "use client";
 
 import React from 'react';
@@ -6,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import HeroSliderFixed from '@/components/ui/hero-slider-fixed';
-import { SafeMotion, stagger } from '@/components/ui/safe-motion';
+import { usePrefersReducedMotion } from '@/lib/motion';
 import { colorStyleToCSS, getOverlayStyles, getButtonStyles, ColorStyle } from '@/lib/sanity-styles';
 
 interface HeroData {
@@ -61,6 +62,9 @@ interface HeroProps {
 }
 
 export default function Hero({ data }: HeroProps) {
+  // Disable parallax scroll effects to avoid hydration issues
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   // Use static motion values instead of scroll-based transforms
   const textY = 0;
   const textOpacity = 1;
@@ -98,8 +102,8 @@ export default function Hero({ data }: HeroProps) {
   const word2 = data?.word2?.trim() || '';
   const word3 = data?.word3?.trim() || '';
 
-  // Hero font size - professional sizes for B2B manufacturing site
-  const heroFontSize = data?.heroFontSize || 'text-[2.25rem] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[3.75rem] xl:text-[4.25rem]';
+  // Hero font size - optimized for all screen sizes (increased for better impact)
+  const heroFontSize = data?.heroFontSize || 'text-[2.5rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem] xl:text-[4.5rem]';
   const tagline = data?.tagline?.trim() || '';
 
   // Handle both string badges and object badges from Sanity
@@ -152,12 +156,15 @@ export default function Hero({ data }: HeroProps) {
         <div className="max-w-5xl mx-auto">
           <div className="text-center">
 
-            {/* Three-Word Hero Title */}
+            {/* Three-Word Hero Title - Clean Sequential Animation */}
             <div className="mb-4">
+              {/* Word 1 */}
               {word1 && (
-                <SafeMotion
-                  y={20}
-                  delay={0.1}
+                <motion.span
+                  initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
                     color: titleColor,
@@ -165,12 +172,15 @@ export default function Hero({ data }: HeroProps) {
                   }}
                 >
                   {word1.toUpperCase()}
-                </SafeMotion>
+                </motion.span>
               )}
+              {/* Word 2 */}
               {word2 && (
-                <SafeMotion
-                  y={20}
-                  delay={0.25}
+                <motion.span
+                  initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.25, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
                     color: titleColor,
@@ -178,12 +188,15 @@ export default function Hero({ data }: HeroProps) {
                   }}
                 >
                   {word2.toUpperCase()}
-                </SafeMotion>
+                </motion.span>
               )}
+              {/* Word 3 with gradient */}
               {word3 && (
-                <SafeMotion
-                  y={20}
-                  delay={0.4}
+                <motion.span
+                  initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={
                     titleHighlightColor
@@ -201,21 +214,23 @@ export default function Hero({ data }: HeroProps) {
                   }
                 >
                   {word3.toUpperCase()}
-                </SafeMotion>
+                </motion.span>
               )}
             </div>
 
             {/* Tagline */}
-            <SafeMotion y={15} delay={0.6}>
-              <h1
-                className="text-lg sm:text-xl md:text-2xl font-light leading-[1.3] tracking-normal mb-8"
-                style={{ color: descriptionColor }}
-              >
-                {tagline}
-              </h1>
-            </SafeMotion>
+            <motion.h1
+              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
+              className="text-lg sm:text-xl md:text-2xl font-light leading-[1.3] tracking-normal mb-8"
+              style={{ color: descriptionColor }}
+            >
+              {tagline}
+            </motion.h1>
 
-            {/* Capabilities - Staggered badges */}
+            {/* Capabilities - Clean Sequential Badges */}
             <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-12 max-w-3xl mx-auto">
               {badges.map((badge, index) => {
                 const badgeStyle: React.CSSProperties = {
@@ -229,22 +244,33 @@ export default function Hero({ data }: HeroProps) {
                 }
 
                 return (
-                  <SafeMotion
+                  <motion.span
                     key={`${badge}-${index}`}
-                    y={10}
-                    delay={stagger(index, 100, 800)}
+                    initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      delay: 0.8 + (index * 0.1),
+                      duration: 0.5,
+                      ease: "easeOut"
+                    }}
                     className="px-3 md:px-5 py-1.5 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold border backdrop-blur-md whitespace-nowrap"
                     style={badgeStyle}
                   >
                     {badge}
-                  </SafeMotion>
+                  </motion.span>
                 );
               })}
             </div>
 
-            {/* CTA Button */}
+            {/* CTA Button - Single Clean Animation */}
             {primaryCta && (
-              <SafeMotion y={15} delay={1.0}>
+              <motion.div
+                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 1.0, duration: 0.5, ease: "easeOut" }}
+              >
                 <Button
                   size="lg"
                   className="group font-semibold px-10 h-14 text-lg rounded-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
@@ -264,7 +290,7 @@ export default function Hero({ data }: HeroProps) {
                     <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </Button>
-              </SafeMotion>
+              </motion.div>
             )}
 
           </div>
@@ -272,15 +298,27 @@ export default function Hero({ data }: HeroProps) {
       </motion.div>
 
       {/* Smooth Scroll Indicator */}
-      <SafeMotion y={0} delay={1.4} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 1.4, duration: 0.5, ease: "easeOut" }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
+      >
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: [0.33, 1, 0.68, 1] }}
+          animate={prefersReducedMotion ? {} : {
+            y: [0, 8, 0],
+          }}
+          transition={prefersReducedMotion ? {} : {
+            duration: 2,
+            repeat: Infinity,
+            ease: [0.33, 1, 0.68, 1]
+          }}
           className="text-white/50 hover:text-white/70 transition-colors cursor-pointer"
         >
           <ChevronDown className="h-6 w-6" />
         </motion.div>
-      </SafeMotion>
+      </motion.div>
     </section>
   );
 }

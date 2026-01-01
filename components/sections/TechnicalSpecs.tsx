@@ -1,10 +1,12 @@
 "use client";
 
 import { Gauge, Cpu, Shield, Target, Award, Clock, Activity, Zap, CheckCircle2, Calendar, LucideIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
 import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, hexToRgba } from '@/lib/theme-utils';
-import { SafeMotion, stagger } from '@/components/ui/safe-motion';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 
 interface TechnicalSpecsData {
   title?: string;
@@ -25,6 +27,7 @@ interface TechnicalSpecsProps {
 
 export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
   const theme = useTheme();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Icon mapping for CMS data
   const iconMap: Record<string, LucideIcon> = {
@@ -89,12 +92,16 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           {metrics.map((metric, index) => {
             const Icon = metric.icon || Gauge;
+            const headerDelay = SECTION_CONFIGS.metricsGrid.headerCompletion;
+            const metricDelay = headerDelay + SECTION_CONFIGS.metricsGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
 
             return (
-              <SafeMotion
+              <motion.div
                 key={metric.label}
-                y={20}
-                delay={stagger(index)}
+                initial={getInitialState(prefersReducedMotion)}
+                whileInView={getAnimateState(metricDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
                 className="group relative"
               >
                 <div
@@ -146,7 +153,7 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
                     style={getGradientStyle(theme.colors)}
                   />
                 </div>
-              </SafeMotion>
+              </motion.div>
             );
           })}
         </div>

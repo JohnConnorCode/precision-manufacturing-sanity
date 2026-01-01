@@ -8,7 +8,6 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 import { colorStyleToCSS, getOverlayStyles, ColorStyle } from '@/lib/sanity-styles';
-import { SafeMotion } from '@/components/ui/safe-motion';
 
 interface HeroButton {
   label: string;
@@ -119,15 +118,14 @@ export default function HeroSection({
     right: 'text-right items-end'
   };
 
-  // Professional font sizes for B2B manufacturing site - reduced from oversized defaults
   const titleSizeClasses: Record<string, string> = {
-    xs: 'text-xl sm:text-2xl md:text-3xl lg:text-4xl',
-    sm: 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl',
-    base: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
-    lg: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl',
-    xl: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl',
-    '2xl': 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl',
-    '3xl': 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl',
+    xs: 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl',
+    sm: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
+    base: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl',
+    lg: 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[5.5rem]',
+    xl: 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6rem]',
+    '2xl': 'text-6xl sm:text-7xl md:text-8xl lg:text-[6rem]',
+    '3xl': 'text-7xl sm:text-8xl md:text-[6rem] lg:text-[7rem]',
   };
   const descSizeClasses: Record<string, string> = {
     xs: 'text-sm',
@@ -209,7 +207,12 @@ export default function HeroSection({
         )}>
           {/* Badge */}
           {badge && (
-            <SafeMotion y={-20} delay={0.2} className="mb-8">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="mb-8"
+            >
               <span
                 className="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium backdrop-blur-sm"
                 style={{
@@ -223,16 +226,16 @@ export default function HeroSection({
                 {BadgeIcon && <BadgeIcon className="w-3 h-3 mr-2" />}
                 {badge.text}
               </span>
-            </SafeMotion>
+            </motion.div>
           )}
 
           {/* Title */}
-          <SafeMotion
-            y={40}
-            delay={0.4}
-            duration={0.8}
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
             className={cn(
-              titleSize ? titleSizeClasses[titleSize] : 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
+              titleSize ? titleSizeClasses[titleSize] : 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl',
               'font-extrabold mb-6 tracking-tight uppercase'
             )}
             style={{ color: defaultTitleColor }}
@@ -242,27 +245,27 @@ export default function HeroSection({
             ) : (
               title
             )}
-          </SafeMotion>
+          </motion.h1>
 
           {/* Subtitle */}
           {subtitle && (
-            <SafeMotion
-              y={30}
-              delay={0.6}
-              duration={0.8}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
               className="text-xl sm:text-2xl md:text-3xl mb-4 font-light"
               style={{ color: defaultSubtitleColor }}
             >
               {subtitle}
-            </SafeMotion>
+            </motion.div>
           )}
 
           {/* Description */}
           {description && (
-            <SafeMotion
-              y={20}
-              delay={0.8}
-              duration={0.8}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
               className={cn(
                 descriptionSize ? descSizeClasses[descriptionSize] : 'text-base md:text-lg',
                 'mb-10 max-w-3xl'
@@ -270,15 +273,15 @@ export default function HeroSection({
               style={{ color: defaultDescColor }}
             >
               {description}
-            </SafeMotion>
+            </motion.div>
           )}
 
           {/* Buttons */}
           {buttons.length > 0 && (
-            <SafeMotion
-              y={20}
-              delay={1.0}
-              duration={0.8}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.0, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
               className={cn(
                 'flex flex-col sm:flex-row gap-5 sm:gap-6',
                 alignment === 'center' && 'justify-center',
@@ -327,14 +330,19 @@ export default function HeroSection({
                   </Button>
                 );
               })}
-            </SafeMotion>
+            </motion.div>
           )}
         </div>
       </motion.div>
 
       {/* Scroll Indicator */}
       {showScrollIndicator && (
-        <SafeMotion y={0} delay={2} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2, duration: 1 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
+        >
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{
@@ -346,7 +354,7 @@ export default function HeroSection({
           >
             <ChevronDown className="h-6 w-6" />
           </motion.div>
-        </SafeMotion>
+        </motion.div>
       )}
     </section>
   );

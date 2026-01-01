@@ -1,10 +1,12 @@
 "use client";
 
+import { motion } from 'framer-motion';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
 import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, getGradientTextStyle } from '@/lib/theme-utils';
-import { SafeMotion, stagger } from '@/components/ui/safe-motion';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { SECTION_CONFIGS, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { StatsData, StatItem } from '@/lib/types/cms';
 import { DotGridBackground } from '@/lib/background-patterns';
 
@@ -16,6 +18,7 @@ interface StatsProps {
 
 export default function Stats({ data }: StatsProps) {
   const theme = useTheme();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Use ONLY CMS data - return null if no data
   const statsArray = data?.items || data?.stats;
@@ -60,8 +63,19 @@ export default function Stats({ data }: StatsProps) {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((stat, index: number) => (
-            <SafeMotion key={index} scale={0.9} delay={stagger(index)} className="text-center">
+          {stats.map((stat, index: number) => {
+            const headerDelay = SECTION_CONFIGS.fourColumnGrid.headerCompletion;
+            const statDelay = headerDelay + SECTION_CONFIGS.fourColumnGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
+
+            return (
+              <motion.div
+                key={index}
+                initial={getScaleInitialState(prefersReducedMotion)}
+                whileInView={getScaleAnimateState(statDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
+                className="text-center"
+              >
               <div className="relative inline-block mb-3">
                 <div className="absolute inset-0 rounded-full blur-xl opacity-20" style={getGradientStyle(theme.colors)} />
                 <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg dark:shadow-slate-950/50">
@@ -78,8 +92,9 @@ export default function Stats({ data }: StatsProps) {
               <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 {stat.label}
               </p>
-            </SafeMotion>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

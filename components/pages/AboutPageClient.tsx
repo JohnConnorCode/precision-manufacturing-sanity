@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
@@ -9,7 +10,6 @@ import ParallaxImage from '@/components/ui/parallax-image';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
 import imageUrlBuilder from '@sanity/image-url';
 import { client } from '@/sanity/lib/client';
-import { SafeMotion, stagger } from '@/components/ui/safe-motion';
 
 const builder = imageUrlBuilder(client);
 
@@ -249,14 +249,22 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
       {Array.isArray(data.companyStats) && data.companyStats.length > 0 && (
         <section id="stats" className={`${styles.sectionLight} bg-slate-900/5`}>
           <div className={spacing.container}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-8"
+            >
               {data.companyStats
                 .filter((stat: CompanyStat) => stat?.enabled !== false)
                 .map((stat: CompanyStat, index: number) => (
-                <SafeMotion
+                <motion.div
                   key={`${stat?.label}-${index}`}
-                  y={20}
-                  delay={stagger(index, 100)}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  viewport={{ once: true }}
                   className="text-center"
                 >
                   <div className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2">
@@ -268,9 +276,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   <div className="text-sm text-slate-500 dark:text-slate-400">
                     {stat?.description}
                   </div>
-                </SafeMotion>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
       )}
@@ -279,7 +287,12 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
         <section className={spacing.section}>
           <div className={spacing.container}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <SafeMotion x={-20}>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+              >
                 {data.story?.title && (
                   <h2 className={cn(typography.h2, "mb-6")}>{data.story.title}</h2>
                 )}
@@ -288,17 +301,23 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                     <p key={index}>{paragraph}</p>
                   ))}
                 </div>
-              </SafeMotion>
+              </motion.div>
 
               {storyImage && (
-                <SafeMotion x={20} className="relative">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8 }}
+                  viewport={{ once: true }}
+                  className="relative"
+                >
                   <ParallaxImage
                     src={storyImage}
                     alt={data.story?.imageAlt || ''}
                     className="w-full h-96 rounded-xl object-cover shadow-xl"
                     speed={0.2}
                   />
-                </SafeMotion>
+                </motion.div>
               )}
             </div>
           </div>
@@ -308,7 +327,13 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
       {timelineMilestones.length > 0 && (
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
               {data.timeline?.title && (
                 <h2 className={cn(typography.h2, "mb-6")}>{data.timeline.title}</h2>
               )}
@@ -317,16 +342,18 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   {data.timeline.description}
                 </p>
               )}
-            </SafeMotion>
+            </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {timelineMilestones
                 .filter((milestone: Milestone) => milestone?.enabled !== false)
                 .map((milestone: Milestone, index: number) => (
-                <SafeMotion
+                <motion.div
                   key={`${milestone?.title}-${index}`}
-                  y={20}
-                  delay={stagger(index, 100)}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
+                  viewport={{ once: true }}
                 >
                   <Card className={cn(styles.featureCard, "h-full group")}>
                     {/* Year Badge */}
@@ -336,7 +363,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                     <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">{milestone?.title}</h3>
                     <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{milestone?.description}</p>
                   </Card>
-                </SafeMotion>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -346,7 +373,13 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
       {valuesItems.length > 0 && (
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
               {data.values?.title && (
                 <h2 className={cn(typography.h2, "mb-6")}>{data.values.title}</h2>
               )}
@@ -355,7 +388,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   {data.values.description}
                 </p>
               )}
-            </SafeMotion>
+            </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {valuesItems
@@ -370,10 +403,12 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   ];
                   const gradient = gradients[index % gradients.length];
                   return (
-                    <SafeMotion
+                    <motion.div
                       key={`${value?.title}-${index}`}
-                      y={20}
-                      delay={stagger(index, 100)}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
+                      viewport={{ once: true }}
                     >
                       <Card className={cn(styles.featureCard, "h-full group")}>
                         <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
@@ -382,7 +417,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                         <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">{value?.title}</h3>
                         <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">{value?.description}</p>
                       </Card>
-                    </SafeMotion>
+                    </motion.div>
                   );
                 })}
             </div>
@@ -393,12 +428,18 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
       {(capabilities.length > 0 || certifications.length > 0) && (
         <section id="capabilities" className={styles.sectionLight}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
               <h2 className={cn(typography.h2, "mb-4")}>Capabilities & Certifications</h2>
               <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
                 Advanced manufacturing capabilities backed by rigorous quality certifications
               </p>
-            </SafeMotion>
+            </motion.div>
 
             {/* Capabilities Grid - Full Width */}
             {capabilities.length > 0 && (
@@ -412,10 +453,12 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   ];
                   const gradient = gradients[index % gradients.length];
                   return (
-                    <SafeMotion
+                    <motion.div
                       key={`${capability?.title}-${index}`}
-                      y={20}
-                      delay={stagger(index, 100)}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
+                      viewport={{ once: true }}
                     >
                       <Card className="p-6 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 hover:shadow-lg h-full group">
                         <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
@@ -434,7 +477,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                           ))}
                         </div>
                       </Card>
-                    </SafeMotion>
+                    </motion.div>
                   );
                 })}
               </div>
@@ -442,8 +485,11 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
 
             {/* Certifications Section */}
             {certifications.length > 0 && (
-              <SafeMotion
-                y={20}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
                 className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 md:p-12"
               >
                 <div className="text-center mb-8">
@@ -455,15 +501,17 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
                   {certifications.map((cert: Certification, index: number) => (
-                    <SafeMotion
+                    <motion.div
                       key={`${cert?.certification}-${index}`}
-                      scale={0.9}
-                      delay={stagger(index, 50)}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: Math.min(index * 0.05, 0.3), duration: 0.4 }}
+                      viewport={{ once: true }}
                       className="flex flex-col items-center text-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300"
                     >
                       <Shield className="w-8 h-8 text-blue-400 mb-2" />
                       <span className="text-sm font-semibold text-white">{cert?.certification}</span>
-                    </SafeMotion>
+                    </motion.div>
                   ))}
                 </div>
 
@@ -473,7 +521,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                     <p className="text-slate-400">{data.certifications.commitmentDescription}</p>
                   </div>
                 )}
-              </SafeMotion>
+              </motion.div>
             )}
           </div>
         </section>
@@ -482,7 +530,13 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
       {leadershipMembers.length > 0 && (
         <section className={spacing.section}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
               {data.leadership?.title && (
                 <h2 className={cn(typography.h2, "mb-6")}>{data.leadership.title}</h2>
               )}
@@ -491,7 +545,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   {data.leadership.description}
                 </p>
               )}
-            </SafeMotion>
+            </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               {leadershipMembers
@@ -499,10 +553,12 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 .map((leader: LeadershipMember, index: number) => {
                   const photoUrl = urlFor(leader?.photo) || leader?.photoUrl || '';
                   return (
-                    <SafeMotion
+                    <motion.div
                       key={`${leader?.name}-${index}`}
-                      y={20}
-                      delay={stagger(index, 100)}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
+                      viewport={{ once: true }}
                     >
                       <Card className="overflow-hidden border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 hover:shadow-xl h-full group">
                         {/* Large Photo Header */}
@@ -538,7 +594,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                           )}
                         </div>
                       </Card>
-                    </SafeMotion>
+                    </motion.div>
                   );
                 })}
             </div>
@@ -549,7 +605,13 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
       {(data.cta?.title || data.cta?.description || ctaButtons.length > 0) && (
         <section className={spacing.section}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center max-w-4xl mx-auto"
+            >
               {data.cta?.title && (
                 <h2 className={cn(typography.h2, "mb-6")}>{data.cta.title}</h2>
               )}
@@ -576,7 +638,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   ))}
                 </div>
               )}
-            </SafeMotion>
+            </motion.div>
           </div>
         </section>
       )}

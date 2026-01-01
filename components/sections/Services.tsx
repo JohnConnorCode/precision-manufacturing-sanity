@@ -8,9 +8,10 @@ import Image from 'next/image';
 import SectionHeader from '@/components/ui/section-header';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { spacing, colors } from '@/lib/design-system';
+import { usePrefersReducedMotion } from '@/lib/motion';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getPrimaryColorStyle } from '@/lib/theme-utils';
-import { SafeMotion, stagger } from '@/components/ui/safe-motion';
+import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { Service, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
 import { DotGridBackground } from '@/lib/background-patterns';
 
@@ -51,6 +52,7 @@ interface ServicesProps {
 }
 
 export default function Services({ data, sectionData }: ServicesProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const theme = useTheme();
 
   // Use CMS data with text fallbacks for section headers
@@ -96,12 +98,16 @@ export default function Services({ data, sectionData }: ServicesProps) {
           {displayServices.map((service: Service, index: number) => {
             // Handle both CMS data (iconName) and hardcoded data (icon)
             const Icon = service.iconName ? (iconMap[service.iconName] || Cog) : (service.icon || Cog);
+            const baseDelay = SECTION_CONFIGS.fourColumnGrid.headerCompletion;
+            const cardDelay = baseDelay + SECTION_CONFIGS.fourColumnGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
 
             return (
-              <SafeMotion
+              <motion.div
                 key={service.title}
-                y={20}
-                delay={stagger(index)}
+                initial={getInitialState(prefersReducedMotion)}
+                whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
                 className="group"
               >
                 <Link href={service.href} className="block h-full">
@@ -181,21 +187,26 @@ export default function Services({ data, sectionData }: ServicesProps) {
                   </Card>
                   </motion.div>
                 </Link>
-              </SafeMotion>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Call to Action */}
         {ctaLink && (
-          <SafeMotion y={20} delay={0.5} className="text-center mt-16 md:mt-20">
+          <motion.div
+            initial={getInitialState(prefersReducedMotion)}
+            whileInView={getAnimateState(0.5, 0.6, prefersReducedMotion)}
+            viewport={getViewportConfig()}
+            className="text-center mt-16 md:mt-20"
+          >
             <Link href={ctaLink.href}>
               <PremiumButton size="lg">
                 {ctaLink.text}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </PremiumButton>
             </Link>
-          </SafeMotion>
+          </motion.div>
         )}
       </div>
     </section>

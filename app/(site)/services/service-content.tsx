@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { PremiumButton } from '@/components/ui/premium-button';
 import Image from 'next/image';
@@ -10,7 +11,8 @@ import SectionHeader from '@/components/ui/section-header';
 import HeroSection from '@/components/ui/hero-section';
 import { PortableTextContent } from '@/components/portable-text-components';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
-import { SafeMotion, stagger } from '@/components/ui/safe-motion';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { ArrowRight, CheckCircle, Settings, Shield, Zap, Cog, Target, FileText, Award, Activity, TrendingDown, Wrench, LucideIcon } from 'lucide-react';
 
 const iconMap: Record<string, LucideIcon> = {
@@ -214,6 +216,14 @@ interface ServiceContentProps {
 export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps) {
   const service = serviceData;
   const router = useRouter();
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const viewportConfig = getViewportConfig();
+  const initialState = getInitialState(prefersReducedMotion);
+  const createFade = (delay = 0, duration = 0.8) => getAnimateState(delay, duration, prefersReducedMotion);
+  const getStaggerDelay = (config: { headerCompletion?: number; getDelay: (index: number) => number }, index: number) => {
+    const headerDelay = config?.headerCompletion || 0;
+    return headerDelay + (config?.getDelay ? config.getDelay(index) : 0);
+  };
 
   const heroTitle = service.hero?.title || service.title;
   const heroImage =
@@ -330,33 +340,31 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       {capabilityStats.length > 0 && (
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
-            {/* Dynamic grid based on item count to prevent orphans */}
-            <div className={cn(
-                'grid gap-6 md:gap-8',
-                capabilityStats.length === 1 && 'grid-cols-1 max-w-md mx-auto',
-                capabilityStats.length === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
-                capabilityStats.length === 3 && 'grid-cols-1 md:grid-cols-3',
-                capabilityStats.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
-                capabilityStats.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
-                capabilityStats.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-                capabilityStats.length > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
-              )}
+            <motion.div
+              initial={initialState}
+              whileInView={createFade(0, 0.8)}
+              viewport={viewportConfig}
+              className={styles.grid4Col}
             >
-              {capabilityStats.map((capability: CapabilityStat, index: number) => (
-                <SafeMotion
-                  key={`${capability.label}-${capability.value}`}
-                  y={20}
-                  delay={stagger(index)}
-                  className="text-center"
-                >
-                  <div className={styles.statValue}>{capability.value}</div>
-                  <div className={cn(typography.badge, 'text-slate-700 dark:text-slate-300 mb-2')}>
-                    {capability.label}
-                  </div>
-                  <div className={typography.small}>{capability.description}</div>
-                </SafeMotion>
-              ))}
-            </div>
+              {capabilityStats.map((capability: CapabilityStat, index: number) => {
+                const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
+                return (
+                  <motion.div
+                    key={`${capability.label}-${capability.value}`}
+                    initial={initialState}
+                    whileInView={createFade(delay, 0.6)}
+                    viewport={viewportConfig}
+                    className="text-center"
+                  >
+                    <div className={styles.statValue}>{capability.value}</div>
+                    <div className={cn(typography.badge, 'text-slate-700 dark:text-slate-300 mb-2')}>
+                      {capability.label}
+                    </div>
+                    <div className={typography.small}>{capability.description}</div>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
           </div>
         </section>
       )}
@@ -366,7 +374,12 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         <section className="py-24 md:py-32 lg:py-20">
           <div className={spacing.container}>
             {(capabilitiesHeading || capabilitiesDescription) && (
-              <SafeMotion y={20} className="text-center mb-16">
+              <motion.div
+                initial={initialState}
+                whileInView={createFade(0, 0.8)}
+                viewport={viewportConfig}
+                className="text-center mb-16"
+              >
                 {capabilitiesHeading && (
                   <h2 className={cn(typography.h2, 'mb-6')}>{capabilitiesHeading}</h2>
                 )}
@@ -375,7 +388,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     {capabilitiesDescription}
                   </p>
                 )}
-              </SafeMotion>
+              </motion.div>
             )}
 
             <div className={styles.grid2Col}>
@@ -383,12 +396,14 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                 const CapIcon = capability.iconName ? (iconMap[capability.iconName] || Settings) : Settings;
                 const capImage = capability.image?.asset?.url || capability.imageUrl;
                 const capAlt = capability.image?.alt || capability.title || 'Capability';
+                const delay = getStaggerDelay(SECTION_CONFIGS.twoColumnGrid, index);
 
                 return (
-                  <SafeMotion
+                  <motion.div
                     key={capability.title}
-                    y={20}
-                    delay={stagger(index)}
+                    initial={initialState}
+                    whileInView={createFade(delay, 0.6)}
+                    viewport={viewportConfig}
                   >
                     <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 group h-full overflow-hidden">
                       {capImage && (
@@ -448,7 +463,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         )}
                       </div>
                     </Card>
-                  </SafeMotion>
+                  </motion.div>
                 );
               })}
             </div>
@@ -460,26 +475,27 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       {benefits.length > 0 && (
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-12">
+            <motion.div
+              initial={initialState}
+              whileInView={createFade(0, 0.8)}
+              viewport={viewportConfig}
+              className="text-center mb-12"
+            >
               <h2 className={cn(typography.h2, 'mb-4')}>Key Benefits</h2>
-            </SafeMotion>
+            </motion.div>
 
-            {/* Dynamic grid based on item count to prevent orphans */}
-            <div className={cn(
-              'grid gap-6 md:gap-8',
-              benefits.length === 1 && 'grid-cols-1 max-w-md mx-auto',
-              benefits.length === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
-              benefits.length === 3 && 'grid-cols-1 md:grid-cols-3',
-              benefits.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
-              benefits.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
-              benefits.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-              benefits.length > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
-            )}>
+            <div className={styles.grid4Col}>
               {benefits.map((benefit: Benefit, index: number) => {
                 const BenefitIcon = benefit.iconName ? (iconMap[benefit.iconName] || Award) : Award;
+                const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
 
                 return (
-                  <SafeMotion key={benefit.title} y={20} delay={stagger(index)}>
+                  <motion.div
+                    key={benefit.title}
+                    initial={initialState}
+                    whileInView={createFade(delay, 0.6)}
+                    viewport={viewportConfig}
+                  >
                     <Card className={cn(styles.featureCard, 'h-full text-center p-6')}>
                       <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
                         <BenefitIcon className="w-6 h-6 text-white" />
@@ -487,7 +503,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                       <h3 className={cn(typography.h5, 'mb-2')}>{benefit.title}</h3>
                       <p className={typography.small}>{benefit.description}</p>
                     </Card>
-                  </SafeMotion>
+                  </motion.div>
                 );
               })}
             </div>
@@ -498,21 +514,32 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       {serviceOfferings.length > 0 && (
         <section className="py-24 md:py-32 lg:py-20">
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={initialState}
+              whileInView={createFade(0, 0.8)}
+              viewport={viewportConfig}
+              className="text-center mb-16"
+            >
               <h2 className={cn(typography.h2, 'mb-6')}>{servicesHeading}</h2>
               <div className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 {servicesDescriptionNode}
               </div>
-            </SafeMotion>
+            </motion.div>
 
             <div className={styles.grid2Col}>
               {serviceOfferings.map((offering: ServiceOffering, index: number) => {
                 const OfferingIcon = offering.iconName ? (iconMap[offering.iconName] || Settings) : Settings;
                 const offeringImage = offering.image?.asset?.url || offering.imageUrl;
                 const offeringAlt = offering.image?.alt || offering.title || 'Service offering';
+                const delay = getStaggerDelay(SECTION_CONFIGS.twoColumnGrid, index);
 
                 return (
-                  <SafeMotion key={offering.title} y={20} delay={stagger(index)}>
+                  <motion.div
+                    key={offering.title}
+                    initial={initialState}
+                    whileInView={createFade(delay, 0.6)}
+                    viewport={viewportConfig}
+                  >
                     <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 group h-full overflow-hidden">
                       {offeringImage && (
                         <div className="relative h-64 overflow-hidden">
@@ -577,7 +604,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         )}
                       </div>
                     </Card>
-                  </SafeMotion>
+                  </motion.div>
                 );
               })}
             </div>
@@ -588,42 +615,45 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       {materials.length > 0 && (
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={initialState}
+              whileInView={createFade(0, 0.8)}
+              viewport={viewportConfig}
+              className="text-center mb-16"
+            >
               <h2 className={cn(typography.h2, 'mb-6')}>{materialsHeading}</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 {materialsDescription}
               </p>
-            </SafeMotion>
+            </motion.div>
 
-            {/* Dynamic grid based on item count to prevent orphans */}
-            <div className={cn(
-              'grid gap-6 md:gap-8',
-              materials.length === 1 && 'grid-cols-1 max-w-md mx-auto',
-              materials.length === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
-              materials.length === 3 && 'grid-cols-1 md:grid-cols-3',
-              materials.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
-              materials.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
-              materials.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-              materials.length > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
-            )}>
-              {materials.map((material: MaterialCategory, index: number) => (
-                <SafeMotion key={material.category} y={20} delay={stagger(index)}>
-                  <Card className={cn(styles.featureCard, 'h-full')}>
-                    <h3 className={cn(typography.h5, 'mb-3')}>{material.category}</h3>
+            <div className={styles.grid4Col}>
+              {materials.map((material: MaterialCategory, index: number) => {
+                const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
+                return (
+                  <motion.div
+                    key={material.category}
+                    initial={initialState}
+                    whileInView={createFade(delay, 0.6)}
+                    viewport={viewportConfig}
+                  >
+                    <Card className={cn(styles.featureCard, 'h-full')}>
+                      <h3 className={cn(typography.h5, 'mb-3')}>{material.category}</h3>
 
-                    {material.types && material.types.length > 0 && (
-                      <div className="mb-4 space-y-1">
-                        {material.types.map((type: MaterialType) => (
-                          <div key={type.type} className="flex items-center text-xs text-slate-600 dark:text-slate-400">
-                            <div className="w-1 h-1 bg-blue-500 rounded-full mr-2" />
-                            {type.type}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </Card>
-                </SafeMotion>
-              ))}
+                      {material.types && material.types.length > 0 && (
+                        <div className="mb-4 space-y-1">
+                          {material.types.map((type: MaterialType) => (
+                            <div key={type.type} className="flex items-center text-xs text-slate-600 dark:text-slate-400">
+                              <div className="w-1 h-1 bg-blue-500 rounded-full mr-2" />
+                              {type.type}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </Card>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -632,21 +662,32 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       {applications.length > 0 && (
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={initialState}
+              whileInView={createFade(0, 0.8)}
+              viewport={viewportConfig}
+              className="text-center mb-16"
+            >
               <h2 className={cn(typography.h2, 'mb-6')}>{applicationsHeading}</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 {applicationsDescription}
               </p>
-            </SafeMotion>
+            </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {applications.map((app: ApplicationItem, index: number) => {
                 const appImage = app.image?.asset?.url || app.imageUrl;
                 const appAlt = app.image?.alt || app.title || 'Application';
+                const delay = getStaggerDelay(SECTION_CONFIGS.threeColumnGrid, index);
                 const listLabel = app.listLabel || applicationsListLabel;
 
                 return (
-                  <SafeMotion key={app.title} y={20} delay={stagger(index)}>
+                  <motion.div
+                    key={app.title}
+                    initial={initialState}
+                    whileInView={createFade(delay, 0.6)}
+                    viewport={viewportConfig}
+                  >
                     <Card className={cn(styles.featureCard, 'h-full overflow-hidden')}>
                       {appImage && (
                         <div className="relative h-56 overflow-hidden">
@@ -686,7 +727,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         )}
                       </div>
                     </Card>
-                  </SafeMotion>
+                  </motion.div>
                 );
               })}
             </div>
@@ -695,47 +736,45 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {qualityStandards.length > 0 && (
-        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950">
+        <section className="py-24 md:py-32 lg:py-20 bg-slate-900">
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-16">
-              <h2 className={cn(typography.h2, 'mb-6 text-white')}>{qualityHeading}</h2>
+            <motion.div
+              initial={initialState}
+              whileInView={createFade(0, 0.8)}
+              viewport={viewportConfig}
+              className="text-center mb-12"
+            >
+              <h2 className={cn(typography.h2, 'mb-4 text-white')}>{qualityHeading}</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto text-slate-300')}>
                 {qualityDescription}
               </p>
-            </SafeMotion>
+            </motion.div>
 
-            <div className="grid gap-12 lg:grid-cols-2 items-start">
-              {/* Quality Standards Grid */}
-              <div className={cn(
-                'grid gap-4',
-                qualityStandards.length <= 3 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'
-              )}>
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-center">
+              <div className="space-y-4 text-center lg:text-left">
                 {qualityStandards.map((standard: QualityStandard, index: number) => {
+                  const delay = getStaggerDelay(SECTION_CONFIGS.twoColumnGrid, index);
                   const StandardIcon = standard.iconName ? (iconMap[standard.iconName] || Shield) : Shield;
                   return (
-                    <SafeMotion
+                    <motion.div
                       key={`${standard.title}-${index}`}
-                      y={20}
-                      delay={stagger(index)}
-                      className="flex items-start gap-4 p-5 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:border-slate-600 transition-colors"
+                      initial={initialState}
+                      whileInView={createFade(delay, 0.5)}
+                      viewport={viewportConfig}
+                      className="flex items-start gap-3"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-blue-600/20 flex items-center justify-center flex-shrink-0">
-                        <StandardIcon className="w-5 h-5 text-blue-400" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-white mb-1">{standard.title}</h4>
-                        {standard.description && (
-                          <p className="text-sm text-slate-400">{standard.description}</p>
-                        )}
-                      </div>
-                    </SafeMotion>
+                      <StandardIcon className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <p className={cn(typography.body, 'text-slate-200')}>
+                        {standard.title}
+                        {standard.description ? ` — ${standard.description}` : ''}
+                      </p>
+                    </motion.div>
                   );
                 })}
               </div>
 
-              {/* Quality Image */}
               {qualityImageSrc && (
-                <SafeMotion y={20} delay={0.3} className="relative h-[400px] rounded-2xl overflow-hidden">
+                <div className="relative h-[360px] rounded-2xl overflow-hidden">
                   <Image
                     src={qualityImageSrc}
                     alt={qualityImageAlt}
@@ -743,8 +782,8 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-950/30" />
-                </SafeMotion>
+                  <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/20 to-slate-950/60" />
+                </div>
               )}
             </div>
           </div>
@@ -754,41 +793,45 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       {processes.length > 0 && (
         <section className="py-24 md:py-32 lg:py-20">
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={initialState}
+              whileInView={createFade(0, 0.8)}
+              viewport={viewportConfig}
+              className="text-center mb-16"
+            >
               <h2 className={cn(typography.h2, 'mb-6')}>{processHeading}</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 {processDescription}
               </p>
-            </SafeMotion>
+            </motion.div>
 
-            {/* Dynamic grid based on item count to prevent orphans */}
-            <div className={cn(
-              'grid gap-6 md:gap-8',
-              processes.length === 1 && 'grid-cols-1 max-w-md mx-auto',
-              processes.length === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
-              processes.length === 3 && 'grid-cols-1 md:grid-cols-3',
-              processes.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
-              processes.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
-              processes.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-              processes.length > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
-            )}>
-              {processes.map((process: ProcessItem, index: number) => (
-                <SafeMotion key={process.title} y={20} delay={stagger(index)}>
-                  <Card className={cn(styles.featureCard, 'h-full')}>
-                    <div className={cn('w-12 h-12 text-white rounded-lg flex items-center justify-center text-xl font-bold mb-4', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
-                      {String(index + 1).padStart(2, '0')}
-                    </div>
-                    <h3 className={cn(typography.h5, 'mb-3')}>{process.title}</h3>
-                    {process.descriptionRich ? (
-                      <div className={cn(typography.small, 'mb-4')}>
-                        <PortableTextContent value={process.descriptionRich} />
+            <div className={styles.grid4Col}>
+              {processes.map((process: ProcessItem, index: number) => {
+                const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
+                return (
+                  <motion.div
+                    key={process.title}
+                    initial={initialState}
+                    whileInView={createFade(delay, 0.6)}
+                    viewport={viewportConfig}
+                  >
+                    <Card className={cn(styles.featureCard, 'h-full')}>
+                      <div className={cn('w-12 h-12 text-white rounded-lg flex items-center justify-center text-xl font-bold mb-4', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
+                        {String(index + 1).padStart(2, '0')}
                       </div>
-                    ) : (
-                      <p className={cn(typography.small, 'mb-4')}>{process.description}</p>
-                    )}
-                  </Card>
-                </SafeMotion>
-              ))}
+                      <h3 className={cn(typography.h5, 'mb-3')}>{process.title}</h3>
+                      {process.descriptionRich ? (
+                        <div className={cn(typography.small, 'mb-4')}>
+                          <PortableTextContent value={process.descriptionRich} />
+                        </div>
+                      ) : (
+                        <p className={cn(typography.small, 'mb-4')}>{process.description}</p>
+                      )}
+
+                    </Card>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>

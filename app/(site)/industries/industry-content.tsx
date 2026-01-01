@@ -1,6 +1,6 @@
 'use client';
 
-import { SafeMotion, stagger } from '@/components/ui/safe-motion';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, CheckCircle, Award, TrendingUp, Target } from 'lucide-react';
@@ -231,7 +231,12 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
             <div className={styles.grid2Col}>
-              <SafeMotion y={20}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+              >
                 <h2 className={cn(typography.h2, 'mb-6')}>Market Overview</h2>
                 <p className={cn(typography.lead, 'mb-6')}>
                   {industry.overview.description}
@@ -259,12 +264,14 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                     </div>
                   </div>
                 )}
-              </SafeMotion>
+              </motion.div>
 
               {industry.overview?.challenges && industry.overview.challenges.length > 0 && (
-                <SafeMotion
-                  y={20}
-                  delay={0.1}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.8 }}
+                  viewport={{ once: true }}
                   className="bg-slate-50 dark:bg-slate-900 p-8 rounded-lg"
                 >
                   <h3 className={cn(typography.h3, 'mb-6')}>Key Challenges</h3>
@@ -278,7 +285,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       </div>
                     ))}
                   </div>
-                </SafeMotion>
+                </motion.div>
               )}
             </div>
           </div>
@@ -289,16 +296,28 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
       {industry.capabilities && industry.capabilities.length > 0 && (
         <section className={spacing.section}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
               <h2 className={cn(typography.h2, 'mb-6')}>Our Capabilities</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 Specialized manufacturing capabilities for {industry.title.toLowerCase()} applications.
               </p>
-            </SafeMotion>
+            </motion.div>
 
             <div className={styles.grid2Col}>
               {industry.capabilities.map((capability: CapabilityItem, index: number) => (
-                <SafeMotion key={capability.title || `capability-${index}`} y={20} delay={stagger(index)}>
+                <motion.div
+                  key={capability.title || `capability-${index}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  viewport={{ once: true }}
+                >
                   <Card className={cn(styles.featureCard, 'h-full')}>
                     <h3 className={cn(typography.h4, 'mb-4')}>{capability.title}</h3>
                     <p className={cn(typography.body, 'mb-6')}>{capability.description}</p>
@@ -317,7 +336,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       </div>
                     )}
                   </Card>
-                </SafeMotion>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -328,19 +347,27 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
       {industry.components && industry.components.length > 0 && (
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
               <h2 className={cn(typography.h2, 'mb-6')}>Component Expertise</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 Precision manufacturing for critical {industry.title.toLowerCase()} components.
               </p>
-            </SafeMotion>
+            </motion.div>
 
             <div className="space-y-20">
               {industry.components.map((component: ComponentCategory, index: number) => (
-                <SafeMotion
+                <motion.div
                   key={component.category}
-                  y={20}
-                  delay={stagger(index, 100)}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.8 }}
+                  viewport={{ once: true }}
                   className={cn(
                     'grid lg:grid-cols-2 gap-12 items-center',
                     index % 2 === 0 ? '' : 'lg:grid-flow-dense'
@@ -413,7 +440,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       </div>
                     )}
                   </div>
-                </SafeMotion>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -424,19 +451,27 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
       {industry.expertise && industry.expertise.length > 0 && (
         <section className={spacing.section}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
               <h2 className={cn(typography.h2, 'mb-6')}>Our Expertise</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 Specialized knowledge and capabilities for {industry.title.toLowerCase()} applications.
               </p>
-            </SafeMotion>
+            </motion.div>
 
             <div className="space-y-24">
               {industry.expertise.map((item: ExpertiseItem, index: number) => (
-                <SafeMotion
+                <motion.div
                   key={item.title || `expertise-${index}`}
-                  y={20}
-                  delay={stagger(index, 100)}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.8 }}
+                  viewport={{ once: true }}
                   className={cn(
                     'grid lg:grid-cols-2 gap-12 items-center',
                     index % 2 === 0 ? '' : 'lg:grid-flow-dense'
@@ -512,7 +547,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       </div>
                     )}
                   </div>
-                </SafeMotion>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -523,16 +558,27 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
       {industry.regulatory && (industry.regulatory.certifications || industry.regulatory.standards) && (
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
               <h2 className={cn(typography.h2, 'mb-6')}>Regulatory Compliance</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 Comprehensive certifications and standards compliance for {industry.title.toLowerCase()}.
               </p>
-            </SafeMotion>
+            </motion.div>
 
             <div className={styles.grid2Col}>
               {industry.regulatory.certifications && industry.regulatory.certifications.length > 0 && (
-                <SafeMotion y={20}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  viewport={{ once: true }}
+                >
                   <Card className={cn(styles.featureCard, 'h-full')}>
                     <Award className="w-12 h-12 text-blue-600 mb-4" />
                     <h3 className={cn(typography.h4, 'mb-6')}>Certifications</h3>
@@ -548,11 +594,16 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       ))}
                     </div>
                   </Card>
-                </SafeMotion>
+                </motion.div>
               )}
 
               {industry.regulatory.standards && industry.regulatory.standards.length > 0 && (
-                <SafeMotion y={20} delay={0.1}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.6 }}
+                  viewport={{ once: true }}
+                >
                   <Card className={cn(styles.featureCard, 'h-full')}>
                     <CheckCircle className="w-12 h-12 text-blue-600 mb-4" />
                     <h3 className={cn(typography.h4, 'mb-6')}>Standards</h3>
@@ -568,7 +619,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       ))}
                     </div>
                   </Card>
-                </SafeMotion>
+                </motion.div>
               )}
             </div>
           </div>
@@ -579,26 +630,28 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
       {industry.applications && industry.applications.length > 0 && (
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
               <h2 className={cn(typography.h2, 'mb-6')}>Industry Applications</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 Specialized solutions for diverse {industry.title.toLowerCase()} applications.
               </p>
-            </SafeMotion>
+            </motion.div>
 
-            {/* Dynamic grid based on item count to prevent orphans */}
-            <div className={cn(
-              'grid gap-6 md:gap-8',
-              industry.applications.length === 1 && 'grid-cols-1 max-w-md mx-auto',
-              industry.applications.length === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
-              industry.applications.length === 3 && 'grid-cols-1 md:grid-cols-3',
-              industry.applications.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
-              industry.applications.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
-              industry.applications.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-              industry.applications.length > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-            )}>
+            <div className={styles.grid3Col}>
               {industry.applications.map((application: Application, index: number) => (
-                <SafeMotion key={application.name} y={20} delay={stagger(index)}>
+                <motion.div
+                  key={application.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  viewport={{ once: true }}
+                >
                   <Card className={cn(styles.featureCard, 'h-full')}>
                     <h3 className={cn(typography.h5, 'mb-3')}>{application.name}</h3>
                     <p className={cn(typography.small, 'mb-4')}>{application.description}</p>
@@ -617,7 +670,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       </div>
                     )}
                   </Card>
-                </SafeMotion>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -628,33 +681,35 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
       {industry.qualityStandards && industry.qualityStandards.length > 0 && (
         <section className={spacing.section}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
               <h2 className={cn(typography.h2, 'mb-6')}>Quality Standards</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 Rigorous quality control processes ensuring the highest standards.
               </p>
-            </SafeMotion>
+            </motion.div>
 
-            {/* Dynamic grid based on item count to prevent orphans */}
-            <div className={cn(
-              'grid gap-6 md:gap-8',
-              industry.qualityStandards.length === 1 && 'grid-cols-1 max-w-md mx-auto',
-              industry.qualityStandards.length === 2 && 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto',
-              industry.qualityStandards.length === 3 && 'grid-cols-1 md:grid-cols-3',
-              industry.qualityStandards.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
-              industry.qualityStandards.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
-              industry.qualityStandards.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-              industry.qualityStandards.length > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
-            )}>
+            <div className={styles.grid4Col}>
               {industry.qualityStandards.map((item: QualityStandard | string, index: number) => (
-                <SafeMotion key={typeof item === 'string' ? item : item.standard} y={20} delay={stagger(index, 50)}>
+                <motion.div
+                  key={typeof item === 'string' ? item : item.standard}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05, duration: 0.6 }}
+                  viewport={{ once: true }}
+                >
                   <Card className={cn(styles.featureCard, 'h-full text-center')}>
                     <CheckCircle className="w-8 h-8 text-blue-600 mx-auto mb-3" />
                     <p className={cn(typography.small, 'font-medium')}>
                       {typeof item === 'string' ? item : item.standard}
                     </p>
                   </Card>
-                </SafeMotion>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -665,16 +720,28 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
       {industry.processBenefits && industry.processBenefits.length > 0 && (
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
               <h2 className={cn(typography.h2, 'mb-6')}>Process Benefits</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
                 Advanced manufacturing processes delivering superior results.
               </p>
-            </SafeMotion>
+            </motion.div>
 
             <div className={styles.grid2Col}>
               {industry.processBenefits.map((benefit: ProcessBenefit, index: number) => (
-                <SafeMotion key={benefit.title} y={20} delay={stagger(index)}>
+                <motion.div
+                  key={benefit.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  viewport={{ once: true }}
+                >
                   <Card className={cn(styles.featureCard, 'h-full')}>
                     <TrendingUp className="w-10 h-10 text-blue-600 mb-4" />
                     <h3 className={cn(typography.h4, 'mb-4')}>{benefit.title}</h3>
@@ -694,7 +761,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                       </div>
                     )}
                   </Card>
-                </SafeMotion>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -704,7 +771,13 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
       {/* CTA Section */}
       <section className={styles.sectionDark}>
         <div className={spacing.container}>
-          <SafeMotion y={20} className="text-center max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center max-w-4xl mx-auto"
+          >
             <h2 className={cn(typography.h2, 'mb-6 text-white')}>
               {industry.cta?.title || 'Ready to Get Started?'}
             </h2>
@@ -741,7 +814,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                   );
                 })}
             </div>
-          </SafeMotion>
+          </motion.div>
         </div>
       </section>
     </div>

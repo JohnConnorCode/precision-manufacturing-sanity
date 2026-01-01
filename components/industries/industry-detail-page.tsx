@@ -1,6 +1,6 @@
 'use client';
 
-import { SafeMotion, stagger } from '@/components/ui/safe-motion';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, Award, CheckCircle } from 'lucide-react';
@@ -68,10 +68,12 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {industry.stats.map((stat: any, index: number) => (
-                <SafeMotion
+                <motion.div
                   key={stat._key || index}
-                  y={20}
-                  delay={stagger(index)}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
                   className="text-center"
                 >
                   <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 mb-2">{stat.value}</div>
@@ -79,7 +81,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   {stat.description && (
                     <div className="text-sm text-zinc-400">{stat.description}</div>
                   )}
-                </SafeMotion>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -90,23 +92,31 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
       {industry.expertise && industry.expertise.length > 0 && (
         <section className="py-24 bg-zinc-50 dark:bg-zinc-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
               <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
                 {industry.expertiseSectionHeading || `${industry.title} Expertise`}
               </h2>
               <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto">
                 {industry.expertiseSectionDescription || 'Specialized manufacturing capabilities for critical applications.'}
               </p>
-            </SafeMotion>
+            </motion.div>
 
             <div className="space-y-20">
               {industry.expertise.map((section: any, index: number) => {
                 const isEven = index % 2 === 0;
                 return (
-                  <SafeMotion
+                  <motion.div
                     key={section._key || index}
-                    y={30}
-                    delay={stagger(index, 100)}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.7 }}
                     className="group"
                   >
                     <div className={`grid lg:grid-cols-2 gap-12 items-center ${isEven ? '' : 'lg:grid-flow-dense'}`}>
@@ -186,7 +196,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                         </div>
                       </div>
                     </div>
-                  </SafeMotion>
+                  </motion.div>
                 );
               })}
             </div>
@@ -198,24 +208,36 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
       {industry.certifications && industry.certifications.length > 0 && (
         <section className="py-24 bg-zinc-50 dark:bg-zinc-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
               <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
                 {industry.certificationsSectionHeading || 'Industry Certifications'}
               </h2>
               <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto">
                 {industry.certificationsSectionDescription || 'Industry-leading certifications ensuring the highest quality standards.'}
               </p>
-            </SafeMotion>
+            </motion.div>
 
             <div className={`grid md:grid-cols-2 ${industry.certifications.length >= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-8`}>
               {industry.certifications.map((cert: any, index: number) => (
-                <SafeMotion key={cert._key || index} y={20} delay={stagger(index)}>
+                <motion.div
+                  key={cert._key || index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                >
                   <Card className="p-6 h-full hover:shadow-lg transition-shadow duration-300">
                     <Award className="w-12 h-12 text-blue-500 mb-4" />
                     <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-3">{cert.title}</h3>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400 whitespace-pre-line">{cert.description}</p>
                   </Card>
-                </SafeMotion>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -226,18 +248,30 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
       {industry.processBenefits && industry.processBenefits.length > 0 && (
         <section className="py-24 bg-white dark:bg-zinc-950">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
               <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
                 {industry.processBenefitsSectionHeading || 'Manufacturing Capabilities'}
               </h2>
               <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto">
                 {industry.processBenefitsSectionDescription || 'Advanced capabilities delivering superior results for critical applications.'}
               </p>
-            </SafeMotion>
+            </motion.div>
 
             <div className={`grid ${industry.processBenefits.length >= 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'} gap-8`}>
               {industry.processBenefits.map((benefit: any, index: number) => (
-                <SafeMotion key={benefit._key || index} y={20} delay={stagger(index)}>
+                <motion.div
+                  key={benefit._key || index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                >
                   <Card className="p-8 h-full hover:shadow-lg transition-shadow duration-300">
                     <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">{benefit.title}</h3>
                     <p className="text-zinc-600 dark:text-zinc-400 mb-6">{benefit.description}</p>
@@ -253,7 +287,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                       </ul>
                     )}
                   </Card>
-                </SafeMotion>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -263,7 +297,13 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
       {/* CTA Section */}
       <section className="py-24 bg-zinc-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SafeMotion y={20} className="text-center max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-4xl mx-auto"
+          >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               {industry.cta?.heading || `Partner with ${industry.title} Experts`}
             </h2>
@@ -296,7 +336,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                 </>
               )}
             </div>
-          </SafeMotion>
+          </motion.div>
         </div>
       </section>
     </div>

@@ -11,8 +11,6 @@
  * 4. All timing values derived from these constants
  */
 
-import { useState, useEffect, useRef, RefObject } from 'react';
-
 // ============================================================================
 // CORE TIMING CONSTANTS
 // ============================================================================
@@ -152,12 +150,11 @@ export function getCardDelay(
 
 /**
  * Get initial animation state for fade-in-up
- * Uses smaller y offset to reduce jarring effect on failed animations
  */
 export function getInitialState(prefersReducedMotion: boolean = false) {
   return {
     opacity: 0,
-    y: prefersReducedMotion ? 0 : 16,
+    y: prefersReducedMotion ? 0 : 20,
   };
 }
 
@@ -177,25 +174,6 @@ export function getAnimateState(
       duration: prefersReducedMotion ? 0 : duration,
       ease: EASING as any,
     },
-  };
-}
-
-/**
- * Get safe initial state that works with hydration
- * Returns visible state during SSR, animated state after mount
- */
-export function getSafeInitialState(
-  mounted: boolean,
-  prefersReducedMotion: boolean = false
-) {
-  // During SSR or before mount, return visible state
-  if (!mounted) {
-    return { opacity: 1, y: 0 };
-  }
-  // After mount, return animated initial state
-  return {
-    opacity: 0,
-    y: prefersReducedMotion ? 0 : 16,
   };
 }
 
@@ -337,148 +315,3 @@ export const SECTION_CONFIGS = {
     getDelay: (index: number) => getCardDelay(index, STAGGER.list, 0),
   },
 } as const;
-
-// ============================================================================
-// RELIABLE SCROLL-TRIGGERED ANIMATIONS
-// ============================================================================
-
-/**
- * Hook for reliable scroll-triggered animations that work on page refresh.
- *
- * The Problem:
- * - `whileInView` with `once: true` only fires when elements ENTER the viewport
- * - On page refresh, elements already in view never "enter" so animation never triggers
- * - Elements stay stuck at opacity: 0
- *
- * The Solution:
- * - Use `animate` prop with IntersectionObserver to track isInView state
- * - Use `initial={false}` to prevent setting opacity:0 during SSR
- * - Track mounted state to animate only after hydration
- *
- * How it works:
- * - SSR: mounted=false → content visible (opacity: 1, y: 0)
- * - After hydration, not in view: mounted=true, isInView=false → hidden (opacity: 0)
- * - After hydration, in view: mounted=true, isInView=true → visible with animation
- *
- * @param delay - Animation delay in seconds (for staggered effects)
- * @param duration - Animation duration in seconds
- * @param yOffset - Y translation distance in pixels
- */
-export function useAnimateOnScroll(
-  delay: number = 0,
-  duration: number = DURATIONS.normal,
-  yOffset: number = 16
-): {
-  ref: RefObject<HTMLDivElement | null>;
-  initial: false;
-  animate: {
-    opacity: number;
-    y: number;
-  };
-  transition: {
-    duration: number;
-    delay: number;
-    ease: "easeOut";
-  };
-} {
-  const [mounted, setMounted] = useState(false);
-  const [isInView, setIsInView] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  // Track mounted state
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // IntersectionObserver for reliable in-view detection
-  useEffect(() => {
-    if (!ref.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.disconnect(); // once: true behavior
-        }
-      },
-      { threshold: 0.1, rootMargin: '-50px' }
-    );
-
-    observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return {
-    ref,
-    initial: false, // KEY: Don't set opacity:0 during SSR
-    animate: {
-      // SSR/pre-mount: visible | mounted but not in view: hidden | in view: visible
-      opacity: mounted && isInView ? 1 : mounted ? 0 : 1,
-      y: mounted && isInView ? 0 : mounted ? yOffset : 0,
-    },
-    transition: {
-      duration,
-      delay: isInView ? delay : 0, // Only apply delay when animating in
-      ease: EASING,
-    },
-  };
-}
-
-/**
- * Variant of useAnimateOnScroll for scale animations (like stats counters)
- */
-export function useScaleOnScroll(
-  delay: number = 0,
-  duration: number = DURATIONS.slow
-): {
-  ref: RefObject<HTMLDivElement | null>;
-  initial: false;
-  animate: {
-    opacity: number;
-    scale: number;
-  };
-  transition: {
-    duration: number;
-    delay: number;
-    ease: "easeOut";
-  };
-} {
-  const [mounted, setMounted] = useState(false);
-  const [isInView, setIsInView] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!ref.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1, rootMargin: '-50px' }
-    );
-
-    observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return {
-    ref,
-    initial: false,
-    animate: {
-      opacity: mounted && isInView ? 1 : mounted ? 0 : 1,
-      scale: mounted && isInView ? 1 : mounted ? 0.8 : 1,
-    },
-    transition: {
-      duration,
-      delay: isInView ? delay : 0,
-      ease: EASING,
-    },
-  };
-}

@@ -1,9 +1,9 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
-import { SafeMotion } from '@/components/ui/safe-motion';
 import {
   Mail,
   Phone,
@@ -132,16 +132,27 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
       <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-b from-slate-50 to-white">
         <div className={spacing.container}>
           <div className="max-w-6xl mx-auto">
-            <SafeMotion y={20} className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
               <h2 className={cn(typography.h2, 'mb-6')}>{contactData.contactInfo.heading}</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto text-slate-600')}>
                 {contactData.contactInfo.description}
               </p>
-            </SafeMotion>
+            </motion.div>
 
             <div className="grid lg:grid-cols-2 gap-12 mb-20">
               {/* Primary Contact Information */}
-              <SafeMotion x={-20} delay={0.1}>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                viewport={{ once: true }}
+              >
                 <Card className={cn(styles.featureCard, 'p-10 h-full')}>
                   <h3 className={cn(typography.h3, 'mb-8')}>Contact Information</h3>
 
@@ -206,10 +217,16 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     </div>
                   </div>
                 </Card>
-              </SafeMotion>
+              </motion.div>
 
               {/* Quick Actions / Additional Info */}
-              <SafeMotion x={20} delay={0.2} className="space-y-6">
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="space-y-6"
+              >
                 {/* Quick Actions */}
                 <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
                   <div className="flex items-start gap-4">
@@ -275,11 +292,16 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     </div>
                   </div>
                 </Card>
-              </SafeMotion>
+              </motion.div>
             </div>
 
             {/* Map Section */}
-            <SafeMotion y={20}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
               <Card className="overflow-hidden shadow-2xl">
                 <div className="relative h-[500px]">
                   {contactData.locationImage?.asset?.url && (
@@ -309,7 +331,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                   </div>
                 </div>
               </Card>
-            </SafeMotion>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -318,7 +340,13 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
       {Array.isArray(contactData.bottomStats) && contactData.bottomStats.length > 0 && (
         <section className={styles.sectionDark}>
           <div className={spacing.container}>
-            <SafeMotion y={20} className="flex flex-wrap justify-center gap-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="flex flex-wrap justify-center gap-12"
+            >
               {contactData.bottomStats
                 .filter((stat: BottomStat) => stat?.enabled !== false)
                 .map((stat: BottomStat, index: number) => {
@@ -336,7 +364,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     </div>
                   );
                 })}
-            </SafeMotion>
+            </motion.div>
           </div>
         </section>
       )}

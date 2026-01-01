@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { SafeMotion, stagger } from '@/components/ui/safe-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Quote, Award, Clock, Building2 } from 'lucide-react';
@@ -46,12 +45,9 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
   const theme = useTheme();
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950">
+    <main className="min-h-screen bg-white dark:bg-slate-950">
       {/* Hero Section */}
-      <section
-        data-hero-section="dark"
-        className="relative min-h-[70vh] flex items-end -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]"
-      >
+      <section className="relative min-h-[70vh] flex items-end">
         {/* Background Image */}
         {data.heroImage && (
           <div className="absolute inset-0">
@@ -133,10 +129,12 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {data.results.map((result, index) => (
-                <SafeMotion
+                <motion.div
                   key={result.metric}
-                  y={20}
-                  delay={stagger(index)}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
                   className="text-center"
                 >
                   <div
@@ -148,7 +146,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                   <div className="text-sm text-white/80 font-medium uppercase tracking-wide">
                     {result.metric}
                   </div>
-                </SafeMotion>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -161,26 +159,36 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
           <div className="grid md:grid-cols-2 gap-12 md:gap-20">
             {/* The Challenge */}
             {data.challenge && (
-              <SafeMotion x={-30}>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
                 <h2 className="text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-4">
                   The Challenge
                 </h2>
                 <p className="text-lg md:text-xl text-slate-700 dark:text-slate-300 leading-relaxed">
                   {data.challenge}
                 </p>
-              </SafeMotion>
+              </motion.div>
             )}
 
             {/* Our Solution */}
             {data.solution && (
-              <SafeMotion x={30} delay={0.2}>
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
                 <h2 className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: theme.colors.primary }}>
                   Our Solution
                 </h2>
                 <p className="text-lg md:text-xl text-slate-700 dark:text-slate-300 leading-relaxed">
                   {data.solution}
                 </p>
-              </SafeMotion>
+              </motion.div>
             )}
           </div>
         </div>
@@ -190,15 +198,22 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
       {data.galleryImages && data.galleryImages.length > 0 && (
         <section className="py-16 bg-slate-50 dark:bg-slate-900">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
-            <SafeMotion y={20} className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-10 text-center">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-10 text-center"
+            >
               Project Gallery
-            </SafeMotion>
+            </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {data.galleryImages.map((image, index) => (
-                <SafeMotion
+                <motion.div
                   key={index}
-                  scale={0.95}
-                  delay={stagger(index)}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
                   className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group"
                 >
                   <Image
@@ -212,7 +227,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                       <p className="text-white text-sm">{image.caption}</p>
                     </div>
                   )}
-                </SafeMotion>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -223,7 +238,12 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
       {data.testimonial?.quote && (
         <section className="py-20 md:py-28 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
           <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
-            <SafeMotion y={30}>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
               <Quote className="w-16 h-16 mx-auto mb-8 opacity-30" style={{ color: theme.colors.primary }} />
               <blockquote className="text-2xl md:text-3xl lg:text-4xl font-light text-white leading-relaxed mb-8">
                 &ldquo;{data.testimonial.quote}&rdquo;
@@ -232,7 +252,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                 <p className="text-lg font-semibold text-white">{data.testimonial.author}</p>
                 <p className="text-white/60">{data.testimonial.role}</p>
               </div>
-            </SafeMotion>
+            </motion.div>
           </div>
         </section>
       )}
@@ -244,7 +264,11 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
             <div className="grid md:grid-cols-2 gap-12">
               {/* Technologies */}
               {data.technologies && data.technologies.length > 0 && (
-                <SafeMotion y={20}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                >
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Technologies Used</h3>
                   <div className="flex flex-wrap gap-3">
                     {data.technologies.map((tech) => (
@@ -256,12 +280,17 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                       </span>
                     ))}
                   </div>
-                </SafeMotion>
+                </motion.div>
               )}
 
               {/* Certifications */}
               {data.certifications && data.certifications.length > 0 && (
-                <SafeMotion y={20} delay={0.1}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                >
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Relevant Certifications</h3>
                   <div className="flex flex-wrap gap-3">
                     {data.certifications.map((cert) => (
@@ -275,7 +304,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                       </span>
                     ))}
                   </div>
-                </SafeMotion>
+                </motion.div>
               )}
             </div>
           </div>
@@ -285,7 +314,11 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
       {/* CTA Section */}
       <section className="py-20 md:py-28 bg-slate-50 dark:bg-slate-900">
         <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
-          <SafeMotion y={30}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">
               Ready to Start Your Project?
             </h2>
@@ -308,9 +341,9 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                 View Our Services
               </Link>
             </div>
-          </SafeMotion>
+          </motion.div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

@@ -1,12 +1,14 @@
 "use client";
 
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { BookOpen, ArrowRight, Clock, GraduationCap, TrendingUp, LucideIcon } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
 import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { hexToRgba } from '@/lib/theme-utils';
-import { SafeMotion, stagger } from '@/components/ui/safe-motion';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
 import { ResourcesData, ResourceSeries, ResourceBenefit } from '@/lib/types/cms';
 import { DotGridBackground } from '@/lib/background-patterns';
 
@@ -25,6 +27,8 @@ interface ResourcesProps {
 
 export default function Resources({ data }: ResourcesProps) {
   const theme = useTheme();
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const sectionHeaderDelay = SECTION_CONFIGS.threeColumnGrid.headerCompletion;
 
   // Use ONLY CMS data - NO fallbacks
   if (!data || !data.header || !Array.isArray(data.featuredSeries)) {
@@ -53,16 +57,19 @@ export default function Resources({ data }: ResourcesProps) {
         {/* Featured Series Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12">
           {resourcesData.featuredSeries.filter((series: any) => series.enabled !== false).map((series: ResourceSeries, index: number) => {
+            const cardDelay = sectionHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
+            const viewportConfig = getViewportConfig();
             const seriesSlug = series.slug;
             if (!seriesSlug) {
               return null;
             }
 
             return (
-              <SafeMotion
+              <motion.div
                 key={`${series.slug}-${index}`}
-                y={20}
-                delay={stagger(index)}
+                initial={getInitialState(prefersReducedMotion)}
+                whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
+                viewport={viewportConfig}
               >
                 <Link href={`/resources/series/${seriesSlug}`}>
                   <article
@@ -127,22 +134,23 @@ export default function Resources({ data }: ResourcesProps) {
                   </div>
                 </article>
               </Link>
-              </SafeMotion>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Additional Series & CTA */}
         {showCta && (
-          <SafeMotion
-            y={20}
-            delay={0.4}
-            className="border rounded-2xl p-8 md:p-12"
-            style={{
-              background: `linear-gradient(to right, ${hexToRgba(theme.colors.primary, 0.1)}, ${hexToRgba(theme.colors.secondary, 0.1)}, ${hexToRgba(theme.colors.primary, 0.1)})`,
-              borderColor: hexToRgba(theme.colors.primary, 0.2)
-            }}
-          >
+          <motion.div
+          initial={getInitialState(prefersReducedMotion)}
+          whileInView={getAnimateState(0.4, 0.6, prefersReducedMotion)}
+          viewport={getViewportConfig()}
+          className="border rounded-2xl p-8 md:p-12"
+          style={{
+            background: `linear-gradient(to right, ${hexToRgba(theme.colors.primary, 0.1)}, ${hexToRgba(theme.colors.secondary, 0.1)}, ${hexToRgba(theme.colors.primary, 0.1)})`,
+            borderColor: hexToRgba(theme.colors.primary, 0.2)
+          }}
+        >
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex-1 text-center md:text-left">
                 {additionalSeriesText && (
@@ -171,7 +179,7 @@ export default function Resources({ data }: ResourcesProps) {
                 ))}
               </div>
             </div>
-          </SafeMotion>
+          </motion.div>
         )}
 
         {/* Benefits Grid */}
@@ -179,12 +187,15 @@ export default function Resources({ data }: ResourcesProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {resourcesData.benefits.filter(benefit => benefit.enabled !== false).map((benefit: ResourceBenefit, index: number) => {
               const IconComponent = (benefit.iconName && iconMap[benefit.iconName]) || BookOpen;
+              const benefitDelay = sectionHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
+              const viewportConfig = getViewportConfig();
 
               return (
-                <SafeMotion
+                <motion.div
                   key={benefit.title || index}
-                  y={20}
-                  delay={stagger(index)}
+                  initial={getInitialState(prefersReducedMotion)}
+                  whileInView={getAnimateState(benefitDelay, 0.6, prefersReducedMotion)}
+                  viewport={viewportConfig}
                   className="text-center p-6 bg-slate-900/30 rounded-xl border border-slate-800/50"
                 >
                   <div
@@ -199,7 +210,7 @@ export default function Resources({ data }: ResourcesProps) {
                   </div>
                   <h4 className="text-lg font-bold text-white mb-2">{benefit.title}</h4>
                   <p className="text-slate-400 text-sm">{benefit.description}</p>
-                </SafeMotion>
+                </motion.div>
               );
             })}
           </div>

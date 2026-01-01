@@ -1,18 +1,13 @@
 'use client';
 
-/**
- * LogoSVG Component
- *
- * Simple, reliable logo component without animation jank.
- * Visible immediately on load - no opacity:0 initial states.
- */
+import { motion } from 'framer-motion';
 
 interface LogoSVGProps {
   className?: string;
   showText?: boolean;
   variant?: 'dark' | 'light';
   size?: 'sm' | 'md' | 'lg';
-  animated?: boolean; // Kept for API compatibility, but animation removed for reliability
+  animated?: boolean;
 }
 
 export default function LogoSVG({
@@ -20,47 +15,125 @@ export default function LogoSVG({
   showText = true,
   variant = 'dark',
   size = 'md',
+  animated = true
 }: LogoSVGProps) {
   // Size mappings
   const sizeMap = {
-    sm: { width: 32, height: 32, textClass: 'text-[9px]', gap: 'gap-0', logoGap: 'gap-1.5' },
-    md: { width: 40, height: 40, textClass: 'text-[11px]', gap: 'gap-0.5', logoGap: 'gap-2' },
-    lg: { width: 50, height: 50, textClass: 'text-[13px]', gap: 'gap-1', logoGap: 'gap-3' },
+    sm: { width: 32, height: 32 },
+    md: { width: 40, height: 40 },
+    lg: { width: 50, height: 50 },
   };
 
-  const { width, height, textClass, gap, logoGap } = sizeMap[size];
+  const { width, height } = sizeMap[size];
 
-  // Color based on variant
+  // Color based on variant - use CSS classes for automatic dark mode support
+  // When variant is 'dark', show black in light mode, when 'light', show white
+  // Using currentColor allows CSS to control the actual color via text color classes
   const colorClass = variant === 'light'
     ? 'text-white'
     : 'text-slate-900 dark:text-white';
 
-  const systemsColor = variant === 'light'
-    ? 'text-blue-400'
-    : 'text-blue-600 dark:text-blue-400';
+  // Scale text size with logo size
+  const textSizeClass = size === 'sm'
+    ? 'text-[9px]'
+    : size === 'lg'
+    ? 'text-[13px]'
+    : 'text-[11px]';
+
+  // Scale spacing with logo size
+  const gapClass = size === 'sm'
+    ? 'gap-0'
+    : size === 'lg'
+    ? 'gap-1'
+    : 'gap-0.5';
+
+  // Gap between logo and text
+  const logoTextGap = size === 'sm' ? 'gap-1.5' : size === 'lg' ? 'gap-3' : 'gap-2';
+
+  // Animation variants
+  const curveVariants = {
+    hidden: {
+      pathLength: 0,
+      opacity: 0
+    },
+    visible: {
+      pathLength: 1,
+      opacity: 1,
+      transition: {
+        pathLength: { duration: 1.5, ease: "easeInOut" as const },
+        opacity: { duration: 0.3 }
+      }
+    }
+  } as const;
+
+  const textVariants = {
+    hidden: {
+      opacity: 0,
+      scale: 0.8
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delay: 1.2,
+        duration: 0.6,
+        ease: [0.34, 1.56, 0.64, 1] as const
+      }
+    }
+  } as const;
+
+  const containerLabelVariants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 1.2
+      }
+    }
+  } as const;
+
+  const wordVariants = {
+    hidden: {
+      opacity: 0,
+      x: -10
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut" as const
+      }
+    }
+  } as const;
 
   return (
-    <div className={`flex items-center ${logoGap} ${colorClass}`}>
-      {/* SVG Logo */}
-      <svg
+    <div className={`flex items-center ${logoTextGap} ${colorClass}`}>
+      {/* SVG Logo - uses currentColor for automatic dark mode support */}
+      <motion.svg
         width={width}
         height={height}
         viewBox="0 0 800 600"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className={`flex-shrink-0 ${className}`}
+        initial={animated ? "hidden" : "visible"}
+        animate={animated ? "visible" : undefined}
       >
-        {/* Gaussian Bell Curve */}
-        <path
+        {/* Gaussian Bell Curve - mathematically accurate smooth path */}
+        <motion.path
           d="M 50 550 C 80 540, 110 515, 140 470 C 170 425, 200 360, 230 270 C 260 180, 290 115, 320 75 C 350 35, 375 20, 400 20 C 425 20, 450 35, 480 75 C 510 115, 540 180, 570 270 C 600 360, 630 425, 660 470 C 690 515, 720 540, 750 550"
           stroke="currentColor"
           strokeWidth="12"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
+          variants={animated ? curveVariants : undefined}
         />
+
         {/* Base line */}
-        <line
+        <motion.line
           x1="40"
           y1="550"
           x2="760"
@@ -68,9 +141,11 @@ export default function LogoSVG({
           stroke="currentColor"
           strokeWidth="12"
           strokeLinecap="round"
+          variants={animated ? curveVariants : undefined}
         />
-        {/* IIS Text */}
-        <text
+
+        {/* IIS Text - positioned near bottom of curve */}
+        <motion.text
           x="400"
           y="430"
           textAnchor="middle"
@@ -78,24 +153,34 @@ export default function LogoSVG({
           fontWeight="900"
           fontFamily="Georgia, serif"
           fill="currentColor"
+          variants={animated ? textVariants : undefined}
         >
           IIS
-        </text>
-      </svg>
+        </motion.text>
+      </motion.svg>
 
-      {/* Company Name Text */}
+      {/* Text Label - Animates in after logo with stagger */}
       {showText && (
-        <div className={`flex flex-col justify-center ${gap}`}>
-          <div className={`${textClass} font-extrabold tracking-[0.15em] leading-none`}>
-            INTEGRATED
-          </div>
-          <div className={`${textClass} font-extrabold tracking-[0.15em] leading-none`}>
-            INSPECTION
-          </div>
-          <div className={`${textClass} font-extrabold tracking-[0.15em] leading-none ${systemsColor}`}>
-            SYSTEMS
-          </div>
-        </div>
+        <motion.div
+          initial={animated ? "hidden" : "visible"}
+          animate={animated ? "visible" : undefined}
+          variants={animated ? containerLabelVariants : undefined}
+          className={`flex flex-col justify-center ${gapClass}`}
+        >
+          {['INTEGRATED', 'INSPECTION', 'SYSTEMS'].map((word, i) => (
+            <motion.div
+              key={word}
+              variants={animated ? wordVariants : undefined}
+              className={
+                i === 2
+                  ? `${textSizeClass} font-extrabold tracking-[0.15em] leading-none ${variant === 'light' ? 'text-blue-400' : 'text-blue-600 dark:text-blue-400'}`
+                  : `${textSizeClass} font-extrabold tracking-[0.15em] leading-none ${variant === 'light' ? 'text-white' : 'text-slate-800 dark:text-white'}`
+              }
+            >
+              {word}
+            </motion.div>
+          ))}
+        </motion.div>
       )}
     </div>
   );
