@@ -17,7 +17,6 @@ import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { typography } from '@/lib/design-system';
-import { throttleRAF } from '@/lib/performance';
 
 // Child menu item type
 interface ChildMenuItem {
@@ -133,58 +132,74 @@ export default function Header({ data }: HeaderProps) {
     setShowAnnouncement(shouldShow);
   }, [announcement]);
 
-  // Optimized scroll handler with requestAnimationFrame throttling
-  // This reduces re-renders from ~60/sec to ~16/sec (60fps)
+  // Scroll handler - determines when header should be solid vs transparent
   useEffect(() => {
+    let rafId: number | null = null;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 10);
+        rafId = null;
+      });
     };
 
-    // Use requestAnimationFrame throttling for optimal scroll performance
-    const throttledScroll = throttleRAF(handleScroll);
-
     // Set initial state
-    handleScroll();
+    setIsScrolled(window.scrollY > 10);
 
-    window.addEventListener('scroll', throttledScroll, { passive: true });
-    return () => window.removeEventListener('scroll', throttledScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   // Hero section detection - transparent header over dark hero sections
   useEffect(() => {
-    // Small delay to ensure hero component has rendered
-    const detectHero = () => {
+    let rafId: number | null = null;
+    let retryTimeout: NodeJS.Timeout | null = null;
+
+    const setupHeroDetection = () => {
       const darkHeroSection = document.querySelector('[data-hero-section="dark"]');
       if (!darkHeroSection) {
         setIsOverHero(false);
         setHeroDetected(true);
-        return null;
+        return false;
       }
 
       const handleHeroScroll = () => {
-        const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
-        setIsOverHero(heroBottom > 120);
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
+          setIsOverHero(heroBottom > 120);
+          rafId = null;
+        });
       };
 
-      const throttledHeroScroll = throttleRAF(handleHeroScroll);
-      handleHeroScroll();
+      // Set initial state immediately
+      const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
+      setIsOverHero(heroBottom > 120);
       setHeroDetected(true);
 
-      window.addEventListener('scroll', throttledHeroScroll, { passive: true });
-      return () => window.removeEventListener('scroll', throttledHeroScroll);
+      window.addEventListener('scroll', handleHeroScroll, { passive: true });
+      return true;
     };
 
-    // Try immediately, then retry after a short delay if no hero found
-    let cleanup = detectHero();
+    // Try immediately
+    const found = setupHeroDetection();
 
-    if (!cleanup) {
-      const retryTimeout = setTimeout(() => {
-        cleanup = detectHero();
+    // Retry after short delay if no hero found (for hydration timing)
+    if (!found) {
+      retryTimeout = setTimeout(() => {
+        setupHeroDetection();
       }, 100);
-      return () => clearTimeout(retryTimeout);
     }
 
-    return cleanup;
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      if (retryTimeout) clearTimeout(retryTimeout);
+      // Note: scroll listener cleanup handled by component unmount
+    };
   }, [pathname]);
 
   const listJustify = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'

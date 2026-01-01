@@ -766,22 +766,26 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {qualityStandards.length > 0 && (
-        <section className="py-24 md:py-32 lg:py-20 bg-slate-900">
+        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950">
           <div className={spacing.container}>
             <motion.div
               initial={initialState}
               whileInView={createFade(0, 0.8)}
               viewport={viewportConfig}
-              className="text-center mb-12"
+              className="text-center mb-16"
             >
-              <h2 className={cn(typography.h2, 'mb-4 text-white')}>{qualityHeading}</h2>
+              <h2 className={cn(typography.h2, 'mb-6 text-white')}>{qualityHeading}</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto text-slate-300')}>
                 {qualityDescription}
               </p>
             </motion.div>
 
-            <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-center">
-              <div className="space-y-4 text-center lg:text-left">
+            <div className="grid gap-12 lg:grid-cols-2 items-start">
+              {/* Quality Standards Grid */}
+              <div className={cn(
+                'grid gap-4',
+                qualityStandards.length <= 3 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'
+              )}>
                 {qualityStandards.map((standard: QualityStandard, index: number) => {
                   const delay = getStaggerDelay(SECTION_CONFIGS.twoColumnGrid, index);
                   const StandardIcon = standard.iconName ? (iconMap[standard.iconName] || Shield) : Shield;
@@ -791,20 +795,30 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                       initial={initialState}
                       whileInView={createFade(delay, 0.5)}
                       viewport={viewportConfig}
-                      className="flex items-start gap-3"
+                      className="flex items-start gap-4 p-5 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:border-slate-600 transition-colors"
                     >
-                      <StandardIcon className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                      <p className={cn(typography.body, 'text-slate-200')}>
-                        {standard.title}
-                        {standard.description ? ` — ${standard.description}` : ''}
-                      </p>
+                      <div className="w-10 h-10 rounded-lg bg-blue-600/20 flex items-center justify-center flex-shrink-0">
+                        <StandardIcon className="w-5 h-5 text-blue-400" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-white mb-1">{standard.title}</h4>
+                        {standard.description && (
+                          <p className="text-sm text-slate-400">{standard.description}</p>
+                        )}
+                      </div>
                     </motion.div>
                   );
                 })}
               </div>
 
+              {/* Quality Image */}
               {qualityImageSrc && (
-                <div className="relative h-[360px] rounded-2xl overflow-hidden">
+                <motion.div
+                  initial={initialState}
+                  whileInView={createFade(0.3, 0.6)}
+                  viewport={viewportConfig}
+                  className="relative h-[400px] rounded-2xl overflow-hidden"
+                >
                   <Image
                     src={qualityImageSrc}
                     alt={qualityImageAlt}
@@ -812,8 +826,8 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/20 to-slate-950/60" />
-                </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-950/30" />
+                </motion.div>
               )}
             </div>
           </div>

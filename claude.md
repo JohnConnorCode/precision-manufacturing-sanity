@@ -10,6 +10,22 @@
 
 These rules are NON-NEGOTIABLE. Violations must be fixed immediately.
 
+### Rule 0: ALWAYS VERIFY YOUR WORK - NO ASKING
+
+**NEVER ask "should I check this?" - ALWAYS check your work automatically.**
+
+- After ANY code change, take screenshots and visually verify
+- After ANY fix, test that the fix actually works
+- Check dark mode AND light mode
+- Check desktop AND mobile viewports
+- Check scroll behavior and animations
+- Check multiple pages, not just one
+- If you can't verify something visually, say so explicitly
+- DO NOT mark tasks as "completed" until visually verified
+- DO NOT ask the user if you should verify - just do it
+
+**This is not optional. Failing to verify work wastes time and creates cycles of broken fixes.**
+
 ### Rule 1: ALL CONTENT MUST BE IN SANITY CMS
 
 **Every single piece of user-visible content MUST be stored in and fetched from Sanity CMS:**
