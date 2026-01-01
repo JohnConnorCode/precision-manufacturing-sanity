@@ -160,31 +160,10 @@ export default function Header({ data }: HeaderProps) {
   }, [pathname]);
 
   const listJustify = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'
-
-  // Animation variants for nav items (kept for potential future use)
-  const _navContainerVariants = {
-    hidden: { opacity: 1 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.3
-      }
-    }
-  }
-
-  const _navItemVariants = {
-    hidden: { opacity: 0, y: -10 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.4,
-        ease: "easeOut" as const
-      }
-    }
-  }
   const sizeClasses = density === 'compact' ? 'h-9 px-3 py-1.5' : 'h-10 px-4 py-2'
+
+  // Helper to validate hrefs
+  const isValidHref = (href?: string) => href && href !== '#' && href !== '/'
 
   // Gradient bottom border for hover/active states - animates width from center
   const gradientBorder = 'relative after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-blue-600 after:via-blue-500 after:to-indigo-600 hover:after:w-full after:transition-all after:duration-300 after:ease-out'
@@ -340,7 +319,7 @@ export default function Header({ data }: HeaderProps) {
                   ? item.children.filter((c: ChildMenuItem) => c && (c.href || c.name))
                   : []
                 const hasChildren = children.length > 0
-                const href = (item.href && item.href !== '#') ? item.href : '/'
+                const href = isValidHref(item.href) ? item.href : '/'
                 const itemVariant = item?.style?.variant || 'link'
                 const badgeText = item?.style?.badgeText
                 const target = item?.openInNewTab ? '_blank' : undefined
@@ -352,8 +331,7 @@ export default function Header({ data }: HeaderProps) {
                 const isPriority1 = index === 0 || index === 1 || index === 5 // Services, Industries, Contact
                 const itemClasses = isPriority1 ? '' : 'hidden xl:flex'
 
-                // Check if item has a real href (not just '#')
-                const hasRealHref = href && href !== '/' && href !== '#'
+                const hasRealHref = isValidHref(href)
 
                 return (
                   <motion.li
@@ -423,7 +401,7 @@ export default function Header({ data }: HeaderProps) {
                             {children.map((child: ChildMenuItem) => (
                               <DropdownMenuItem key={child.name} asChild>
                                 <Link
-                                  href={(child.href && child.href !== '#') ? child.href : href}
+                                  href={isValidHref(child.href) ? child.href : href}
                                   target={child?.openInNewTab ? '_blank' : undefined}
                                   rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
                                   className={cn(
@@ -612,7 +590,7 @@ export default function Header({ data }: HeaderProps) {
                   <div className="space-y-2">
                     {navigation.map((item: MenuItem, index: number) => {
                       const children = Array.isArray(item.children) ? item.children : []
-                      const href = (item.href && item.href !== '#') ? item.href : '/'
+                      const href = isValidHref(item.href) ? item.href : '/'
                       const itemVariant = item?.style?.variant || 'link'
                       const target = item?.openInNewTab ? '_blank' : undefined
                       const rel = item?.openInNewTab ? 'noopener noreferrer' : undefined
@@ -640,7 +618,7 @@ export default function Header({ data }: HeaderProps) {
                                 {children.map((child: ChildMenuItem) => (
                                   <Link
                                     key={child.name}
-                                    href={(child.href && child.href !== '#') ? child.href : href}
+                                    href={isValidHref(child.href) ? child.href : href}
                                     target={child?.openInNewTab ? '_blank' : undefined}
                                     rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
                                     onClick={() => setMobileMenuOpen(false)}

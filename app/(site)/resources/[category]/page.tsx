@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Clock, ArrowRight, ArrowLeft, BookOpen } from 'lucide-react';
-import { Card } from '@/components/ui/card';
+import { ArrowRight, BookOpen } from 'lucide-react';
 import { getResourcesByCategory } from '@/sanity/lib/queries';
+import HeroSection from '@/components/ui/hero-section';
 import AnimatedSection from '@/components/ui/animated-section';
-import { typography, spacing, cn } from '@/lib/design-system';
+import ResourceCard from '@/components/ui/resource-card';
+import SectionHeader from '@/components/ui/section-header';
+import { PremiumButton } from '@/components/ui/premium-button';
+import { spacing } from '@/lib/design-system';
 
 // Enable ISR with 1 hour revalidation
 export const revalidate = 3600;
@@ -19,27 +22,32 @@ export async function generateStaticParams() {
   ];
 }
 
-// Static category definitions
-const categoryDefinitions: Record<string, { title: string; description: string }> = {
+// Static category definitions with images
+const categoryDefinitions: Record<string, { title: string; description: string; image?: string }> = {
   'manufacturing-processes': {
     title: 'Manufacturing Processes',
-    description: 'Comprehensive guides on precision manufacturing processes, CNC machining, and advanced production techniques.'
+    description: 'Comprehensive guides on precision manufacturing processes, CNC machining, and advanced production techniques.',
+    image: 'https://cdn.sanity.io/images/vgacjlhu/production/b0e5736216c771b0f1272b102eab0ef55ace0449-1600x1067.jpg'
   },
   'industry-applications': {
     title: 'Industry Applications',
-    description: 'Industry-specific manufacturing applications and solutions for aerospace, defense, medical, and energy sectors.'
+    description: 'Industry-specific manufacturing applications and solutions for aerospace, defense, medical, and energy sectors.',
+    image: 'https://cdn.sanity.io/images/vgacjlhu/production/b0e5736216c771b0f1272b102eab0ef55ace0449-1600x1067.jpg'
   },
   'quality-compliance': {
     title: 'Quality & Compliance',
-    description: 'Quality control, inspection standards, and regulatory compliance for precision manufacturing.'
+    description: 'Quality control, inspection standards, and regulatory compliance for precision manufacturing.',
+    image: 'https://cdn.sanity.io/images/vgacjlhu/production/aaf823aef6a73946ee8edab6bf74867c5d4012a7-1600x1067.jpg'
   },
   'material-science': {
     title: 'Material Science',
-    description: 'Advanced materials, material properties, and selection guides for precision manufacturing applications.'
+    description: 'Advanced materials, material properties, and selection guides for precision manufacturing applications.',
+    image: 'https://cdn.sanity.io/images/vgacjlhu/production/b0e5736216c771b0f1272b102eab0ef55ace0449-1600x1067.jpg'
   },
   'calculators-tools': {
     title: 'Calculators & Tools',
-    description: 'Useful calculators, estimation tools, and resources for manufacturing professionals.'
+    description: 'Useful calculators, estimation tools, and resources for manufacturing professionals.',
+    image: 'https://cdn.sanity.io/images/vgacjlhu/production/b0e5736216c771b0f1272b102eab0ef55ace0449-1600x1067.jpg'
   },
 };
 
@@ -75,112 +83,91 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
     slug: resource.slug?.current || resource.slug,
   }));
 
+  // Split title for gradient effect
+  const titleWords = categoryData.title.split(' ');
+  const firstPart = titleWords.slice(0, -1).join(' ');
+  const lastWord = titleWords[titleWords.length - 1];
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative py-24 md:py-32 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
-        {/* Background pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.08)_0%,_transparent_50%)]" />
-
-        <div className={cn(spacing.containerWide, 'relative z-10')}>
-          <AnimatedSection>
-            <Link
-              href="/resources"
-              className="inline-flex items-center gap-2 text-slate-400 hover:text-blue-400 transition-colors mb-8 group"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              Back to Resources
-            </Link>
-
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600/10 border border-blue-600/20 mb-6">
-              <BookOpen className="h-4 w-4 text-blue-400" />
-              <span className="text-sm font-medium text-blue-400">Resources</span>
-            </div>
-
-            <h1 className={cn(typography.heroHeading, 'text-white mb-6 uppercase')}>
-              {categoryData.title.split(' ').slice(0, -1).join(' ')}{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
-                {categoryData.title.split(' ').slice(-1)}
-              </span>
-            </h1>
-
-            <p className={cn(typography.descriptionLight, 'max-w-3xl mb-8')}>
-              {categoryData.description}
-            </p>
-
-            <div className="flex flex-wrap gap-4">
-              <span className="bg-slate-800/80 text-slate-300 px-4 py-2 rounded-full text-sm font-medium border border-slate-700">
-                {formattedResources.length} {formattedResources.length === 1 ? 'Article' : 'Articles'}
-              </span>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
+      {/* Hero Section with proper dark hero mode */}
+      <HeroSection
+        backgroundImage={categoryData.image || ''}
+        imageAlt={categoryData.title}
+        height="medium"
+        alignment="center"
+        darkHero={true}
+        badge={{ text: 'RESOURCES' }}
+        title={
+          <span>
+            <span className="text-white">{firstPart} </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
+              {lastWord}
+            </span>
+          </span>
+        }
+        description={categoryData.description}
+        buttons={[
+          {
+            label: 'Back to Resources',
+            href: '/resources',
+            variant: 'secondary'
+          }
+        ]}
+      />
 
       {/* Resources Grid */}
       <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
         <div className={spacing.containerWide}>
+          <AnimatedSection>
+            <SectionHeader
+              eyebrow={`${formattedResources.length} ${formattedResources.length === 1 ? 'Article' : 'Articles'}`}
+              heading={categoryData.title}
+              gradientWordPosition="last"
+              description="Explore our comprehensive guides and technical resources"
+              className="mb-12"
+            />
+          </AnimatedSection>
+
           {formattedResources.length === 0 ? (
             <AnimatedSection>
               <div className="text-center py-16">
                 <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-6">
                   <BookOpen className="w-8 h-8 text-slate-400" />
                 </div>
-                <h3 className={cn(typography.h3, 'mb-4')}>No resources found</h3>
-                <p className={cn(typography.body, 'mb-8')}>
+                <h3 className="text-2xl font-bold mb-4">No resources found</h3>
+                <p className="text-slate-600 dark:text-slate-400 mb-8">
                   No resources found in this category yet. Check back soon!
                 </p>
-                <Link
-                  href="/resources"
-                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-                >
-                  Browse All Resources
-                  <ArrowRight className="w-4 h-4" />
+                <Link href="/resources">
+                  <PremiumButton>
+                    Browse All Resources
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </PremiumButton>
                 </Link>
               </div>
             </AnimatedSection>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {formattedResources.map((resource: any, index: number) => (
-                <AnimatedSection key={resource._id} delay={index * 0.1}>
-                  <Link
-                    href={`/resources/${category}/${resource.slug}`}
-                    className="block h-full group"
-                  >
-                    <Card className="h-full p-6 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/30">
-                      <div className="flex items-start justify-between mb-4">
-                        <span className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${
-                          resource.difficulty === 'beginner'
-                            ? 'bg-green-500/10 text-green-600 border-green-500/20'
-                            : resource.difficulty === 'intermediate'
-                            ? 'bg-amber-500/10 text-amber-600 border-amber-500/20'
-                            : 'bg-red-500/10 text-red-600 border-red-500/20'
-                        }`}>
-                          {resource.difficulty ? resource.difficulty.charAt(0).toUpperCase() + resource.difficulty.slice(1) : 'General'}
-                        </span>
-                        <div className="flex items-center text-slate-500 text-sm">
-                          <Clock className="h-4 w-4 mr-1.5 text-blue-500" />
-                          <span>{resource.readTime}</span>
-                        </div>
-                      </div>
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {formattedResources.map((resource: any, index: number) => (
+                  <AnimatedSection key={resource._id} delay={Math.min(index * 0.05, 0.3)}>
+                    <ResourceCard resource={resource} />
+                  </AnimatedSection>
+                ))}
+              </div>
 
-                      <h3 className={cn(typography.cardTitle, 'mb-3 group-hover:text-blue-600 transition-colors')}>
-                        {resource.title}
-                      </h3>
-
-                      <p className={cn(typography.small, 'mb-4 line-clamp-2')}>
-                        {resource.excerpt}
-                      </p>
-
-                      <div className="flex items-center text-blue-600 text-sm font-semibold mt-auto">
-                        Read Article
-                        <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </Card>
+              <AnimatedSection delay={0.4}>
+                <div className="text-center mt-16">
+                  <Link href="/resources">
+                    <PremiumButton variant="secondary" size="lg">
+                      View All Resources
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </PremiumButton>
                   </Link>
-                </AnimatedSection>
-              ))}
-            </div>
+                </div>
+              </AnimatedSection>
+            </>
           )}
         </div>
       </section>

@@ -9,6 +9,7 @@ import Link from 'next/link';
 import HeroSliderFixed from '@/components/ui/hero-slider-fixed';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { colorStyleToCSS, getOverlayStyles, getButtonStyles, ColorStyle } from '@/lib/sanity-styles';
+import { HERO_SEQUENCE, EASING } from '@/lib/animation-config';
 
 interface HeroData {
   // Three-word structure (new)
@@ -137,7 +138,9 @@ export default function Hero({ data }: HeroProps) {
 
   const overlayStyle = getOverlayStyles(data?.overlay);
   const primaryButtonStyles = getButtonStyles(data?.buttonStyles?.primaryButton);
-  const _secondaryButtonStyles = getButtonStyles(data?.buttonStyles?.secondaryButton);
+
+  // Shared styles for DRY
+  const titleDropShadow = 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))';
 
   return (
     <section data-hero-section="dark" className="relative min-h-screen flex items-center justify-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]">
@@ -164,12 +167,9 @@ export default function Hero({ data }: HeroProps) {
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
+                  transition={{ delay: HERO_SEQUENCE.word1.delay, duration: HERO_SEQUENCE.word1.duration, ease: EASING }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
-                  style={{
-                    color: titleColor,
-                    filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
-                  }}
+                  style={{ color: titleColor, filter: titleDropShadow }}
                 >
                   {word1.toUpperCase()}
                 </motion.span>
@@ -180,12 +180,9 @@ export default function Hero({ data }: HeroProps) {
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.25, duration: 0.5, ease: "easeOut" }}
+                  transition={{ delay: HERO_SEQUENCE.word2.delay, duration: HERO_SEQUENCE.word2.duration, ease: EASING }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
-                  style={{
-                    color: titleColor,
-                    filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
-                  }}
+                  style={{ color: titleColor, filter: titleDropShadow }}
                 >
                   {word2.toUpperCase()}
                 </motion.span>
@@ -196,20 +193,17 @@ export default function Hero({ data }: HeroProps) {
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
+                  transition={{ delay: HERO_SEQUENCE.word3.delay, duration: HERO_SEQUENCE.word3.duration, ease: EASING }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={
                     titleHighlightColor
-                      ? {
-                          color: titleHighlightColor,
-                          filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
-                        }
+                      ? { color: titleHighlightColor, filter: titleDropShadow }
                       : {
                           background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
                           WebkitBackgroundClip: 'text',
                           WebkitTextFillColor: 'transparent',
                           backgroundClip: 'text',
-                          filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
+                          filter: titleDropShadow
                         }
                   }
                 >
@@ -223,7 +217,7 @@ export default function Hero({ data }: HeroProps) {
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
+              transition={{ delay: HERO_SEQUENCE.tagline.delay, duration: HERO_SEQUENCE.tagline.duration, ease: EASING }}
               className="text-lg sm:text-xl md:text-2xl font-light leading-[1.3] tracking-normal mb-8"
               style={{ color: descriptionColor }}
             >
@@ -250,9 +244,9 @@ export default function Hero({ data }: HeroProps) {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{
-                      delay: 0.8 + (index * 0.1),
-                      duration: 0.5,
-                      ease: "easeOut"
+                      delay: HERO_SEQUENCE.badges.startDelay + (index * HERO_SEQUENCE.badges.stagger),
+                      duration: HERO_SEQUENCE.badges.duration,
+                      ease: EASING
                     }}
                     className="px-3 md:px-5 py-1.5 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold border backdrop-blur-md whitespace-nowrap"
                     style={badgeStyle}
@@ -269,7 +263,7 @@ export default function Hero({ data }: HeroProps) {
                 initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 1.0, duration: 0.5, ease: "easeOut" }}
+                transition={{ delay: HERO_SEQUENCE.cta.delay, duration: HERO_SEQUENCE.cta.duration, ease: EASING }}
               >
                 <Button
                   size="lg"
@@ -302,7 +296,7 @@ export default function Hero({ data }: HeroProps) {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ delay: 1.4, duration: 0.5, ease: "easeOut" }}
+        transition={{ delay: HERO_SEQUENCE.scrollIndicator.delay, duration: HERO_SEQUENCE.scrollIndicator.duration, ease: EASING }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >
         <motion.div

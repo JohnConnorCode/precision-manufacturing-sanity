@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { Industry, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
+import { DURATIONS, STAGGER, EASING, getViewportConfig } from '@/lib/animation-config';
 
 interface IndustriesProps {
   data?: Industry[];
@@ -40,10 +41,10 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
       <div className="container">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: prefersReducedMotion ? 0 : 0.8 }}
-          viewport={{ once: true }}
+          transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, ease: EASING }}
+          viewport={getViewportConfig()}
           className="text-center mb-16 md:mb-20"
         >
           {eyebrow && (
@@ -81,13 +82,14 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
             return (
               <motion.div
                 key={industry.title}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{
-                  duration: prefersReducedMotion ? 0 : 0.8,
-                  delay: prefersReducedMotion ? 0 : index * 0.15,
+                  duration: prefersReducedMotion ? 0 : DURATIONS.slower,
+                  delay: prefersReducedMotion ? 0 : index * STAGGER.cards,
+                  ease: EASING,
                 }}
-                viewport={{ once: true, margin: "-50px" }}
+                viewport={getViewportConfig()}
                 className="group"
               >
                 <Link href={industry.href || '#'} className="block">

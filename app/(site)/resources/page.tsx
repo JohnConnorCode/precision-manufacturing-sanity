@@ -87,7 +87,7 @@ export default async function ResourcesPage() {
       <HeroSection
         backgroundImage={pageContent?.resourcesPage?.hero?.backgroundImageUrl || pageContent?.resourcesPage?.hero?.backgroundImage?.asset?.url || ''}
         imageAlt={pageContent?.resourcesPage?.hero?.backgroundImage?.alt || ''}
-        darkHero={false}
+        darkHero={true}
         badge={pageContent?.resourcesPage?.hero?.badge ? { text: pageContent.resourcesPage.hero.badge } : undefined}
         title={
           pageContent?.resourcesPage?.hero?.title ? (() => {

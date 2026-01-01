@@ -1083,7 +1083,7 @@ export async function getTerms(preview = false) {
 
 export async function getSupplierRequirements(preview = false) {
   try {
-  const query = `*[_type == "supplierRequirements"][0] {
+  const query = `*[_type == "supplierrequirements"][0] {
     hero{
       backgroundImage{asset->{url,_id}, alt},
       badges[]{_key, iconName, text},

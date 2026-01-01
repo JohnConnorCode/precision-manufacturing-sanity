@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import * as Icons from 'lucide-react';
 import { usePrefersReducedMotion } from '@/lib/motion';
+import { DURATIONS, STAGGER, EASING, getViewportConfig } from '@/lib/animation-config';
 
 function DynamicIcon({ name, className }: { name: string; className?: string }) {
   // Get the icon from lucide-react, fallback to Circle
@@ -63,10 +64,10 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
       <div className="container relative z-10">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: prefersReducedMotion ? 0 : 0.8 }}
-          viewport={{ once: true }}
+          transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, ease: EASING }}
+          viewport={getViewportConfig()}
           className="text-center mb-20"
         >
           {heading && (
@@ -94,11 +95,12 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
           {benefits.map((benefit, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{
-                duration: prefersReducedMotion ? 0 : 0.7,
-                delay: prefersReducedMotion ? 0 : index * 0.15,
+                duration: prefersReducedMotion ? 0 : DURATIONS.slower,
+                delay: prefersReducedMotion ? 0 : index * STAGGER.cards,
+                ease: EASING,
               }}
               viewport={{ once: true, margin: "-50px" }}
               className="group"
