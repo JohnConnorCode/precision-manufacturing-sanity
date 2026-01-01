@@ -132,41 +132,31 @@ export default function Header({ data }: HeaderProps) {
     setShowAnnouncement(shouldShow);
   }, [announcement]);
 
-  // Optimized scroll handler with requestAnimationFrame throttling
-  // This reduces re-renders from ~60/sec to ~16/sec (60fps)
+  // Consolidated scroll handler - updates both isScrolled and isOverHero atomically
+  // This prevents race conditions that caused nav transparency to not return properly
   useEffect(() => {
+    const darkHeroSection = document.querySelector('[data-hero-section="dark"]');
+
     const handleScroll = () => {
+      // Update both states in the same callback to ensure atomic updates
       setIsScrolled(window.scrollY > 10);
+
+      if (darkHeroSection) {
+        const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
+        setIsOverHero(heroBottom > 120);
+      } else {
+        setIsOverHero(false);
+      }
     };
 
     // Use requestAnimationFrame throttling for optimal scroll performance
     const throttledScroll = throttleRAF(handleScroll);
 
-    // Set initial state
+    // Set initial state immediately
     handleScroll();
 
     window.addEventListener('scroll', throttledScroll, { passive: true });
     return () => window.removeEventListener('scroll', throttledScroll);
-  }, []);
-
-  // Hero section detection - transparent header over dark hero sections
-  useEffect(() => {
-    const darkHeroSection = document.querySelector('[data-hero-section="dark"]');
-    if (!darkHeroSection) {
-      setIsOverHero(false);
-      return;
-    }
-
-    const handleHeroScroll = () => {
-      const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
-      setIsOverHero(heroBottom > 120);
-    };
-
-    const throttledHeroScroll = throttleRAF(handleHeroScroll);
-    handleHeroScroll();
-
-    window.addEventListener('scroll', throttledHeroScroll, { passive: true });
-    return () => window.removeEventListener('scroll', throttledHeroScroll);
   }, [pathname]);
 
   const listJustify = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'
