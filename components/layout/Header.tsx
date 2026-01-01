@@ -217,7 +217,9 @@ export default function Header({ data }: HeaderProps) {
     : `bg-transparent text-slate-700 dark:text-slate-100 ${gradientBorder}`;
 
   const headerClass = cn(
-    'fixed z-[140] w-full top-0',
+    'fixed z-[140] w-full',
+    // Position below top bar on desktop initially, move to top-0 when scrolled past top bar
+    isScrolled ? 'top-0' : 'lg:top-10 top-0',
     // Only apply transitions after initial hero detection to prevent flash
     heroDetected ? 'transition-all duration-300' : '',
     inHeroMode
