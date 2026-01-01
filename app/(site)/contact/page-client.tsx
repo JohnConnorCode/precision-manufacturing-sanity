@@ -111,7 +111,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
           badge={contactData.hero.badge ? { text: contactData.hero.badge, icon: HeroBadgeIcon } : undefined}
           title={
             contactData.hero.title ? (
-              <span className="text-white">
+              <span className="text-inherit">
                 {contactData.hero.title}{' '}
                 {contactData.hero.titleHighlight && (
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
@@ -129,20 +129,20 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
       )}
 
       {/* Main Contact Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-b from-slate-50 to-white">
+      <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         <div className={spacing.container}>
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className={cn(typography.h2, 'mb-6')}>{contactData.contactInfo.heading}</h2>
-              <p className={cn(typography.lead, 'max-w-3xl mx-auto text-slate-600')}>
-                {contactData.contactInfo.description}
-              </p>
+            <div className="max-w-6xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="text-center mb-16"
+              >
+                <h2 className={cn(typography.h2, 'mb-6')}>{contactData.contactInfo.heading}</h2>
+                <p className={cn(typography.lead, 'max-w-3xl mx-auto text-slate-600 dark:text-slate-300')}>
+                  {contactData.contactInfo.description}
+                </p>
             </motion.div>
 
             <div className="grid lg:grid-cols-2 gap-12 mb-20">
@@ -162,7 +162,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                       <MapPin className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
                       <div>
                         <h4 className={cn(typography.h5, 'mb-2')}>Headquarters</h4>
-                        <p className={cn(typography.body, 'text-slate-600 leading-relaxed')}>
+                        <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300 leading-relaxed')}>
                           {contactData.contactInfo.addressLine1}<br />
                           {contactData.contactInfo.addressLine2}<br />
                           {contactData.contactInfo.addressLine3}
@@ -209,7 +209,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                       <Clock className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
                       <div>
                         <h4 className={cn(typography.h5, 'mb-2')}>Business Hours</h4>
-                        <p className={cn(typography.body, 'text-slate-600')}>
+                        <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300')}>
                           {contactData.contactInfo.hoursLine1}<br />
                           {contactData.contactInfo.hoursLine2}
                         </p>
@@ -235,7 +235,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     </div>
                     <div>
                       <h4 className={cn(typography.h5, 'mb-2')}>Request a Quote</h4>
-                      <p className={cn(typography.body, 'text-slate-600 mb-4')}>
+                      <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300 mb-4')}>
                         Email us your specifications, drawings, or project details for a comprehensive quote.
                       </p>
                       <a
@@ -256,7 +256,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     </div>
                     <div>
                       <h4 className={cn(typography.h5, 'mb-2')}>{contactData.contactInfo?.consultationHeading || 'Technical Consultation'}</h4>
-                      <p className={cn(typography.body, 'text-slate-600 mb-4')}>
+                      <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300 mb-4')}>
                         Call us directly to discuss your technical requirements with our engineering team.
                       </p>
                       <a
@@ -277,7 +277,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     </div>
                     <div>
                       <h4 className={cn(typography.h5, 'mb-2')}>General Inquiries</h4>
-                      <p className={cn(typography.body, 'text-slate-600 mb-4')}>
+                      <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300 mb-4')}>
                         Have questions about our capabilities or services? Reach out via email or phone.
                       </p>
                       <div className="flex flex-col gap-2">
@@ -313,18 +313,18 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                  <div className="absolute bottom-0 left-0 right-0 p-8 text-tone-inverse">
                     <div className="max-w-md bg-black/50 backdrop-blur-sm rounded-lg p-6 border border-white/10">
                       <div className="flex items-center gap-3 mb-3">
                         <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                          <Building2 className="w-4 h-4 text-white" />
+                          <Building2 className="w-4 h-4 text-tone-inverse" />
                         </div>
-                        <h3 className={cn(typography.h4, 'text-white drop-shadow-lg')}>Visit Our Facility</h3>
+                        <h3 className={cn(typography.h4, 'text-tone-inverse drop-shadow-lg')}>Visit Our Facility</h3>
                       </div>
-                      <p className={cn(typography.body, 'mb-4 text-white drop-shadow-md')}>
+                      <p className={cn(typography.body, 'mb-4 text-tone-inverse drop-shadow-md')}>
                         {contactData.locationDescription || 'Located in Clackamas, Oregon, our state-of-the-art facility features advanced CNC machining, metrology, and inspection capabilities.'}
                       </p>
-                      <p className={cn(typography.small, 'text-white font-semibold drop-shadow-md')}>
+                      <p className={cn(typography.small, 'text-tone-inverse font-semibold drop-shadow-md')}>
                         {contactData.contactInfo.addressLine1}, {contactData.contactInfo.addressLine2}
                       </p>
                     </div>
@@ -358,7 +358,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                       ) : (
                         <IconComponent className="w-5 h-5 text-blue-400" />
                       )}
-                      <span className={cn(typography.body, 'text-white font-medium')}>
+                      <span className={cn(typography.body, 'text-tone-inverse font-medium')}>
                         {stat?.text}
                       </span>
                     </div>

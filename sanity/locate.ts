@@ -1,4 +1,4 @@
-import { DocumentLocationsState, DocumentLocationResolver } from 'sanity/presentation'
+import { DocumentLocationResolver } from 'sanity/presentation'
 import { map } from 'rxjs'
 
 // Enhanced locate function for Presentation Tool (Visual Editing)

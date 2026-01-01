@@ -4,8 +4,16 @@ import typescriptParser from '@typescript-eslint/parser';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import next from '@next/eslint-plugin-next';
+import { FlatCompat } from '@eslint/eslintrc';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const compat = new FlatCompat({ baseDirectory: __dirname });
 
 export default [
+  ...compat.extends('next/core-web-vitals'),
   js.configs.recommended,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -76,6 +84,25 @@ export default [
     },
   },
   {
+    files: ['e2e/**/*.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
+  {
+    files: ['sanity/schemas/**/*.{ts,tsx}'],
+    rules: {
+      'import/no-anonymous-default-export': 'off',
+    },
+  },
+  {
+    files: ['scripts/**/*.{ts,tsx,js,jsx,mjs}'],
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
+  {
     ignores: [
       'node_modules/**',
       '.next/**',
@@ -86,6 +113,9 @@ export default [
       '*.config.js',
       '*.config.ts',
       'public/**',
+      'next-env.d.ts',
+      'sanity/**',
+      'scripts/**',
     ],
   },
 ];

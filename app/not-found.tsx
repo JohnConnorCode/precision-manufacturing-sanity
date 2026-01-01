@@ -65,7 +65,7 @@ export default function NotFound() {
             className="flex flex-col sm:flex-row gap-4 justify-center mb-10"
           >
             <Link href="/">
-              <Button className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/25">
+              <Button className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-tone-inverse shadow-lg shadow-blue-600/25">
                 <Home className="w-4 h-4 mr-2" />
                 Go to homepage
               </Button>
@@ -93,7 +93,7 @@ export default function NotFound() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="group inline-flex items-center gap-1 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 text-slate-600 dark:text-slate-300 hover:text-white text-sm font-medium transition-all duration-300"
+                  className="group inline-flex items-center gap-1 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 text-slate-600 dark:text-slate-300 hover:text-tone-inverse text-sm font-medium transition-all duration-300"
                 >
                   {link.label}
                   <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />

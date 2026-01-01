@@ -45,10 +45,11 @@ export const previewPane = definePlugin({
         case 'industry':
           if (!slug) return prev;
           return buildPreview({ collection: 'industries', slug });
-        case 'resource':
+        case 'resource': {
           if (!slug) return prev;
           const category = (document as any).category || 'manufacturing-processes';
           return buildPreview({ collection: 'resources', slug, category });
+        }
         case 'homepage':
           return buildPreview({ global: 'homepage' });
         case 'about':

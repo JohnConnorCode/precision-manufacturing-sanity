@@ -122,7 +122,7 @@ export default function EmptyState({
         animate="animate"
         className="max-w-md"
       >
-        <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">
+        <h3 className="text-xl font-semibold text-slate-900 dark:text-tone-inverse mb-3">
           {title}
         </h3>
         <p className="text-slate-500 dark:text-slate-400 leading-relaxed mb-6">

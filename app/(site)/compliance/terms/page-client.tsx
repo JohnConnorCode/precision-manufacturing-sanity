@@ -9,6 +9,8 @@ import {
 import HeroSection from '@/components/ui/hero-section';
 import AnimatedSection from '@/components/ui/animated-section';
 import { Card } from '@/components/ui/card';
+import { typography } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -62,7 +64,7 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
         darkHero={true}
         badge={{ text: 'LEGAL' }}
         title={
-          <span className="text-white">{termsData.header.title}</span>
+          <span className="text-inherit">{termsData.header.title}</span>
         }
         description={
           <div className="text-slate-300">
@@ -96,10 +98,10 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
                         </div>
                       </div>
                       <div className="flex-1">
-                        <h2 className="text-lg md:text-xl font-bold mb-2 text-slate-900 dark:text-white">
+                        <h2 className={cn(typography.h5, 'mb-2 text-slate-900 dark:text-tone-inverse')}>
                           {section.title}
                         </h2>
-                        <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        <p className={cn(typography.body, 'text-slate-600 dark:text-slate-400 leading-relaxed')}>
                           {section.content}
                         </p>
                       </div>
@@ -116,30 +118,30 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
       <AnimatedSection>
         <section className="py-16 md:py-24 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950">
           <div className="container max-w-4xl mx-auto px-4 text-center">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">
+            <h3 className={cn(typography.subsectionTitle, 'text-tone-inverse mb-4')}>
               {termsData.contact.heading}
             </h3>
-            <p className="text-slate-300 mb-8 max-w-2xl mx-auto">
+            <p className={cn(typography.descriptionMuted, 'text-slate-300 mb-8 max-w-2xl mx-auto')}>
               {termsData.contact.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <a
                 href={`mailto:${termsData.contact.email}`}
-                className="flex items-center gap-3 text-white hover:text-blue-400 transition-colors"
+                className={cn(typography.body, 'flex items-center gap-3 text-tone-inverse hover:text-blue-400 transition-colors')}
               >
                 <Mail className="w-5 h-5 text-blue-400" />
                 <span>{termsData.contact.email}</span>
               </a>
-              <span className="hidden sm:block text-slate-600">|</span>
+              <span className="hidden sm:block text-slate-600 dark:text-slate-400">|</span>
               <a
                 href={`tel:+1${termsData.contact.phone.replace(/\D/g, '')}`}
-                className="flex items-center gap-3 text-white hover:text-blue-400 transition-colors"
+                className={cn(typography.body, 'flex items-center gap-3 text-tone-inverse hover:text-blue-400 transition-colors')}
               >
                 <Phone className="w-5 h-5 text-blue-400" />
                 <span>{termsData.contact.phone}</span>
               </a>
-              <span className="hidden sm:block text-slate-600">|</span>
-              <div className="flex items-center gap-3 text-slate-300">
+              <span className="hidden sm:block text-slate-600 dark:text-slate-400">|</span>
+              <div className={cn(typography.body, 'flex items-center gap-3 text-slate-300')}>
                 <MapPin className="w-5 h-5 text-blue-400" />
                 <span>{termsData.contact.department}</span>
               </div>

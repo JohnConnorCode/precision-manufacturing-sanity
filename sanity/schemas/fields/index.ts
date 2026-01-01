@@ -20,7 +20,7 @@
  */
 
 import { defineField, defineArrayMember } from 'sanity'
-import type { Rule, StringRule, ObjectRule, SlugRule, ImageRule } from 'sanity'
+import type { StringRule, SlugRule, ImageRule } from 'sanity'
 import IconPicker from '../../components/IconPicker'
 
 // Re-export the existing icon field

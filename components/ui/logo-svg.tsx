@@ -30,8 +30,8 @@ export default function LogoSVG({
   // When variant is 'dark', show black in light mode, when 'light', show white
   // Using currentColor allows CSS to control the actual color via text color classes
   const colorClass = variant === 'light'
-    ? 'text-white'
-    : 'text-slate-900 dark:text-white';
+    ? 'text-tone-inverse'
+    : 'text-slate-900 dark:text-tone-inverse';
 
   // Scale text size with logo size
   const textSizeClass = size === 'sm'
@@ -174,7 +174,7 @@ export default function LogoSVG({
               className={
                 i === 2
                   ? `${textSizeClass} font-extrabold tracking-[0.15em] leading-none ${variant === 'light' ? 'text-blue-400' : 'text-blue-600 dark:text-blue-400'}`
-                  : `${textSizeClass} font-extrabold tracking-[0.15em] leading-none ${variant === 'light' ? 'text-white' : 'text-slate-800 dark:text-white'}`
+                  : `${textSizeClass} font-extrabold tracking-[0.15em] leading-none ${variant === 'light' ? 'text-tone-inverse' : 'text-slate-800 dark:text-tone-inverse'}`
               }
             >
               {word}

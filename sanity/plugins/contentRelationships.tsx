@@ -192,7 +192,7 @@ export const relationshipValidation = {
 // Relationship suggestions
 export const relationshipSuggestions = {
   // Suggest related content based on tags, categories, or keywords
-  async suggestRelatedContent(client: any, documentId: string, documentType: string) {
+  async suggestRelatedContent(client: any, documentId: string) {
     return await client.fetch(
       `
       *[_id == $id][0] {

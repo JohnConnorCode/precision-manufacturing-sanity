@@ -478,7 +478,7 @@ export const EnhancedLogoShowcase = () => {
           <p className="text-xl text-slate-600">Enhanced Precision Target Logo</p>
           <button
             onClick={restartAnimation}
-            className="mt-4 px-6 py-2 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-500 hover:to-indigo-500 transition-all"
+            className="mt-4 px-6 py-2 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-tone-inverse rounded-lg hover:from-blue-500 hover:to-indigo-500 transition-all"
           >
             Replay Animation
           </button>
@@ -511,7 +511,7 @@ export const EnhancedLogoShowcase = () => {
             <div className="flex items-center justify-center h-32">
               <LogoPrecisionTargetEnhanced variant="mono" size="lg" className="invert" animated={false} />
             </div>
-            <p className="text-center text-sm text-white mt-4">Monochrome</p>
+            <p className="text-center text-sm text-tone-inverse mt-4">Monochrome</p>
           </div>
 
           <div className="bg-gradient-to-br from-blue-50 to-blue-50 p-8 rounded-lg shadow-lg">

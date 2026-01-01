@@ -83,7 +83,7 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
             transition={{ delay: 0.2, duration: 0.5 }}
             className="mt-8 space-y-4"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
+            <h2 className="text-3xl md:text-4xl font-bold text-tone-inverse">
               {errorPages?.notFound?.heading || 'Page Not Found'}
             </h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">
@@ -127,7 +127,7 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
             transition={{ delay: 0.6, duration: 0.5 }}
             className="mt-16 p-8 bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-800"
           >
-            <h3 className="text-lg font-semibold text-white mb-6">
+            <h3 className="text-lg font-semibold text-tone-inverse mb-6">
               {errorPages?.notFound?.popularLinksHeading || 'Popular Pages'}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -156,7 +156,7 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.5 }}
-            className="mt-8 text-xs text-slate-600 font-mono"
+            className="mt-8 text-xs text-slate-600 dark:text-slate-300 font-mono"
           >
             {errorPages?.notFound?.errorCode || 'ERROR: TOLERANCE_EXCEEDED | ROUTE_NOT_FOUND | PRECISION_MISMATCH'}
           </motion.div>

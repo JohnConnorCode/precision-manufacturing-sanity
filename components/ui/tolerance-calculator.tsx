@@ -131,10 +131,10 @@ export default function ToleranceCalculator() {
           {/* Header */}
           <div className="flex items-center gap-3 mb-8">
             <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center">
-              <Calculator className="w-6 h-6 text-white" />
+              <Calculator className="w-6 h-6 text-tone-inverse" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-white">Precision Tolerance Calculator</h2>
+              <h2 className="text-2xl font-bold text-tone-inverse">Precision Tolerance Calculator</h2>
               <p className="text-slate-400">Calculate ISO 286 tolerances for precision manufacturing</p>
             </div>
           </div>
@@ -152,7 +152,7 @@ export default function ToleranceCalculator() {
                 onChange={(e) => setDimension(e.target.value)}
                 step="0.001"
                 min="0.001"
-                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/50 focus:border-blue-600"
+                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/50 focus:border-blue-600"
                 placeholder="25.000"
               />
             </div>
@@ -165,7 +165,7 @@ export default function ToleranceCalculator() {
               <select
                 value={toleranceGrade}
                 onChange={(e) => setToleranceGrade(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-600/50 focus:border-blue-600"
+                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse focus:outline-none focus:ring-2 focus:ring-blue-600/50 focus:border-blue-600"
               >
                 {toleranceGrades.map((grade) => (
                   <option key={grade.value} value={grade.value}>
@@ -183,7 +183,7 @@ export default function ToleranceCalculator() {
               <select
                 value={deviation}
                 onChange={(e) => setDeviation(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-600/50 focus:border-blue-600"
+                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse focus:outline-none focus:ring-2 focus:ring-blue-600/50 focus:border-blue-600"
               >
                 {fundamentalDeviations.map((dev) => (
                   <option key={dev.value} value={dev.value}>
@@ -224,25 +224,25 @@ export default function ToleranceCalculator() {
             >
               <div className="flex items-center gap-2 mb-4">
                 <CheckCircle className="w-5 h-5 text-green-400" />
-                <h3 className="text-lg font-bold text-white">Calculation Results</h3>
+                <h3 className="text-lg font-bold text-tone-inverse">Calculation Results</h3>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                 <div className="bg-slate-800/50 rounded-lg p-4">
                   <div className="text-slate-400 text-sm mb-1">Upper Limit</div>
-                  <div className="text-xl font-bold text-white">
+                  <div className="text-xl font-bold text-tone-inverse">
                     {calculation.upperLimit.toFixed(4)} mm
                   </div>
                 </div>
                 <div className="bg-slate-800/50 rounded-lg p-4">
                   <div className="text-slate-400 text-sm mb-1">Lower Limit</div>
-                  <div className="text-xl font-bold text-white">
+                  <div className="text-xl font-bold text-tone-inverse">
                     {calculation.lowerLimit.toFixed(4)} mm
                   </div>
                 </div>
                 <div className="bg-slate-800/50 rounded-lg p-4">
                   <div className="text-slate-400 text-sm mb-1">Tolerance Zone</div>
-                  <div className="text-xl font-bold text-white">
+                  <div className="text-xl font-bold text-tone-inverse">
                     ±{(calculation.toleranceZone / 2).toFixed(4)} mm
                   </div>
                 </div>
@@ -252,7 +252,7 @@ export default function ToleranceCalculator() {
                 <div className="flex items-start gap-3">
                   <Info className="w-5 h-5 text-blue-400 mt-0.5" />
                   <div>
-                    <div className="text-white font-medium">Fit Type: {calculation.fit}</div>
+                    <div className="text-tone-inverse font-medium">Fit Type: {calculation.fit}</div>
                     <div className="text-slate-300 text-sm">{calculation.recommendation}</div>
                   </div>
                 </div>
@@ -276,7 +276,7 @@ export default function ToleranceCalculator() {
 
           {/* Information Panel */}
           <div className="mt-8 bg-slate-800/30 rounded-xl p-6">
-            <h4 className="text-lg font-bold text-white mb-4">Understanding Tolerances</h4>
+            <h4 className="text-lg font-bold text-tone-inverse mb-4">Understanding Tolerances</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
               <div>
                 <h5 className="font-medium text-blue-400 mb-2">Tolerance Grades (IT)</h5>

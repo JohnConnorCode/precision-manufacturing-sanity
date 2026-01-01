@@ -104,7 +104,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
         darkHero={true}
         badge={{ text: categoryDisplayName.toUpperCase() }}
         title={
-          <span className="text-white">{resource.title}</span>
+          <span className="text-inherit">{resource.title}</span>
         }
         description={
           <div className="flex flex-wrap items-center justify-center gap-4 text-slate-300 text-sm md:text-base">
@@ -149,7 +149,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
               <span className="mx-2">/</span>
               <Link href={`/resources/${category}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{categoryDisplayName}</Link>
               <span className="mx-2">/</span>
-              <span className="text-slate-900 dark:text-white font-medium truncate">{resource.title}</span>
+              <span className="text-slate-900 dark:text-tone-inverse font-medium truncate">{resource.title}</span>
             </div>
           </div>
         </nav>
@@ -212,12 +212,12 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
               <Card className="p-8 md:p-12 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 shadow-lg">
                 {resource.content ? (
                   <div className="prose prose-slate prose-lg max-w-none dark:prose-invert
-                    prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-slate-900 dark:prose-headings:text-white
+                    prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-slate-900 dark:prose-headings:text-tone-inverse
                     prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:border-b prose-h2:border-slate-200 dark:prose-h2:border-slate-700 prose-h2:pb-3
                     prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
                     prose-p:leading-relaxed prose-p:text-slate-600 dark:prose-p:text-slate-300
                     prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:font-medium prose-a:no-underline hover:prose-a:underline
-                    prose-strong:text-slate-900 dark:prose-strong:text-white prose-strong:font-semibold
+                    prose-strong:text-slate-900 dark:prose-strong:text-tone-inverse prose-strong:font-semibold
                     prose-ul:my-4 prose-li:text-slate-600 dark:prose-li:text-slate-300 prose-li:marker:text-blue-600
                     prose-ol:my-4
                     prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-800/50 prose-blockquote:py-3 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:text-slate-600 dark:prose-blockquote:text-slate-300
@@ -280,7 +280,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
                 heading="Apply What You've Learned"
                 gradientWordPosition="last"
                 description="Contact us to discuss your precision manufacturing needs and learn how we can help bring your project to life."
-                className="[&_h2]:text-white [&_p]:text-slate-300 mb-8"
+                className="[&_h2]:text-tone-inverse [&_p]:text-slate-300 mb-8"
               />
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/contact">

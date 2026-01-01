@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { AlertTriangle, RefreshCw, Home, Mail } from 'lucide-react'
 import { typography, cn } from '@/lib/design-system'
+import Link from 'next/link'
 
 export default function Error({
   error,
@@ -63,7 +64,7 @@ export default function Error({
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button
               onClick={() => reset()}
-              className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/25"
+              className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-tone-inverse shadow-lg shadow-blue-600/25"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Try again
@@ -80,13 +81,13 @@ export default function Error({
           <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
             <p className={cn(typography.small, 'text-slate-500')}>
               Need help?{' '}
-              <a
+              <Link
                 href="/contact"
                 className="text-blue-600 hover:text-blue-700 font-semibold transition-colors inline-flex items-center gap-1"
               >
                 <Mail className="w-3 h-3" />
                 Contact support
-              </a>
+              </Link>
             </p>
           </div>
         </Card>

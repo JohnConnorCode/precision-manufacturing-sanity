@@ -8889,11 +8889,11 @@
                 "of": [
                   {
                     "type": "string",
-                    "value": "text-white"
+                    "value": "text-tone-inverse"
                   },
                   {
                     "type": "string",
-                    "value": "text-white/90"
+                    "value": "text-tone-inverse/90"
                   },
                   {
                     "type": "string",
@@ -8922,11 +8922,11 @@
                 "of": [
                   {
                     "type": "string",
-                    "value": "text-white/80"
+                    "value": "text-tone-inverse/80"
                   },
                   {
                     "type": "string",
-                    "value": "text-white"
+                    "value": "text-tone-inverse"
                   },
                   {
                     "type": "string",
@@ -10994,11 +10994,11 @@
                 "of": [
                   {
                     "type": "string",
-                    "value": "text-white"
+                    "value": "text-tone-inverse"
                   },
                   {
                     "type": "string",
-                    "value": "text-white/90"
+                    "value": "text-tone-inverse/90"
                   },
                   {
                     "type": "string",
@@ -11023,11 +11023,11 @@
                 "of": [
                   {
                     "type": "string",
-                    "value": "text-white/90"
+                    "value": "text-tone-inverse/90"
                   },
                   {
                     "type": "string",
-                    "value": "text-white"
+                    "value": "text-tone-inverse"
                   },
                   {
                     "type": "string",
@@ -11035,7 +11035,7 @@
                   },
                   {
                     "type": "string",
-                    "value": "text-white/80"
+                    "value": "text-tone-inverse/80"
                   },
                   {
                     "type": "string",

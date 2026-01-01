@@ -200,7 +200,7 @@ export default function ParallaxSliderPro({
 
               {/* Tooltip on hover */}
               {slide.title && (
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-slate-900/90 rounded text-xs text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-slate-900/90 rounded text-xs text-tone-inverse whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                   {slide.title}
                 </div>
               )}
@@ -223,7 +223,7 @@ export default function ParallaxSliderPro({
             <h3 className="text-sm font-medium text-blue-600 mb-1">
               {slides[currentIndex].subtitle}
             </h3>
-            <h2 className="text-2xl font-bold text-white">
+            <h2 className="text-2xl font-bold text-tone-inverse">
               {slides[currentIndex].title}
             </h2>
           </motion.div>

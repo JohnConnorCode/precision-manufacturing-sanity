@@ -35,7 +35,7 @@ export function CalloutBox({ type, title, children }: CalloutBoxProps) {
         <Icon className="w-5 h-5 flex-shrink-0 mt-0.5" />
         <div className="flex-1">
           {title && (
-            <h4 className="font-semibold mb-2 text-white">{title}</h4>
+            <h4 className="font-semibold mb-2 text-tone-inverse">{title}</h4>
           )}
           <div className="text-slate-300 text-sm leading-relaxed">
             {children}

@@ -10,7 +10,7 @@ interface ToleranceTableProps {
 export function ToleranceTable({ title, description, headers, rows }: ToleranceTableProps) {
   return (
     <div className="my-8 bg-gradient-to-br from-slate-900 to-slate-800 rounded-lg p-6 border border-slate-700">
-      <h3 className="text-2xl font-bold text-white mb-2">{title}</h3>
+      <h3 className="text-2xl font-bold text-tone-inverse mb-2">{title}</h3>
       {description && (
         <p className="text-slate-400 mb-4">{description}</p>
       )}
@@ -37,7 +37,7 @@ export function ToleranceTable({ title, description, headers, rows }: ToleranceT
                     key={cellIndex}
                     className={`px-4 py-3 text-sm ${
                       cellIndex === 0
-                        ? 'font-medium text-white'
+                        ? 'font-medium text-tone-inverse'
                         : 'text-slate-300'
                     }`}
                   >

@@ -149,7 +149,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
             <HelpCircle className="h-4 w-4 text-blue-400" />
             <span className="text-sm font-medium text-blue-400">Help Center</span>
           </div>
-          <h1 className={cn(typography.heroHeading, 'text-white mb-3 uppercase')}>
+          <h1 className={cn(typography.heroHeading, 'text-tone-inverse mb-3 uppercase')}>
             Troubleshooting <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">Guide</span>
           </h1>
           <p className={cn(typography.descriptionLight)}>
@@ -166,11 +166,11 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
         >
           <Card className="p-8 bg-slate-900/50 border-slate-800">
             <div className="flex items-center justify-between mb-6">
-              <h2 className={cn(typography.h4, 'text-white')}>System Health Check</h2>
+              <h2 className={cn(typography.h4, 'text-tone-inverse')}>System Health Check</h2>
               <Button
                 onClick={refreshHealth}
                 disabled={loading}
-                className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/25"
+                className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-tone-inverse shadow-lg shadow-blue-600/25"
               >
                 <RefreshCw className={cn('w-4 h-4 mr-2', loading && 'animate-spin')} />
                 {loading ? 'Checking...' : 'Refresh'}
@@ -217,7 +217,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
                   <div className="p-4 bg-slate-800/50 rounded-xl border border-slate-700">
                     <div className="flex items-center gap-3 mb-2">
                       <StatusIcon ok={health.sanity.connected} />
-                      <h3 className="font-semibold text-white">Sanity CMS</h3>
+                      <h3 className="font-semibold text-tone-inverse">Sanity CMS</h3>
                     </div>
                     <p className="text-sm text-slate-400">
                       {health.sanity.message}
@@ -231,7 +231,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
                   <div className="p-4 bg-slate-800/50 rounded-xl border border-slate-700">
                     <div className="flex items-center gap-3 mb-2">
                       <StatusIcon ok={health.apis.navigation && health.apis.footer && health.apis.siteSettings} />
-                      <h3 className="font-semibold text-white">Content APIs</h3>
+                      <h3 className="font-semibold text-tone-inverse">Content APIs</h3>
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 text-sm">
@@ -253,7 +253,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
                   <div className="p-4 bg-slate-800/50 rounded-xl border border-slate-700">
                     <div className="flex items-center gap-3 mb-2">
                       <StatusIcon ok={health.email.configured} />
-                      <h3 className="font-semibold text-white">Email System</h3>
+                      <h3 className="font-semibold text-tone-inverse">Email System</h3>
                     </div>
                     <p className="text-sm text-slate-400">{health.email.message}</p>
                     {!health.email.configured && (
@@ -291,7 +291,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
               <div className="w-10 h-10 rounded-xl bg-blue-600/20 flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-blue-400" />
               </div>
-              <h2 className={cn(typography.h4, 'text-white')}>Common Issues & Solutions</h2>
+              <h2 className={cn(typography.h4, 'text-tone-inverse')}>Common Issues & Solutions</h2>
             </div>
 
             <div className="space-y-6">
@@ -303,7 +303,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
                   transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
                   className="border-l-4 border-blue-600 pl-6 py-2"
                 >
-                  <h3 className="font-bold text-white mb-3">{issue.title}</h3>
+                  <h3 className="font-bold text-tone-inverse mb-3">{issue.title}</h3>
                   <ol className="space-y-2 text-sm text-slate-300 list-decimal list-inside">
                     {issue.steps.map((step, stepIndex) => (
                       <li key={stepIndex}>{step}</li>
@@ -327,7 +327,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
               <div className="w-10 h-10 rounded-xl bg-indigo-600/20 flex items-center justify-center">
                 <MessageCircle className="w-5 h-5 text-indigo-400" />
               </div>
-              <h2 className={cn(typography.h4, 'text-white')}>Frequently Asked Questions</h2>
+              <h2 className={cn(typography.h4, 'text-tone-inverse')}>Frequently Asked Questions</h2>
             </div>
 
             <div className="space-y-6">
@@ -339,7 +339,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
                   transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
                   className="p-4 bg-slate-800/50 rounded-xl border border-slate-700"
                 >
-                  <h3 className="font-bold text-white mb-2">{faq.question}</h3>
+                  <h3 className="font-bold text-tone-inverse mb-2">{faq.question}</h3>
                   <p className="text-sm text-slate-400">{faq.answer}</p>
                 </motion.div>
               ))}
@@ -387,7 +387,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
 
             <div className="flex flex-wrap gap-4 mt-6">
               <Link href="/">
-                <Button className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/25">
+                <Button className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-tone-inverse shadow-lg shadow-blue-600/25">
                   <Home className="w-4 h-4 mr-2" />
                   Back to Website
                 </Button>

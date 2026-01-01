@@ -1,5 +1,3 @@
-import { defineConfig } from 'sanity';
-
 export const searchConfig = {
   search: {
     // Define which fields are searchable

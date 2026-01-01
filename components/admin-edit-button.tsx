@@ -42,7 +42,7 @@ export function AdminEditButton() {
       href={adminUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-blue-600 text-white px-4 py-3 rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-200 group"
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-blue-600 text-tone-inverse px-4 py-3 rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-200 group"
       title="Edit this page in Payload admin"
       aria-label="Edit this page in Payload admin"
     >

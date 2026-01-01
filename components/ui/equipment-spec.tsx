@@ -35,10 +35,10 @@ export function EquipmentSpec({
       <div className="p-6 border-b border-slate-700">
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-orange-600 to-red-600 flex items-center justify-center">
-            <Settings className="w-6 h-6 text-white" />
+            <Settings className="w-6 h-6 text-tone-inverse" />
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-white">{equipmentName}</h3>
+            <h3 className="text-2xl font-bold text-tone-inverse">{equipmentName}</h3>
             {(manufacturer || model) && (
               <p className="text-blue-400 font-medium">
                 {[manufacturer, model].filter(Boolean).join(' - ')}
@@ -59,7 +59,7 @@ export function EquipmentSpec({
           />
           {image.caption && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-              <p className="text-sm text-white">{image.caption}</p>
+              <p className="text-sm text-tone-inverse">{image.caption}</p>
             </div>
           )}
         </div>
@@ -79,7 +79,7 @@ export function EquipmentSpec({
             <tbody className="divide-y divide-slate-800">
               {specifications.map((spec, index) => (
                 <tr key={index} className="hover:bg-slate-800/50 transition-colors">
-                  <td className="px-4 py-2 text-sm font-medium text-white">{spec.parameter}</td>
+                  <td className="px-4 py-2 text-sm font-medium text-tone-inverse">{spec.parameter}</td>
                   <td className="px-4 py-2 text-sm text-slate-300">
                     {spec.value} {spec.unit && <span className="text-slate-500">({spec.unit})</span>}
                   </td>

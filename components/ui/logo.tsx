@@ -117,8 +117,8 @@ export default function Logo({
                       ? 'text-blue-400'
                       : 'text-blue-600 dark:text-blue-400'
                     : effectiveVariant === 'light'
-                    ? 'text-white'
-                    : 'text-slate-800 dark:text-white'
+                    ? 'text-tone-inverse'
+                    : 'text-slate-800 dark:text-tone-inverse'
                 }`}
               >
                 {word}
@@ -155,8 +155,8 @@ export default function Logo({
                       ? 'text-blue-400'
                       : 'text-blue-600 dark:text-blue-400'
                     : effectiveVariant === 'light'
-                    ? 'text-white'
-                    : 'text-slate-800 dark:text-white'
+                    ? 'text-tone-inverse'
+                    : 'text-slate-800 dark:text-tone-inverse'
                 }`}
               >
                 {word}

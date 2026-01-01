@@ -9,6 +9,8 @@ import HeroSection from '@/components/ui/hero-section';
 import AnimatedSection from '@/components/ui/animated-section';
 import SectionHeader from '@/components/ui/section-header';
 import { Card } from '@/components/ui/card';
+import { typography } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 
 // Icon mapping for CMS data
 const iconMap: Record<string, any> = {
@@ -57,7 +59,7 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
         badge={{ text: 'QUALITY STANDARDS' }}
         title={
           <span>
-            <span className="text-white">{pageData.hero.title} </span>
+            <span className="text-inherit">{pageData.hero.title} </span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
               {pageData.hero.titleHighlight}
             </span>
@@ -106,9 +108,9 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
                       <div>
                         <div className="flex items-center gap-3 mb-3">
                           <span className="text-2xl font-black text-blue-600 dark:text-blue-400">{section.number}</span>
-                          <h2 className="text-xl font-bold text-slate-900 dark:text-white">{section.title}</h2>
+                          <h2 className={cn(typography.h5, 'text-slate-900 dark:text-tone-inverse')}>{section.title}</h2>
                         </div>
-                        <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{section.content}</p>
+                        <p className={cn(typography.body, 'text-slate-600 dark:text-slate-400 leading-relaxed')}>{section.content}</p>
                       </div>
                     </div>
                   </Card>
@@ -144,13 +146,13 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-3">
                           <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{req.number}</span>
-                          {req.title && <h3 className="text-lg font-bold text-slate-900 dark:text-white">{req.title}</h3>}
+                          {req.title && <h3 className={cn(typography.h5, 'text-slate-900 dark:text-tone-inverse')}>{req.title}</h3>}
                         </div>
                         {req.content && (
-                          <p className="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">{req.content}</p>
+                          <p className={cn(typography.body, 'text-slate-600 dark:text-slate-400 mb-4 leading-relaxed')}>{req.content}</p>
                         )}
                         {req.additional && (
-                          <p className="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg">
+                          <p className={cn(typography.body, 'text-slate-600 dark:text-slate-400 mb-4 leading-relaxed bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg')}>
                             {req.additional}
                           </p>
                         )}
@@ -191,10 +193,10 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-4">
                             <span className="text-2xl font-black text-blue-600 dark:text-blue-400">{section.number}</span>
-                            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">{section.title}</h2>
+                            <h2 className={cn(typography.h4, 'text-slate-900 dark:text-tone-inverse')}>{section.title}</h2>
                           </div>
                           {section.content && (
-                            <p className="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">{section.content}</p>
+                            <p className={cn(typography.body, 'text-slate-600 dark:text-slate-400 mb-4 leading-relaxed')}>{section.content}</p>
                           )}
                           {section.list && (
                             <ul className="space-y-2">
@@ -228,7 +230,7 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
                     const FooterIcon = pageData.footerNote?.iconName ? iconMap[pageData.footerNote.iconName] : Info;
                     return <FooterIcon className="w-8 h-8 text-blue-400" />;
                   })()}
-                  <h3 className="text-xl md:text-2xl font-bold text-white">{pageData.footerNote.heading}</h3>
+                  <h3 className="text-xl md:text-2xl font-bold text-tone-inverse">{pageData.footerNote.heading}</h3>
                 </div>
                 <p className="text-slate-300 leading-relaxed">
                   {pageData.footerNote.content}

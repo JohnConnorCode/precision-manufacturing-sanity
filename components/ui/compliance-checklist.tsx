@@ -395,10 +395,10 @@ export default function ComplianceChecklist() {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl flex items-center justify-center">
-                <Check className="w-6 h-6 text-white" />
+                <Check className="w-6 h-6 text-tone-inverse" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-white">AS9100D Compliance Tracker</h2>
+                <h2 className="text-2xl font-bold text-tone-inverse">AS9100D Compliance Tracker</h2>
                 <p className="text-slate-400">Track your certification readiness</p>
               </div>
             </div>
@@ -414,7 +414,7 @@ export default function ComplianceChecklist() {
           <div className="bg-slate-800/50 rounded-xl p-6 mb-8">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-lg font-semibold text-white">Overall Compliance Progress</h3>
+                <h3 className="text-lg font-semibold text-tone-inverse">Overall Compliance Progress</h3>
                 <p className="text-slate-400 text-sm">
                   {sections.reduce((acc, s) => acc + s.items.filter(i => i.status === 'completed').length, 0)} of {' '}
                   {sections.reduce((acc, s) => acc + s.items.length, 0)} requirements completed
@@ -422,7 +422,7 @@ export default function ComplianceChecklist() {
               </div>
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-green-400" />
-                <span className="text-3xl font-bold text-white">{overallProgress}%</span>
+                <span className="text-3xl font-bold text-tone-inverse">{overallProgress}%</span>
               </div>
             </div>
             <div className="w-full bg-slate-700 rounded-full h-3 overflow-hidden">
@@ -443,7 +443,7 @@ export default function ComplianceChecklist() {
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-600/50 focus:border-green-600"
+                className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-600/50 focus:border-green-600"
                 placeholder="Search requirements..."
               />
             </div>
@@ -451,7 +451,7 @@ export default function ComplianceChecklist() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-600/50 focus:border-green-600"
+              className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse focus:outline-none focus:ring-2 focus:ring-green-600/50 focus:border-green-600"
             >
               <option value="all">All Status</option>
               <option value="not-started">Not Started</option>
@@ -463,7 +463,7 @@ export default function ComplianceChecklist() {
             <select
               value={filterPriority}
               onChange={(e) => setFilterPriority(e.target.value)}
-              className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-600/50 focus:border-green-600"
+              className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse focus:outline-none focus:ring-2 focus:ring-green-600/50 focus:border-green-600"
             >
               <option value="all">All Priority</option>
               <option value="high">High</option>
@@ -494,14 +494,14 @@ export default function ComplianceChecklist() {
                         <ChevronRight className="w-5 h-5 text-slate-400" />
                       )}
                       <div>
-                        <h3 className="text-lg font-semibold text-white">{section.title}</h3>
+                        <h3 className="text-lg font-semibold text-tone-inverse">{section.title}</h3>
                         <p className="text-sm text-slate-400">{section.description}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="text-right">
                         <div className="text-sm text-slate-400">Progress</div>
-                        <div className="text-lg font-bold text-white">{section.progress}%</div>
+                        <div className="text-lg font-bold text-tone-inverse">{section.progress}%</div>
                       </div>
                       <div className="w-24 bg-slate-700 rounded-full h-2 overflow-hidden">
                         <div
@@ -536,7 +536,7 @@ export default function ComplianceChecklist() {
                                     {item.priority}
                                   </span>
                                 </div>
-                                <h4 className="font-medium text-white mb-1">{item.requirement}</h4>
+                                <h4 className="font-medium text-tone-inverse mb-1">{item.requirement}</h4>
                                 <p className="text-sm text-slate-400">{item.description}</p>
                               </div>
                               <div className="flex items-center gap-2 ml-4">

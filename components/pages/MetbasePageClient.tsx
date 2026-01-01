@@ -24,10 +24,7 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
-import imageUrlBuilder from '@sanity/image-url';
-import { client } from '@/sanity/lib/client';
-
-const builder = imageUrlBuilder(client);
+import { getHeroImageUrl } from '@/lib/hero-images';
 
 const iconMap: Record<string, LucideIcon> = {
   Database,
@@ -45,18 +42,7 @@ const iconMap: Record<string, LucideIcon> = {
   CheckCircle2,
 };
 
-const urlFor = (source?: { asset?: { url?: string } } | string) => {
-  if (!source) return '';
-  if (typeof source === 'string') return source;
-  if (source?.asset) {
-    try {
-      return builder.image(source).url();
-    } catch {
-      return '';
-    }
-  }
-  return '';
-};
+const urlFor = getHeroImageUrl;
 
 interface MetbasePageClientProps {
   data?: {
@@ -148,7 +134,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Content Not Found</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-tone-inverse mb-4">Content Not Found</h1>
           <p className="text-slate-600 dark:text-slate-400">Please add MetBase content in Sanity Studio.</p>
         </div>
       </div>
@@ -196,7 +182,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
         title={
           data.hero?.title ? (
             data.hero?.titleHighlight ? (
-              <span className="text-white">
+              <span className="text-tone-inverse">
                 {data.hero.title}{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
                   {data.hero.titleHighlight}
@@ -243,7 +229,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                       className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-950/50 rounded-lg"
                     >
                       <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-5 h-5 text-white" />
+                        <Icon className="w-5 h-5 text-tone-inverse" />
                       </div>
                       <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{highlight?.text}</span>
                     </motion.div>
@@ -259,7 +245,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 text-white shadow-2xl">
+              <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 text-tone-inverse shadow-2xl">
                 <Database className="w-16 h-16 mb-6 opacity-80" />
                 <h3 className="text-2xl font-bold mb-4">Enterprise-Grade Solution</h3>
                 <p className="text-blue-100 leading-relaxed">
@@ -316,9 +302,9 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                 >
                   <Card className="p-6 h-full border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 hover:shadow-xl group">
                     <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                      <Icon className="w-7 h-7 text-white" />
+                      <Icon className="w-7 h-7 text-tone-inverse" />
                     </div>
-                    <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">{feature?.title}</h3>
+                    <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-tone-inverse">{feature?.title}</h3>
                     <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{feature?.description}</p>
                   </Card>
                 </motion.div>
@@ -432,7 +418,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                     <div className="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mx-auto mb-4">
                       <Icon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <h3 className="text-lg font-bold mb-2 text-slate-900 dark:text-white">{benefit?.title}</h3>
+                    <h3 className="text-lg font-bold mb-2 text-slate-900 dark:text-tone-inverse">{benefit?.title}</h3>
                     <p className="text-slate-600 dark:text-slate-400 text-sm">{benefit?.description}</p>
                   </Card>
                 </motion.div>
@@ -484,7 +470,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                   />
                 </div>
               ) : (
-                <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-8 text-white shadow-2xl">
+                <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-8 text-tone-inverse shadow-2xl">
                   <RefreshCw className="w-16 h-16 mb-6 opacity-80" />
                   <h3 className="text-2xl font-bold mb-4">Continuous Improvement</h3>
                   <p className="text-indigo-100 leading-relaxed">

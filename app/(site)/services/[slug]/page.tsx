@@ -61,7 +61,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <h1 className={cn(typography.h1, 'mb-4')}>Service Not Found</h1>
-          <p className={cn(typography.body, 'text-slate-600 mb-8')}>
+          <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300 mb-8')}>
             The service you&apos;re looking for could not be found.
           </p>
           <Button asChild>

@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --max-warnings=0",
     "test": "playwright test",
     "test:visual:quick": "PLAYWRIGHT_BASE_URL=http://localhost:3000 SKIP_WEBSERVER=1 playwright test e2e/visual-regression.spec.ts --project=chromium",
     "test:all": "playwright test --reporter=html",

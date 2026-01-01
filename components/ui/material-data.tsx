@@ -31,10 +31,10 @@ export function MaterialData({
       {/* Header */}
       <div className="flex items-start gap-4 mb-4">
         <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
-          <Beaker className="w-6 h-6 text-white" />
+          <Beaker className="w-6 h-6 text-tone-inverse" />
         </div>
         <div>
-          <h3 className="text-2xl font-bold text-white">{materialName}</h3>
+          <h3 className="text-2xl font-bold text-tone-inverse">{materialName}</h3>
           {grade && (
             <p className="text-blue-400 font-medium">{grade}</p>
           )}
@@ -57,7 +57,7 @@ export function MaterialData({
           <tbody className="divide-y divide-slate-800">
             {properties.map((prop, index) => (
               <tr key={index} className="hover:bg-slate-800/50 transition-colors">
-                <td className="px-4 py-2 text-sm font-medium text-white">{prop.property}</td>
+                <td className="px-4 py-2 text-sm font-medium text-tone-inverse">{prop.property}</td>
                 <td className="px-4 py-2 text-sm text-slate-300">
                   {prop.value} {prop.unit && <span className="text-slate-500">({prop.unit})</span>}
                 </td>

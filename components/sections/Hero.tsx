@@ -10,6 +10,8 @@ import HeroSliderFixed from '@/components/ui/hero-slider-fixed';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { colorStyleToCSS, getOverlayStyles, getButtonStyles, ColorStyle } from '@/lib/sanity-styles';
 import { HERO_SEQUENCE, EASING } from '@/lib/animation-config';
+import { getHeroTheme, resolveHeroTone } from '@/lib/hero-theme';
+import { cn } from '@/lib/utils';
 
 interface HeroData {
   // Three-word structure (new)
@@ -56,6 +58,8 @@ interface HeroData {
       borderColor?: ColorStyle;
     };
   };
+  heroTone?: 'dark' | 'light';
+  darkHero?: boolean;
 }
 
 interface HeroProps {
@@ -69,6 +73,10 @@ export default function Hero({ data }: HeroProps) {
   // Use static motion values instead of scroll-based transforms
   const textY = 0;
   const textOpacity = 1;
+
+  const heroTone = resolveHeroTone(data?.heroTone ?? data?.darkHero);
+  const heroTheme = getHeroTheme(heroTone);
+  const palette = heroTheme.palette;
 
   // Use ONLY Sanity data - no fallbacks
   const heroSlides = (data?.slides && data.slides.length > 0)
@@ -129,13 +137,13 @@ export default function Hero({ data }: HeroProps) {
   } : null;
 
   // Extract styles from Sanity data
-  const titleColor = colorStyleToCSS(data?.titleColor) || 'rgba(255, 255, 255, 0.9)';
-  const titleHighlightColor = colorStyleToCSS(data?.titleHighlightColor);
-  const descriptionColor = colorStyleToCSS(data?.descriptionColor) || 'rgba(255, 255, 255, 0.95)';
+  const titleColor = colorStyleToCSS(data?.titleColor) || palette.title;
+  const titleHighlightColor = colorStyleToCSS(data?.titleHighlightColor) || palette.subtitle;
+  const descriptionColor = colorStyleToCSS(data?.descriptionColor) || palette.description;
 
-  const badgeTextColor = colorStyleToCSS(data?.badgeStyle?.textColor) || '#ffffff';
-  const badgeBgColor = colorStyleToCSS(data?.badgeStyle?.backgroundColor);
-  const badgeBorderColor = colorStyleToCSS(data?.badgeStyle?.borderColor) || 'rgba(96, 165, 250, 0.3)';
+  const badgeTextColor = colorStyleToCSS(data?.badgeStyle?.textColor) || palette.badge.text;
+  const badgeBgColor = colorStyleToCSS(data?.badgeStyle?.backgroundColor) || palette.badge.background;
+  const badgeBorderColor = colorStyleToCSS(data?.badgeStyle?.borderColor) || palette.badge.border;
 
   const overlayStyle = getOverlayStyles(data?.overlay);
   const primaryButtonStyles = getButtonStyles(data?.buttonStyles?.primaryButton);
@@ -144,7 +152,14 @@ export default function Hero({ data }: HeroProps) {
   const titleDropShadow = 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))';
 
   return (
-    <section data-hero-section="dark" className="relative min-h-screen flex items-center justify-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]">
+    <section
+      data-hero-section={heroTone}
+      className={cn(
+        'relative min-h-screen flex items-center justify-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]',
+        heroTheme.classes.section,
+        heroTheme.classes.background
+      )}
+    >
       {/* Premium Background Slider */}
       <HeroSliderFixed slides={finalSlides} />
 
@@ -166,8 +181,7 @@ export default function Hero({ data }: HeroProps) {
               {word1 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: HERO_SEQUENCE.word1.delay, duration: HERO_SEQUENCE.word1.duration, ease: EASING }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{ color: titleColor, filter: titleDropShadow }}
@@ -179,8 +193,7 @@ export default function Hero({ data }: HeroProps) {
               {word2 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: HERO_SEQUENCE.word2.delay, duration: HERO_SEQUENCE.word2.duration, ease: EASING }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{ color: titleColor, filter: titleDropShadow }}
@@ -192,8 +205,7 @@ export default function Hero({ data }: HeroProps) {
               {word3 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: HERO_SEQUENCE.word3.delay, duration: HERO_SEQUENCE.word3.duration, ease: EASING }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={
@@ -216,8 +228,7 @@ export default function Hero({ data }: HeroProps) {
             {/* Tagline */}
             <motion.h1
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: HERO_SEQUENCE.tagline.delay, duration: HERO_SEQUENCE.tagline.duration, ease: EASING }}
               className="text-lg sm:text-xl md:text-2xl font-light leading-[1.3] tracking-normal mb-8"
               style={{ color: descriptionColor }}
@@ -231,19 +242,14 @@ export default function Hero({ data }: HeroProps) {
                 const badgeStyle: React.CSSProperties = {
                   color: badgeTextColor,
                   borderColor: badgeBorderColor,
+                  backgroundColor: badgeBgColor,
                 };
-                if (badgeBgColor) {
-                  badgeStyle.backgroundColor = badgeBgColor;
-                } else {
-                  badgeStyle.backgroundImage = 'linear-gradient(to right, rgba(37, 99, 235, 0.2), rgba(79, 70, 229, 0.2))';
-                }
 
                 return (
                   <motion.span
                     key={`${badge}-${index}`}
                     initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{
                       delay: HERO_SEQUENCE.badges.startDelay + (index * HERO_SEQUENCE.badges.stagger),
                       duration: HERO_SEQUENCE.badges.duration,
@@ -262,20 +268,27 @@ export default function Hero({ data }: HeroProps) {
             {primaryCta && (
               <motion.div
                 initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: HERO_SEQUENCE.cta.delay, duration: HERO_SEQUENCE.cta.duration, ease: EASING }}
               >
                 <Button
                   size="lg"
-                  className="group font-semibold px-10 h-14 text-lg rounded-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                  className={cn(
+                    'group font-semibold px-10 h-14 text-lg rounded-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]',
+                    heroTone === 'dark'
+                      ? 'shadow-lg shadow-blue-500/30'
+                      : 'shadow-lg shadow-slate-900/10 dark:shadow-blue-500/20'
+                  )}
                   style={
                     Object.keys(primaryButtonStyles.style).length > 0
                       ? primaryButtonStyles.style
                       : {
-                          backgroundImage: 'linear-gradient(to right, #2563eb, #3b82f6, #4f46e5)',
-                          color: '#ffffff',
-                          boxShadow: 'rgba(37, 99, 235, 0.25) 0px 0px 20px, rgba(37, 99, 235, 0.15) 0px 8px 16px'
+                          backgroundColor: palette.buttons.primaryBg,
+                          color: palette.buttons.primaryText,
+                          border: heroTone === 'light' ? '1px solid rgba(15,23,42,0.1)' : undefined,
+                          boxShadow: heroTone === 'dark'
+                            ? 'rgba(37, 99, 235, 0.25) 0px 0px 20px, rgba(37, 99, 235, 0.15) 0px 8px 16px'
+                            : 'rgba(15, 23, 42, 0.12) 0px 12px 30px',
                         }
                   }
                   asChild
@@ -295,8 +308,7 @@ export default function Hero({ data }: HeroProps) {
       {/* Smooth Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
+        animate={{ opacity: 1 }}
         transition={{ delay: HERO_SEQUENCE.scrollIndicator.delay, duration: HERO_SEQUENCE.scrollIndicator.duration, ease: EASING }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >
@@ -309,7 +321,7 @@ export default function Hero({ data }: HeroProps) {
             repeat: Infinity,
             ease: [0.33, 1, 0.68, 1]
           }}
-          className="text-white/50 hover:text-white/70 transition-colors cursor-pointer"
+          className={cn('transition-colors cursor-pointer', heroTheme.classes.scrollIndicator)}
         >
           <ChevronDown className="h-6 w-6" />
         </motion.div>

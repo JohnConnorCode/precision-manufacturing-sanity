@@ -187,6 +187,14 @@ function sendMetric(name: string, value: number, pathname: string) {
   if (process.env.NODE_ENV === 'development') {
     console.log(`${name}: ${Math.round(value)}ms (${getMetricRating(name, value)}) - ${pathname}`);
   }
+
+  sendToMetricsEndpoint({
+    type: 'core-web-vital',
+    name,
+    value: Math.round(value),
+    rating: getMetricRating(name, value),
+    page: pathname,
+  });
 }
 
 function sendResourceMetric(url: string, duration: number, size: number, pathname: string, type = 'slow-resource') {
@@ -200,6 +208,17 @@ function sendResourceMetric(url: string, duration: number, size: number, pathnam
       page_path: pathname
     });
   }
+
+  sendToMetricsEndpoint({
+    type: 'resource',
+    name: url.split('/').pop(),
+    page: pathname,
+    details: {
+      duration: Math.round(duration),
+      size,
+      variant: type,
+    },
+  });
 }
 
 function sendMemoryMetric(used: number, total: number, pathname: string) {
@@ -212,6 +231,16 @@ function sendMemoryMetric(used: number, total: number, pathname: string) {
       page_path: pathname
     });
   }
+
+  sendToMetricsEndpoint({
+    type: 'memory',
+    name: 'js-heap',
+    page: pathname,
+    details: {
+      used,
+      total,
+    },
+  });
 }
 
 function sendEngagementMetric(action: string, pathname: string) {
@@ -222,6 +251,12 @@ function sendEngagementMetric(action: string, pathname: string) {
       page_path: pathname
     });
   }
+
+  sendToMetricsEndpoint({
+    type: 'engagement',
+    name: action,
+    page: pathname,
+  });
 }
 
 function getMetricRating(metric: string, value: number): 'good' | 'needs-improvement' | 'poor' {
@@ -243,3 +278,20 @@ function getMetricRating(metric: string, value: number): 'good' | 'needs-improve
 }
 
 export default PerformanceMonitor;
+
+const METRICS_ENDPOINT = '/api/metrics/vitals';
+
+function sendToMetricsEndpoint(payload: Record<string, unknown>) {
+  if (typeof navigator === 'undefined') return;
+  const body = JSON.stringify(payload);
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon(METRICS_ENDPOINT, body);
+  } else {
+    fetch(METRICS_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+      keepalive: true,
+    }).catch(() => {});
+  }
+}

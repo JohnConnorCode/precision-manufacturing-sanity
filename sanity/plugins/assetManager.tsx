@@ -1,5 +1,4 @@
 import { definePlugin } from 'sanity';
-import { ImageIcon } from '@sanity/icons';
 
 /**
  * Advanced Asset Management Plugin

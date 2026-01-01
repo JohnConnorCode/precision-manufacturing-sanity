@@ -101,13 +101,13 @@ export default async function ResourcesPage() {
             const lastWord = words[words.length - 1];
             return (
               <span>
-                <span className="text-white">{firstPart} </span>
+                <span className="text-inherit">{firstPart} </span>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
               </span>
             );
           })() : (
             <>
-              <span className="text-white">Master</span>{' '}
+              <span className="text-inherit">Master</span>{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">Precision Manufacturing</span>
             </>
           )
@@ -122,7 +122,7 @@ export default async function ResourcesPage() {
       />
 
       {/* Articles Grid */}
-      <section className="relative py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white">
+      <section className="relative py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         <div className={spacing.containerWide}>
           <AnimatedSection>
             <SectionHeader

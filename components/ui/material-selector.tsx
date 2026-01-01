@@ -216,10 +216,10 @@ export default function MaterialSelector() {
           {/* Header */}
           <div className="flex items-center gap-3 mb-8">
             <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl flex items-center justify-center">
-              <Search className="w-6 h-6 text-white" />
+              <Search className="w-6 h-6 text-tone-inverse" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-white">Material Selection Tool</h2>
+              <h2 className="text-2xl font-bold text-tone-inverse">Material Selection Tool</h2>
               <p className="text-slate-400">Find the optimal material for your aerospace application</p>
             </div>
           </div>
@@ -235,7 +235,7 @@ export default function MaterialSelector() {
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-600/50 focus:border-purple-600"
+                    className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-600/50 focus:border-purple-600"
                     placeholder="Search by name or grade..."
                   />
                 </div>
@@ -246,7 +246,7 @@ export default function MaterialSelector() {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-600/50 focus:border-purple-600"
+                  className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse focus:outline-none focus:ring-2 focus:ring-purple-600/50 focus:border-purple-600"
                 >
                   <option value="all">All Categories</option>
                   <option value="aluminum">Aluminum Alloys</option>
@@ -261,7 +261,7 @@ export default function MaterialSelector() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-600/50 focus:border-purple-600"
+                  className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse focus:outline-none focus:ring-2 focus:ring-purple-600/50 focus:border-purple-600"
                 >
                   <option value="name">Name</option>
                   <option value="strength">Strength (High to Low)</option>
@@ -272,7 +272,7 @@ export default function MaterialSelector() {
 
               {/* Requirements */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white">Requirements</h3>
+                <h3 className="text-lg font-semibold text-tone-inverse">Requirements</h3>
 
                 <div>
                   <label className="block text-sm text-slate-300 mb-1">
@@ -341,7 +341,7 @@ export default function MaterialSelector() {
             {/* Materials List */}
             <div className="lg:col-span-2 space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-white">
+                <h3 className="text-lg font-semibold text-tone-inverse">
                   Available Materials ({filteredMaterials.length})
                 </h3>
               </div>
@@ -361,7 +361,7 @@ export default function MaterialSelector() {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
                         <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${categoryColors[material.category]}`} />
-                        <h4 className="font-semibold text-white">{material.name}</h4>
+                        <h4 className="font-semibold text-tone-inverse">{material.name}</h4>
                         {material.aerospaceCertified && (
                           <span title="Aerospace Certified">
                             <CheckCircle className="w-4 h-4 text-green-400" />
@@ -373,15 +373,15 @@ export default function MaterialSelector() {
                     <div className="grid grid-cols-3 gap-4 text-sm">
                       <div>
                         <div className="text-slate-400">Strength</div>
-                        <div className="text-white">{material.properties.tensileStrength} MPa</div>
+                        <div className="text-tone-inverse">{material.properties.tensileStrength} MPa</div>
                       </div>
                       <div>
                         <div className="text-slate-400">Density</div>
-                        <div className="text-white">{material.properties.density} kg/m³</div>
+                        <div className="text-tone-inverse">{material.properties.density} kg/m³</div>
                       </div>
                       <div>
                         <div className="text-slate-400">Max Temp</div>
-                        <div className="text-white">{material.properties.maxTemp}°C</div>
+                        <div className="text-tone-inverse">{material.properties.maxTemp}°C</div>
                       </div>
                     </div>
                   </motion.div>
@@ -402,7 +402,7 @@ export default function MaterialSelector() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   {/* Properties */}
                   <div>
-                    <h3 className="text-xl font-bold text-white mb-4">Material Properties</h3>
+                    <h3 className="text-xl font-bold text-tone-inverse mb-4">Material Properties</h3>
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="bg-slate-800/50 rounded-lg p-3">
@@ -410,28 +410,28 @@ export default function MaterialSelector() {
                             <Weight className="w-4 h-4 text-slate-400" />
                             <span className="text-sm text-slate-400">Density</span>
                           </div>
-                          <div className="text-white font-semibold">{selectedMaterial.properties.density} kg/m³</div>
+                          <div className="text-tone-inverse font-semibold">{selectedMaterial.properties.density} kg/m³</div>
                         </div>
                         <div className="bg-slate-800/50 rounded-lg p-3">
                           <div className="flex items-center gap-2 mb-1">
                             <Zap className="w-4 h-4 text-slate-400" />
                             <span className="text-sm text-slate-400">Tensile Strength</span>
                           </div>
-                          <div className="text-white font-semibold">{selectedMaterial.properties.tensileStrength} MPa</div>
+                          <div className="text-tone-inverse font-semibold">{selectedMaterial.properties.tensileStrength} MPa</div>
                         </div>
                         <div className="bg-slate-800/50 rounded-lg p-3">
                           <div className="flex items-center gap-2 mb-1">
                             <Thermometer className="w-4 h-4 text-slate-400" />
                             <span className="text-sm text-slate-400">Max Temperature</span>
                           </div>
-                          <div className="text-white font-semibold">{selectedMaterial.properties.maxTemp}°C</div>
+                          <div className="text-tone-inverse font-semibold">{selectedMaterial.properties.maxTemp}°C</div>
                         </div>
                         <div className="bg-slate-800/50 rounded-lg p-3">
                           <div className="flex items-center gap-2 mb-1">
                             <Shield className="w-4 h-4 text-slate-400" />
                             <span className="text-sm text-slate-400">Corrosion Resistance</span>
                           </div>
-                          <div className="text-white font-semibold">{selectedMaterial.properties.corrosionResistance}</div>
+                          <div className="text-tone-inverse font-semibold">{selectedMaterial.properties.corrosionResistance}</div>
                         </div>
                       </div>
                     </div>
@@ -439,7 +439,7 @@ export default function MaterialSelector() {
 
                   {/* Applications & Considerations */}
                   <div>
-                    <h3 className="text-xl font-bold text-white mb-4">Applications & Considerations</h3>
+                    <h3 className="text-xl font-bold text-tone-inverse mb-4">Applications & Considerations</h3>
                     <div className="space-y-4">
                       <div>
                         <h4 className="text-green-400 font-medium mb-2">Typical Applications</h4>

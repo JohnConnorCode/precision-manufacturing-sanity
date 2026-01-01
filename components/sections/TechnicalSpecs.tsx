@@ -84,7 +84,7 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
             gradientWordPosition="last"
             description={subtitle}
             centered={true}
-            className="[&_h2]:text-white [&_p]:text-slate-400"
+            className="[&_h2]:text-tone-inverse [&_p]:text-slate-400"
           />
         </div>
 
@@ -128,12 +128,12 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
                   {/* Icon */}
                   <div className="relative w-12 h-12 rounded-xl p-[1px] mb-4" style={getGradientStyle(theme.colors)}>
                     <div className="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center">
-                      <Icon className="w-6 h-6 text-white" />
+                      <Icon className="w-6 h-6 text-tone-inverse" />
                     </div>
                   </div>
 
                   {/* Metric Value */}
-                  <div className="text-2xl md:text-3xl font-black text-white mb-1 tracking-tight">
+                  <div className="text-2xl md:text-3xl font-black text-tone-inverse mb-1 tracking-tight">
                     {metric.value}
                   </div>
 

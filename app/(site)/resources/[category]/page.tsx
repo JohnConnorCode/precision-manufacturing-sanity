@@ -100,7 +100,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         badge={{ text: 'RESOURCES' }}
         title={
           <span>
-            <span className="text-white">{firstPart} </span>
+            <span className="text-inherit">{firstPart} </span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
               {lastWord}
             </span>

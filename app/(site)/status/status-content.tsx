@@ -7,6 +7,8 @@ import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { typography, spacing, cn } from '@/lib/design-system'
+import { getToneTypography } from '@/lib/typography'
+import type { ServerLogEntry } from '@/lib/server-logger'
 
 interface HealthStatus {
   timestamp: string
@@ -25,6 +27,7 @@ interface HealthStatus {
     message: string
   }
   healthy: boolean
+  logs?: ServerLogEntry[]
 }
 
 interface StatusContentProps {
@@ -39,6 +42,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
   const [showEnv, setShowEnv] = useState(false)
   const [copiedText, setCopiedText] = useState<string | null>(null)
   const [envVars, setEnvVars] = useState<Record<string, string | boolean | null>>({})
+  const darkTone = getToneTypography('dark')
 
   const refreshHealth = async () => {
     setLoading(true)
@@ -97,7 +101,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600/10 border border-blue-600/20 mb-4">
                 <span className="text-sm font-medium text-blue-400">Admin Dashboard</span>
               </div>
-              <h1 className={cn(typography.heroHeading, 'text-white mb-3 uppercase')}>
+              <h1 className={cn(typography.heroHeading, darkTone.heading, 'mb-3 uppercase')}>
                 System <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">Status</span>
               </h1>
               <p className={cn(typography.descriptionLight)}>
@@ -107,7 +111,10 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
             <Button
               onClick={refreshHealth}
               disabled={loading}
-              className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/25"
+              className={cn(
+                'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-600/25',
+                darkTone.heading
+              )}
             >
               <RefreshCw className={cn('w-4 h-4 mr-2', loading && 'animate-spin')} />
               {loading ? 'Checking...' : 'Refresh Status'}
@@ -187,7 +194,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
                 <Card className="p-6 bg-slate-900/50 border-slate-800">
                   <div className="flex items-center gap-3 mb-4">
                     <StatusIcon ok={health.sanity.connected} />
-                    <h3 className={cn(typography.h5, 'text-white')}>Sanity CMS</h3>
+                    <h3 className={cn(typography.h5, darkTone.heading)}>Sanity CMS</h3>
                   </div>
                   <p className={cn(typography.small, health.sanity.connected ? 'text-green-400' : 'text-red-400', 'mb-3')}>
                     {health.sanity.message}
@@ -212,7 +219,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
                 <Card className="p-6 bg-slate-900/50 border-slate-800">
                   <div className="flex items-center gap-3 mb-4">
                     <StatusIcon ok={health.email.configured} />
-                    <h3 className={cn(typography.h5, 'text-white')}>Email System</h3>
+                    <h3 className={cn(typography.h5, darkTone.heading)}>Email System</h3>
                   </div>
                   <p className={cn(typography.small, health.email.configured ? 'text-green-400' : 'text-amber-400', 'mb-3')}>
                     {health.email.message}
@@ -233,7 +240,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <Card className="p-6 bg-slate-900/50 border-slate-800">
-                <h3 className={cn(typography.h5, 'text-white mb-6 flex items-center gap-2')}>
+                <h3 className={cn(typography.h5, darkTone.heading, 'mb-6 flex items-center gap-2')}>
                   <StatusIcon ok={health.apis.navigation && health.apis.footer && health.apis.siteSettings} />
                   Content APIs
                 </h3>
@@ -263,7 +270,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
             >
               <Card className="p-6 bg-slate-900/50 border-slate-800">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className={cn(typography.h5, 'text-white')}>Configuration</h3>
+                  <h3 className={cn(typography.h5, darkTone.heading)}>Configuration</h3>
                   <Button
                     onClick={() => setShowEnv(!showEnv)}
                     variant="ghost"
@@ -318,7 +325,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
               transition={{ duration: 0.6, delay: 0.6 }}
             >
               <Card className="p-6 bg-slate-900/50 border-slate-800">
-                <h3 className={cn(typography.h5, 'text-white mb-6')}>Quick Links</h3>
+                <h3 className={cn(typography.h5, darkTone.heading, 'mb-6')}>Quick Links</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {[
                     { href: '/troubleshooting', label: '📋 Troubleshooting Guide' },
@@ -339,6 +346,67 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
                 </div>
               </Card>
             </motion.div>
+
+            {/* Recent Server Logs */}
+            {health.logs && health.logs.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.65 }}
+              >
+                <Card className="p-6 bg-slate-900/50 border-slate-800">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className={cn(typography.h5, darkTone.heading)}>Recent Server Logs</h3>
+                    <span className={cn('text-xs font-mono', darkTone.muted)}>
+                      Last {health.logs.length} events
+                    </span>
+                  </div>
+                  <div className="space-y-3">
+                    {health.logs.map((log) => (
+                      <div
+                        key={log.id}
+                        className="p-4 rounded-xl bg-slate-900/70 border border-slate-800"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span
+                            className={cn(
+                              'text-xs font-semibold uppercase tracking-wide',
+                              log.level === 'error'
+                                ? 'text-red-300'
+                                : log.level === 'warn'
+                                ? 'text-amber-300'
+                                : 'text-blue-300'
+                            )}
+                          >
+                            {log.level}
+                          </span>
+                          <span className="text-xs font-mono text-slate-500">
+                            {new Date(log.timestamp).toLocaleTimeString()}
+                          </span>
+                        </div>
+                        <p className={cn('text-sm font-medium', darkTone.body)}>
+                          {log.message}
+                        </p>
+                        <p className={cn('text-xs mt-1', darkTone.muted)}>
+                          {log.scope}
+                          {log.context?.query != null && (
+                            <>
+                              {' '}
+                              &mdash; <span>{String(log.context.query)}</span>
+                            </>
+                          )}
+                        </p>
+                        {log.stack && (
+                          <pre className="mt-2 text-[11px] text-slate-500 font-mono whitespace-pre-wrap">
+                            {log.stack.split('\n')[0]}
+                          </pre>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              </motion.div>
+            )}
 
             {/* Support Info */}
             <motion.div

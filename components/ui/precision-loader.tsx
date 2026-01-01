@@ -118,7 +118,7 @@ export function DataPoint({
     <div className={`space-y-1 ${className}`}>
       <div className="text-xs text-slate-500 uppercase tracking-wider">{label}</div>
       <div className="flex items-baseline gap-1">
-        <span className="text-2xl font-light text-white">
+        <span className="text-2xl font-light text-tone-inverse">
           {formattedValue}
         </span>
         {unit && (
@@ -189,7 +189,7 @@ export function ProgressRing({
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <div className="text-2xl font-light text-white">
+        <div className="text-2xl font-light text-tone-inverse">
           {value.toFixed(1)}%
         </div>
         {label && (

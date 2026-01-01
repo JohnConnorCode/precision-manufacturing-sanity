@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { FileQuestion, BookOpen, ArrowRight, Home, ArrowLeft } from 'lucide-react'
 import { typography, cn } from '@/lib/design-system'
+import { getToneTypography } from '@/lib/typography'
 
 export default function NotFound() {
+  const darkTone = getToneTypography('dark')
   const suggestedResources = [
     { label: 'Manufacturing Processes', href: '/resources/manufacturing-processes' },
     { label: 'Quality & Compliance', href: '/resources/quality-compliance' },
@@ -46,7 +48,7 @@ export default function NotFound() {
               404
             </h1>
 
-            <h2 className={cn(typography.h3, 'text-white mb-4')}>
+            <h2 className={cn(typography.h3, darkTone.heading, 'mb-4')}>
               Resource Not Found
             </h2>
 
@@ -62,7 +64,12 @@ export default function NotFound() {
             className="flex flex-col sm:flex-row gap-3 justify-center mb-8"
           >
             <Link href="/resources">
-              <Button className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/25 w-full sm:w-auto">
+              <Button
+                className={cn(
+                  'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-600/25 w-full sm:w-auto',
+                  darkTone.heading
+                )}
+              >
                 <BookOpen className="w-4 h-4 mr-2" />
                 Browse All Resources
               </Button>

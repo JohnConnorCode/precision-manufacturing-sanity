@@ -13,6 +13,22 @@ import { theme, styles, cn } from '@/lib/theme';
 
 ## Typography Replacements
 
+### Tone-aware Classes
+Dark-mode typography now uses the `text-tone-inverse` utility (and its `/opacity` variants) rather than literal hex values. Map your designs like this:
+
+```tsx
+// ❌ BEFORE
+<h3 className="text-tone-inverse/80">Dark mode text</h3>
+
+// ✅ AFTER – use tone helper or class string from lib/typography
+import { getToneTypography } from '@/lib/typography';
+const tone = getToneTypography('dark');
+
+<h3 className={tone.headingMuted}>Dark mode text</h3>
+```
+
+Preview all typography/tone tokens live at `/styleguide`.
+
 ### Section Headings
 ```typescript
 // ❌ BEFORE (inline)
@@ -49,7 +65,7 @@ import { theme, styles, cn } from '@/lib/theme';
 ### Card Titles (White Text)
 ```typescript
 // ❌ BEFORE
-<h3 className="text-2xl font-bold text-white">
+<h3 className="text-2xl font-bold text-tone-inverse">
 
 // ✅ AFTER
 <h3 className={styles.heading.cardWhite}>
@@ -267,7 +283,7 @@ import { theme, styles, cn } from '@/lib/theme';
 ### Primary Button
 ```typescript
 // ❌ BEFORE
-<Button className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold shadow-2xl shadow-cyan-600/20 hover:shadow-cyan-600/30 transition-all duration-300">
+<Button className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-tone-inverse font-semibold shadow-2xl shadow-cyan-600/20 hover:shadow-cyan-600/30 transition-all duration-300">
 
 // ✅ AFTER
 <Button className={styles.ctaPrimary}>

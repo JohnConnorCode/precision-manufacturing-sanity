@@ -2,7 +2,7 @@ import { DocumentActionComponent } from 'sanity';
 import { CopyIcon } from '@sanity/icons';
 
 export const DuplicateAction: DocumentActionComponent = (props) => {
-  const { id, type, draft, published, onComplete } = props;
+  const { id, draft, published, onComplete } = props;
 
   return {
     label: 'Duplicate',

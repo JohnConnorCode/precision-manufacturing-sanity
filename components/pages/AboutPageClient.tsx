@@ -6,12 +6,10 @@ import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight, Users, Factory, Award, Target, Zap, Shield, Lightbulb, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import ParallaxImage from '@/components/ui/parallax-image';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
-import imageUrlBuilder from '@sanity/image-url';
-import { client } from '@/sanity/lib/client';
-
-const builder = imageUrlBuilder(client);
+import { getHeroImageUrl } from '@/lib/hero-images';
 
 const iconMap: Record<string, LucideIcon> = {
   Award,
@@ -29,18 +27,7 @@ interface SanityImageSource {
   alt?: string;
 }
 
-const urlFor = (source?: string | SanityImageSource) => {
-  if (!source) return '';
-  if (typeof source === 'string') return source;
-  if (source?.asset) {
-    try {
-      return builder.image(source).url();
-    } catch {
-      return '';
-    }
-  }
-  return '';
-};
+const urlFor = getHeroImageUrl;
 
 // Type definitions for About page CMS data
 interface HeroButton {
@@ -216,7 +203,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
           title={
             data.hero?.title ? (
               data.hero?.titleHighlight ? (
-                <span className="text-white">
+                <span className="text-tone-inverse">
                   {data.hero.title}{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
                     {data.hero.titleHighlight}
@@ -232,7 +219,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 const lastWord = words[words.length - 1];
                 return (
                   <span>
-                    <span className="text-white">{firstPart} </span>
+                    <span className="text-tone-inverse">{firstPart} </span>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
                   </span>
                 );
@@ -267,7 +254,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   viewport={{ once: true }}
                   className="text-center"
                 >
-                  <div className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2">
+                  <div className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-tone-inverse mb-2">
                     {stat?.value}
                   </div>
                   <div className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide mb-2">
@@ -360,7 +347,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                     <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 mb-4">
                       {milestone?.year}
                     </div>
-                    <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">{milestone?.title}</h3>
+                    <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-tone-inverse group-hover:text-blue-600 transition-colors">{milestone?.title}</h3>
                     <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{milestone?.description}</p>
                   </Card>
                 </motion.div>
@@ -412,9 +399,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                     >
                       <Card className={cn(styles.featureCard, "h-full group")}>
                         <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                          <Icon className="w-8 h-8 text-white" />
+                          <Icon className="w-8 h-8 text-tone-inverse" />
                         </div>
-                        <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">{value?.title}</h3>
+                        <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-tone-inverse">{value?.title}</h3>
                         <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">{value?.description}</p>
                       </Card>
                     </motion.div>
@@ -462,9 +449,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                     >
                       <Card className="p-6 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 hover:shadow-lg h-full group">
                         <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                          <Factory className="w-6 h-6 text-white" />
+                          <Factory className="w-6 h-6 text-tone-inverse" />
                         </div>
-                        <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-white">{capability?.title}</h3>
+                        <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-tone-inverse">{capability?.title}</h3>
                         {capability?.description && (
                           <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">{capability.description}</p>
                         )}
@@ -494,7 +481,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               >
                 <div className="text-center mb-8">
                   {isCertificationsObject(data.certifications) && data.certifications.title && (
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{data.certifications.title}</h3>
+                    <h3 className="text-2xl md:text-3xl font-bold text-tone-inverse mb-2">{data.certifications.title}</h3>
                   )}
                   <p className="text-slate-400">Industry-recognized quality standards</p>
                 </div>
@@ -510,14 +497,14 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                       className="flex flex-col items-center text-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300"
                     >
                       <Shield className="w-8 h-8 text-blue-400 mb-2" />
-                      <span className="text-sm font-semibold text-white">{cert?.certification}</span>
+                      <span className="text-sm font-semibold text-tone-inverse">{cert?.certification}</span>
                     </motion.div>
                   ))}
                 </div>
 
                 {isCertificationsObject(data.certifications) && data.certifications.commitmentTitle && (
                   <div className="text-center max-w-2xl mx-auto">
-                    <h4 className="text-lg font-bold text-white mb-2">{data.certifications.commitmentTitle}</h4>
+                    <h4 className="text-lg font-bold text-tone-inverse mb-2">{data.certifications.commitmentTitle}</h4>
                     <p className="text-slate-400">{data.certifications.commitmentDescription}</p>
                   </div>
                 )}
@@ -564,21 +551,23 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                         {/* Large Photo Header */}
                         <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
                           {photoUrl ? (
-                            <img
+                            <Image
                               src={photoUrl}
                               alt={leader?.photo?.alt || `Photo of ${leader?.name}`}
+                              width={128}
+                              height={128}
                               className="w-32 h-32 rounded-full object-cover shadow-xl border-4 border-white dark:border-slate-600 group-hover:scale-105 transition-transform duration-300"
                             />
                           ) : (
                             <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-xl border-4 border-white dark:border-slate-600">
-                              <Users className="w-16 h-16 text-white" />
+                              <Users className="w-16 h-16 text-tone-inverse" />
                             </div>
                           )}
                         </div>
 
                         {/* Content */}
                         <div className="p-8 text-center">
-                          <h3 className="text-2xl font-bold mb-1 text-slate-900 dark:text-white">{leader?.name}</h3>
+                          <h3 className="text-2xl font-bold mb-1 text-slate-900 dark:text-tone-inverse">{leader?.name}</h3>
                           <div className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-2">{leader?.title}</div>
                           {leader?.experience && (
                             <div className="text-sm text-slate-500 dark:text-slate-400 mb-4">{leader.experience}</div>

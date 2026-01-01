@@ -124,7 +124,7 @@ export default function CTA({ data }: CTAProps) {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, delay: prefersReducedMotion ? 0 : STAGGER.cards, ease: EASING }}
             viewport={getViewportConfig()}
-            className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-8 leading-tight"
+            className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-tone-inverse mb-8 leading-tight"
           >
             {firstPart && <span>{firstPart} </span>}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-500">

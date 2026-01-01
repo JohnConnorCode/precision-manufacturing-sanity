@@ -326,7 +326,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
           const lastWord = words[words.length - 1];
           return (
             <span>
-              <span className="text-white">{firstPart} </span>
+              <span className="text-inherit">{firstPart} </span>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
             </span>
           );
@@ -417,7 +417,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                           <div className="absolute bottom-4 left-4">
-                            <CapIcon className="w-8 h-8 text-white" />
+                            <CapIcon className="w-8 h-8 text-tone-inverse" />
                           </div>
                         </div>
                       )}
@@ -498,7 +498,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                   >
                     <Card className={cn(styles.featureCard, 'h-full text-center p-6')}>
                       <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
-                        <BenefitIcon className="w-6 h-6 text-white" />
+                        <BenefitIcon className="w-6 h-6 text-tone-inverse" />
                       </div>
                       <h3 className={cn(typography.h5, 'mb-2')}>{benefit.title}</h3>
                       <p className={typography.small}>{benefit.description}</p>
@@ -552,7 +552,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                           <div className="absolute bottom-4 left-4">
-                            <OfferingIcon className="w-8 h-8 text-white" />
+                            <OfferingIcon className="w-8 h-8 text-tone-inverse" />
                           </div>
                         </div>
                       )}
@@ -744,7 +744,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               viewport={viewportConfig}
               className="text-center mb-12"
             >
-              <h2 className={cn(typography.h2, 'mb-4 text-white')}>{qualityHeading}</h2>
+              <h2 className={cn(typography.h2, 'mb-4 text-tone-inverse')}>{qualityHeading}</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto text-slate-300')}>
                 {qualityDescription}
               </p>
@@ -816,7 +816,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     viewport={viewportConfig}
                   >
                     <Card className={cn(styles.featureCard, 'h-full')}>
-                      <div className={cn('w-12 h-12 text-white rounded-lg flex items-center justify-center text-xl font-bold mb-4', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
+                      <div className={cn('w-12 h-12 text-tone-inverse rounded-lg flex items-center justify-center text-xl font-bold mb-4', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
                         {String(index + 1).padStart(2, '0')}
                       </div>
                       <h3 className={cn(typography.h5, 'mb-3')}>{process.title}</h3>
@@ -845,7 +845,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               heading={ctaData?.title || 'Ready to Get Started?'}
               gradientWordPosition="last"
               description={ctaData?.description}
-              className="[&_h2]:text-white [&_p]:text-slate-300 mb-8"
+              className="[&_h2]:text-tone-inverse [&_p]:text-slate-300 mb-8"
             />
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {(ctaData?.buttons || [])

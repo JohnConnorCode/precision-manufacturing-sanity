@@ -6,35 +6,11 @@ import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight, Users, Briefcase, Award, Heart, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
-import imageUrlBuilder from '@sanity/image-url';
-import { client } from '@/sanity/lib/client';
+import { getHeroImageUrl } from '@/lib/hero-images';
 
-const builder = imageUrlBuilder(client);
-
-function urlFor(source: any) {
-  if (!source) return '';
-  // If it's already a URL, return it
-  if (typeof source === 'string') {
-    // Check if it's a Sanity asset reference string
-    if (source.startsWith('asset-reference:') || source.includes('image-')) {
-      return ''; // Return empty string for invalid asset references
-    }
-    if (source.startsWith('http')) {
-      return source;
-    }
-    return '';
-  }
-  // If it's a Sanity image object
-  if (source && (source._type === 'image' || source.asset)) {
-    try {
-      return builder.image(source).url();
-    } catch {
-      return '';
-    }
-  }
-  return '';
-}
+const urlFor = getHeroImageUrl;
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -64,7 +40,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
         }}
         title={
           data?.hero?.titleHighlight ? (
-            <span className="text-white">
+            <span className="text-inherit">
               {data?.hero?.title}{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{data?.hero?.titleHighlight}</span>
             </span>
@@ -79,7 +55,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             const lastWord = words[words.length - 1];
             return (
               <span>
-                <span className="text-white">{firstPart} </span>
+                <span className="text-inherit">{firstPart} </span>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
               </span>
             );
@@ -111,10 +87,10 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               <p className={cn(typography.lead, "mb-6")}>
                 {data?.whyWorkHere?.paragraph1 || 'Join a team committed to excellence in precision manufacturing.'}
               </p>
-              <p className={cn(typography.body, "text-slate-600 mb-8")}>
+              <p className={cn(typography.body, "text-slate-600 dark:text-slate-300 mb-8")}>
                 {data?.whyWorkHere?.paragraph2 || 'We offer competitive compensation and comprehensive benefits.'}
               </p>
-              <p className={cn(typography.body, "text-slate-600")}>
+              <p className={cn(typography.body, "text-slate-600 dark:text-slate-300")}>
                 {data?.whyWorkHere?.paragraph3 || 'Grow your career with ongoing training and development opportunities.'}
               </p>
             </motion.div>
@@ -128,12 +104,18 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             >
               {(() => {
                 const imageUrl = urlFor(data?.whyWorkHere?.image) || (data as any)?.whyWorkHere?.imageUrl;
-                return imageUrl && (
-                  <img
-                    src={imageUrl}
-                    alt={data?.whyWorkHere?.imageAlt || 'Team collaboration'}
-                    className="w-full h-96 rounded-lg object-cover shadow-lg"
-                  />
+                if (!imageUrl) return null;
+                return (
+                  <div className="relative w-full h-96 rounded-lg overflow-hidden shadow-lg">
+                    <Image
+                      src={imageUrl}
+                      alt={data?.whyWorkHere?.imageAlt || 'Team collaboration'}
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      priority={false}
+                    />
+                  </div>
                 );
               })()}
             </motion.div>
@@ -179,7 +161,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                       </div>
                       <div className="ml-4">
                         <h3 className={cn(typography.h4, "mb-2")}>{benefit.title}</h3>
-                        <p className={cn(typography.body, "text-slate-600")}>{benefit.description}</p>
+                        <p className={cn(typography.body, "text-slate-600 dark:text-slate-300")}>{benefit.description}</p>
                       </div>
                     </div>
                   </Card>
@@ -219,7 +201,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               >
                 <Card className={cn(styles.featureCard)}>
                   <h3 className={cn(typography.h4, "mb-3")}>{value.title}</h3>
-                  <p className={cn(typography.body, "text-slate-600")}>{value.description}</p>
+                  <p className={cn(typography.body, "text-slate-600 dark:text-slate-300")}>{value.description}</p>
                 </Card>
               </motion.div>
             ))}
@@ -270,7 +252,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                               {position.department}
                             </p>
                           )}
-                          <p className={cn(typography.body, "text-slate-600 mb-3")}>
+                          <p className={cn(typography.body, "text-slate-600 dark:text-slate-300 mb-3")}>
                             {position.shortDescription}
                           </p>
                           <div className="flex flex-wrap gap-2">
@@ -288,7 +270,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                           </div>
                         </div>
                         <div className="flex-shrink-0">
-                          <div className="px-6 py-3 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white rounded-lg font-semibold group-hover:from-blue-500 group-hover:to-indigo-500 transition-all inline-flex items-center">
+                          <div className="px-6 py-3 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-tone-inverse rounded-lg font-semibold group-hover:from-blue-500 group-hover:to-indigo-500 transition-all inline-flex items-center">
                             View Details <ArrowRight className="ml-2 h-4 w-4" />
                           </div>
                         </div>
@@ -300,7 +282,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             </div>
           ) : (
             <Card className="p-12 text-center">
-              <p className={cn(typography.lead, "text-slate-600 mb-4")}>
+              <p className={cn(typography.lead, "text-slate-600 dark:text-slate-300 mb-4")}>
                 No open positions at this time.
               </p>
               <p className={cn(typography.body, "text-slate-500")}>

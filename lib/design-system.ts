@@ -16,10 +16,10 @@ export const typography = {
   display: 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-[-0.02em] leading-[0.9]',
 
   // Section headings - Clean and authoritative
-  sectionHeading: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-slate-900 dark:text-white',
+  sectionHeading: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-slate-900 dark:text-tone-inverse',
 
   // Page hero headings
-  heroHeading: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-[-0.02em] leading-[1.05] text-slate-900 dark:text-white',
+  heroHeading: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-[-0.02em] leading-[1.05] text-slate-900 dark:text-tone-inverse',
 
   // Eyebrow/subtitle text - Elegant and understated
   eyebrow: 'text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] text-blue-600',
@@ -30,10 +30,10 @@ export const typography = {
   descriptionLight: 'text-lg md:text-xl text-slate-300 leading-relaxed',
 
   // Card titles - Clear hierarchy
-  cardTitle: 'text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white',
+  cardTitle: 'text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-tone-inverse',
 
   // Subsection titles
-  subsectionTitle: 'text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white',
+  subsectionTitle: 'text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-tone-inverse',
 
   // Body text - Optimized for readability
   body: 'text-base text-slate-600 dark:text-slate-300 leading-relaxed',
@@ -51,11 +51,11 @@ export const typography = {
   stat: 'text-4xl md:text-5xl lg:text-6xl font-black tabular-nums',
 
   // Legacy aliases (backwards compatibility)
-  h1: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white',
-  h2: 'text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white',
-  h3: 'text-2xl sm:text-3xl md:text-4xl font-semibold leading-snug text-slate-900 dark:text-white',
-  h4: 'text-xl sm:text-2xl md:text-3xl font-semibold leading-snug text-slate-900 dark:text-white',
-  h5: 'text-lg sm:text-xl md:text-2xl font-medium leading-snug text-slate-900 dark:text-white',
+  h1: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-slate-900 dark:text-tone-inverse',
+  h2: 'text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-tone-inverse',
+  h3: 'text-2xl sm:text-3xl md:text-4xl font-semibold leading-snug text-slate-900 dark:text-tone-inverse',
+  h4: 'text-xl sm:text-2xl md:text-3xl font-semibold leading-snug text-slate-900 dark:text-tone-inverse',
+  h5: 'text-lg sm:text-xl md:text-2xl font-medium leading-snug text-slate-900 dark:text-tone-inverse',
   lead: 'text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed',
 } as const;
 
@@ -88,17 +88,17 @@ export const colors = {
   subtleGradient: 'from-blue-600/20 to-indigo-600/20',                // Subtle backgrounds
 
   // Text colors (with dark mode support)
-  textDark: 'text-slate-900 dark:text-white',
+  textDark: 'text-slate-900 dark:text-tone-inverse',
   textMedium: 'text-slate-600 dark:text-slate-300',
   textLight: 'text-slate-400 dark:text-slate-500',
-  textWhite: 'text-white',
+  textWhite: 'text-tone-inverse',
 
   // Dark mode aware semantic tokens
   text: {
-    primary: 'text-slate-900 dark:text-white',
+    primary: 'text-slate-900 dark:text-tone-inverse',
     secondary: 'text-slate-600 dark:text-slate-300',
     muted: 'text-slate-400 dark:text-slate-400', // slate-400 provides better contrast (~7:1 on dark backgrounds)
-    inverse: 'text-white dark:text-slate-900',
+    inverse: 'text-tone-inverse dark:text-slate-900',
   },
 
   bg: {
@@ -121,7 +121,7 @@ export const colors = {
     border: 'border-blue-600/10',
     text: {
       heading: 'text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600',
-      primary: 'text-white',
+      primary: 'text-tone-inverse',
       secondary: 'text-slate-400',
       muted: 'text-slate-500',
     },
@@ -314,9 +314,9 @@ export const cardStyles = {
 // Ready-to-use component class strings
 export const components = {
   // Buttons (with dark mode support)
-  buttonPrimary: 'inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow-lg shadow-blue-600/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300',
-  buttonSecondary: 'inline-flex items-center justify-center px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:shadow-lg transition-all duration-300',
-  buttonGhost: 'inline-flex items-center justify-center px-6 py-3 text-slate-600 dark:text-slate-300 font-medium hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all duration-200',
+  buttonPrimary: 'inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-tone-inverse font-semibold rounded-lg shadow-lg shadow-blue-600/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300',
+  buttonSecondary: 'inline-flex items-center justify-center px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-tone-inverse font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:shadow-lg transition-all duration-300',
+  buttonGhost: 'inline-flex items-center justify-center px-6 py-3 text-slate-600 dark:text-slate-300 font-medium hover:text-slate-900 dark:hover:text-tone-inverse hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all duration-200',
 
   // Badges (with dark mode support)
   badge: 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium',
@@ -325,7 +325,7 @@ export const components = {
 
   // Icon containers
   iconBox: 'w-12 h-12 rounded-xl flex items-center justify-center',
-  iconBoxPrimary: 'w-12 h-12 rounded-xl flex items-center justify-center bg-blue-600 text-white',
+  iconBoxPrimary: 'w-12 h-12 rounded-xl flex items-center justify-center bg-blue-600 text-tone-inverse',
   iconBoxLight: 'w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400',
 } as const;
 
@@ -365,7 +365,7 @@ export const styles = {
   featureCard: 'bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15),0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 p-6 md:p-8 group',
 
   // CTA buttons
-  ctaPrimary: 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:via-blue-400 hover:to-indigo-500 text-white font-semibold shadow-lg shadow-blue-600/25 hover:shadow-xl transition-all duration-300 px-8 py-4',
+  ctaPrimary: 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:via-blue-400 hover:to-indigo-500 text-tone-inverse font-semibold shadow-lg shadow-blue-600/25 hover:shadow-xl transition-all duration-300 px-8 py-4',
   ctaSecondary: 'border-2 border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all duration-300 px-8 py-4',
 
   // Page header (dark hero background)
@@ -373,31 +373,31 @@ export const styles = {
 
   // Heading shortcuts (with color + dark mode)
   heading: {
-    section: 'text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white',
-    sectionWhite: 'text-4xl md:text-5xl lg:text-6xl font-black text-white',
-    subsection: 'text-2xl md:text-3xl font-bold text-slate-900 dark:text-white',
-    subsectionWhite: 'text-2xl md:text-3xl font-bold text-white',
-    card: 'text-xl md:text-2xl font-bold text-slate-900 dark:text-white',
-    cardWhite: 'text-xl md:text-2xl font-bold text-white',
+    section: 'text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-tone-inverse',
+    sectionWhite: 'text-4xl md:text-5xl lg:text-6xl font-black text-tone-inverse',
+    subsection: 'text-2xl md:text-3xl font-bold text-slate-900 dark:text-tone-inverse',
+    subsectionWhite: 'text-2xl md:text-3xl font-bold text-tone-inverse',
+    card: 'text-xl md:text-2xl font-bold text-slate-900 dark:text-tone-inverse',
+    cardWhite: 'text-xl md:text-2xl font-bold text-tone-inverse',
   },
 
   // Icon containers
   iconContainer: {
-    small: 'w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white',
+    small: 'w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-tone-inverse',
     medium: 'w-12 h-12 rounded-lg bg-blue-600/10 flex items-center justify-center text-blue-600',
-    large: 'w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-blue-600/30',
+    large: 'w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-tone-inverse shadow-lg shadow-blue-600/30',
   },
 } as const;
 
 // ==================== FORM STYLES ====================
 export const forms = {
-  input: 'bg-slate-950/50 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-600 rounded-lg',
-  textarea: 'bg-slate-950/50 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-600 resize-none rounded-lg',
+  input: 'bg-slate-950/50 border-slate-700 text-tone-inverse placeholder:text-slate-500 focus:border-blue-600 rounded-lg',
+  textarea: 'bg-slate-950/50 border-slate-700 text-tone-inverse placeholder:text-slate-500 focus:border-blue-600 resize-none rounded-lg',
   label: 'text-slate-300 text-sm font-medium',
   select: {
-    trigger: 'bg-slate-950/50 border-slate-700 text-white focus:border-blue-600',
-    content: 'bg-slate-900 border-slate-700 text-white',
-    item: 'text-white hover:bg-slate-800',
+    trigger: 'bg-slate-950/50 border-slate-700 text-tone-inverse focus:border-blue-600',
+    content: 'bg-slate-900 border-slate-700 text-tone-inverse',
+    item: 'text-tone-inverse hover:bg-slate-800',
   },
 } as const;
 

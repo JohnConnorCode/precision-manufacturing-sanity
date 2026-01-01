@@ -1346,8 +1346,8 @@ export type Homepage = {
   hero?: {
     enabled?: boolean;
     backgroundGradient?: "from-blue-600 to-indigo-600" | "from-blue-800 to-indigo-800" | "from-zinc-800 to-zinc-900" | "from-indigo-600 to-purple-600" | "bg-blue-600" | "bg-zinc-900" | "custom";
-    headingTextColor?: "text-white" | "text-white/90" | "text-zinc-900" | "text-zinc-600" | "text-blue-600" | "custom";
-    taglineTextColor?: "text-white/80" | "text-white" | "text-zinc-300" | "text-zinc-400" | "text-zinc-600" | "custom";
+    headingTextColor?: "text-tone-inverse" | "text-tone-inverse/90" | "text-zinc-900" | "text-zinc-600" | "text-blue-600" | "custom";
+    taglineTextColor?: "text-tone-inverse/80" | "text-tone-inverse" | "text-zinc-300" | "text-zinc-400" | "text-zinc-600" | "custom";
     heroVerticalPadding?: "py-16 md:py-20" | "py-20 md:py-24" | "py-24 md:py-32" | "py-32 md:py-40" | "custom";
     word1?: string;
     word2?: string;
@@ -1594,8 +1594,8 @@ export type Homepage = {
     title?: string;
     subtitle?: string;
     backgroundColor?: "from-blue-600 to-indigo-600" | "from-blue-800 to-indigo-800" | "from-zinc-800 to-zinc-900" | "from-indigo-600 to-purple-600" | "bg-blue-600" | "bg-zinc-900" | "custom";
-    titleColor?: "text-white" | "text-white/90" | "text-zinc-100" | "text-blue-100" | "custom";
-    subtitleColor?: "text-white/90" | "text-white" | "text-zinc-200" | "text-white/80" | "custom";
+    titleColor?: "text-tone-inverse" | "text-tone-inverse/90" | "text-zinc-100" | "text-blue-100" | "custom";
+    subtitleColor?: "text-tone-inverse/90" | "text-tone-inverse" | "text-zinc-200" | "text-tone-inverse/80" | "custom";
     buttons?: Array<{
       enabled?: boolean;
       text?: string;

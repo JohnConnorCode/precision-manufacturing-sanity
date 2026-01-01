@@ -105,10 +105,10 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                         {item.category}
                       </p>
                     )}
-                    <h3 className="text-2xl font-bold text-white mb-3">
+                    <h3 className="text-2xl font-bold text-tone-inverse mb-3">
                       {item.title}
                     </h3>
-                    <div className="flex items-center text-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="flex items-center text-tone-inverse/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
@@ -155,7 +155,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                 className="text-center p-6 bg-white dark:bg-slate-900 rounded-2xl shadow-lg dark:shadow-slate-950/50 hover:shadow-xl transition-all duration-300"
               >
                 <Icon className="h-8 w-8 mx-auto mb-3" style={{ color: theme.colors.primary }} />
-                <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-1">
+                <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-tone-inverse mb-1">
                   {stat.value}
                 </div>
                 <div className="text-sm text-slate-600 dark:text-slate-400 font-medium">
@@ -176,7 +176,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
             className="text-center"
           >
             <div className="inline-flex flex-col items-center p-8 md:p-12 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-2xl">
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              <h3 className="text-2xl md:text-3xl font-bold text-tone-inverse mb-4">
                 {data.cta.title}
               </h3>
               <p className="text-lg text-slate-300 mb-8 max-w-md">
@@ -191,8 +191,8 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                     href={button.href}
                     className={`inline-flex items-center px-8 py-4 font-semibold rounded-lg transition-all duration-300 ${
                       button.variant === 'primary'
-                        ? 'text-white shadow-xl hover:shadow-2xl'
-                        : 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm'
+                        ? 'text-tone-inverse shadow-xl hover:shadow-2xl'
+                        : 'bg-white/10 hover:bg-white/20 text-tone-inverse backdrop-blur-sm'
                     }`}
                     style={button.variant === 'primary' ? getGradientStyle(theme.colors) : undefined}
                   >

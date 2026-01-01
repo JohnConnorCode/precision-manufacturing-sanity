@@ -71,7 +71,7 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
           className="text-center mb-20"
         >
           {heading && (
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-tone-inverse mb-6">
               {heading.split(' ').map((word, i, arr) => (
                 i === arr.length - 1 ? (
                   <span key={i} className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
@@ -112,12 +112,12 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
                 {/* Icon with Gradient Background */}
                 <div className="relative mb-6">
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-xl shadow-blue-500/20 group-hover:shadow-blue-500/40 group-hover:scale-105 transition-all duration-300">
-                    <DynamicIcon name={benefit.iconName || 'Circle'} className="w-8 h-8 text-white" />
+                    <DynamicIcon name={benefit.iconName || 'Circle'} className="w-8 h-8 text-tone-inverse" />
                   </div>
                 </div>
 
                 {/* Title */}
-                <h3 className="relative text-xl md:text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors duration-300">
+                <h3 className="relative text-xl md:text-2xl font-bold text-tone-inverse mb-4 group-hover:text-blue-400 transition-colors duration-300">
                   {benefit.title}
                 </h3>
 

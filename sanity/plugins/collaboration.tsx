@@ -86,7 +86,7 @@ export const collaborationUtils = {
         expiresAt: new Date(Date.now() + 300000).toISOString(), // 5 minutes
       });
       return true;
-    } catch (error) {
+    } catch (_error) {
       // Lock already exists
       return false;
     }
@@ -99,7 +99,7 @@ export const collaborationUtils = {
     try {
       await client.delete(lockId);
       return true;
-    } catch (error) {
+    } catch (_error) {
       return false;
     }
   },

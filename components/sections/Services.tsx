@@ -142,7 +142,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
                             background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`,
                           }}
                         >
-                          <Icon className="h-7 w-7 text-white" />
+                          <Icon className="h-7 w-7 text-tone-inverse" />
                         </div>
                       </div>
 
@@ -151,7 +151,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
                     {/* Content */}
                     <div className="p-6 flex flex-col flex-1">
                       <h3
-                        className="text-lg font-bold mb-3 text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 line-clamp-2"
+                        className="text-lg font-bold mb-3 text-slate-900 dark:text-tone-inverse group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 line-clamp-2"
                       >
                         {service.title}
                       </h3>

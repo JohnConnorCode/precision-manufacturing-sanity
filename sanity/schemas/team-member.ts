@@ -1,6 +1,6 @@
 import { defineType, defineField } from 'sanity'
 import { Users } from 'lucide-react'
-import { publishedField, orderField, imageWithAlt } from './fields'
+import { publishedField, orderField } from './fields'
 
 /**
  * Team Member Schema

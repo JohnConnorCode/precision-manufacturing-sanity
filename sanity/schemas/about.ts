@@ -1,6 +1,6 @@
 import { iconField } from './fields/iconField'
 
-export default {
+const aboutSchema = {
   icon: () => 'ℹ️',
   name: 'about',
   type: 'document',
@@ -649,3 +649,5 @@ export default {
     },
   ],
 }
+export default aboutSchema
+

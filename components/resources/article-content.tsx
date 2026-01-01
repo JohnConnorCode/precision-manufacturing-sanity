@@ -91,7 +91,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
               </div>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-black mb-6 text-white leading-tight uppercase">
+            <h1 className="text-4xl md:text-5xl font-black mb-6 text-tone-inverse leading-tight uppercase">
               {resource.title}
             </h1>
 
@@ -120,7 +120,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
                   Share
                 </motion.button>
                 <motion.button
-                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-tone-inverse px-4 py-2 rounded-lg transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -168,7 +168,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
             >
-              <h2 className="text-3xl font-bold text-white mb-8">Related Articles</h2>
+              <h2 className="text-3xl font-bold text-tone-inverse mb-8">Related Articles</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {relatedResources.map((related, index) => (
                   <Link key={related._id} href={`/resources/${category}/${related.slug.current}`}>
@@ -180,7 +180,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
                       whileHover={{ y: -4 }}
                     >
                       <span className="text-blue-400 text-sm">{categoryInfo.title}</span>
-                      <h3 className="text-lg font-bold text-white mt-2 mb-2 line-clamp-2">{related.title}</h3>
+                      <h3 className="text-lg font-bold text-tone-inverse mt-2 mb-2 line-clamp-2">{related.title}</h3>
                       <p className="text-slate-400 text-sm mb-3 line-clamp-2">{related.excerpt}</p>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center text-slate-400 text-sm">
@@ -214,7 +214,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
             transition={{ delay: 1.1, duration: 0.6 }}
           >
             <div className="bg-gradient-to-r from-blue-600/10 to-indigo-600/10 border border-blue-600/20 rounded-2xl p-12">
-              <h2 className="text-3xl font-bold text-white mb-4">
+              <h2 className="text-3xl font-bold text-tone-inverse mb-4">
                 Ready to Start Your Project?
               </h2>
               <p className="text-xl text-slate-400 mb-8">

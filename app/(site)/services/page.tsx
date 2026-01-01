@@ -189,7 +189,7 @@ export default async function ServicesPage() {
               const lastWord = words[words.length - 1];
               return (
                 <span>
-                  <span className="text-white">{firstPart} </span>
+                  <span className="text-inherit">{firstPart} </span>
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
                 </span>
               );
@@ -336,7 +336,7 @@ export default async function ServicesPage() {
             <AnimatedSection>
               <div className="text-center mb-12">
                 {qualityHeading && (
-                  <h2 className={cn(typography.subsectionTitle, "mb-4 text-white")}>{qualityHeading}</h2>
+                  <h2 className={cn(typography.subsectionTitle, "mb-4 text-tone-inverse")}>{qualityHeading}</h2>
                 )}
                 {qualityIntro && (
                   <p className={cn(typography.description, "max-w-3xl mx-auto text-slate-300")}>

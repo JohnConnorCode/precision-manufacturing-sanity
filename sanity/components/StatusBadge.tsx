@@ -1,6 +1,6 @@
 'use client';
 
-import { Badge, Card, Flex, Stack, Text } from '@sanity/ui';
+import { Card, Flex, Stack, Text } from '@sanity/ui';
 import { CheckmarkCircleIcon, ClockIcon, WarningOutlineIcon } from '@sanity/icons';
 
 interface StatusBadgeProps {

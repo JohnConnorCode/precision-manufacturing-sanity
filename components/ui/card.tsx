@@ -10,7 +10,7 @@ const Card = React.forwardRef<
     ref={ref}
     className={cn(
       // Base styling - clean, professional with dark mode
-      "rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-white",
+      "rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-tone-inverse",
       // Premium shadow system - subtle at rest, elevated on hover
       "shadow-sm hover:shadow-xl dark:shadow-slate-950/50",
       // Smooth transition for all states
@@ -45,7 +45,7 @@ const CardTitle = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "text-xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white",
+      "text-xl font-bold leading-tight tracking-tight text-slate-900 dark:text-tone-inverse",
       className
     )}
     {...props}
@@ -97,7 +97,7 @@ const CardInteractive = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-white",
+      "rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-tone-inverse",
       "shadow-sm hover:shadow-2xl dark:shadow-slate-950/50",
       "transition-all duration-300 ease-out",
       "border-slate-200/60 dark:border-slate-800 hover:border-blue-500/30 dark:hover:border-blue-500/30",
@@ -122,7 +122,7 @@ const CardFeature = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-2xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-white",
+      "rounded-2xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-tone-inverse",
       "shadow-md hover:shadow-2xl dark:shadow-slate-950/50",
       "transition-all duration-400 ease-out",
       "border-slate-200/50 dark:border-slate-800 hover:border-blue-500/20",
@@ -147,7 +147,7 @@ const CardGlass = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-xl border text-white",
+      "rounded-xl border text-tone-inverse",
       "bg-white/5 backdrop-blur-xl",
       "border-white/10 hover:border-white/20",
       "shadow-lg shadow-black/5",
@@ -170,7 +170,7 @@ const CardHighlight = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-xl border-2 bg-white dark:bg-slate-900 text-slate-900 dark:text-white",
+      "rounded-xl border-2 bg-white dark:bg-slate-900 text-slate-900 dark:text-tone-inverse",
       "shadow-lg hover:shadow-2xl dark:shadow-slate-950/50",
       "transition-all duration-300 ease-out",
       "hover:-translate-y-1",
@@ -195,7 +195,7 @@ const CardMinimal = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white",
+      "rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-tone-inverse",
       "transition-all duration-200",
       "hover:bg-slate-100 dark:hover:bg-slate-700",
       className

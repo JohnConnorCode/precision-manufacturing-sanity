@@ -11,23 +11,23 @@ const buttonVariants = cva(
       variant: {
         // Primary - Premium gradient with glow
         default:
-          "bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/30 hover:from-blue-500 hover:via-blue-400 hover:to-indigo-500 active:scale-[0.98]",
+          "bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-tone-inverse shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/30 hover:from-blue-500 hover:via-blue-400 hover:to-indigo-500 active:scale-[0.98]",
 
         // Destructive - Red gradient with glow
         destructive:
-          "bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/25 hover:shadow-xl hover:shadow-red-600/30 hover:from-red-500 hover:to-rose-500 active:scale-[0.98]",
+          "bg-gradient-to-r from-red-600 to-rose-600 text-tone-inverse shadow-lg shadow-red-600/25 hover:shadow-xl hover:shadow-red-600/30 hover:from-red-500 hover:to-rose-500 active:scale-[0.98]",
 
         // Outline - Clean border with subtle fill on hover
         outline:
-          "border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/30 active:scale-[0.98]",
+          "border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-tone-inverse hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/30 active:scale-[0.98]",
 
         // Secondary - Subtle background with depth
         secondary:
-          "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200/80 dark:hover:bg-slate-700 shadow-sm hover:shadow-md active:scale-[0.98]",
+          "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-tone-inverse hover:bg-slate-200/80 dark:hover:bg-slate-700 shadow-sm hover:shadow-md active:scale-[0.98]",
 
         // Ghost - Minimal, text-only feel
         ghost:
-          "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800 active:scale-[0.98]",
+          "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-tone-inverse hover:bg-slate-100/80 dark:hover:bg-slate-800 active:scale-[0.98]",
 
         // Link - Underline style
         link:
@@ -35,15 +35,15 @@ const buttonVariants = cva(
 
         // Premium - Extra fancy with shimmer-ready styling
         premium:
-          "bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white shadow-xl shadow-blue-600/30 hover:shadow-2xl hover:shadow-blue-600/40 hover:from-blue-500 hover:via-blue-400 hover:to-indigo-500 active:scale-[0.98] relative overflow-hidden",
+          "bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-tone-inverse shadow-xl shadow-blue-600/30 hover:shadow-2xl hover:shadow-blue-600/40 hover:from-blue-500 hover:via-blue-400 hover:to-indigo-500 active:scale-[0.98] relative overflow-hidden",
 
         // Glass - Glassmorphism effect for dark backgrounds
         glass:
-          "bg-white/10 text-white backdrop-blur-md border border-white/20 hover:bg-white/20 hover:border-white/30 active:scale-[0.98]",
+          "bg-white/10 text-tone-inverse backdrop-blur-md border border-white/20 hover:bg-white/20 hover:border-white/30 active:scale-[0.98]",
 
         // Success - Green gradient
         success:
-          "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/25 hover:shadow-xl hover:shadow-emerald-600/30 hover:from-emerald-500 hover:to-teal-500 active:scale-[0.98]",
+          "bg-gradient-to-r from-emerald-600 to-teal-600 text-tone-inverse shadow-lg shadow-emerald-600/25 hover:shadow-xl hover:shadow-emerald-600/30 hover:from-emerald-500 hover:to-teal-500 active:scale-[0.98]",
       },
       size: {
         sm: "h-9 px-4 text-xs",

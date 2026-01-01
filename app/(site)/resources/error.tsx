@@ -49,7 +49,7 @@ export default function Error({
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h1 className={cn(typography.h3, 'text-white mb-3')}>
+            <h1 className={cn(typography.h3, 'text-tone-inverse mb-3')}>
               Something went wrong
             </h1>
 
@@ -79,7 +79,7 @@ export default function Error({
           >
             <Button
               onClick={() => reset()}
-              className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/25"
+              className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-tone-inverse shadow-lg shadow-blue-600/25"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Try again

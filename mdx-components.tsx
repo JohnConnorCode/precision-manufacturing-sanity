@@ -11,7 +11,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     // Custom heading components with animations
     h1: ({ children, ...props }) => (
       <motion.h1
-        className="text-4xl font-bold text-white mb-6 mt-8"
+        className="text-4xl font-bold text-tone-inverse mb-6 mt-8"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -22,7 +22,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     h2: ({ children, ...props }) => (
       <motion.h2
-        className="text-3xl font-bold text-white mb-4 mt-8"
+        className="text-3xl font-bold text-tone-inverse mb-4 mt-8"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -33,7 +33,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     h3: ({ children, ...props }) => (
       <motion.h3
-        className="text-2xl font-bold text-white mb-3 mt-6"
+        className="text-2xl font-bold text-tone-inverse mb-3 mt-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -104,7 +104,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </div>
     ),
     th: ({ children, ...props }) => (
-      <th className="border border-slate-700 bg-slate-800 text-white px-4 py-2 text-left" {...props}>
+      <th className="border border-slate-700 bg-slate-800 text-tone-inverse px-4 py-2 text-left" {...props}>
         {children}
       </th>
     ),
@@ -174,7 +174,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <h4 className="text-xl font-bold text-white mb-4">{title}</h4>
+        <h4 className="text-xl font-bold text-tone-inverse mb-4">{title}</h4>
         {children}
       </motion.div>
     ),
@@ -186,12 +186,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h4 className="text-lg font-bold text-white mb-4">Technical Specifications</h4>
+        <h4 className="text-lg font-bold text-tone-inverse mb-4">Technical Specifications</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {specs.map((spec, index) => (
             <div key={index} className="flex justify-between items-center py-2 border-b border-slate-800 last:border-b-0">
               <span className="text-slate-400">{spec.label}</span>
-              <span className="text-white font-medium">
+              <span className="text-tone-inverse font-medium">
                 {spec.value} {spec.unit && <span className="text-slate-400">{spec.unit}</span>}
               </span>
             </div>

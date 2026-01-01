@@ -9,31 +9,27 @@
  */
 
 import { getClient } from './client'
+import { logServerError } from '@/lib/server-logger'
 import type {
-  ServiceCard,
-  ServiceDetail,
-  IndustryCard,
-  IndustryDetail,
-  ResourceCard,
   ResourceDetail,
   TeamMemberQueryResult,
   JobPostingQueryResult,
-  HomepageQueryResult,
-  SiteSettingsQueryResult,
-  NavigationQueryResult,
-  FooterQueryResult,
   ContactPage,
   CareersPage,
   AboutPage,
-  GenericPage,
 } from '../types/query.types'
+
+const logQueryError = (scope: string, error: unknown) => {
+  logServerError(`sanity.${scope}`, error, {
+    query: scope,
+    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+  });
+};
 
 // ============================================================================
 // SERVICES
 // ============================================================================
 
-// TODO: Tighten types once component types are unified
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function getAllServices(preview = false): Promise<any[]> {
   try {
     const pub = preview ? '' : ' && published == true'
@@ -132,11 +128,11 @@ export async function getAllServices(preview = false): Promise<any[]> {
 
     return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getAllServices', error);
     return []
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function getServiceBySlug(slug: string, preview = false): Promise<any> {
   try {
     const pub = preview ? '' : ' && published == true'
@@ -244,6 +240,7 @@ export async function getServiceBySlug(slug: string, preview = false): Promise<a
 
     return await getClient(preview).fetch(query, { slug })
   } catch (error) {
+    logQueryError('getServiceBySlug', error);
     return null
   }
 }
@@ -252,7 +249,6 @@ export async function getServiceBySlug(slug: string, preview = false): Promise<a
 // INDUSTRIES
 // ============================================================================
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function getAllIndustries(preview = false): Promise<any[]> {
   try {
     const pub = preview ? '' : ' && published == true'
@@ -313,11 +309,11 @@ export async function getAllIndustries(preview = false): Promise<any[]> {
 
     return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getAllIndustries', error);
     return []
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function getIndustryBySlug(slug: string, preview = false): Promise<any> {
   try {
     const pub = preview ? '' : ' && published == true'
@@ -390,6 +386,7 @@ export async function getIndustryBySlug(slug: string, preview = false): Promise<
 
     return await getClient(preview).fetch(query, { slug })
   } catch (error) {
+    logQueryError('getIndustryBySlug', error);
     return null
   }
 }
@@ -398,7 +395,6 @@ export async function getIndustryBySlug(slug: string, preview = false): Promise<
 // RESOURCES
 // ============================================================================
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function getAllResources(preview = false): Promise<any[]> {
   const pub = preview ? '' : ' && published == true'
   const query = `*[_type == "resource" && !(_id in path("drafts.**"))${pub}] | order(publishDate desc) {
@@ -453,8 +449,9 @@ export async function getResourceBySlug(slug: string, preview = false): Promise<
 
   return await getClient(preview).fetch(query, { slug })
   } catch (error) {
-    return null
-  }
+  logQueryError('getResourceBySlug', error);
+  return null
+}
 }
 
 export async function getResourcesByCategory(category: string, preview = false) {
@@ -476,6 +473,7 @@ export async function getResourcesByCategory(category: string, preview = false) 
 
   return await getClient(preview).fetch(query, { category })
   } catch (error) {
+    logQueryError('getResourcesByCategory', error);
     return []
   }
 }
@@ -499,7 +497,8 @@ export async function getFeaturedResources(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
-    return null
+    logQueryError('getFeaturedResources', error);
+    return []
   }
 }
 
@@ -526,6 +525,7 @@ export async function getAllTeamMembers(preview = false): Promise<TeamMemberQuer
 
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getAllTeamMembers', error);
     return []
   }
 }
@@ -560,6 +560,7 @@ export async function getSiteSettings(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getSiteSettings', error);
     return null
   }
 }
@@ -575,11 +576,11 @@ export async function getNavigation(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getNavigation', error);
     return null
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function getHomepage(preview = false): Promise<any> {
   try {
   const query = `*[_type == "homepage"][0] {
@@ -820,6 +821,7 @@ export async function getHomepage(preview = false): Promise<any> {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getHomepage', error);
     return null
   }
 }
@@ -838,6 +840,7 @@ export async function getFooter(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getFooter', error);
     return null
   }
 }
@@ -946,6 +949,7 @@ export async function getAbout(preview = false): Promise<AboutPage | null> {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getAbout', error);
     return null
   }
 }
@@ -963,6 +967,7 @@ export async function getContact(preview = false): Promise<ContactPage | null> {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getContact', error);
     return null
   }
 }
@@ -1042,6 +1047,7 @@ export async function getCareers(preview = false): Promise<CareersPage | null> {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getCareers', error);
     return null
   }
 }
@@ -1077,6 +1083,7 @@ export async function getTerms(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getTerms', error);
     return null
   }
 }
@@ -1134,6 +1141,7 @@ export async function getSupplierRequirements(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getSupplierRequirements', error);
     return null
   }
 }
@@ -1147,6 +1155,7 @@ export async function getUIText(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getUIText', error);
     return null
   }
 }
@@ -1185,6 +1194,7 @@ export async function getPageContent(preview = false) {
 
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getPageContent', error);
     return null
   }
 }
@@ -1257,8 +1267,9 @@ export async function getServicesPage(preview = false) {
         keywords[]
       }
     }`
-    return await getClient(preview).fetch(query)
+  return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getServicesPage', error);
     return null
   }
 }
@@ -1371,8 +1382,9 @@ export async function getIndustriesPage(preview = false) {
         keywords[]
       }
     }`
-    return await getClient(preview).fetch(query)
+  return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getIndustriesPage', error);
     return null
   }
 }
@@ -1393,6 +1405,7 @@ export async function getPageBySlug(slug: string, preview = false) {
   }`
   return await getClient(preview).fetch(query, { slug })
   } catch (error) {
+    logQueryError('getPageBySlug', error);
     return null
   }
 }
@@ -1405,6 +1418,7 @@ export async function getAllPageSlugs(preview = false) {
   }`
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getAllPageSlugs', error);
     return []
   }
 }
@@ -1436,6 +1450,7 @@ export async function getAllJobPostings(preview = false): Promise<JobPostingQuer
   }`
   return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getAllJobPostings', error);
     return []
   }
 }
@@ -1466,6 +1481,7 @@ export async function getJobPostingBySlug(slug: string, preview = false) {
   }`
   return await getClient(preview).fetch(query, { slug })
   } catch (error) {
+    logQueryError('getJobPostingBySlug', error);
     return null
   }
 }
@@ -1556,8 +1572,9 @@ export async function getMetbase(preview = false) {
       }
     }`
 
-    return await getClient(preview).fetch(query)
+  return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getMetbase', error);
     return null
   }
 }
@@ -1587,6 +1604,7 @@ export async function getErrorPages(preview = false) {
 
     return await getClient(preview).fetch(query)
   } catch (error) {
+    logQueryError('getErrorPages', error);
     return null
   }
 }

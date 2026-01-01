@@ -42,18 +42,26 @@ export interface RichTextStyles {
 
 // Factory function to create Portable Text components with custom styles
 export function createPortableTextComponents(styles?: RichTextStyles) {
+  const toneInverse = 'rgb(var(--tone-inverse))';
+  const slate300 = 'rgb(var(--slate-300))';
+  const slate400 = 'rgb(var(--slate-400))';
+  const slate800 = 'rgb(var(--slate-800))';
+  const blue400 = '#60a5fa';
+  const blue300 = '#93c5fd';
+  const blue600 = '#2563eb';
+
   // Extract colors from styles or use defaults
-  const h1Color = colorStyleToCSS(styles?.headingStyles?.h1?.textColor) || '#ffffff';
-  const h2Color = colorStyleToCSS(styles?.headingStyles?.h2?.textColor) || '#ffffff';
-  const h3Color = colorStyleToCSS(styles?.headingStyles?.h3?.textColor) || '#ffffff';
-  const h4Color = colorStyleToCSS(styles?.headingStyles?.h4?.textColor) || '#ffffff';
-  const bodyColor = colorStyleToCSS(styles?.bodyTextStyle?.textColor) || '#cbd5e1'; // slate-300
-  const linkColor = colorStyleToCSS(styles?.linkStyle?.color) || '#60a5fa'; // blue-400
-  const linkHoverColor = colorStyleToCSS(styles?.linkStyle?.hoverColor) || '#93c5fd'; // blue-300
-  const blockquoteTextColor = colorStyleToCSS(styles?.blockquoteStyle?.textColor) || '#94a3b8'; // slate-400
-  const blockquoteBorderColor = colorStyleToCSS(styles?.blockquoteStyle?.borderColor) || '#2563eb'; // blue-600
-  const codeTextColor = colorStyleToCSS(styles?.codeStyle?.textColor) || '#60a5fa'; // blue-400
-  const codeBgColor = colorStyleToCSS(styles?.codeStyle?.backgroundColor) || '#1e293b'; // slate-800
+  const h1Color = colorStyleToCSS(styles?.headingStyles?.h1?.textColor) || toneInverse;
+  const h2Color = colorStyleToCSS(styles?.headingStyles?.h2?.textColor) || toneInverse;
+  const h3Color = colorStyleToCSS(styles?.headingStyles?.h3?.textColor) || toneInverse;
+  const h4Color = colorStyleToCSS(styles?.headingStyles?.h4?.textColor) || toneInverse;
+  const bodyColor = colorStyleToCSS(styles?.bodyTextStyle?.textColor) || slate300;
+  const linkColor = colorStyleToCSS(styles?.linkStyle?.color) || blue400;
+  const linkHoverColor = colorStyleToCSS(styles?.linkStyle?.hoverColor) || blue300;
+  const blockquoteTextColor = colorStyleToCSS(styles?.blockquoteStyle?.textColor) || slate400;
+  const blockquoteBorderColor = colorStyleToCSS(styles?.blockquoteStyle?.borderColor) || blue600;
+  const codeTextColor = colorStyleToCSS(styles?.codeStyle?.textColor) || blue400;
+  const codeBgColor = colorStyleToCSS(styles?.codeStyle?.backgroundColor) || slate800;
 
   // Get typography classes
   const h1Classes = styles?.headingStyles?.h1 ? typographyStyleToClasses(styles.headingStyles.h1) : '';

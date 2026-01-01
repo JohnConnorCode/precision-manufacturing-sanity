@@ -51,7 +51,7 @@ export default function Resources({ data }: ResourcesProps) {
             heading={resourcesData.header.title}
             gradientWordPosition="last"
             description={resourcesData.header.description}
-            className="[&_h2]:text-white [&_p]:text-slate-300 [&_p]:text-xl"
+            className="[&_h2]:text-tone-inverse [&_p]:text-slate-300 [&_p]:text-xl"
           />
 
         {/* Featured Series Grid */}
@@ -73,20 +73,19 @@ export default function Resources({ data }: ResourcesProps) {
               >
                 <Link href={`/resources/series/${seriesSlug}`}>
                   <article
-                  className="group h-full bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
-                  style={{
-                    '--hover-border-color': hexToRgba(theme.colors.primary, 0.5),
-                    '--hover-shadow-color': hexToRgba(theme.colors.primary, 0.1)
-                  } as React.CSSProperties}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = hexToRgba(theme.colors.primary, 0.5);
-                    e.currentTarget.style.boxShadow = `0 25px 50px -12px ${hexToRgba(theme.colors.primary, 0.1)}`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgb(30 41 59)'; // slate-800
-                    e.currentTarget.style.boxShadow = '';
-                  }}
-                >
+                    className="group h-full bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+                    style={{
+                      borderColor: 'rgb(var(--slate-800))',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = hexToRgba(theme.colors.primary, 0.5);
+                      e.currentTarget.style.boxShadow = `0 25px 50px -12px ${hexToRgba(theme.colors.primary, 0.1)}`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgb(var(--slate-800))';
+                      e.currentTarget.style.boxShadow = '';
+                    }}
+                  >
                   {/* Series Header */}
                   <div className="p-6 border-b border-slate-800">
                     <div className="flex items-center justify-between mb-3">
@@ -102,7 +101,7 @@ export default function Resources({ data }: ResourcesProps) {
                         {series.articleCount} Articles
                       </span>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">
+                    <h3 className="text-2xl font-bold text-tone-inverse mb-2">
                       {series.title}
                     </h3>
                   </div>
@@ -159,7 +158,7 @@ export default function Resources({ data }: ResourcesProps) {
                     <span className="text-sm font-medium" style={{ color: hexToRgba(theme.colors.primary, 0.8) }}>{additionalSeriesText}</span>
                   </div>
                 )}
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                <h3 className="text-2xl md:text-3xl font-bold text-tone-inverse mb-3">
                   {ctaData?.title}
                 </h3>
                 <p className="text-lg text-slate-300">
@@ -208,7 +207,7 @@ export default function Resources({ data }: ResourcesProps) {
                   >
                     <IconComponent className="w-6 h-6" />
                   </div>
-                  <h4 className="text-lg font-bold text-white mb-2">{benefit.title}</h4>
+                  <h4 className="text-lg font-bold text-tone-inverse mb-2">{benefit.title}</h4>
                   <p className="text-slate-400 text-sm">{benefit.description}</p>
                 </motion.div>
               );

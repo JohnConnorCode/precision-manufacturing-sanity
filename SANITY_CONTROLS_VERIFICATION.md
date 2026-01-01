@@ -17,14 +17,14 @@ The refactoring **only changed static wrapper classes**, not any dynamic Sanity-
 #### Before:
 ```tsx
 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-600/30">
-  <MapPin className="w-7 h-7 text-white" />
+  <MapPin className="w-7 h-7 text-tone-inverse" />
 </div>
 ```
 
 #### After:
 ```tsx
 <div className={cn(styles.iconContainer.large, "flex-shrink-0")}>
-  <MapPin className="w-7 h-7 text-white" />
+  <MapPin className="w-7 h-7 text-tone-inverse" />
 </div>
 ```
 

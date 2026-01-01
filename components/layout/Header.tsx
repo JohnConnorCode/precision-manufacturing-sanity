@@ -90,6 +90,8 @@ interface HeaderProps {
   } | null;
 }
 
+const HERO_SELECTORS = ['[data-hero-section="dark"]', '[data-hero-section="light"]', '[data-hero-section]'];
+
 export default function Header({ data }: HeaderProps) {
   // 100% CMS controlled - no hardcoded fallbacks
   const topBar = data?.topBar;
@@ -132,50 +134,89 @@ export default function Header({ data }: HeaderProps) {
     setShowAnnouncement(shouldShow);
   }, [announcement]);
 
-  // Consolidated scroll handler - updates both isScrolled and isOverHero atomically
-  // This prevents race conditions that caused nav transparency to not return properly
+  // Consolidated scroll + hero observers keep header transitions silky smooth
   useEffect(() => {
-    const darkHeroSection = document.querySelector('[data-hero-section="dark"]');
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
 
-    const handleScroll = () => {
-      // Update both states in the same callback to ensure atomic updates
-      setIsScrolled(window.scrollY > 10);
+    let heroSection: HTMLElement | null = null;
+    let heroObserver: IntersectionObserver | null = null;
+    let mutationObserver: MutationObserver | null = null;
 
-      if (darkHeroSection) {
-        const heroBottom = darkHeroSection.getBoundingClientRect().bottom;
-        setIsOverHero(heroBottom > 120);
-      } else {
+    const resolveHeroSection = () => {
+      if (heroSection && document.body.contains(heroSection)) {
+        return heroSection;
+      }
+      for (const selector of HERO_SELECTORS) {
+        const candidate = document.querySelector(selector) as HTMLElement | null;
+        if (candidate) {
+          heroSection = candidate;
+          break;
+        }
+      }
+      return heroSection;
+    };
+
+    const updateScrollState = () => setIsScrolled(window.scrollY > 10);
+    const throttledScroll = throttleRAF(updateScrollState);
+
+    const attachHeroObserver = () => {
+      const heroEl = resolveHeroSection();
+      if (!heroEl || typeof IntersectionObserver === 'undefined') {
         setIsOverHero(false);
+        return;
+      }
+
+      if (heroObserver) {
+        heroObserver.disconnect();
+      }
+
+      heroObserver = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          setIsOverHero(Boolean(entry?.isIntersecting));
+        },
+        {
+          root: null,
+          threshold: 0,
+          // Treat hero as "exited" when its bottom is 120px above the fold
+          rootMargin: '-120px 0px 0px 0px',
+        }
+      );
+
+      heroObserver.observe(heroEl);
+    };
+
+    const ensureHeroPresence = () => {
+      if (resolveHeroSection()) {
+        attachHeroObserver();
+        if (mutationObserver) {
+          mutationObserver.disconnect();
+          mutationObserver = null;
+        }
       }
     };
 
-    // Use requestAnimationFrame throttling for optimal scroll performance
-    const throttledScroll = throttleRAF(handleScroll);
+    if (!resolveHeroSection() && typeof MutationObserver !== 'undefined') {
+      mutationObserver = new MutationObserver(() => ensureHeroPresence());
+      mutationObserver.observe(document.body, { childList: true, subtree: true });
+    } else {
+      attachHeroObserver();
+    }
 
-    // CRITICAL: scrollEndTimeout ensures final scroll position is captured
-    // Without this, if scrolling stops between animation frames, the final state is missed
-    let scrollEndTimeout: ReturnType<typeof setTimeout> | null = null;
+    updateScrollState();
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+    window.addEventListener('resize', throttledScroll);
 
-    const handleScrollWithFinalState = () => {
-      throttledScroll();
-
-      // Clear any pending timeout
-      if (scrollEndTimeout) {
-        clearTimeout(scrollEndTimeout);
-      }
-
-      // Schedule a final state check after scrolling stops
-      scrollEndTimeout = setTimeout(handleScroll, 50);
-    };
-
-    // Set initial state immediately
-    handleScroll();
-
-    window.addEventListener('scroll', handleScrollWithFinalState, { passive: true });
     return () => {
-      window.removeEventListener('scroll', handleScrollWithFinalState);
-      if (scrollEndTimeout) {
-        clearTimeout(scrollEndTimeout);
+      window.removeEventListener('scroll', throttledScroll);
+      window.removeEventListener('resize', throttledScroll);
+      if (heroObserver) {
+        heroObserver.disconnect();
+      }
+      if (mutationObserver) {
+        mutationObserver.disconnect();
       }
     };
   }, [pathname]);
@@ -196,11 +237,11 @@ export default function Header({ data }: HeaderProps) {
   // Use Tailwind dark: variants instead of conditional logic
   // When over hero, use white text; otherwise use standard colors
   const linkTone = inHeroMode
-    ? `text-white/90 hover:text-white ${gradientBorder}`
+    ? `text-tone-inverse/90 hover:text-tone-inverse ${gradientBorder}`
     : `text-slate-700 dark:text-slate-100 ${gradientBorder}`;
   const activeTone = activeGradientBorder;
   const triggerTone = inHeroMode
-    ? `bg-transparent text-white/90 hover:text-white ${gradientBorder}`
+    ? `bg-transparent text-tone-inverse/90 hover:text-tone-inverse ${gradientBorder}`
     : `bg-transparent text-slate-700 dark:text-slate-100 ${gradientBorder}`;
 
   const headerClass = cn(
@@ -246,10 +287,10 @@ export default function Header({ data }: HeaderProps) {
         <aside
           className={cn(
             'fixed top-0 z-[160] w-full',
-            announcement.variant === 'success' ? 'bg-green-600 text-white' :
+            announcement.variant === 'success' ? 'bg-green-600 text-tone-inverse' :
             announcement.variant === 'warning' ? 'bg-amber-500 text-slate-900' :
-            announcement.variant === 'alert' ? 'bg-red-600 text-white' :
-            'bg-blue-600 text-white'
+            announcement.variant === 'alert' ? 'bg-red-600 text-tone-inverse' :
+            'bg-blue-600 text-tone-inverse'
           )}
           role="status"
           aria-label="Announcement"
@@ -477,7 +518,7 @@ export default function Header({ data }: HeaderProps) {
                               {item.name}
                             </span>
                             {badgeText && (
-                              <span className="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-blue-600 text-white">
+                              <span className="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-blue-600 text-tone-inverse">
                                 {badgeText}
                               </span>
                             )}
@@ -582,7 +623,7 @@ export default function Header({ data }: HeaderProps) {
               className={cn(
                 "hidden lg:flex xl:hidden items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
                 inHeroMode
-                  ? "text-white/90 hover:text-white hover:bg-white/10 active:bg-white/20"
+                  ? "text-tone-inverse/90 hover:text-tone-inverse hover:bg-white/10 active:bg-white/20"
                   : "hover:bg-slate-100/80 dark:hover:bg-slate-800/80 active:bg-slate-200/60 dark:active:bg-slate-700/60"
               )}
               aria-label="More menu options"
@@ -629,7 +670,7 @@ export default function Header({ data }: HeaderProps) {
                         >
                           {children.length > 0 ? (
                             <div className="space-y-1">
-                              <div className="px-3 py-2.5 font-bold text-lg text-slate-900 dark:text-white">
+                              <div className="px-3 py-2.5 font-bold text-lg text-slate-900 dark:text-tone-inverse">
                                 <span className="inline-flex items-center gap-3">
                                   {IconFor(item?.iconName)}
                                   {item.name}
@@ -643,7 +684,7 @@ export default function Header({ data }: HeaderProps) {
                                     target={child?.openInNewTab ? '_blank' : undefined}
                                     rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-base font-medium transition-colors text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
+                                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-base font-medium transition-colors text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-tone-inverse hover:bg-slate-100 dark:hover:bg-slate-800"
                                   >
                                     {IconFor(child?.iconName)}
                                     {child.name}
@@ -668,7 +709,7 @@ export default function Header({ data }: HeaderProps) {
                               onClick={() => setMobileMenuOpen(false)}
                               className={cn(
                                 "flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-lg transition-colors",
-                                "text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800",
+                                "text-slate-900 dark:text-tone-inverse hover:bg-slate-100 dark:hover:bg-slate-800",
                                 pathname === href && 'bg-slate-100 dark:bg-slate-800'
                               )}
                             >
@@ -704,7 +745,7 @@ export default function Header({ data }: HeaderProps) {
                     {topBar?.showPhone !== false && (
                       <a
                         href={topBar?.phoneLink}
-                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-tone-inverse hover:bg-slate-100 dark:hover:bg-slate-800"
                         aria-label={`Call ${topBar?.phone}`}
                       >
                         <Phone className="h-5 w-5" />
@@ -714,7 +755,7 @@ export default function Header({ data }: HeaderProps) {
                     {topBar?.showEmail !== false && (
                       <a
                         href={topBar?.emailLink}
-                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-tone-inverse hover:bg-slate-100 dark:hover:bg-slate-800"
                         aria-label={`Email ${topBar?.email}`}
                       >
                         <Mail className="h-5 w-5" />

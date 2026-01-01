@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronDown, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -8,6 +8,8 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 import { colorStyleToCSS, getOverlayStyles, ColorStyle } from '@/lib/sanity-styles';
+import { getHeroTheme, resolveHeroTone } from '@/lib/hero-theme';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface HeroButton {
   label: string;
@@ -44,6 +46,7 @@ interface HeroSectionProps {
 
   // Header integration - set to true for dark heroes that support transparent header
   darkHero?: boolean;
+  heroTone?: 'dark' | 'light';
 
   // Style props from Sanity
   titleColor?: ColorStyle;
@@ -89,6 +92,7 @@ export default function HeroSection({
   titleSize,
   descriptionSize,
   darkHero = true, // Default to true for backwards compatibility
+  heroTone: heroToneProp,
   titleColor,
   titleHighlightColor,
   descriptionColor,
@@ -98,11 +102,19 @@ export default function HeroSection({
   className = ''
 }: HeroSectionProps) {
   // Hooks must be called unconditionally
+  const prefersReducedMotion = usePrefersReducedMotion();
   const { scrollY } = useScroll();
-  const imageY = useTransform(scrollY, [0, 1000], [0, -200]);
-  const imageScale = useTransform(scrollY, [0, 1000], [1, 1.2]);
-  const contentY = useTransform(scrollY, [0, 500], [0, 50]);
-  const contentOpacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const zeroMotion = useMotionValue(0);
+  const oneMotion = useMotionValue(1);
+  const imageYTransform = useTransform(scrollY, [0, 1000], [0, -200]);
+  const imageScaleTransform = useTransform(scrollY, [0, 1000], [1, 1.2]);
+  const contentYTransform = useTransform(scrollY, [0, 500], [0, 50]);
+  const contentOpacityTransform = useTransform(scrollY, [0, 300], [1, 0]);
+
+  const imageY = prefersReducedMotion ? zeroMotion : imageYTransform;
+  const imageScale = prefersReducedMotion ? oneMotion : imageScaleTransform;
+  const contentY = prefersReducedMotion ? zeroMotion : contentYTransform;
+  const contentOpacity = prefersReducedMotion ? oneMotion : contentOpacityTransform;
 
   const LEGACY_PARITY = process.env.NEXT_PUBLIC_PARITY_MODE === 'legacy'
 
@@ -136,22 +148,26 @@ export default function HeroSection({
     xl: 'text-xl',
   };
 
+  const heroTone = resolveHeroTone(heroToneProp ?? darkHero);
+  const heroTheme = getHeroTheme(heroTone);
+  const palette = heroTheme.palette;
+
   // Extract colors from Sanity style props
-  const defaultTitleColor = colorStyleToCSS(titleColor) || '#ffffff';
-  const defaultSubtitleColor = colorStyleToCSS(titleHighlightColor) || 'rgba(255, 255, 255, 0.9)';
-  const defaultDescColor = colorStyleToCSS(descriptionColor) || 'rgba(255, 255, 255, 0.8)';
+  const defaultTitleColor = colorStyleToCSS(titleColor) || palette.title;
+  const defaultSubtitleColor = colorStyleToCSS(titleHighlightColor) || palette.subtitle;
+  const defaultDescColor = colorStyleToCSS(descriptionColor) || palette.description;
 
-  const badgeTextColor = colorStyleToCSS(badgeStyle?.textColor) || '#cbd5e1'; // slate-300
-  const badgeBgColor = colorStyleToCSS(badgeStyle?.backgroundColor) || 'rgba(30, 41, 59, 0.5)'; // slate-800/50
-  const badgeBorderColor = colorStyleToCSS(badgeStyle?.borderColor) || 'rgba(51, 65, 85, 0.5)'; // slate-700/50
+  const badgeTextColor = colorStyleToCSS(badgeStyle?.textColor) || palette.badge.text;
+  const badgeBgColor = colorStyleToCSS(badgeStyle?.backgroundColor) || palette.badge.background;
+  const badgeBorderColor = colorStyleToCSS(badgeStyle?.borderColor) || palette.badge.border;
 
-  const primaryBtnTextColor = colorStyleToCSS(buttonStyles?.primaryButton?.textColor) || '#ffffff';
-  const primaryBtnBgColor = colorStyleToCSS(buttonStyles?.primaryButton?.backgroundColor) || '#2563eb'; // blue-600
+  const primaryBtnTextColor = colorStyleToCSS(buttonStyles?.primaryButton?.textColor) || palette.buttons.primaryText;
+  const primaryBtnBgColor = colorStyleToCSS(buttonStyles?.primaryButton?.backgroundColor) || palette.buttons.primaryBg;
   const primaryBtnBorderColor = colorStyleToCSS(buttonStyles?.primaryButton?.borderColor);
 
-  const secondaryBtnTextColor = colorStyleToCSS(buttonStyles?.secondaryButton?.textColor) || '#ffffff';
-  const secondaryBtnBgColor = colorStyleToCSS(buttonStyles?.secondaryButton?.backgroundColor) || 'rgba(255, 255, 255, 0.05)';
-  const secondaryBtnBorderColor = colorStyleToCSS(buttonStyles?.secondaryButton?.borderColor) || 'rgba(255, 255, 255, 0.2)';
+  const secondaryBtnTextColor = colorStyleToCSS(buttonStyles?.secondaryButton?.textColor) || palette.buttons.secondaryText;
+  const secondaryBtnBgColor = colorStyleToCSS(buttonStyles?.secondaryButton?.backgroundColor) || palette.buttons.secondaryBg;
+  const secondaryBtnBorderColor = colorStyleToCSS(buttonStyles?.secondaryButton?.borderColor) || palette.buttons.secondaryBorder;
 
   const overlayStyle = getOverlayStyles(overlay);
 
@@ -159,9 +175,11 @@ export default function HeroSection({
 
   return (
     <section
-      {...(darkHero && { 'data-hero-section': 'dark' })}
+      data-hero-section={heroTone}
       className={cn(
         'relative flex items-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]',
+        heroTheme.classes.section,
+        heroTheme.classes.background,
         heightClasses[height],
         className
       )}
@@ -169,7 +187,7 @@ export default function HeroSection({
       {/* Parallax Background Image */}
       <motion.div
         className="absolute inset-0 w-full h-[120%] -top-[10%]"
-        style={LEGACY_PARITY ? undefined : { y: imageY as any, scale: imageScale as any }}
+        style={LEGACY_PARITY || prefersReducedMotion ? undefined : { y: imageY as any, scale: imageScale as any }}
       >
         {backgroundImage && typeof backgroundImage === 'string' && backgroundImage.trim() && (
           <Image
@@ -191,8 +209,8 @@ export default function HeroSection({
           <div style={overlayStyle} />
         ) : (
           <>
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/80 to-slate-950/95" />
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-950/30 via-transparent to-blue-950/30" />
+            <div className={heroTheme.classes.overlayBase} />
+            <div className={heroTheme.classes.overlayAccent} />
           </>
         )}
       </motion.div>
@@ -200,7 +218,7 @@ export default function HeroSection({
       {/* Content Container */}
       <motion.div
         className="container relative z-10 px-4 md:px-8"
-        style={LEGACY_PARITY ? undefined : { y: contentY as any, opacity: contentOpacity as any }}
+        style={LEGACY_PARITY || prefersReducedMotion ? undefined : { y: contentY as any, opacity: contentOpacity as any }}
       >
         <div className={cn(
           'max-w-5xl mx-auto flex flex-col',
@@ -294,6 +312,10 @@ export default function HeroSection({
                 const ButtonIcon = button.icon || ArrowRight;
                 const isPrimary = button.variant === 'primary' || index === 0;
 
+                const secondaryToneClass = heroTone === 'dark'
+                  ? 'backdrop-blur-sm hover:bg-white/10 hover:scale-105 active:scale-[0.98]'
+                  : 'backdrop-blur-sm hover:bg-slate-900/10 dark:hover:bg-white/10 hover:scale-105 active:scale-[0.98]';
+
                 const buttonStyle = isPrimary ? {
                   backgroundColor: primaryBtnBgColor,
                   color: primaryBtnTextColor,
@@ -319,7 +341,7 @@ export default function HeroSection({
                       'group h-12 md:h-14 px-8 md:px-10 text-base font-semibold shadow-lg transition-all duration-300',
                       isPrimary
                         ? 'hover:shadow-2xl hover:shadow-blue-500/30 hover:scale-105 active:scale-[0.98]'
-                        : 'backdrop-blur-sm hover:bg-white/10 hover:scale-105 active:scale-[0.98]'
+                        : secondaryToneClass
                     )}
                     style={buttonStyle}
                     asChild
@@ -351,7 +373,7 @@ export default function HeroSection({
               repeat: Infinity,
               ease: [0.33, 1, 0.68, 1]
             }}
-            className="text-white/50 hover:text-white/70 transition-colors cursor-pointer"
+            className={cn('transition-colors cursor-pointer', heroTheme.classes.scrollIndicator)}
           >
             <ChevronDown className="h-6 w-6" />
           </motion.div>

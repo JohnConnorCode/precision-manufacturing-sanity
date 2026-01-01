@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getSiteSettings } from '@/sanity/lib/queries'
+import { getServerLogEntries } from '@/lib/server-logger'
 
 export const revalidate = 0 // Always fresh
 
@@ -56,8 +57,10 @@ export async function GET() {
     checks.apis.footer &&
     checks.apis.siteSettings
 
+  const logs = getServerLogEntries(10)
+
   return NextResponse.json(
-    { ...checks, healthy: allHealthy },
+    { ...checks, healthy: allHealthy, logs },
     {
       status: allHealthy ? 200 : 503,
       headers: {

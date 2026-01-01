@@ -79,15 +79,15 @@ export default {
           fieldset: 'styling',
           options: {
             list: [
-              { title: 'White ⭐ (Default)', value: 'text-white' },
-              { title: 'Off-White', value: 'text-white/90' },
+              { title: 'White ⭐ (Default)', value: 'text-tone-inverse' },
+              { title: 'Off-White', value: 'text-tone-inverse/90' },
               { title: 'Dark Gray', value: 'text-zinc-900' },
               { title: 'Medium Gray', value: 'text-zinc-600' },
               { title: 'Blue Accent', value: 'text-blue-600' },
               { title: 'Custom (Advanced)', value: 'custom' }
             ]
           },
-          initialValue: 'text-white',
+          initialValue: 'text-tone-inverse',
         },
         {
           name: 'taglineTextColor',
@@ -97,15 +97,15 @@ export default {
           fieldset: 'styling',
           options: {
             list: [
-              { title: 'Off-White ⭐ (Default)', value: 'text-white/80' },
-              { title: 'White', value: 'text-white' },
+              { title: 'Off-White ⭐ (Default)', value: 'text-tone-inverse/80' },
+              { title: 'White', value: 'text-tone-inverse' },
               { title: 'Light Gray', value: 'text-zinc-300' },
               { title: 'Medium Gray', value: 'text-zinc-400' },
               { title: 'Dark Gray', value: 'text-zinc-600' },
               { title: 'Custom (Advanced)', value: 'custom' }
             ]
           },
-          initialValue: 'text-white/80',
+          initialValue: 'text-tone-inverse/80',
         },
         {
           name: 'heroVerticalPadding',
@@ -973,7 +973,7 @@ export default {
                   name: 'value',
                   type: 'string',
                   title: 'Value',
-                  description: 'The specification value (e.g., "±0.0001\"", "24/7", "AS9100D")',
+                  description: 'The specification value (e.g., "±0.0001 inches", "24/7", "AS9100D")',
                 },
                 {
                   name: 'description',
@@ -1827,14 +1827,14 @@ export default {
           fieldset: 'styling',
           options: {
             list: [
-              { title: 'White ⭐ (Default)', value: 'text-white' },
-              { title: 'Off-White', value: 'text-white/90' },
+              { title: 'White ⭐ (Default)', value: 'text-tone-inverse' },
+              { title: 'Off-White', value: 'text-tone-inverse/90' },
               { title: 'Light Gray', value: 'text-zinc-100' },
               { title: 'Blue Accent', value: 'text-blue-100' },
               { title: 'Custom (Advanced)', value: 'custom' }
             ]
           },
-          initialValue: 'text-white',
+          initialValue: 'text-tone-inverse',
         },
         {
           name: 'subtitleColor',
@@ -1844,14 +1844,14 @@ export default {
           fieldset: 'styling',
           options: {
             list: [
-              { title: 'Off-White ⭐ (Default)', value: 'text-white/90' },
-              { title: 'White', value: 'text-white' },
+              { title: 'Off-White ⭐ (Default)', value: 'text-tone-inverse/90' },
+              { title: 'White', value: 'text-tone-inverse' },
               { title: 'Light Gray', value: 'text-zinc-200' },
-              { title: 'Very Light', value: 'text-white/80' },
+              { title: 'Very Light', value: 'text-tone-inverse/80' },
               { title: 'Custom (Advanced)', value: 'custom' }
             ]
           },
-          initialValue: 'text-white/90',
+          initialValue: 'text-tone-inverse/90',
         },
         {
           name: 'buttons',

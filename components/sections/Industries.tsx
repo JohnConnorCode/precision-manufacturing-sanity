@@ -53,7 +53,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
             </p>
           )}
           {heading && (
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-tone-inverse mb-6">
               {heading.split(' ').map((word, i, arr) => (
                 i === arr.length - 1 ? (
                   <span key={i} className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
@@ -118,7 +118,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                             return (
                               <span
                                 key={i}
-                                className="px-3 py-1 text-xs font-semibold text-white/90 bg-white/10 backdrop-blur-md rounded-full border border-white/20"
+                                className="px-3 py-1 text-xs font-semibold text-tone-inverse/90 bg-white/10 backdrop-blur-md rounded-full border border-white/20"
                               >
                                 {featureText}
                               </span>
@@ -128,7 +128,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                       )}
 
                       {/* Title */}
-                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 group-hover:translate-x-2 transition-transform duration-300">
+                      <h3 className="text-2xl md:text-3xl font-bold text-tone-inverse mb-3 group-hover:translate-x-2 transition-transform duration-300">
                         {industry.title}
                       </h3>
 

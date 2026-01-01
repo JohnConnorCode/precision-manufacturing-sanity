@@ -12,13 +12,13 @@ const premiumButtonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white shadow-xl shadow-blue-600/25 hover:shadow-2xl hover:shadow-blue-600/40",
+          "bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-tone-inverse shadow-xl shadow-blue-600/25 hover:shadow-2xl hover:shadow-blue-600/40",
         secondary:
-          "bg-white/10 text-white border border-white/20 backdrop-blur-sm hover:bg-white/20 hover:border-white/30",
+          "bg-white/10 text-tone-inverse border border-white/20 backdrop-blur-sm hover:bg-white/20 hover:border-white/30",
         ghost:
           "bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent hover:from-blue-500 hover:to-indigo-500",
         destructive:
-          "bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-xl shadow-red-500/25 hover:shadow-2xl hover:shadow-red-500/40",
+          "bg-gradient-to-r from-red-500 to-rose-600 text-tone-inverse shadow-xl shadow-red-500/25 hover:shadow-2xl hover:shadow-red-500/40",
       },
       size: {
         sm: "h-12 px-4 text-sm",

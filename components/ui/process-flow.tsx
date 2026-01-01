@@ -20,7 +20,7 @@ interface ProcessFlowProps {
 export function ProcessFlow({ title, description, steps }: ProcessFlowProps) {
   return (
     <div className="my-8">
-      <h3 className="text-2xl font-bold text-white mb-2">{title}</h3>
+      <h3 className="text-2xl font-bold text-tone-inverse mb-2">{title}</h3>
       {description && (
         <p className="text-slate-400 mb-6">{description}</p>
       )}
@@ -38,12 +38,12 @@ export function ProcessFlow({ title, description, steps }: ProcessFlowProps) {
 
             <div className="flex items-start gap-4">
               {/* Step number badge */}
-              <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xl">
+              <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-tone-inverse font-bold text-xl">
                 {step.stepNumber}
               </div>
 
               <div className="flex-1">
-                <h4 className="text-xl font-bold text-white mb-2">{step.title}</h4>
+                <h4 className="text-xl font-bold text-tone-inverse mb-2">{step.title}</h4>
                 <p className="text-slate-300 mb-3">{step.description}</p>
 
                 {/* Duration */}

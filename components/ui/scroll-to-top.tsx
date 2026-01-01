@@ -72,7 +72,7 @@ export default function ScrollToTop({
             "fixed bottom-8 right-8 z-50",
             "w-12 h-12 rounded-full",
             "bg-gradient-to-br from-blue-600 to-indigo-600",
-            "text-white shadow-lg hover:shadow-xl",
+            "text-tone-inverse shadow-lg hover:shadow-xl",
             "flex items-center justify-center",
             "group transition-all duration-300",
             "overflow-hidden",

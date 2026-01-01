@@ -12,6 +12,7 @@ import { Analytics } from "@vercel/analytics/react";
 import PreviewBanner from "@/components/preview-banner";
 import { Toaster } from 'sonner';
 import { getNavigation, getFooter, getSiteSettings } from '@/sanity/lib/queries';
+import AnimationReadyFlag from '@/components/animation-ready-flag';
 
 // Load Inter font
 const inter = Inter({
@@ -289,7 +290,8 @@ export default async function SiteLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className={`${fontClass} antialiased bg-white dark:bg-slate-950 text-slate-900 dark:text-white min-h-screen`}>
+      <div className={`${fontClass} antialiased bg-white dark:bg-slate-950 text-slate-900 dark:text-tone-inverse min-h-screen`}>
+        <AnimationReadyFlag />
         <SiteChrome
           navigationData={navigationData}
           footerData={footerData}

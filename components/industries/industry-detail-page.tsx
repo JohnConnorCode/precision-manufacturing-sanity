@@ -6,30 +6,25 @@ import { Card } from '@/components/ui/card';
 import { ArrowRight, Award, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import imageUrlBuilder from '@sanity/image-url';
-import { client } from '@/sanity/lib/client';
 import { PortableText } from '@portabletext/react';
 import HeroSection from '@/components/ui/hero-section';
-
-const builder = imageUrlBuilder(client);
+import { getHeroImageUrl } from '@/lib/hero-images';
 
 interface IndustryDetailPageProps {
   industry: any;
 }
 
 export default function IndustryDetailPage({ industry }: IndustryDetailPageProps) {
-  // Extract hero data - use hero.backgroundImage or fall back to main image
-  const heroImage = industry.hero?.backgroundImage
-    ? builder.image(industry.hero.backgroundImage).width(1920).height(1080).url()
-    : industry.image
-    ? builder.image(industry.image).width(1920).height(1080).url()
-    : undefined;
+  const heroImage =
+    getHeroImageUrl(industry.hero?.backgroundImage) ||
+    getHeroImageUrl(industry.image) ||
+    '';
 
   // Build the title with gradient highlight on second part (matches reference site)
   // Reference: "Aerospace" (white) + "Components" (blue gradient)
   const heroTitle = (
     <>
-      <span className="text-white">{industry.hero?.title || industry.title}</span>
+      <span className="text-tone-inverse">{industry.hero?.title || industry.title}</span>
       {industry.hero?.titleHighlight && (
         <>
           {' '}
@@ -77,7 +72,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   className="text-center"
                 >
                   <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 mb-2">{stat.value}</div>
-                  <div className="text-lg font-semibold text-white mb-1">{stat.label}</div>
+                  <div className="text-lg font-semibold text-tone-inverse mb-1">{stat.label}</div>
                   {stat.description && (
                     <div className="text-sm text-zinc-400">{stat.description}</div>
                   )}
@@ -99,7 +94,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               transition={{ duration: 0.6 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-tone-inverse mb-4">
                 {industry.expertiseSectionHeading || `${industry.title} Expertise`}
               </h2>
               <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto">
@@ -124,12 +119,18 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                       <div className={`relative ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                         {section.image && (
                           <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
-                            <Image
-                              src={builder.image(section.image).width(800).height(600).quality(85).url()}
-                              alt={section.image?.alt || section.title}
-                              fill
-                              className="object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
+                            {(() => {
+                              const sectionImageUrl = getHeroImageUrl(section.image, 800, 600);
+                              if (!sectionImageUrl) return null;
+                              return (
+                                <Image
+                                  src={sectionImageUrl}
+                                  alt={section.image?.alt || section.title}
+                                  fill
+                                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                />
+                              );
+                            })()}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                           </div>
                         )}
@@ -137,7 +138,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
                       {/* Content Side */}
                       <div className={`${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-                        <h3 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-4">
+                        <h3 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-tone-inverse mb-4">
                           {section.title}
                         </h3>
                         <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed">{section.description}</p>
@@ -145,7 +146,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                         <div className="grid sm:grid-cols-2 gap-6">
                           {section.components && section.components.length > 0 && (
                             <div className="bg-white dark:bg-zinc-800 rounded-xl p-5 shadow-sm border border-zinc-100 dark:border-zinc-700">
-                              <h4 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-3 flex items-center gap-2">
+                              <h4 className="text-sm font-bold text-zinc-900 dark:text-tone-inverse uppercase tracking-wide mb-3 flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-blue-500"></span>
                                 {section.componentsLabel || 'Typical Components'}
                               </h4>
@@ -162,7 +163,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
                           {section.materials && section.materials.length > 0 && (
                             <div className="bg-white dark:bg-zinc-800 rounded-xl p-5 shadow-sm border border-zinc-100 dark:border-zinc-700">
-                              <h4 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-3 flex items-center gap-2">
+                              <h4 className="text-sm font-bold text-zinc-900 dark:text-tone-inverse uppercase tracking-wide mb-3 flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
                                 Materials
                               </h4>
@@ -179,7 +180,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
                           {section.requirements && section.requirements.length > 0 && (
                             <div className={`bg-white dark:bg-zinc-800 rounded-xl p-5 shadow-sm border border-zinc-100 dark:border-zinc-700 ${!section.components || !section.materials ? '' : 'sm:col-span-2'}`}>
-                              <h4 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-3 flex items-center gap-2">
+                              <h4 className="text-sm font-bold text-zinc-900 dark:text-tone-inverse uppercase tracking-wide mb-3 flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-cyan-500"></span>
                                 {section.requirementsLabel || 'Key Requirements'}
                               </h4>
@@ -215,7 +216,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               transition={{ duration: 0.6 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-tone-inverse mb-4">
                 {industry.certificationsSectionHeading || 'Industry Certifications'}
               </h2>
               <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto">
@@ -234,7 +235,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                 >
                   <Card className="p-6 h-full hover:shadow-lg transition-shadow duration-300">
                     <Award className="w-12 h-12 text-blue-500 mb-4" />
-                    <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-3">{cert.title}</h3>
+                    <h3 className="text-xl font-bold text-zinc-900 dark:text-tone-inverse mb-3">{cert.title}</h3>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400 whitespace-pre-line">{cert.description}</p>
                   </Card>
                 </motion.div>
@@ -255,7 +256,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               transition={{ duration: 0.6 }}
               className="text-center mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-tone-inverse mb-4">
                 {industry.processBenefitsSectionHeading || 'Manufacturing Capabilities'}
               </h2>
               <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto">
@@ -273,7 +274,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
                   <Card className="p-8 h-full hover:shadow-lg transition-shadow duration-300">
-                    <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">{benefit.title}</h3>
+                    <h3 className="text-2xl font-bold text-zinc-900 dark:text-tone-inverse mb-4">{benefit.title}</h3>
                     <p className="text-zinc-600 dark:text-zinc-400 mb-6">{benefit.description}</p>
 
                     {benefit.features && benefit.features.length > 0 && (
@@ -304,7 +305,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
             transition={{ duration: 0.6 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-tone-inverse mb-6">
               {industry.cta?.heading || `Partner with ${industry.title} Experts`}
             </h2>
             <p className="text-lg text-zinc-300 mb-8">

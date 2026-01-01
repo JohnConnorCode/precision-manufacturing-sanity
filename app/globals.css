@@ -12,21 +12,20 @@
   }
 }
 
-/* Apply fallback to any element with opacity:0 inline style */
-/* This catches Framer Motion initial states that fail to animate */
-[style*="opacity: 0"],
-[style*="opacity:0"],
-[style*="opacity:0;"],
-[style*="opacity: 0;"] {
+/* Apply fallback only until hydration marks animations as ready */
+html:not(.animations-ready) [data-motion-id][style*="opacity: 0"],
+html:not(.animations-ready) [data-motion-id][style*="opacity:0"],
+html:not(.animations-ready) [data-motion-id][style*="opacity:0;"],
+html:not(.animations-ready) [data-motion-id][style*="opacity: 0;"] {
   animation: ensureVisible 0.3s ease-out 1s forwards !important;
 }
 
-/* Reduced motion users - make everything visible immediately */
+/* Reduced motion users - make everything visible immediately until hydration completes */
 @media (prefers-reduced-motion: reduce) {
-  [style*="opacity: 0"],
-  [style*="opacity:0"],
-  [style*="opacity:0;"],
-  [style*="opacity: 0;"] {
+  html:not(.animations-ready) [data-motion-id][style*="opacity: 0"],
+  html:not(.animations-ready) [data-motion-id][style*="opacity:0"],
+  html:not(.animations-ready) [data-motion-id][style*="opacity:0;"],
+  html:not(.animations-ready) [data-motion-id][style*="opacity: 0;"] {
     opacity: 1 !important;
     transform: none !important;
     animation: none !important;
@@ -72,6 +71,18 @@
     --border: 214 31% 91%;
     --input: 214 31% 91%;
     --ring: 189 94% 43%;
+    --tone-inverse: 255 255 255;
+    --slate-50: 248 250 252;
+    --slate-100: 241 245 249;
+    --slate-200: 226 232 240;
+    --slate-300: 203 213 225;
+    --slate-400: 148 163 184;
+    --slate-500: 100 116 139;
+    --slate-600: 71 85 105;
+    --slate-700: 51 65 85;
+    --slate-800: 30 41 59;
+    --slate-900: 15 23 42;
+    --slate-950: 2 6 23;
 
     /* Spacing & Sizing */
     --radius: 0.5rem;
@@ -494,7 +505,7 @@
   /* Button Gradients */
   .btn-gradient-blue {
     background: var(--gradient-blue-to-indigo);
-    @apply text-white transition-all duration-300;
+    @apply text-tone-inverse transition-all duration-300;
   }
 
   .btn-gradient-blue:hover {

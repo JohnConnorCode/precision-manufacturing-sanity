@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getAllIndustries, getIndustriesPage } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import { NoIndustriesState } from '@/components/ui/empty-state';
@@ -9,6 +10,8 @@ import type { Metadata } from 'next';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import * as Icons from 'lucide-react';
 import { colors, spacing, cardStyles } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
+import { getToneTypography } from '@/lib/typography';
 
 // Dynamic icon component
 function DynamicIcon({ name, className }: { name: string; className?: string }) {
@@ -91,6 +94,7 @@ export default async function IndustriesPage() {
     slug: industry.slug?.current || industry.slug,
     description: industry.shortDescription || portableTextToPlainText(industry.description),
   }));
+  const darkTone = getToneTypography('dark');
 
   return (
     <div className="min-h-screen bg-background">
@@ -100,14 +104,14 @@ export default async function IndustriesPage() {
         badge={industriesPageData?.hero?.badge || '🏭 CRITICAL INDUSTRY SOLUTIONS'}
         title={
           industriesPageData?.hero?.heading ? (
-            <span className="text-white">
+            <span className="text-inherit">
               {industriesPageData.hero.heading.replace(industriesPageData.hero.headingHighlight || 'We Serve', '')}{' '}
               <span className={`text-transparent bg-clip-text bg-gradient-to-r ${colors.textGradient}`}>
                 {industriesPageData.hero.headingHighlight || 'We Serve'}
               </span>
             </span>
           ) : (
-            <span className="text-white">
+            <span className="text-inherit">
               Industries <span className={`text-transparent bg-clip-text bg-gradient-to-r ${colors.textGradient}`}>We Serve</span>
             </span>
           )
@@ -134,7 +138,7 @@ export default async function IndustriesPage() {
                     <div className="text-4xl md:text-5xl font-black text-blue-600 dark:text-blue-400 mb-2">
                       {stat.value}
                     </div>
-                    <div className="text-sm md:text-base text-slate-900 dark:text-white font-semibold uppercase tracking-wide mb-2">
+                    <div className="text-sm md:text-base text-slate-900 dark:text-tone-inverse font-semibold uppercase tracking-wide mb-2">
                       {stat.label}
                     </div>
                     <div className="text-sm text-slate-600 dark:text-slate-400">
@@ -175,10 +179,12 @@ export default async function IndustriesPage() {
                     {/* Image */}
                     {industry.image?.asset?.url && (
                       <div className="relative h-64 md:h-auto">
-                        <img
+                        <Image
                           src={industry.image.asset.url}
-                          alt={industry.image.alt || industry.name}
-                          className="absolute inset-0 w-full h-full object-cover"
+                          alt={industry.image.alt || industry.name || 'Industry illustration'}
+                          fill
+                          className="object-cover"
+                          sizes="(min-width: 768px) 50vw, 100vw"
                         />
                       </div>
                     )}
@@ -194,7 +200,7 @@ export default async function IndustriesPage() {
                         {/* Certifications */}
                         {industry.certifications && industry.certifications.length > 0 && (
                           <div>
-                            <h4 className="font-semibold text-sm uppercase tracking-wide text-slate-900 dark:text-white mb-3">
+                            <h4 className="font-semibold text-sm uppercase tracking-wide text-slate-900 dark:text-tone-inverse mb-3">
                               Certifications
                             </h4>
                             <ul className="space-y-2">
@@ -211,7 +217,7 @@ export default async function IndustriesPage() {
                         {/* Expertise */}
                         {industry.expertise && industry.expertise.length > 0 && (
                           <div>
-                            <h4 className="font-semibold text-sm uppercase tracking-wide text-slate-900 dark:text-white mb-3">
+                            <h4 className="font-semibold text-sm uppercase tracking-wide text-slate-900 dark:text-tone-inverse mb-3">
                               Expertise
                             </h4>
                             <ul className="space-y-2">
@@ -290,14 +296,24 @@ export default async function IndustriesPage() {
 
       {/* Proven Results */}
       {industriesPageData?.content?.provenResults && industriesPageData.content.provenResults.length > 0 && (
-        <section className={`${spacing.section} bg-slate-900 text-white`}>
+        <section className={`${spacing.section} bg-slate-950`}>
           <div className="container">
             <AnimatedSection>
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                <h2
+                  className={cn(
+                    'text-4xl md:text-5xl font-bold mb-6',
+                    darkTone.heading
+                  )}
+                >
                   {industriesPageData?.content?.resultsSection?.title || 'Proven Results'}
                 </h2>
-                <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+                <p
+                  className={cn(
+                    'text-xl max-w-3xl mx-auto',
+                    darkTone.body
+                  )}
+                >
                   {industriesPageData?.content?.resultsSection?.description || 'Measurable performance metrics that demonstrate our commitment to excellence and continuous improvement.'}
                 </p>
               </div>
@@ -312,8 +328,10 @@ export default async function IndustriesPage() {
                     <div className="text-4xl md:text-5xl font-black text-blue-400 mb-2">
                       {metric.value}
                     </div>
-                    <div className="text-lg font-semibold mb-2">{metric.metric}</div>
-                    <p className="text-sm text-slate-400">{metric.description}</p>
+                    <div className={cn('text-lg font-semibold mb-2', darkTone.heading)}>
+                      {metric.metric}
+                    </div>
+                    <p className={cn('text-sm', darkTone.muted)}>{metric.description}</p>
                   </div>
                 </AnimatedSection>
               ))}
@@ -333,7 +351,14 @@ export default async function IndustriesPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 {industriesPageData?.cta?.primaryButton?.enabled !== false && (
-                  <Button size="lg" className={`bg-gradient-to-r ${colors.primaryGradient} hover:${colors.primaryGradientHover} text-white font-semibold`} asChild>
+                  <Button
+                    size="lg"
+                    className={cn(
+                      `bg-gradient-to-r ${colors.primaryGradient} hover:${colors.primaryGradientHover} font-semibold`,
+                      darkTone.heading
+                    )}
+                    asChild
+                  >
                     <Link href={industriesPageData?.cta?.primaryButton?.href || '/contact'}>
                       {industriesPageData?.cta?.primaryButton?.label || 'Schedule Consultation'}
                       <ArrowRight className="ml-2 h-4 w-4" />

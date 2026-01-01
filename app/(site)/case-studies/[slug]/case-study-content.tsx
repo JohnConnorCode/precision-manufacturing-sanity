@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Quote, Award, Clock, Building2 } from 'lucide-react';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle } from '@/lib/theme-utils';
+import { cn } from '@/lib/utils';
+import { getToneTypography } from '@/lib/typography';
 
 interface CaseStudyData {
   title: string;
@@ -43,6 +45,9 @@ interface CaseStudyData {
 
 export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
   const theme = useTheme();
+  const heroTone = data.heroImage ? 'dark' : 'light';
+  const heroToneTypography = getToneTypography(heroTone);
+  const darkTone = getToneTypography('dark');
 
   return (
     <main className="min-h-screen bg-white dark:bg-slate-950">
@@ -72,7 +77,10 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
             {/* Breadcrumb */}
             <Link
               href="/"
-              className="inline-flex items-center text-white/70 hover:text-white transition-colors mb-8"
+              className={cn(
+                'inline-flex items-center transition-colors mb-8',
+                heroToneTypography.interactiveMuted
+              )}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
@@ -87,19 +95,24 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                 Case Study
               </span>
               {data.industry && (
-                <span className="text-white/60 text-sm">
+                <span className={cn('text-sm', heroToneTypography.muted)}>
                   {data.industry.title}
                 </span>
               )}
             </div>
 
             {/* Title */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 max-w-4xl uppercase">
+            <h1
+              className={cn(
+                'text-4xl md:text-5xl lg:text-6xl font-bold mb-4 max-w-4xl uppercase',
+                heroToneTypography.heading
+              )}
+            >
               {data.title}
             </h1>
 
             {data.subtitle && (
-              <p className="text-xl md:text-2xl text-white/80 max-w-3xl">
+              <p className={cn('text-xl md:text-2xl max-w-3xl', heroToneTypography.body)}>
                 {data.subtitle}
               </p>
             )}
@@ -107,13 +120,13 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
             {/* Meta Info */}
             <div className="flex flex-wrap gap-6 mt-8">
               {data.client && (
-                <div className="flex items-center text-white/70">
+                <div className={cn('flex items-center', heroToneTypography.muted)}>
                   <Building2 className="w-5 h-5 mr-2" style={{ color: theme.colors.primary }} />
                   <span>{data.client}</span>
                 </div>
               )}
               {data.duration && (
-                <div className="flex items-center text-white/70">
+                <div className={cn('flex items-center', heroToneTypography.muted)}>
                   <Clock className="w-5 h-5 mr-2" style={{ color: theme.colors.primary }} />
                   <span>{data.duration}</span>
                 </div>
@@ -143,7 +156,12 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                   >
                     {result.value}
                   </div>
-                  <div className="text-sm text-white/80 font-medium uppercase tracking-wide">
+                  <div
+                    className={cn(
+                      'text-sm font-medium uppercase tracking-wide',
+                      darkTone.bodyMuted
+                    )}
+                  >
                     {result.metric}
                   </div>
                 </motion.div>
@@ -202,7 +220,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-10 text-center"
+              className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-tone-inverse mb-10 text-center"
             >
               Project Gallery
             </motion.h2>
@@ -224,7 +242,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                   />
                   {image.caption && (
                     <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                      <p className="text-white text-sm">{image.caption}</p>
+                      <p className={cn('text-sm', darkTone.body)}>{image.caption}</p>
                     </div>
                   )}
                 </motion.div>
@@ -245,12 +263,19 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
               transition={{ duration: 0.8 }}
             >
               <Quote className="w-16 h-16 mx-auto mb-8 opacity-30" style={{ color: theme.colors.primary }} />
-              <blockquote className="text-2xl md:text-3xl lg:text-4xl font-light text-white leading-relaxed mb-8">
+              <blockquote
+                className={cn(
+                  'text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed mb-8',
+                  darkTone.body
+                )}
+              >
                 &ldquo;{data.testimonial.quote}&rdquo;
               </blockquote>
               <div className="flex flex-col items-center">
-                <p className="text-lg font-semibold text-white">{data.testimonial.author}</p>
-                <p className="text-white/60">{data.testimonial.role}</p>
+                <p className={cn('text-lg font-semibold', darkTone.heading)}>
+                  {data.testimonial.author}
+                </p>
+                <p className={darkTone.muted}>{data.testimonial.role}</p>
               </div>
             </motion.div>
           </div>
@@ -269,7 +294,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                 >
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Technologies Used</h3>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-tone-inverse mb-6">Technologies Used</h3>
                   <div className="flex flex-wrap gap-3">
                     {data.technologies.map((tech) => (
                       <span
@@ -291,7 +316,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 }}
                 >
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Relevant Certifications</h3>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-tone-inverse mb-6">Relevant Certifications</h3>
                   <div className="flex flex-wrap gap-3">
                     {data.certifications.map((cert) => (
                       <span
@@ -319,7 +344,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-tone-inverse mb-6">
               Ready to Start Your Project?
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto">
@@ -328,7 +353,10 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center px-8 py-4 font-semibold text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+                className={cn(
+                  'inline-flex items-center justify-center px-8 py-4 font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl',
+                  darkTone.heading
+                )}
                 style={getGradientStyle(theme.colors)}
               >
                 Request a Quote
