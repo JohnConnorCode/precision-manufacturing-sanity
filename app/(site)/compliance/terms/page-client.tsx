@@ -116,7 +116,7 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
 
       {/* Contact Section */}
       <AnimatedSection>
-        <section className="py-16 md:py-24 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950">
+        <section className="py-16 md:py-24 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 dark-section">
           <div className="container max-w-4xl mx-auto px-4 text-center">
             <h3 className={cn(typography.subsectionTitle, 'text-tone-inverse mb-4')}>
               {termsData.contact.heading}

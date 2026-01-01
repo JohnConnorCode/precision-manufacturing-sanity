@@ -296,7 +296,7 @@ export default async function IndustriesPage() {
 
       {/* Proven Results */}
       {industriesPageData?.content?.provenResults && industriesPageData.content.provenResults.length > 0 && (
-        <section className={`${spacing.section} bg-slate-950`}>
+        <section className={`${spacing.section} bg-slate-950 dark-section`}>
           <div className="container">
             <AnimatedSection>
               <div className="text-center mb-16">

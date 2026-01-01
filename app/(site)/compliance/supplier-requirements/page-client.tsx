@@ -222,7 +222,7 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
       {/* Footer Note */}
       {pageData.footerNote && (
         <AnimatedSection>
-          <section className="py-16 md:py-24 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950">
+          <section className="py-16 md:py-24 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 dark-section">
             <div className="container max-w-4xl mx-auto px-4">
               <div className="p-8 md:p-10 bg-gradient-to-r from-blue-600/10 to-indigo-600/10 rounded-2xl border border-blue-600/20">
                 <div className="flex items-center gap-4 mb-4">

@@ -138,7 +138,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
 
       {/* Results Stats Bar */}
       {data.results && data.results.length > 0 && (
-        <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12">
+        <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 dark-section">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {data.results.map((result, index) => (
@@ -254,7 +254,7 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
 
       {/* Testimonial */}
       {data.testimonial?.quote && (
-        <section className="py-20 md:py-28 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <section className="py-20 md:py-28 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark-section">
           <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}

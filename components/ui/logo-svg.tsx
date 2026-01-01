@@ -82,31 +82,6 @@ export default function LogoSVG({
     }
   } as const;
 
-  const containerLabelVariants = {
-    hidden: { opacity: 1 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 1.2
-      }
-    }
-  } as const;
-
-  const wordVariants = {
-    hidden: {
-      opacity: 0,
-      x: -10
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut" as const
-      }
-    }
-  } as const;
 
   return (
     <div className={`flex items-center ${logoTextGap} ${colorClass}`}>
@@ -159,18 +134,12 @@ export default function LogoSVG({
         </motion.text>
       </motion.svg>
 
-      {/* Text Label - Animates in after logo with stagger */}
+      {/* Text Label - Always visible for reliability */}
       {showText && (
-        <motion.div
-          initial={animated ? "hidden" : "visible"}
-          animate={animated ? "visible" : undefined}
-          variants={animated ? containerLabelVariants : undefined}
-          className={`flex flex-col justify-center ${gapClass}`}
-        >
+        <div className={`flex flex-col justify-center ${gapClass}`}>
           {['INTEGRATED', 'INSPECTION', 'SYSTEMS'].map((word, i) => (
-            <motion.div
+            <div
               key={word}
-              variants={animated ? wordVariants : undefined}
               className={
                 i === 2
                   ? `${textSizeClass} font-extrabold tracking-[0.15em] leading-none ${variant === 'light' ? 'text-blue-400' : 'text-blue-600 dark:text-blue-400'}`
@@ -178,9 +147,9 @@ export default function LogoSVG({
               }
             >
               {word}
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       )}
     </div>
   );

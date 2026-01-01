@@ -41,7 +41,7 @@ export default function Resources({ data }: ResourcesProps) {
   const showCta = Boolean(ctaData && (ctaData.title || ctaData.description));
 
   return (
-    <section className="relative py-24 md:py-32 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 overflow-hidden">
+    <section className="relative py-24 md:py-32 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 overflow-hidden dark-section">
       {/* Background Pattern */}
       <DotGridBackground color="rgb(59, 130, 246)" spacing={40} dotPosition={1} opacity={0.05} />
 

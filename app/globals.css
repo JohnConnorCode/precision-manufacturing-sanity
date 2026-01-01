@@ -244,6 +244,53 @@ html:not(.animations-ready) [data-motion-id][style*="opacity: 0;"] {
     text-wrap: balance;
   }
 
+  /* Dark Section - Forces light text on permanently dark backgrounds
+   * Use this class on sections that have dark backgrounds regardless of theme mode.
+   * This ensures readability in both light and dark mode.
+   * BANNED: text-slate-400, text-slate-500, text-slate-600 inside dark sections
+   */
+  .dark-section {
+    /* Base text should be light */
+    color: rgb(226 232 240); /* slate-200 */
+  }
+
+  .dark-section .text-muted,
+  .dark-section .text-body-muted {
+    color: rgb(203 213 225); /* slate-300 */
+  }
+
+  /* Override problematic grey text classes inside dark sections */
+  .dark-section .text-slate-400 {
+    color: rgb(203 213 225); /* slate-300 - lighter for readability */
+  }
+
+  .dark-section .text-slate-500 {
+    color: rgb(148 163 184); /* slate-400 - bump up one level */
+  }
+
+  .dark-section .text-slate-600 {
+    color: rgb(148 163 184); /* slate-400 - bump up significantly */
+  }
+
+  .dark-section .text-slate-700 {
+    color: rgb(203 213 225); /* slate-300 - bump up significantly for readability */
+  }
+
+  .dark-section .text-gray-400,
+  .dark-section .text-zinc-400 {
+    color: rgb(203 213 225); /* slate-300 */
+  }
+
+  .dark-section .text-gray-500,
+  .dark-section .text-zinc-500 {
+    color: rgb(148 163 184); /* slate-400 */
+  }
+
+  .dark-section .text-gray-600,
+  .dark-section .text-zinc-600 {
+    color: rgb(148 163 184); /* slate-400 */
+  }
+
   /* 3D Perspective */
   .perspective-1000 {
     perspective: 1000px;

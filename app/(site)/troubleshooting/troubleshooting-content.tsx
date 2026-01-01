@@ -136,7 +136,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-16 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-16 px-4 dark-section">
       <div className={spacing.containerWide}>
         {/* Header */}
         <motion.div

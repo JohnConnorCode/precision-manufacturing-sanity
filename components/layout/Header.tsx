@@ -386,11 +386,6 @@ export default function Header({ data }: HeaderProps) {
 
           {/* Desktop Navigation - Click-based Dropdowns */}
           <nav className="hidden lg:flex items-center justify-center flex-1">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: mounted ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
             <ul className={cn('flex list-none items-center space-x-2', listJustify)}>
               {navigation.map((item: MenuItem, index: number) => {
                 const children = Array.isArray(item.children)
@@ -412,11 +407,8 @@ export default function Header({ data }: HeaderProps) {
                 const hasRealHref = isValidHref(href)
 
                 return (
-                  <motion.li
+                  <li
                     key={item.name}
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : -10 }}
-                    transition={{ duration: 0.4, delay: mounted ? 0.1 + index * 0.05 : 0, ease: "easeOut" }}
                     className={itemClasses}
                   >
                     {hasChildren ? (
@@ -541,20 +533,14 @@ export default function Header({ data }: HeaderProps) {
                           </Link>
                       )
                     )}
-                  </motion.li>
+                  </li>
                 )
               })}
             </ul>
-            </motion.div>
           </nav>
 
           {/* Desktop CTA + Theme Toggle */}
-          <motion.div
-            className="hidden lg:flex items-center space-x-2"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: mounted ? 1 : 0, x: mounted ? 0 : 20 }}
-            transition={{ duration: 0.5, delay: mounted ? 0.6 : 0, ease: "easeOut" }}
-          >
+          <div className="hidden lg:flex items-center space-x-2">
             {/* Theme Toggle */}
             {mounted && <ThemeToggle />}
 
@@ -575,7 +561,7 @@ export default function Header({ data }: HeaderProps) {
                 </PremiumButton>
               </Link>
             )}
-          </motion.div>
+          </div>
 
           {/* Mobile/More Menu - Shows below lg (1024px) OR as "More" button on lg-xl */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>

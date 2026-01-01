@@ -273,7 +273,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
 
         {/* CTA Section */}
         <AnimatedSection delay={0.4}>
-          <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950">
+          <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 dark-section">
             <div className="max-w-4xl mx-auto text-center">
               <SectionHeader
                 eyebrow="Ready to Start?"

@@ -37,7 +37,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 py-20">
+      <section className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 py-20 dark-section">
         <div className={spacing.container}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}

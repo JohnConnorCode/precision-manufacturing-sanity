@@ -69,7 +69,7 @@ export default function CTA({ data }: CTAProps) {
   const lastPart = words.slice(-2).join('\u00A0'); // Non-breaking space
 
   return (
-    <section className="relative py-32 md:py-40 overflow-hidden">
+    <section className="relative py-32 md:py-40 overflow-hidden dark-section">
       {/* Dramatic Background */}
       <div className="absolute inset-0 bg-slate-950">
         {/* Gradient layers */}
