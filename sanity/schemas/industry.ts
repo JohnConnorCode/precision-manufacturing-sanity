@@ -258,7 +258,8 @@ export default {
               name: 'image',
               type: 'image',
               title: 'Background Image',
-              description: 'Background image for expertise card',
+              description: 'Background image for expertise card (REQUIRED)',
+              validation: (Rule: any) => Rule.required().error('Image is required for expertise cards'),
               options: {
                 hotspot: true,
                 metadata: ['blurhash', 'lqip', 'palette']
@@ -268,7 +269,8 @@ export default {
                   name: 'alt',
                   type: 'string',
                   title: 'Alt Text',
-                  description: 'Alternative text for accessibility'
+                  description: 'Alternative text for accessibility',
+                  validation: (Rule: any) => Rule.required().error('Alt text is required')
                 }
               ]
             },
@@ -582,7 +584,8 @@ export default {
               name: 'image',
               type: 'image',
               title: 'Component Image',
-              description: 'Image for this component category',
+              description: 'Image for this component category (REQUIRED)',
+              validation: (Rule: any) => Rule.required().error('Image is required for component cards'),
               options: {
                 hotspot: true,
                 metadata: ['blurhash', 'lqip', 'palette'],

@@ -268,7 +268,8 @@ export default {
               name: 'image',
               type: 'image',
               title: 'Service Image',
-              description: 'Image for this service offering',
+              description: 'Image for this service offering (REQUIRED)',
+              validation: (Rule: any) => Rule.required().error('Image is required for service offerings'),
               options: {
                 hotspot: true,
                 metadata: ['blurhash', 'lqip', 'palette'],
@@ -400,6 +401,8 @@ export default {
               name: 'image',
               type: 'image',
               title: 'Application Image',
+              description: 'Image for this application (REQUIRED)',
+              validation: (Rule: any) => Rule.required().error('Image is required for applications'),
               options: {
                 hotspot: true,
                 metadata: ['blurhash', 'lqip', 'palette']
