@@ -1,46 +1,28 @@
 import type { MDXComponents } from 'mdx/types';
-import { motion } from 'framer-motion';
 import { PremiumButton } from '@/components/ui/premium-button';
 import ToleranceCalculator from '@/components/ui/tolerance-calculator';
 import ComplianceChecklist from '@/components/ui/compliance-checklist';
 import MaterialSelector from '@/components/ui/material-selector';
+import { SafeMotion } from '@/components/ui/safe-motion';
 import { Check, AlertTriangle, Info, Lightbulb } from 'lucide-react';
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    // Custom heading components with animations
+    // Custom heading components with scroll-triggered animations
     h1: ({ children, ...props }) => (
-      <motion.h1
-        className="text-4xl font-bold text-white mb-6 mt-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        {...props}
-      >
-        {children}
-      </motion.h1>
+      <SafeMotion y={20} className="text-4xl font-bold text-white mb-6 mt-8">
+        <h1 {...props}>{children}</h1>
+      </SafeMotion>
     ),
     h2: ({ children, ...props }) => (
-      <motion.h2
-        className="text-3xl font-bold text-white mb-4 mt-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        {...props}
-      >
-        {children}
-      </motion.h2>
+      <SafeMotion y={20} className="text-3xl font-bold text-white mb-4 mt-8">
+        <h2 {...props}>{children}</h2>
+      </SafeMotion>
     ),
     h3: ({ children, ...props }) => (
-      <motion.h3
-        className="text-2xl font-bold text-white mb-3 mt-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        {...props}
-      >
-        {children}
-      </motion.h3>
+      <SafeMotion y={20} className="text-2xl font-bold text-white mb-3 mt-6">
+        <h3 {...props}>{children}</h3>
+      </SafeMotion>
     ),
 
     // Enhanced paragraph with better typography
@@ -87,21 +69,25 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     // Blockquotes
     blockquote: ({ children, ...props }) => (
-      <blockquote
-        className="border-l-4 border-blue-600 pl-6 py-2 mb-6 bg-blue-600/5 text-slate-300 italic"
-        {...props}
-      >
-        {children}
-      </blockquote>
+      <SafeMotion y={20}>
+        <blockquote
+          className="border-l-4 border-blue-600 pl-6 py-2 mb-6 bg-blue-600/5 text-slate-300 italic"
+          {...props}
+        >
+          {children}
+        </blockquote>
+      </SafeMotion>
     ),
 
     // Tables
     table: ({ children, ...props }) => (
-      <div className="overflow-x-auto mb-6">
-        <table className="w-full border-collapse border border-slate-700" {...props}>
-          {children}
-        </table>
-      </div>
+      <SafeMotion y={20}>
+        <div className="overflow-x-auto mb-6">
+          <table className="w-full border-collapse border border-slate-700" {...props}>
+            {children}
+          </table>
+        </div>
+      </SafeMotion>
     ),
     th: ({ children, ...props }) => (
       <th className="border border-slate-700 bg-slate-800 text-white px-4 py-2 text-left" {...props}>
@@ -150,12 +136,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       };
 
       return (
-        <motion.div
-          className={`border rounded-lg p-6 mb-6 ${getColors()}`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <SafeMotion y={20} className={`border rounded-lg p-6 mb-6 ${getColors()}`}>
           <div className="flex items-center gap-3 mb-3">
             {getIcon()}
             {title && <h4 className="font-semibold text-lg">{title}</h4>}
@@ -163,29 +144,19 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
           <div className="text-slate-300">
             {children}
           </div>
-        </motion.div>
+        </SafeMotion>
       );
     },
 
     InteractiveDemo: ({ title, children }: { title: string; children: React.ReactNode }) => (
-      <motion.div
-        className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 mb-6"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-      >
+      <SafeMotion y={20} scale={0.98} className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 mb-6">
         <h4 className="text-xl font-bold text-white mb-4">{title}</h4>
         {children}
-      </motion.div>
+      </SafeMotion>
     ),
 
     TechnicalSpecs: ({ specs }: { specs: Array<{ label: string; value: string; unit?: string }> }) => (
-      <motion.div
-        className="bg-slate-900/30 border border-slate-800 rounded-lg p-6 mb-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+      <SafeMotion y={20} className="bg-slate-900/30 border border-slate-800 rounded-lg p-6 mb-6">
         <h4 className="text-lg font-bold text-white mb-4">Technical Specifications</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {specs.map((spec, index) => (
@@ -197,7 +168,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
             </div>
           ))}
         </div>
-      </motion.div>
+      </SafeMotion>
     ),
 
     CTAButton: ({ href, children, variant = 'default' }: {
@@ -205,25 +176,31 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       children: React.ReactNode;
       variant?: 'default' | 'secondary';
     }) => (
-      <div className="my-6">
+      <SafeMotion y={20} className="my-6">
         <a href={href}>
           <PremiumButton variant={variant as any} size="lg">
             {children}
           </PremiumButton>
         </a>
-      </div>
+      </SafeMotion>
     ),
 
     ToleranceCalculator: () => (
-      <ToleranceCalculator />
+      <SafeMotion y={20}>
+        <ToleranceCalculator />
+      </SafeMotion>
     ),
 
     ComplianceChecklist: () => (
-      <ComplianceChecklist />
+      <SafeMotion y={20}>
+        <ComplianceChecklist />
+      </SafeMotion>
     ),
 
     MaterialSelector: () => (
-      <MaterialSelector />
+      <SafeMotion y={20}>
+        <MaterialSelector />
+      </SafeMotion>
     ),
 
     ...components,
