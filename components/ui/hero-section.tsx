@@ -118,14 +118,15 @@ export default function HeroSection({
     right: 'text-right items-end'
   };
 
+  // Professional font sizes for B2B manufacturing site - reduced from oversized defaults
   const titleSizeClasses: Record<string, string> = {
-    xs: 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl',
-    sm: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
-    base: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl',
-    lg: 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[5.5rem]',
-    xl: 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6rem]',
-    '2xl': 'text-6xl sm:text-7xl md:text-8xl lg:text-[6rem]',
-    '3xl': 'text-7xl sm:text-8xl md:text-[6rem] lg:text-[7rem]',
+    xs: 'text-xl sm:text-2xl md:text-3xl lg:text-4xl',
+    sm: 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl',
+    base: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
+    lg: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl',
+    xl: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl',
+    '2xl': 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl',
+    '3xl': 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl',
   };
   const descSizeClasses: Record<string, string> = {
     xs: 'text-sm',
@@ -237,7 +238,7 @@ export default function HeroSection({
             viewport={{ once: true }}
             transition={{ delay: 0.4, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
             className={cn(
-              titleSize ? titleSizeClasses[titleSize] : 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl',
+              titleSize ? titleSizeClasses[titleSize] : 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
               'font-extrabold mb-6 tracking-tight uppercase'
             )}
             style={{ color: defaultTitleColor }}
