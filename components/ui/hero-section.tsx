@@ -379,6 +379,12 @@ export default function HeroSection({
           </motion.div>
         </motion.div>
       )}
+
+      <span
+        data-hero-sentinel
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px w-full opacity-0"
+      />
     </section>
   );
 }

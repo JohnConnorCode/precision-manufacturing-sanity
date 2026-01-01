@@ -138,7 +138,8 @@ export default function Hero({ data }: HeroProps) {
 
   // Extract styles from Sanity data
   const titleColor = colorStyleToCSS(data?.titleColor) || palette.title;
-  const titleHighlightColor = colorStyleToCSS(data?.titleHighlightColor) || palette.subtitle;
+  // titleHighlightColor should only be set if explicitly defined - allows gradient fallback
+  const titleHighlightColor = colorStyleToCSS(data?.titleHighlightColor);
   const descriptionColor = colorStyleToCSS(data?.descriptionColor) || palette.description;
 
   const badgeTextColor = colorStyleToCSS(data?.badgeStyle?.textColor) || palette.badge.text;
@@ -326,6 +327,12 @@ export default function Hero({ data }: HeroProps) {
           <ChevronDown className="h-6 w-6" />
         </motion.div>
       </motion.div>
+
+      <span
+        data-hero-sentinel
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px w-full opacity-0"
+      />
     </section>
   );
 }

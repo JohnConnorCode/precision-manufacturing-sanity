@@ -91,6 +91,7 @@ interface HeaderProps {
 }
 
 const HERO_SELECTORS = ['[data-hero-section="dark"]', '[data-hero-section="light"]', '[data-hero-section]'];
+const HERO_SENTINEL_SELECTOR = '[data-hero-sentinel]';
 
 export default function Header({ data }: HeaderProps) {
   // 100% CMS controlled - no hardcoded fallbacks
@@ -141,6 +142,7 @@ export default function Header({ data }: HeaderProps) {
     }
 
     let heroSection: HTMLElement | null = null;
+    let heroSentinel: HTMLElement | null = null;
     let heroObserver: IntersectionObserver | null = null;
     let mutationObserver: MutationObserver | null = null;
 
@@ -158,13 +160,24 @@ export default function Header({ data }: HeaderProps) {
       return heroSection;
     };
 
+    const resolveHeroSentinel = () => {
+      if (heroSentinel && document.body.contains(heroSentinel)) {
+        return heroSentinel;
+      }
+      heroSentinel = document.querySelector(HERO_SENTINEL_SELECTOR) as HTMLElement | null;
+      return heroSentinel;
+    };
+
     const updateScrollState = () => setIsScrolled(window.scrollY > 10);
     const throttledScroll = throttleRAF(updateScrollState);
 
     const attachHeroObserver = () => {
+      const sentinelEl = resolveHeroSentinel();
       const heroEl = resolveHeroSection();
-      if (!heroEl || typeof IntersectionObserver === 'undefined') {
-        setIsOverHero(false);
+      const target = sentinelEl || heroEl;
+
+      if (!target || typeof IntersectionObserver === 'undefined') {
+        setIsOverHero(Boolean(heroEl));
         return;
       }
 
@@ -175,17 +188,20 @@ export default function Header({ data }: HeaderProps) {
       heroObserver = new IntersectionObserver(
         (entries) => {
           const entry = entries[0];
+          if (sentinelEl) {
+            setIsOverHero(Boolean(entry?.isIntersecting));
+            return;
+          }
           setIsOverHero(Boolean(entry?.isIntersecting));
         },
         {
           root: null,
           threshold: 0,
-          // Treat hero as "exited" when its bottom is 120px above the fold
-          rootMargin: '-120px 0px 0px 0px',
+          rootMargin: sentinelEl ? '-80px 0px 0px 0px' : '-120px 0px 0px 0px',
         }
       );
 
-      heroObserver.observe(heroEl);
+      heroObserver.observe(target);
     };
 
     const ensureHeroPresence = () => {
