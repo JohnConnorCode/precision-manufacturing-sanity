@@ -6,6 +6,7 @@ import { ArrowRight, FileText, Shield, Award, Activity, Clock, LucideIcon } from
 import Link from 'next/link';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import { DURATIONS, STAGGER, EASING, getViewportConfig } from '@/lib/animation-config';
 
 interface CTAData {
   title?: string;
@@ -107,8 +108,8 @@ export default function CTA({ data }: CTAProps) {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0 }}
-              viewport={{ once: true }}
+              transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, ease: EASING }}
+              viewport={getViewportConfig()}
               className="inline-flex items-center px-4 py-2 mb-8 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-sm"
             >
               <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
@@ -119,10 +120,10 @@ export default function CTA({ data }: CTAProps) {
 
           {/* Title with gradient on last 2 words */}
           <motion.h2
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.7, delay: prefersReducedMotion ? 0 : 0.1 }}
-            viewport={{ once: true }}
+            transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, delay: prefersReducedMotion ? 0 : STAGGER.cards, ease: EASING }}
+            viewport={getViewportConfig()}
             className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-8 leading-tight"
           >
             {firstPart && <span>{firstPart} </span>}
@@ -136,8 +137,8 @@ export default function CTA({ data }: CTAProps) {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 0.2 }}
-              viewport={{ once: true }}
+              transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, delay: prefersReducedMotion ? 0 : STAGGER.cards * 2, ease: EASING }}
+              viewport={getViewportConfig()}
               className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto"
             >
               {subtitleString}
@@ -148,8 +149,8 @@ export default function CTA({ data }: CTAProps) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 0.3 }}
-            viewport={{ once: true }}
+            transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, delay: prefersReducedMotion ? 0 : STAGGER.cards * 3, ease: EASING }}
+            viewport={getViewportConfig()}
             className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
           >
             {buttons.map((button, index) => {
@@ -173,7 +174,7 @@ export default function CTA({ data }: CTAProps) {
           {/* Certification Badges */}
           {certifications.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
-              {certifications.filter((cert: any) => cert.enabled !== false).map((cert, index) => {
+              {certifications.filter(cert => cert.enabled !== false).map((cert, index) => {
                 const Icon = iconMap[cert.icon] || Activity;
                 const isFirstBadge = index === 0 && cert.icon === 'Clock';
 
@@ -183,10 +184,11 @@ export default function CTA({ data }: CTAProps) {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{
-                      duration: prefersReducedMotion ? 0 : 0.5,
-                      delay: prefersReducedMotion ? 0 : 0.4 + index * 0.1
+                      duration: prefersReducedMotion ? 0 : DURATIONS.slow,
+                      delay: prefersReducedMotion ? 0 : STAGGER.cards * 4 + index * STAGGER.badges,
+                      ease: EASING
                     }}
-                    viewport={{ once: true }}
+                    viewport={getViewportConfig()}
                     className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-slate-900/50 border border-slate-800/50 hover:border-slate-700 transition-colors"
                   >
                     {isFirstBadge ? (
@@ -213,8 +215,8 @@ export default function CTA({ data }: CTAProps) {
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.8, delay: prefersReducedMotion ? 0 : 0.7 }}
-              viewport={{ once: true }}
+              transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, delay: prefersReducedMotion ? 0 : STAGGER.cards * 5, ease: EASING }}
+              viewport={getViewportConfig()}
               className="mt-12"
             >
               <p className="text-xs text-slate-500">

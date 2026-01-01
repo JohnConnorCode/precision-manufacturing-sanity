@@ -103,20 +103,21 @@ export default function Hero({ data }: HeroProps) {
   const word2 = data?.word2?.trim() || '';
   const word3 = data?.word3?.trim() || '';
 
-  // Hero font size - optimized for all screen sizes (increased for better impact)
-  const heroFontSize = data?.heroFontSize || 'text-[2.5rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem] xl:text-[4.5rem]';
+  // Hero font size - optimized for professional B2B appearance (reduced for better desktop proportions)
+  const heroFontSize = data?.heroFontSize || 'text-[2rem] sm:text-[2.25rem] md:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem]';
   const tagline = data?.tagline?.trim() || '';
 
   // Handle both string badges and object badges from Sanity
+  type BadgeItem = string | { text?: string; badge?: string; enabled?: boolean };
   const badges = Array.isArray(data?.badges)
-    ? (data?.badges as Array<any>)
-        .filter((badge: any) => {
+    ? (data?.badges as BadgeItem[])
+        .filter((badge: BadgeItem) => {
           if (typeof badge === 'string') {
             return badge.trim().length > 0;
           }
           return badge?.enabled !== false && Boolean(badge?.text || badge?.badge);
         })
-        .map((badge: any) =>
+        .map((badge: BadgeItem) =>
           typeof badge === 'string' ? badge : (badge.text || badge.badge || '')
         )
     : [];
