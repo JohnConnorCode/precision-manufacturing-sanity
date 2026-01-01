@@ -152,11 +152,32 @@ export default function Header({ data }: HeaderProps) {
     // Use requestAnimationFrame throttling for optimal scroll performance
     const throttledScroll = throttleRAF(handleScroll);
 
+    // CRITICAL: scrollEndTimeout ensures final scroll position is captured
+    // Without this, if scrolling stops between animation frames, the final state is missed
+    let scrollEndTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    const handleScrollWithFinalState = () => {
+      throttledScroll();
+
+      // Clear any pending timeout
+      if (scrollEndTimeout) {
+        clearTimeout(scrollEndTimeout);
+      }
+
+      // Schedule a final state check after scrolling stops
+      scrollEndTimeout = setTimeout(handleScroll, 50);
+    };
+
     // Set initial state immediately
     handleScroll();
 
-    window.addEventListener('scroll', throttledScroll, { passive: true });
-    return () => window.removeEventListener('scroll', throttledScroll);
+    window.addEventListener('scroll', handleScrollWithFinalState, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScrollWithFinalState);
+      if (scrollEndTimeout) {
+        clearTimeout(scrollEndTimeout);
+      }
+    };
   }, [pathname]);
 
   const listJustify = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'
