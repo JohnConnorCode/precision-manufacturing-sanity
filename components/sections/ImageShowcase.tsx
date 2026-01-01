@@ -8,8 +8,7 @@ import SectionHeader from '@/components/ui/section-header';
 import { spacing, colors, borderRadius } from '@/lib/design-system';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle } from '@/lib/theme-utils';
-import { usePrefersReducedMotion } from '@/lib/motion';
-import { SECTION_CONFIGS, getInitialState, getAnimateState, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { SafeMotion, stagger } from '@/components/ui/safe-motion';
 import { ImageShowcaseData, ShowcaseImage, ShowcaseStat } from '@/lib/types/cms';
 
 // Icon mapping for stats
@@ -28,7 +27,6 @@ interface ImageShowcaseProps {
 
 export default function ImageShowcase({ data }: ImageShowcaseProps) {
   const theme = useTheme();
-  const prefersReducedMotion = usePrefersReducedMotion();
 
   if (!data) {
     return null;
@@ -65,9 +63,6 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         {/* Large Feature Images */}
         <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} mb-12`}>
           {showcaseImages.filter((item: ShowcaseImage) => item.enabled !== false).map((item: ShowcaseImage, index: number) => {
-            const imageHeaderDelay = SECTION_CONFIGS.threeColumnGrid.headerCompletion;
-            const imageDelay = imageHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
-            const viewportConfig = getViewportConfig();
             const imageSrc = (typeof item.src === 'string' && item.src.trim().length > 0)
               ? item.src
               : item.image?.asset?.url;
@@ -117,13 +112,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
             );
 
             return (
-              <motion.div
-                key={item.title}
-                initial={getInitialState(prefersReducedMotion)}
-                whileInView={getAnimateState(imageDelay, 0.6, prefersReducedMotion)}
-                viewport={viewportConfig}
-                className="group"
-              >
+              <SafeMotion key={item.title} y={20} delay={stagger(index)} className="group">
                 {item.href ? (
                   <Link href={item.href} className="block relative">
                     {card}
@@ -131,7 +120,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                 ) : (
                   card
                 )}
-              </motion.div>
+              </SafeMotion>
             );
           })}
         </div>
@@ -140,41 +129,32 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         {stats.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">
             {stats.filter((stat: ShowcaseStat) => stat.enabled !== false).map((stat: ShowcaseStat, index: number) => {
-            const iconKey = stat.iconName || stat.icon;
-            const Icon = (iconKey && iconMap[iconKey]) || Award;
-            const statsHeaderDelay = SECTION_CONFIGS.fourColumnGrid.headerCompletion;
-            const statDelay = statsHeaderDelay + SECTION_CONFIGS.fourColumnGrid.getDelay(index);
-            const viewportConfig = getViewportConfig();
+              const iconKey = stat.iconName || stat.icon;
+              const Icon = (iconKey && iconMap[iconKey]) || Award;
 
-            return (
-              <motion.div
-                key={stat._key || `stat-${index}`}
-                initial={getScaleInitialState(prefersReducedMotion)}
-                whileInView={getScaleAnimateState(statDelay, 0.6, prefersReducedMotion)}
-                viewport={viewportConfig}
-                className="text-center p-6 bg-white dark:bg-slate-900 rounded-2xl shadow-lg dark:shadow-slate-950/50 hover:shadow-xl transition-all duration-300"
-              >
-                <Icon className="h-8 w-8 mx-auto mb-3" style={{ color: theme.colors.primary }} />
-                <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-1">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400 font-medium">
-                  {stat.label}
-                </div>
-              </motion.div>
-            );
-          })}
+              return (
+                <SafeMotion
+                  key={stat._key || `stat-${index}`}
+                  scale={0.9}
+                  delay={stagger(index)}
+                  className="text-center p-6 bg-white dark:bg-slate-900 rounded-2xl shadow-lg dark:shadow-slate-950/50 hover:shadow-xl transition-all duration-300"
+                >
+                  <Icon className="h-8 w-8 mx-auto mb-3" style={{ color: theme.colors.primary }} />
+                  <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-1">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-slate-600 dark:text-slate-400 font-medium">
+                    {stat.label}
+                  </div>
+                </SafeMotion>
+              );
+            })}
           </div>
         )}
 
         {/* Call to Action */}
         {data?.cta && (data.cta.title || data.cta.description) && (
-          <motion.div
-            initial={getInitialState(prefersReducedMotion)}
-            whileInView={getAnimateState(0.4, 0.8, prefersReducedMotion)}
-            viewport={getViewportConfig()}
-            className="text-center"
-          >
+          <SafeMotion y={20} delay={0.4} className="text-center">
             <div className="inline-flex flex-col items-center p-8 md:p-12 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-2xl">
               <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
                 {data.cta.title}
@@ -202,7 +182,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </SafeMotion>
         )}
       </div>
     </section>

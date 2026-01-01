@@ -283,6 +283,94 @@ export function ScaleIn({
 }
 
 // ============================================================================
+// INLINE MOTION (for spans in headings)
+// ============================================================================
+
+interface SafeMotionSpanProps extends Omit<HTMLMotionProps<'span'>, 'initial' | 'animate' | 'ref'> {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  duration?: number;
+  y?: number;
+}
+
+/**
+ * SafeMotionSpan - For inline text animations (e.g., words in headings)
+ * Same safe pattern as SafeMotion but uses motion.span for inline display
+ */
+export function SafeMotionSpan({
+  children,
+  className,
+  delay = 0,
+  duration = 0.5,
+  y = 16,
+  ...motionProps
+}: SafeMotionSpanProps) {
+  const mounted = useMounted();
+  const { ref, isInView } = useInView();
+
+  const animateState = {
+    opacity: mounted && isInView ? 1 : mounted ? 0 : 1,
+    y: mounted && isInView ? 0 : mounted ? y : 0,
+  };
+
+  return (
+    <motion.span
+      ref={ref as React.RefObject<HTMLSpanElement>}
+      className={cn('inline-block', className)}
+      initial={false}
+      animate={animateState}
+      transition={{
+        duration,
+        delay: isInView ? delay : 0,
+        ease: 'easeOut',
+      }}
+      {...motionProps}
+    >
+      {children}
+    </motion.span>
+  );
+}
+
+/**
+ * SafeMotionP - For paragraph animations
+ * Same safe pattern as SafeMotion but uses motion.p
+ */
+export function SafeMotionP({
+  children,
+  className,
+  delay = 0,
+  duration = 0.5,
+  y = 16,
+  ...motionProps
+}: SafeMotionSpanProps) {
+  const mounted = useMounted();
+  const { ref, isInView } = useInView();
+
+  const animateState = {
+    opacity: mounted && isInView ? 1 : mounted ? 0 : 1,
+    y: mounted && isInView ? 0 : mounted ? y : 0,
+  };
+
+  return (
+    <motion.p
+      ref={ref as React.RefObject<HTMLParagraphElement>}
+      className={cn(className)}
+      initial={false}
+      animate={animateState}
+      transition={{
+        duration,
+        delay: isInView ? delay : 0,
+        ease: 'easeOut',
+      }}
+      {...motionProps}
+    >
+      {children}
+    </motion.p>
+  );
+}
+
+// ============================================================================
 // STAGGER HELPER
 // ============================================================================
 
