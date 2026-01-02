@@ -102,7 +102,12 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                   className="text-center"
                 >
-                  <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 mb-2">{stat.value}</div>
+                  <div className="text-4xl font-bold mb-2" style={{
+                    background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}>{stat.value}</div>
                   <div className="text-lg font-semibold text-tone-inverse mb-1">{stat.label}</div>
                   {stat.description && (
                     <div className="text-sm text-zinc-400">{stat.description}</div>

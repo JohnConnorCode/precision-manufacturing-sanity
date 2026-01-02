@@ -44,7 +44,12 @@ export default function NotFound() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h1 className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 mb-2">
+            <h1 className="text-7xl font-black mb-2" style={{
+              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
               404
             </h1>
 

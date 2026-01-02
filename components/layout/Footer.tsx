@@ -182,7 +182,12 @@ const Footer = ({ data }: FooterProps) => {
           </div>
 
           <div>
-            <h4 className={cn('font-semibold mb-3', colors.footer.text.heading)}>{footerData.servicesHeading}</h4>
+            <h4 className="font-semibold mb-3" style={{
+              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>{footerData.servicesHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.servicesLinks.map((link) => (
                 <li key={link.label}>
@@ -195,7 +200,12 @@ const Footer = ({ data }: FooterProps) => {
           </div>
 
           <div>
-            <h4 className={cn('font-semibold mb-3', colors.footer.text.heading)}>{footerData.resourcesHeading}</h4>
+            <h4 className="font-semibold mb-3" style={{
+              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>{footerData.resourcesHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.resourcesLinks.map((link) => (
                 <li key={link.label}>
@@ -208,7 +218,12 @@ const Footer = ({ data }: FooterProps) => {
           </div>
 
           <div>
-            <h4 className={cn('font-semibold mb-3', colors.footer.text.heading)}>{footerData.quickLinksHeading}</h4>
+            <h4 className="font-semibold mb-3" style={{
+              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>{footerData.quickLinksHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.quickLinks.map((link) => (
                 <li key={link.label}>
@@ -221,7 +236,12 @@ const Footer = ({ data }: FooterProps) => {
           </div>
 
           <div>
-            <h4 className={cn('font-semibold mb-3', colors.footer.text.heading)}>{footerData.contactHeading}</h4>
+            <h4 className="font-semibold mb-3" style={{
+              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>{footerData.contactHeading}</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start space-x-2">
                 <Mail className={cn('h-4 w-4 mt-0.5', colors.footer.icon)} />

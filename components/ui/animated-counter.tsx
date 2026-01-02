@@ -98,7 +98,12 @@ export function StatsCounter({ stats, className = "" }: StatsCounterProps) {
               prefix={stat.prefix}
               suffix={stat.suffix}
               decimals={stat.decimals}
-              className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400"
+              style={{
+                background: 'linear-gradient(to right, #3b82f6, #60a5fa)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
             />
           </div>
           <div className="text-sm text-slate-400 uppercase tracking-wider">

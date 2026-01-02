@@ -71,7 +71,12 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
         >
           {/* 404 Text with gradient */}
           <h1 className="text-[150px] md:text-[200px] font-black leading-none">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 animate-pulse">
+            <span className="animate-pulse" style={{
+              background: 'linear-gradient(to right, #3b82f6, #4f46e5, #3b82f6)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
               404
             </span>
           </h1>

@@ -102,7 +102,12 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
                 <span className="text-sm font-medium text-blue-400">Admin Dashboard</span>
               </div>
               <h1 className={cn(typography.heroHeading, darkTone.heading, 'mb-3 uppercase')}>
-                System <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">Status</span>
+                System <span style={{
+                  background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}>Status</span>
               </h1>
               <p className={cn(typography.descriptionLight)}>
                 Real-time monitoring for IIS precision manufacturing website

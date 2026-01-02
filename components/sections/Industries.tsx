@@ -56,7 +56,12 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-tone-inverse mb-6">
               {heading.split(' ').map((word, i, arr) => (
                 i === arr.length - 1 ? (
-                  <span key={i} className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                  <span key={i} style={{
+                    background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}>
                     {word}
                   </span>
                 ) : (

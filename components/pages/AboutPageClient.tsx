@@ -352,7 +352,12 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 >
                   <Card className={cn(styles.featureCard, "h-full group")}>
                     {/* Year Badge */}
-                    <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 mb-4">
+                    <div className="text-3xl font-black mb-4" style={{
+                      background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}>
                       {milestone?.year}
                     </div>
                     <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-tone-inverse group-hover:text-blue-600 transition-colors">{milestone?.title}</h3>

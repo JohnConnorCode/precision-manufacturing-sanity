@@ -234,7 +234,12 @@ export default async function ServicesPage() {
                         key={capability.label}
                         className="text-center"
                       >
-                        <div className={styles.statValue}>
+                        <div className="text-3xl md:text-4xl font-bold" style={{
+                          background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          backgroundClip: 'text',
+                        }}>
                           {capability.value}
                         </div>
                         <div className={cn(typography.badge, "text-slate-700 dark:text-slate-300 mb-2")}>
