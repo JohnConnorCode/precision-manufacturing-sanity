@@ -7,7 +7,7 @@ import SectionHeader from '@/components/ui/section-header';
 import { Card } from '@/components/ui/card';
 import { typography } from '@/lib/design-system';
 import { cn } from '@/lib/utils';
-import { PortableText } from '@portabletext/react';
+import { PortableText, PortableTextComponents } from '@portabletext/react';
 
 const fallbackIcon = (LucideIcons as any).Circle;
 
@@ -20,19 +20,34 @@ function resolveIcon(name?: string) {
   return (LucideIcons as any)[normalized] || (LucideIcons as any)[name] || fallbackIcon;
 }
 
+const portableComponents: PortableTextComponents = {
+  block: {
+    normal: ({ children }) => (
+      <p className={cn(typography.body, 'text-slate-600 dark:text-slate-400 leading-relaxed mb-4 last:mb-0')}>
+        {children}
+      </p>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }) => (
+      <li className={cn(typography.body, 'text-slate-600 dark:text-slate-400 leading-relaxed')}>
+        {children}
+      </li>
+    ),
+  },
+};
+
 function renderPortableContent(content?: unknown) {
   if (!content) return null;
   if (typeof content === 'string') {
     return <p className={cn(typography.body, 'text-slate-600 dark:text-slate-400 leading-relaxed')}>{content}</p>;
   }
-  if (Array.isArray(content)) {
-    return (
-      <div className={cn(typography.body, 'prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-400')}>
-        <PortableText value={content as any} />
-      </div>
-    );
-  }
-  return null;
+  const portableValue = Array.isArray(content) ? content : [content];
+  return (
+    <div className={cn(typography.body, 'prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-400')}>
+      <PortableText value={portableValue as any} components={portableComponents} />
+    </div>
+  );
 }
 
 interface SupplierRequirementsPageClientProps {
