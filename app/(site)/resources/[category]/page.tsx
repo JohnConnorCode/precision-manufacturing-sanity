@@ -83,11 +83,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
     slug: resource.slug?.current || resource.slug,
   }));
 
-  // Split title for gradient effect
-  const titleWords = categoryData.title.split(' ');
-  const firstPart = titleWords.slice(0, -1).join(' ');
-  const lastWord = titleWords[titleWords.length - 1];
-
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section with proper dark hero mode */}
@@ -98,14 +93,22 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         alignment="center"
         darkHero={true}
         badge={{ text: 'RESOURCES' }}
-        title={
-          <span>
-            <span className="text-inherit">{firstPart} </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
-              {lastWord}
+        title={(() => {
+          // Split title to highlight last word in blue gradient
+          const title = categoryData.title || '';
+          const words = title.split(' ');
+          if (words.length <= 1) {
+            return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{title}</span>;
+          }
+          const firstPart = words.slice(0, -1).join(' ');
+          const lastWord = words[words.length - 1];
+          return (
+            <span>
+              <span className="text-inherit">{firstPart} </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
             </span>
-          </span>
-        }
+          );
+        })()}
         description={categoryData.description}
         buttons={[
           {

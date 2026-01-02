@@ -426,8 +426,11 @@ export default function Header({ data }: HeaderProps) {
                 const hasRealHref = isValidHref(href)
 
                 return (
-                  <li
+                  <motion.li
                     key={item.name}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={mounted ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+                    transition={{ duration: 0.4, delay: mounted ? 0.1 + index * 0.05 : 0, ease: "easeOut" }}
                     className={itemClasses}
                   >
                     {hasChildren ? (
@@ -552,14 +555,19 @@ export default function Header({ data }: HeaderProps) {
                           </Link>
                       )
                     )}
-                  </li>
+                  </motion.li>
                 )
               })}
             </ul>
           </nav>
 
           {/* Desktop CTA + Theme Toggle */}
-          <div className="hidden lg:flex items-center space-x-2">
+          <motion.div
+            className="hidden lg:flex items-center space-x-2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={mounted ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+            transition={{ duration: 0.5, delay: mounted ? 0.4 : 0, ease: "easeOut" }}
+          >
             {/* Theme Toggle */}
             {mounted && <ThemeToggle />}
 
@@ -580,7 +588,7 @@ export default function Header({ data }: HeaderProps) {
                 </PremiumButton>
               </Link>
             )}
-          </div>
+          </motion.div>
 
           {/* Mobile/More Menu - Shows below lg (1024px) OR as "More" button on lg-xl */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>

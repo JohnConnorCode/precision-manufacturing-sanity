@@ -63,9 +63,22 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
         alignment="center"
         darkHero={true}
         badge={{ text: 'LEGAL' }}
-        title={
-          <span className="text-inherit">{termsData.header.title}</span>
-        }
+        title={(() => {
+          // Split title to highlight last word in blue gradient
+          const title = termsData.header.title || '';
+          const words = title.split(' ');
+          if (words.length <= 1) {
+            return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{title}</span>;
+          }
+          const firstPart = words.slice(0, -1).join(' ');
+          const lastWord = words[words.length - 1];
+          return (
+            <span>
+              <span className="text-inherit">{firstPart} </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
+            </span>
+          );
+        })()}
         description={
           <div className="text-slate-300">
             <p className="mb-4">{termsData.header.subtitle}</p>
