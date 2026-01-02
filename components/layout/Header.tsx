@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
+import MobileMenu from '@/components/layout/MobileMenu';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { typography } from '@/lib/design-system';
@@ -113,8 +113,6 @@ export default function Header({ data }: HeaderProps) {
   // Track client-side mounting for theme toggle hydration
   const [mounted, setMounted] = useState(false);
 
-  // Use static ID to prevent hydration mismatch (only one mobile menu per page)
-  const mobileSheetId = 'mobile-navigation-sheet';
 
   // Prevent hydration mismatch for theme
   useEffect(() => setMounted(true), []);
@@ -590,215 +588,90 @@ export default function Header({ data }: HeaderProps) {
             )}
           </motion.div>
 
-          {/* Mobile/More Menu - Shows below lg (1024px) OR as "More" button on lg-xl */}
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            {/* Mobile hamburger (below lg) */}
-            <button
-              type="button"
-              className={cn(
-                "lg:hidden relative w-12 h-12 flex items-center justify-center rounded-lg transition-all duration-200",
-                inHeroMode
-                  ? "hover:bg-white/10 active:bg-white/20"
-                  : "hover:bg-slate-100/80 dark:hover:bg-slate-800/80 active:bg-slate-200/60 dark:active:bg-slate-700/60"
-              )}
-              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-              aria-haspopup="dialog"
-              aria-expanded={mobileMenuOpen}
-              aria-controls={mobileSheetId}
-              onClick={() => setMobileMenuOpen((prev) => !prev)}
-            >
-              {/* Animated Hamburger Icon */}
-              <div className="w-6 h-5 flex flex-col justify-center items-center gap-1.5">
-                <motion.span
-                  animate={{
-                    rotate: mobileMenuOpen ? 45 : 0,
-                    y: mobileMenuOpen ? 8 : 0,
-                  }}
-                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                  className={cn(
-                    "w-full h-0.5 rounded-full origin-center",
-                    inHeroMode ? "bg-white" : "bg-slate-900 dark:bg-slate-100"
-                  )}
-                />
-                <motion.span
-                  animate={{
-                    opacity: mobileMenuOpen ? 0 : 1,
-                    x: mobileMenuOpen ? -10 : 0,
-                  }}
-                  transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                  className={cn(
-                    "w-full h-0.5 rounded-full",
-                    inHeroMode ? "bg-white" : "bg-slate-900 dark:bg-slate-100"
-                  )}
-                />
-                <motion.span
-                  animate={{
-                    rotate: mobileMenuOpen ? -45 : 0,
-                    y: mobileMenuOpen ? -8 : 0,
-                  }}
-                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                  className={cn(
-                    "w-full h-0.5 rounded-full origin-center",
-                    inHeroMode ? "bg-white" : "bg-slate-900 dark:bg-slate-100"
-                  )}
-                />
-              </div>
-            </button>
-
-            {/* "More" button for lg-xl screens (when some items are hidden) */}
-            {moreButtonText && (
-            <button
-              type="button"
-              className={cn(
-                "hidden lg:flex xl:hidden items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
-                inHeroMode
-                  ? "text-tone-inverse/90 hover:text-tone-inverse hover:bg-white/10 active:bg-white/20"
-                  : "hover:bg-slate-100/80 dark:hover:bg-slate-800/80 active:bg-slate-200/60 dark:active:bg-slate-700/60"
-              )}
-              aria-label="More menu options"
-              aria-haspopup="dialog"
-              aria-expanded={mobileMenuOpen}
-              onClick={() => setMobileMenuOpen((prev) => !prev)}
-            >
-              <Menu className="h-4 w-4" />
-              <span>{moreButtonText}</span>
-            </button>
+          {/* Mobile hamburger button */}
+          <button
+            type="button"
+            className={cn(
+              "lg:hidden relative w-12 h-12 flex items-center justify-center rounded-lg transition-all duration-200",
+              inHeroMode
+                ? "hover:bg-white/10 active:bg-white/20"
+                : "hover:bg-slate-100/80 dark:hover:bg-slate-800/80 active:bg-slate-200/60 dark:active:bg-slate-700/60"
             )}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-haspopup="dialog"
+            aria-expanded={mobileMenuOpen}
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+          >
+            {/* Animated Hamburger Icon */}
+            <div className="w-6 h-5 flex flex-col justify-center items-center gap-1.5">
+              <motion.span
+                animate={{
+                  rotate: mobileMenuOpen ? 45 : 0,
+                  y: mobileMenuOpen ? 8 : 0,
+                }}
+                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                className={cn(
+                  "w-full h-0.5 rounded-full origin-center",
+                  inHeroMode ? "bg-white" : "bg-slate-900 dark:bg-slate-100"
+                )}
+              />
+              <motion.span
+                animate={{
+                  opacity: mobileMenuOpen ? 0 : 1,
+                  x: mobileMenuOpen ? -10 : 0,
+                }}
+                transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                className={cn(
+                  "w-full h-0.5 rounded-full",
+                  inHeroMode ? "bg-white" : "bg-slate-900 dark:bg-slate-100"
+                )}
+              />
+              <motion.span
+                animate={{
+                  rotate: mobileMenuOpen ? -45 : 0,
+                  y: mobileMenuOpen ? -8 : 0,
+                }}
+                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                className={cn(
+                  "w-full h-0.5 rounded-full origin-center",
+                  inHeroMode ? "bg-white" : "bg-slate-900 dark:bg-slate-100"
+                )}
+              />
+            </div>
+          </button>
 
-            <SheetContent
-              id={mobileSheetId}
-              side="right"
-              className="w-full sm:w-[400px] border-l border-slate-200/50 dark:border-slate-700/50"
-            >
-              <nav className="flex flex-col h-full pt-12 pb-6">
-                <div className="flex-1 overflow-y-auto px-4">
-                  {/* Theme Toggle in Mobile Menu */}
-                  <div className="mb-6 pb-4 border-b border-slate-200/50 dark:border-slate-700/50">
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-3">Appearance</p>
-                    {mounted && <ThemeToggle variant="dropdown" />}
-                  </div>
-
-                  <div className="space-y-2">
-                    {navigation.map((item: MenuItem, index: number) => {
-                      const children = Array.isArray(item.children) ? item.children : []
-                      const href = isValidHref(item.href) ? item.href : '/'
-                      const itemVariant = item?.style?.variant || 'link'
-                      const target = item?.openInNewTab ? '_blank' : undefined
-                      const rel = item?.openInNewTab ? 'noopener noreferrer' : undefined
-                      return (
-                        <motion.div
-                          key={item.name}
-                          className="py-1"
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{
-                            duration: 0.3,
-                            delay: 0.1 + index * 0.05,
-                            ease: [0.25, 0.1, 0.25, 1]
-                          }}
-                        >
-                          {children.length > 0 ? (
-                            <div className="space-y-1">
-                              <div className="px-3 py-2.5 font-bold text-lg text-slate-900 dark:text-tone-inverse">
-                                <span className="inline-flex items-center gap-3">
-                                  {IconFor(item?.iconName)}
-                                  {item.name}
-                                </span>
-                              </div>
-                              <div className="space-y-1 pl-4 ml-3 border-l-2 border-slate-300 dark:border-slate-600">
-                                {children.map((child: ChildMenuItem) => (
-                                  <Link
-                                    key={child.name}
-                                    href={isValidHref(child.href) ? child.href : href}
-                                    target={child?.openInNewTab ? '_blank' : undefined}
-                                    rel={child?.openInNewTab ? 'noopener noreferrer' : undefined}
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-base font-medium transition-colors text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-tone-inverse hover:bg-slate-100 dark:hover:bg-slate-800"
-                                  >
-                                    {IconFor(child?.iconName)}
-                                    {child.name}
-                                  </Link>
-                                ))}
-                              </div>
-                            </div>
-                          ) : itemVariant.startsWith('button-') ? (
-                            <Link href={href} target={target} rel={rel} onClick={() => setMobileMenuOpen(false)}>
-                              <PremiumButton className="w-full" variant={itemVariant === 'button-primary' ? 'default' : 'secondary'}>
-                                <span className="inline-flex items-center justify-center w-full gap-2">
-                                  {IconFor(item?.iconName)}
-                                  {item.name}
-                                </span>
-                              </PremiumButton>
-                            </Link>
-                          ) : (
-                            <Link
-                              href={href}
-                              target={target}
-                              rel={rel}
-                              onClick={() => setMobileMenuOpen(false)}
-                              className={cn(
-                                "flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-lg transition-colors",
-                                "text-slate-900 dark:text-tone-inverse hover:bg-slate-100 dark:hover:bg-slate-800",
-                                pathname === href && 'bg-slate-100 dark:bg-slate-800'
-                              )}
-                            >
-                              {IconFor(item?.iconName)}
-                              {item.name}
-                            </Link>
-                          )}
-                        </motion.div>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* CTA Button at bottom */}
-                <motion.div
-                  className="px-4 pt-6 border-t border-slate-200/50 dark:border-slate-700/50"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                >
-                  {cta && (
-                  <Link href={cta?.href || '/contact'} onClick={() => setMobileMenuOpen(false)} className="block">
-                    <PremiumButton className="w-full h-12 text-base font-semibold">
-                      {cta?.text}
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </PremiumButton>
-                  </Link>
-                  )}
-
-                  {/* Contact info */}
-                  {topBar && (
-                  <div className="mt-4 space-y-2">
-                    {topBar?.showPhone !== false && (
-                      <a
-                        href={topBar?.phoneLink}
-                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-tone-inverse hover:bg-slate-100 dark:hover:bg-slate-800"
-                        aria-label={`Call ${topBar?.phone}`}
-                      >
-                        <Phone className="h-5 w-5" />
-                        <span className="text-base font-medium">{topBar?.phone}</span>
-                      </a>
-                    )}
-                    {topBar?.showEmail !== false && (
-                      <a
-                        href={topBar?.emailLink}
-                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-tone-inverse hover:bg-slate-100 dark:hover:bg-slate-800"
-                        aria-label={`Email ${topBar?.email}`}
-                      >
-                        <Mail className="h-5 w-5" />
-                        <span className="text-base font-medium">{topBar?.email}</span>
-                      </a>
-                    )}
-                  </div>
-                  )}
-                </motion.div>
-              </nav>
-            </SheetContent>
-          </Sheet>
+          {/* "More" button for lg-xl screens (when some items are hidden) */}
+          {moreButtonText && (
+          <button
+            type="button"
+            className={cn(
+              "hidden lg:flex xl:hidden items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
+              inHeroMode
+                ? "text-tone-inverse/90 hover:text-tone-inverse hover:bg-white/10 active:bg-white/20"
+                : "hover:bg-slate-100/80 dark:hover:bg-slate-800/80 active:bg-slate-200/60 dark:active:bg-slate-700/60"
+            )}
+            aria-label="More menu options"
+            aria-haspopup="dialog"
+            aria-expanded={mobileMenuOpen}
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+          >
+            <Menu className="h-4 w-4" />
+            <span>{moreButtonText}</span>
+          </button>
+          )}
         </nav>
       </header>
+
+      {/* Full-screen Mobile Menu */}
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        navigation={navigation}
+        cta={cta}
+        topBar={topBar}
+        logoData={data?.logo}
+        mounted={mounted}
+      />
     </>
   );
 }
