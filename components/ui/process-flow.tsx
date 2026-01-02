@@ -22,7 +22,7 @@ export function ProcessFlow({ title, description, steps }: ProcessFlowProps) {
     <div className="my-8">
       <h3 className="text-2xl font-bold text-tone-inverse mb-2">{title}</h3>
       {description && (
-        <p className="text-slate-400 mb-6">{description}</p>
+        <p className="text-slate-600 dark:text-slate-400 mb-6">{description}</p>
       )}
 
       <div className="space-y-6">
