@@ -20,21 +20,44 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
     getHeroImageUrl(industry.image) ||
     '';
 
-  // Build the title with gradient highlight on second part (matches reference site)
-  // Reference: "Aerospace" (white) + "Components" (blue gradient)
-  const heroTitle = (
-    <>
-      <span className="text-tone-inverse">{industry.hero?.title || industry.title}</span>
-      {industry.hero?.titleHighlight && (
+  // Build the title with gradient highlight on last word
+  // If titleHighlight is set, use it. Otherwise, split title and highlight last word.
+  const heroTitle = (() => {
+    const title = industry.hero?.title || industry.title;
+
+    // If titleHighlight is explicitly set, use that pattern
+    if (industry.hero?.titleHighlight) {
+      return (
         <>
+          <span className="text-tone-inverse">{title}</span>
           {' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
             {industry.hero.titleHighlight}
           </span>
         </>
-      )}
-    </>
-  );
+      );
+    }
+
+    // Otherwise, split title and highlight last word
+    const words = title.split(' ');
+    if (words.length === 1) {
+      return (
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
+          {title}
+        </span>
+      );
+    }
+    const firstPart = words.slice(0, -1).join(' ');
+    const lastWord = words[words.length - 1];
+    return (
+      <>
+        <span className="text-tone-inverse">{firstPart} </span>
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
+          {lastWord}
+        </span>
+      </>
+    );
+  })();
 
   // Use hero.description (plain text) or hero.descriptionRich (portable text)
   const heroDescription = industry.hero?.description
