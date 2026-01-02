@@ -5,11 +5,24 @@
  * Ensures consistent, precise, sequential animations across all sections.
  *
  * Design Principles:
- * 1. Headers animate sequentially (eyebrow → word1 → word2 → description)
- * 2. Content starts AFTER header completes
- * 3. Cards/grids use consistent stagger timing
- * 4. All timing values derived from these constants
+ * 1. Use variants pattern with initial="hidden" whileInView="visible"
+ * 2. Headers animate sequentially (eyebrow → word1 → word2 → description)
+ * 3. Content starts AFTER header completes
+ * 4. Cards/grids use consistent stagger timing
+ *
+ * USAGE PATTERN (from Superdebate - working pattern):
+ *
+ * <motion.section
+ *   initial="hidden"
+ *   whileInView="visible"
+ *   viewport={viewportSettings}
+ *   variants={animations.fadeIn}
+ * >
+ *   Content here
+ * </motion.section>
  */
+
+import { Variants } from 'framer-motion';
 
 // ============================================================================
 // CORE TIMING CONSTANTS
@@ -315,3 +328,94 @@ export const SECTION_CONFIGS = {
     getDelay: (index: number) => getCardDelay(index, STAGGER.list, 0),
   },
 } as const;
+
+// ============================================================================
+// VIEWPORT SETTINGS - For scroll-triggered animations
+// ============================================================================
+
+/**
+ * Common viewport settings for all scroll animations
+ * Matches Superdebate's working pattern
+ */
+export const viewportSettings = {
+  once: true,
+  margin: "-100px", // Trigger 100px before element is in view
+  amount: 0.1, // Need 10% visible to trigger
+};
+
+// ============================================================================
+// ANIMATION VARIANTS - Use with initial="hidden" whileInView="visible"
+// ============================================================================
+
+// Smooth easing curve
+const SMOOTH_EASING = [0.43, 0.13, 0.23, 0.96] as const;
+
+/**
+ * Main animation variants
+ * Usage: <motion.div initial="hidden" whileInView="visible" variants={animations.fadeIn}>
+ */
+export const animations = {
+  // Simple fade in with upward movement
+  fadeIn: {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: DURATIONS.normal,
+        ease: SMOOTH_EASING,
+      },
+    },
+  } as Variants,
+
+  // Stagger container for lists - children animate in sequence
+  stagger: {
+    container: {
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: {
+          staggerChildren: 0.12,
+          delayChildren: 0.1,
+        },
+      },
+    } as Variants,
+    item: {
+      hidden: {
+        opacity: 0,
+        y: 16,
+      },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: DURATIONS.normal,
+          ease: SMOOTH_EASING,
+        },
+      },
+    } as Variants,
+  },
+
+  // Scale animation for interactive elements
+  scale: {
+    tap: { scale: 0.95 },
+    hover: { scale: 1.05 },
+  },
+
+  // Card hover effect
+  cardHover: {
+    rest: { scale: 1, y: 0 },
+    hover: {
+      scale: 1.02,
+      y: -5,
+      boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
+      transition: {
+        duration: 0.3,
+        ease: "easeOut",
+      },
+    },
+  },
+};

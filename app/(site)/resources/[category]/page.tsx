@@ -22,32 +22,32 @@ export async function generateStaticParams() {
   ];
 }
 
-// Static category definitions with images
+// Static category definitions with images - using actual manufacturing images from Sanity
 const categoryDefinitions: Record<string, { title: string; description: string; image?: string }> = {
   'manufacturing-processes': {
     title: 'Manufacturing Processes',
     description: 'Comprehensive guides on precision manufacturing processes, CNC machining, and advanced production techniques.',
-    image: 'https://cdn.sanity.io/images/vgacjlhu/production/b0e5736216c771b0f1272b102eab0ef55ace0449-1600x1067.jpg'
+    image: 'https://cdn.sanity.io/images/vgacjlhu/production/514525a24860527cf951fd9f65acac15e7d8fb10-1024x1536.png' // 5-axis machining
   },
   'industry-applications': {
     title: 'Industry Applications',
     description: 'Industry-specific manufacturing applications and solutions for aerospace, defense, medical, and energy sectors.',
-    image: 'https://cdn.sanity.io/images/vgacjlhu/production/b0e5736216c771b0f1272b102eab0ef55ace0449-1600x1067.jpg'
+    image: 'https://cdn.sanity.io/images/vgacjlhu/production/e59c2ca9901e61dce18c6c4d20b38cf807c3a31b-1536x1024.png' // Adaptive machining
   },
   'quality-compliance': {
     title: 'Quality & Compliance',
     description: 'Quality control, inspection standards, and regulatory compliance for precision manufacturing.',
-    image: 'https://cdn.sanity.io/images/vgacjlhu/production/aaf823aef6a73946ee8edab6bf74867c5d4012a7-1600x1067.jpg'
+    image: 'https://cdn.sanity.io/images/vgacjlhu/production/a1e0b8424e0f5bfe09ed65269b8745649b0578cf-800x533.jpg' // Metrology
   },
   'material-science': {
     title: 'Material Science',
     description: 'Advanced materials, material properties, and selection guides for precision manufacturing applications.',
-    image: 'https://cdn.sanity.io/images/vgacjlhu/production/b0e5736216c771b0f1272b102eab0ef55ace0449-1600x1067.jpg'
+    image: 'https://cdn.sanity.io/images/vgacjlhu/production/825642bea34fd176d1b91ff2e8ca5b0ce5870e84-4864x2736.jpg' // Machining
   },
   'calculators-tools': {
     title: 'Calculators & Tools',
     description: 'Useful calculators, estimation tools, and resources for manufacturing professionals.',
-    image: 'https://cdn.sanity.io/images/vgacjlhu/production/b0e5736216c771b0f1272b102eab0ef55ace0449-1600x1067.jpg'
+    image: 'https://cdn.sanity.io/images/vgacjlhu/production/21a64aa81eb06febd7a23492b477b60edf92cdd3-1536x1024.png' // Engineering
   },
 };
 

@@ -1,12 +1,45 @@
 "use client";
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientTextStyle } from '@/lib/theme-utils';
 import { typography, spacing, colors } from '@/lib/design-system';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
-import { HEADER_SEQUENCE, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { viewportSettings } from '@/lib/animation-config';
+
+// Sequential stagger animation for section headers
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: [0.43, 0.13, 0.23, 0.96],
+    },
+  },
+};
+
+// Reduced motion variants - no movement
+const reducedMotionVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.2 } },
+};
 
 interface SectionHeaderProps {
   /**
@@ -106,7 +139,9 @@ export default function SectionHeader({
 }: SectionHeaderProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const theme = useTheme();
-  const viewportConfig = getViewportConfig();
+
+  // Choose variants based on motion preference
+  const activeItemVariants = prefersReducedMotion ? reducedMotionVariants : itemVariants;
 
   // Handle single heading string with gradient word
   let displayWord1 = word1;
@@ -146,17 +181,17 @@ export default function SectionHeader({
   const descriptionAlignClass = centered ? 'mx-auto' : '';
 
   return (
-    <div className={`${alignmentClass} ${spacing.headingBottom} ${className}`}>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportSettings}
+      variants={containerVariants}
+      className={`${alignmentClass} ${spacing.headingBottom} ${className}`}
+    >
       {/* Eyebrow */}
       {eyebrow && (
         <motion.p
-          initial={getInitialState(prefersReducedMotion)}
-          whileInView={getAnimateState(
-            HEADER_SEQUENCE.eyebrow.delay,
-            HEADER_SEQUENCE.eyebrow.duration,
-            prefersReducedMotion
-          )}
-          viewport={viewportConfig}
+          variants={activeItemVariants}
           className={`${typography.eyebrow} ${colors.textMedium} mb-4`}
         >
           {eyebrow}
@@ -165,57 +200,35 @@ export default function SectionHeader({
 
       {/* Heading with Sequential Word Animation */}
       {(displayWord1 || displayWord2) && (
-        <h2 className={`${typography.sectionHeading} mb-6`}>
+        <motion.h2 variants={activeItemVariants} className={`${typography.sectionHeading} mb-6`}>
           {displayWord1 && (
             <>
-              <motion.span
-                initial={getInitialState(prefersReducedMotion)}
-                whileInView={getAnimateState(
-                  HEADER_SEQUENCE.word1.delay,
-                  HEADER_SEQUENCE.word1.duration,
-                  prefersReducedMotion
-                )}
-                viewport={viewportConfig}
-                className="inline-block"
-              >
+              <span className="inline-block">
                 {displayWord1}
-              </motion.span>
+              </span>
               {displayWord2 && ' '}
             </>
           )}
           {displayWord2 && (
-            <motion.span
-              initial={getInitialState(prefersReducedMotion)}
-              whileInView={getAnimateState(
-                HEADER_SEQUENCE.word2.delay,
-                HEADER_SEQUENCE.word2.duration,
-                prefersReducedMotion
-              )}
-              viewport={viewportConfig}
+            <span
               className="inline-block text-transparent bg-clip-text"
               style={getGradientTextStyle(theme.colors)}
             >
               {displayWord2}
-            </motion.span>
+            </span>
           )}
-        </h2>
+        </motion.h2>
       )}
 
       {/* Description */}
       {description && (
         <motion.p
-          initial={getInitialState(prefersReducedMotion)}
-          whileInView={getAnimateState(
-            HEADER_SEQUENCE.description.delay,
-            HEADER_SEQUENCE.description.duration,
-            prefersReducedMotion
-          )}
-          viewport={viewportConfig}
+          variants={activeItemVariants}
           className={`${typography.descriptionMuted} ${descriptionMaxWidth} ${descriptionAlignClass}`}
         >
           {portableTextToPlainText(description) || description}
         </motion.p>
       )}
-    </div>
+    </motion.div>
   );
 }
