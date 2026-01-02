@@ -257,7 +257,7 @@ export default function HeroSection({
               titleSize ? titleSizeClasses[titleSize] : 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
               'font-extrabold mb-6 tracking-tight uppercase'
             )}
-            style={{ color: defaultTitleColor }}
+            style={typeof title === 'string' ? { color: defaultTitleColor } : undefined}
           >
             {typeof title === 'string' ? (
               <span>{title}</span>
