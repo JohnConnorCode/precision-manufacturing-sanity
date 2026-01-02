@@ -144,9 +144,10 @@ export default async function ServicesPage() {
   const showHero = Boolean(heroHeading || heroDescription || heroBackgroundImage);
 
   const qualityIntro = sharedServicesPage?.qualityIntro;
-  // Override with proper metrology image - the Sanity image was inappropriate
-  const qualityImageUrl = 'https://cdn.sanity.io/images/vgacjlhu/production/a1e0b8424e0f5bfe09ed65269b8745649b0578cf-800x533.jpg';
-  const qualityImageAlt = 'Precision metrology and quality inspection equipment';
+  const qualityImageUrl =
+    sharedServicesPage?.qualityImage?.asset?.url ||
+    sharedServicesPage?.qualityImageUrl;
+  const qualityImageAlt = sharedServicesPage?.qualityImage?.alt || '';
   const qualityHeading =
     (servicesPageData as any)?.content?.qualitySectionTitle ||
     (sharedServicesPage as any)?.qualityHeading;
