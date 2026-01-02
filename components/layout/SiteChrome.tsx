@@ -34,7 +34,7 @@ export default function SiteChrome({ children, navigationData, footerData, siteS
           Skip to main content
         </a>
         <Header data={{ ...(navigationData || {}), announcement: siteSettings?.announcement, logo: siteSettings?.logo }} />
-        <main id="main-content" className="min-h-screen pt-20 lg:pt-[120px]">
+        <main id="main-content" className="min-h-screen pt-20 lg:pt-[120px] overflow-visible">
           <PageTransition>
             {children}
           </PageTransition>

@@ -149,7 +149,7 @@ export default function Hero({ data }: HeroProps) {
   const _secondaryButtonStyles = getButtonStyles(data?.buttonStyles?.secondaryButton);
 
   return (
-    <section data-hero-section="dark" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 lg:pt-0">
+    <section data-hero-section="dark" className="relative min-h-screen flex items-center justify-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px] bg-slate-950 text-white">
       {/* Premium Background Slider */}
       <HeroSliderFixed slides={finalSlides} />
 
