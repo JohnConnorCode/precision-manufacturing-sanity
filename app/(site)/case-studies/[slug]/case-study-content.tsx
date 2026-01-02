@@ -50,9 +50,10 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
   return (
     <main className="min-h-screen bg-white dark:bg-slate-950">
       {/* Hero Section - negative margin pulls hero behind transparent header */}
+      {/* min-h includes header offset so content area stays same size */}
       <section
         data-hero-section="dark"
-        className="relative min-h-[70vh] flex items-end bg-slate-950 -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]"
+        className="relative min-h-[calc(70vh+5rem)] lg:min-h-[calc(70vh+120px)] flex items-end bg-slate-950 -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]"
       >
         {/* Background Image */}
         {data.heroImage && (
