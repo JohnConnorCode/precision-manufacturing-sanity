@@ -200,32 +200,40 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
           backgroundImage={heroImage}
           imageAlt={heroAlt}
           badge={data.hero?.badge ? { text: data.hero.badge, icon: BadgeIcon } : undefined}
-          title={
-            data.hero?.title ? (
-              data.hero?.titleHighlight ? (
+          title={(() => {
+            // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
+            const gradientStyle = {
+              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            } as React.CSSProperties;
+
+            if (!data.hero?.title) return '';
+            if (data.hero?.titleHighlight) {
+              return (
                 <span className="text-tone-inverse">
                   {data.hero.title}{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
+                  <span style={gradientStyle}>
                     {data.hero.titleHighlight}
                   </span>
                 </span>
-              ) : (() => {
-                // Split title to highlight last word in blue gradient
-                const words = data.hero.title.split(' ');
-                if (words.length === 1) {
-                  return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{data.hero.title}</span>;
-                }
-                const firstPart = words.slice(0, -1).join(' ');
-                const lastWord = words[words.length - 1];
-                return (
-                  <span>
-                    <span className="text-tone-inverse">{firstPart} </span>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
-                  </span>
-                );
-              })()
-            ) : ''
-          }
+              );
+            }
+            // Split title to highlight last word in blue gradient
+            const words = data.hero.title.split(' ');
+            if (words.length === 1) {
+              return <span style={gradientStyle}>{data.hero.title}</span>;
+            }
+            const firstPart = words.slice(0, -1).join(' ');
+            const lastWord = words[words.length - 1];
+            return (
+              <span>
+                <span className="text-tone-inverse">{firstPart} </span>
+                <span style={gradientStyle}>{lastWord}</span>
+              </span>
+            );
+          })()}
           description={data.hero?.description}
           buttons={heroButtons}
           height="large"

@@ -89,29 +89,38 @@ export default async function ResourcesPage() {
         imageAlt={pageContent?.resourcesPage?.hero?.backgroundImage?.alt || ''}
         darkHero={true}
         badge={pageContent?.resourcesPage?.hero?.badge ? { text: pageContent.resourcesPage.hero.badge } : undefined}
-        title={
-          pageContent?.resourcesPage?.hero?.title ? (() => {
-            // Split title to highlight last word in blue gradient
-            const title = pageContent.resourcesPage.hero.title;
-            const words = title.split(' ');
-            if (words.length <= 1) {
-              return <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{title}</span>;
-            }
-            const firstPart = words.slice(0, -1).join(' ');
-            const lastWord = words[words.length - 1];
+        title={(() => {
+          // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
+          const gradientStyle = {
+            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          } as React.CSSProperties;
+
+          if (!pageContent?.resourcesPage?.hero?.title) {
             return (
-              <span>
-                <span className="text-inherit">{firstPart} </span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">{lastWord}</span>
-              </span>
+              <>
+                <span className="text-inherit">Master</span>{' '}
+                <span style={gradientStyle}>Precision Manufacturing</span>
+              </>
             );
-          })() : (
-            <>
-              <span className="text-inherit">Master</span>{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">Precision Manufacturing</span>
-            </>
-          )
-        }
+          }
+          // Split title to highlight last word in blue gradient
+          const title = pageContent.resourcesPage.hero.title;
+          const words = title.split(' ');
+          if (words.length <= 1) {
+            return <span style={gradientStyle}>{title}</span>;
+          }
+          const firstPart = words.slice(0, -1).join(' ');
+          const lastWord = words[words.length - 1];
+          return (
+            <span>
+              <span className="text-inherit">{firstPart} </span>
+              <span style={gradientStyle}>{lastWord}</span>
+            </span>
+          );
+        })()}
         description={pageContent?.resourcesPage?.hero?.descriptionRich ? (
           <PortableTextContent value={pageContent.resourcesPage.hero.descriptionRich} />
         ) : (

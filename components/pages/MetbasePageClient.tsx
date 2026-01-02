@@ -179,22 +179,32 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
         backgroundImage={heroImage}
         imageAlt={heroAlt}
         badge={data.hero?.badge ? { text: data.hero.badge, icon: BadgeIcon } : undefined}
-        title={
-          data.hero?.title ? (
-            data.hero?.titleHighlight ? (
+        title={(() => {
+          // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
+          const gradientStyle = {
+            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          } as React.CSSProperties;
+
+          if (!data.hero?.title) return '';
+          if (data.hero?.titleHighlight) {
+            return (
               <span className="text-tone-inverse">
                 {data.hero.title}{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
+                <span style={gradientStyle}>
                   {data.hero.titleHighlight}
                 </span>
               </span>
-            ) : (
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
-                {data.hero.title}
-              </span>
-            )
-          ) : ''
-        }
+            );
+          }
+          return (
+            <span style={gradientStyle}>
+              {data.hero.title}
+            </span>
+          );
+        })()}
         description={data.hero?.description}
         buttons={heroButtons}
         height="large"

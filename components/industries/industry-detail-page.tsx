@@ -22,6 +22,14 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
   // Build the title with gradient highlight on last word
   // If titleHighlight is set, use it. Otherwise, split title and highlight last word.
+  // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
+  const gradientStyle = {
+    background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+  } as React.CSSProperties;
+
   const heroTitle = (() => {
     const title = industry.hero?.title || industry.title;
 
@@ -31,7 +39,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
         <>
           <span className="text-tone-inverse">{title}</span>
           {' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
+          <span style={gradientStyle}>
             {industry.hero.titleHighlight}
           </span>
         </>
@@ -42,7 +50,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
     const words = title.split(' ');
     if (words.length === 1) {
       return (
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
+        <span style={gradientStyle}>
           {title}
         </span>
       );
@@ -52,7 +60,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
     return (
       <>
         <span className="text-tone-inverse">{firstPart} </span>
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
+        <span style={gradientStyle}>
           {lastWord}
         </span>
       </>

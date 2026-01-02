@@ -1,7 +1,7 @@
  
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronDown } from 'lucide-react';
@@ -9,9 +9,6 @@ import Link from 'next/link';
 import HeroSliderFixed from '@/components/ui/hero-slider-fixed';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { colorStyleToCSS, getOverlayStyles, getButtonStyles, ColorStyle } from '@/lib/sanity-styles';
-import { HERO_SEQUENCE, EASING } from '@/lib/animation-config';
-import { getHeroTheme, resolveHeroTone } from '@/lib/hero-theme';
-import { cn } from '@/lib/utils';
 
 interface HeroData {
   // Three-word structure (new)
@@ -58,8 +55,6 @@ interface HeroData {
       borderColor?: ColorStyle;
     };
   };
-  heroTone?: 'dark' | 'light';
-  darkHero?: boolean;
 }
 
 interface HeroProps {
@@ -67,28 +62,12 @@ interface HeroProps {
 }
 
 export default function Hero({ data }: HeroProps) {
-  // Track client-side mounting - critical for animations on page refresh
-  // SSR renders without animation styles, so we need to trigger animations on mount
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    // Small delay ensures DOM is ready and prevents hydration issues
-    const timer = requestAnimationFrame(() => {
-      setIsMounted(true);
-    });
-    return () => cancelAnimationFrame(timer);
-  }, []);
-
   // Disable parallax scroll effects to avoid hydration issues
   const prefersReducedMotion = usePrefersReducedMotion();
 
   // Use static motion values instead of scroll-based transforms
   const textY = 0;
   const textOpacity = 1;
-
-  const heroTone = resolveHeroTone(data?.heroTone ?? data?.darkHero);
-  const heroTheme = getHeroTheme(heroTone);
-  const palette = heroTheme.palette;
 
   // Use ONLY Sanity data - no fallbacks
   const heroSlides = (data?.slides && data.slides.length > 0)
@@ -102,8 +81,8 @@ export default function Hero({ data }: HeroProps) {
 
           // Get alt text - handle both string and object types
           const imageAlt = typeof slide.image === 'string'
-            ? 'Precision manufacturing facility'
-            : slide.image?.alt || 'Manufacturing equipment';
+            ? ''
+            : slide.image?.alt || '';
 
           return {
             src: imageUrl || '',
@@ -123,21 +102,20 @@ export default function Hero({ data }: HeroProps) {
   const word2 = data?.word2?.trim() || '';
   const word3 = data?.word3?.trim() || '';
 
-  // Hero font size - optimized for professional B2B appearance
-  const heroFontSize = data?.heroFontSize || 'text-[2.25rem] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[3.75rem] xl:text-[4.25rem]';
+  // Hero font size - optimized for all screen sizes
+  const heroFontSize = data?.heroFontSize || 'text-[2rem] sm:text-[2.25rem] md:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem]';
   const tagline = data?.tagline?.trim() || '';
 
   // Handle both string badges and object badges from Sanity
-  type BadgeItem = string | { text?: string; badge?: string; enabled?: boolean };
   const badges = Array.isArray(data?.badges)
-    ? (data?.badges as BadgeItem[])
-        .filter((badge: BadgeItem) => {
+    ? (data?.badges as Array<any>)
+        .filter((badge: any) => {
           if (typeof badge === 'string') {
             return badge.trim().length > 0;
           }
           return badge?.enabled !== false && Boolean(badge?.text || badge?.badge);
         })
-        .map((badge: BadgeItem) =>
+        .map((badge: any) =>
           typeof badge === 'string' ? badge : (badge.text || badge.badge || '')
         )
     : [];
@@ -149,33 +127,26 @@ export default function Hero({ data }: HeroProps) {
   } : null;
 
   // Extract styles from Sanity data
-  const titleColor = colorStyleToCSS(data?.titleColor) || palette.title;
-  // titleHighlightColor should only be set if explicitly defined - allows gradient fallback
+  const titleColor = colorStyleToCSS(data?.titleColor) || 'rgba(255, 255, 255, 0.9)';
   const titleHighlightColor = colorStyleToCSS(data?.titleHighlightColor);
-  const descriptionColor = colorStyleToCSS(data?.descriptionColor) || palette.description;
+  const descriptionColor = colorStyleToCSS(data?.descriptionColor) || 'rgba(255, 255, 255, 0.95)';
 
-  const badgeTextColor = colorStyleToCSS(data?.badgeStyle?.textColor) || palette.badge.text;
-  const badgeBgColor = colorStyleToCSS(data?.badgeStyle?.backgroundColor) || palette.badge.background;
-  const badgeBorderColor = colorStyleToCSS(data?.badgeStyle?.borderColor) || palette.badge.border;
+  const badgeTextColor = colorStyleToCSS(data?.badgeStyle?.textColor) || '#ffffff';
+  const badgeBgColor = colorStyleToCSS(data?.badgeStyle?.backgroundColor);
+  const badgeBorderColor = colorStyleToCSS(data?.badgeStyle?.borderColor) || 'rgba(96, 165, 250, 0.3)';
 
   const overlayStyle = getOverlayStyles(data?.overlay);
   const primaryButtonStyles = getButtonStyles(data?.buttonStyles?.primaryButton);
-
-  // Shared styles for DRY
-  const titleDropShadow = 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))';
+  const _secondaryButtonStyles = getButtonStyles(data?.buttonStyles?.secondaryButton);
 
   return (
-    <section
-      data-hero-section={heroTone}
-      className={cn(
-        'relative min-h-screen flex items-center justify-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px]',
-        heroTheme.classes.section,
-        heroTheme.classes.background
-      )}
-    >
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 lg:pt-0">
       {/* Premium Background Slider */}
       <HeroSliderFixed slides={finalSlides} />
 
+      {finalSlides[0]?.src && (
+        <img src={finalSlides[0].src} alt={finalSlides[0].alt} className="sr-only" loading="eager" />
+      )}
 
       {/* Overlay if enabled */}
       {overlayStyle && <div style={overlayStyle} />}
@@ -189,16 +160,18 @@ export default function Hero({ data }: HeroProps) {
           <div className="text-center">
 
             {/* Three-Word Hero Title - Clean Sequential Animation */}
-            {/* Uses isMounted to ensure animations replay on page refresh (SSR hydration fix) */}
             <div className="mb-4">
               {/* Word 1 */}
               {word1 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  transition={{ delay: HERO_SEQUENCE.word1.delay, duration: HERO_SEQUENCE.word1.duration, ease: EASING }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
-                  style={{ color: titleColor, filter: titleDropShadow }}
+                  style={{
+                    color: titleColor,
+                    filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
+                  }}
                 >
                   {word1.toUpperCase()}
                 </motion.span>
@@ -207,10 +180,13 @@ export default function Hero({ data }: HeroProps) {
               {word2 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  transition={{ delay: HERO_SEQUENCE.word2.delay, duration: HERO_SEQUENCE.word2.duration, ease: EASING }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
-                  style={{ color: titleColor, filter: titleDropShadow }}
+                  style={{
+                    color: titleColor,
+                    filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
+                  }}
                 >
                   {word2.toUpperCase()}
                 </motion.span>
@@ -219,18 +195,21 @@ export default function Hero({ data }: HeroProps) {
               {word3 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  transition={{ delay: HERO_SEQUENCE.word3.delay, duration: HERO_SEQUENCE.word3.duration, ease: EASING }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={
                     titleHighlightColor
-                      ? { color: titleHighlightColor, filter: titleDropShadow }
+                      ? {
+                          color: titleHighlightColor,
+                          filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
+                        }
                       : {
                           background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
                           WebkitBackgroundClip: 'text',
                           WebkitTextFillColor: 'transparent',
                           backgroundClip: 'text',
-                          filter: titleDropShadow
+                          filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
                         }
                   }
                 >
@@ -242,8 +221,8 @@ export default function Hero({ data }: HeroProps) {
             {/* Tagline */}
             <motion.h1
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
-              animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
-              transition={{ delay: HERO_SEQUENCE.tagline.delay, duration: HERO_SEQUENCE.tagline.duration, ease: EASING }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
               className="text-lg sm:text-xl md:text-2xl font-light leading-[1.3] tracking-normal mb-8"
               style={{ color: descriptionColor }}
             >
@@ -256,18 +235,22 @@ export default function Hero({ data }: HeroProps) {
                 const badgeStyle: React.CSSProperties = {
                   color: badgeTextColor,
                   borderColor: badgeBorderColor,
-                  backgroundColor: badgeBgColor,
                 };
+                if (badgeBgColor) {
+                  badgeStyle.backgroundColor = badgeBgColor;
+                } else {
+                  badgeStyle.backgroundImage = 'linear-gradient(to right, rgba(37, 99, 235, 0.2), rgba(79, 70, 229, 0.2))';
+                }
 
                 return (
                   <motion.span
                     key={`${badge}-${index}`}
                     initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
-                    animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      delay: HERO_SEQUENCE.badges.startDelay + (index * HERO_SEQUENCE.badges.stagger),
-                      duration: HERO_SEQUENCE.badges.duration,
-                      ease: EASING
+                      delay: 0.8 + (index * 0.1),
+                      duration: 0.5,
+                      ease: "easeOut"
                     }}
                     className="px-3 md:px-5 py-1.5 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold border backdrop-blur-md whitespace-nowrap"
                     style={badgeStyle}
@@ -282,27 +265,19 @@ export default function Hero({ data }: HeroProps) {
             {primaryCta && (
               <motion.div
                 initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
-                animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
-                transition={{ delay: HERO_SEQUENCE.cta.delay, duration: HERO_SEQUENCE.cta.duration, ease: EASING }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.0, duration: 0.5, ease: "easeOut" }}
               >
                 <Button
                   size="lg"
-                  className={cn(
-                    'group font-semibold px-10 h-14 text-lg rounded-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]',
-                    heroTone === 'dark'
-                      ? 'shadow-lg shadow-blue-500/30'
-                      : 'shadow-lg shadow-slate-900/10 dark:shadow-blue-500/20'
-                  )}
+                  className="group font-semibold px-10 h-14 text-lg rounded-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
                   style={
                     Object.keys(primaryButtonStyles.style).length > 0
                       ? primaryButtonStyles.style
                       : {
-                          backgroundColor: palette.buttons.primaryBg,
-                          color: palette.buttons.primaryText,
-                          border: heroTone === 'light' ? '1px solid rgba(15,23,42,0.1)' : undefined,
-                          boxShadow: heroTone === 'dark'
-                            ? 'rgba(37, 99, 235, 0.25) 0px 0px 20px, rgba(37, 99, 235, 0.15) 0px 8px 16px'
-                            : 'rgba(15, 23, 42, 0.12) 0px 12px 30px',
+                          backgroundImage: 'linear-gradient(to right, #2563eb, #3b82f6, #4f46e5)',
+                          color: '#ffffff',
+                          boxShadow: 'rgba(37, 99, 235, 0.25) 0px 0px 20px, rgba(37, 99, 235, 0.15) 0px 8px 16px'
                         }
                   }
                   asChild
@@ -322,8 +297,8 @@ export default function Hero({ data }: HeroProps) {
       {/* Smooth Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={isMounted ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ delay: HERO_SEQUENCE.scrollIndicator.delay, duration: HERO_SEQUENCE.scrollIndicator.duration, ease: EASING }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4, duration: 0.5, ease: "easeOut" }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >
         <motion.div
@@ -335,17 +310,11 @@ export default function Hero({ data }: HeroProps) {
             repeat: Infinity,
             ease: [0.33, 1, 0.68, 1]
           }}
-          className={cn('transition-colors cursor-pointer', heroTheme.classes.scrollIndicator)}
+          className="text-white/50 hover:text-white/70 transition-colors cursor-pointer"
         >
           <ChevronDown className="h-6 w-6" />
         </motion.div>
       </motion.div>
-
-      <span
-        data-hero-sentinel
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px w-full opacity-0"
-      />
     </section>
   );
 }
