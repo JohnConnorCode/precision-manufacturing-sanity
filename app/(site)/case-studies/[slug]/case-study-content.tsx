@@ -45,14 +45,15 @@ interface CaseStudyData {
 
 export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
   const theme = useTheme();
-  const heroTone = data.heroImage ? 'dark' : 'light';
-  const heroToneTypography = getToneTypography(heroTone);
   const darkTone = getToneTypography('dark');
 
   return (
     <main className="min-h-screen bg-white dark:bg-slate-950">
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex items-end">
+      <section
+        data-hero-section="dark"
+        className="relative min-h-[70vh] flex items-end bg-slate-950"
+      >
         {/* Background Image */}
         {data.heroImage && (
           <div className="absolute inset-0">
@@ -67,20 +68,13 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
           </div>
         )}
 
-        {/* Content */}
+        {/* Content - Always white text on dark hero */}
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 pb-16 md:pb-24 pt-32">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <div>
             {/* Breadcrumb */}
             <Link
               href="/"
-              className={cn(
-                'inline-flex items-center transition-colors mb-8',
-                heroToneTypography.interactiveMuted
-              )}
+              className="inline-flex items-center transition-colors mb-8 text-white/70 hover:text-white"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
@@ -95,45 +89,47 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
                 Case Study
               </span>
               {data.industry && (
-                <span className={cn('text-sm', heroToneTypography.muted)}>
+                <span className="text-sm text-white/70">
                   {data.industry.title}
                 </span>
               )}
             </div>
 
-            {/* Title */}
-            <h1
-              className={cn(
-                'text-4xl md:text-5xl lg:text-6xl font-bold mb-4 max-w-4xl uppercase',
-                heroToneTypography.heading
-              )}
-            >
+            {/* Title - Always white */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 max-w-4xl uppercase text-white">
               {data.title}
             </h1>
 
             {data.subtitle && (
-              <p className={cn('text-xl md:text-2xl max-w-3xl', heroToneTypography.body)}>
+              <p className="text-xl md:text-2xl max-w-3xl text-white/90">
                 {data.subtitle}
               </p>
             )}
 
-            {/* Meta Info */}
+            {/* Meta Info - White text */}
             <div className="flex flex-wrap gap-6 mt-8">
               {data.client && (
-                <div className={cn('flex items-center', heroToneTypography.muted)}>
+                <div className="flex items-center text-white/80">
                   <Building2 className="w-5 h-5 mr-2" style={{ color: theme.colors.primary }} />
                   <span>{data.client}</span>
                 </div>
               )}
               {data.duration && (
-                <div className={cn('flex items-center', heroToneTypography.muted)}>
+                <div className="flex items-center text-white/80">
                   <Clock className="w-5 h-5 mr-2" style={{ color: theme.colors.primary }} />
                   <span>{data.duration}</span>
                 </div>
               )}
             </div>
-          </motion.div>
+          </div>
         </div>
+
+        {/* Hero sentinel for header detection */}
+        <span
+          data-hero-sentinel
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px w-full opacity-0"
+        />
       </section>
 
       {/* Results Stats Bar */}

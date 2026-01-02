@@ -641,12 +641,12 @@ export default function Header({ data }: HeaderProps) {
             <SheetContent
               id={mobileSheetId}
               side="right"
-              className="w-full sm:w-[400px] border-l bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
+              className="w-full sm:w-[400px] border-l border-slate-200/50 dark:border-slate-700/50"
             >
               <nav className="flex flex-col h-full pt-12 pb-6">
                 <div className="flex-1 overflow-y-auto px-4">
                   {/* Theme Toggle in Mobile Menu */}
-                  <div className="mb-6 pb-4 border-b border-slate-200 dark:border-slate-700">
+                  <div className="mb-6 pb-4 border-b border-slate-200/50 dark:border-slate-700/50">
                     <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-3">Appearance</p>
                     {mounted && <ThemeToggle variant="dropdown" />}
                   </div>
@@ -727,7 +727,7 @@ export default function Header({ data }: HeaderProps) {
 
                 {/* CTA Button at bottom */}
                 <motion.div
-                  className="px-4 pt-6 border-t border-slate-200 dark:border-slate-700"
+                  className="px-4 pt-6 border-t border-slate-200/50 dark:border-slate-700/50"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
