@@ -244,51 +244,80 @@ html:not(.animations-ready) [data-motion-id][style*="opacity: 0;"] {
     text-wrap: balance;
   }
 
-  /* Dark Section - Forces light text on permanently dark backgrounds
-   * Use this class on sections that have dark backgrounds regardless of theme mode.
-   * This ensures readability in both light and dark mode.
-   * BANNED: text-slate-400, text-slate-500, text-slate-600 inside dark sections
+  /* ===========================================
+   * DARK SECTION & HERO SECTION TEXT SYSTEM
+   * ===========================================
+   * Forces WHITE text on dark backgrounds.
+   * Use .dark-section OR data-hero-section="dark" on any section with dark bg.
+   * NO GREY TEXT ALLOWED - everything is white or near-white.
+   * This is scalable and works across the entire app.
    */
-  .dark-section {
-    /* Base text should be light */
-    color: rgb(226 232 240); /* slate-200 */
+
+  /* Base: All text in dark sections/heroes is WHITE */
+  .dark-section,
+  [data-hero-section="dark"] {
+    color: #ffffff;
   }
 
+  /* Headings: Pure white */
+  .dark-section h1, .dark-section h2, .dark-section h3, .dark-section h4, .dark-section h5, .dark-section h6,
+  [data-hero-section="dark"] h1, [data-hero-section="dark"] h2, [data-hero-section="dark"] h3,
+  [data-hero-section="dark"] h4, [data-hero-section="dark"] h5, [data-hero-section="dark"] h6 {
+    color: #ffffff;
+  }
+
+  /* Paragraphs and body text: White */
+  .dark-section p, .dark-section span, .dark-section div, .dark-section li,
+  [data-hero-section="dark"] p, [data-hero-section="dark"] span, [data-hero-section="dark"] li {
+    color: #ffffff;
+  }
+
+  /* Links: White with blue hover */
+  .dark-section a, [data-hero-section="dark"] a {
+    color: #ffffff;
+  }
+  .dark-section a:hover, [data-hero-section="dark"] a:hover {
+    color: #60a5fa; /* blue-400 */
+  }
+
+  /* Override ANY grey text classes - NO GREY ALLOWED */
+  .dark-section .text-slate-300, .dark-section .text-slate-400, .dark-section .text-slate-500,
+  .dark-section .text-slate-600, .dark-section .text-slate-700,
+  .dark-section .text-gray-300, .dark-section .text-gray-400, .dark-section .text-gray-500,
+  .dark-section .text-gray-600, .dark-section .text-gray-700,
+  .dark-section .text-zinc-300, .dark-section .text-zinc-400, .dark-section .text-zinc-500,
+  .dark-section .text-zinc-600, .dark-section .text-zinc-700,
+  [data-hero-section="dark"] .text-slate-300, [data-hero-section="dark"] .text-slate-400,
+  [data-hero-section="dark"] .text-slate-500, [data-hero-section="dark"] .text-slate-600,
+  [data-hero-section="dark"] .text-slate-700,
+  [data-hero-section="dark"] .text-gray-300, [data-hero-section="dark"] .text-gray-400,
+  [data-hero-section="dark"] .text-gray-500, [data-hero-section="dark"] .text-gray-600,
+  [data-hero-section="dark"] .text-gray-700,
+  [data-hero-section="dark"] .text-zinc-300, [data-hero-section="dark"] .text-zinc-400,
+  [data-hero-section="dark"] .text-zinc-500, [data-hero-section="dark"] .text-zinc-600,
+  [data-hero-section="dark"] .text-zinc-700 {
+    color: #ffffff !important;
+  }
+
+  /* Override opacity-reduced text - make it full white */
+  .dark-section .text-tone-inverse\/65, .dark-section .text-tone-inverse\/70,
+  .dark-section .text-tone-inverse\/80, .dark-section .text-tone-inverse\/85,
+  .dark-section .text-white\/65, .dark-section .text-white\/70,
+  .dark-section .text-white\/80, .dark-section .text-white\/85, .dark-section .text-white\/90,
+  [data-hero-section="dark"] .text-tone-inverse\/65, [data-hero-section="dark"] .text-tone-inverse\/70,
+  [data-hero-section="dark"] .text-tone-inverse\/80, [data-hero-section="dark"] .text-tone-inverse\/85,
+  [data-hero-section="dark"] .text-white\/65, [data-hero-section="dark"] .text-white\/70,
+  [data-hero-section="dark"] .text-white\/80, [data-hero-section="dark"] .text-white\/85,
+  [data-hero-section="dark"] .text-white\/90 {
+    color: #ffffff !important;
+  }
+
+  /* Muted text in dark sections: still white but slightly transparent for hierarchy */
   .dark-section .text-muted,
-  .dark-section .text-body-muted {
-    color: rgb(203 213 225); /* slate-300 */
-  }
-
-  /* Override problematic grey text classes inside dark sections */
-  .dark-section .text-slate-400 {
-    color: rgb(203 213 225); /* slate-300 - lighter for readability */
-  }
-
-  .dark-section .text-slate-500 {
-    color: rgb(148 163 184); /* slate-400 - bump up one level */
-  }
-
-  .dark-section .text-slate-600 {
-    color: rgb(148 163 184); /* slate-400 - bump up significantly */
-  }
-
-  .dark-section .text-slate-700 {
-    color: rgb(203 213 225); /* slate-300 - bump up significantly for readability */
-  }
-
-  .dark-section .text-gray-400,
-  .dark-section .text-zinc-400 {
-    color: rgb(203 213 225); /* slate-300 */
-  }
-
-  .dark-section .text-gray-500,
-  .dark-section .text-zinc-500 {
-    color: rgb(148 163 184); /* slate-400 */
-  }
-
-  .dark-section .text-gray-600,
-  .dark-section .text-zinc-600 {
-    color: rgb(148 163 184); /* slate-400 */
+  .dark-section .text-body-muted,
+  [data-hero-section="dark"] .text-muted,
+  [data-hero-section="dark"] .text-body-muted {
+    color: rgba(255, 255, 255, 0.9);
   }
 
   /* 3D Perspective */

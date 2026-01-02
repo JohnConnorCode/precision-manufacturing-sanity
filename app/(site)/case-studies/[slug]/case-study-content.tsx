@@ -68,13 +68,13 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
           </div>
         )}
 
-        {/* Content - Always white text on dark hero */}
+        {/* Content - CSS handles white text automatically via [data-hero-section="dark"] */}
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 pb-16 md:pb-24 pt-32">
           <div>
             {/* Breadcrumb */}
             <Link
               href="/"
-              className="inline-flex items-center transition-colors mb-8 text-white/70 hover:text-white"
+              className="inline-flex items-center transition-colors mb-8"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
@@ -83,40 +83,39 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
             {/* Category Tag */}
             <div className="flex items-center gap-3 mb-6">
               <span
-                className="px-4 py-1.5 text-sm font-bold uppercase tracking-wider rounded-full"
-                style={{ backgroundColor: theme.colors.primary, color: 'white' }}
+                className="px-4 py-1.5 text-sm font-bold uppercase tracking-wider rounded-full bg-blue-600"
               >
                 Case Study
               </span>
               {data.industry && (
-                <span className="text-sm text-white/70">
+                <span className="text-sm">
                   {data.industry.title}
                 </span>
               )}
             </div>
 
-            {/* Title - Always white */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 max-w-4xl uppercase text-white">
+            {/* Title */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 max-w-4xl uppercase">
               {data.title}
             </h1>
 
             {data.subtitle && (
-              <p className="text-xl md:text-2xl max-w-3xl text-white/90">
+              <p className="text-xl md:text-2xl max-w-3xl">
                 {data.subtitle}
               </p>
             )}
 
-            {/* Meta Info - White text */}
+            {/* Meta Info */}
             <div className="flex flex-wrap gap-6 mt-8">
               {data.client && (
-                <div className="flex items-center text-white/80">
-                  <Building2 className="w-5 h-5 mr-2" style={{ color: theme.colors.primary }} />
+                <div className="flex items-center">
+                  <Building2 className="w-5 h-5 mr-2 text-blue-400" />
                   <span>{data.client}</span>
                 </div>
               )}
               {data.duration && (
-                <div className="flex items-center text-white/80">
-                  <Clock className="w-5 h-5 mr-2" style={{ color: theme.colors.primary }} />
+                <div className="flex items-center">
+                  <Clock className="w-5 h-5 mr-2 text-blue-400" />
                   <span>{data.duration}</span>
                 </div>
               )}
