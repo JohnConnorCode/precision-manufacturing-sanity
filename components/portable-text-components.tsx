@@ -41,27 +41,22 @@ export interface RichTextStyles {
 }
 
 // Factory function to create Portable Text components with custom styles
+// NOTE: Default colors must work in BOTH light and dark mode via CSS classes, NOT inline styles
 export function createPortableTextComponents(styles?: RichTextStyles) {
-  const toneInverse = 'rgb(var(--tone-inverse))';
-  const slate300 = 'rgb(var(--slate-300))';
-  const slate400 = 'rgb(var(--slate-400))';
-  const slate800 = 'rgb(var(--slate-800))';
-  const blue400 = '#60a5fa';
-  const blue300 = '#93c5fd';
   const blue600 = '#2563eb';
 
-  // Extract colors from styles or use defaults
-  const h1Color = colorStyleToCSS(styles?.headingStyles?.h1?.textColor) || toneInverse;
-  const h2Color = colorStyleToCSS(styles?.headingStyles?.h2?.textColor) || toneInverse;
-  const h3Color = colorStyleToCSS(styles?.headingStyles?.h3?.textColor) || toneInverse;
-  const h4Color = colorStyleToCSS(styles?.headingStyles?.h4?.textColor) || toneInverse;
-  const bodyColor = colorStyleToCSS(styles?.bodyTextStyle?.textColor) || slate300;
-  const linkColor = colorStyleToCSS(styles?.linkStyle?.color) || blue400;
-  const linkHoverColor = colorStyleToCSS(styles?.linkStyle?.hoverColor) || blue300;
-  const blockquoteTextColor = colorStyleToCSS(styles?.blockquoteStyle?.textColor) || slate400;
+  // Only use inline colors if explicitly set via CMS styles
+  // Otherwise, use null and let CSS classes handle light/dark mode
+  const h1Color = colorStyleToCSS(styles?.headingStyles?.h1?.textColor) || null;
+  const h2Color = colorStyleToCSS(styles?.headingStyles?.h2?.textColor) || null;
+  const h3Color = colorStyleToCSS(styles?.headingStyles?.h3?.textColor) || null;
+  const h4Color = colorStyleToCSS(styles?.headingStyles?.h4?.textColor) || null;
+  const bodyColor = colorStyleToCSS(styles?.bodyTextStyle?.textColor) || null;
+  const linkColor = colorStyleToCSS(styles?.linkStyle?.color) || null;
+  const blockquoteTextColor = colorStyleToCSS(styles?.blockquoteStyle?.textColor) || null;
   const blockquoteBorderColor = colorStyleToCSS(styles?.blockquoteStyle?.borderColor) || blue600;
-  const codeTextColor = colorStyleToCSS(styles?.codeStyle?.textColor) || blue400;
-  const codeBgColor = colorStyleToCSS(styles?.codeStyle?.backgroundColor) || slate800;
+  const codeTextColor = colorStyleToCSS(styles?.codeStyle?.textColor) || null;
+  const codeBgColor = colorStyleToCSS(styles?.codeStyle?.backgroundColor) || null;
 
   // Get typography classes
   const h1Classes = styles?.headingStyles?.h1 ? typographyStyleToClasses(styles.headingStyles.h1) : '';
@@ -224,42 +219,43 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
 
   block: {
     // Custom styles for block elements
+    // Use CSS classes for light/dark mode, only use inline style if CMS override exists
     h1: ({ children }: any) => (
       <h1
-        className={`text-4xl font-bold mt-8 mb-4 ${h1Classes}`}
-        style={{ color: h1Color }}
+        className={`text-4xl font-bold mt-8 mb-4 text-slate-900 dark:text-white ${h1Classes}`}
+        style={h1Color ? { color: h1Color } : undefined}
       >
         {children}
       </h1>
     ),
     h2: ({ children }: any) => (
       <h2
-        className={`text-3xl font-bold mt-8 mb-4 ${h2Classes}`}
-        style={{ color: h2Color }}
+        className={`text-3xl font-bold mt-8 mb-4 text-slate-900 dark:text-white ${h2Classes}`}
+        style={h2Color ? { color: h2Color } : undefined}
       >
         {children}
       </h2>
     ),
     h3: ({ children }: any) => (
       <h3
-        className={`text-2xl font-bold mt-6 mb-3 ${h3Classes}`}
-        style={{ color: h3Color }}
+        className={`text-2xl font-bold mt-6 mb-3 text-slate-900 dark:text-white ${h3Classes}`}
+        style={h3Color ? { color: h3Color } : undefined}
       >
         {children}
       </h3>
     ),
     h4: ({ children }: any) => (
       <h4
-        className={`text-xl font-bold mt-6 mb-3 ${h4Classes}`}
-        style={{ color: h4Color }}
+        className={`text-xl font-bold mt-6 mb-3 text-slate-900 dark:text-white ${h4Classes}`}
+        style={h4Color ? { color: h4Color } : undefined}
       >
         {children}
       </h4>
     ),
     normal: ({ children }: any) => (
       <p
-        className={`leading-relaxed mb-4 ${bodyClasses}`}
-        style={{ color: bodyColor }}
+        className={`leading-relaxed mb-4 text-slate-700 dark:text-slate-300 ${bodyClasses}`}
+        style={bodyColor ? { color: bodyColor } : undefined}
         suppressHydrationWarning
       >
         {children}
@@ -267,10 +263,10 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
     ),
     blockquote: ({ children }: any) => (
       <blockquote
-        className="border-l-4 pl-4 my-4 italic"
+        className="border-l-4 pl-4 my-4 italic text-slate-600 dark:text-slate-400"
         style={{
           borderColor: blockquoteBorderColor,
-          color: blockquoteTextColor,
+          ...(blockquoteTextColor ? { color: blockquoteTextColor } : {}),
         }}
       >
         {children}
@@ -281,18 +277,18 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
   marks: {
     // Custom styles for inline elements
     strong: ({ children }: any) => (
-      <strong className="font-bold">{children}</strong>
+      <strong className="font-bold text-slate-900 dark:text-white">{children}</strong>
     ),
     em: ({ children }: any) => (
       <em className="italic">{children}</em>
     ),
     code: ({ children }: any) => (
       <code
-        className="px-1 py-0.5 rounded text-sm"
-        style={{
-          backgroundColor: codeBgColor,
-          color: codeTextColor,
-        }}
+        className="px-1 py-0.5 rounded text-sm bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200"
+        style={codeBgColor || codeTextColor ? {
+          ...(codeBgColor ? { backgroundColor: codeBgColor } : {}),
+          ...(codeTextColor ? { color: codeTextColor } : {}),
+        } : undefined}
       >
         {children}
       </code>
@@ -307,14 +303,8 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
           href={value?.href || '#'}
           target={target}
           rel={rel}
-          className={`transition-colors ${underlineClass}`}
-          style={{ color: linkColor }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = linkHoverColor;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = linkColor;
-          }}
+          className={`transition-colors text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 ${underlineClass}`}
+          style={linkColor ? { color: linkColor } : undefined}
         >
           {children}
         </Link>
@@ -324,12 +314,12 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
 
   list: {
     bullet: ({ children }: any) => (
-      <ul className="list-disc list-inside space-y-2 mb-4" style={{ color: bodyColor }}>
+      <ul className="list-disc list-inside space-y-2 mb-4 text-slate-700 dark:text-slate-300" style={bodyColor ? { color: bodyColor } : undefined}>
         {children}
       </ul>
     ),
     number: ({ children }: any) => (
-      <ol className="list-decimal list-inside space-y-2 mb-4" style={{ color: bodyColor }}>
+      <ol className="list-decimal list-inside space-y-2 mb-4 text-slate-700 dark:text-slate-300" style={bodyColor ? { color: bodyColor } : undefined}>
         {children}
       </ol>
     ),
@@ -364,7 +354,7 @@ export const PortableTextContent = React.memo(function PortableTextContent({
   );
 
   return (
-    <div className="prose prose-lg prose-invert max-w-none" suppressHydrationWarning>
+    <div className="prose prose-lg dark:prose-invert max-w-none" suppressHydrationWarning>
       <PortableText
         value={value}
         components={components}
