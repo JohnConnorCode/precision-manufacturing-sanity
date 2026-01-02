@@ -91,7 +91,6 @@ interface HeaderProps {
 }
 
 const HERO_SELECTORS = ['[data-hero-section="dark"]', '[data-hero-section="light"]', '[data-hero-section]'];
-const HERO_SENTINEL_SELECTOR = '[data-hero-sentinel]';
 
 export default function Header({ data }: HeaderProps) {
   // 100% CMS controlled - no hardcoded fallbacks
@@ -135,14 +134,13 @@ export default function Header({ data }: HeaderProps) {
     setShowAnnouncement(shouldShow);
   }, [announcement]);
 
-  // Consolidated scroll + hero observers keep header transitions silky smooth
+  // Consolidated scroll + hero detection for transparent header over hero sections
   useEffect(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined') {
       return;
     }
 
     let heroSection: HTMLElement | null = null;
-    let heroSentinel: HTMLElement | null = null;
     let heroObserver: IntersectionObserver | null = null;
     let mutationObserver: MutationObserver | null = null;
 
@@ -160,24 +158,40 @@ export default function Header({ data }: HeaderProps) {
       return heroSection;
     };
 
-    const resolveHeroSentinel = () => {
-      if (heroSentinel && document.body.contains(heroSentinel)) {
-        return heroSentinel;
-      }
-      heroSentinel = document.querySelector(HERO_SENTINEL_SELECTOR) as HTMLElement | null;
-      return heroSentinel;
+    // Simple, reliable scroll state update
+    const updateScrollState = () => {
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 10);
     };
 
-    const updateScrollState = () => setIsScrolled(window.scrollY > 10);
-    const throttledScroll = throttleRAF(updateScrollState);
+    // Simpler hero detection - check if hero bottom is below header
+    const checkHeroVisibility = () => {
+      const hero = resolveHeroSection();
+      if (!hero) {
+        setIsOverHero(false);
+        return;
+      }
+
+      const heroRect = hero.getBoundingClientRect();
+      const headerHeight = 120; // Header is ~120px tall
+
+      // We're "over hero" if the hero's bottom edge is below the header
+      setIsOverHero(heroRect.bottom > headerHeight);
+    };
+
+    const handleScroll = () => {
+      updateScrollState();
+      checkHeroVisibility();
+    };
+
+    const throttledScroll = throttleRAF(handleScroll);
 
     const attachHeroObserver = () => {
-      const sentinelEl = resolveHeroSentinel();
       const heroEl = resolveHeroSection();
-      const target = sentinelEl || heroEl;
 
-      if (!target || typeof IntersectionObserver === 'undefined') {
-        setIsOverHero(Boolean(heroEl));
+      if (!heroEl || typeof IntersectionObserver === 'undefined') {
+        // No hero section - use scroll-based check
+        checkHeroVisibility();
         return;
       }
 
@@ -185,23 +199,23 @@ export default function Header({ data }: HeaderProps) {
         heroObserver.disconnect();
       }
 
+      // Use IntersectionObserver as backup, but also run checkHeroVisibility
       heroObserver = new IntersectionObserver(
-        (entries) => {
-          const entry = entries[0];
-          if (sentinelEl) {
-            setIsOverHero(Boolean(entry?.isIntersecting));
-            return;
-          }
-          setIsOverHero(Boolean(entry?.isIntersecting));
+        () => {
+          // Always use the more reliable rect-based check
+          checkHeroVisibility();
         },
         {
           root: null,
-          threshold: 0,
-          rootMargin: sentinelEl ? '-80px 0px 0px 0px' : '-120px 0px 0px 0px',
+          threshold: [0, 0.1, 0.5, 1],
+          rootMargin: '-120px 0px 0px 0px',
         }
       );
 
-      heroObserver.observe(target);
+      heroObserver.observe(heroEl);
+
+      // Initial check
+      checkHeroVisibility();
     };
 
     const ensureHeroPresence = () => {
@@ -214,6 +228,7 @@ export default function Header({ data }: HeaderProps) {
       }
     };
 
+    // Wait for hero to appear in DOM
     if (!resolveHeroSection() && typeof MutationObserver !== 'undefined') {
       mutationObserver = new MutationObserver(() => ensureHeroPresence());
       mutationObserver.observe(document.body, { childList: true, subtree: true });
@@ -221,9 +236,13 @@ export default function Header({ data }: HeaderProps) {
       attachHeroObserver();
     }
 
+    // Initial state
     updateScrollState();
+    checkHeroVisibility();
+
+    // Use both scroll and resize events
     window.addEventListener('scroll', throttledScroll, { passive: true });
-    window.addEventListener('resize', throttledScroll);
+    window.addEventListener('resize', throttledScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', throttledScroll);
