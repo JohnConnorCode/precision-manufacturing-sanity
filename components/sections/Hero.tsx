@@ -1,7 +1,7 @@
  
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronDown } from 'lucide-react';
@@ -64,6 +64,15 @@ interface HeroProps {
 export default function Hero({ data }: HeroProps) {
   // Disable parallax scroll effects to avoid hydration issues
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  // SSR-safe mount detection - animations only play after hydration
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    const timer = requestAnimationFrame(() => {
+      setIsMounted(true);
+    });
+    return () => cancelAnimationFrame(timer);
+  }, []);
 
   // Use static motion values instead of scroll-based transforms
   const textY = 0;
@@ -165,7 +174,7 @@ export default function Hero({ data }: HeroProps) {
               {word1 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                   transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
@@ -180,7 +189,7 @@ export default function Hero({ data }: HeroProps) {
               {word2 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                   transition={{ delay: 0.25, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={{
@@ -195,7 +204,7 @@ export default function Hero({ data }: HeroProps) {
               {word3 && (
                 <motion.span
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                   transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
                   className={`${heroFontSize} font-black tracking-[0.02em] leading-[1.1] block`}
                   style={
@@ -221,7 +230,7 @@ export default function Hero({ data }: HeroProps) {
             {/* Tagline */}
             <motion.h1
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
               transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
               className="text-lg sm:text-xl md:text-2xl font-light leading-[1.3] tracking-normal mb-8"
               style={{ color: descriptionColor }}
@@ -246,7 +255,7 @@ export default function Hero({ data }: HeroProps) {
                   <motion.span
                     key={`${badge}-${index}`}
                     initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
                     transition={{
                       delay: 0.8 + (index * 0.1),
                       duration: 0.5,
@@ -265,7 +274,7 @@ export default function Hero({ data }: HeroProps) {
             {primaryCta && (
               <motion.div
                 initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
-                animate={{ opacity: 1, y: 0 }}
+                animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 15 }}
                 transition={{ delay: 1.0, duration: 0.5, ease: "easeOut" }}
               >
                 <Button
@@ -297,7 +306,7 @@ export default function Hero({ data }: HeroProps) {
       {/* Smooth Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={isMounted ? { opacity: 1 } : { opacity: 0 }}
         transition={{ delay: 1.4, duration: 0.5, ease: "easeOut" }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >
