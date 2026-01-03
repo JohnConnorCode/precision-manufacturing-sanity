@@ -8,7 +8,8 @@ import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { hexToRgba } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
-import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { SECTION_CONFIGS } from '@/lib/animation-config';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { ResourcesData, ResourceSeries, ResourceBenefit } from '@/lib/types/cms';
 import { DotGridBackground } from '@/lib/background-patterns';
 
@@ -29,6 +30,11 @@ export default function Resources({ data }: ResourcesProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
   const sectionHeaderDelay = SECTION_CONFIGS.threeColumnGrid.headerCompletion;
+
+  // Animation hooks for scroll-triggered animations that work on refresh
+  const seriesAnim = useAnimateInView<HTMLDivElement>();
+  const ctaAnim = useAnimateInView<HTMLDivElement>();
+  const benefitsAnim = useAnimateInView<HTMLDivElement>();
 
   // Use ONLY CMS data - NO fallbacks
   if (!data || !data.header || !Array.isArray(data.featuredSeries)) {
@@ -55,10 +61,9 @@ export default function Resources({ data }: ResourcesProps) {
           />
 
         {/* Featured Series Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12">
+        <div ref={seriesAnim.ref} className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12">
           {resourcesData.featuredSeries.filter((series: any) => series.enabled !== false).map((series: ResourceSeries, index: number) => {
             const cardDelay = sectionHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
-            const viewportConfig = getViewportConfig();
             const seriesSlug = series.slug;
             if (!seriesSlug) {
               return null;
@@ -67,9 +72,9 @@ export default function Resources({ data }: ResourcesProps) {
             return (
               <motion.div
                 key={`${series.slug}-${index}`}
-                initial={getInitialState(prefersReducedMotion)}
-                whileInView={getAnimateState(cardDelay, 0.6, prefersReducedMotion)}
-                viewport={viewportConfig}
+                initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                animate={seriesAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : cardDelay }}
               >
                 <Link href={`/resources/series/${seriesSlug}`}>
                   <article
@@ -141,9 +146,10 @@ export default function Resources({ data }: ResourcesProps) {
         {/* Additional Series & CTA */}
         {showCta && (
           <motion.div
-          initial={getInitialState(prefersReducedMotion)}
-          whileInView={getAnimateState(0.4, 0.6, prefersReducedMotion)}
-          viewport={getViewportConfig()}
+          ref={ctaAnim.ref}
+          initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+          animate={ctaAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+          transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.4 }}
           className="border rounded-2xl p-8 md:p-12"
           style={{
             background: `linear-gradient(to right, ${hexToRgba(theme.colors.primary, 0.1)}, ${hexToRgba(theme.colors.secondary, 0.1)}, ${hexToRgba(theme.colors.primary, 0.1)})`,
@@ -183,18 +189,17 @@ export default function Resources({ data }: ResourcesProps) {
 
         {/* Benefits Grid */}
         {Array.isArray(resourcesData.benefits) && resourcesData.benefits.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+          <div ref={benefitsAnim.ref} className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {resourcesData.benefits.filter(benefit => benefit.enabled !== false).map((benefit: ResourceBenefit, index: number) => {
               const IconComponent = (benefit.iconName && iconMap[benefit.iconName]) || BookOpen;
               const benefitDelay = sectionHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
-              const viewportConfig = getViewportConfig();
 
               return (
                 <motion.div
                   key={benefit.title || index}
-                  initial={getInitialState(prefersReducedMotion)}
-                  whileInView={getAnimateState(benefitDelay, 0.6, prefersReducedMotion)}
-                  viewport={viewportConfig}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={benefitsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : benefitDelay }}
                   className="text-center p-6 bg-slate-900/30 rounded-xl border border-slate-800/50"
                 >
                   <div

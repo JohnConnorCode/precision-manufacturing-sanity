@@ -9,7 +9,8 @@ import { spacing, colors, borderRadius } from '@/lib/design-system';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
-import { SECTION_CONFIGS, getInitialState, getAnimateState, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { SECTION_CONFIGS } from '@/lib/animation-config';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { ImageShowcaseData, ShowcaseImage, ShowcaseStat } from '@/lib/types/cms';
 
 // Icon mapping for stats
@@ -29,6 +30,11 @@ interface ImageShowcaseProps {
 export default function ImageShowcase({ data }: ImageShowcaseProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hooks for scroll-triggered animations that work on refresh
+  const imagesAnim = useAnimateInView<HTMLDivElement>();
+  const statsAnim = useAnimateInView<HTMLDivElement>();
+  const ctaAnim = useAnimateInView<HTMLDivElement>();
 
   if (!data) {
     return null;
@@ -63,11 +69,10 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         )}
 
         {/* Large Feature Images */}
-        <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} mb-12`}>
+        <div ref={imagesAnim.ref} className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} mb-12`}>
           {showcaseImages.filter((item: ShowcaseImage) => item.enabled !== false).map((item: ShowcaseImage, index: number) => {
             const imageHeaderDelay = SECTION_CONFIGS.threeColumnGrid.headerCompletion;
             const imageDelay = imageHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
-            const viewportConfig = getViewportConfig();
             const imageSrc = (typeof item.src === 'string' && item.src.trim().length > 0)
               ? item.src
               : item.image?.asset?.url;
@@ -119,9 +124,9 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
             return (
               <motion.div
                 key={item.title}
-                initial={getInitialState(prefersReducedMotion)}
-                whileInView={getAnimateState(imageDelay, 0.6, prefersReducedMotion)}
-                viewport={viewportConfig}
+                initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                animate={imagesAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : imageDelay }}
                 className="group"
               >
                 {item.href ? (
@@ -138,20 +143,19 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
 
         {/* Stats Grid */}
         {stats.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">
+          <div ref={statsAnim.ref} className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">
             {stats.filter((stat: ShowcaseStat) => stat.enabled !== false).map((stat: ShowcaseStat, index: number) => {
             const iconKey = stat.iconName || stat.icon;
             const Icon = (iconKey && iconMap[iconKey]) || Award;
             const statsHeaderDelay = SECTION_CONFIGS.fourColumnGrid.headerCompletion;
             const statDelay = statsHeaderDelay + SECTION_CONFIGS.fourColumnGrid.getDelay(index);
-            const viewportConfig = getViewportConfig();
 
             return (
               <motion.div
                 key={stat._key || `stat-${index}`}
-                initial={getScaleInitialState(prefersReducedMotion)}
-                whileInView={getScaleAnimateState(statDelay, 0.6, prefersReducedMotion)}
-                viewport={viewportConfig}
+                initial={prefersReducedMotion ? ANIM_STATES.scaleIn.animate : ANIM_STATES.scaleIn.initial}
+                animate={statsAnim.shouldAnimate ? ANIM_STATES.scaleIn.animate : ANIM_STATES.scaleIn.initial}
+                transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : statDelay }}
                 className="text-center p-6 bg-white dark:bg-slate-900 rounded-2xl shadow-lg dark:shadow-slate-950/50 hover:shadow-xl transition-all duration-300"
               >
                 <Icon className="h-8 w-8 mx-auto mb-3" style={{ color: theme.colors.primary }} />
@@ -170,9 +174,10 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         {/* Call to Action */}
         {data?.cta && (data.cta.title || data.cta.description) && (
           <motion.div
-            initial={getInitialState(prefersReducedMotion)}
-            whileInView={getAnimateState(0.4, 0.8, prefersReducedMotion)}
-            viewport={getViewportConfig()}
+            ref={ctaAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={ctaAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.4 }}
             className="text-center"
           >
             <div className="inline-flex flex-col items-center p-8 md:p-12 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-2xl">

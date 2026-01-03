@@ -6,7 +6,8 @@ import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, getGradientTextStyle } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
-import { SECTION_CONFIGS, getScaleInitialState, getScaleAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { SECTION_CONFIGS } from '@/lib/animation-config';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { StatsData, StatItem } from '@/lib/types/cms';
 import { DotGridBackground } from '@/lib/background-patterns';
 
@@ -19,6 +20,9 @@ interface StatsProps {
 export default function Stats({ data }: StatsProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hook for scroll-triggered animations that work on refresh
+  const statsAnim = useAnimateInView<HTMLDivElement>();
 
   // Use ONLY CMS data - return null if no data
   const statsArray = data?.items || data?.stats;
@@ -62,18 +66,17 @@ export default function Stats({ data }: StatsProps) {
         />
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div ref={statsAnim.ref} className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, index: number) => {
             const headerDelay = SECTION_CONFIGS.fourColumnGrid.headerCompletion;
             const statDelay = headerDelay + SECTION_CONFIGS.fourColumnGrid.getDelay(index);
-            const viewportConfig = getViewportConfig();
 
             return (
               <motion.div
                 key={index}
-                initial={getScaleInitialState(prefersReducedMotion)}
-                whileInView={getScaleAnimateState(statDelay, 0.6, prefersReducedMotion)}
-                viewport={viewportConfig}
+                initial={prefersReducedMotion ? ANIM_STATES.scaleIn.animate : ANIM_STATES.scaleIn.initial}
+                animate={statsAnim.shouldAnimate ? ANIM_STATES.scaleIn.animate : ANIM_STATES.scaleIn.initial}
+                transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : statDelay }}
                 className="text-center"
               >
               <div className="relative inline-block mb-3">

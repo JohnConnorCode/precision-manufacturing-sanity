@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { cn } from '@/lib/utils';
+import { useAnimateInView, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
 interface ClientLogo {
   _key?: string;
@@ -31,6 +32,9 @@ interface ClientLogosProps {
 export default function ClientLogos({ data }: ClientLogosProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
 
+  // Animation hook for scroll-triggered animations that work on refresh
+  const eyebrowAnim = useAnimateInView<HTMLParagraphElement>();
+
   if (!data?.enabled) return null;
 
   const logos = (data.logos || []).filter(logo => logo.enabled !== false && logo.logo?.asset?.url);
@@ -53,10 +57,10 @@ export default function ClientLogos({ data }: ClientLogosProps) {
       <div className="container mb-8">
         {data.eyebrow && (
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            ref={eyebrowAnim.ref}
+            initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+            animate={eyebrowAnim.shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+            transition={prefersReducedMotion ? { duration: 0 } : ANIM_TRANSITION}
             className="text-center text-xs md:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]"
           >
             {data.eyebrow}

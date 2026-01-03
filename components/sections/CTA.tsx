@@ -6,7 +6,8 @@ import { ArrowRight, FileText, Shield, Award, Activity, Clock, LucideIcon } from
 import Link from 'next/link';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
-import { DURATIONS, STAGGER, EASING, getViewportConfig } from '@/lib/animation-config';
+import { STAGGER } from '@/lib/animation-config';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
 interface CTAData {
   title?: string;
@@ -39,6 +40,9 @@ interface CTAProps {
 
 export default function CTA({ data }: CTAProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hook for scroll-triggered animations that work on refresh
+  const sectionAnim = useAnimateInView<HTMLDivElement>();
 
   if (!data?.title || !data?.buttons || data.buttons.length === 0) {
     return null;
@@ -102,14 +106,13 @@ export default function CTA({ data }: CTAProps) {
       </div>
 
       <div className="container relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+        <div ref={sectionAnim.ref} className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           {badge && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, ease: EASING }}
-              viewport={getViewportConfig()}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={sectionAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={prefersReducedMotion ? { duration: 0 } : ANIM_TRANSITION}
               className="inline-flex items-center px-4 py-2 mb-8 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-sm"
             >
               <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
@@ -121,10 +124,9 @@ export default function CTA({ data }: CTAProps) {
           {/* Title with gradient on last 2 words */}
           {/* Using inline styles for WebKit compatibility (Tailwind bg-clip-text doesn't work in Safari) */}
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, delay: prefersReducedMotion ? 0 : STAGGER.cards, ease: EASING }}
-            viewport={getViewportConfig()}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={sectionAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : STAGGER.cards }}
             className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-tone-inverse mb-8 leading-tight"
           >
             {firstPart && <span>{firstPart} </span>}
@@ -143,10 +145,9 @@ export default function CTA({ data }: CTAProps) {
           {/* Subtitle */}
           {subtitleString && (
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, delay: prefersReducedMotion ? 0 : STAGGER.cards * 2, ease: EASING }}
-              viewport={getViewportConfig()}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={sectionAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : STAGGER.cards * 2 }}
               className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto"
             >
               {subtitleString}
@@ -155,10 +156,9 @@ export default function CTA({ data }: CTAProps) {
 
           {/* CTA Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, delay: prefersReducedMotion ? 0 : STAGGER.cards * 3, ease: EASING }}
-            viewport={getViewportConfig()}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={sectionAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : STAGGER.cards * 3 }}
             className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
           >
             {buttons.map((button, index) => {
@@ -189,14 +189,12 @@ export default function CTA({ data }: CTAProps) {
                 return (
                   <motion.div
                     key={cert._key || `cert-${index}`}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={sectionAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                     transition={{
-                      duration: prefersReducedMotion ? 0 : DURATIONS.slow,
+                      ...ANIM_TRANSITION,
                       delay: prefersReducedMotion ? 0 : STAGGER.cards * 4 + index * STAGGER.badges,
-                      ease: EASING
                     }}
-                    viewport={getViewportConfig()}
                     className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-slate-900/50 border border-slate-800/50 hover:border-slate-700 transition-colors"
                   >
                     {isFirstBadge ? (
@@ -221,10 +219,9 @@ export default function CTA({ data }: CTAProps) {
           {/* Trust Message */}
           {trustMessage && (
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, delay: prefersReducedMotion ? 0 : STAGGER.cards * 5, ease: EASING }}
-              viewport={getViewportConfig()}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeIn.animate : ANIM_STATES.fadeIn.initial}
+              animate={sectionAnim.shouldAnimate ? ANIM_STATES.fadeIn.animate : ANIM_STATES.fadeIn.initial}
+              transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : STAGGER.cards * 5 }}
               className="mt-12"
             >
               <p className="text-xs text-slate-500">

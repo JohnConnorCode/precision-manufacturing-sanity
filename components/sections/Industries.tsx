@@ -6,7 +6,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { Industry, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
-import { DURATIONS, STAGGER, EASING, getViewportConfig } from '@/lib/animation-config';
+import { STAGGER } from '@/lib/animation-config';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
 interface IndustriesProps {
   data?: Industry[];
@@ -23,6 +24,10 @@ interface IndustriesProps {
 
 export default function Industries({ data, sectionData }: IndustriesProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hooks for scroll-triggered animations that work on refresh
+  const headerAnim = useAnimateInView<HTMLDivElement>();
+  const cardsAnim = useAnimateInView<HTMLDivElement>();
 
   const industriesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
   if (!industriesData || industriesData.length === 0) return null;
@@ -41,10 +46,10 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
       <div className="container">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, ease: EASING }}
-          viewport={getViewportConfig()}
+          ref={headerAnim.ref}
+          initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+          animate={headerAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+          transition={prefersReducedMotion ? { duration: 0 } : ANIM_TRANSITION}
           className="text-center mb-16 md:mb-20"
         >
           {eyebrow && (
@@ -78,7 +83,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
         </motion.div>
 
         {/* Industries Grid - Dramatic Full-Height Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div ref={cardsAnim.ref} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {industriesData.slice(0, 3).map((industry, index) => {
             const imageUrl = typeof industry.image === 'string'
               ? industry.image
@@ -87,14 +92,12 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
             return (
               <motion.div
                 key={industry.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                animate={cardsAnim.shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{
-                  duration: prefersReducedMotion ? 0 : DURATIONS.slower,
+                  ...ANIM_TRANSITION,
                   delay: prefersReducedMotion ? 0 : index * STAGGER.cards,
-                  ease: EASING,
                 }}
-                viewport={getViewportConfig()}
                 className="group"
               >
                 <Link href={industry.href || '#'} className="block">

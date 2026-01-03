@@ -6,7 +6,8 @@ import SectionHeader from '@/components/ui/section-header';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle, hexToRgba } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
-import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { SECTION_CONFIGS } from '@/lib/animation-config';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
 interface TechnicalSpecsData {
   title?: string;
@@ -28,6 +29,9 @@ interface TechnicalSpecsProps {
 export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
   const theme = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hook for scroll-triggered animations that work on refresh
+  const metricsAnim = useAnimateInView<HTMLDivElement>();
 
   // Icon mapping for CMS data
   const iconMap: Record<string, LucideIcon> = {
@@ -89,19 +93,18 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
         </div>
 
         {/* Metrics Grid - Premium Card Design */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        <div ref={metricsAnim.ref} className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           {metrics.map((metric, index) => {
             const Icon = metric.icon || Gauge;
             const headerDelay = SECTION_CONFIGS.metricsGrid.headerCompletion;
             const metricDelay = headerDelay + SECTION_CONFIGS.metricsGrid.getDelay(index);
-            const viewportConfig = getViewportConfig();
 
             return (
               <motion.div
                 key={metric.label}
-                initial={getInitialState(prefersReducedMotion)}
-                whileInView={getAnimateState(metricDelay, 0.6, prefersReducedMotion)}
-                viewport={viewportConfig}
+                initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                animate={metricsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : metricDelay }}
                 className="group relative"
               >
                 <div

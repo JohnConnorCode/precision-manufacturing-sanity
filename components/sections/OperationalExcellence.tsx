@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import * as Icons from 'lucide-react';
 import { usePrefersReducedMotion } from '@/lib/motion';
-import { DURATIONS, STAGGER, EASING, getViewportConfig } from '@/lib/animation-config';
+import { STAGGER } from '@/lib/animation-config';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
 function DynamicIcon({ name, className }: { name: string; className?: string }) {
   // Get the icon from lucide-react, fallback to Circle
@@ -40,6 +41,11 @@ interface OperationalExcellenceProps {
 export default function OperationalExcellence({ data }: OperationalExcellenceProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
 
+  // Animation hooks for scroll-triggered animations that work on refresh
+  const headerAnim = useAnimateInView<HTMLDivElement>();
+  const benefitsAnim = useAnimateInView<HTMLDivElement>();
+  const certsAnim = useAnimateInView<HTMLDivElement>();
+
   if (!data?.benefits || data.benefits.length === 0) {
     return null;
   }
@@ -64,10 +70,10 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
       <div className="container relative z-10">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: prefersReducedMotion ? 0 : DURATIONS.slower, ease: EASING }}
-          viewport={getViewportConfig()}
+          ref={headerAnim.ref}
+          initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+          animate={headerAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+          transition={prefersReducedMotion ? { duration: 0 } : ANIM_TRANSITION}
           className="text-center mb-20"
         >
           {/* Using inline styles for WebKit compatibility (Tailwind bg-clip-text doesn't work in Safari) */}
@@ -100,18 +106,16 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
         </motion.div>
 
         {/* Benefits - Horizontal Cards with Dramatic Design */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div ref={benefitsAnim.ref} className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {benefits.map((benefit, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              animate={benefitsAnim.shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{
-                duration: prefersReducedMotion ? 0 : DURATIONS.slower,
+                ...ANIM_TRANSITION,
                 delay: prefersReducedMotion ? 0 : index * STAGGER.cards,
-                ease: EASING,
               }}
-              viewport={{ once: true, margin: "-50px" }}
               className="group"
             >
               <div className="relative h-full p-8 rounded-3xl bg-gradient-to-br from-slate-900/80 to-slate-900/40 border border-slate-800/50 backdrop-blur-sm hover:border-blue-500/30 transition-all duration-500">
@@ -146,10 +150,10 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
         {/* Trust Badges / Certifications Row - CMS Controlled */}
         {data?.certifications && data.certifications.filter(c => c?.enabled !== false).length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
+            ref={certsAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={certsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.4 }}
             className="mt-20 pt-12 border-t border-slate-800"
           >
             <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
