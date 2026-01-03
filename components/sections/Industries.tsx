@@ -50,7 +50,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
           initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
           animate={headerAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
           transition={prefersReducedMotion ? { duration: 0 } : ANIM_TRANSITION}
-          className="text-center mb-16 md:mb-20"
+          className="text-center mb-8 md:mb-12"
         >
           {eyebrow && (
             <p className="text-sm font-semibold text-blue-600 uppercase tracking-[0.2em] mb-4">

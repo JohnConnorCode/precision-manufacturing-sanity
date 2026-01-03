@@ -6,7 +6,7 @@ import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientTextStyle } from '@/lib/theme-utils';
 import { typography, spacing, colors } from '@/lib/design-system';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
-import { viewportSettings } from '@/lib/animation-config';
+import { useAnimateInView } from '@/lib/use-animate-in-view';
 
 // Sequential stagger animation for section headers
 const containerVariants: Variants = {
@@ -139,6 +139,7 @@ export default function SectionHeader({
 }: SectionHeaderProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const theme = useTheme();
+  const { ref, shouldAnimate } = useAnimateInView<HTMLDivElement>();
 
   // Choose variants based on motion preference
   const activeItemVariants = prefersReducedMotion ? reducedMotionVariants : itemVariants;
@@ -182,9 +183,9 @@ export default function SectionHeader({
 
   return (
     <motion.div
+      ref={ref}
       initial="hidden"
-      whileInView="visible"
-      viewport={viewportSettings}
+      animate={shouldAnimate ? "visible" : "hidden"}
       variants={containerVariants}
       className={`${alignmentClass} ${spacing.headingBottom} ${className}`}
     >

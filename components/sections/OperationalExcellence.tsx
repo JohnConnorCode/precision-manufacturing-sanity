@@ -74,7 +74,7 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
           initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
           animate={headerAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
           transition={prefersReducedMotion ? { duration: 0 } : ANIM_TRANSITION}
-          className="text-center mb-20"
+          className="text-center mb-8 md:mb-12"
         >
           {/* Using inline styles for WebKit compatibility (Tailwind bg-clip-text doesn't work in Safari) */}
           {heading && (
