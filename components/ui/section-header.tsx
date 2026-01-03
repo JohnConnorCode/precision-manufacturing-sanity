@@ -211,7 +211,7 @@ export default function SectionHeader({
           )}
           {displayWord2 && (
             <span
-              className="inline-block text-transparent bg-clip-text"
+              className="inline-block"
               style={getGradientTextStyle(theme.colors)}
             >
               {displayWord2}

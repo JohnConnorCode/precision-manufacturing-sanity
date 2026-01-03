@@ -16,7 +16,7 @@ const premiumButtonVariants = cva(
         secondary:
           "bg-white/10 text-tone-inverse border border-white/20 backdrop-blur-sm hover:bg-white/20 hover:border-white/30",
         ghost:
-          "bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent hover:from-blue-500 hover:to-indigo-500",
+          "", // Gradient text handled via inline styles for WebKit compatibility
         destructive:
           "bg-gradient-to-r from-red-500 to-rose-600 text-tone-inverse shadow-xl shadow-red-500/25 hover:shadow-2xl hover:shadow-red-500/40",
       },
@@ -82,10 +82,19 @@ export const PremiumButton = React.forwardRef<
     onClick?.(event)
   }
 
+  // Ghost variant uses inline styles for WebKit gradient text compatibility
+  const ghostStyles: React.CSSProperties | undefined = variant === 'ghost' ? {
+    background: 'linear-gradient(to right, #2563eb, #4f46e5)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+  } : undefined;
+
   return (
     <motion.button
       ref={ref}
       className={cn(premiumButtonVariants({ variant, size, className }))}
+      style={ghostStyles}
       whileHover={prefersReducedMotion ? {} : {
         scale: 1.01,
         transition: {

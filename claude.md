@@ -486,6 +486,67 @@ const itemVariants = {
 'border-zinc-800' // Dark mode
 ```
 
+### ⚠️ CRITICAL: Gradient Text (WebKit Compatibility)
+
+**Tailwind's `bg-clip-text text-transparent` DOES NOT work in Safari/WebKit.**
+
+❌ **BROKEN in Safari:**
+```typescript
+<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">
+  Gradient Text
+</span>
+```
+
+✅ **CORRECT - Use inline styles:**
+```typescript
+<span
+  style={{
+    background: 'linear-gradient(to right, #60a5fa, #6366f1)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+  }}
+>
+  Gradient Text
+</span>
+```
+
+**Standard Gradient Colors:**
+- Blue to Indigo: `#60a5fa, #6366f1` or `#3b82f6, #4f46e5`
+- Use `getGradientTextStyle()` from `@/lib/theme-utils` for dynamic theme colors
+
+**Pattern for splitting heading with gradient on last word(s):**
+```typescript
+const title = "Start Your Manufacturing Project";
+const words = title.split(' ');
+const firstPart = words.slice(0, -2).join(' ');  // "Start Your"
+const lastPart = words.slice(-2).join('\u00A0'); // "Manufacturing Project" (non-breaking space)
+
+return (
+  <h2 className="text-4xl font-bold text-white">
+    {firstPart && <span>{firstPart} </span>}
+    <span
+      style={{
+        background: 'linear-gradient(to right, #60a5fa, #3b82f6, #6366f1)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text',
+      }}
+    >
+      {lastPart}
+    </span>
+  </h2>
+);
+```
+
+**Files using this pattern:**
+- `components/sections/CTA.tsx` - CTA section headings
+- `components/sections/OperationalExcellence.tsx` - Section headers
+- `components/sections/Hero.tsx` - Hero titles
+- `components/ui/section-header.tsx` - All section headers (uses `getGradientTextStyle`)
+- `components/ui/premium-button.tsx` - Ghost variant buttons
+- All hero sections in page files (services, industries, resources, etc.)
+
 ### Typography Scale
 
 **Use ONLY these text sizes:**
@@ -939,14 +1000,15 @@ When making ANY change, verify:
 ## 11. COMMON PITFALLS TO AVOID
 
 1. ❌ **ANIMATION HYDRATION BUG** - Using `motion.div animate={{...}}` without `mounted` check in stateful components (Header, etc.) - causes elements to stay invisible! Use `SafeMotion` or `useMounted()` hook.
-2. ❌ Hardcoding content instead of using Sanity
-3. ❌ Forgetting `hotspot: true` on images
-4. ❌ Using `animate` instead of `whileInView` for scroll animations
-5. ❌ Mixing `'use client'` with `async` functions
-6. ❌ Testing only HTTP status codes
-7. ❌ Using inconsistent spacing/colors/typography
-8. ❌ Skipping alt text validation
-9. ❌ Not validating required fields in schemas
+2. ❌ **GRADIENT TEXT WEBKIT BUG** - Using Tailwind's `bg-clip-text text-transparent` - DOES NOT WORK in Safari! Use inline styles with `WebkitBackgroundClip` and `WebkitTextFillColor` instead.
+3. ❌ Hardcoding content instead of using Sanity
+4. ❌ Forgetting `hotspot: true` on images
+5. ❌ Using `animate` instead of `whileInView` for scroll animations
+6. ❌ Mixing `'use client'` with `async` functions
+7. ❌ Testing only HTTP status codes
+8. ❌ Using inconsistent spacing/colors/typography
+9. ❌ Skipping alt text validation
+10. ❌ Not validating required fields in schemas
 
 ---
 

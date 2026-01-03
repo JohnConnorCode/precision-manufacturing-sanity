@@ -119,6 +119,7 @@ export default function CTA({ data }: CTAProps) {
           )}
 
           {/* Title with gradient on last 2 words */}
+          {/* Using inline styles for WebKit compatibility (Tailwind bg-clip-text doesn't work in Safari) */}
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -127,7 +128,14 @@ export default function CTA({ data }: CTAProps) {
             className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-tone-inverse mb-8 leading-tight"
           >
             {firstPart && <span>{firstPart} </span>}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-500">
+            <span
+              style={{
+                background: 'linear-gradient(to right, #60a5fa, #3b82f6, #6366f1)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
               {lastPart}
             </span>
           </motion.h2>

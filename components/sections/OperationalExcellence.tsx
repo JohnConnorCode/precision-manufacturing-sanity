@@ -70,11 +70,20 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
           viewport={getViewportConfig()}
           className="text-center mb-20"
         >
+          {/* Using inline styles for WebKit compatibility (Tailwind bg-clip-text doesn't work in Safari) */}
           {heading && (
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-tone-inverse mb-6">
               {heading.split(' ').map((word, i, arr) => (
                 i === arr.length - 1 ? (
-                  <span key={i} className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+                  <span
+                    key={i}
+                    style={{
+                      background: 'linear-gradient(to right, #60a5fa, #818cf8)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                  >
                     {word}
                   </span>
                 ) : (
