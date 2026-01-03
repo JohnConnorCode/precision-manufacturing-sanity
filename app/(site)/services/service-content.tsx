@@ -727,7 +727,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               {applications.map((app: ApplicationItem, index: number) => {
                 const appImage = app.image?.asset?.url || app.imageUrl;
                 const appAlt = app.image?.alt || app.title || 'Application';
-                const listLabel = app.listLabel || applicationsListLabel;
+                const listLabel = app.listLabel || applicationsListLabel || 'Deliverables';
 
                 return (
                   <motion.div
@@ -736,9 +736,9 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     animate={applicationsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                     transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
-                    <Card className={cn(styles.featureCard, 'h-full overflow-hidden')}>
+                    <Card className="h-full bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-lg hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 overflow-hidden">
                       {appImage && (
-                        <div className="relative h-56 overflow-hidden">
+                        <div className="relative h-48 overflow-hidden">
                           <Image
                             src={appImage}
                             alt={appAlt}
@@ -749,25 +749,25 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                         </div>
                       )}
-                      <div className="p-6">
-                        <h3 className={cn(typography.h4, 'mb-3')}>{app.title}</h3>
-                        <p className={cn(typography.body, 'mb-4')}>{app.description}</p>
+                      <div className="p-6 lg:p-8">
+                        <h3 className={cn(typography.h5, 'mb-3')}>{app.title}</h3>
+                        <p className={cn(typography.body, 'mb-5 text-slate-600 dark:text-slate-400')}>{app.description}</p>
                         {app.timeline && (
-                          <div className="mb-4">
-                            <p className={cn(typography.label, 'text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400 mb-1')}>
-                              Timeline:
+                          <div className="mb-5">
+                            <p className={cn(typography.label, 'text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 mb-1')}>
+                              Timeline
                             </p>
-                            <p className={cn(typography.body, 'text-slate-700 dark:text-slate-300')}>{app.timeline}</p>
+                            <p className={cn(typography.body, 'text-slate-700 dark:text-slate-300 font-medium')}>{app.timeline}</p>
                           </div>
                         )}
                         {app.challenges && app.challenges.length > 0 && (
                           <div>
-                            <h4 className={cn(typography.label, 'mb-2 text-sm')}>{listLabel}</h4>
-                            <div className="space-y-1">
+                            <h4 className={cn(typography.label, 'mb-3 text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400')}>{listLabel}</h4>
+                            <div className="space-y-2">
                               {app.challenges.map((item: ApplicationChallenge) => (
-                                <div key={item.challenge} className="flex items-center text-sm text-slate-600 dark:text-slate-400">
-                                  <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2" />
-                                  {item.challenge}
+                                <div key={item.challenge} className="flex items-start text-sm text-slate-700 dark:text-slate-300">
+                                  <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-3 mt-1.5 flex-shrink-0" />
+                                  <span>{item.challenge}</span>
                                 </div>
                               ))}
                             </div>
@@ -854,47 +854,42 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               </p>
             </motion.div>
 
-            {/* Process Timeline - horizontal on desktop, vertical on mobile */}
-            <div ref={processGridAnim.ref} className="relative">
-              {/* Connection line - only visible on lg+ */}
-              <div className="hidden lg:block absolute top-10 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600/20 via-blue-600/40 to-indigo-600/20" />
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-4">
-                {processes.map((process: ProcessItem, index: number) => {
-                  const isLast = index === processes.length - 1;
-                  return (
-                    <motion.div
-                      key={process.title}
-                      initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-                      animate={processGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-                      transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
-                      className="relative text-center lg:text-center"
-                    >
-                      {/* Step number circle */}
-                      <div className="relative z-10 mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 flex items-center justify-center text-2xl font-bold text-tone-inverse shadow-lg shadow-blue-600/25 mb-6">
+            {/* Process Cards - adaptive grid based on item count */}
+            <div ref={processGridAnim.ref} className={cn(
+              'grid gap-6',
+              processes.length === 3 && 'grid-cols-1 md:grid-cols-3',
+              processes.length === 4 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+              processes.length === 5 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
+              processes.length === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+              processes.length !== 3 && processes.length !== 4 && processes.length !== 5 && processes.length !== 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+            )}>
+              {processes.map((process: ProcessItem, index: number) => {
+                return (
+                  <motion.div
+                    key={process.title}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={processGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
+                  >
+                    <Card className="h-full bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-lg hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 p-8">
+                      {/* Step number badge */}
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 flex items-center justify-center text-lg font-bold text-tone-inverse shadow-md shadow-blue-600/20 mb-5">
                         {String(index + 1).padStart(2, '0')}
                       </div>
 
-                      {/* Arrow between steps - only on lg */}
-                      {!isLast && (
-                        <div className="hidden lg:block absolute top-10 -right-2 transform -translate-y-1/2 z-20">
-                          <ArrowRight className="w-4 h-4 text-blue-500/60" />
-                        </div>
-                      )}
-
                       {/* Content */}
-                      <h3 className={cn(typography.h5, 'mb-2')}>{process.title}</h3>
+                      <h3 className={cn(typography.h5, 'mb-3')}>{process.title}</h3>
                       {process.descriptionRich ? (
-                        <div className={cn(typography.small, 'text-slate-600 dark:text-slate-400')}>
+                        <div className={cn(typography.body, 'text-slate-600 dark:text-slate-400')}>
                           <PortableTextContent value={process.descriptionRich} />
                         </div>
                       ) : (
-                        <p className={cn(typography.small, 'text-slate-600 dark:text-slate-400')}>{process.description}</p>
+                        <p className={cn(typography.body, 'text-slate-600 dark:text-slate-400')}>{process.description}</p>
                       )}
-                    </motion.div>
-                  );
-                })}
-              </div>
+                    </Card>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
