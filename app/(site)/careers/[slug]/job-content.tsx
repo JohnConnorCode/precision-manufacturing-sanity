@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import {
   Mail,
   MapPin,
@@ -26,6 +28,18 @@ interface JobContentProps {
 }
 
 export default function JobContent({ job, siteSettings }: JobContentProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hooks
+  const overviewAnim = useAnimateInView<HTMLDivElement>();
+  const responsibilitiesAnim = useAnimateInView<HTMLDivElement>();
+  const qualificationsAnim = useAnimateInView<HTMLDivElement>();
+  const preferredAnim = useAnimateInView<HTMLDivElement>();
+  const benefitsAnim = useAnimateInView<HTMLDivElement>();
+  const applyCardAnim = useAnimateInView<HTMLDivElement>();
+  const detailsCardAnim = useAnimateInView<HTMLDivElement>();
+  const morePositionsAnim = useAnimateInView<HTMLDivElement>();
+
   const formattedDate = job.datePosted
     ? new Date(job.datePosted).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -96,10 +110,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
               {/* Overview */}
               {job.overview && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
+                  ref={overviewAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={overviewAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={ANIM_TRANSITION}
                 >
                   <h2 className={cn(typography.h3, 'mb-4')}>Overview</h2>
                   <div className={cn(typography.body, 'text-slate-600 dark:text-slate-400 leading-relaxed prose prose-slate dark:prose-invert max-w-none')}>
@@ -132,10 +146,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
               {/* Responsibilities */}
               {job.responsibilities && job.responsibilities.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  viewport={{ once: true }}
+                  ref={responsibilitiesAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={responsibilitiesAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.1 }}
                 >
                   <h2 className={cn(typography.h3, 'mb-6')}>Key Responsibilities</h2>
                   <div className="space-y-4">
@@ -156,10 +170,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
               {/* Required Qualifications */}
               {job.qualifications && job.qualifications.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  viewport={{ once: true }}
+                  ref={qualificationsAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={qualificationsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.2 }}
                 >
                   <Card className={cn(styles.featureCard, 'p-8 border-l-4 border-blue-600')}>
                     <h2 className={cn(typography.h3, 'mb-6')}>Required Qualifications</h2>
@@ -180,10 +194,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
               {/* Preferred Qualifications */}
               {job.preferredQualifications && job.preferredQualifications.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                  viewport={{ once: true }}
+                  ref={preferredAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={preferredAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.3 }}
                 >
                   <h2 className={cn(typography.h3, 'mb-6')}>Preferred Qualifications</h2>
                   <div className="space-y-3">
@@ -202,10 +216,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
               {/* Benefits */}
               {job.benefits && job.benefits.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  viewport={{ once: true }}
+                  ref={benefitsAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={benefitsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.4 }}
                 >
                   <h2 className={cn(typography.h3, 'mb-6')}>Benefits & Perks</h2>
                   <div className="grid md:grid-cols-2 gap-4">
@@ -229,10 +243,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
               <div className="sticky top-24 space-y-6">
                 {/* Apply Card */}
                 <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
+                  ref={applyCardAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+                  animate={applyCardAnim.shouldAnimate ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+                  transition={ANIM_TRANSITION}
                 >
                   <Card className={cn(styles.featureCard, 'p-8 text-center')}>
                     <Briefcase className="w-12 h-12 text-blue-600 mx-auto mb-4" />
@@ -271,10 +285,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
 
                 {/* Job Details */}
                 <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  viewport={{ once: true }}
+                  ref={detailsCardAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+                  animate={detailsCardAnim.shouldAnimate ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.1 }}
                 >
                   <Card className={cn(styles.featureCard, 'p-6')}>
                     <h3 className={cn(typography.h5, 'mb-4')}>Job Details</h3>
@@ -336,10 +350,10 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
 
                 {/* More Opportunities */}
                 <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  viewport={{ once: true }}
+                  ref={morePositionsAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+                  animate={morePositionsAnim.shouldAnimate ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.2 }}
                 >
                   <Card className={cn(styles.featureCard, 'p-6 bg-slate-50 dark:bg-slate-800')}>
                     <FileText className="w-10 h-10 text-blue-600 mb-4" />
