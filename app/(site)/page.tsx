@@ -60,18 +60,20 @@ export default async function Home() {
   ]);
 
   // Format data for display
-  const formattedServices = servicesData?.map((service) => ({
+  // Use hero background image for cards (matches individual service page heroes)
+  const formattedServices = servicesData?.map((service: any) => ({
     ...service,
     description: service.shortDescription || portableTextToPlainText(service.description),
     href: `/services/${typeof service.slug === 'string' ? service.slug : service.slug?.current}`,
-    image: service.image?.asset?.url || service.imageUrl,
+    image: service.hero?.backgroundImage?.asset?.url || service.image?.asset?.url || service.imageUrl,
   }));
 
-  const formattedIndustries = industriesData?.map((industry) => ({
+  // Use hero background image for industry cards (matches individual industry page heroes)
+  const formattedIndustries = industriesData?.map((industry: any) => ({
     ...industry,
     description: industry.shortDescription || portableTextToPlainText(industry.description),
     href: `/industries/${typeof industry.slug === 'string' ? industry.slug : industry.slug?.current}`,
-    image: industry.image?.asset?.url || industry.imageUrl,
+    image: industry.hero?.backgroundImage?.asset?.url || industry.image?.asset?.url || industry.imageUrl,
   }));
 
   const heroData = homepageData?.hero || undefined;
