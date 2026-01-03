@@ -88,7 +88,6 @@ export default async function ResourcesPage() {
         backgroundImage={pageContent?.resourcesPage?.hero?.backgroundImageUrl || pageContent?.resourcesPage?.hero?.backgroundImage?.asset?.url || ''}
         imageAlt={pageContent?.resourcesPage?.hero?.backgroundImage?.alt || ''}
         darkHero={true}
-        badge={pageContent?.resourcesPage?.hero?.badge ? { text: pageContent.resourcesPage.hero.badge } : undefined}
         title={(() => {
           // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
           const gradientStyle = {

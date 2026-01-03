@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, Phone, Mail, ArrowRight } from 'lucide-react';
 import Logo from '@/components/ui/logo';
 import { PremiumButton } from '@/components/ui/premium-button';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { cn } from '@/lib/utils';
 
 interface ChildMenuItem {
@@ -42,7 +41,6 @@ interface MobileMenuProps {
     showEmail?: boolean;
   } | null;
   logoData?: Record<string, unknown>;
-  mounted: boolean;
 }
 
 // Animation variants defined outside component to prevent recreation on render
@@ -105,7 +103,6 @@ export default function MobileMenu({
   cta,
   topBar,
   logoData,
-  mounted,
 }: MobileMenuProps) {
   const pathname = usePathname();
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
@@ -354,54 +351,42 @@ export default function MobileMenu({
               </ul>
             </nav>
 
-            {/* Footer */}
-            <div className="border-t border-slate-200 dark:border-slate-800 px-6 py-5 space-y-5 bg-slate-50 dark:bg-slate-900/50 flex-shrink-0">
-              {/* Theme Toggle */}
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                  Theme
-                </span>
-                {mounted && <ThemeToggle variant="dropdown" />}
-              </div>
+            {/* Footer - Compact */}
+            <div className="border-t border-slate-200 dark:border-slate-800 px-6 py-4 bg-slate-50 dark:bg-slate-900/50 flex-shrink-0">
+              {/* CTA Button */}
+              {cta && cta.text && (
+                <Link href={cta.href || '/contact'} onClick={onClose} className="block mb-3">
+                  <PremiumButton className="w-full h-12 text-base font-semibold">
+                    {cta.text}
+                    <ArrowRight className="ml-2 w-4 h-4" aria-hidden="true" />
+                  </PremiumButton>
+                </Link>
+              )}
 
-              {/* Contact Info */}
+              {/* Contact row - compact inline */}
               {topBar && (topBar.showPhone !== false || topBar.showEmail !== false) && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="flex items-center justify-center gap-6 text-sm text-slate-600 dark:text-slate-400">
                   {topBar.showPhone !== false && topBar.phone && (
                     <a
                       href={topBar.phoneLink}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                       aria-label={`Call ${topBar.phone}`}
                     >
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-                        <Phone className="w-5 h-5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
-                      </div>
-                      <span className="font-medium">{topBar.phone}</span>
+                      <Phone className="w-4 h-4" aria-hidden="true" />
+                      <span>{topBar.phone}</span>
                     </a>
                   )}
                   {topBar.showEmail !== false && topBar.email && (
                     <a
                       href={topBar.emailLink}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                       aria-label={`Email ${topBar.email}`}
                     >
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-                        <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
-                      </div>
-                      <span className="font-medium truncate">{topBar.email}</span>
+                      <Mail className="w-4 h-4" aria-hidden="true" />
+                      <span className="truncate max-w-[140px]">{topBar.email}</span>
                     </a>
                   )}
                 </div>
-              )}
-
-              {/* CTA Button */}
-              {cta && cta.text && (
-                <Link href={cta.href || '/contact'} onClick={onClose} className="block">
-                  <PremiumButton className="w-full h-14 text-lg font-semibold">
-                    {cta.text}
-                    <ArrowRight className="ml-2 w-5 h-5" aria-hidden="true" />
-                  </PremiumButton>
-                </Link>
               )}
             </div>
           </motion.div>

@@ -190,10 +190,6 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         height="large"
         alignment="center"
         showScrollIndicator={true}
-        badge={{
-          text: industry.hero?.badge || industry.title.toUpperCase(),
-          icon: Target,
-        }}
         title={(() => {
           // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
           const gradientStyle = {

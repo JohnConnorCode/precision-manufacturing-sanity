@@ -68,7 +68,6 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
         height="medium"
         alignment="left"
         darkHero={true}
-        badge={{ text: 'QUALITY STANDARDS' }}
         title={(() => {
           // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
           const gradientStyle = {

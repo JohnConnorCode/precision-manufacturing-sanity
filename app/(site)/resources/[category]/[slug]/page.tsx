@@ -102,7 +102,6 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
         height="medium"
         alignment="center"
         darkHero={true}
-        badge={{ text: categoryDisplayName.toUpperCase() }}
         title={(() => {
           // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
           const gradientStyle = {

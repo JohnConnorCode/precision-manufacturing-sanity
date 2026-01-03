@@ -315,7 +315,6 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         height="large"
         alignment="center"
         showScrollIndicator
-        badge={{ text: service.hero?.badge || 'SERVICE', icon: Target }}
         title={(() => {
           // Split title to highlight last word in blue gradient
           // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)

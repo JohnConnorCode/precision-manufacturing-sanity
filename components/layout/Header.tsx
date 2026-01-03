@@ -670,7 +670,6 @@ export default function Header({ data }: HeaderProps) {
         cta={cta}
         topBar={topBar}
         logoData={data?.logo}
-        mounted={mounted}
       />
     </>
   );

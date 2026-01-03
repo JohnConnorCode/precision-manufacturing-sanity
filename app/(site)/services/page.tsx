@@ -128,7 +128,7 @@ export default async function ServicesPage() {
   const heroDescription =
     servicesPageData?.hero?.description ||
     sharedServicesPage?.hero?.description;
-  const heroBadge =
+  const _heroBadge =
     servicesPageData?.hero?.badge ||
     sharedServicesPage?.hero?.badge;
   const heroButtonsSource = (servicesPageData?.hero?.buttons && servicesPageData.hero.buttons.length > 0)
@@ -177,7 +177,6 @@ export default async function ServicesPage() {
         <HeroSection
           backgroundImage={heroBackgroundImage || ''}
           imageAlt={heroImageAlt}
-          badge={heroBadge ? { text: heroBadge } : undefined}
           title={(() => {
             // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
             const gradientStyle = {

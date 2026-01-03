@@ -62,7 +62,6 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
         height="medium"
         alignment="center"
         darkHero={true}
-        badge={{ text: 'LEGAL' }}
         title={(() => {
           // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
           const gradientStyle = {

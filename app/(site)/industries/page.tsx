@@ -101,21 +101,25 @@ export default async function IndustriesPage() {
       <HeroSection
         backgroundImage={industriesPageData?.hero?.backgroundImage?.asset?.url || industriesPageData?.hero?.backgroundImageUrl || ''}
         imageAlt={industriesPageData?.hero?.backgroundImage?.alt || 'Industries hero background'}
-        badge={industriesPageData?.hero?.badge || '🏭 CRITICAL INDUSTRY SOLUTIONS'}
-        title={
-          industriesPageData?.hero?.heading ? (
-            <span className="text-inherit">
-              {industriesPageData.hero.heading.replace(industriesPageData.hero.headingHighlight || 'We Serve', '')}{' '}
-              <span className={`text-transparent bg-clip-text bg-gradient-to-r ${colors.textGradient}`}>
-                {industriesPageData.hero.headingHighlight || 'We Serve'}
-              </span>
+        title={(() => {
+          const gradientStyle = {
+            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          } as React.CSSProperties;
+
+          const heading = industriesPageData?.hero?.heading || industriesPageData?.hero?.title || 'Industries We Serve';
+          const highlight = industriesPageData?.hero?.headingHighlight || 'We Serve';
+          const beforeHighlight = heading.replace(highlight, '').trim();
+
+          return (
+            <span>
+              {beforeHighlight && <span className="text-inherit">{beforeHighlight} </span>}
+              <span style={gradientStyle}>{highlight}</span>
             </span>
-          ) : (
-            <span className="text-inherit">
-              Industries <span className={`text-transparent bg-clip-text bg-gradient-to-r ${colors.textGradient}`}>We Serve</span>
-            </span>
-          )
-        }
+          );
+        })()}
         description={industriesPageData?.hero?.subheading || 'Trusted partner for aerospace, defense, and energy sectors, delivering mission-critical components with uncompromising quality and precision.'}
         buttons={(industriesPageData?.hero?.buttons || [
           { label: 'Explore Industries', href: '#industries', variant: 'primary' },

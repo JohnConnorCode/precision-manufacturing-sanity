@@ -100,15 +100,12 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
     if (typeof bg === 'object' && bg?.alt) return bg.alt;
     return contactData.hero?.imageAlt || '';
   })();
-  const HeroBadgeIcon = iconMap[contactData.hero?.badgeIconName || 'Activity'] || Activity;
-
   return (
     <div className="min-h-screen bg-background">
       {contactData.hero && (
         <HeroSection
           backgroundImage={heroBackgroundImage}
           imageAlt={heroImageAlt}
-          badge={contactData.hero.badge ? { text: contactData.hero.badge, icon: HeroBadgeIcon } : undefined}
           title={(() => {
             // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
             const gradientStyle = {

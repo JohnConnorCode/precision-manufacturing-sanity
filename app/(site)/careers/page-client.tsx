@@ -27,17 +27,11 @@ interface CareersPageClientProps {
 }
 
 export default function CareersPageClient({ data, jobPostings = [] }: CareersPageClientProps) {
-  const BadgeIcon = data?.hero?.badgeIconName ? (iconMap[data.hero.badgeIconName] || Users) : Users;
-
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
         backgroundImage={urlFor(data?.hero?.backgroundImage) || (data as any)?.hero?.backgroundImageUrl}
         imageAlt={data?.hero?.imageAlt || data?.hero?.backgroundImage?.alt}
-        badge={{
-          text: data?.hero?.badge,
-          icon: BadgeIcon
-        }}
         title={(() => {
           // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
           const gradientStyle = {
