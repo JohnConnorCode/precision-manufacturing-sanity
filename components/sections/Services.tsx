@@ -57,6 +57,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
   const theme = useTheme();
 
   // Animation hooks for scroll-triggered animations that work on refresh
+  const subdescAnim = useAnimateInView<HTMLParagraphElement>();
   const cardsAnim = useAnimateInView<HTMLDivElement>();
   const ctaAnim = useAnimateInView<HTMLDivElement>();
 
@@ -90,13 +91,20 @@ export default function Services({ data, sectionData }: ServicesProps) {
             word2={headingWord2}
             heading={!headingWord1 && !headingWord2 ? heading : undefined}
             description={description}
+            className={subdescription ? '[&]:mb-4' : ''}
           />
         )}
 
         {subdescription && (
-          <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 text-center max-w-4xl mx-auto mb-6">
+          <motion.p
+            ref={subdescAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={subdescAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.2 }}
+            className="text-base md:text-lg text-slate-600 dark:text-slate-400 text-center max-w-4xl mx-auto mb-8 md:mb-12"
+          >
             {subdescription}
-          </p>
+          </motion.p>
         )}
 
         <div ref={cardsAnim.ref} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ${spacing.grid}`}>

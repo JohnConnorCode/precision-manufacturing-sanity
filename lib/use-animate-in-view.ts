@@ -73,6 +73,14 @@ export const ANIM_STATES = {
     initial: { opacity: 0, scale: 0.95 },
     animate: { opacity: 1, scale: 1 },
   },
+  slideLeft: {
+    initial: { opacity: 0, x: -20 },
+    animate: { opacity: 1, x: 0 },
+  },
+  slideRight: {
+    initial: { opacity: 0, x: 20 },
+    animate: { opacity: 1, x: 0 },
+  },
 } as const;
 
 /**

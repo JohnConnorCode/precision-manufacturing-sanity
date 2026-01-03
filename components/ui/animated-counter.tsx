@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
 import { usePrefersReducedMotion } from '@/lib/motion'
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view'
 
 interface AnimatedCounterProps {
   value: number
@@ -76,20 +77,16 @@ interface StatsCounterProps {
 
 export function StatsCounter({ stats, className = "" }: StatsCounterProps) {
   const prefersReducedMotion = usePrefersReducedMotion()
+  const { ref, shouldAnimate } = useAnimateInView<HTMLDivElement>()
 
   return (
-    <div className={`grid grid-cols-2 md:grid-cols-4 gap-8 ${className}`}>
+    <div ref={ref} className={`grid grid-cols-2 md:grid-cols-4 gap-8 ${className}`}>
       {stats.map((stat, index) => (
         <motion.div
           key={stat.label}
-          initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{
-            duration: prefersReducedMotion ? 0 : 0.6,
-            delay: prefersReducedMotion ? 0 : index * 0.1,
-            ease: [0.25, 0.1, 0.25, 1]
-          }}
+          initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+          animate={shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+          transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : index * 0.1 }}
           className="text-center"
         >
           <div className="text-4xl md:text-5xl font-black mb-2">
