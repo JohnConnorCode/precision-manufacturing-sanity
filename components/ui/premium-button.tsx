@@ -84,7 +84,7 @@ export const PremiumButton = React.forwardRef<
 
   // Ghost variant uses inline styles for WebKit gradient text compatibility
   const ghostStyles: React.CSSProperties | undefined = variant === 'ghost' ? {
-    background: 'linear-gradient(to right, #2563eb, #4f46e5)',
+    background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',

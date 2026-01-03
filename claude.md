@@ -501,7 +501,7 @@ const itemVariants = {
 ```typescript
 <span
   style={{
-    background: 'linear-gradient(to right, #60a5fa, #6366f1)',
+    background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
@@ -511,9 +511,10 @@ const itemVariants = {
 </span>
 ```
 
-**Standard Gradient Colors:**
-- Blue to Indigo: `#60a5fa, #6366f1` or `#3b82f6, #4f46e5`
-- Use `getGradientTextStyle()` from `@/lib/theme-utils` for dynamic theme colors
+**THE STANDARD GRADIENT (use this everywhere):**
+```
+#3b82f6 → #4f46e5  (blue-600 to indigo-600)
+```
 
 **Pattern for splitting heading with gradient on last word(s):**
 ```typescript
@@ -527,7 +528,7 @@ return (
     {firstPart && <span>{firstPart} </span>}
     <span
       style={{
-        background: 'linear-gradient(to right, #60a5fa, #3b82f6, #6366f1)',
+        background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
         WebkitBackgroundClip: 'text',
         WebkitTextFillColor: 'transparent',
         backgroundClip: 'text',

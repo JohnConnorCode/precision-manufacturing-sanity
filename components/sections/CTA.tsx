@@ -130,7 +130,7 @@ export default function CTA({ data }: CTAProps) {
             {firstPart && <span>{firstPart} </span>}
             <span
               style={{
-                background: 'linear-gradient(to right, #60a5fa, #3b82f6, #6366f1)',
+                background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',

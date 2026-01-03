@@ -78,7 +78,7 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
                   <span
                     key={i}
                     style={{
-                      background: 'linear-gradient(to right, #60a5fa, #818cf8)',
+                      background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text',
