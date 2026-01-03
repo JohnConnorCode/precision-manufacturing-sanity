@@ -9,6 +9,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
 import { getHeroImageUrl } from '@/lib/hero-images';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
 const urlFor = getHeroImageUrl;
 
@@ -27,6 +29,13 @@ interface CareersPageClientProps {
 }
 
 export default function CareersPageClient({ data, jobPostings = [] }: CareersPageClientProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hooks
+  const whyWorkLeftAnim = useAnimateInView<HTMLDivElement>();
+  const whyWorkRightAnim = useAnimateInView<HTMLDivElement>();
+  const benefitsHeaderAnim = useAnimateInView<HTMLDivElement>();
+
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
@@ -81,10 +90,10 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
         <div className={spacing.container}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={whyWorkLeftAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+              animate={whyWorkLeftAnim.shouldAnimate ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+              transition={ANIM_TRANSITION}
             >
               <h2 className={cn(typography.h2, "mb-6")}>{data?.whyWorkHere?.heading || 'Why Work at IIS?'}</h2>
               <p className={cn(typography.lead, "mb-6")}>
@@ -99,10 +108,10 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={whyWorkRightAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+              animate={whyWorkRightAnim.shouldAnimate ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+              transition={ANIM_TRANSITION}
               className="relative"
             >
               {(() => {
@@ -130,10 +139,10 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       <section className={styles.sectionLight}>
         <div className={spacing.container}>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            ref={benefitsHeaderAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={benefitsHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={ANIM_TRANSITION}
             className="text-center mb-16"
           >
             <h2 className={cn(typography.h2, "mb-6")}>{data?.benefits?.title || 'Comprehensive Benefits Package'}</h2>

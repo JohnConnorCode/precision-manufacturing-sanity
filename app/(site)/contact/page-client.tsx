@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import {
   Mail,
   Phone,
@@ -77,6 +79,14 @@ interface ContactPageClientProps {
 
 export default function ContactPageClient({ data }: ContactPageClientProps) {
   const contactData = data;
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hooks
+  const headerAnim = useAnimateInView<HTMLDivElement>();
+  const leftCardAnim = useAnimateInView<HTMLDivElement>();
+  const rightCardAnim = useAnimateInView<HTMLDivElement>();
+  const mapAnim = useAnimateInView<HTMLDivElement>();
+  const statsAnim = useAnimateInView<HTMLDivElement>();
 
   if (!contactData) {
     return null;
@@ -153,10 +163,10 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
         <div className={spacing.container}>
             <div className="max-w-6xl mx-auto">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
+                ref={headerAnim.ref}
+                initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                animate={headerAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                transition={ANIM_TRANSITION}
                 className="text-center mb-16"
               >
                 <h2 className={cn(typography.h2, 'mb-6')}>{contactData.contactInfo.heading}</h2>
@@ -168,10 +178,10 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
             <div className="grid lg:grid-cols-2 gap-12 mb-20">
               {/* Primary Contact Information */}
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                viewport={{ once: true }}
+                ref={leftCardAnim.ref}
+                initial={prefersReducedMotion ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+                animate={leftCardAnim.shouldAnimate ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+                transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.1 }}
               >
                 <Card className={cn(styles.featureCard, 'p-10 h-full')}>
                   <h3 className={cn(typography.h3, 'mb-8')}>Contact Information</h3>
@@ -241,10 +251,10 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
               {/* Quick Actions / Additional Info */}
               <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
+                ref={rightCardAnim.ref}
+                initial={prefersReducedMotion ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+                animate={rightCardAnim.shouldAnimate ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+                transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.2 }}
                 className="space-y-6"
               >
                 {/* Quick Actions */}
@@ -317,10 +327,10 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
             {/* Map Section */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={mapAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={mapAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
             >
               <Card className="overflow-hidden shadow-2xl">
                 <div className="relative h-[500px]">
@@ -361,10 +371,10 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
         <section className={styles.sectionDark}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
+              ref={statsAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={statsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="flex flex-wrap justify-center gap-12"
             >
               {contactData.bottomStats
