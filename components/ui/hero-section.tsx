@@ -6,7 +6,7 @@ import { ArrowRight, ChevronDown, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { ReactNode } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { colorStyleToCSS, getOverlayStyles, ColorStyle } from '@/lib/sanity-styles';
 import { getHeroTheme, resolveHeroTone } from '@/lib/hero-theme';
 import { usePrefersReducedMotion } from '@/lib/motion';
@@ -118,6 +118,12 @@ export default function HeroSection({
 
   const LEGACY_PARITY = process.env.NEXT_PUBLIC_PARITY_MODE === 'legacy'
 
+  // Mounted state for SSR-safe animations
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const heightClasses = {
     full: 'min-h-screen',
     large: 'min-h-[85vh]',
@@ -228,7 +234,7 @@ export default function HeroSection({
           {badge && (
             <motion.div
               initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
               transition={{ delay: 0.2, duration: 0.6 }}
               className="mb-8"
             >
@@ -251,7 +257,7 @@ export default function HeroSection({
           {/* Title */}
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
             transition={{ delay: 0.4, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
             className={cn(
               titleSize ? titleSizeClasses[titleSize] : 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
@@ -270,7 +276,7 @@ export default function HeroSection({
           {subtitle && (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ delay: 0.6, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
               className="text-xl sm:text-2xl md:text-3xl mb-4 font-light"
               style={{ color: defaultSubtitleColor }}
@@ -283,7 +289,7 @@ export default function HeroSection({
           {description && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ delay: 0.8, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
               className={cn(
                 descriptionSize ? descSizeClasses[descriptionSize] : 'text-base md:text-lg',
@@ -299,7 +305,7 @@ export default function HeroSection({
           {buttons.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ delay: 1.0, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
               className={cn(
                 'flex flex-col sm:flex-row gap-5 sm:gap-6',
@@ -362,7 +368,7 @@ export default function HeroSection({
       {showScrollIndicator && (
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={isMounted ? { opacity: 1 } : { opacity: 0 }}
           transition={{ delay: 2, duration: 1 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
         >

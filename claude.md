@@ -294,32 +294,33 @@ function DynamicIcon({ name, ...props }: { name: string }) {
 
 ---
 
-## 2. ANIMATIONS - CONSISTENCY GUIDELINES
+## 2. ANIMATIONS - THE SINGLE CORRECT PATTERN
 
-### ⚠️ CRITICAL: HYDRATION-SAFE ANIMATIONS
-
-**This is WHY animations keep breaking:** Framer Motion + Next.js SSR causes hydration mismatches.
+### ⚠️ CRITICAL: Why Animations Break
 
 **The Problem:**
-1. SSR renders elements with `initial` state (opacity: 0, y: 20, etc.)
-2. Client hydrates, but if ANY state differs (scroll, theme, etc.), hydration fails
-3. Failed hydration = elements STUCK at opacity: 0 forever
-4. This happens silently - no console errors
+1. `whileInView` only triggers when element ENTERS viewport
+2. On page refresh, elements already visible don't "enter" - they're already there
+3. So animations don't play on refresh - content just appears
 
-**The Solution - ALWAYS use one of these patterns:**
+### THE SOLUTION: useAnimateInView Hook
 
-#### Option 1: useMounted Hook (PREFERRED)
+We have ONE hook that solves all animation problems. Use it everywhere.
+
+**Location:** `@/lib/use-animate-in-view`
+
 ```typescript
-import { useMounted } from '@/components/ui/safe-motion';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
-function Component() {
-  const mounted = useMounted();
+function MyComponent() {
+  const { ref, shouldAnimate } = useAnimateInView();
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : 20 }}
-      transition={{ duration: 0.5, delay: mounted ? 0.2 : 0 }}
+      ref={ref}
+      initial={ANIM_STATES.fadeUp.initial}
+      animate={shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+      transition={ANIM_TRANSITION}
     >
       {children}
     </motion.div>
@@ -327,139 +328,70 @@ function Component() {
 }
 ```
 
-#### Option 3: whileInView (Safe for scroll-triggered)
+### OR: Use AnimatedSection Component
+
+Even simpler - use the pre-built component:
+
 ```typescript
-// whileInView is SAFE because it triggers AFTER hydration
+import AnimatedSection from '@/components/ui/animated-section';
+
+<AnimatedSection delay={0.2}>
+  <YourContent />
+</AnimatedSection>
+```
+
+### For Hero Sections: isMounted Pattern
+
+Hero sections use `animate` directly (not scroll-triggered), so they need `isMounted`:
+
+```typescript
+const [isMounted, setIsMounted] = useState(false);
+useEffect(() => { setIsMounted(true); }, []);
+
+<motion.h1
+  initial={{ opacity: 0, y: 40 }}
+  animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+  transition={{ delay: 0.4, duration: 0.8 }}
+>
+```
+
+### Animation States (ANIM_STATES)
+
+```typescript
+fadeUp:   { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 } }
+fadeIn:   { initial: { opacity: 0 }, animate: { opacity: 1 } }
+scaleIn:  { initial: { opacity: 0, scale: 0.95 }, animate: { opacity: 1, scale: 1 } }
+```
+
+### Standard Transition
+
+```typescript
+{ duration: 0.5, ease: "easeOut" }
+```
+
+### Hover Effects (Still use motion props directly)
+
+```typescript
 <motion.div
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
->
-  {children}
-</motion.div>
-```
-
-**❌ DANGEROUS - DO NOT USE in components with state:**
-```typescript
-// This WILL break if component has scroll/theme/any client state
-<motion.div
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}  // BAD - no mounted check!
->
-```
-
-**Components that MUST use SafeMotion or mounted check:**
-- Header/Navigation (has scroll state, theme state)
-- Any component with useState that differs from SSR
-- Hero sections (if they have client-side state)
-
-**Safe to use regular motion with animate:**
-- Static components with NO client state
-- Components that ONLY use whileInView
-- Hover/tap animations (whileHover, whileTap)
-
----
-
-### Standard Animation Patterns
-
-**Use these EXACT Framer Motion patterns for consistency:**
-
-#### Page Entry Animations
-```typescript
-'use client'
-import { motion } from 'framer-motion'
-
-// Section fade-in on scroll (STANDARD PATTERN)
-<motion.section
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, margin: "-100px" }}
-  transition={{ duration: 0.6, ease: "easeOut" }}
->
-  {children}
-</motion.section>
-```
-
-#### Stagger Children
-```typescript
-// Parent container
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
-}
-
-// Child items
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: "easeOut" }
-  }
-}
-
-<motion.div
-  variants={containerVariants}
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true }}
->
-  {items.map((item) => (
-    <motion.div key={item.id} variants={itemVariants}>
-      {item.content}
-    </motion.div>
-  ))}
-</motion.div>
-```
-
-#### Hover Effects (Cards)
-```typescript
-// Standard card hover (KEEP CONSISTENT)
-<motion.div
-  whileHover={{
-    scale: 1.02,
-    boxShadow: "0 20px 40px rgba(0,0,0,0.15)"
-  }}
-  transition={{ duration: 0.3, ease: "easeOut" }}
->
-  <Card />
-</motion.div>
-```
-
-#### Button Hover Effects
-```typescript
-// Standard button hover (KEEP CONSISTENT)
-<motion.button
-  whileHover={{ scale: 1.05 }}
+  whileHover={{ scale: 1.02 }}
   whileTap={{ scale: 0.98 }}
-  transition={{ duration: 0.2 }}
+  transition={{ duration: 0.3 }}
 >
-  {label}
-</motion.button>
 ```
 
 ### Animation Rules
 
-1. **ALWAYS use `whileInView` instead of `animate`** for scroll-triggered animations
-2. **ALWAYS use `viewport={{ once: true }}`** to prevent re-triggering on scroll
-3. **ALWAYS use `margin: "-100px"`** to trigger animations slightly before viewport
-4. **Duration:** 0.6s for sections, 0.3s for hover, 0.2s for buttons
-5. **Easing:** `"easeOut"` for entries, `"easeInOut"` for complex animations
-6. **Stagger:** 0.1s between children, 0.2s initial delay
+1. **Use `useAnimateInView` or `AnimatedSection`** for scroll-triggered content
+2. **Use `isMounted` pattern** for hero sections with `animate` prop
+3. **Never use bare `whileInView`** - it breaks on page refresh
+4. **Duration:** 0.5s standard, 0.3s for hover
+5. **Easing:** `"easeOut"` for all entry animations
 
 ### Animation Performance
 
-**DO NOT animate these properties (causes reflow):**
-- ❌ width, height, top, left, margin, padding
-
-**ONLY animate these properties (GPU accelerated):**
+**ONLY animate GPU-accelerated properties:**
 - ✅ opacity, transform (scale, translateX, translateY, rotate)
+- ❌ width, height, top, left, margin, padding
 
 ---
 
