@@ -10,6 +10,8 @@ import Image from 'next/image';
 import ParallaxImage from '@/components/ui/parallax-image';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
 import { getHeroImageUrl } from '@/lib/hero-images';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
 const iconMap: Record<string, LucideIcon> = {
   Award,
@@ -159,6 +161,23 @@ interface AboutPageClientProps {
 }
 
 export default function AboutPageClient({ data }: AboutPageClientProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hooks for each section
+  const statsAnim = useAnimateInView<HTMLDivElement>();
+  const storyLeftAnim = useAnimateInView<HTMLDivElement>();
+  const storyRightAnim = useAnimateInView<HTMLDivElement>();
+  const timelineHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const timelineGridAnim = useAnimateInView<HTMLDivElement>();
+  const valuesHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const valuesGridAnim = useAnimateInView<HTMLDivElement>();
+  const capabilitiesHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const capabilitiesGridAnim = useAnimateInView<HTMLDivElement>();
+  const certificationsAnim = useAnimateInView<HTMLDivElement>();
+  const leadershipHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const leadershipGridAnim = useAnimateInView<HTMLDivElement>();
+  const ctaAnim = useAnimateInView<HTMLDivElement>();
+
   if (!data) {
     return null;
   }
@@ -245,10 +264,10 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
         <section id="stats" className={`${styles.sectionLight} bg-slate-900/5`}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={statsAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={statsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="grid grid-cols-2 md:grid-cols-4 gap-8"
             >
               {data.companyStats
@@ -256,10 +275,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                 .map((stat: CompanyStat, index: number) => (
                 <motion.div
                   key={`${stat?.label}-${index}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={statsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : index * 0.1 }}
                   className="text-center"
                 >
                   <div className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-tone-inverse mb-2">
@@ -283,10 +301,10 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
           <div className={spacing.container}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
+                ref={storyLeftAnim.ref}
+                initial={prefersReducedMotion ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+                animate={storyLeftAnim.shouldAnimate ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+                transition={ANIM_TRANSITION}
               >
                 {data.story?.title && (
                   <h2 className={cn(typography.h2, "mb-6")}>{data.story.title}</h2>
@@ -300,10 +318,10 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
 
               {storyImage && (
                 <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8 }}
-                  viewport={{ once: true }}
+                  ref={storyRightAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+                  animate={storyRightAnim.shouldAnimate ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+                  transition={ANIM_TRANSITION}
                   className="relative"
                 >
                   <ParallaxImage
@@ -323,10 +341,10 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={timelineHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={timelineHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-12"
             >
               {data.timeline?.title && (
@@ -339,16 +357,15 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               )}
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div ref={timelineGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {timelineMilestones
                 .filter((milestone: Milestone) => milestone?.enabled !== false)
                 .map((milestone: Milestone, index: number) => (
                 <motion.div
                   key={`${milestone?.title}-${index}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
-                  viewport={{ once: true }}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={timelineGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
                   <Card className={cn(styles.featureCard, "h-full group")}>
                     {/* Year Badge */}
@@ -374,10 +391,10 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={valuesHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={valuesHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-12"
             >
               {data.values?.title && (
@@ -390,7 +407,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               )}
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div ref={valuesGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {valuesItems
                 .filter((value: ValueItem) => value?.enabled !== false)
                 .map((value: ValueItem, index: number) => {
@@ -405,10 +422,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   return (
                     <motion.div
                       key={`${value?.title}-${index}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
-                      viewport={{ once: true }}
+                      initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      animate={valuesGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                     >
                       <Card className={cn(styles.featureCard, "h-full group")}>
                         <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
@@ -429,10 +445,10 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
         <section id="capabilities" className={styles.sectionLight}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={capabilitiesHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={capabilitiesHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-12"
             >
               <h2 className={cn(typography.h2, "mb-4")}>Capabilities & Certifications</h2>
@@ -443,7 +459,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
 
             {/* Capabilities Grid - Full Width */}
             {capabilities.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+              <div ref={capabilitiesGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                 {capabilities.map((capability: Capability, index: number) => {
                   const gradients = [
                     'from-blue-600 to-indigo-600',
@@ -455,10 +471,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   return (
                     <motion.div
                       key={`${capability?.title}-${index}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
-                      viewport={{ once: true }}
+                      initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      animate={capabilitiesGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                     >
                       <Card className="p-6 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 hover:shadow-lg h-full group">
                         <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
@@ -486,10 +501,10 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
             {/* Certifications Section */}
             {certifications.length > 0 && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
+                ref={certificationsAnim.ref}
+                initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                animate={certificationsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                transition={ANIM_TRANSITION}
                 className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 md:p-12"
               >
                 <div className="text-center mb-8">
@@ -503,10 +518,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   {certifications.map((cert: Certification, index: number) => (
                     <motion.div
                       key={`${cert?.certification}-${index}`}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: Math.min(index * 0.05, 0.3), duration: 0.4 }}
-                      viewport={{ once: true }}
+                      initial={prefersReducedMotion ? ANIM_STATES.scaleIn.animate : ANIM_STATES.scaleIn.initial}
+                      animate={certificationsAnim.shouldAnimate ? ANIM_STATES.scaleIn.animate : ANIM_STATES.scaleIn.initial}
+                      transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.05, 0.3) }}
                       className="flex flex-col items-center text-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300"
                     >
                       <Shield className="w-8 h-8 text-blue-400 mb-2" />
@@ -531,10 +545,10 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
         <section className={spacing.section}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={leadershipHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={leadershipHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-12"
             >
               {data.leadership?.title && (
@@ -547,7 +561,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               )}
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div ref={leadershipGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 gap-10">
               {leadershipMembers
                 .filter((leader: LeadershipMember) => leader?.enabled !== false)
                 .map((leader: LeadershipMember, index: number) => {
@@ -555,10 +569,9 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   return (
                     <motion.div
                       key={`${leader?.name}-${index}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
-                      viewport={{ once: true }}
+                      initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      animate={leadershipGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                     >
                       <Card className="overflow-hidden border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 hover:shadow-xl h-full group">
                         {/* Large Photo Header */}
@@ -608,10 +621,10 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
         <section className={spacing.section}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={ctaAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={ctaAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center max-w-4xl mx-auto"
             >
               {data.cta?.title && (

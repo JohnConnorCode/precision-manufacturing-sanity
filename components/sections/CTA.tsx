@@ -74,65 +74,75 @@ export default function CTA({ data }: CTAProps) {
 
   return (
     <section className="relative py-32 md:py-40 overflow-hidden dark-section">
-      {/* Dramatic Background */}
+      {/* Premium Dark Background with Dynamic Elements */}
       <div className="absolute inset-0 bg-slate-950">
-        {/* Gradient layers */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-950/40 via-slate-950 to-indigo-950/40" />
+        {/* Rich gradient base */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900" />
 
-        {/* Animated gradient orbs */}
-        <div className="absolute top-0 left-1/4 w-[800px] h-[800px] bg-blue-600/8 rounded-full blur-[150px]" />
-        <div className="absolute bottom-0 right-1/4 w-[800px] h-[800px] bg-indigo-600/8 rounded-full blur-[150px]" />
+        {/* Accent gradient overlays */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-blue-950/50 via-transparent to-indigo-950/50" />
 
-        {/* Animated scan line */}
+        {/* Large glowing orbs for depth */}
+        <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px]" />
+        <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-blue-500/5 rounded-full blur-[100px]" />
+
+        {/* Animated diagonal lines */}
         <motion.div
-          className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"
-          initial={{ top: '0%' }}
-          animate={{ top: ['0%', '100%', '0%'] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(59, 130, 246, 0.5) 100px, rgba(59, 130, 246, 0.5) 101px)',
+          }}
+          animate={{ backgroundPosition: ['0px 0px', '200px 200px'] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
         />
 
-        {/* Grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:80px_80px]" />
 
-        {/* Corner accents */}
-        <svg className="absolute top-0 left-0 w-48 h-48 text-blue-500/10" viewBox="0 0 100 100">
-          <path d="M 0 40 L 0 0 L 40 0" fill="none" stroke="currentColor" strokeWidth="1" />
-          <path d="M 0 60 L 0 0 L 60 0" fill="none" stroke="currentColor" strokeWidth="0.5" />
-        </svg>
-        <svg className="absolute bottom-0 right-0 w-48 h-48 text-blue-500/10 rotate-180" viewBox="0 0 100 100">
-          <path d="M 0 40 L 0 0 L 40 0" fill="none" stroke="currentColor" strokeWidth="1" />
-          <path d="M 0 60 L 0 0 L 60 0" fill="none" stroke="currentColor" strokeWidth="0.5" />
-        </svg>
+        {/* Top and bottom gradient edges */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
+
+        {/* Corner decorations */}
+        <div className="absolute top-8 left-8 w-24 h-24">
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-blue-500/40 to-transparent" />
+          <div className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-blue-500/40 to-transparent" />
+        </div>
+        <div className="absolute bottom-8 right-8 w-24 h-24">
+          <div className="absolute bottom-0 right-0 w-full h-px bg-gradient-to-l from-indigo-500/40 to-transparent" />
+          <div className="absolute bottom-0 right-0 h-full w-px bg-gradient-to-t from-indigo-500/40 to-transparent" />
+        </div>
       </div>
 
       <div className="container relative z-10">
         <div ref={sectionAnim.ref} className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
+          {/* Eyebrow Badge */}
           {badge && (
             <motion.div
               initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
               animate={sectionAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
               transition={prefersReducedMotion ? { duration: 0 } : ANIM_TRANSITION}
-              className="inline-flex items-center px-4 py-2 mb-8 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-sm"
+              className="mb-6"
             >
-              <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
+              <span className="text-xs sm:text-sm font-semibold text-blue-400 uppercase tracking-[0.15em]">
                 {badge}
               </span>
             </motion.div>
           )}
 
-          {/* Title with gradient on last 2 words */}
+          {/* Title with gradient on last 2 words - UPPERCASE to match other sections */}
           {/* Using inline styles for WebKit compatibility (Tailwind bg-clip-text doesn't work in Safari) */}
           <motion.h2
             initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
             animate={sectionAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
             transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : STAGGER.cards }}
-            className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-tone-inverse mb-8 leading-tight"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-tone-inverse mb-8 leading-[1.1] tracking-tight uppercase"
           >
             {firstPart && <span>{firstPart} </span>}
             <span
               style={{
-                background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+                background: 'linear-gradient(to right, #3b82f6, #6366f1)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',

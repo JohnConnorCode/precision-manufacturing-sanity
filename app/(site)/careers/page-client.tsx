@@ -31,10 +31,16 @@ interface CareersPageClientProps {
 export default function CareersPageClient({ data, jobPostings = [] }: CareersPageClientProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  // Animation hooks
+  // Animation hooks for each section
   const whyWorkLeftAnim = useAnimateInView<HTMLDivElement>();
   const whyWorkRightAnim = useAnimateInView<HTMLDivElement>();
   const benefitsHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const benefitsGridAnim = useAnimateInView<HTMLDivElement>();
+  const valuesHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const valuesGridAnim = useAnimateInView<HTMLDivElement>();
+  const opportunitiesHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const opportunitiesGridAnim = useAnimateInView<HTMLDivElement>();
+  const ctaAnim = useAnimateInView<HTMLDivElement>();
 
   return (
     <div className="min-h-screen bg-background">
@@ -151,7 +157,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div ref={benefitsGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {(data?.benefits?.items || [])
               .filter((benefit: any) => benefit?.enabled !== false)
               .map((benefit: any, index: number) => {
@@ -159,10 +165,9 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               return (
                 <motion.div
                   key={benefit.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={benefitsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
                   <Card className={cn(styles.featureCard, "h-full")}>
                     <div className="flex items-start">
@@ -188,10 +193,10 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       <section className={spacing.section}>
         <div className={spacing.container}>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            ref={valuesHeaderAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={valuesHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={ANIM_TRANSITION}
             className="text-center mb-16"
           >
             <h2 className={cn(typography.h2, "mb-6")}>{data?.values?.title || 'Our Values'}</h2>
@@ -200,16 +205,15 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div ref={valuesGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {(data?.values?.items || [])
               .filter((value: any) => value?.enabled !== false)
               .map((value: any, index: number) => (
               <motion.div
                 key={value.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
+                initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                animate={valuesGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
               >
                 <Card className={cn(styles.featureCard)}>
                   <h3 className={cn(typography.h4, "mb-3")}>{value.title}</h3>
@@ -225,10 +229,10 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       <section id="opportunities" className={styles.sectionLight}>
         <div className={spacing.container}>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            ref={opportunitiesHeaderAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={opportunitiesHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={ANIM_TRANSITION}
             className="text-center mb-16"
           >
             <h2 className={cn(typography.h2, "mb-6")}>{data?.opportunities?.title || 'Current Opportunities'}</h2>
@@ -238,14 +242,13 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
           </motion.div>
 
           {jobPostings.length > 0 ? (
-            <div className="space-y-6">
+            <div ref={opportunitiesGridAnim.ref} className="space-y-6">
               {jobPostings.map((position: any, index: number) => (
                 <motion.div
                   key={position._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={opportunitiesGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
                   <Link href={`/careers/${position.slug?.current || position.slug}`} className="block">
                     <Card className={cn(styles.featureCard, "group hover:shadow-xl transition-shadow cursor-pointer")}>
@@ -309,10 +312,10 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       <section className={spacing.section}>
         <div className={spacing.container}>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            ref={ctaAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={ctaAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={ANIM_TRANSITION}
             className="text-center max-w-4xl mx-auto"
           >
             <h2 className={cn(typography.h2, "mb-6")}>{data?.cta?.title || 'Ready to Join Us?'}</h2>

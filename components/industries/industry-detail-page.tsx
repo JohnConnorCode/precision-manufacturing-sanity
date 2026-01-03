@@ -9,12 +9,26 @@ import Image from 'next/image';
 import { PortableText } from '@portabletext/react';
 import HeroSection from '@/components/ui/hero-section';
 import { getHeroImageUrl } from '@/lib/hero-images';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
 interface IndustryDetailPageProps {
   industry: any;
 }
 
 export default function IndustryDetailPage({ industry }: IndustryDetailPageProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hooks for each section
+  const statsAnim = useAnimateInView<HTMLDivElement>();
+  const expertiseHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const expertiseGridAnim = useAnimateInView<HTMLDivElement>();
+  const certificationsHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const certificationsGridAnim = useAnimateInView<HTMLDivElement>();
+  const processBenefitsHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const processBenefitsGridAnim = useAnimateInView<HTMLDivElement>();
+  const ctaAnim = useAnimateInView<HTMLDivElement>();
+
   const heroImage =
     getHeroImageUrl(industry.hero?.backgroundImage) ||
     getHeroImageUrl(industry.image) ||
@@ -92,14 +106,13 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
       {industry.stats && industry.stats.length > 0 && (
         <section className="py-16 bg-zinc-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div ref={statsAnim.ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {industry.stats.map((stat: any, index: number) => (
                 <motion.div
                   key={stat._key || index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={statsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   className="text-center"
                 >
                   <div className="text-4xl font-bold mb-2" style={{
@@ -124,10 +137,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
         <section className="py-24 bg-zinc-50 dark:bg-zinc-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
+              ref={expertiseHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={expertiseHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-tone-inverse mb-4">
@@ -138,16 +151,15 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               </p>
             </motion.div>
 
-            <div className="space-y-20">
+            <div ref={expertiseGridAnim.ref} className="space-y-20">
               {industry.expertise.map((section: any, index: number) => {
                 const isEven = index % 2 === 0;
                 return (
                   <motion.div
                     key={section._key || index}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={{ duration: 0.7 }}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={expertiseGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                     className="group"
                   >
                     <div className={`grid lg:grid-cols-2 gap-12 items-center ${isEven ? '' : 'lg:grid-flow-dense'}`}>
@@ -246,10 +258,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
         <section className="py-24 bg-zinc-50 dark:bg-zinc-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
+              ref={certificationsHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={certificationsHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-tone-inverse mb-4">
@@ -260,14 +272,13 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               </p>
             </motion.div>
 
-            <div className={`grid md:grid-cols-2 ${industry.certifications.length >= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-8`}>
+            <div ref={certificationsGridAnim.ref} className={`grid md:grid-cols-2 ${industry.certifications.length >= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-8`}>
               {industry.certifications.map((cert: any, index: number) => (
                 <motion.div
                   key={cert._key || index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={certificationsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
                   <Card className="p-6 h-full hover:shadow-lg transition-shadow duration-300">
                     <Award className="w-12 h-12 text-blue-500 mb-4" />
@@ -286,10 +297,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
         <section className="py-24 bg-white dark:bg-zinc-950">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
+              ref={processBenefitsHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={processBenefitsHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-tone-inverse mb-4">
@@ -300,14 +311,13 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               </p>
             </motion.div>
 
-            <div className={`grid ${industry.processBenefits.length >= 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'} gap-8`}>
+            <div ref={processBenefitsGridAnim.ref} className={`grid ${industry.processBenefits.length >= 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'} gap-8`}>
               {industry.processBenefits.map((benefit: any, index: number) => (
                 <motion.div
                   key={benefit._key || index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={processBenefitsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
                   <Card className="p-8 h-full hover:shadow-lg transition-shadow duration-300">
                     <h3 className="text-2xl font-bold text-zinc-900 dark:text-tone-inverse mb-4">{benefit.title}</h3>
@@ -335,10 +345,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
       <section className="py-24 bg-zinc-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
+            ref={ctaAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={ctaAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={ANIM_TRANSITION}
             className="text-center max-w-4xl mx-auto"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-tone-inverse mb-6">

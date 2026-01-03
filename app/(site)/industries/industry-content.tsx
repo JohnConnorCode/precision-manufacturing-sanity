@@ -11,6 +11,8 @@ import HeroSection from '@/components/ui/hero-section';
 import React from 'react';
 import { getHeroImageAlt, getHeroImageUrl } from '@/lib/hero-images';
 import type { SanityImageSource } from '@/lib/image-utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
 const hasText = (value?: string | null): value is string =>
   typeof value === 'string' && value.trim().length > 0;
@@ -177,6 +179,27 @@ interface IndustryContentProps {
 
 export function IndustryContent({ industryData }: IndustryContentProps) {
   const industry = industryData;
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hooks for each section
+  const marketOverviewLeftAnim = useAnimateInView<HTMLDivElement>();
+  const marketOverviewChallengesAnim = useAnimateInView<HTMLDivElement>();
+  const capabilitiesHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const capabilitiesGridAnim = useAnimateInView<HTMLDivElement>();
+  const componentsHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const componentsGridAnim = useAnimateInView<HTMLDivElement>();
+  const expertiseHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const expertiseGridAnim = useAnimateInView<HTMLDivElement>();
+  const regulatoryHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const regulatoryCertsAnim = useAnimateInView<HTMLDivElement>();
+  const regulatoryStandardsAnim = useAnimateInView<HTMLDivElement>();
+  const applicationsHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const applicationsGridAnim = useAnimateInView<HTMLDivElement>();
+  const qualityHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const qualityGridAnim = useAnimateInView<HTMLDivElement>();
+  const processBenefitsHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const processBenefitsGridAnim = useAnimateInView<HTMLDivElement>();
+  const ctaAnim = useAnimateInView<HTMLDivElement>();
 
   const heroImage = getHeroImageUrl(industry.hero?.backgroundImage);
   const heroImageAlt = getHeroImageAlt(industry.hero?.backgroundImage, industry.title);
@@ -225,10 +248,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
           <div className={spacing.container}>
             <div className={styles.grid2Col}>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
+                ref={marketOverviewLeftAnim.ref}
+                initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                animate={marketOverviewLeftAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                transition={ANIM_TRANSITION}
               >
                 <h2 className={cn(typography.h2, 'mb-6')}>Market Overview</h2>
                 {hasText(industry.overview.description) && (
@@ -267,10 +290,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
 
               {industry.overview?.challenges && industry.overview.challenges.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1, duration: 0.8 }}
-                  viewport={{ once: true }}
+                  ref={marketOverviewChallengesAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={marketOverviewChallengesAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.1 }}
                   className="bg-slate-50 dark:bg-slate-900 p-8 rounded-lg"
                 >
                   <h3 className={cn(typography.h3, 'mb-6')}>Key Challenges</h3>
@@ -300,10 +323,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         <section className={spacing.section}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={capabilitiesHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={capabilitiesHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className={cn(typography.h2, 'mb-6')}>Our Capabilities</h2>
@@ -312,7 +335,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
               </p>
             </motion.div>
 
-            <div className={styles.grid2Col}>
+            <div ref={capabilitiesGridAnim.ref} className={styles.grid2Col}>
               {industry.capabilities.map((capability: CapabilityItem, index: number) => {
                 const capabilityTitle = toDisplayText(capability.title);
                 const capabilityDescription = toDisplayText(capability.description);
@@ -323,10 +346,9 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                 return (
                   <motion.div
                     key={keyFor('capability', index, capability.title)}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                    viewport={{ once: true }}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={capabilitiesGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
                     <Card className={cn(styles.featureCard, 'h-full')}>
                       <h3 className={cn(typography.h4, 'mb-4')}>{capabilityTitle || 'Capability'}</h3>
@@ -368,10 +390,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={componentsHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={componentsHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className={cn(typography.h2, 'mb-6')}>Component Expertise</h2>
@@ -380,7 +402,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
               </p>
             </motion.div>
 
-            <div className="space-y-20">
+            <div ref={componentsGridAnim.ref} className="space-y-20">
               {industry.components.map((component: ComponentCategory, index: number) => {
                 const componentTitle = toDisplayText(component.category);
                 const componentDescription = toDisplayText(component.description);
@@ -394,10 +416,9 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                 return (
                   <motion.div
                     key={keyFor('component', index, component.category)}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.8 }}
-                    viewport={{ once: true }}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={componentsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                     className={cn(
                       'grid lg:grid-cols-2 gap-12 items-center',
                       index % 2 === 0 ? '' : 'lg:grid-flow-dense'
@@ -496,10 +517,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         <section className={spacing.section}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={expertiseHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={expertiseHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className={cn(typography.h2, 'mb-6')}>Our Expertise</h2>
@@ -508,7 +529,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
               </p>
             </motion.div>
 
-            <div className="space-y-24">
+            <div ref={expertiseGridAnim.ref} className="space-y-24">
               {industry.expertise.map((item: ExpertiseItem, index: number) => {
                 const expertiseTitle = toDisplayText(item.title);
                 const expertiseDescription = toDisplayText(item.description);
@@ -523,10 +544,9 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                 return (
                   <motion.div
                     key={keyFor('expertise', index, item.title)}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.8 }}
-                    viewport={{ once: true }}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={expertiseGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                     className={cn(
                       'grid lg:grid-cols-2 gap-12 items-center',
                       index % 2 === 0 ? '' : 'lg:grid-flow-dense'
@@ -625,10 +645,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={regulatoryHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={regulatoryHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className={cn(typography.h2, 'mb-6')}>Regulatory Compliance</h2>
@@ -640,10 +660,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             <div className={styles.grid2Col}>
               {industry.regulatory.certifications && industry.regulatory.certifications.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
+                  ref={regulatoryCertsAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={regulatoryCertsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={ANIM_TRANSITION}
                 >
                   <Card className={cn(styles.featureCard, 'h-full')}>
                     <Award className="w-12 h-12 text-blue-600 mb-4" />
@@ -670,10 +690,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
 
               {industry.regulatory.standards && industry.regulatory.standards.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
+                  ref={regulatoryStandardsAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={regulatoryStandardsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.1 }}
                 >
                   <Card className={cn(styles.featureCard, 'h-full')}>
                     <CheckCircle className="w-12 h-12 text-blue-600 mb-4" />
@@ -707,10 +727,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={applicationsHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={applicationsHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className={cn(typography.h2, 'mb-6')}>Industry Applications</h2>
@@ -719,7 +739,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
               </p>
             </motion.div>
 
-            <div className={styles.grid3Col}>
+            <div ref={applicationsGridAnim.ref} className={styles.grid3Col}>
               {industry.applications.map((application: Application, index: number) => {
                 const applicationName = toDisplayText(application.name);
                 const applicationDescription = toDisplayText(application.description);
@@ -729,10 +749,9 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                 return (
                   <motion.div
                     key={keyFor('application', index, application.name)}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                    viewport={{ once: true }}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={applicationsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
                     <Card className={cn(styles.featureCard, 'h-full')}>
                       <h3 className={cn(typography.h5, 'mb-3')}>{applicationName || 'Application'}</h3>
@@ -774,10 +793,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         <section className={spacing.section}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={qualityHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={qualityHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className={cn(typography.h2, 'mb-6')}>Quality Standards</h2>
@@ -786,14 +805,13 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
               </p>
             </motion.div>
 
-            <div className={styles.grid4Col}>
+            <div ref={qualityGridAnim.ref} className={styles.grid4Col}>
               {industry.qualityStandards.map((item: QualityStandard | string, index: number) => (
                 <motion.div
                   key={keyFor('quality-standard', index, typeof item === 'string' ? item : item?.standard)}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05, duration: 0.6 }}
-                  viewport={{ once: true }}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={qualityGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.05, 0.3) }}
                 >
                   <Card className={cn(styles.featureCard, 'h-full text-center')}>
                     <CheckCircle className="w-8 h-8 text-blue-600 mx-auto mb-3" />
@@ -813,10 +831,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         <section className={styles.sectionLight}>
           <div className={spacing.container}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={processBenefitsHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={processBenefitsHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className={cn(typography.h2, 'mb-6')}>Process Benefits</h2>
@@ -825,7 +843,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
               </p>
             </motion.div>
 
-            <div className={styles.grid2Col}>
+            <div ref={processBenefitsGridAnim.ref} className={styles.grid2Col}>
               {industry.processBenefits.map((benefit: ProcessBenefit, index: number) => {
                 const benefitTitle = toDisplayText(benefit.title);
                 const benefitDescription = toDisplayText(benefit.description);
@@ -835,10 +853,9 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                 return (
                   <motion.div
                     key={keyFor('process-benefit', index, benefit.title)}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                    viewport={{ once: true }}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={processBenefitsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
                     <Card className={cn(styles.featureCard, 'h-full')}>
                       <TrendingUp className="w-10 h-10 text-blue-600 mb-4" />
@@ -880,10 +897,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
       <section className={styles.sectionDark}>
         <div className={spacing.container}>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            ref={ctaAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={ctaAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={ANIM_TRANSITION}
             className="text-center max-w-4xl mx-auto"
           >
             <h2 className={cn(typography.h2, 'mb-6 text-tone-inverse')}>

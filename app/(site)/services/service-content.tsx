@@ -12,8 +12,38 @@ import HeroSection from '@/components/ui/hero-section';
 import { PortableTextContent } from '@/components/portable-text-components';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
 import { usePrefersReducedMotion } from '@/lib/motion';
-import { SECTION_CONFIGS, getInitialState, getAnimateState, getViewportConfig } from '@/lib/animation-config';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { ArrowRight, CheckCircle, Settings, Shield, Zap, Cog, Target, FileText, Award, Activity, TrendingDown, Wrench, LucideIcon } from 'lucide-react';
+
+/**
+ * Returns the optimal grid class based on item count
+ * Prioritizes readable content while minimizing orphaned cards
+ */
+function getAdaptiveGridClass(count: number): string {
+  switch (count) {
+    case 1:
+      return 'grid grid-cols-1 max-w-lg mx-auto gap-6';
+    case 2:
+      return 'grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto';
+    case 3:
+      return 'grid grid-cols-1 sm:grid-cols-3 gap-6';
+    case 4:
+      // 4 items: 2x2 grid - clean and balanced
+      return 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6';
+    case 5:
+      // 5 items: Use 5 columns on xl only, 2 cols on smaller (3+2 looks awkward)
+      return 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-6';
+    case 6:
+      // 6 items: 3 columns = 2 perfect rows
+      return 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6';
+    case 8:
+      // 8 items: 4 columns = 2 perfect rows
+      return 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6';
+    default:
+      // Other counts: 3 columns is safest for readability
+      return 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6';
+  }
+}
 
 const iconMap: Record<string, LucideIcon> = {
   Settings,
@@ -217,13 +247,23 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
   const service = serviceData;
   const router = useRouter();
   const prefersReducedMotion = usePrefersReducedMotion();
-  const viewportConfig = getViewportConfig();
-  const initialState = getInitialState(prefersReducedMotion);
-  const createFade = (delay = 0, duration = 0.8) => getAnimateState(delay, duration, prefersReducedMotion);
-  const getStaggerDelay = (config: { headerCompletion?: number; getDelay: (index: number) => number }, index: number) => {
-    const headerDelay = config?.headerCompletion || 0;
-    return headerDelay + (config?.getDelay ? config.getDelay(index) : 0);
-  };
+
+  // Animation hooks for each section
+  const capabilityStatsAnim = useAnimateInView<HTMLDivElement>();
+  const capabilitiesHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const capabilitiesGridAnim = useAnimateInView<HTMLDivElement>();
+  const benefitsHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const benefitsGridAnim = useAnimateInView<HTMLDivElement>();
+  const servicesHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const servicesGridAnim = useAnimateInView<HTMLDivElement>();
+  const materialsHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const materialsGridAnim = useAnimateInView<HTMLDivElement>();
+  const applicationsHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const applicationsGridAnim = useAnimateInView<HTMLDivElement>();
+  const qualityHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const qualityGridAnim = useAnimateInView<HTMLDivElement>();
+  const processHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const processGridAnim = useAnimateInView<HTMLDivElement>();
 
   const heroTitle = service.hero?.title || service.title;
   const heroImage =
@@ -346,20 +386,17 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       {capabilityStats.length > 0 && (
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
-            <motion.div
-              initial={initialState}
-              whileInView={createFade(0, 0.8)}
-              viewport={viewportConfig}
-              className={styles.grid4Col}
+            <div
+              ref={capabilityStatsAnim.ref}
+              className={getAdaptiveGridClass(capabilityStats.length)}
             >
               {capabilityStats.map((capability: CapabilityStat, index: number) => {
-                const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
                 return (
                   <motion.div
                     key={`${capability.label}-${capability.value}`}
-                    initial={initialState}
-                    whileInView={createFade(delay, 0.6)}
-                    viewport={viewportConfig}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={capabilityStatsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                     className="text-center"
                   >
                     <div className="text-3xl md:text-4xl font-bold" style={{
@@ -375,7 +412,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                   </motion.div>
                 );
               })}
-            </motion.div>
+            </div>
           </div>
         </section>
       )}
@@ -386,9 +423,10 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
           <div className={spacing.container}>
             {(capabilitiesHeading || capabilitiesDescription) && (
               <motion.div
-                initial={initialState}
-                whileInView={createFade(0, 0.8)}
-                viewport={viewportConfig}
+                ref={capabilitiesHeaderAnim.ref}
+                initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                animate={capabilitiesHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                transition={ANIM_TRANSITION}
                 className="text-center mb-16"
               >
                 {capabilitiesHeading && (
@@ -402,19 +440,18 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               </motion.div>
             )}
 
-            <div className={styles.grid2Col}>
+            <div ref={capabilitiesGridAnim.ref} className={styles.grid2Col}>
               {capabilityCards.map((capability: CapabilityCard, index: number) => {
                 const CapIcon = capability.iconName ? (iconMap[capability.iconName] || Settings) : Settings;
                 const capImage = capability.image?.asset?.url || capability.imageUrl;
                 const capAlt = capability.image?.alt || capability.title || 'Capability';
-                const delay = getStaggerDelay(SECTION_CONFIGS.twoColumnGrid, index);
 
                 return (
                   <motion.div
                     key={capability.title}
-                    initial={initialState}
-                    whileInView={createFade(delay, 0.6)}
-                    viewport={viewportConfig}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={capabilitiesGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
                     <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 group h-full overflow-hidden">
                       {capImage && (
@@ -487,25 +524,25 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
             <motion.div
-              initial={initialState}
-              whileInView={createFade(0, 0.8)}
-              viewport={viewportConfig}
+              ref={benefitsHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={benefitsHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-12"
             >
               <h2 className={cn(typography.h2, 'mb-4')}>Key Benefits</h2>
             </motion.div>
 
-            <div className={styles.grid4Col}>
+            <div ref={benefitsGridAnim.ref} className={getAdaptiveGridClass(benefits.length)}>
               {benefits.map((benefit: Benefit, index: number) => {
                 const BenefitIcon = benefit.iconName ? (iconMap[benefit.iconName] || Award) : Award;
-                const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
 
                 return (
                   <motion.div
                     key={benefit.title}
-                    initial={initialState}
-                    whileInView={createFade(delay, 0.6)}
-                    viewport={viewportConfig}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={benefitsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
                     <Card className={cn(styles.featureCard, 'h-full text-center p-6')}>
                       <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
@@ -526,9 +563,10 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         <section className="py-24 md:py-32 lg:py-20">
           <div className={spacing.container}>
             <motion.div
-              initial={initialState}
-              whileInView={createFade(0, 0.8)}
-              viewport={viewportConfig}
+              ref={servicesHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={servicesHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className={cn(typography.h2, 'mb-6')}>{servicesHeading}</h2>
@@ -537,19 +575,18 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               </div>
             </motion.div>
 
-            <div className={styles.grid2Col}>
+            <div ref={servicesGridAnim.ref} className={styles.grid2Col}>
               {serviceOfferings.map((offering: ServiceOffering, index: number) => {
                 const OfferingIcon = offering.iconName ? (iconMap[offering.iconName] || Settings) : Settings;
                 const offeringImage = offering.image?.asset?.url || offering.imageUrl;
                 const offeringAlt = offering.image?.alt || offering.title || 'Service offering';
-                const delay = getStaggerDelay(SECTION_CONFIGS.twoColumnGrid, index);
 
                 return (
                   <motion.div
                     key={offering.title}
-                    initial={initialState}
-                    whileInView={createFade(delay, 0.6)}
-                    viewport={viewportConfig}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={servicesGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
                     <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 group h-full overflow-hidden">
                       {offeringImage && (
@@ -627,9 +664,10 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
             <motion.div
-              initial={initialState}
-              whileInView={createFade(0, 0.8)}
-              viewport={viewportConfig}
+              ref={materialsHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={materialsHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className={cn(typography.h2, 'mb-6')}>{materialsHeading}</h2>
@@ -638,15 +676,14 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               </p>
             </motion.div>
 
-            <div className={styles.grid4Col}>
+            <div ref={materialsGridAnim.ref} className={getAdaptiveGridClass(materials.length)}>
               {materials.map((material: MaterialCategory, index: number) => {
-                const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
                 return (
                   <motion.div
                     key={material.category}
-                    initial={initialState}
-                    whileInView={createFade(delay, 0.6)}
-                    viewport={viewportConfig}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={materialsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
                     <Card className={cn(styles.featureCard, 'h-full')}>
                       <h3 className={cn(typography.h5, 'mb-3')}>{material.category}</h3>
@@ -674,9 +711,10 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
             <motion.div
-              initial={initialState}
-              whileInView={createFade(0, 0.8)}
-              viewport={viewportConfig}
+              ref={applicationsHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={applicationsHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className={cn(typography.h2, 'mb-6')}>{applicationsHeading}</h2>
@@ -685,19 +723,18 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div ref={applicationsGridAnim.ref} className={getAdaptiveGridClass(applications.length)}>
               {applications.map((app: ApplicationItem, index: number) => {
                 const appImage = app.image?.asset?.url || app.imageUrl;
                 const appAlt = app.image?.alt || app.title || 'Application';
-                const delay = getStaggerDelay(SECTION_CONFIGS.threeColumnGrid, index);
                 const listLabel = app.listLabel || applicationsListLabel;
 
                 return (
                   <motion.div
                     key={app.title}
-                    initial={initialState}
-                    whileInView={createFade(delay, 0.6)}
-                    viewport={viewportConfig}
+                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    animate={applicationsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
                     <Card className={cn(styles.featureCard, 'h-full overflow-hidden')}>
                       {appImage && (
@@ -750,9 +787,10 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         <section className="py-24 md:py-32 lg:py-20 bg-slate-900 dark-section">
           <div className={spacing.container}>
             <motion.div
-              initial={initialState}
-              whileInView={createFade(0, 0.8)}
-              viewport={viewportConfig}
+              ref={qualityHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={qualityHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-12"
             >
               <h2 className={cn(typography.h2, 'mb-4 text-tone-inverse')}>{qualityHeading}</h2>
@@ -762,16 +800,15 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
             </motion.div>
 
             <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-center">
-              <div className="space-y-4 text-center lg:text-left">
+              <div ref={qualityGridAnim.ref} className="space-y-4 text-center lg:text-left">
                 {qualityStandards.map((standard: QualityStandard, index: number) => {
-                  const delay = getStaggerDelay(SECTION_CONFIGS.twoColumnGrid, index);
                   const StandardIcon = standard.iconName ? (iconMap[standard.iconName] || Shield) : Shield;
                   return (
                     <motion.div
                       key={`${standard.title}-${index}`}
-                      initial={initialState}
-                      whileInView={createFade(delay, 0.5)}
-                      viewport={viewportConfig}
+                      initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      animate={qualityGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                       className="flex items-start gap-3"
                     >
                       <StandardIcon className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
@@ -805,9 +842,10 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         <section className="py-24 md:py-32 lg:py-20">
           <div className={spacing.container}>
             <motion.div
-              initial={initialState}
-              whileInView={createFade(0, 0.8)}
-              viewport={viewportConfig}
+              ref={processHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={processHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-center mb-16"
             >
               <h2 className={cn(typography.h2, 'mb-6')}>{processHeading}</h2>
@@ -816,33 +854,47 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               </p>
             </motion.div>
 
-            <div className={styles.grid4Col}>
-              {processes.map((process: ProcessItem, index: number) => {
-                const delay = getStaggerDelay(SECTION_CONFIGS.fourColumnGrid, index);
-                return (
-                  <motion.div
-                    key={process.title}
-                    initial={initialState}
-                    whileInView={createFade(delay, 0.6)}
-                    viewport={viewportConfig}
-                  >
-                    <Card className={cn(styles.featureCard, 'h-full')}>
-                      <div className={cn('w-12 h-12 text-tone-inverse rounded-lg flex items-center justify-center text-xl font-bold mb-4', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
+            {/* Process Timeline - horizontal on desktop, vertical on mobile */}
+            <div ref={processGridAnim.ref} className="relative">
+              {/* Connection line - only visible on lg+ */}
+              <div className="hidden lg:block absolute top-10 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600/20 via-blue-600/40 to-indigo-600/20" />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-4">
+                {processes.map((process: ProcessItem, index: number) => {
+                  const isLast = index === processes.length - 1;
+                  return (
+                    <motion.div
+                      key={process.title}
+                      initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      animate={processGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
+                      className="relative text-center lg:text-center"
+                    >
+                      {/* Step number circle */}
+                      <div className="relative z-10 mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 flex items-center justify-center text-2xl font-bold text-tone-inverse shadow-lg shadow-blue-600/25 mb-6">
                         {String(index + 1).padStart(2, '0')}
                       </div>
-                      <h3 className={cn(typography.h5, 'mb-3')}>{process.title}</h3>
+
+                      {/* Arrow between steps - only on lg */}
+                      {!isLast && (
+                        <div className="hidden lg:block absolute top-10 -right-2 transform -translate-y-1/2 z-20">
+                          <ArrowRight className="w-4 h-4 text-blue-500/60" />
+                        </div>
+                      )}
+
+                      {/* Content */}
+                      <h3 className={cn(typography.h5, 'mb-2')}>{process.title}</h3>
                       {process.descriptionRich ? (
-                        <div className={cn(typography.small, 'mb-4')}>
+                        <div className={cn(typography.small, 'text-slate-600 dark:text-slate-400')}>
                           <PortableTextContent value={process.descriptionRich} />
                         </div>
                       ) : (
-                        <p className={cn(typography.small, 'mb-4')}>{process.description}</p>
+                        <p className={cn(typography.small, 'text-slate-600 dark:text-slate-400')}>{process.description}</p>
                       )}
-
-                    </Card>
-                  </motion.div>
-                );
-              })}
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>

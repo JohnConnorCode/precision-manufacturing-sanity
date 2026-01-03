@@ -25,6 +25,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { typography, spacing, styles, cn } from '@/lib/design-system';
 import { getHeroImageUrl } from '@/lib/hero-images';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
 const iconMap: Record<string, LucideIcon> = {
   Database,
@@ -128,6 +130,24 @@ interface MetbasePageClientProps {
 // See CLAUDE.md Rule 2: NO "DEFAULT CONTENT" OBJECTS
 
 export default function MetbasePageClient({ data }: MetbasePageClientProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hooks for each section
+  const overviewLeftAnim = useAnimateInView<HTMLDivElement>();
+  const overviewHighlightsAnim = useAnimateInView<HTMLDivElement>();
+  const overviewRightAnim = useAnimateInView<HTMLDivElement>();
+  const featuresHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const featuresGridAnim = useAnimateInView<HTMLDivElement>();
+  const analysisLeftAnim = useAnimateInView<HTMLDivElement>();
+  const analysisCapabilitiesAnim = useAnimateInView<HTMLDivElement>();
+  const analysisRightAnim = useAnimateInView<HTMLDivElement>();
+  const integrationHeaderAnim = useAnimateInView<HTMLDivElement>();
+  const integrationGridAnim = useAnimateInView<HTMLDivElement>();
+  const integrationImageAnim = useAnimateInView<HTMLDivElement>();
+  const closedLoopLeftAnim = useAnimateInView<HTMLDivElement>();
+  const closedLoopRightAnim = useAnimateInView<HTMLDivElement>();
+  const ctaAnim = useAnimateInView<HTMLDivElement>();
+
   // Use Sanity data directly - NO fallbacks to hardcoded content
   // All content must be managed in Sanity Studio
   if (!data) {
@@ -216,26 +236,25 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
         <div className={spacing.container}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={overviewLeftAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+              animate={overviewLeftAnim.shouldAnimate ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+              transition={ANIM_TRANSITION}
             >
               <h2 className={cn(typography.h2, "mb-6")}>{data.overview?.title}</h2>
               <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
                 {data.overview?.description}
               </p>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div ref={overviewHighlightsAnim.ref} className="grid grid-cols-2 gap-4">
                 {overviewHighlights.map((highlight, index) => {
                   const Icon = iconMap[highlight?.iconName || ''] || CheckCircle2;
                   return (
                     <motion.div
                       key={highlight?._key || index}
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1, duration: 0.5 }}
-                      viewport={{ once: true }}
+                      initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      animate={overviewHighlightsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                       className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-950/50 rounded-lg"
                     >
                       <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
@@ -249,10 +268,10 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={overviewRightAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+              animate={overviewRightAnim.shouldAnimate ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+              transition={ANIM_TRANSITION}
               className="relative"
             >
               <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 text-tone-inverse shadow-2xl">
@@ -277,10 +296,10 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
       <section className={styles.sectionLight}>
         <div className={spacing.container}>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            ref={featuresHeaderAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={featuresHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={ANIM_TRANSITION}
             className="text-center mb-16"
           >
             <h2 className={cn(typography.h2, "mb-6")}>{data.features?.title}</h2>
@@ -289,7 +308,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div ref={featuresGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featureItems.map((feature, index) => {
               const Icon = iconMap[feature?.iconName || ''] || Database;
               const gradients = [
@@ -305,10 +324,9 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
               return (
                 <motion.div
                   key={feature?._key || index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: Math.min(index * 0.1, 0.3), duration: 0.6 }}
-                  viewport={{ once: true }}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={featuresGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
                   <Card className="p-6 h-full border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 hover:shadow-xl group">
                     <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
@@ -329,10 +347,10 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
         <div className={spacing.container}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={analysisLeftAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+              animate={analysisLeftAnim.shouldAnimate ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+              transition={ANIM_TRANSITION}
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold mb-6">
                 <BarChart3 className="w-4 h-4" />
@@ -343,14 +361,13 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                 {data.analysisTool?.description}
               </p>
 
-              <div className="space-y-3">
+              <div ref={analysisCapabilitiesAnim.ref} className="space-y-3">
                 {analysisCapabilities.map((capability, index) => (
                   <motion.div
                     key={capability?._key || index}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.5 }}
-                    viewport={{ once: true }}
+                    initial={prefersReducedMotion ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+                    animate={analysisCapabilitiesAnim.shouldAnimate ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                     className="flex items-center gap-3"
                   >
                     <div className="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center flex-shrink-0">
@@ -363,10 +380,10 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={analysisRightAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+              animate={analysisRightAnim.shouldAnimate ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+              transition={ANIM_TRANSITION}
               className="relative"
             >
               {analysisImage ? (
@@ -401,10 +418,10 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
       <section className={styles.sectionLight}>
         <div className={spacing.container}>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            ref={integrationHeaderAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={integrationHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={ANIM_TRANSITION}
             className="text-center mb-16"
           >
             <h2 className={cn(typography.h2, "mb-6")}>{data.systemIntegration?.title}</h2>
@@ -413,16 +430,15 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div ref={integrationGridAnim.ref} className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {integrationBenefits.map((benefit, index) => {
               const Icon = iconMap[benefit?.iconName || ''] || Zap;
               return (
                 <motion.div
                   key={benefit?._key || index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={integrationGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
                   <Card className="p-6 text-center h-full border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 hover:shadow-lg">
                     <div className="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mx-auto mb-4">
@@ -438,10 +454,10 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
 
           {integrationImage && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={integrationImageAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={integrationImageAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="max-w-4xl mx-auto"
             >
               <div className="rounded-xl overflow-hidden shadow-xl">
@@ -463,10 +479,10 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
         <div className={spacing.container}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={closedLoopLeftAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+              animate={closedLoopLeftAnim.shouldAnimate ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+              transition={ANIM_TRANSITION}
               className="order-2 lg:order-1"
             >
               {closedLoopImage ? (
@@ -491,10 +507,10 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              ref={closedLoopRightAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+              animate={closedLoopRightAnim.shouldAnimate ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+              transition={ANIM_TRANSITION}
               className="order-1 lg:order-2"
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-semibold mb-6">
@@ -514,10 +530,10 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
       <section className={styles.sectionLight}>
         <div className={spacing.container}>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            ref={ctaAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={ctaAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={ANIM_TRANSITION}
             className="text-center max-w-4xl mx-auto"
           >
             <h2 className={cn(typography.h2, "mb-6")}>{data.cta?.title}</h2>

@@ -8,6 +8,8 @@ import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle } from '@/lib/theme-utils';
 import { cn } from '@/lib/utils';
 import { getToneTypography } from '@/lib/typography';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
 interface CaseStudyData {
   title: string;
@@ -46,6 +48,18 @@ interface CaseStudyData {
 export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
   const theme = useTheme();
   const darkTone = getToneTypography('dark');
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Animation hooks for each section
+  const resultsAnim = useAnimateInView<HTMLDivElement>();
+  const challengeAnim = useAnimateInView<HTMLDivElement>();
+  const solutionAnim = useAnimateInView<HTMLDivElement>();
+  const galleryHeaderAnim = useAnimateInView<HTMLHeadingElement>();
+  const galleryGridAnim = useAnimateInView<HTMLDivElement>();
+  const testimonialAnim = useAnimateInView<HTMLDivElement>();
+  const technologiesAnim = useAnimateInView<HTMLDivElement>();
+  const certificationsAnim = useAnimateInView<HTMLDivElement>();
+  const ctaAnim = useAnimateInView<HTMLDivElement>();
 
   return (
     <main className="min-h-screen bg-white dark:bg-slate-950">
@@ -136,14 +150,13 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
       {data.results && data.results.length > 0 && (
         <section className="bg-gradient-to-r from-slate-900 to-slate-800 py-12 dark-section">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div ref={resultsAnim.ref} className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {data.results.map((result, index) => (
                 <motion.div
                   key={result.metric}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={resultsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   className="text-center"
                 >
                   <div
@@ -174,10 +187,10 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
             {/* The Challenge */}
             {data.challenge && (
               <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
+                ref={challengeAnim.ref}
+                initial={prefersReducedMotion ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+                animate={challengeAnim.shouldAnimate ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
+                transition={ANIM_TRANSITION}
               >
                 <h2 className="text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-4">
                   The Challenge
@@ -191,10 +204,10 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
             {/* Our Solution */}
             {data.solution && (
               <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                ref={solutionAnim.ref}
+                initial={prefersReducedMotion ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+                animate={solutionAnim.shouldAnimate ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
+                transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.2 }}
               >
                 <h2 className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: theme.colors.primary }}>
                   Our Solution
@@ -213,21 +226,21 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
         <section className="py-16 bg-slate-50 dark:bg-slate-900">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              ref={galleryHeaderAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={galleryHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
               className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-tone-inverse mb-10 text-center"
             >
               Project Gallery
             </motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div ref={galleryGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {data.galleryImages.map((image, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  initial={prefersReducedMotion ? ANIM_STATES.scaleIn.animate : ANIM_STATES.scaleIn.initial}
+                  animate={galleryGridAnim.shouldAnimate ? ANIM_STATES.scaleIn.animate : ANIM_STATES.scaleIn.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group"
                 >
                   <Image
@@ -253,10 +266,10 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
         <section className="py-20 md:py-28 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark-section">
           <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              ref={testimonialAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={testimonialAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
             >
               <Quote className="w-16 h-16 mx-auto mb-8 opacity-30" style={{ color: theme.colors.primary }} />
               <blockquote
@@ -286,9 +299,10 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
               {/* Technologies */}
               {data.technologies && data.technologies.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  ref={technologiesAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={technologiesAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={ANIM_TRANSITION}
                 >
                   <h3 className="text-lg font-bold text-slate-900 dark:text-tone-inverse mb-6">Technologies Used</h3>
                   <div className="flex flex-wrap gap-3">
@@ -307,10 +321,10 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
               {/* Certifications */}
               {data.certifications && data.certifications.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
+                  ref={certificationsAnim.ref}
+                  initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  animate={certificationsAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                  transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.1 }}
                 >
                   <h3 className="text-lg font-bold text-slate-900 dark:text-tone-inverse mb-6">Relevant Certifications</h3>
                   <div className="flex flex-wrap gap-3">
@@ -336,9 +350,10 @@ export default function CaseStudyContent({ data }: { data: CaseStudyData }) {
       <section className="py-20 md:py-28 bg-slate-50 dark:bg-slate-900">
         <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            ref={ctaAnim.ref}
+            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            animate={ctaAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+            transition={ANIM_TRANSITION}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-tone-inverse mb-6">
               Ready to Start Your Project?
