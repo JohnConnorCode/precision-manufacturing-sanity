@@ -5,21 +5,25 @@
  * Ensures consistent, precise, sequential animations across all sections.
  *
  * Design Principles:
- * 1. Use variants pattern with initial="hidden" whileInView="visible"
+ * 1. Use useAnimateInView hook for scroll-triggered animations (NOT bare whileInView)
  * 2. Headers animate sequentially (eyebrow → word1 → word2 → description)
  * 3. Content starts AFTER header completes
  * 4. Cards/grids use consistent stagger timing
  *
- * USAGE PATTERN (from Superdebate - working pattern):
+ * CORRECT USAGE PATTERN:
  *
- * <motion.section
- *   initial="hidden"
- *   whileInView="visible"
- *   viewport={viewportSettings}
- *   variants={animations.fadeIn}
+ * const { ref, shouldAnimate } = useAnimateInView();
+ * <motion.div
+ *   ref={ref}
+ *   initial={ANIM_STATES.fadeUp.initial}
+ *   animate={shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+ *   transition={ANIM_TRANSITION}
  * >
  *   Content here
- * </motion.section>
+ * </motion.div>
+ *
+ * Or use AnimatedSection component for simpler cases:
+ * <AnimatedSection delay={0.2}>Content</AnimatedSection>
  */
 
 import { Variants } from 'framer-motion';

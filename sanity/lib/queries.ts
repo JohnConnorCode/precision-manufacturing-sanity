@@ -33,7 +33,7 @@ const logQueryError = (scope: string, error: unknown) => {
 export async function getAllServices(preview = false): Promise<any[]> {
   try {
     const pub = preview ? '' : ' && published == true'
-    const query = `*[_type == "service" && !(_id in path("drafts.**"))${pub}] | order(order asc) {
+    const query = `*[_type == "service"${pub}] | order(order asc) {
       _id,
       title,
       slug,
@@ -97,6 +97,8 @@ export async function getAllServices(preview = false): Promise<any[]> {
         features,
         capabilities
       },
+      capabilitiesSectionHeading,
+      capabilitiesSectionDescription,
       servicesHeading,
       servicesDescription,
       servicesDescriptionRich,
@@ -136,7 +138,7 @@ export async function getAllServices(preview = false): Promise<any[]> {
 export async function getServiceBySlug(slug: string, preview = false): Promise<any> {
   try {
     const pub = preview ? '' : ' && published == true'
-    const query = `*[_type == "service" && slug.current == $slug && !(_id in path("drafts.**"))${pub}][0] {
+    const query = `*[_type == "service" && slug.current == $slug${pub}][0] {
       _id,
       title,
       slug,
@@ -193,6 +195,8 @@ export async function getServiceBySlug(slug: string, preview = false): Promise<a
         features,
         capabilities
       },
+      capabilitiesSectionHeading,
+      capabilitiesSectionDescription,
       servicesHeading,
       servicesDescription,
       servicesDescriptionRich,
@@ -252,7 +256,7 @@ export async function getServiceBySlug(slug: string, preview = false): Promise<a
 export async function getAllIndustries(preview = false): Promise<any[]> {
   try {
     const pub = preview ? '' : ' && published == true'
-    const query = `*[_type == "industry" && !(_id in path("drafts.**"))${pub}] | order(order asc) {
+    const query = `*[_type == "industry"${pub}] | order(order asc) {
       _id,
       title,
       slug,
@@ -317,7 +321,7 @@ export async function getAllIndustries(preview = false): Promise<any[]> {
 export async function getIndustryBySlug(slug: string, preview = false): Promise<any> {
   try {
     const pub = preview ? '' : ' && published == true'
-    const query = `*[_type == "industry" && slug.current == $slug && !(_id in path("drafts.**"))${pub}][0] {
+    const query = `*[_type == "industry" && slug.current == $slug${pub}][0] {
       _id,
       title,
       slug,
@@ -396,8 +400,9 @@ export async function getIndustryBySlug(slug: string, preview = false): Promise<
 // ============================================================================
 
 export async function getAllResources(preview = false): Promise<any[]> {
+  try {
   const pub = preview ? '' : ' && published == true'
-  const query = `*[_type == "resource" && !(_id in path("drafts.**"))${pub}] | order(publishDate desc) {
+  const query = `*[_type == "resource"${pub}] | order(publishDate desc) {
     _id,
     title,
     slug,
@@ -420,12 +425,16 @@ export async function getAllResources(preview = false): Promise<any[]> {
   }`
 
   return await getClient(preview).fetch(query)
+  } catch (error) {
+    logQueryError('getAllResources', error);
+    return []
+  }
 }
 
 export async function getResourceBySlug(slug: string, preview = false): Promise<ResourceDetail | null> {
   try {
   const pub = preview ? '' : ' && published == true'
-  const query = `*[_type == "resource" && slug.current == $slug && !(_id in path("drafts.**"))${pub}][0] {
+  const query = `*[_type == "resource" && slug.current == $slug${pub}][0] {
     _id,
     title,
     slug,
@@ -454,10 +463,47 @@ export async function getResourceBySlug(slug: string, preview = false): Promise<
 }
 }
 
+export async function getResourceCategory(slug: string, preview = false) {
+  try {
+    const pub = preview ? '' : ' && published == true'
+    const query = `*[_type == "resourceCategory" && slug.current == $slug${pub}][0] {
+      _id,
+      title,
+      "slug": slug.current,
+      description,
+      "image": image.asset->url,
+      "imageAlt": image.alt,
+      order
+    }`
+    return await getClient(preview).fetch(query, { slug })
+  } catch (error) {
+    logQueryError('getResourceCategory', error);
+    return null
+  }
+}
+
+export async function getAllResourceCategories(preview = false) {
+  try {
+    const pub = preview ? '' : ' && published == true'
+    const query = `*[_type == "resourceCategory"${pub}] | order(order asc) {
+      _id,
+      title,
+      "slug": slug.current,
+      description,
+      "image": image.asset->url,
+      order
+    }`
+    return await getClient(preview).fetch(query)
+  } catch (error) {
+    logQueryError('getAllResourceCategories', error);
+    return []
+  }
+}
+
 export async function getResourcesByCategory(category: string, preview = false) {
   try {
   const pub = preview ? '' : ' && published == true'
-  const query = `*[_type == "resource" && category == $category && !(_id in path("drafts.**"))${pub}] | order(publishDate desc) {
+  const query = `*[_type == "resource" && category == $category${pub}] | order(publishDate desc) {
     _id,
     title,
     slug,
@@ -474,30 +520,6 @@ export async function getResourcesByCategory(category: string, preview = false) 
   return await getClient(preview).fetch(query, { category })
   } catch (error) {
     logQueryError('getResourcesByCategory', error);
-    return []
-  }
-}
-
-export async function getFeaturedResources(preview = false) {
-  try {
-  const pub = preview ? '' : ' && published == true'
-  const query = `*[_type == "resource" && featured == true && !(_id in path("drafts.**"))${pub}] | order(publishDate desc) [0...6] {
-    _id,
-    title,
-    slug,
-    excerpt,
-    category,
-    difficulty,
-    readTime,
-    publishDate,
-    author,
-    featured,
-    featuredImage{asset->{url, _id}, alt, caption}
-  }`
-
-  return await getClient(preview).fetch(query)
-  } catch (error) {
-    logQueryError('getFeaturedResources', error);
     return []
   }
 }
@@ -555,7 +577,15 @@ export async function getSiteSettings(preview = false) {
     company,
     contact,
     social,
-    seo
+    seo {
+      defaultTitle,
+      defaultDescription,
+      defaultKeywords,
+      "defaultOgImageUrl": defaultOgImage.asset->url,
+      "defaultOgImageAlt": defaultOgImage.alt,
+      googleAnalyticsId,
+      googleVerificationCode
+    }
   }`
 
   return await getClient(preview).fetch(query)
@@ -960,8 +990,10 @@ export async function getContact(preview = false): Promise<ContactPage | null> {
     hero{ backgroundImage{asset->{url,_id}}, badge, badgeIconName, title, titleHighlight, description, buttonLabel, buttonHref },
     contactInfo,
     certifications,
+    trustBar,
     bottomStats,
     locationImage{asset->{url, _id}, alt},
+    locationDescription,
     seo
   }`
 
@@ -1401,25 +1433,19 @@ export async function getPageBySlug(slug: string, preview = false) {
     title,
     slug,
     sections[],
-    seo
+    seo {
+      metaTitle,
+      metaDescription,
+      ogImage {
+        asset-> { url },
+        alt
+      }
+    }
   }`
   return await getClient(preview).fetch(query, { slug })
   } catch (error) {
     logQueryError('getPageBySlug', error);
     return null
-  }
-}
-
-export async function getAllPageSlugs(preview = false) {
-  try {
-  const pub = preview ? '' : ' && published == true'
-  const query = `*[_type == "page"${pub}]{
-    'slug': slug.current
-  }`
-  return await getClient(preview).fetch(query)
-  } catch (error) {
-    logQueryError('getAllPageSlugs', error);
-    return []
   }
 }
 
@@ -1575,6 +1601,195 @@ export async function getMetbase(preview = false) {
   return await getClient(preview).fetch(query)
   } catch (error) {
     logQueryError('getMetbase', error);
+    return null
+  }
+}
+
+// ============================================================================
+// CASE STUDIES
+// ============================================================================
+
+export async function getAllCaseStudies(preview = false) {
+  try {
+    const pub = preview ? '' : ' && published == true'
+    const query = `*[_type == "caseStudy"${pub}] | order(_createdAt desc) {
+      _id,
+      title,
+      "slug": slug.current,
+      subtitle,
+      client,
+      duration,
+      challenge,
+      "heroImage": heroImage.asset->url,
+      "heroImageAlt": heroImage.alt,
+      industry-> {
+        title,
+        "slug": slug.current
+      },
+      results,
+      technologies,
+      certifications
+    }`
+    return await getClient(preview).fetch(query)
+  } catch (error) {
+    logQueryError('getAllCaseStudies', error);
+    return []
+  }
+}
+
+export async function getCaseStudiesPage(preview = false) {
+  try {
+    const query = `*[_type == "caseStudiesPage"][0] {
+      hero {
+        backgroundImage { asset->{ url, _id }, alt },
+        badge,
+        title,
+        titleHighlight,
+        description
+      },
+      featuredLabel,
+      filterLabel,
+      noResultsMessage,
+      cta {
+        title,
+        description,
+        buttons[] {
+          label,
+          href,
+          variant,
+          enabled
+        }
+      },
+      seo {
+        metaTitle,
+        metaDescription,
+        ogImage { asset->{ url, _id }, alt }
+      }
+    }`
+    return await getClient(preview).fetch(query)
+  } catch (error) {
+    logQueryError('getCaseStudiesPage', error);
+    return null
+  }
+}
+
+// ============================================================================
+// TESTIMONIALS
+// ============================================================================
+
+export async function getAllTestimonials(preview = false) {
+  try {
+    const pub = preview ? '' : ' && published == true'
+    const query = `*[_type == "testimonial"${pub}] | order(featured desc) {
+      _id,
+      quote,
+      author,
+      role,
+      company,
+      companyLogo {
+        asset->{ url, _id },
+        alt
+      },
+      rating,
+      featured,
+      relatedService-> { title, "slug": slug.current },
+      relatedIndustry-> { title, "slug": slug.current },
+      relatedCaseStudy-> { title, "slug": slug.current }
+    }`
+    return await getClient(preview).fetch(query)
+  } catch (error) {
+    logQueryError('getAllTestimonials', error);
+    return []
+  }
+}
+
+export async function getFeaturedTestimonials(preview = false) {
+  try {
+    const pub = preview ? '' : ' && published == true'
+    const query = `*[_type == "testimonial" && featured == true${pub}] | order(_createdAt desc) {
+      _id,
+      quote,
+      author,
+      role,
+      company,
+      companyLogo {
+        asset->{ url, _id },
+        alt
+      },
+      rating,
+      relatedService-> { title, "slug": slug.current },
+      relatedIndustry-> { title, "slug": slug.current }
+    }`
+    return await getClient(preview).fetch(query)
+  } catch (error) {
+    logQueryError('getFeaturedTestimonials', error);
+    return []
+  }
+}
+
+// ============================================================================
+// CERTIFICATIONS
+// ============================================================================
+
+export async function getAllCertifications(preview = false) {
+  try {
+    const pub = preview ? '' : ' && published == true'
+    const query = `*[_type == "certification"${pub}] | order(order asc) {
+      _id,
+      name,
+      "slug": slug.current,
+      shortName,
+      description,
+      iconName,
+      scope,
+      whyItMatters,
+      certNumber,
+      issuingBody,
+      validFrom,
+      validUntil,
+      body
+    }`
+    return await getClient(preview).fetch(query)
+  } catch (error) {
+    logQueryError('getAllCertifications', error);
+    return []
+  }
+}
+
+export async function getCertificationsPage(preview = false) {
+  try {
+    const query = `*[_type == "certificationsPage"][0] {
+      hero {
+        backgroundImage { asset->{ url, _id }, alt },
+        badge,
+        title,
+        titleHighlight,
+        description
+      },
+      qualityCommitment {
+        title,
+        description,
+        image { asset->{ url, _id }, alt }
+      },
+      cta {
+        title,
+        description,
+        buttons[] {
+          label,
+          href,
+          variant,
+          enabled
+        }
+      },
+      seo {
+        metaTitle,
+        metaDescription,
+        ogImage { asset->{ url, _id }, alt }
+      }
+    }`
+    return await getClient(preview).fetch(query)
+  } catch (error) {
+    logQueryError('getCertificationsPage', error);
     return null
   }
 }

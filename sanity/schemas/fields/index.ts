@@ -427,7 +427,7 @@ export function richTextField(
         blockConfig,
         defineArrayMember({
           type: 'image',
-          options: { hotspot: true },
+          options: { hotspot: true, metadata: ['blurhash', 'lqip', 'palette'] },
           fields: [
             defineField({
               name: 'alt',

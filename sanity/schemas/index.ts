@@ -5,6 +5,9 @@ import resource from './resource'
 import teamMember from './team-member'
 import jobPosting from './job-posting'
 import caseStudy from './case-study'
+import resourceCategory from './resource-category'
+import testimonial from './testimonial'
+import certification from './certification'
 
 // Globals
 import siteSettings from './site-settings'
@@ -20,6 +23,8 @@ import termsPage from './terms'
 import supplierRequirementsPage from './supplier-requirements'
 import errorPages from './error-pages'
 import metbasePage from './metbase'
+import caseStudiesPage from './case-studies-page'
+import certificationsPage from './certifications-page'
 import uiText from './ui-text'
 import pageContent from './page-content'
 import page from './page'
@@ -68,6 +73,9 @@ export const schemaTypes = [
   teamMember,
   jobPosting,
   caseStudy,
+  resourceCategory,
+  testimonial,
+  certification,
 
   // Globals
   siteSettings,
@@ -83,6 +91,8 @@ export const schemaTypes = [
   supplierRequirementsPage,
   errorPages,
   metbasePage,
+  caseStudiesPage,
+  certificationsPage,
   uiText,
   pageContent,
   page,

@@ -108,7 +108,7 @@ export default {
           type: 'image',
           title: 'OpenGraph Image',
           fieldset: 'social',
-          options: { hotspot: true },
+          options: { hotspot: true, metadata: ['blurhash', 'lqip', 'palette'] },
           fields: [
             {
               name: 'alt',

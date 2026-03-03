@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { Linkedin, Twitter, Facebook, Mail, Phone, MapPin, Award, Shield, CheckCircle, Zap, LucideIcon } from 'lucide-react';
 
 // Icon mapping for CMS-driven certification badges
@@ -13,6 +14,8 @@ const iconMap: Record<string, LucideIcon> = {
 import Logo from '@/components/ui/logo';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { typography, colors, cn } from '@/lib/design-system';
+import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface FooterProps {
   data?: {
@@ -127,14 +130,24 @@ const Footer = ({ data }: FooterProps) => {
     },
     copyright: data?.copyright
   };
-  // No entrance animations - content is always visible
-  // This prevents jank and ensures reliability on refresh
+  // Sequential entrance animations using useAnimateInView (fixes refresh bug)
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const { ref: footerRef, shouldAnimate } = useAnimateInView<HTMLElement>({ amount: 0.1 });
+
+  // Stagger delay for each column (0.1s apart)
+  const colDelay = (index: number) => index * 0.1;
 
   return (
-    <footer key="site-footer" className={cn(colors.footer.bg, colors.footer.text.primary, 'border-t', colors.footer.border)} suppressHydrationWarning>
+    <footer ref={footerRef} key="site-footer" className={cn(colors.footer.bg, colors.footer.text.primary, 'border-t', colors.footer.border)} suppressHydrationWarning>
       <div className="container py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          <div className="space-y-4">
+          {/* Column 1: Logo & Company Info */}
+          <motion.div
+            className="space-y-4"
+            initial={prefersReducedMotion ? false : ANIM_STATES.fadeUp.initial}
+            animate={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : (shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial)}
+            transition={{ ...ANIM_TRANSITION, delay: colDelay(0) }}
+          >
             <Logo variant="light" showText={true} size="md" animated={true} logoData={data?.logo} />
             <p className={cn(typography.small, colors.footer.text.secondary, 'max-w-xs')}>
               {footerData.company?.description}
@@ -179,9 +192,14 @@ const Footer = ({ data }: FooterProps) => {
                 </div>
               </div>
             )}
-          </div>
+          </motion.div>
 
-          <div>
+          {/* Column 2: Services Links */}
+          <motion.div
+            initial={prefersReducedMotion ? false : ANIM_STATES.fadeUp.initial}
+            animate={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : (shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial)}
+            transition={{ ...ANIM_TRANSITION, delay: colDelay(1) }}
+          >
             <h4 className="font-semibold mb-3" style={{
               background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
               WebkitBackgroundClip: 'text',
@@ -197,9 +215,14 @@ const Footer = ({ data }: FooterProps) => {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
-          <div>
+          {/* Column 3: Resources Links */}
+          <motion.div
+            initial={prefersReducedMotion ? false : ANIM_STATES.fadeUp.initial}
+            animate={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : (shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial)}
+            transition={{ ...ANIM_TRANSITION, delay: colDelay(2) }}
+          >
             <h4 className="font-semibold mb-3" style={{
               background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
               WebkitBackgroundClip: 'text',
@@ -215,9 +238,14 @@ const Footer = ({ data }: FooterProps) => {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
-          <div>
+          {/* Column 4: Quick Links */}
+          <motion.div
+            initial={prefersReducedMotion ? false : ANIM_STATES.fadeUp.initial}
+            animate={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : (shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial)}
+            transition={{ ...ANIM_TRANSITION, delay: colDelay(3) }}
+          >
             <h4 className="font-semibold mb-3" style={{
               background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
               WebkitBackgroundClip: 'text',
@@ -233,9 +261,14 @@ const Footer = ({ data }: FooterProps) => {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
-          <div>
+          {/* Column 5: Contact Info */}
+          <motion.div
+            initial={prefersReducedMotion ? false : ANIM_STATES.fadeUp.initial}
+            animate={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : (shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial)}
+            transition={{ ...ANIM_TRANSITION, delay: colDelay(4) }}
+          >
             <h4 className="font-semibold mb-3" style={{
               background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
               WebkitBackgroundClip: 'text',
@@ -267,10 +300,16 @@ const Footer = ({ data }: FooterProps) => {
                 </span>
               </li>
             </ul>
-          </div>
+          </motion.div>
         </div>
 
-        <div className={cn('mt-8 pt-8 border-t', colors.footer.border)}>
+        {/* Copyright bar - fades in after all columns */}
+        <motion.div
+          className={cn('mt-8 pt-8 border-t', colors.footer.border)}
+          initial={prefersReducedMotion ? false : ANIM_STATES.fadeIn.initial}
+          animate={prefersReducedMotion ? ANIM_STATES.fadeIn.animate : (shouldAnimate ? ANIM_STATES.fadeIn.animate : ANIM_STATES.fadeIn.initial)}
+          transition={{ ...ANIM_TRANSITION, delay: 0.6 }}
+        >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className={cn(typography.small, colors.footer.text.muted)}>
               {footerData.copyright?.replace('{year}', new Date().getFullYear().toString())}
@@ -286,7 +325,7 @@ const Footer = ({ data }: FooterProps) => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

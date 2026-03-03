@@ -136,7 +136,7 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
                   </div>
 
                   {/* Metric Value */}
-                  <div className="text-2xl md:text-3xl font-black text-tone-inverse mb-1 tracking-tight">
+                  <div className="text-3xl md:text-4xl font-black text-tone-inverse mb-1 tracking-tight">
                     {metric.value}
                   </div>
 

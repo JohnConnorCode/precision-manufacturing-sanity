@@ -1,60 +1,22 @@
 import { notFound } from 'next/navigation';
-import { client } from '@/sanity/lib/client';
+import { draftMode } from 'next/headers';
+import { getJobPostingBySlug, getAllJobPostings, getSiteSettings } from '@/sanity/lib/queries';
 import JobContent from './job-content';
 
-export const revalidate = 3600; // Revalidate every hour
-
-async function getSiteSettings() {
-  const query = `*[_type == "siteSettings"][0] {
-    hrEmail,
-    contact {
-      phone,
-      email
-    }
-  }`;
-  return await client.fetch(query);
-}
-
-async function getJobBySlug(slug: string) {
-  const query = `*[_type == "jobPosting" && slug.current == $slug && published == true][0] {
-    _id,
-    title,
-    department,
-    location,
-    employmentType,
-    salaryRange,
-    slug,
-    overview,
-    responsibilities,
-    qualifications,
-    preferredQualifications,
-    benefits,
-    applicationEmail,
-    applicationInstructions,
-    published,
-    datePosted
-  }`;
-
-  return await client.fetch(query, { slug });
-}
-
-async function getAllJobs() {
-  const query = `*[_type == "jobPosting" && published == true] {
-    "slug": slug.current
-  }`;
-  return await client.fetch(query);
-}
+// ISR for automatic updates when Sanity content changes (supports draft mode preview)
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  const jobs = await getAllJobs();
+  const jobs = await getAllJobPostings();
   return jobs.map((job: any) => ({
-    slug: job.slug,
+    slug: job.slug?.current || job.slug,
   }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const job = await getJobBySlug(slug);
+  const { isEnabled: isDraft } = await draftMode();
+  const job = await getJobPostingBySlug(slug, isDraft);
 
   if (!job) {
     return {
@@ -62,21 +24,42 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
 
+  const baseUrl = 'https://iismet.com';
+  const title = `${job.title} - Careers at IIS`;
+  const description = job.overview || `Join our team as a ${job.title} in ${job.department}`;
+
   return {
-    title: `${job.title} - Careers at IIS`,
-    description: job.overview || `Join our team as a ${job.title} in ${job.department}`,
+    title,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/careers/${slug}`,
+    },
     openGraph: {
-      title: `${job.title} - Careers at IIS`,
-      description: job.overview || `Join our team as a ${job.title}`,
+      type: 'website',
+      locale: 'en_US',
+      url: `${baseUrl}/careers/${slug}`,
+      siteName: 'IIS - Integrated Inspection Systems',
+      title,
+      description,
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }
 
 export default async function JobPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const { isEnabled: isDraft } = await draftMode();
   const [job, siteSettings] = await Promise.all([
-    getJobBySlug(slug),
-    getSiteSettings()
+    getJobPostingBySlug(slug, isDraft),
+    getSiteSettings(isDraft)
   ]);
 
   if (!job) {

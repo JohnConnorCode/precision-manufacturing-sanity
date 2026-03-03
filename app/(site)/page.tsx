@@ -7,6 +7,7 @@ import Industries from '@/components/sections/Industries';
 import ImageShowcase from '@/components/sections/ImageShowcase';
 import OperationalExcellence from '@/components/sections/OperationalExcellence';
 import Resources from '@/components/sections/Resources';
+import Testimonials from '@/components/sections/Testimonials';
 import CTA from '@/components/sections/CTA';
 import StructuredData from '@/components/seo/StructuredData';
 import {
@@ -16,7 +17,7 @@ import {
   generateProductCatalogSchema,
   generateFAQSchema
 } from '@/lib/structured-data';
-import { getAllServices, getAllIndustries, getHomepage, getSiteSettings } from '@/sanity/lib/queries';
+import { getAllServices, getAllIndustries, getHomepage, getSiteSettings, getFeaturedTestimonials } from '@/sanity/lib/queries';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import type { SanityImage } from '@/lib/types/cms';
 
@@ -51,17 +52,18 @@ export default async function Home() {
   const { isEnabled: isDraft } = await draftMode();
   const baseUrl = 'https://iismet.com';
 
-  // Parallel data fetching - 4x faster than sequential
-  const [servicesData, industriesData, homepageData, siteSettings] = await Promise.all([
+  // Parallel data fetching - 5x faster than sequential
+  const [servicesData, industriesData, homepageData, siteSettings, testimonials] = await Promise.all([
     getAllServices(isDraft) as Promise<SanityServiceData[] | null>,
     getAllIndustries(isDraft) as Promise<SanityIndustryData[] | null>,
     getHomepage(isDraft),
-    getSiteSettings(isDraft)
+    getSiteSettings(isDraft),
+    getFeaturedTestimonials(isDraft)
   ]);
 
   // Format data for display
   // Use hero background image for cards (matches individual service page heroes)
-  const formattedServices = servicesData?.map((service: any) => ({
+  const formattedServices = servicesData?.map((service: SanityServiceData & Record<string, any>) => ({
     ...service,
     description: service.shortDescription || portableTextToPlainText(service.description),
     href: `/services/${typeof service.slug === 'string' ? service.slug : service.slug?.current}`,
@@ -69,7 +71,7 @@ export default async function Home() {
   }));
 
   // Use hero background image for industry cards (matches individual industry page heroes)
-  const formattedIndustries = industriesData?.map((industry: any) => ({
+  const formattedIndustries = industriesData?.map((industry: SanityIndustryData & Record<string, any>) => ({
     ...industry,
     description: industry.shortDescription || portableTextToPlainText(industry.description),
     href: `/industries/${typeof industry.slug === 'string' ? industry.slug : industry.slug?.current}`,
@@ -80,8 +82,8 @@ export default async function Home() {
 
   // Always use stats for header, technicalSpecs for the spec items
   const technicalSpecsData = {
-    title: homepageData?.stats?.title || 'Precision By The Numbers',
-    subtitle: homepageData?.stats?.subtitle || 'Industry-leading capabilities backed by decades of aerospace and defense manufacturing expertise',
+    title: homepageData?.stats?.title,
+    subtitle: homepageData?.stats?.subtitle,
     enabled: homepageData?.technicalSpecs?.enabled,
     specs: Array.isArray(homepageData?.technicalSpecs)
       ? homepageData.technicalSpecs
@@ -147,6 +149,7 @@ export default async function Home() {
       )}
       {homepageData?.operationalExcellence?.enabled !== false && <OperationalExcellence data={homepageData?.operationalExcellence || undefined} />}
       {homepageData?.resourcesSection?.enabled !== false && <Resources data={homepageData?.resourcesSection || undefined} />}
+      {testimonials && testimonials.length > 0 && <Testimonials data={testimonials} />}
       {homepageData?.cta?.enabled !== false && <CTA data={homepageData?.cta || undefined} />}
     </>
   );
@@ -163,19 +166,19 @@ export async function generateMetadata() {
   // Pull SEO data from Sanity with fallbacks (fallbacks allowed for SEO resilience)
   const metadata = {
     title: homepageData?.seo?.metaTitle || 'IIS - Integrated Inspection Systems | Engineering, Metrology, Machining & Database Services',
-    description: homepageData?.seo?.metaDescription || 'Integrated Inspection Systems (IIS): Engineering, Metrology, Machining & Database Services since 1995. Proprietary MetBase® software links CMM, CNC & vision systems. AS9100, ISO 9001 certified, ITAR registered. Serving aerospace, manufacturing & government.',
-    keywords: homepageData?.seo?.metaKeywords || 'IIS, Integrated Inspection Systems, engineering services, metrology, machining, database services, MetBase software, CMM inspection, CNC machining, AS9100, ISO 9001, ITAR, aerospace, precision manufacturing, Oregon',
-    ogImage: homepageData?.seo?.ogImage?.asset?.url || `${baseUrl}/og-image-home.jpg`,
-    ogImageAlt: homepageData?.seo?.ogImage?.alt || 'IIS Precision Manufacturing - Advanced CNC Machining Services',
+    description: homepageData?.seo?.metaDescription || 'Integrated Inspection Systems (IIS): Engineering, Metrology, Machining & Database Services since 1995. Proprietary MetBase® software links CMM, CNC & vision systems. AS9100, ISO 9001 certified, ITAR registered. Serving aerospace & government.',
+    keywords: homepageData?.seo?.metaKeywords || 'IIS, Integrated Inspection Systems, engineering services, metrology, machining, database services, MetBase software, CMM inspection, CNC machining, AS9100, ISO 9001, ITAR, aerospace, precision machining, Oregon',
+    ogImage: homepageData?.seo?.ogImage?.asset?.url || null,
+    ogImageAlt: homepageData?.seo?.ogImage?.alt || 'IIS - Integrated Inspection Systems - Advanced CNC Machining Services',
   };
 
   return {
     title: metadata.title,
     description: metadata.description,
     keywords: metadata.keywords,
-    authors: [{ name: 'IIS Precision Manufacturing', url: baseUrl }],
-    creator: 'IIS Precision Manufacturing',
-    publisher: 'IIS Precision Manufacturing',
+    authors: [{ name: 'IIS - Integrated Inspection Systems', url: baseUrl }],
+    creator: 'IIS - Integrated Inspection Systems',
+    publisher: 'IIS - Integrated Inspection Systems',
     robots: {
       index: true,
       follow: true,
@@ -194,10 +197,10 @@ export async function generateMetadata() {
       type: 'website',
       locale: 'en_US',
       url: baseUrl,
-      siteName: 'IIS Precision Manufacturing',
+      siteName: 'IIS - Integrated Inspection Systems',
       title: metadata.title,
       description: metadata.description,
-      images: [
+      images: metadata.ogImage ? [
         {
           url: metadata.ogImage,
           width: 1200,
@@ -205,7 +208,7 @@ export async function generateMetadata() {
           alt: metadata.ogImageAlt,
           type: 'image/jpeg',
         }
-      ],
+      ] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -213,7 +216,7 @@ export async function generateMetadata() {
       creator: '@iisprecision',
       title: metadata.title,
       description: metadata.description,
-      images: [metadata.ogImage],
+      images: metadata.ogImage ? [metadata.ogImage] : [],
     },
     // verification: {
     //   // Add search engine verification codes when obtained from:
@@ -223,7 +226,7 @@ export async function generateMetadata() {
     //   // other: { 'msvalidate.01': 'your-bing-verification-code' },
     // },
     category: 'Business',
-    classification: 'Manufacturing',
+    classification: 'Machining & Inspection',
     other: {
       'business:contact_data:street_address': siteSettings?.contact?.address,
       'business:contact_data:locality': siteSettings?.contact?.city,

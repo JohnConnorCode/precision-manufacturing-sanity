@@ -2,9 +2,8 @@ import ContactPageClient from './page-client';
 import { getContact } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 
-// Force static generation for INSTANT routing (no server delays)
-export const dynamic = 'force-static';
-export const revalidate = 60; // Revalidate every 60 seconds
+// ISR for automatic updates when Sanity content changes (supports draft mode preview)
+export const revalidate = 60;
 
 export default async function ContactPage() {
   const { isEnabled } = await draftMode();
@@ -22,20 +21,20 @@ export async function generateMetadata() {
 
   // Pull SEO data from Sanity with fallbacks
   const metadata = {
-    title: contactData?.seo?.metaTitle || 'Contact IIS - Precision Manufacturing Quote & Consultation',
-    description: contactData?.seo?.metaDescription || 'Contact Integrated Inspection Systems for precision manufacturing quotes, technical consultations, and project inquiries. AS9100, ISO 9001 certified, ITAR registered facility.',
-    keywords: contactData?.seo?.metaKeywords || 'contact IIS, precision manufacturing quote, CNC machining quote, CMM inspection quote, aerospace manufacturing inquiry, technical consultation, metrology services quote, Oregon manufacturing',
-    ogImage: contactData?.seo?.ogImage?.asset?.url || `${baseUrl}/og-image-contact.jpg`,
-    ogImageAlt: contactData?.seo?.ogImage?.alt || 'Contact IIS Precision Manufacturing',
+    title: contactData?.seo?.metaTitle || 'Contact IIS - Precision Machining Quote & Consultation',
+    description: contactData?.seo?.metaDescription || 'Contact Integrated Inspection Systems for precision machining quotes, technical consultations, and project inquiries. AS9100, ISO 9001 certified, ITAR registered facility.',
+    keywords: contactData?.seo?.metaKeywords || 'contact IIS, precision machining quote, CNC machining quote, CMM inspection quote, aerospace machining inquiry, technical consultation, metrology services quote, Oregon machining',
+    ogImage: contactData?.seo?.ogImage?.asset?.url || null,
+    ogImageAlt: contactData?.seo?.ogImage?.alt || 'Contact IIS - Integrated Inspection Systems',
   };
 
   return {
     title: metadata.title,
     description: metadata.description,
     keywords: metadata.keywords,
-    authors: [{ name: 'IIS Precision Manufacturing', url: baseUrl }],
-    creator: 'IIS Precision Manufacturing',
-    publisher: 'IIS Precision Manufacturing',
+    authors: [{ name: 'IIS - Integrated Inspection Systems', url: baseUrl }],
+    creator: 'IIS - Integrated Inspection Systems',
+    publisher: 'IIS - Integrated Inspection Systems',
     robots: {
       index: true,
       follow: true,
@@ -54,10 +53,10 @@ export async function generateMetadata() {
       type: 'website',
       locale: 'en_US',
       url: `${baseUrl}/contact`,
-      siteName: 'IIS Precision Manufacturing',
+      siteName: 'IIS - Integrated Inspection Systems',
       title: metadata.title,
       description: metadata.description,
-      images: [
+      images: metadata.ogImage ? [
         {
           url: metadata.ogImage,
           width: 1200,
@@ -65,7 +64,7 @@ export async function generateMetadata() {
           alt: metadata.ogImageAlt,
           type: 'image/jpeg',
         }
-      ],
+      ] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -73,9 +72,9 @@ export async function generateMetadata() {
       creator: '@iisprecision',
       title: metadata.title,
       description: metadata.description,
-      images: [metadata.ogImage],
+      images: metadata.ogImage ? [metadata.ogImage] : [],
     },
     category: 'Business',
-    classification: 'Manufacturing',
+    classification: 'Machining & Inspection',
   };
 }

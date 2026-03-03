@@ -23,8 +23,8 @@ import Link from 'next/link';
 import { PortableText } from '@portabletext/react';
 
 interface JobContentProps {
-  job: any;
-  siteSettings: any;
+  job: Record<string, any>;
+  siteSettings: Record<string, any>;
 }
 
 export default function JobContent({ job, siteSettings }: JobContentProps) {

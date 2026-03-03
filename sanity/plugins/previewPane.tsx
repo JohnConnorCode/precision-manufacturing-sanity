@@ -50,6 +50,17 @@ export const previewPane = definePlugin({
           const category = (document as any).category || 'manufacturing-processes';
           return buildPreview({ collection: 'resources', slug, category });
         }
+        case 'resourceCategory':
+          if (!slug) return prev;
+          return buildPreview({ collection: 'resource-categories', slug });
+        case 'caseStudy':
+          if (!slug) return prev;
+          return buildPreview({ collection: 'case-studies', slug });
+        case 'jobPosting':
+          if (!slug) return prev;
+          return buildPreview({ collection: 'careers', slug });
+        case 'metbase':
+          return buildPreview({ global: 'metbase' });
         case 'homepage':
           return buildPreview({ global: 'homepage' });
         case 'about':

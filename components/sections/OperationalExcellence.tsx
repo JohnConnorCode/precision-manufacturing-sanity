@@ -5,6 +5,7 @@ import * as Icons from 'lucide-react';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { STAGGER } from '@/lib/animation-config';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import { cn } from '@/lib/utils';
 
 function DynamicIcon({ name, className }: { name: string; className?: string }) {
   // Get the icon from lucide-react, fallback to Circle
@@ -55,13 +56,13 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
   const benefits = data.benefits.filter((b: Benefit) => b.enabled !== false);
 
   return (
-    <section className="relative py-32 md:py-40 overflow-hidden">
+    <section className="relative py-24 md:py-32 overflow-hidden">
       {/* Dramatic Dark Background with Gradient */}
-      <div className="absolute inset-0 bg-slate-950">
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-blue-950/5 to-slate-950">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-950/30 via-slate-950 to-indigo-950/30" />
         {/* Animated gradient orbs */}
-        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className={cn("absolute top-1/4 -left-32 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px]", !prefersReducedMotion && "animate-pulse")} />
+        <div className={cn("absolute bottom-1/4 -right-32 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px]", !prefersReducedMotion && "animate-pulse")} style={!prefersReducedMotion ? { animationDelay: '1s' } : undefined} />
       </div>
 
       {/* Grid Pattern Overlay */}

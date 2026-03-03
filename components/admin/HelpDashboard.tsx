@@ -6,7 +6,7 @@ export default function HelpDashboard() {
   return (
     <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
       <h1 style={{ marginBottom: '8px', fontSize: '32px', fontWeight: 'bold' }}>
-        Welcome to IIS Precision Manufacturing CMS
+        Welcome to IIS - Integrated Inspection Systems CMS
       </h1>
       <p style={{ marginBottom: '32px', color: '#666', fontSize: '16px' }}>
         Your complete guide to managing website content

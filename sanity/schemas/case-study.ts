@@ -6,6 +6,23 @@ export default defineType({
   title: 'Case Studies',
   type: 'document',
   icon: FileText,
+  orderings: [
+    {
+      title: 'Title A-Z',
+      name: 'titleAsc',
+      by: [{field: 'title', direction: 'asc'}],
+    },
+    {
+      title: 'Title Z-A',
+      name: 'titleDesc',
+      by: [{field: 'title', direction: 'desc'}],
+    },
+    {
+      title: 'Client A-Z',
+      name: 'clientAsc',
+      by: [{field: 'client', direction: 'asc'}],
+    },
+  ],
   fields: [
     defineField({
       name: 'title',
@@ -30,12 +47,13 @@ export default defineType({
       name: 'heroImage',
       title: 'Hero Image',
       type: 'image',
-      options: { hotspot: true },
+      options: { hotspot: true, metadata: ['blurhash', 'lqip', 'palette'] },
       fields: [
         {
           name: 'alt',
           title: 'Alt Text',
           type: 'string',
+          validation: (Rule) => Rule.required().error('Alt text is required for accessibility'),
         },
       ],
     }),
@@ -103,9 +121,9 @@ export default defineType({
       of: [
         {
           type: 'image',
-          options: { hotspot: true },
+          options: { hotspot: true, metadata: ['blurhash', 'lqip', 'palette'] },
           fields: [
-            { name: 'alt', type: 'string', title: 'Alt Text' },
+            { name: 'alt', type: 'string', title: 'Alt Text', validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility') },
             { name: 'caption', type: 'string', title: 'Caption' },
           ],
         },
@@ -139,9 +157,50 @@ export default defineType({
       name: 'seo',
       title: 'SEO',
       type: 'object',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       fields: [
-        { name: 'metaTitle', type: 'string', title: 'Meta Title' },
-        { name: 'metaDescription', type: 'text', title: 'Meta Description' },
+        {
+          name: 'metaTitle',
+          type: 'string',
+          title: 'Meta Title',
+          description: 'Title shown in search results (50-60 characters recommended)',
+          validation: (Rule) => Rule.max(60).warning('Meta title should be 60 characters or less'),
+        },
+        {
+          name: 'metaDescription',
+          type: 'text',
+          title: 'Meta Description',
+          description: 'Description shown in search results (150-160 characters recommended)',
+          rows: 3,
+          validation: (Rule) => Rule.max(160).warning('Meta description should be 160 characters or less'),
+        },
+        {
+          name: 'ogImage',
+          type: 'image',
+          title: 'Social Share Image',
+          description: 'Image shown when shared on social media (1200x630px recommended)',
+          options: {
+            hotspot: true,
+            metadata: ['blurhash', 'lqip', 'palette'],
+          },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+            },
+          ],
+        },
+        {
+          name: 'noindex',
+          type: 'boolean',
+          title: 'Prevent Indexing',
+          description: 'Prevent search engines from indexing this case study',
+          initialValue: false,
+        },
       ],
     }),
   ],

@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { typography, spacing, cn } from '@/lib/design-system'
 import { getToneTypography } from '@/lib/typography'
+import { usePrefersReducedMotion } from '@/lib/motion'
 import type { ServerLogEntry } from '@/lib/server-logger'
 
 interface HealthStatus {
@@ -35,6 +36,7 @@ interface StatusContentProps {
 }
 
 export default function StatusContent({ siteSettings }: StatusContentProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
   const [health, setHealth] = useState<HealthStatus | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -55,10 +57,8 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
       setLastRefresh(new Date())
 
       setEnvVars({
-        'SMTP_HOST': process.env.NEXT_PUBLIC_SMTP_HOST ? '✓ Configured' : null,
-        'SMTP_USER': process.env.NEXT_PUBLIC_SMTP_USER ? '✓ Configured' : null,
-        'SMTP_PASS': process.env.NEXT_PUBLIC_SMTP_PASS ? '✓ Configured' : null,
-        'NODE_ENV': process.env.NODE_ENV,
+        'EMAIL_SYSTEM': data.email?.configured ? '✓ Configured' : '✗ Not configured',
+        'NODE_ENV': process.env.NODE_ENV || 'Not set',
         'NEXT_PUBLIC_SANITY_PROJECT_ID': process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'Not set',
         'NEXT_PUBLIC_SANITY_DATASET': process.env.NEXT_PUBLIC_SANITY_DATASET || 'Not set',
       })
@@ -87,13 +87,11 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
     )
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-16 px-4 dark-section">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-24 md:py-32 px-4 dark-section">
       <div className={spacing.containerWide}>
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6 } })}
           className="mb-12"
         >
           <div className="flex items-center justify-between mb-4">
@@ -110,7 +108,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
                 }}>Status</span>
               </h1>
               <p className={cn(typography.descriptionLight)}>
-                Real-time monitoring for IIS precision manufacturing website
+                Real-time monitoring for IIS precision machining website
               </p>
             </div>
             <Button
@@ -134,8 +132,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
 
         {error && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 } })}
             className="mb-8"
           >
             <Card className="bg-red-500/10 border-red-500/20 p-6">
@@ -154,9 +151,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
           <div className="space-y-8">
             {/* Overall Status Card */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.1 } })}
             >
               <Card className={cn(
                 'p-8 border-2',
@@ -192,9 +187,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
             <div className="grid lg:grid-cols-2 gap-6">
               {/* Sanity Connection */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.2 } })}
               >
                 <Card className="p-6 bg-slate-900/50 border-slate-800">
                   <div className="flex items-center gap-3 mb-4">
@@ -217,9 +210,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
 
               {/* Email Configuration */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.3 } })}
               >
                 <Card className="p-6 bg-slate-900/50 border-slate-800">
                   <div className="flex items-center gap-3 mb-4">
@@ -240,9 +231,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
 
             {/* API Endpoints */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.4 } })}
             >
               <Card className="p-6 bg-slate-900/50 border-slate-800">
                 <h3 className={cn(typography.h5, darkTone.heading, 'mb-6 flex items-center gap-2')}>
@@ -269,9 +258,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
 
             {/* Configuration */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
+              {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.5 } })}
             >
               <Card className="p-6 bg-slate-900/50 border-slate-800">
                 <div className="flex items-center justify-between mb-6">
@@ -325,9 +312,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
 
             {/* Quick Links */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
+              {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.6 } })}
             >
               <Card className="p-6 bg-slate-900/50 border-slate-800">
                 <h3 className={cn(typography.h5, darkTone.heading, 'mb-6')}>Quick Links</h3>
@@ -355,9 +340,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
             {/* Recent Server Logs */}
             {health.logs && health.logs.length > 0 && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.65 }}
+                {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.65 } })}
               >
                 <Card className="p-6 bg-slate-900/50 border-slate-800">
                   <div className="flex items-center justify-between mb-6">
@@ -415,9 +398,7 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
 
             {/* Support Info */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
+              {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.7 } })}
             >
               <Card className="p-8 bg-gradient-to-br from-blue-600/10 to-indigo-600/10 border-blue-600/20">
                 <h3 className={cn(typography.h4, 'text-blue-300 mb-4')}>Need Help?</h3>

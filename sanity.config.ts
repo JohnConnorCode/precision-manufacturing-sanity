@@ -70,6 +70,8 @@ const singletonTypes = new Set([
   'industriesPage',
   'uiText',
   'pageContent',
+  'metbase',
+  'errorPages',
 ])
 
 // Define allowed actions for singleton documents
@@ -98,6 +100,7 @@ export default defineConfig({
         preview: '/',
         previewMode: {
           enable: '/api/draft-mode/enable',
+          disable: '/api/draft-mode/disable',
         },
       },
       resolve: {

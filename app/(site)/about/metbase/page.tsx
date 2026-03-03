@@ -2,8 +2,7 @@ import MetbasePageClient from '@/components/pages/MetbasePageClient';
 import { getMetbase } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 
-// Use ISR for automatic updates when Sanity content changes
-export const dynamic = 'force-static';
+// ISR for automatic updates when Sanity content changes (supports draft mode preview)
 export const revalidate = 60;
 
 export default async function MetbasePage() {
@@ -19,18 +18,18 @@ export async function generateMetadata() {
   const baseUrl = 'https://iismet.com';
 
   const metadata = {
-    title: metbaseData?.seo?.metaTitle || 'Metbase - Proprietary Database Software | IIS Precision Manufacturing',
+    title: metbaseData?.seo?.metaTitle || 'Metbase - Proprietary Database Software | IIS - Integrated Inspection Systems',
     description: metbaseData?.seo?.metaDescription || 'Metbase is IIS\'s proprietary database software providing ISO 9001 & AS9100 compliance for traceability, inspection data management, and robotic programming with over 15 years of historical data access.',
-    ogImage: metbaseData?.seo?.ogImage?.asset?.url || `${baseUrl}/og-image-metbase.jpg`,
+    ogImage: metbaseData?.seo?.ogImage?.asset?.url || null,
     ogImageAlt: metbaseData?.seo?.ogImage?.alt || 'Metbase Database Software by IIS',
   };
 
   return {
     title: metadata.title,
     description: metadata.description,
-    authors: [{ name: 'IIS Precision Manufacturing', url: baseUrl }],
-    creator: 'IIS Precision Manufacturing',
-    publisher: 'IIS Precision Manufacturing',
+    authors: [{ name: 'IIS - Integrated Inspection Systems', url: baseUrl }],
+    creator: 'IIS - Integrated Inspection Systems',
+    publisher: 'IIS - Integrated Inspection Systems',
     robots: {
       index: true,
       follow: true,
@@ -49,10 +48,10 @@ export async function generateMetadata() {
       type: 'website',
       locale: 'en_US',
       url: `${baseUrl}/about/metbase`,
-      siteName: 'IIS Precision Manufacturing',
+      siteName: 'IIS - Integrated Inspection Systems',
       title: metadata.title,
       description: metadata.description,
-      images: [
+      images: metadata.ogImage ? [
         {
           url: metadata.ogImage,
           width: 1200,
@@ -60,7 +59,7 @@ export async function generateMetadata() {
           alt: metadata.ogImageAlt,
           type: 'image/jpeg',
         }
-      ],
+      ] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -68,7 +67,7 @@ export async function generateMetadata() {
       creator: '@iisprecision',
       title: metadata.title,
       description: metadata.description,
-      images: [metadata.ogImage],
+      images: metadata.ogImage ? [metadata.ogImage] : [],
     },
     category: 'Technology',
     classification: 'Software',

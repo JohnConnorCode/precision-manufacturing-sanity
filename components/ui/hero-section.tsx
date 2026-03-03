@@ -200,7 +200,7 @@ export default function HeroSection({
             src={backgroundImage}
             alt={imageAlt || 'Hero background'}
             fill
-            className="object-cover object-center animate-fade-in"
+            className={cn("object-cover object-center", !prefersReducedMotion && "animate-fade-in")}
             priority={true}
             loading="eager"
             quality={95}
@@ -367,14 +367,14 @@ export default function HeroSection({
       {/* Scroll Indicator */}
       {showScrollIndicator && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={isMounted ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: 2, duration: 1 }}
+          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
+          animate={isMounted ? { opacity: 1 } : (prefersReducedMotion ? { opacity: 1 } : { opacity: 0 })}
+          transition={{ delay: prefersReducedMotion ? 0 : 2, duration: prefersReducedMotion ? 0 : 1 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
         >
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{
+            animate={prefersReducedMotion ? {} : { y: [0, 8, 0] }}
+            transition={prefersReducedMotion ? { duration: 0 } : {
               duration: 2,
               repeat: Infinity,
               ease: [0.33, 1, 0.68, 1]

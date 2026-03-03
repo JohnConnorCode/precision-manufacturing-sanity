@@ -12,6 +12,7 @@ import { Analytics } from "@vercel/analytics/react";
 import PreviewBanner from "@/components/preview-banner";
 import { Toaster } from 'sonner';
 import { getNavigation, getFooter, getSiteSettings } from '@/sanity/lib/queries';
+import type { RawNavItem, MappedNavItem } from '@/lib/types/cms';
 
 // Load Inter font
 const inter = Inter({
@@ -22,68 +23,70 @@ const inter = Inter({
 
 const fontClass = inter.className;
 
-export const metadata: Metadata = {
-  title: "IIS - Precision Machining & CMM Inspection Services | AS9100 Certified | Oregon",
-  description: "Integrated Inspection Systems (IIS) - AS9100 & ISO 9001 certified precision machining, CMM inspection, and first article inspection services. Proprietary MetBase® software for closed-loop data integration. ITAR registered. Serving aerospace, defense & manufacturing since 1995.",
-  keywords: "CMM inspection services, AS9100 certified, ISO 9001, ITAR registered, first article inspection, precision machining Oregon, dimensional inspection, coordinate measuring, MetBase software, aerospace machining, defense manufacturing, GD&T, statistical process control, Clackamas Oregon",
-  authors: [{ name: "Integrated Inspection Systems (IIS)" }],
-  creator: "Integrated Inspection Systems",
-  publisher: "Integrated Inspection Systems",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL("https://iismet.com"),
-  alternates: {
-    canonical: "/",
-  },
-  icons: {
-    icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' }
-    ],
-    apple: [
-      { url: '/favicon.svg', type: 'image/svg+xml' }
-    ],
-  },
-  openGraph: {
-    title: "IIS - AS9100 Certified Precision Machining & CMM Inspection | Oregon",
-    description: "AS9100 & ISO 9001 certified precision machining and CMM inspection services. First article inspection, dimensional measurement, and proprietary MetBase® software for aerospace, defense & manufacturing industries. ITAR registered since 1995.",
-    url: "https://iismet.com",
-    siteName: "Integrated Inspection Systems (IIS)",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "IIS - Integrated Inspection Systems Data-Driven Manufacturing",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "IIS - Integrated Inspection Systems | Data-Driven Manufacturing",
-    description: "Pioneer in data-driven precision manufacturing with proprietary Metbase® software. Serving industrial gas turbines, aerospace & government with ISO 9001 & AS9100 certified excellence since 1995.",
-    images: ["/og-image.jpg"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+export async function generateMetadata(): Promise<Metadata> {
+  const { isEnabled } = await draftMode()
+  const settings = await getSiteSettings(isEnabled).catch(() => null)
+  const ogImageUrl = settings?.seo?.defaultOgImageUrl
+  const ogImageAlt = settings?.seo?.defaultOgImageAlt || 'IIS - Integrated Inspection Systems'
+  const ogImages = ogImageUrl
+    ? [{ url: ogImageUrl, width: 1200, height: 630, alt: ogImageAlt }]
+    : []
+
+  return {
+    title: settings?.seo?.defaultTitle || "IIS - Precision Machining & CMM Inspection Services | AS9100 Certified | Oregon",
+    description: settings?.seo?.defaultDescription || "Integrated Inspection Systems (IIS) - AS9100 & ISO 9001 certified precision machining, CMM inspection, and first article inspection services. Proprietary MetBase® software for closed-loop data integration. ITAR registered. Serving aerospace and defense since 1995.",
+    keywords: settings?.seo?.defaultKeywords || "CMM inspection services, AS9100 certified, ISO 9001, ITAR registered, first article inspection, precision machining Oregon, dimensional inspection, coordinate measuring, MetBase software, aerospace machining, defense machining, GD&T, statistical process control, Clackamas Oregon",
+    authors: [{ name: settings?.company?.name || "Integrated Inspection Systems (IIS)" }],
+    creator: settings?.company?.name || "Integrated Inspection Systems",
+    publisher: settings?.company?.name || "Integrated Inspection Systems",
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    metadataBase: new URL(settings?.company?.websiteUrl || "https://iismet.com"),
+    alternates: {
+      canonical: "/",
+    },
+    icons: {
+      icon: [
+        { url: '/favicon.svg', type: 'image/svg+xml' }
+      ],
+      apple: [
+        { url: '/favicon.svg', type: 'image/svg+xml' }
+      ],
+    },
+    openGraph: {
+      title: settings?.seo?.defaultTitle || "IIS - AS9100 Certified Precision Machining & CMM Inspection | Oregon",
+      description: settings?.seo?.defaultDescription || "AS9100 & ISO 9001 certified precision machining and CMM inspection services. First article inspection, dimensional measurement, and proprietary MetBase® software for aerospace and defense industries. ITAR registered since 1995.",
+      url: settings?.company?.websiteUrl || "https://iismet.com",
+      siteName: settings?.company?.name || "Integrated Inspection Systems (IIS)",
+      images: ogImages,
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: settings?.seo?.defaultTitle || "IIS - Integrated Inspection Systems | Data-Driven Machining & Inspection",
+      description: settings?.seo?.defaultDescription || "Pioneer in data-driven precision machining and inspection with proprietary Metbase® software. Serving industrial gas turbines, aerospace & government with ISO 9001 & AS9100 certified excellence since 1995.",
+      images: ogImages.length > 0 ? [ogImages[0].url] : [],
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-  verification: {
-    // Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION in .env.local after adding site to Google Search Console
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
-  },
-};
+    verification: {
+      google: settings?.seo?.googleVerificationCode || process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+    },
+  }
+}
 
 // Helper function to normalize navigation hrefs
 function normalizeHref(name: string, href?: string | null) {
@@ -100,16 +103,16 @@ function normalizeHref(name: string, href?: string | null) {
 }
 
 // Helper function to map navigation items
-function mapNavigationItem(item: any): any {
+function mapNavigationItem(item: RawNavItem): MappedNavItem | null {
   if (!item) return null
   if (item?._type === 'navGroup') {
     const title = item?.groupTitle || 'Group'
-    const items = Array.isArray(item?.items) ? item.items.map(mapNavigationItem).filter(Boolean) : []
+    const items = Array.isArray(item?.items) ? item.items.map(mapNavigationItem).filter((x): x is MappedNavItem => x !== null) : []
     return { name: title, href: '', description: '', linkType: 'internal', openInNewTab: false, iconName: null, showInHeader: true, showInMobile: true, style: { variant: 'link', badgeText: null }, children: items }
   }
   const name = item?.name ?? ''
   const href = normalizeHref(name, item?.href ?? '')
-  const children = Array.isArray(item?.children) ? item.children.map(mapNavigationItem).filter(Boolean) : []
+  const children = Array.isArray(item?.children) ? item.children.map(mapNavigationItem).filter((x): x is MappedNavItem => x !== null) : []
   return {
     name,
     href,
@@ -204,20 +207,12 @@ export default async function SiteLayout({
         publisher: {
           "@id": `${baseUrl}/#organization`,
         },
-        potentialAction: {
-          "@type": "SearchAction",
-          target: {
-            "@type": "EntryPoint",
-            urlTemplate: `${baseUrl}/search?q={search_term_string}`,
-          },
-          "query-input": "required name=search_term_string",
-        },
       },
       {
         "@type": "LocalBusiness",
         "@id": `${baseUrl}/#localbusiness`,
         name: siteSettingsData?.company?.name,
-        image: `${baseUrl}/facility.jpg`,
+        image: siteSettingsData?.seo?.defaultOgImageUrl || siteSettingsData?.company?.logoUrl || `${baseUrl}/favicon.svg`,
         priceRange: "$$$",
         address: {
           "@type": "PostalAddress",
@@ -242,7 +237,7 @@ export default async function SiteLayout({
         },
         hasOfferCatalog: {
           "@type": "OfferCatalog",
-          name: "Data-Driven Manufacturing Services",
+          name: "Data-Driven Machining & Inspection Services",
           itemListElement: [
             {
               "@type": "Offer",

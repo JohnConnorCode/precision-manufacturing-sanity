@@ -10,10 +10,12 @@ import { getAllServices, getPageContent, getServicesPage } from '@/sanity/lib/qu
 import AnimatedSection from '@/components/ui/animated-section';
 import { NoServicesState } from '@/components/ui/empty-state';
 import type { Metadata } from 'next';
+import type { ServiceItem, ServiceCapability, QualityAssuranceItem, CMSButton, ServiceSpec, PortableTextBlock } from '@/lib/types/cms';
+import { draftMode } from 'next/headers';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 
 // Defensive converter: accepts strings, PT arrays, or simple objects
-function toPlainText(value: any): string {
+function toPlainText(value: string | PortableTextBlock[] | { text?: string; spec?: string; label?: string } | null | undefined): string {
   if (!value) return '';
   if (typeof value === 'string') return value;
   if (Array.isArray(value)) return portableTextToPlainText(value);
@@ -24,9 +26,8 @@ function toPlainText(value: any): string {
   return String(value ?? '');
 }
 
-// Force static generation for INSTANT routing (no server delays)
-export const dynamic = 'force-static';
-export const revalidate = 60; // Revalidate every 60 seconds
+// ISR for automatic updates when Sanity content changes (supports draft mode preview)
+export const revalidate = 60;
 
 // Comprehensive SEO metadata with social sharing optimization - pulls from Sanity CMS
 export async function generateMetadata(): Promise<Metadata> {
@@ -35,11 +36,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const pageUrl = `${baseUrl}/services`;
 
   // Pull SEO data from Sanity with fallbacks
-  const seoTitle = servicesPage?.seo?.metaTitle || 'Precision Manufacturing Services | 5-Axis CNC, Metrology, Engineering | IIS';
-  const seoDescription = servicesPage?.seo?.metaDescription || 'Advanced manufacturing services: 5-axis CNC machining, precision metrology, adaptive machining, engineering design. AS9100D certified, ±0.0001" tolerances, 150+ materials. ITAR registered for aerospace & defense.';
-  const seoKeywords = servicesPage?.seo?.keywords?.join(', ') || 'precision manufacturing, 5-axis CNC machining, metrology services, CMM inspection, adaptive machining, engineering services, AS9100D, ITAR, aerospace machining, defense manufacturing, tight tolerance machining';
-  const ogImage = servicesPage?.seo?.ogImage?.asset?.url || `${baseUrl}/og-image-services.jpg`;
-  const ogImageAlt = servicesPage?.seo?.ogImage?.alt || 'IIS Precision Manufacturing Services - CNC Machining and Metrology';
+  const seoTitle = servicesPage?.seo?.metaTitle || 'Precision Machining Services | 5-Axis CNC, Metrology, Engineering | IIS';
+  const seoDescription = servicesPage?.seo?.metaDescription || 'Advanced machining services: 5-axis CNC machining, precision metrology, adaptive machining, engineering support. AS9100D certified, ±0.0001" tolerances, 150+ materials. ITAR registered for aerospace & defense.';
+  const seoKeywords = servicesPage?.seo?.keywords?.join(', ') || 'precision machining, 5-axis CNC machining, metrology services, CMM inspection, adaptive machining, engineering services, AS9100D, ITAR, aerospace machining, defense machining, tight tolerance machining';
+  const ogImage = servicesPage?.seo?.ogImage?.asset?.url || null;
+  const ogImageAlt = servicesPage?.seo?.ogImage?.alt || 'IIS - Integrated Inspection Systems Services - CNC Machining and Metrology';
 
   return {
     title: seoTitle,
@@ -52,10 +53,10 @@ export async function generateMetadata(): Promise<Metadata> {
       type: 'website',
       locale: 'en_US',
       url: pageUrl,
-      siteName: 'IIS Precision Manufacturing',
+      siteName: 'IIS - Integrated Inspection Systems',
       title: seoTitle,
       description: seoDescription,
-      images: [
+      images: ogImage ? [
         {
           url: ogImage,
           width: 1200,
@@ -63,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
           alt: ogImageAlt,
           type: 'image/jpeg',
         }
-      ],
+      ] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -71,7 +72,7 @@ export async function generateMetadata(): Promise<Metadata> {
       creator: '@iisprecision',
       title: seoTitle,
       description: seoDescription,
-      images: [ogImage],
+      images: ogImage ? [ogImage] : [],
     },
     robots: {
       index: true,
@@ -88,29 +89,33 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ServicesPage() {
+  const { isEnabled: isDraft } = await draftMode();
   // Parallel data fetching - 2x faster than sequential
   const [services, servicesPageData, pageContent] = await Promise.all([
-    getAllServices(),
-    getServicesPage(),
-    getPageContent()
+    getAllServices(isDraft),
+    getServicesPage(isDraft),
+    getPageContent(isDraft)
   ]);
 
   const sharedServicesPage = pageContent?.servicesPage;
 
   // Format services with slug and plain text description
-  const formattedServices = services?.map((service: any, _slug: number) => ({
-    ...service,
-    slug: service.slug?.current || service.slug,
-    description: toPlainText(service.shortDescription) || portableTextToPlainText(service.description),
-    href: `/services/${service.slug?.current || service.slug}`,
-  })) || [];
+  const formattedServices = services?.map((service: ServiceItem, _slug: number) => {
+    const slugStr = typeof service.slug === 'string' ? service.slug : service.slug?.current || '';
+    return {
+      ...service,
+      slug: slugStr,
+      description: toPlainText(service.shortDescription) || portableTextToPlainText(service.description),
+      href: `/services/${slugStr}`,
+    };
+  }) || [];
 
   const capabilities = (servicesPageData?.content?.capabilities || []).filter(
-    (capability: any) => capability?.label && capability?.value && capability?.description
+    (capability: ServiceCapability) => capability?.label && capability?.value && capability?.description
   );
 
   const qualityAssurance = (servicesPageData?.content?.qualityAssurance || []).filter(
-    (item: any) => item?.title
+    (item: QualityAssuranceItem) => item?.title
   );
 
   const heroBackgroundImage =
@@ -135,8 +140,8 @@ export default async function ServicesPage() {
     ? servicesPageData.hero.buttons
     : sharedServicesPage?.hero?.buttons || [];
   const heroButtons = heroButtonsSource
-    .filter((button: any) => button?.enabled !== false && button?.label && button?.href)
-    .map((button: any) => ({
+    .filter((button: CMSButton) => button?.enabled !== false && button?.label && button?.href)
+    .map((button: CMSButton) => ({
       label: button.label,
       href: button.href,
       variant: button.variant as 'primary' | 'secondary' | undefined,
@@ -149,8 +154,8 @@ export default async function ServicesPage() {
     sharedServicesPage?.qualityImageUrl;
   const qualityImageAlt = sharedServicesPage?.qualityImage?.alt || '';
   const qualityHeading =
-    (servicesPageData as any)?.content?.qualitySectionTitle ||
-    (sharedServicesPage as any)?.qualityHeading;
+    servicesPageData?.content?.qualitySectionTitle ||
+    sharedServicesPage?.qualityHeading;
 
   const ctaHeading =
     servicesPageData?.cta?.heading ||
@@ -160,7 +165,7 @@ export default async function ServicesPage() {
     sharedServicesPage?.cta?.description;
   const ctaButtons = (Array.isArray(servicesPageData?.cta?.buttons) && servicesPageData.cta.buttons.length > 0)
     ? servicesPageData.cta.buttons
-        .filter((button: any) => button?.enabled !== false && button?.label && button?.href)
+        .filter((button: CMSButton) => button?.enabled !== false && button?.label && button?.href)
     : [
         sharedServicesPage?.cta?.primaryButton
           ? { ...sharedServicesPage.cta.primaryButton, variant: 'primary' }
@@ -210,12 +215,12 @@ export default async function ServicesPage() {
       )}
 
       {/* Capabilities Overview - only show if there are enabled capabilities */}
-      {capabilities.filter((c: any) => c?.enabled !== false).length > 0 && (
+      {capabilities.filter((c: ServiceCapability) => c?.enabled !== false).length > 0 && (
         <section id="capabilities" className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className={spacing.container}>
             <AnimatedSection>
               {(() => {
-                const filteredCaps = capabilities.filter((c: any) => c?.enabled !== false);
+                const filteredCaps = capabilities.filter((c: ServiceCapability) => c?.enabled !== false);
                 const count = filteredCaps.length;
                 return (
                   <div className={cn(
@@ -228,7 +233,7 @@ export default async function ServicesPage() {
                     count === 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
                     count > 6 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
                   )}>
-                    {filteredCaps.map((capability: any) => (
+                    {filteredCaps.map((capability: ServiceCapability) => (
                       <div
                         key={capability.label}
                         className="text-center"
@@ -281,9 +286,9 @@ export default async function ServicesPage() {
             <NoServicesState />
           ) : (
           <div className={styles.grid2Col}>
-            {formattedServices.map((service: any, index: number) => {
+            {formattedServices.map((service: ServiceItem & { href: string; description: string }, index: number) => {
               // Extract image URL safely
-              const imageUrl = service.image?.asset?.url || service.image;
+              const imageUrl = typeof service.image === 'string' ? service.image : service.image?.asset?.url;
 
               return (
               <AnimatedSection key={service.title} delay={index * 0.1}>
@@ -311,7 +316,7 @@ export default async function ServicesPage() {
 
                     {Array.isArray(service.specs) && service.specs.length > 0 && (
                       <div className="grid grid-cols-2 gap-2 mb-6">
-                        {service.specs.slice(0,4).map((spec: any, idx: number) => (
+                        {service.specs.slice(0,4).map((spec: string | ServiceSpec, idx: number) => (
                           <div key={idx} className={cn("flex items-center", typography.small)}>
                             <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2" />
                             {toPlainText(spec)}
@@ -361,8 +366,8 @@ export default async function ServicesPage() {
               <AnimatedSection>
                 <div className="space-y-4 text-center lg:text-left">
                   {qualityAssurance
-                    .filter((item: any) => item?.enabled !== false)
-                    .map((item: any) => (
+                    .filter((item: QualityAssuranceItem) => item?.enabled !== false)
+                    .map((item: QualityAssuranceItem) => (
                     <div
                       key={item.title}
                       className="flex items-start gap-3"
@@ -409,7 +414,7 @@ export default async function ServicesPage() {
                   </p>
                 )}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  {ctaButtons.map((button: any, index: number) => (
+                  {ctaButtons.map((button: CMSButton, index: number) => (
                     button.variant === 'secondary' ? (
                       <Button
                         key={`${button.label}-${index}`}
@@ -418,12 +423,12 @@ export default async function ServicesPage() {
                         variant="outline"
                         asChild
                       >
-                        <Link href={button.href}>
+                        <Link href={button.href || '#'}>
                           {button.label || button.text}
                         </Link>
                       </Button>
                     ) : (
-                      <Link key={`${button.label}-${index}`} href={button.href}>
+                      <Link key={`${button.label}-${index}`} href={button.href || '#'}>
                         <PremiumButton size="lg">
                           {button.label || button.text}
                           <ArrowRight className="ml-2 h-4 w-4" />

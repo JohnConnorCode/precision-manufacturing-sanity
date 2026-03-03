@@ -1,19 +1,21 @@
 import { notFound } from 'next/navigation';
 import SupplierRequirementsPageClient from './page-client';
 import { getSupplierRequirements } from '@/sanity/lib/queries';
+import { draftMode } from 'next/headers';
 
-// Force static generation with long revalidation
+// ISR for automatic updates when Sanity content changes (supports draft mode preview)
 export const revalidate = 3600;
 
 export default async function SupplierRequirementsPage() {
-  // Fetch data from CMS
-  const supplierRequirementsData = await getSupplierRequirements();
+  const { isEnabled: isDraft } = await draftMode();
+  const supplierRequirementsData = await getSupplierRequirements(isDraft);
 
   // Return 404 if document doesn't exist yet in Sanity
   if (!supplierRequirementsData) {
     notFound();
   }
 
+  // Cast: query return type and client component prop type represent the same CMS document
   return <SupplierRequirementsPageClient data={supplierRequirementsData as any} />;
 }
 
@@ -22,19 +24,19 @@ export async function generateMetadata() {
   const baseUrl = 'https://iismet.com';
 
   const metadata = {
-    title: 'Supplier Quality Requirements | AS9100 Standards - IIS Precision Manufacturing',
-    description: 'Comprehensive supplier quality requirements for aerospace and precision manufacturing. AS9100D, ISO 9001:2015, ITAR compliance, and industry best practices for supply chain excellence.',
-    keywords: 'supplier requirements, AS9100D, ISO 9001, supplier quality, aerospace supplier standards, ITAR compliance, quality system requirements, supplier approval process, manufacturing standards',
-    ogImage: `${baseUrl}/og-image-supplier-requirements.jpg`
+    title: 'Supplier Quality Requirements | AS9100 Standards - IIS - Integrated Inspection Systems',
+    description: 'Comprehensive supplier quality requirements for aerospace and precision machining. AS9100D, ISO 9001:2015, ITAR compliance, and industry best practices for supply chain excellence.',
+    keywords: 'supplier requirements, AS9100D, ISO 9001, supplier quality, aerospace supplier standards, ITAR compliance, quality system requirements, supplier approval process, machining standards',
+    ogImage: null as string | null
   };
 
   return {
     title: metadata.title,
     description: metadata.description,
     keywords: metadata.keywords,
-    authors: [{ name: 'IIS Precision Manufacturing', url: baseUrl }],
-    creator: 'IIS Precision Manufacturing',
-    publisher: 'IIS Precision Manufacturing',
+    authors: [{ name: 'IIS - Integrated Inspection Systems', url: baseUrl }],
+    creator: 'IIS - Integrated Inspection Systems',
+    publisher: 'IIS - Integrated Inspection Systems',
     robots: {
       index: true,
       follow: true,
@@ -53,10 +55,10 @@ export async function generateMetadata() {
       type: 'website',
       locale: 'en_US',
       url: `${baseUrl}/compliance/supplier-requirements`,
-      siteName: 'IIS Precision Manufacturing',
+      siteName: 'IIS - Integrated Inspection Systems',
       title: metadata.title,
       description: metadata.description,
-      images: [
+      images: metadata.ogImage ? [
         {
           url: metadata.ogImage,
           width: 1200,
@@ -64,7 +66,7 @@ export async function generateMetadata() {
           alt: 'IIS Supplier Quality Requirements',
           type: 'image/jpeg',
         }
-      ],
+      ] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -72,7 +74,7 @@ export async function generateMetadata() {
       creator: '@iisprecision',
       title: metadata.title,
       description: metadata.description,
-      images: [metadata.ogImage],
+      images: metadata.ogImage ? [metadata.ogImage] : [],
     },
     category: 'Business',
     classification: 'Quality Standards',

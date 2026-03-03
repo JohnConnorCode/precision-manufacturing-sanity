@@ -2,7 +2,19 @@
  * Extract plain text from Lexical richtext content
  * Handles the {root: {children: [...]}} structure
  */
-export function lexicalToText(lexical: any): string {
+
+interface LexicalNode {
+  text?: string;
+  children?: LexicalNode[];
+}
+
+interface LexicalRoot {
+  root?: {
+    children?: LexicalNode[];
+  };
+}
+
+export function lexicalToText(lexical: unknown): string {
   if (!lexical || typeof lexical !== 'object') {
     return String(lexical || '');
   }
@@ -13,14 +25,15 @@ export function lexicalToText(lexical: any): string {
   }
 
   // Handle Lexical structure
-  if (lexical.root && lexical.root.children) {
-    return extractTextFromChildren(lexical.root.children);
+  const doc = lexical as LexicalRoot;
+  if (doc.root && doc.root.children) {
+    return extractTextFromChildren(doc.root.children);
   }
 
   return '';
 }
 
-function extractTextFromChildren(children: any[]): string {
+function extractTextFromChildren(children: LexicalNode[]): string {
   if (!Array.isArray(children)) {
     return '';
   }

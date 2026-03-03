@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card'
 import { AlertTriangle, RefreshCw, BookOpen, Home } from 'lucide-react'
 import Link from 'next/link'
 import { typography, cn } from '@/lib/design-system'
+import { usePrefersReducedMotion } from '@/lib/motion'
 
 export default function Error({
   error,
@@ -15,11 +16,30 @@ export default function Error({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const prefersReducedMotion = usePrefersReducedMotion()
+
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
       console.error('Resources error:', error)
     }
   }, [error])
+
+  const noMotion = { initial: undefined, animate: undefined, transition: undefined }
+  const fadeIn = (delay = 0) => prefersReducedMotion ? noMotion : {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5, delay },
+  }
+  const scaleIn = (delay = 0) => prefersReducedMotion ? noMotion : {
+    initial: { scale: 0.8, opacity: 0 },
+    animate: { scale: 1, opacity: 1 },
+    transition: { duration: 0.5, delay },
+  }
+  const fadeOnly = (delay = 0) => prefersReducedMotion ? noMotion : {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.5, delay },
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center px-4">
@@ -27,16 +47,12 @@ export default function Error({
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(239,68,68,0.05)_0%,_transparent_50%)]" />
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        {...fadeIn()}
         className="relative z-10 max-w-md w-full"
       >
         <Card className="p-8 md:p-10 text-center bg-slate-900/50 border-slate-800">
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            {...scaleIn(0.2)}
             className="mb-6 flex justify-center"
           >
             <div className="w-20 h-20 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-2xl flex items-center justify-center border border-red-500/30">
@@ -45,9 +61,7 @@ export default function Error({
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            {...fadeOnly(0.3)}
           >
             <h1 className={cn(typography.h3, 'text-tone-inverse mb-3')}>
               Something went wrong
@@ -60,9 +74,7 @@ export default function Error({
 
           {process.env.NODE_ENV === 'development' && error.message && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              {...fadeOnly(0.4)}
               className="mb-6 p-4 bg-slate-800/50 rounded-xl border border-slate-700 text-left"
             >
               <p className="text-xs font-mono text-red-400 break-all">
@@ -72,9 +84,7 @@ export default function Error({
           )}
 
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            {...fadeIn(0.5)}
             className="flex flex-col sm:flex-row gap-3 justify-center"
           >
             <Button
@@ -93,9 +103,7 @@ export default function Error({
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            {...fadeOnly(0.6)}
             className="mt-6 pt-6 border-t border-slate-800"
           >
             <Link

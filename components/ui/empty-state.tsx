@@ -173,7 +173,7 @@ export function NoIndustriesState() {
     <EmptyState
       icon={FolderOpen}
       title="No industries listed"
-      description="Industry information is being updated. Reach out to learn about the sectors we serve and how we can support your manufacturing needs."
+      description="Industry information is being updated. Reach out to learn about the sectors we serve and how we can support your machining needs."
       action={{
         label: 'Get in Touch',
         href: '/contact'
@@ -187,7 +187,7 @@ export function NoResourcesState() {
     <EmptyState
       icon={FileX2}
       title="No resources found"
-      description="Our knowledge base is being expanded with new technical guides and resources. Check back soon for expert insights on precision manufacturing."
+      description="Our knowledge base is being expanded with new technical guides and resources. Check back soon for expert insights on precision machining."
       action={{
         label: 'View Services',
         href: '/services'

@@ -1,5 +1,4 @@
 import type { MDXComponents } from 'mdx/types';
-import { motion } from 'framer-motion';
 import { PremiumButton } from '@/components/ui/premium-button';
 import ToleranceCalculator from '@/components/ui/tolerance-calculator';
 import ComplianceChecklist from '@/components/ui/compliance-checklist';
@@ -8,39 +7,30 @@ import { Check, AlertTriangle, Info, Lightbulb } from 'lucide-react';
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    // Custom heading components with animations
+    // Custom heading components
     h1: ({ children, ...props }) => (
-      <motion.h1
+      <h1
         className="text-4xl font-bold text-tone-inverse mb-6 mt-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
         {...props}
       >
         {children}
-      </motion.h1>
+      </h1>
     ),
     h2: ({ children, ...props }) => (
-      <motion.h2
+      <h2
         className="text-3xl font-bold text-tone-inverse mb-4 mt-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
         {...props}
       >
         {children}
-      </motion.h2>
+      </h2>
     ),
     h3: ({ children, ...props }) => (
-      <motion.h3
+      <h3
         className="text-2xl font-bold text-tone-inverse mb-3 mt-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
         {...props}
       >
         {children}
-      </motion.h3>
+      </h3>
     ),
 
     // Enhanced paragraph with better typography
@@ -150,11 +140,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       };
 
       return (
-        <motion.div
+        <div
           className={`border rounded-lg p-6 mb-6 ${getColors()}`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
         >
           <div className="flex items-center gap-3 mb-3">
             {getIcon()}
@@ -163,28 +150,22 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
           <div className="text-slate-300">
             {children}
           </div>
-        </motion.div>
+        </div>
       );
     },
 
     InteractiveDemo: ({ title, children }: { title: string; children: React.ReactNode }) => (
-      <motion.div
+      <div
         className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 mb-6"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
       >
         <h4 className="text-xl font-bold text-tone-inverse mb-4">{title}</h4>
         {children}
-      </motion.div>
+      </div>
     ),
 
     TechnicalSpecs: ({ specs }: { specs: Array<{ label: string; value: string; unit?: string }> }) => (
-      <motion.div
+      <div
         className="bg-slate-900/30 border border-slate-800 rounded-lg p-6 mb-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
       >
         <h4 className="text-lg font-bold text-tone-inverse mb-4">Technical Specifications</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -197,17 +178,17 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
             </div>
           ))}
         </div>
-      </motion.div>
+      </div>
     ),
 
     CTAButton: ({ href, children, variant = 'default' }: {
       href: string;
       children: React.ReactNode;
-      variant?: 'default' | 'secondary';
+      variant?: 'default' | 'secondary' | 'ghost' | 'destructive';
     }) => (
       <div className="my-6">
         <a href={href}>
-          <PremiumButton variant={variant as any} size="lg">
+          <PremiumButton variant={variant} size="lg">
             {children}
           </PremiumButton>
         </a>

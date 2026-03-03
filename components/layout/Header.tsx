@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { typography } from '@/lib/design-system';
 import { throttleRAF } from '@/lib/performance';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 // Child menu item type
 interface ChildMenuItem {
@@ -112,6 +113,7 @@ export default function Header({ data }: HeaderProps) {
 
   // Track client-side mounting for theme toggle hydration
   const [mounted, setMounted] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
 
   // Prevent hydration mismatch for theme
@@ -426,9 +428,9 @@ export default function Header({ data }: HeaderProps) {
                 return (
                   <motion.li
                     key={item.name}
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={mounted ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-                    transition={{ duration: 0.4, delay: mounted ? 0.1 + index * 0.05 : 0, ease: "easeOut" }}
+                    initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+                    animate={mounted ? { opacity: 1, y: 0 } : prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+                    transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.4, delay: mounted ? 0.1 + index * 0.05 : 0, ease: "easeOut" }}
                     className={itemClasses}
                   >
                     {hasChildren ? (
@@ -562,9 +564,9 @@ export default function Header({ data }: HeaderProps) {
           {/* Desktop CTA + Theme Toggle */}
           <motion.div
             className="hidden lg:flex items-center space-x-2"
-            initial={{ opacity: 0, x: 20 }}
-            animate={mounted ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-            transition={{ duration: 0.5, delay: mounted ? 0.4 : 0, ease: "easeOut" }}
+            initial={prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+            animate={mounted ? { opacity: 1, x: 0 } : prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: mounted ? 0.4 : 0, ease: "easeOut" }}
           >
             {/* Theme Toggle */}
             {mounted && <ThemeToggle />}
@@ -609,7 +611,7 @@ export default function Header({ data }: HeaderProps) {
                   rotate: mobileMenuOpen ? 45 : 0,
                   y: mobileMenuOpen ? 8 : 0,
                 }}
-                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                 className={cn(
                   "w-full h-0.5 rounded-full origin-center",
                   inHeroMode ? "bg-white" : "bg-slate-900 dark:bg-slate-100"
@@ -620,7 +622,7 @@ export default function Header({ data }: HeaderProps) {
                   opacity: mobileMenuOpen ? 0 : 1,
                   x: mobileMenuOpen ? -10 : 0,
                 }}
-                transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                 className={cn(
                   "w-full h-0.5 rounded-full",
                   inHeroMode ? "bg-white" : "bg-slate-900 dark:bg-slate-100"
@@ -631,7 +633,7 @@ export default function Header({ data }: HeaderProps) {
                   rotate: mobileMenuOpen ? -45 : 0,
                   y: mobileMenuOpen ? -8 : 0,
                 }}
-                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                 className={cn(
                   "w-full h-0.5 rounded-full origin-center",
                   inHeroMode ? "bg-white" : "bg-slate-900 dark:bg-slate-100"

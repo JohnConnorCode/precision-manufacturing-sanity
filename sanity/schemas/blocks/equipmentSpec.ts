@@ -30,6 +30,7 @@ export default {
       description: 'Photo or diagram of the equipment',
       options: {
         hotspot: true,
+      metadata: ['blurhash', 'lqip', 'palette'],
       },
       fields: [
         {

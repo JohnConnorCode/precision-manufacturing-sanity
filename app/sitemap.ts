@@ -1,27 +1,49 @@
 import { MetadataRoute } from 'next';
 import { client } from '@/sanity/lib/client';
 
-// Fetch all published services with their slugs and update dates
 async function getServices() {
-  const query = `*[_type == "service" && published == true && !(_id in path("drafts.**"))] {
+  const query = `*[_type == "service" && published == true] {
     "slug": slug.current,
     _updatedAt
   }`;
   return client.fetch(query).catch(() => []);
 }
 
-// Fetch all published industries with their slugs and update dates
 async function getIndustries() {
-  const query = `*[_type == "industry" && published == true && !(_id in path("drafts.**"))] {
+  const query = `*[_type == "industry" && published == true] {
     "slug": slug.current,
     _updatedAt
   }`;
   return client.fetch(query).catch(() => []);
 }
 
-// Fetch all published resources with their slugs and update dates
 async function getResources() {
-  const query = `*[_type == "resource" && published == true && !(_id in path("drafts.**"))] {
+  const query = `*[_type == "resource" && published == true] {
+    "slug": slug.current,
+    category,
+    _updatedAt
+  }`;
+  return client.fetch(query).catch(() => []);
+}
+
+async function getJobPostings() {
+  const query = `*[_type == "jobPosting" && published == true] {
+    "slug": slug.current,
+    _updatedAt
+  }`;
+  return client.fetch(query).catch(() => []);
+}
+
+async function getCaseStudies() {
+  const query = `*[_type == "caseStudy" && published == true] {
+    "slug": slug.current,
+    _updatedAt
+  }`;
+  return client.fetch(query).catch(() => []);
+}
+
+async function getResourceCategories() {
+  const query = `*[_type == "resourceCategory"] | order(order asc) {
     "slug": slug.current,
     _updatedAt
   }`;
@@ -31,11 +53,13 @@ async function getResources() {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://iismet.com';
 
-  // Fetch dynamic content from Sanity
-  const [services, industries, resources] = await Promise.all([
+  const [services, industries, resources, jobPostings, caseStudies, resourceCategories] = await Promise.all([
     getServices(),
     getIndustries(),
     getResources(),
+    getJobPostings(),
+    getCaseStudies(),
+    getResourceCategories(),
   ]);
 
   // Static pages
@@ -100,7 +124,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.5,
     },
+    {
+      url: `${baseUrl}/case-studies`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/certifications`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
   ];
+
+  // Resource category landing pages (from Sanity CMS)
+  const categoryPages: MetadataRoute.Sitemap = resourceCategories
+    .filter((cat: { slug: string }) => cat.slug)
+    .map((cat: { slug: string; _updatedAt: string }) => ({
+      url: `${baseUrl}/resources/${cat.slug}`,
+      lastModified: new Date(cat._updatedAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    }));
 
   // Dynamic service pages
   const servicePages: MetadataRoute.Sitemap = services
@@ -122,15 +168,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }));
 
-  // Dynamic resource pages
+  // Dynamic resource pages (correct URL: /resources/{category}/{slug})
   const resourcePages: MetadataRoute.Sitemap = resources
-    .filter((r: { slug: string }) => r.slug)
-    .map((resource: { slug: string; _updatedAt: string }) => ({
-      url: `${baseUrl}/resources/${resource.slug}`,
+    .filter((r: { slug: string; category: string }) => r.slug && r.category)
+    .map((resource: { slug: string; category: string; _updatedAt: string }) => ({
+      url: `${baseUrl}/resources/${resource.category}/${resource.slug}`,
       lastModified: new Date(resource._updatedAt),
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     }));
 
-  return [...staticPages, ...servicePages, ...industryPages, ...resourcePages];
+  // Dynamic job posting pages
+  const jobPages: MetadataRoute.Sitemap = jobPostings
+    .filter((j: { slug: string }) => j.slug)
+    .map((job: { slug: string; _updatedAt: string }) => ({
+      url: `${baseUrl}/careers/${job.slug}`,
+      lastModified: new Date(job._updatedAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    }));
+
+  // Dynamic case study pages
+  const caseStudyPages: MetadataRoute.Sitemap = caseStudies
+    .filter((cs: { slug: string }) => cs.slug)
+    .map((cs: { slug: string; _updatedAt: string }) => ({
+      url: `${baseUrl}/case-studies/${cs.slug}`,
+      lastModified: new Date(cs._updatedAt),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }));
+
+  return [
+    ...staticPages,
+    ...categoryPages,
+    ...servicePages,
+    ...industryPages,
+    ...resourcePages,
+    ...jobPages,
+    ...caseStudyPages,
+  ];
 }

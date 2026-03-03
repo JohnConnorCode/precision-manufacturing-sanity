@@ -414,6 +414,7 @@ export default {
                   description: 'Client logo (SVG or PNG with transparent background recommended)',
                   options: {
                     hotspot: true,
+                  metadata: ['blurhash', 'lqip', 'palette'],
                   },
                   fields: [
                     {

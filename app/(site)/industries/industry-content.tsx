@@ -331,7 +331,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             >
               <h2 className={cn(typography.h2, 'mb-6')}>Our Capabilities</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
-                Specialized manufacturing capabilities for {industry.title.toLowerCase()} applications.
+                Specialized machining capabilities for {industry.title.toLowerCase()} applications.
               </p>
             </motion.div>
 
@@ -398,7 +398,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             >
               <h2 className={cn(typography.h2, 'mb-6')}>Component Expertise</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
-                Precision manufacturing for critical {industry.title.toLowerCase()} components.
+                Precision machining for critical {industry.title.toLowerCase()} components.
               </p>
             </motion.div>
 
@@ -839,7 +839,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             >
               <h2 className={cn(typography.h2, 'mb-6')}>Process Benefits</h2>
               <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
-                Advanced manufacturing processes delivering superior results.
+                Advanced machining processes delivering superior results.
               </p>
             </motion.div>
 

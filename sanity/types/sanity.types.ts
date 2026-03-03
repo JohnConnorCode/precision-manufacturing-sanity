@@ -369,6 +369,136 @@ export type UiText = {
   };
 };
 
+export type CertificationsPage = {
+  _id: string;
+  _type: "certificationsPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  hero?: {
+    backgroundImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+    badge?: string;
+    title?: string;
+    titleHighlight?: string;
+    description?: string;
+  };
+  qualityCommitment?: {
+    title?: string;
+    description?: string;
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+  };
+  cta?: {
+    title?: string;
+    description?: string;
+    buttons?: Array<{
+      label?: string;
+      href?: string;
+      variant?: "primary" | "secondary";
+      enabled?: boolean;
+      _key: string;
+    }>;
+  };
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    ogImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+  };
+};
+
+export type CaseStudiesPage = {
+  _id: string;
+  _type: "caseStudiesPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  hero?: {
+    backgroundImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+    badge?: string;
+    title?: string;
+    titleHighlight?: string;
+    description?: string;
+  };
+  featuredLabel?: string;
+  filterLabel?: string;
+  noResultsMessage?: string;
+  cta?: {
+    title?: string;
+    description?: string;
+    buttons?: Array<{
+      label?: string;
+      href?: string;
+      variant?: "primary" | "secondary";
+      enabled?: boolean;
+      _key: string;
+    }>;
+  };
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    ogImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+  };
+};
+
 export type Metbase = {
   _id: string;
   _type: "metbase";
@@ -877,6 +1007,13 @@ export type Contact = {
   certifications?: Array<{
     enabled?: boolean;
     certification?: string;
+    _key: string;
+  }>;
+  trustBar?: Array<{
+    enabled?: boolean;
+    label?: string;
+    value?: string;
+    sublabel?: string;
     _key: string;
   }>;
   bottomStats?: Array<{
@@ -1770,6 +1907,117 @@ export type ColorStyle = {
   opacity?: number;
 };
 
+export type Certification = {
+  _id: string;
+  _type: "certification";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  slug?: Slug;
+  shortName?: string;
+  description?: string;
+  iconName?: string;
+  scope?: string;
+  whyItMatters?: string;
+  certNumber?: string;
+  issuingBody?: string;
+  validFrom?: string;
+  validUntil?: string;
+  body?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  order?: number;
+  published?: boolean;
+};
+
+export type Testimonial = {
+  _id: string;
+  _type: "testimonial";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  quote?: string;
+  author?: string;
+  role?: string;
+  company?: string;
+  companyLogo?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  rating?: number;
+  relatedService?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "service";
+  };
+  relatedIndustry?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "industry";
+  };
+  relatedCaseStudy?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "caseStudy";
+  };
+  featured?: boolean;
+  published?: boolean;
+};
+
+export type ResourceCategory = {
+  _id: string;
+  _type: "resourceCategory";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  description?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  published?: boolean;
+  order?: number;
+};
+
 export type CaseStudy = {
   _id: string;
   _type: "caseStudy";
@@ -1834,6 +2082,20 @@ export type CaseStudy = {
   seo?: {
     metaTitle?: string;
     metaDescription?: string;
+    ogImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+    noindex?: boolean;
   };
 };
 
@@ -2451,6 +2713,8 @@ export type Service = {
     }>;
     _key: string;
   }>;
+  capabilitiesSectionHeading?: string;
+  capabilitiesSectionDescription?: string;
   servicesHeading?: string;
   servicesDescription?: string;
   servicesDescriptionRich?: Array<{
@@ -3015,5 +3279,5 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = Page | SanityImageCrop | SanityImageHotspot | Slug | PageContent | UiText | Metbase | ErrorPages | SupplierRequirements | Terms | Careers | Contact | About | Footer | IndustriesPage | ServicesPage | Homepage | Navigation | SiteSettings | ColorStyle | CaseStudy | JobPosting | TeamMember | Resource | Industry | Service | CtaSection | SectionTheme | RichTextSection | TypographyStyle | HeroSection | NavGroup | NavItem | CtaButton | EquipmentSpec | MaterialData | ProcessFlow | ToleranceTable | CalloutBox | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = Page | SanityImageCrop | SanityImageHotspot | Slug | PageContent | UiText | CertificationsPage | CaseStudiesPage | Metbase | ErrorPages | SupplierRequirements | Terms | Careers | Contact | About | Footer | IndustriesPage | ServicesPage | Homepage | Navigation | SiteSettings | ColorStyle | Certification | Testimonial | ResourceCategory | CaseStudy | JobPosting | TeamMember | Resource | Industry | Service | CtaSection | SectionTheme | RichTextSection | TypographyStyle | HeroSection | NavGroup | NavItem | CtaButton | EquipmentSpec | MaterialData | ProcessFlow | ToleranceTable | CalloutBox | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;

@@ -13,30 +13,30 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import Image from 'next/image'
 import Link from 'next/link'
-import { colorStyleToCSS, typographyStyleToClasses } from '@/lib/sanity-styles'
+import { colorStyleToCSS, typographyStyleToClasses, type ColorStyle, type TypographyStyle } from '@/lib/sanity-styles'
 
 // Define style interface for rich text
 export interface RichTextStyles {
   headingStyles?: {
-    h1?: any;
-    h2?: any;
-    h3?: any;
-    h4?: any;
+    h1?: TypographyStyle;
+    h2?: TypographyStyle;
+    h3?: TypographyStyle;
+    h4?: TypographyStyle;
   };
-  bodyTextStyle?: any;
+  bodyTextStyle?: TypographyStyle;
   linkStyle?: {
-    color?: any;
-    hoverColor?: any;
+    color?: ColorStyle;
+    hoverColor?: ColorStyle;
     underline?: boolean;
   };
   blockquoteStyle?: {
-    textColor?: any;
-    borderColor?: any;
-    backgroundColor?: any;
+    textColor?: ColorStyle;
+    borderColor?: ColorStyle;
+    backgroundColor?: ColorStyle;
   };
   codeStyle?: {
-    textColor?: any;
-    backgroundColor?: any;
+    textColor?: ColorStyle;
+    backgroundColor?: ColorStyle;
   };
 }
 
@@ -82,6 +82,7 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
             alt={value.alt || 'Resource image'}
             width={1200}
             height={800}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 85vw"
             className="rounded-lg w-full"
           />
           {value.caption && (
@@ -123,14 +124,21 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
       if (!value?.code) return null
 
       return (
-        <div className="my-6">
+        <div className="my-6 bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+          {value.language && value.language !== 'text' && (
+            <div className="px-4 py-2 bg-slate-800/60 border-b border-slate-800 text-xs text-slate-400 font-mono">
+              {value.language}
+            </div>
+          )}
           <SyntaxHighlighter
             language={value.language || 'text'}
             style={vscDarkPlus}
             customStyle={{
-              borderRadius: '0.5rem',
+              borderRadius: 0,
               fontSize: '0.875rem',
               padding: '1rem',
+              margin: 0,
+              background: 'transparent',
             }}
             showLineNumbers={value.language !== 'text'}
           >

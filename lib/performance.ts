@@ -98,15 +98,15 @@ export function debounce<T extends (...args: any[]) => any>(
  * @param blocks - Portable Text blocks array
  * @returns Plain text string
  */
-export function portableTextToPlainText(blocks: any): string {
+export function portableTextToPlainText(blocks: unknown): string {
   if (!blocks) return '';
   if (typeof blocks === 'string') return blocks;
   if (!Array.isArray(blocks)) return '';
 
   return blocks
-    .map((block: any) => {
+    .map((block: Record<string, unknown>) => {
       if (block._type !== 'block' || !block.children) return '';
-      return block.children.map((child: any) => child.text || '').join('');
+      return (block.children as Array<{ text?: string }>).map((child) => child.text || '').join('');
     })
     .filter(Boolean)
     .join(' ');
@@ -124,7 +124,7 @@ const textConversionCache = new Map<string, string>();
  * @param blocks - Portable Text blocks array
  * @returns Plain text string
  */
-export function portableTextToPlainTextMemoized(blocks: any): string {
+export function portableTextToPlainTextMemoized(blocks: unknown): string {
   // Create cache key from blocks
   const cacheKey = JSON.stringify(blocks);
 

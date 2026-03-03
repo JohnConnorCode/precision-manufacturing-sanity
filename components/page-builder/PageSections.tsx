@@ -6,7 +6,7 @@ import { PortableText } from '@portabletext/react'
 import CTA from '@/components/sections/CTA'
 import { getBackgroundColor, paddingToClass } from '@/lib/sanity-styles'
 
-export default function PageSections({ sections }: { sections: any[] }) {
+export default function PageSections({ sections }: { sections: Record<string, any>[] }) {
   if (!Array.isArray(sections) || sections.length === 0) return null
 
   return (

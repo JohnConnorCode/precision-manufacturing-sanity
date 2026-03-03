@@ -42,13 +42,36 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
     };
   }
 
+  const { category } = await params;
+  const baseUrl = 'https://iismet.com';
+  const title = resource.seo?.metaTitle || `${resource.title} | IIS`;
+  const description = resource.seo?.metaDescription || resource.excerpt;
+  const ogImage = resource.featuredImage?.asset?.url;
+
   return {
-    title: resource.seo?.metaTitle || `${resource.title} | IIS`,
-    description: resource.seo?.metaDescription || resource.excerpt,
+    title,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/resources/${category}/${slug}`,
+    },
     openGraph: {
-      title: resource.seo?.metaTitle || resource.title,
-      description: resource.seo?.metaDescription || resource.excerpt,
-      images: resource.featuredImage?.asset?.url ? [{ url: resource.featuredImage.asset.url }] : undefined,
+      type: 'article',
+      locale: 'en_US',
+      url: `${baseUrl}/resources/${category}/${slug}`,
+      siteName: 'IIS - Integrated Inspection Systems',
+      title,
+      description,
+      ...(ogImage && { images: [{ url: ogImage, width: 1200, height: 630, alt: title }] }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      ...(ogImage && { images: [ogImage] }),
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }
@@ -63,7 +86,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
   }
 
   // Fetch related resources (same category, excluding current)
-  const allResources = await getAllResources();
+  const allResources = await getAllResources(isEnabled);
   const relatedResources = allResources
     .filter((r: any) => {
       const rCategory = typeof r.category === 'string' ? r.category : r.category?.name;
@@ -298,7 +321,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
                 eyebrow="Ready to Start?"
                 heading="Apply What You've Learned"
                 gradientWordPosition="last"
-                description="Contact us to discuss your precision manufacturing needs and learn how we can help bring your project to life."
+                description="Contact us to discuss your precision machining needs and learn how we can help bring your project to life."
                 className="[&_h2]:text-tone-inverse [&_p]:text-slate-300 mb-8"
               />
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

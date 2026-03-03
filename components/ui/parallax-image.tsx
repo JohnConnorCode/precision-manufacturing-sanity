@@ -2,6 +2,8 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import { usePrefersReducedMotion } from '@/lib/motion';
+import { cn } from '@/lib/utils';
 
 interface ParallaxImageProps {
   src: string | null | undefined;
@@ -24,6 +26,7 @@ export default function ParallaxImage({
 }: ParallaxImageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Don't render anything if src is empty/null
   if (!src) return null;
@@ -47,7 +50,7 @@ export default function ParallaxImage({
     <div className={`relative overflow-hidden ${className}`}>
       {/* Loading skeleton with shimmer effect */}
       {isLoading && (
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 animate-pulse" />
+        <div className={cn("absolute inset-0 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200", !prefersReducedMotion && "animate-pulse")} />
       )}
       <div className="relative w-full h-full">
         <Image

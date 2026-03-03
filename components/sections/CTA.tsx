@@ -67,7 +67,7 @@ export default function CTA({ data }: CTAProps) {
     Activity,
   };
 
-  // Split title for styling - keep last 2 words together for "Manufacturing Project"
+  // Split title for styling - keep last 2 words together for "Machining Project"
   const words = title.split(' ');
   const firstPart = words.slice(0, -2).join(' ');
   const lastPart = words.slice(-2).join('\u00A0'); // Non-breaking space
@@ -93,7 +93,7 @@ export default function CTA({ data }: CTAProps) {
           style={{
             backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(59, 130, 246, 0.5) 100px, rgba(59, 130, 246, 0.5) 101px)',
           }}
-          animate={{ backgroundPosition: ['0px 0px', '200px 200px'] }}
+          animate={prefersReducedMotion ? {} : { backgroundPosition: ['0px 0px', '200px 200px'] }}
           transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
         />
 
@@ -142,7 +142,7 @@ export default function CTA({ data }: CTAProps) {
             {firstPart && <span>{firstPart} </span>}
             <span
               style={{
-                background: 'linear-gradient(to right, #3b82f6, #6366f1)',
+                background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -212,7 +212,7 @@ export default function CTA({ data }: CTAProps) {
                         <div className="w-2 h-2 bg-green-500 rounded-full" />
                         <motion.div
                           className="absolute inset-0 w-2 h-2 bg-green-500 rounded-full"
-                          animate={{ scale: [1, 2, 1], opacity: [1, 0, 1] }}
+                          animate={prefersReducedMotion ? {} : { scale: [1, 2, 1], opacity: [1, 0, 1] }}
                           transition={{ duration: 2, repeat: Infinity }}
                         />
                       </div>

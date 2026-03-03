@@ -13,7 +13,7 @@ import { typography } from '@/lib/design-system';
 import { cn } from '@/lib/utils';
 
 // Icon mapping
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   FileText,
   Shield,
   DollarSign,
@@ -36,7 +36,7 @@ const iconMap: Record<string, any> = {
 };
 
 interface TermsPageClientProps {
-  data: any;
+  data: Record<string, any>;
 }
 
 export default function TermsPageClient({ data }: TermsPageClientProps) {
@@ -103,13 +103,33 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
 
       {/* Terms Sections */}
       <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
-        <div className="container max-w-4xl mx-auto px-4">
-          <div className="space-y-4">
+        <div className="container max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+            {/* Sticky TOC Sidebar */}
+            <aside className="hidden lg:block">
+              <div className="sticky-toc">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">Table of Contents</h3>
+                <nav className="space-y-1">
+                  {termsData.sections.map((section: any, index: number) => (
+                    <a
+                      key={index}
+                      href={`#section-${index}`}
+                      className="block px-3 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                    >
+                      {section.title}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            </aside>
+
+            {/* Content */}
+            <div className="space-y-4">
             {termsData.sections.map((section: any, index: number) => {
               const Icon = iconMap[section.iconName] || FileText;
               return (
                 <AnimatedSection key={index} delay={Math.min(index * 0.05, 0.3)}>
-                  <Card className="p-6 md:p-8 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 hover:shadow-lg dark:hover:shadow-slate-950/50 transition-all duration-300">
+                  <Card id={`section-${index}`} className="scroll-mt-24 p-6 md:p-8 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 hover:shadow-lg dark:hover:shadow-slate-950/50 transition-all duration-300">
                     <div className="flex items-start gap-4 md:gap-6">
                       <div className="flex-shrink-0">
                         <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-blue-600/10 flex items-center justify-center">
@@ -129,6 +149,7 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
                 </AnimatedSection>
               );
             })}
+            </div>
           </div>
         </div>
       </section>

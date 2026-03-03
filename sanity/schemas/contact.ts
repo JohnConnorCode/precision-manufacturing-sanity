@@ -273,6 +273,37 @@ export default {
       ],
     },
     {
+      name: 'trustBar',
+      type: 'array',
+      title: 'Trust Bar',
+      description: 'Credibility signals displayed between the location map and bottom stats (e.g., certifications, response time)',
+      group: 'additionalSections',
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'enabled',
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Toggle off to hide',
+              initialValue: true,
+            },
+            {name: 'label', type: 'string', title: 'Label', description: 'e.g., "Response Time"'},
+            {name: 'value', type: 'string', title: 'Value', description: 'e.g., "< 24 Hours"'},
+            {name: 'sublabel', type: 'string', title: 'Sublabel', description: 'e.g., "Quote turnaround"'},
+          ],
+          preview: {
+            select: {title: 'label', subtitle: 'value'},
+          },
+        },
+      ],
+    },
+    {
       name: 'bottomStats',
       type: 'array',
       title: 'Bottom Statistics',

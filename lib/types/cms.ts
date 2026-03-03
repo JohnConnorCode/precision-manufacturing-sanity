@@ -8,11 +8,43 @@
  * - Safer refactoring
  */
 
-import { LucideIcon } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+
+// ============================================================================
+// PORTABLE TEXT TYPES
+// ============================================================================
+
+export interface PortableTextChild {
+  _type?: string;
+  text?: string;
+  marks?: string[];
+}
+
+export interface PortableTextBlock {
+  _type: string;
+  _key?: string;
+  style?: string;
+  children?: PortableTextChild[];
+  markDefs?: Record<string, unknown>[];
+}
 
 // ============================================================================
 // COMMON TYPES
 // ============================================================================
+
+/** Generic CMS button used in heroes, CTAs, and section buttons */
+export interface CMSButton {
+  label?: string;
+  text?: string;
+  href?: string;
+  variant?: string;
+  enabled?: boolean;
+}
+
+/** Item with toggle visibility */
+export interface CMSToggleable {
+  enabled?: boolean;
+}
 
 export interface SectionHeader {
   eyebrow?: string;
@@ -470,4 +502,198 @@ export interface HomepageData {
     metaKeywords?: string;
     ogImage?: SanityImage;
   };
+}
+
+// ============================================================================
+// SERVICES PAGE TYPES
+// ============================================================================
+
+/** Individual service as returned by getAllServices GROQ query */
+export interface ServiceItem {
+  _id?: string;
+  title: string;
+  shortDescription?: string | PortableTextBlock[];
+  description?: string | PortableTextBlock[];
+  iconName?: string;
+  image?: SanityImage | string;
+  slug?: { current?: string } | string;
+  specs?: (string | ServiceSpec)[];
+  cardCtaText?: string;
+  published?: boolean;
+  order?: number;
+  href?: string;
+}
+
+/** Capability stat item from services page content */
+export interface ServiceCapability {
+  label?: string;
+  value?: string;
+  description?: string;
+  enabled?: boolean;
+}
+
+/** Quality assurance item from services page content */
+export interface QualityAssuranceItem {
+  title?: string;
+  description?: string;
+  enabled?: boolean;
+}
+
+// ============================================================================
+// INDUSTRIES PAGE TYPES
+// ============================================================================
+
+/** Overview stat item on industries page */
+export interface IndustryStat {
+  value?: string;
+  label?: string;
+  description?: string;
+  enabled?: boolean;
+}
+
+/** Industry item on the industries listing page */
+export interface IndustryItem {
+  name?: string;
+  title?: string;
+  description?: string;
+  image?: SanityImage;
+  slug?: { current?: string } | string;
+  certifications?: string[];
+  expertise?: string[];
+  cardCtaText?: string;
+  enabled?: boolean;
+}
+
+/** Why choose us benefit item */
+export interface WhyChooseItem {
+  title?: string;
+  description?: string;
+  icon?: string;
+  features?: string[];
+  enabled?: boolean;
+}
+
+/** Proven results metric */
+export interface ProvenResultMetric {
+  value?: string;
+  metric?: string;
+  description?: string;
+  enabled?: boolean;
+}
+
+// ============================================================================
+// RESOURCES PAGE TYPES
+// ============================================================================
+
+/** Individual resource article from GROQ query */
+export interface ResourceItem {
+  _id?: string;
+  title?: string;
+  slug?: { current?: string } | string;
+  category?: string;
+  categorySlug?: string;
+  readTime?: string;
+  difficulty?: string;
+  excerpt?: string;
+  image?: SanityImage;
+  published?: boolean;
+  publishedAt?: string;
+  author?: string;
+}
+
+/** Resource category info */
+export interface ResourceCategoryInfo {
+  title?: string;
+  slug?: string;
+  description?: string;
+  icon?: string;
+}
+
+// ============================================================================
+// CAREERS PAGE TYPES
+// ============================================================================
+
+/** Career benefit item */
+export interface CareerBenefit {
+  title?: string;
+  description?: string;
+  iconName?: string;
+  enabled?: boolean;
+}
+
+/** Career value item */
+export interface CareerValue {
+  title?: string;
+  description?: string;
+  enabled?: boolean;
+}
+
+/** Job posting from GROQ */
+export interface JobPosting {
+  _id?: string;
+  title?: string;
+  slug?: { current?: string } | string;
+  department?: string;
+  location?: string;
+  employmentType?: string;
+  salaryRange?: string;
+  shortDescription?: string;
+  featured?: boolean;
+  published?: boolean;
+}
+
+// ============================================================================
+// COMPLIANCE PAGE TYPES
+// ============================================================================
+
+/** Supplier requirements section item */
+export interface ComplianceSection {
+  _key?: string;
+  _type?: string;
+  title?: string;
+  content?: PortableTextBlock[];
+  items?: ComplianceSectionItem[];
+}
+
+export interface ComplianceSectionItem {
+  _key?: string;
+  item?: string;
+  title?: string;
+  description?: string;
+}
+
+// ============================================================================
+// NAVIGATION ITEM TYPES (for layout/route mappers)
+// ============================================================================
+
+/** Raw navigation item from Sanity GROQ before mapping */
+export interface RawNavItem {
+  _type?: string;
+  name?: string;
+  groupTitle?: string;
+  href?: string;
+  description?: string;
+  linkType?: string;
+  openInNewTab?: boolean;
+  iconPreset?: string;
+  iconName?: string;
+  showInHeader?: boolean;
+  showInMobile?: boolean;
+  style?: { variant?: string; badgeText?: string | null };
+  children?: RawNavItem[];
+  items?: RawNavItem[];
+}
+
+/** Mapped navigation item after normalization */
+export interface MappedNavItem {
+  name: string;
+  href: string;
+  description: string;
+  linkType: string;
+  openInNewTab: boolean;
+  iconName: string | null;
+  showInHeader: boolean;
+  showInMobile: boolean;
+  style: { variant: string; badgeText: string | null };
+  children: MappedNavItem[];
 }

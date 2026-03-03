@@ -252,6 +252,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
   const capabilityStatsAnim = useAnimateInView<HTMLDivElement>();
   const capabilitiesHeaderAnim = useAnimateInView<HTMLDivElement>();
   const capabilitiesGridAnim = useAnimateInView<HTMLDivElement>();
+  const dividerAnim = useAnimateInView<HTMLDivElement>();
   const benefitsHeaderAnim = useAnimateInView<HTMLDivElement>();
   const benefitsGridAnim = useAnimateInView<HTMLDivElement>();
   const servicesHeaderAnim = useAnimateInView<HTMLDivElement>();
@@ -419,7 +420,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
       {/* Capability Cards Section - for services with rich capability data */}
       {capabilityCards.length > 0 && (
-        <section className="py-24 md:py-32 lg:py-20">
+        <section className="py-24 md:py-32">
           <div className={spacing.container}>
             {(capabilitiesHeading || capabilitiesDescription) && (
               <motion.div
@@ -453,7 +454,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     animate={capabilitiesGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                     transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
-                    <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 group h-full overflow-hidden">
+                    <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 group h-full overflow-hidden">
                       {capImage && (
                         <div className="relative h-52 overflow-hidden">
                           <Image
@@ -519,6 +520,47 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         </section>
       )}
 
+      {/* Visual Break - Parallax Image Divider */}
+      {(capabilityCards.length > 0 || capabilityStats.length > 0) && benefits.length > 0 && heroImage && (
+        <section className="relative h-64 md:h-80 overflow-hidden dark-section">
+          <div className="absolute inset-0">
+            <Image
+              src={heroImage}
+              alt={service.hero?.backgroundImage?.alt || service.title}
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950/80" />
+          </div>
+          <div className="relative z-10 h-full flex items-center justify-center">
+            <motion.div
+              ref={dividerAnim.ref}
+              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              animate={dividerAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+              transition={ANIM_TRANSITION}
+              className="text-center px-6"
+            >
+              {capabilityStats.length > 0 && capabilityStats[0]?.value && (
+                <div className="text-4xl md:text-5xl font-bold text-tone-inverse mb-2" style={{
+                  background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}>
+                  {capabilityStats[0].value}
+                </div>
+              )}
+              <p className="text-lg text-slate-300 max-w-xl mx-auto">
+                {capabilityStats.length > 0 && capabilityStats[0]?.label
+                  ? capabilityStats[0].label
+                  : `Precision ${heroTitle}`}
+              </p>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
       {/* Benefits Section */}
       {benefits.length > 0 && (
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
@@ -533,34 +575,85 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               <h2 className={cn(typography.h2, 'mb-4')}>Key Benefits</h2>
             </motion.div>
 
-            <div ref={benefitsGridAnim.ref} className={getAdaptiveGridClass(benefits.length)}>
-              {benefits.map((benefit: Benefit, index: number) => {
-                const BenefitIcon = benefit.iconName ? (iconMap[benefit.iconName] || Award) : Award;
-
-                return (
-                  <motion.div
-                    key={benefit.title}
-                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-                    animate={benefitsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
-                  >
-                    <Card className={cn(styles.featureCard, 'h-full text-center p-6')}>
-                      <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
-                        <BenefitIcon className="w-6 h-6 text-tone-inverse" />
-                      </div>
-                      <h3 className={cn(typography.h5, 'mb-2')}>{benefit.title}</h3>
-                      <p className={typography.small}>{benefit.description}</p>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </div>
+            {/* Asymmetric layout for 4+ benefits, standard grid otherwise */}
+            {benefits.length >= 4 ? (
+              <div ref={benefitsGridAnim.ref} className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Large first card */}
+                {(() => {
+                  const firstBenefit = benefits[0];
+                  const FirstIcon = firstBenefit.iconName ? (iconMap[firstBenefit.iconName] || Award) : Award;
+                  return (
+                    <motion.div
+                      className="lg:col-span-5 lg:row-span-2"
+                      initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      animate={benefitsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      transition={ANIM_TRANSITION}
+                    >
+                      <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 p-8 md:p-10 group h-full flex flex-col justify-center">
+                        <div className={cn('w-14 h-14 rounded-xl flex items-center justify-center mb-6', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 shadow-lg shadow-blue-600/20')}>
+                          <FirstIcon className="w-7 h-7 text-tone-inverse" />
+                        </div>
+                        <h3 className={cn(typography.h4, 'mb-3')}>{firstBenefit.title}</h3>
+                        <p className={cn(typography.body, 'text-slate-600 dark:text-slate-400')}>{firstBenefit.description}</p>
+                      </Card>
+                    </motion.div>
+                  );
+                })()}
+                {/* Remaining cards stacked on the right */}
+                {benefits.slice(1).map((benefit: Benefit, index: number) => {
+                  const BenefitIcon = benefit.iconName ? (iconMap[benefit.iconName] || Award) : Award;
+                  return (
+                    <motion.div
+                      key={benefit.title}
+                      className="lg:col-span-7"
+                      initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      animate={benefitsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min((index + 1) * 0.1, 0.3) }}
+                    >
+                      <Card className={cn(styles.featureCard, 'h-full p-6')}>
+                        <div className="flex items-start gap-4">
+                          <div className={cn('w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
+                            <BenefitIcon className="w-5 h-5 text-tone-inverse" />
+                          </div>
+                          <div>
+                            <h3 className={cn(typography.h5, 'mb-1')}>{benefit.title}</h3>
+                            <p className={typography.small}>{benefit.description}</p>
+                          </div>
+                        </div>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div ref={benefitsGridAnim.ref} className={getAdaptiveGridClass(benefits.length)}>
+                {benefits.map((benefit: Benefit, index: number) => {
+                  const BenefitIcon = benefit.iconName ? (iconMap[benefit.iconName] || Award) : Award;
+                  return (
+                    <motion.div
+                      key={benefit.title}
+                      initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      animate={benefitsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
+                    >
+                      <Card className={cn(styles.featureCard, 'h-full text-center p-6')}>
+                        <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4', 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600')}>
+                          <BenefitIcon className="w-6 h-6 text-tone-inverse" />
+                        </div>
+                        <h3 className={cn(typography.h5, 'mb-2')}>{benefit.title}</h3>
+                        <p className={typography.small}>{benefit.description}</p>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </section>
       )}
 
       {serviceOfferings.length > 0 && (
-        <section className="py-24 md:py-32 lg:py-20">
+        <section className="py-24 md:py-32">
           <div className={spacing.container}>
             <motion.div
               ref={servicesHeaderAnim.ref}
@@ -588,7 +681,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     animate={servicesGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                     transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
-                    <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 group h-full overflow-hidden">
+                    <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 group h-full overflow-hidden">
                       {offeringImage && (
                         <div className="relative h-64 overflow-hidden">
                           <Image
@@ -660,52 +753,77 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         </section>
       )}
 
-      {materials.length > 0 && (
-        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
-          <div className={spacing.container}>
-            <motion.div
-              ref={materialsHeaderAnim.ref}
-              initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-              animate={materialsHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-              transition={ANIM_TRANSITION}
-              className="text-center mb-16"
-            >
-              <h2 className={cn(typography.h2, 'mb-6')}>{materialsHeading}</h2>
-              <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
-                {materialsDescription}
-              </p>
-            </motion.div>
+      {materials.length > 0 && (() => {
+        // Color accents per category index for visual variety
+        const categoryAccents = [
+          { dot: 'bg-blue-500', gradient: 'from-blue-600 to-blue-400', glow: 'shadow-blue-600/20' },
+          { dot: 'bg-indigo-500', gradient: 'from-indigo-600 to-indigo-400', glow: 'shadow-indigo-600/20' },
+          { dot: 'bg-cyan-500', gradient: 'from-cyan-600 to-cyan-400', glow: 'shadow-cyan-600/20' },
+          { dot: 'bg-violet-500', gradient: 'from-violet-600 to-violet-400', glow: 'shadow-violet-600/20' },
+          { dot: 'bg-emerald-500', gradient: 'from-emerald-600 to-emerald-400', glow: 'shadow-emerald-600/20' },
+          { dot: 'bg-amber-500', gradient: 'from-amber-600 to-amber-400', glow: 'shadow-amber-600/20' },
+        ];
 
-            <div ref={materialsGridAnim.ref} className={getAdaptiveGridClass(materials.length)}>
-              {materials.map((material: MaterialCategory, index: number) => {
-                return (
-                  <motion.div
-                    key={material.category}
-                    initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-                    animate={materialsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-                    transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
-                  >
-                    <Card className={cn(styles.featureCard, 'h-full')}>
-                      <h3 className={cn(typography.h5, 'mb-3')}>{material.category}</h3>
+        return (
+          <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
+            <div className={spacing.container}>
+              <motion.div
+                ref={materialsHeaderAnim.ref}
+                initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                animate={materialsHeaderAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                transition={ANIM_TRANSITION}
+                className="text-center mb-16"
+              >
+                <h2 className={cn(typography.h2, 'mb-6')}>{materialsHeading}</h2>
+                <p className={cn(typography.lead, 'max-w-3xl mx-auto')}>
+                  {materialsDescription}
+                </p>
+              </motion.div>
 
-                      {material.types && material.types.length > 0 && (
-                        <div className="mb-4 space-y-1">
-                          {material.types.map((type: MaterialType) => (
-                            <div key={type.type} className="flex items-center text-xs text-slate-600 dark:text-slate-400">
-                              <div className="w-1 h-1 bg-blue-500 rounded-full mr-2" />
-                              {type.type}
-                            </div>
-                          ))}
+              <div ref={materialsGridAnim.ref} className={getAdaptiveGridClass(materials.length)}>
+                {materials.map((material: MaterialCategory, index: number) => {
+                  const accent = categoryAccents[index % categoryAccents.length];
+
+                  return (
+                    <motion.div
+                      key={material.category}
+                      initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      animate={materialsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                      transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
+                    >
+                      <Card className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_10px_20px_-5px_rgba(0,0,0,0.1)] dark:shadow-slate-950/50 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-slate-300/80 dark:hover:border-slate-600 transition-all duration-300 p-6 md:p-8 group h-full">
+                        {/* Material swatch indicator */}
+                        <div className={cn(
+                          'w-10 h-10 rounded-lg bg-gradient-to-br flex items-center justify-center mb-5 shadow-md',
+                          accent.gradient,
+                          accent.glow
+                        )}>
+                          <span className="text-sm font-bold text-white">
+                            {material.category?.charAt(0)?.toUpperCase() || 'M'}
+                          </span>
                         </div>
-                      )}
-                    </Card>
-                  </motion.div>
-                );
-              })}
+
+                        <h3 className={cn(typography.h5, 'mb-4 group-hover:text-blue-600 transition-colors')}>{material.category}</h3>
+
+                        {material.types && material.types.length > 0 && (
+                          <div className="space-y-2">
+                            {material.types.map((type: MaterialType) => (
+                              <div key={type.type} className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+                                <div className={cn('w-1.5 h-1.5 rounded-full mr-2.5 flex-shrink-0', accent.dot)} />
+                                {type.type}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </Card>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        );
+      })()}
 
       {applications.length > 0 && (
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
@@ -784,7 +902,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {qualityStandards.length > 0 && (
-        <section className="py-24 md:py-32 lg:py-20 bg-slate-900 dark-section">
+        <section className="py-24 md:py-32 bg-slate-900 dark-section">
           <div className={spacing.container}>
             <motion.div
               ref={qualityHeaderAnim.ref}
@@ -839,7 +957,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {processes.length > 0 && (
-        <section className="py-24 md:py-32 lg:py-20">
+        <section className="py-24 md:py-32">
           <div className={spacing.container}>
             <motion.div
               ref={processHeaderAnim.ref}

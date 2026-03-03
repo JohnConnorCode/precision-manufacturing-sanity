@@ -37,6 +37,12 @@ export async function GET(request: NextRequest) {
     return new Response('Invalid preview secret', { status: 401 })
   }
 
+  // Validate slug format to prevent path traversal
+  const isValidSlug = (s: string | null) => !s || /^[a-z0-9][a-z0-9-]*$/.test(s)
+  if (!isValidSlug(slug) || !isValidSlug(globalSlug)) {
+    return new Response('Invalid slug format', { status: 400 })
+  }
+
   // Determine the redirect path
   let path = '/'
 

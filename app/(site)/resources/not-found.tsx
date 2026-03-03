@@ -7,11 +7,30 @@ import { Card } from '@/components/ui/card'
 import { FileQuestion, BookOpen, ArrowRight, Home, ArrowLeft } from 'lucide-react'
 import { typography, cn } from '@/lib/design-system'
 import { getToneTypography } from '@/lib/typography'
+import { usePrefersReducedMotion } from '@/lib/motion'
 
 export default function NotFound() {
+  const prefersReducedMotion = usePrefersReducedMotion()
+  const noMotion = { initial: undefined, animate: undefined, transition: undefined }
+  const fadeIn = (delay = 0) => prefersReducedMotion ? noMotion : {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5, delay },
+  }
+  const scaleIn = (delay = 0) => prefersReducedMotion ? noMotion : {
+    initial: { scale: 0.8, opacity: 0 },
+    animate: { scale: 1, opacity: 1 },
+    transition: { duration: 0.5, delay },
+  }
+  const fadeOnly = (delay = 0) => prefersReducedMotion ? noMotion : {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.5, delay },
+  }
+
   const darkTone = getToneTypography('dark')
   const suggestedResources = [
-    { label: 'Manufacturing Processes', href: '/resources/manufacturing-processes' },
+    { label: 'Machining Processes', href: '/resources/manufacturing-processes' },
     { label: 'Quality & Compliance', href: '/resources/quality-compliance' },
     { label: 'Material Science', href: '/resources/material-science' },
   ]
@@ -22,16 +41,12 @@ export default function NotFound() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.05)_0%,_transparent_50%)]" />
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        {...fadeIn()}
         className="relative z-10 max-w-lg w-full"
       >
         <Card className="p-8 md:p-10 text-center bg-slate-900/50 border-slate-800">
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            {...scaleIn(0.2)}
             className="mb-6 flex justify-center"
           >
             <div className="w-24 h-24 bg-gradient-to-br from-blue-600/20 to-indigo-600/20 rounded-2xl flex items-center justify-center border border-blue-600/30">
@@ -40,9 +55,7 @@ export default function NotFound() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            {...fadeOnly(0.3)}
           >
             <h1 className="text-7xl font-black mb-2" style={{
               background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
@@ -63,9 +76,7 @@ export default function NotFound() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            {...fadeIn(0.4)}
             className="flex flex-col sm:flex-row gap-3 justify-center mb-8"
           >
             <Link href="/resources">
@@ -90,9 +101,7 @@ export default function NotFound() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            {...fadeOnly(0.5)}
             className="border-t border-slate-800 pt-6"
           >
             <p className={cn(typography.small, 'text-slate-500 mb-4')}>
@@ -113,9 +122,7 @@ export default function NotFound() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            {...fadeOnly(0.6)}
             className="mt-6 pt-6 border-t border-slate-800"
           >
             <Link

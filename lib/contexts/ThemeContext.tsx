@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useMemo } from 'react';
-import { colorStyleToCSS } from '@/lib/sanity-styles';
+import { colorStyleToCSS, ColorStyle } from '@/lib/sanity-styles';
 
 export interface ThemeColors {
   primary: string;
@@ -33,11 +33,11 @@ const defaultColors: ThemeColors = {
 interface ThemeProviderProps {
   children: React.ReactNode;
   themeData?: {
-    primaryColor?: any;
-    secondaryColor?: any;
-    accentColor?: any;
-    gradientFrom?: any;
-    gradientTo?: any;
+    primaryColor?: ColorStyle;
+    secondaryColor?: ColorStyle;
+    accentColor?: ColorStyle;
+    gradientFrom?: ColorStyle;
+    gradientTo?: ColorStyle;
   };
 }
 

@@ -26,7 +26,7 @@ export const timeline = [
   {
     year: '2012',
     title: 'ITAR Registration',
-    description: 'Secured ITAR registration for defense manufacturing programs'
+    description: 'Secured ITAR registration for defense machining programs'
   },
   {
     year: '2018',
@@ -46,7 +46,7 @@ export const values = [
     description: 'Unwavering commitment to delivering components that exceed specifications and customer expectations.',
     icon: Award,
     principles: [
-      'Zero-defect manufacturing mindset',
+      'Zero-defect machining mindset',
       'Continuous improvement culture',
       'Customer satisfaction focus',
       'Industry-leading standards'
@@ -54,7 +54,7 @@ export const values = [
   },
   {
     title: 'Innovation Leadership',
-    description: 'Pioneering advanced manufacturing technologies and processes to stay ahead of industry demands.',
+    description: 'Pioneering advanced machining technologies and processes to stay ahead of industry demands.',
     icon: Zap,
     principles: [
       'Technology investment',
@@ -92,21 +92,21 @@ export const leadership = [
     name: 'John Anderson',
     title: 'Chief Executive Officer',
     experience: '25+ years',
-    background: 'Former aerospace engineer with extensive manufacturing leadership experience',
+    background: 'Former aerospace engineer with extensive machining leadership experience',
     focus: 'Strategic vision and operational excellence'
   },
   {
     name: 'Sarah Mitchell',
     title: 'Chief Operating Officer',
     experience: '20+ years',
-    background: 'Manufacturing operations expert with lean manufacturing expertise',
+    background: 'Machining operations expert with lean machining expertise',
     focus: 'Production efficiency and quality systems'
   },
   {
     name: 'David Chen',
     title: 'Chief Technology Officer',
     experience: '18+ years',
-    background: 'Advanced manufacturing technology and automation specialist',
+    background: 'Advanced machining technology and automation specialist',
     focus: 'Technology innovation and process optimization'
   },
   {
@@ -129,12 +129,12 @@ export const certifications = [
 
 export const capabilities = [
   {
-    category: 'Manufacturing',
-    items: ['5-axis CNC machining', 'Adaptive manufacturing', 'Precision metrology', 'Surface treatments']
+    category: 'Machining',
+    items: ['5-axis CNC machining', 'Adaptive machining', 'Precision metrology', 'Surface treatments']
   },
   {
     category: 'Engineering',
-    items: ['Design for manufacturing', 'Rapid prototyping', 'CAD/CAM programming', 'Process development']
+    items: ['Engineering support', 'Process optimization', 'CAD/CAM programming', 'Process development']
   },
   {
     category: 'Quality',

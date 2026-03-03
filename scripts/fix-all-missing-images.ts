@@ -10,7 +10,7 @@ const client = createClient({
   dataset: 'production',
   apiVersion: '2024-01-01',
   useCdn: false,
-  token: process.env.SANITY_API_WRITE_TOKEN || 'skZkv9VgTIqtlGQmwfqYPaZPjJt5CVuoPcXRrCiU5iXm0w3kckT1qQ2fXS4vSqywgBeh6pHFG4zT3okJ2Y6sh7Ck7s4FEjOmX9Mi8K91sA9kgTTwbneRRKdQkIHc01f2uneC1qgRNVZ9SzY94o0d5IK4ZFP3Aqdz1YSPiNE8KcRm3f2pIRjZ'
+  token: process.env.SANITY_API_WRITE_TOKEN!
 });
 
 // High-quality manufacturing/industrial images from Unsplash

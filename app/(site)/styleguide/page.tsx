@@ -5,12 +5,12 @@ import { Button } from '@/components/ui/button';
 import { PremiumButton } from '@/components/ui/premium-button';
 
 export const metadata = {
-  title: 'UI Style Guide | IIS Precision Manufacturing',
+  title: 'UI Style Guide | IIS - Integrated Inspection Systems',
   description: 'Living reference for hero typography, tone-aware tokens, and CTA treatments.',
 };
 
 const typographyTokens = [
-  { label: 'Hero Heading', className: typography.heroHeading, sample: 'Mission-critical Precision' },
+  { label: 'Hero Heading', className: typography.heroHeading, sample: 'Data-Driven Precision' },
   { label: 'Section Heading', className: typography.sectionHeading, sample: 'Premium Section Title' },
   { label: 'Subsection Title', className: typography.subsectionTitle, sample: 'Subsection Title' },
   { label: 'Body', className: typography.body, sample: 'Body copy for descriptions and supporting content.' },

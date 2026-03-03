@@ -62,7 +62,7 @@ export function Analytics({
         cookie_expires: 60 * 60 * 24 * 30, // 30 days
       });
 
-      // Set custom dimensions for data-driven manufacturing
+      // Set custom dimensions for data-driven machining
       gtag('config', googleAnalyticsId, {
         custom_map: {
           custom_dimension_1: 'metbase_interest',
@@ -95,7 +95,7 @@ export function Analytics({
       // Track custom B2B events
       if (window.fbq) {
         window.fbq('trackCustom', 'B2BWebsiteVisit', {
-          industry: 'data_driven_manufacturing',
+          industry: 'data_driven_machining',
           services: 'metbase_software,adaptive_machining',
           specialties: 'industrial_gas_turbines,cmm_inspection',
           certifications: 'ISO9001,AS9100,ITAR'
@@ -217,7 +217,7 @@ export const trackQuoteRequest = (service?: string, industry?: string) => {
     window.fbq('trackCustom', 'QuoteRequest', {
       service: service,
       industry: industry,
-      lead_type: 'manufacturing_quote'
+      lead_type: 'machining_quote'
     });
   }
 };

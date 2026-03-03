@@ -16,19 +16,19 @@ export async function generateMetadata() {
   const baseUrl = 'https://iismet.com';
 
   const metadata = {
-    title: 'Contact IIS - Precision Manufacturing Quote & Consultation',
-    description: 'Contact Integrated Inspection Systems for precision manufacturing quotes, technical consultations, and project inquiries. AS9100, ISO 9001 certified, ITAR registered. 24-hour quote response.',
-    keywords: 'contact IIS, precision manufacturing quote, CNC machining quote, CMM inspection quote, aerospace manufacturing inquiry, technical consultation, metrology services quote, Oregon manufacturing',
-    ogImage: `${baseUrl}/og-image-contact.jpg`
+    title: 'Contact IIS - Precision Machining Quote & Consultation',
+    description: 'Contact Integrated Inspection Systems for precision machining quotes, technical consultations, and project inquiries. AS9100, ISO 9001 certified, ITAR registered. 24-hour quote response.',
+    keywords: 'contact IIS, precision machining quote, CNC machining quote, CMM inspection quote, aerospace machining inquiry, technical consultation, metrology services quote, Oregon machining',
+    ogImage: null as string | null
   };
 
   return {
     title: metadata.title,
     description: metadata.description,
     keywords: metadata.keywords,
-    authors: [{ name: 'IIS Precision Manufacturing', url: baseUrl }],
-    creator: 'IIS Precision Manufacturing',
-    publisher: 'IIS Precision Manufacturing',
+    authors: [{ name: 'IIS - Integrated Inspection Systems', url: baseUrl }],
+    creator: 'IIS - Integrated Inspection Systems',
+    publisher: 'IIS - Integrated Inspection Systems',
     robots: {
       index: true,
       follow: true,
@@ -47,18 +47,18 @@ export async function generateMetadata() {
       type: 'website',
       locale: 'en_US',
       url: `${baseUrl}/contact`,
-      siteName: 'IIS Precision Manufacturing',
+      siteName: 'IIS - Integrated Inspection Systems',
       title: metadata.title,
       description: metadata.description,
-      images: [
+      images: metadata.ogImage ? [
         {
           url: metadata.ogImage,
           width: 1200,
           height: 630,
-          alt: 'Contact IIS Precision Manufacturing',
+          alt: 'Contact IIS - Integrated Inspection Systems',
           type: 'image/jpeg',
         }
-      ],
+      ] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -66,9 +66,9 @@ export async function generateMetadata() {
       creator: '@iisprecision',
       title: metadata.title,
       description: metadata.description,
-      images: [metadata.ogImage],
+      images: metadata.ogImage ? [metadata.ogImage] : [],
     },
     category: 'Business',
-    classification: 'Manufacturing',
+    classification: 'Machining & Inspection',
   };
 }

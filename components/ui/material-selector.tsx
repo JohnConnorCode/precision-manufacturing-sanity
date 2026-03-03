@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Thermometer, Zap, Weight, Shield, CheckCircle } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
 import AnimatedSection from '@/components/ui/animated-section';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface Material {
   id: string;
@@ -151,6 +152,7 @@ const categoryColors = {
 };
 
 export default function MaterialSelector() {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -260,7 +262,7 @@ export default function MaterialSelector() {
                 <label className="block text-sm font-medium text-slate-300 mb-2">Sort By</label>
                 <select
                   value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
+                  onChange={(e) => setSortBy(e.target.value as 'name' | 'strength' | 'weight' | 'cost')}
                   className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse focus:outline-none focus:ring-2 focus:ring-purple-600/50 focus:border-purple-600"
                 >
                   <option value="name">Name</option>
@@ -356,7 +358,7 @@ export default function MaterialSelector() {
                         : 'border-slate-700 bg-slate-800/30 hover:border-slate-600'
                     }`}
                     onClick={() => setSelectedMaterial(material)}
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
@@ -394,9 +396,10 @@ export default function MaterialSelector() {
           <AnimatePresence>
             {selectedMaterial && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
+                initial={prefersReducedMotion ? { opacity: 1, height: 'auto' } : { opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
+                exit={prefersReducedMotion ? { opacity: 0, height: 'auto' } : { opacity: 0, height: 0 }}
+                transition={prefersReducedMotion ? { duration: 0 } : undefined}
                 className="mt-8 border-t border-slate-700 pt-8"
               >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

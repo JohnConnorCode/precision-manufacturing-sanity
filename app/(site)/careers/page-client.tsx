@@ -11,11 +11,13 @@ import { typography, spacing, styles, cn } from '@/lib/design-system';
 import { getHeroImageUrl } from '@/lib/hero-images';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import type { JobPosting, CMSButton, CareerBenefit, CareerValue } from '@/lib/types/cms';
+import type { LucideIcon } from 'lucide-react';
 
 const urlFor = getHeroImageUrl;
 
 // Icon mapping
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   Users,
   Briefcase,
   Award,
@@ -24,8 +26,8 @@ const iconMap: Record<string, any> = {
 };
 
 interface CareersPageClientProps {
-  data?: any | null;
-  jobPostings?: any[];
+  data?: Record<string, any> | null;
+  jobPostings?: JobPosting[];
 }
 
 export default function CareersPageClient({ data, jobPostings = [] }: CareersPageClientProps) {
@@ -45,7 +47,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={urlFor(data?.hero?.backgroundImage) || (data as any)?.hero?.backgroundImageUrl}
+        backgroundImage={urlFor(data?.hero?.backgroundImage) || (data as Record<string, any>)?.hero?.backgroundImageUrl}
         imageAlt={data?.hero?.imageAlt || data?.hero?.backgroundImage?.alt}
         title={(() => {
           // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
@@ -81,8 +83,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
         })()}
         description={data?.hero?.description}
         buttons={(data?.hero?.buttons || [])
-          .filter((btn: any) => btn?.enabled !== false)
-          .map((btn: any) => ({
+          .filter((btn: CMSButton) => btn?.enabled !== false)
+          .map((btn: CMSButton) => ({
             label: btn.label,
             href: btn.href,
             variant: btn.variant as 'primary' | 'secondary'
@@ -103,7 +105,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             >
               <h2 className={cn(typography.h2, "mb-6")}>{data?.whyWorkHere?.heading || 'Why Work at IIS?'}</h2>
               <p className={cn(typography.lead, "mb-6")}>
-                {data?.whyWorkHere?.paragraph1 || 'Join a team committed to excellence in precision manufacturing.'}
+                {data?.whyWorkHere?.paragraph1 || 'Join a team committed to excellence in precision machining.'}
               </p>
               <p className={cn(typography.body, "text-slate-600 dark:text-slate-300 mb-8")}>
                 {data?.whyWorkHere?.paragraph2 || 'We offer competitive compensation and comprehensive benefits.'}
@@ -121,7 +123,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               className="relative"
             >
               {(() => {
-                const imageUrl = urlFor(data?.whyWorkHere?.image) || (data as any)?.whyWorkHere?.imageUrl;
+                const imageUrl = urlFor(data?.whyWorkHere?.image) || (data as Record<string, any>)?.whyWorkHere?.imageUrl;
                 if (!imageUrl) return null;
                 return (
                   <div className="relative w-full h-96 rounded-lg overflow-hidden shadow-lg">
@@ -159,9 +161,9 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
 
           <div ref={benefitsGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {(data?.benefits?.items || [])
-              .filter((benefit: any) => benefit?.enabled !== false)
-              .map((benefit: any, index: number) => {
-              const Icon = iconMap[benefit.iconName] || Users;
+              .filter((benefit: CareerBenefit) => benefit?.enabled !== false)
+              .map((benefit: CareerBenefit, index: number) => {
+              const Icon = (benefit.iconName ? iconMap[benefit.iconName] : undefined) || Users;
               return (
                 <motion.div
                   key={benefit.title}
@@ -205,17 +207,17 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             </p>
           </motion.div>
 
-          <div ref={valuesGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div ref={valuesGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {(data?.values?.items || [])
-              .filter((value: any) => value?.enabled !== false)
-              .map((value: any, index: number) => (
+              .filter((value: CareerValue) => value?.enabled !== false)
+              .map((value: CareerValue, index: number) => (
               <motion.div
                 key={value.title}
                 initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                 animate={valuesGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                 transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
               >
-                <Card className={cn(styles.featureCard)}>
+                <Card className={cn(styles.featureCard, 'border-t-4 border-t-blue-600')}>
                   <h3 className={cn(typography.h4, "mb-3")}>{value.title}</h3>
                   <p className={cn(typography.body, "text-slate-600 dark:text-slate-300")}>{value.description}</p>
                 </Card>
@@ -243,15 +245,15 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
 
           {jobPostings.length > 0 ? (
             <div ref={opportunitiesGridAnim.ref} className="space-y-6">
-              {jobPostings.map((position: any, index: number) => (
+              {jobPostings.map((position: JobPosting, index: number) => (
                 <motion.div
                   key={position._id}
                   initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                   animate={opportunitiesGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                   transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
-                  <Link href={`/careers/${position.slug?.current || position.slug}`} className="block">
-                    <Card className={cn(styles.featureCard, "group hover:shadow-xl transition-shadow cursor-pointer")}>
+                  <Link href={`/careers/${typeof position.slug === 'object' ? position.slug?.current : position.slug}`} className="block">
+                    <Card className={cn(styles.featureCard, "group hover:shadow-xl transition-shadow cursor-pointer border-l-4 border-l-blue-600")}>
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
@@ -296,7 +298,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               ))}
             </div>
           ) : (
-            <Card className="p-12 text-center">
+            <Card className="p-16 text-center bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-950 border-2 border-dashed border-slate-200 dark:border-slate-700">
               <p className={cn(typography.lead, "text-slate-600 dark:text-slate-300 mb-4")}>
                 No open positions at this time.
               </p>
@@ -309,7 +311,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
       </section>
 
       {/* CTA Section */}
-      <section className={spacing.section}>
+      <section className={styles.sectionDark}>
         <div className={spacing.container}>
           <motion.div
             ref={ctaAnim.ref}
@@ -318,14 +320,14 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             transition={ANIM_TRANSITION}
             className="text-center max-w-4xl mx-auto"
           >
-            <h2 className={cn(typography.h2, "mb-6")}>{data?.cta?.title || 'Ready to Join Us?'}</h2>
-            <p className={cn(typography.lead, "mb-8")}>
+            <h2 className={cn(typography.h2, "mb-6 text-white")}>{data?.cta?.title || 'Ready to Join Us?'}</h2>
+            <p className={cn(typography.lead, "mb-8 text-slate-300")}>
               {data?.cta?.description || 'Take the next step in your career. We look forward to hearing from you.'}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {((data?.cta?.buttons && data.cta.buttons.length > 0) ? data.cta.buttons : [{ label: 'View Openings', href: '#opportunities', variant: 'primary' }])
-                .filter((button: any) => button?.enabled !== false)
-                .map((button: any, index: number) => (
+                .filter((button: CMSButton) => button?.enabled !== false)
+                .map((button: CMSButton, index: number) => (
                 <Button
                   key={index}
                   size="lg"

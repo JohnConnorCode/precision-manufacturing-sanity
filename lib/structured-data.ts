@@ -89,7 +89,7 @@ export function generateOrganizationSchema(data: OrganizationData) {
     "sameAs": data.sameAs,
     "foundingDate": data.foundingDate || "1995",
     "numberOfEmployees": "25+",
-    "industry": "Precision Manufacturing",
+    "industry": "Precision Machining & Inspection",
     "naics": "332710", // Machine Shops
     "certifications": [
       "AS9100",
@@ -103,8 +103,8 @@ export function generateOrganizationSchema(data: OrganizationData) {
       "GD&T principles",
       "MetBase® proprietary software",
       "Coordinate measuring machines",
-      "Aerospace manufacturing",
-      "Defense manufacturing",
+      "Aerospace machining",
+      "Defense machining",
       "Statistical process control",
       "Process capability studies",
       "Reverse engineering"
@@ -171,10 +171,10 @@ export function generateServiceSchema(service: ServiceData) {
     })),
     "serviceType": service.serviceType,
     "url": service.url,
-    "category": "Manufacturing Services",
+    "category": "Machining & Inspection Services",
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "Precision Manufacturing Services",
+      "name": "Precision Machining & Inspection Services",
       "itemListElement": [
         {
           "@type": "Offer",
@@ -202,7 +202,7 @@ export function generateArticleSchema(article: ArticleData) {
     },
     "publisher": {
       "@type": "Organization",
-      "name": "IIS Precision Manufacturing",
+      "name": "IIS - Integrated Inspection Systems",
       "logo": {
         "@type": "ImageObject",
         "url": "/logo.png"
@@ -222,7 +222,7 @@ export function generateArticleSchema(article: ArticleData) {
     "keywords": article.keywords,
     "about": {
       "@type": "Thing",
-      "name": "Precision Manufacturing"
+      "name": "Precision Machining & Inspection"
     },
     "mentions": [
       {
@@ -231,7 +231,7 @@ export function generateArticleSchema(article: ArticleData) {
       },
       {
         "@type": "Thing",
-        "name": "Aerospace Manufacturing"
+        "name": "Aerospace Machining"
       },
       {
         "@type": "Thing",
@@ -241,14 +241,14 @@ export function generateArticleSchema(article: ArticleData) {
   };
 }
 
-// Manufacturing Process Schema
-export function generateManufacturingProcessSchema() {
+// Machining Process Schema
+export function generateMachiningProcessSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "Precision CNC Machining Process",
-    "description": "Professional precision manufacturing process for aerospace and defense components",
-    "image": "/images/cnc-process.jpg",
+    "description": "Professional precision machining process for aerospace and defense components",
+    "image": "https://iismet.com/og-image.jpg",
     "totalTime": "PT24H", // 24 hours typical
     "supply": [
       {
@@ -277,8 +277,8 @@ export function generateManufacturingProcessSchema() {
     "step": [
       {
         "@type": "HowToStep",
-        "name": "Design Review & DFM Analysis",
-        "text": "Engineering review of component design for manufacturability"
+        "name": "Engineering Review & Programming",
+        "text": "Engineering review of component design for machinability"
       },
       {
         "@type": "HowToStep",
@@ -323,7 +323,7 @@ export function generateFAQSchema() {
         "name": "Are you AS9100D certified?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes, we are AS9100D certified for aerospace quality management and ITAR registered for defense manufacturing programs."
+          "text": "Yes, we are AS9100D certified for aerospace quality management and ITAR registered for defense programs."
         }
       },
       {
@@ -374,8 +374,8 @@ export function generateWebsiteSchema(url: string) {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "url": url,
-    "name": "IIS Precision Manufacturing",
-    "description": "Precision manufacturing services for aerospace, defense, and energy industries. AS9100D certified with ITAR registration.",
+    "name": "IIS - Integrated Inspection Systems",
+    "description": "Precision machining and inspection services for aerospace, defense, and energy industries. AS9100D certified with ITAR registration.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
@@ -386,7 +386,7 @@ export function generateWebsiteSchema(url: string) {
     },
     "publisher": {
       "@type": "Organization",
-      "name": "IIS Precision Manufacturing"
+      "name": "IIS - Integrated Inspection Systems"
     }
   };
 }
@@ -396,8 +396,8 @@ export function generateProductCatalogSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": "Precision Manufacturing Services",
-    "description": "Comprehensive precision manufacturing capabilities for critical applications",
+    "name": "Precision Machining & Inspection Services",
+    "description": "Comprehensive precision machining and inspection capabilities for critical applications",
     "numberOfItems": 6,
     "itemListElement": [
       {
@@ -424,7 +424,7 @@ export function generateProductCatalogSchema() {
         "item": {
           "@type": "Service",
           "name": "Adaptive Machining",
-          "description": "Intelligent manufacturing with real-time control"
+          "description": "Intelligent machining with real-time control"
         }
       },
       {
@@ -433,7 +433,7 @@ export function generateProductCatalogSchema() {
         "item": {
           "@type": "Service",
           "name": "Engineering Services",
-          "description": "Design optimization and rapid prototyping"
+          "description": "Engineering support and process optimization"
         }
       },
       {
@@ -441,8 +441,8 @@ export function generateProductCatalogSchema() {
         "position": 5,
         "item": {
           "@type": "Service",
-          "name": "Predictive Analytics",
-          "description": "AI-powered manufacturing optimization"
+          "name": "Quality Assurance",
+          "description": "Data-driven quality control and process optimization"
         }
       },
       {
@@ -451,7 +451,7 @@ export function generateProductCatalogSchema() {
         "item": {
           "@type": "Service",
           "name": "Supply Chain Integration",
-          "description": "End-to-end manufacturing solutions"
+          "description": "End-to-end machining and inspection solutions"
         }
       }
     ]

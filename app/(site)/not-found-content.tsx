@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Home, ArrowLeft, Search, Phone } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface PopularLink {
   href: string;
@@ -32,6 +33,8 @@ interface NotFoundContentProps {
 }
 
 export default function NotFoundContent({ siteSettings, errorPages }: NotFoundContentProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center px-4">
       {/* Background effects */}
@@ -39,7 +42,7 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] bg-[size:50px_50px] opacity-20" />
         <motion.div
           className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full filter blur-3xl"
-          animate={{
+          animate={prefersReducedMotion ? {} : {
             x: [0, 100, 0],
             y: [0, -100, 0],
           }}
@@ -51,7 +54,7 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
         />
         <motion.div
           className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full filter blur-3xl"
-          animate={{
+          animate={prefersReducedMotion ? {} : {
             x: [0, -100, 0],
             y: [0, 100, 0],
           }}
@@ -65,13 +68,13 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
 
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={prefersReducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
         >
           {/* 404 Text with gradient */}
           <h1 className="text-[150px] md:text-[200px] font-black leading-none">
-            <span className="animate-pulse" style={{
+            <span className={prefersReducedMotion ? '' : 'animate-pulse'} style={{
               background: 'linear-gradient(to right, #3b82f6, #4f46e5, #3b82f6)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -83,24 +86,24 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
 
           {/* Error message */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
+            transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: prefersReducedMotion ? 0 : 0.5 }}
             className="mt-8 space-y-4"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-tone-inverse">
               {errorPages?.notFound?.heading || 'Page Not Found'}
             </h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-              {errorPages?.notFound?.description || "The precision you're looking for seems to be off by a few thousandths. This page doesn't exist, but our manufacturing excellence does."}
+              {errorPages?.notFound?.description || "The precision you're looking for seems to be off by a few thousandths. This page doesn't exist, but our machining excellence does."}
             </p>
           </motion.div>
 
           {/* Action buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
+            transition={{ delay: prefersReducedMotion ? 0 : 0.4, duration: prefersReducedMotion ? 0 : 0.5 }}
             className="mt-12 flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Link href="/">
@@ -127,9 +130,9 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
 
           {/* Helpful links */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
+            transition={{ delay: prefersReducedMotion ? 0 : 0.6, duration: prefersReducedMotion ? 0 : 0.5 }}
             className="mt-16 p-8 bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-800"
           >
             <h3 className="text-lg font-semibold text-tone-inverse mb-6">
@@ -142,7 +145,7 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
                 { href: '/services/metrology', label: 'Precision Metrology' },
                 { href: '/contact', label: 'Request Quote' },
                 { href: '/about', label: 'About IIS' },
-                { href: '/industries/defense', label: 'Defense Manufacturing' },
+                { href: '/industries/defense', label: 'Defense Machining' },
               ]).map((link: PopularLink) => (
                 <Link
                   key={link.href}
@@ -158,9 +161,9 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
 
           {/* Technical details (fun easter egg) */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
+            transition={{ delay: prefersReducedMotion ? 0 : 0.8, duration: prefersReducedMotion ? 0 : 0.5 }}
             className="mt-8 text-xs text-slate-600 dark:text-slate-300 font-mono"
           >
             {errorPages?.notFound?.errorCode || 'ERROR: TOLERANCE_EXCEEDED | ROUTE_NOT_FOUND | PRECISION_MISMATCH'}

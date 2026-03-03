@@ -26,12 +26,35 @@ export async function generateMetadata({ params }: ServicePageProps) {
     };
   }
 
+  const baseUrl = 'https://iismet.com';
+  const title = serviceData.seo?.metaTitle || serviceData.title;
+  const description = serviceData.seo?.metaDescription || serviceData.description;
+  const ogImage = serviceData.seo?.ogImage?.asset?.url || serviceData.heroImage?.asset?.url;
+
   return {
-    title: serviceData.seo?.metaTitle || serviceData.title,
-    description: serviceData.seo?.metaDescription || serviceData.description,
+    title,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/services/${slug}`,
+    },
     openGraph: {
-      title: serviceData.seo?.metaTitle || serviceData.title,
-      description: serviceData.seo?.metaDescription || serviceData.description,
+      type: 'website',
+      locale: 'en_US',
+      url: `${baseUrl}/services/${slug}`,
+      siteName: 'IIS - Integrated Inspection Systems',
+      title,
+      description,
+      ...(ogImage && { images: [{ url: ogImage, width: 1200, height: 630, alt: title }] }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      ...(ogImage && { images: [ogImage] }),
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }

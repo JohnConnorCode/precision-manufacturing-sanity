@@ -6,8 +6,27 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { FileQuestion, Home, ArrowLeft, ArrowRight } from 'lucide-react'
 import { typography, cn } from '@/lib/design-system'
+import { usePrefersReducedMotion } from '@/lib/motion'
 
 export default function NotFound() {
+  const prefersReducedMotion = usePrefersReducedMotion()
+  const noMotion = { initial: undefined, animate: undefined, transition: undefined }
+  const fadeIn = (delay = 0) => prefersReducedMotion ? noMotion : {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5, delay },
+  }
+  const scaleIn = (delay = 0) => prefersReducedMotion ? noMotion : {
+    initial: { scale: 0.8, opacity: 0 },
+    animate: { scale: 1, opacity: 1 },
+    transition: { duration: 0.5, delay },
+  }
+  const fadeOnly = (delay = 0) => prefersReducedMotion ? noMotion : {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.5, delay },
+  }
+
   const quickLinks = [
     { label: 'Services', href: '/services' },
     { label: 'Industries', href: '/industries' },
@@ -22,16 +41,12 @@ export default function NotFound() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.03)_0%,_transparent_50%)]" />
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        {...fadeIn()}
         className="relative z-10 max-w-2xl w-full"
       >
         <Card className="p-8 md:p-12 text-center">
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            {...scaleIn(0.2)}
             className="mb-8 flex justify-center"
           >
             <div className="w-24 h-24 bg-gradient-to-br from-blue-600/10 to-indigo-600/10 rounded-2xl flex items-center justify-center border border-blue-600/20">
@@ -40,9 +55,7 @@ export default function NotFound() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            {...fadeOnly(0.3)}
           >
             <h1 className="text-7xl font-black mb-2" style={{
               background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
@@ -64,9 +77,7 @@ export default function NotFound() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            {...fadeIn(0.4)}
             className="flex flex-col sm:flex-row gap-4 justify-center mb-10"
           >
             <Link href="/">
@@ -85,9 +96,7 @@ export default function NotFound() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            {...fadeOnly(0.5)}
             className="border-t border-slate-200 dark:border-slate-800 pt-8"
           >
             <p className={cn(typography.small, 'text-slate-500 mb-4')}>
@@ -108,13 +117,11 @@ export default function NotFound() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            {...fadeOnly(0.6)}
             className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800"
           >
             <p className={cn(typography.small, 'text-slate-400')}>
-              © {new Date().getFullYear()} IIS Precision Manufacturing
+              © {new Date().getFullYear()} IIS - Integrated Inspection Systems
             </p>
           </motion.div>
         </Card>

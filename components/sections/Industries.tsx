@@ -101,7 +101,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                 className="group"
               >
                 <Link href={industry.href || '#'} className="block">
-                  <div className="relative aspect-[3/4] md:aspect-[2/3] rounded-3xl overflow-hidden">
+                  <div className="relative aspect-[3/4] md:aspect-[2/3] rounded-2xl overflow-hidden">
                     {/* Background Image */}
                     {imageUrl && (
                       <Image
@@ -153,7 +153,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                     </div>
 
                     {/* Hover Border Glow */}
-                    <div className="absolute inset-0 rounded-3xl border-2 border-transparent group-hover:border-blue-500/40 transition-colors duration-500 pointer-events-none" />
+                    <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-blue-500/40 transition-colors duration-500 pointer-events-none" />
 
                     {/* Corner Accent */}
                     <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

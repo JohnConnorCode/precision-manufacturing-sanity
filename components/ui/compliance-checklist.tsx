@@ -445,6 +445,7 @@ export default function ComplianceChecklist() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-600/50 focus:border-green-600"
                 placeholder="Search requirements..."
+                aria-label="Search requirements"
               />
             </div>
 
@@ -452,6 +453,7 @@ export default function ComplianceChecklist() {
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse focus:outline-none focus:ring-2 focus:ring-green-600/50 focus:border-green-600"
+              aria-label="Filter by status"
             >
               <option value="all">All Status</option>
               <option value="not-started">Not Started</option>
@@ -464,6 +466,7 @@ export default function ComplianceChecklist() {
               value={filterPriority}
               onChange={(e) => setFilterPriority(e.target.value)}
               className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-tone-inverse focus:outline-none focus:ring-2 focus:ring-green-600/50 focus:border-green-600"
+              aria-label="Filter by priority"
             >
               <option value="all">All Priority</option>
               <option value="high">High</option>
@@ -482,9 +485,11 @@ export default function ComplianceChecklist() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
               >
-                <div
-                  className="bg-slate-800/50 p-4 cursor-pointer hover:bg-slate-800/70 transition-colors"
+                <button
+                  type="button"
+                  className="w-full text-left bg-slate-800/50 p-4 cursor-pointer hover:bg-slate-800/70 transition-colors"
                   onClick={() => toggleSection(section.id)}
+                  aria-expanded={expandedSections.has(section.id)}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -511,7 +516,7 @@ export default function ComplianceChecklist() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </button>
 
                 <AnimatePresence>
                   {expandedSections.has(section.id) && section.items.length > 0 && (
@@ -540,18 +545,18 @@ export default function ComplianceChecklist() {
                                 <p className="text-sm text-slate-400">{item.description}</p>
                               </div>
                               <div className="flex items-center gap-2 ml-4">
-                                {['not-started', 'in-progress', 'completed', 'non-applicable'].map(status => (
+                                {(['not-started', 'in-progress', 'completed', 'non-applicable'] as const).map(status => (
                                   <button
                                     key={status}
-                                    onClick={() => updateItemStatus(section.id, item.id, status as any)}
+                                    onClick={() => updateItemStatus(section.id, item.id, status)}
                                     className={`p-2 rounded-lg transition-all ${
                                       item.status === status
-                                        ? getStatusColor(status as any)
+                                        ? getStatusColor(status)
                                         : 'text-slate-600 hover:text-slate-400 hover:bg-slate-800'
                                     }`}
                                     title={status.replace('-', ' ')}
                                   >
-                                    {getStatusIcon(status as any)}
+                                    {getStatusIcon(status)}
                                   </button>
                                 ))}
                               </div>

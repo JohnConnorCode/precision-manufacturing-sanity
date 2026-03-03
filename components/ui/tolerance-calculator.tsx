@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Calculator, Info, CheckCircle, AlertTriangle } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
 import AnimatedSection from '@/components/ui/animated-section';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface ToleranceCalculation {
   nominalDimension: number;
@@ -44,6 +45,7 @@ const fundamentalDeviations = [
 ];
 
 export default function ToleranceCalculator() {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [dimension, setDimension] = useState<string>('25');
   const [toleranceGrade, setToleranceGrade] = useState<string>('IT7');
   const [deviation, setDeviation] = useState<string>('h');
@@ -135,7 +137,7 @@ export default function ToleranceCalculator() {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-tone-inverse">Precision Tolerance Calculator</h2>
-              <p className="text-slate-400">Calculate ISO 286 tolerances for precision manufacturing</p>
+              <p className="text-slate-400">Calculate ISO 286 tolerances for precision machining</p>
             </div>
           </div>
 
@@ -217,9 +219,9 @@ export default function ToleranceCalculator() {
           {/* Results */}
           {calculation && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5 }}
               className="bg-gradient-to-r from-blue-600/10 to-indigo-600/10 border border-blue-600/20 rounded-xl p-6"
             >
               <div className="flex items-center gap-2 mb-4">
@@ -261,7 +263,7 @@ export default function ToleranceCalculator() {
                   <div className="flex items-start gap-3">
                     <AlertTriangle className="w-5 h-5 text-yellow-400 mt-0.5" />
                     <div>
-                      <div className="text-yellow-400 font-medium text-sm">Manufacturing Note</div>
+                      <div className="text-yellow-400 font-medium text-sm">Machining Note</div>
                       <div className="text-slate-300 text-sm">
                         These calculations are based on ISO 286 standards. For aerospace applications,
                         verify tolerances meet specific AS9100 requirements and consider material properties,

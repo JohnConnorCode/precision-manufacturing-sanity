@@ -1,6 +1,56 @@
 import fs from 'fs';
 import path from 'path';
 
+interface PortableTextChild {
+  _type?: string;
+  text?: string;
+  marks?: string[];
+}
+
+interface PortableTextBlock {
+  _type: string;
+  _key?: string;
+  style?: string;
+  children?: PortableTextChild[];
+  listItem?: string;
+  items?: string[];
+  type?: string;
+  title?: string;
+  content?: string;
+  code?: string;
+  language?: string;
+  description?: string;
+  headers?: string[];
+  rows?: Record<string, string>[];
+  specs?: Record<string, string>[];
+  steps?: Record<string, string>[];
+  text?: string;
+  href?: string;
+}
+
+interface RelatedReference {
+  _ref?: string;
+  _type?: string;
+  title?: string;
+  slug?: { current: string };
+}
+
+interface TransformedContentBlock {
+  type: string;
+  content?: string;
+  items?: string[];
+  style?: string;
+  title?: string;
+  description?: string;
+  headers?: string[];
+  rows?: Record<string, string>[];
+  specs?: Record<string, string>[];
+  steps?: Record<string, string>[];
+  language?: string;
+  text?: string;
+  href?: string;
+}
+
 export interface TechnicalArticleAuthor {
   name: string;
   title: string;
@@ -38,11 +88,11 @@ interface RawTechnicalArticle {
   author: TechnicalArticleAuthor;
   prerequisites: string[];
   learningObjectives: string[];
-  content: any[];
+  content: PortableTextBlock[];
   relatedContent?: {
-    relatedServices?: any[];
-    relatedCaseStudies?: any[];
-    relatedGlossary?: any[];
+    relatedServices?: RelatedReference[];
+    relatedCaseStudies?: RelatedReference[];
+    relatedGlossary?: RelatedReference[];
     relatedArticles?: RelatedArticle[];
   };
   seo: {
@@ -78,11 +128,11 @@ export interface TechnicalArticle {
     learningObjectives: string[];
     prerequisites: string[];
   };
-  content: any[];
+  content: TransformedContentBlock[];
   relatedContent: {
-    relatedServices: any[];
-    relatedCaseStudies: any[];
-    relatedGlossary: any[];
+    relatedServices: RelatedReference[];
+    relatedCaseStudies: RelatedReference[];
+    relatedGlossary: RelatedReference[];
     relatedArticles?: RelatedArticle[];
   };
   seo: {
@@ -96,13 +146,13 @@ export interface TechnicalArticle {
 const articlesDirectory = path.join(process.cwd(), 'content/technical-articles');
 
 // Transform Sanity portable text blocks to simple content structure
-function transformContent(rawContent: any[]): any[] {
+function transformContent(rawContent: PortableTextBlock[]): TransformedContentBlock[] {
   if (!rawContent) return [];
 
-  return rawContent.map((block: any) => {
+  return rawContent.map((block: PortableTextBlock): TransformedContentBlock | null => {
     // Handle Sanity blocks (paragraphs, headings)
     if (block._type === 'block') {
-      const textContent = block.children?.map((child: any) => child.text).join('') || '';
+      const textContent = block.children?.map((child: PortableTextChild) => child.text).join('') || '';
 
       if (block.style === 'h2') {
         return { type: 'heading', content: textContent };
@@ -180,14 +230,14 @@ function transformContent(rawContent: any[]): any[] {
 
     // Return null for empty or unsupported blocks
     return null;
-  }).filter(Boolean);
+  }).filter((block): block is TransformedContentBlock => block !== null);
 }
 
 // Transform raw JSON to our interface
 function transformArticle(raw: RawTechnicalArticle): TechnicalArticle {
   // Extract overview from content (first paragraph block)
   let overview = '';
-  const firstParagraph = raw.content?.find((item: any) => item._type === 'block' && item.style === 'normal');
+  const firstParagraph = raw.content?.find((item: PortableTextBlock) => item._type === 'block' && item.style === 'normal');
   if (firstParagraph?.children?.[0]?.text) {
     overview = firstParagraph.children[0].text;
   }
@@ -338,11 +388,11 @@ function seriesNameToTitle(seriesName: string): string {
 // Series descriptions
 const seriesDescriptions: Record<string, string> = {
   'CMM Inspection Mastery': 'Master coordinate measuring machine (CMM) setup, programming, and measurement strategies for precision inspection. Learn probe selection, error analysis, and environment control for accurate dimensional verification.',
-  'First Article Inspection (FAI) Excellence': 'Complete guide to AS9102 First Article Inspection requirements, documentation, measurement procedures, and customer approval processes for aerospace and defense manufacturing.',
-  'GD&T Fundamentals and Application': 'Comprehensive Geometric Dimensioning and Tolerancing (GD&T) training covering symbols, datum reference frames, position tolerances, and measurement verification strategies for precision manufacturing.',
-  'CNC Manufacturing Precision': 'Advanced CNC machining techniques covering tolerance capabilities, surface finish requirements, material considerations, and 5-axis manufacturing strategies for precision parts.',
-  'AS9100 Quality Management': 'Complete AS9100 quality management system implementation guide covering certification requirements, risk management, configuration control, and supplier management for aerospace manufacturing.',
-  'MetBase Quality Systems': 'Master MetBase quality data management system setup, statistical process control (SPC), advanced automation, and custom integration solutions for manufacturing quality control.',
+  'First Article Inspection (FAI) Excellence': 'Complete guide to AS9102 First Article Inspection requirements, documentation, measurement procedures, and customer approval processes for aerospace and defense machining.',
+  'GD&T Fundamentals and Application': 'Comprehensive Geometric Dimensioning and Tolerancing (GD&T) training covering symbols, datum reference frames, position tolerances, and measurement verification strategies for precision machining.',
+  'CNC Manufacturing Precision': 'Advanced CNC machining techniques covering tolerance capabilities, surface finish requirements, material considerations, and 5-axis machining strategies for precision parts.',
+  'AS9100 Quality Management': 'Complete AS9100 quality management system implementation guide covering certification requirements, risk management, configuration control, and supplier management for aerospace machining.',
+  'MetBase Quality Systems': 'Master MetBase quality data management system setup, statistical process control (SPC), advanced automation, and custom integration solutions for machining quality control.',
 };
 
 // Series information interface

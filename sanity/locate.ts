@@ -118,6 +118,50 @@ export const locate: DocumentLocationResolver = (params, context) => {
     )
   }
 
+  // Resource Categories - appear on resources page and their own category page
+  if (params.type === 'resourceCategory') {
+    return context.documentStore.listenQuery(
+      `*[_type == "resourceCategory" && _id == $id][0]{ slug }`,
+      { id: params.id },
+      { perspective: 'drafts' }
+    ).pipe(
+      map((doc: any) => ({
+        message: 'This resource category appears on the resources page',
+        tone: 'positive' as const,
+        locations: [
+          {
+            title: 'Resources Overview',
+            href: '/resources',
+          },
+          ...(doc?.slug?.current ? [{
+            title: 'Category Page',
+            href: `/resources/${doc.slug.current}`,
+          }] : []),
+        ],
+      }))
+    )
+  }
+
+  // Case Studies - appear on their own detail page
+  if (params.type === 'caseStudy') {
+    return context.documentStore.listenQuery(
+      `*[_type == "caseStudy" && _id == $id][0]{ slug }`,
+      { id: params.id },
+      { perspective: 'drafts' }
+    ).pipe(
+      map((doc: any) => ({
+        message: 'This case study has its own detail page',
+        tone: 'positive' as const,
+        locations: [
+          ...(doc?.slug?.current ? [{
+            title: 'Case Study Page',
+            href: `/case-studies/${doc.slug.current}`,
+          }] : []),
+        ],
+      }))
+    )
+  }
+
   // Team Members - appear on about page
   if (params.type === 'teamMember') {
     return {
@@ -177,6 +221,8 @@ export const locate: DocumentLocationResolver = (params, context) => {
     careers: { href: '/careers', title: 'Careers Page' },
     terms: { href: '/compliance/terms', title: 'Terms & Conditions' },
     supplierRequirements: { href: '/compliance/supplier-requirements', title: 'Supplier Requirements' },
+    metbase: { href: '/about/metbase', title: 'Metbase Page' },
+    errorPages: { href: '/', title: 'Error Pages' },
   }
 
   if (params.type in singletons) {

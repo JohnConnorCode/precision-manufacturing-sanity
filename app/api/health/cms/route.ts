@@ -17,6 +17,6 @@ export async function GET() {
       ok: false,
       durationMs: duration,
       error: e?.message || 'unknown',
-    }, { status: 200 })
+    }, { status: 503 })
   }
 }

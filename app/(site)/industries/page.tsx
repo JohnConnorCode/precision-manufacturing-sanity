@@ -3,38 +3,39 @@ import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getAllIndustries, getIndustriesPage } from '@/sanity/lib/queries';
+import { getIndustriesPage } from '@/sanity/lib/queries';
 import AnimatedSection from '@/components/ui/animated-section';
 import { NoIndustriesState } from '@/components/ui/empty-state';
 import type { Metadata } from 'next';
-import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import { draftMode } from 'next/headers';
 import * as Icons from 'lucide-react';
 import { colors, spacing, cardStyles } from '@/lib/design-system';
 import { cn } from '@/lib/utils';
 import { getToneTypography } from '@/lib/typography';
+import type { CMSButton, IndustryStat, IndustryItem, WhyChooseItem, ProvenResultMetric } from '@/lib/types/cms';
 
 // Dynamic icon component
 function DynamicIcon({ name, className }: { name: string; className?: string }) {
-  const Icon = (Icons as any)[name] || Icons.Circle;
+  const Icon = (Icons as unknown as Record<string, React.ComponentType<{ className?: string }>>)[name] || Icons.Circle;
   return <Icon className={className} />;
 }
 
-// Force static generation for INSTANT routing (no server delays)
-export const dynamic = 'force-static';
-export const revalidate = 60; // Revalidate every 60 seconds
+// ISR for automatic updates when Sanity content changes (supports draft mode preview)
+export const revalidate = 60;
 
 // Comprehensive SEO metadata with social sharing optimization - pulls from Sanity CMS
 export async function generateMetadata(): Promise<Metadata> {
-  const industriesPage = await getIndustriesPage();
+  const { isEnabled: isDraft } = await draftMode();
+  const industriesPage = await getIndustriesPage(isDraft);
   const baseUrl = 'https://iismet.com';
   const pageUrl = `${baseUrl}/industries`;
 
   // Pull SEO data from Sanity with fallbacks
-  const seoTitle = industriesPage?.seo?.metaTitle || 'Industries We Serve | Aerospace, Defense & Energy Manufacturing | IIS';
-  const seoDescription = industriesPage?.seo?.metaDescription || 'Precision manufacturing for aerospace, defense, and energy industries. AS9100D certified, ITAR registered. Mission-critical components with full traceability, first article inspection, and comprehensive quality documentation.';
-  const seoKeywords = industriesPage?.seo?.keywords?.join(', ') || 'aerospace manufacturing, defense manufacturing, energy sector machining, AS9100D certified, ITAR registered, military components, aircraft parts, turbine components, mission-critical manufacturing';
-  const ogImage = industriesPage?.seo?.ogImage?.asset?.url || `${baseUrl}/og-image-industries.jpg`;
-  const ogImageAlt = industriesPage?.seo?.ogImage?.alt || 'IIS Industries - Aerospace, Defense and Energy Manufacturing';
+  const seoTitle = industriesPage?.seo?.metaTitle || 'Industries We Serve | Aerospace, Defense & Energy Machining | IIS';
+  const seoDescription = industriesPage?.seo?.metaDescription || 'Precision machining for aerospace, defense, and energy industries. AS9100D certified, ITAR registered. Components with full traceability, first article inspection, and comprehensive quality documentation.';
+  const seoKeywords = industriesPage?.seo?.keywords?.join(', ') || 'aerospace machining, defense machining, energy sector machining, AS9100D certified, ITAR registered, military components, aircraft parts, turbine components, precision machining';
+  const ogImage = industriesPage?.seo?.ogImage?.asset?.url || null;
+  const ogImageAlt = industriesPage?.seo?.ogImage?.alt || 'IIS Industries - Aerospace, Defense and Energy Machining';
 
   return {
     title: seoTitle,
@@ -47,10 +48,10 @@ export async function generateMetadata(): Promise<Metadata> {
       type: 'website',
       locale: 'en_US',
       url: pageUrl,
-      siteName: 'IIS Precision Manufacturing',
+      siteName: 'IIS - Integrated Inspection Systems',
       title: seoTitle,
       description: seoDescription,
-      images: [
+      images: ogImage ? [
         {
           url: ogImage,
           width: 1200,
@@ -58,7 +59,7 @@ export async function generateMetadata(): Promise<Metadata> {
           alt: ogImageAlt,
           type: 'image/jpeg',
         }
-      ],
+      ] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -66,7 +67,7 @@ export async function generateMetadata(): Promise<Metadata> {
       creator: '@iisprecision',
       title: seoTitle,
       description: seoDescription,
-      images: [ogImage],
+      images: ogImage ? [ogImage] : [],
     },
     robots: {
       index: true,
@@ -83,17 +84,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function IndustriesPage() {
-  const [industries, industriesPageData] = await Promise.all([
-    getAllIndustries(),
-    getIndustriesPage(),
-  ]);
+  const { isEnabled: isDraft } = await draftMode();
+  const industriesPageData = await getIndustriesPage(isDraft);
 
-  // Format industries with slug and plain text description
-  const _formattedIndustries = industries.map((industry: any) => ({
-    ...industry,
-    slug: industry.slug?.current || industry.slug,
-    description: industry.shortDescription || portableTextToPlainText(industry.description),
-  }));
   const darkTone = getToneTypography('dark');
 
   return (
@@ -109,8 +102,8 @@ export default async function IndustriesPage() {
             backgroundClip: 'text',
           } as React.CSSProperties;
 
-          const heading = industriesPageData?.hero?.heading || industriesPageData?.hero?.title || 'Industries We Serve';
-          const highlight = industriesPageData?.hero?.headingHighlight || 'We Serve';
+          const heading = industriesPageData?.hero?.heading || industriesPageData?.hero?.title || '';
+          const highlight = industriesPageData?.hero?.headingHighlight || '';
           const beforeHighlight = heading.replace(highlight, '').trim();
 
           return (
@@ -120,11 +113,8 @@ export default async function IndustriesPage() {
             </span>
           );
         })()}
-        description={industriesPageData?.hero?.subheading || 'Trusted partner for aerospace, defense, and energy sectors, delivering mission-critical components with uncompromising quality and precision.'}
-        buttons={(industriesPageData?.hero?.buttons || [
-          { label: 'Explore Industries', href: '#industries', variant: 'primary' },
-          { label: 'Industry Consultation', href: '/contact', variant: 'secondary' },
-        ]).filter((button: any) => button?.enabled !== false)}
+        description={industriesPageData?.hero?.subheading}
+        buttons={(industriesPageData?.hero?.buttons || []).filter((button: CMSButton) => button?.enabled !== false)}
         height="large"
         alignment="center"
       />
@@ -136,8 +126,8 @@ export default async function IndustriesPage() {
             <AnimatedSection>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {industriesPageData.content.overviewStats
-                  .filter((stat: any) => stat?.enabled !== false)
-                  .map((stat: any, index: number) => (
+                  .filter((stat: IndustryStat) => stat?.enabled !== false)
+                  .map((stat: IndustryStat, index: number) => (
                   <div key={index} className="text-center">
                     <div className="text-4xl md:text-5xl font-black text-blue-600 dark:text-blue-400 mb-2">
                       {stat.value}
@@ -162,21 +152,21 @@ export default async function IndustriesPage() {
           <AnimatedSection>
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                {industriesPageData?.content?.industriesSection?.title || 'Core Industries'}
+                {industriesPageData?.content?.industriesSection?.title}
               </h2>
               <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                {industriesPageData?.content?.industriesSection?.description || 'Specialized manufacturing solutions for the most demanding industries, backed by decades of experience and industry-leading certifications.'}
+                {industriesPageData?.content?.industriesSection?.description}
               </p>
             </div>
           </AnimatedSection>
 
-          {(!industriesPageData?.content?.industries || industriesPageData.content.industries.filter((i: any) => i?.enabled !== false).length === 0) ? (
+          {(!industriesPageData?.content?.industries || industriesPageData.content.industries.filter((i: IndustryItem) => i?.enabled !== false).length === 0) ? (
             <NoIndustriesState />
           ) : (
           <div className="space-y-12">
             {industriesPageData?.content?.industries
-              ?.filter((industry: any) => industry?.enabled !== false)
-              ?.map((industry: any, index: number) => (
+              ?.filter((industry: IndustryItem) => industry?.enabled !== false)
+              ?.map((industry: IndustryItem, index: number) => (
               <AnimatedSection key={industry.name} delay={index * 0.15}>
                 <div className={cardStyles.base}>
                   <div className="grid md:grid-cols-2 gap-0">
@@ -237,7 +227,7 @@ export default async function IndustriesPage() {
                       </div>
 
                       <Button asChild variant="outline" size="lg">
-                        <Link href={`/industries/${industry.slug?.current || industry.slug || industry.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                        <Link href={`/industries/${(typeof industry.slug === 'object' ? industry.slug?.current : industry.slug) || (industry.name ?? '').toLowerCase().replace(/\s+/g, '-')}`}>
                           {industry.cardCtaText || 'Learn More About'} {industry.name}
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
@@ -259,18 +249,18 @@ export default async function IndustriesPage() {
             <AnimatedSection>
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                  {industriesPageData?.content?.whyChooseSection?.title || 'Why Industry Leaders Choose Us'}
+                  {industriesPageData?.content?.whyChooseSection?.title}
                 </h2>
                 <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                  {industriesPageData?.content?.whyChooseSection?.description || 'Proven capabilities and unwavering commitment to quality make us the preferred manufacturing partner for critical applications.'}
+                  {industriesPageData?.content?.whyChooseSection?.description}
                 </p>
               </div>
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {industriesPageData.content.whyChooseUs
-                .filter((item: any) => item?.enabled !== false)
-                .map((item: any, index: number) => (
+                .filter((item: WhyChooseItem) => item?.enabled !== false)
+                .map((item: WhyChooseItem, index: number) => (
                 <AnimatedSection key={index} delay={index * 0.1}>
                   <div className={`${cardStyles.base} p-8 h-full`}>
                     <div className="flex items-center mb-6">
@@ -310,7 +300,7 @@ export default async function IndustriesPage() {
                     darkTone.heading
                   )}
                 >
-                  {industriesPageData?.content?.resultsSection?.title || 'Proven Results'}
+                  {industriesPageData?.content?.resultsSection?.title}
                 </h2>
                 <p
                   className={cn(
@@ -318,15 +308,15 @@ export default async function IndustriesPage() {
                     darkTone.body
                   )}
                 >
-                  {industriesPageData?.content?.resultsSection?.description || 'Measurable performance metrics that demonstrate our commitment to excellence and continuous improvement.'}
+                  {industriesPageData?.content?.resultsSection?.description}
                 </p>
               </div>
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {industriesPageData.content.provenResults
-                .filter((metric: any) => metric?.enabled !== false)
-                .map((metric: any, index: number) => (
+                .filter((metric: ProvenResultMetric) => metric?.enabled !== false)
+                .map((metric: ProvenResultMetric, index: number) => (
                 <AnimatedSection key={index} delay={index * 0.1}>
                   <div className={`${cardStyles.dark} text-center p-6`}>
                     <div className="text-4xl md:text-5xl font-black text-blue-400 mb-2">
@@ -349,9 +339,9 @@ export default async function IndustriesPage() {
         <div className="container">
           <AnimatedSection>
             <div className="text-center max-w-4xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">{industriesPageData?.cta?.heading || 'Partner with Industry Experts'}</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">{industriesPageData?.cta?.heading}</h2>
               <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
-                {industriesPageData?.cta?.description || "Join the industry leaders who trust us with their most critical manufacturing requirements. Let's discuss your specific needs."}
+                {industriesPageData?.cta?.description}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 {industriesPageData?.cta?.primaryButton?.enabled !== false && (
@@ -364,7 +354,7 @@ export default async function IndustriesPage() {
                     asChild
                   >
                     <Link href={industriesPageData?.cta?.primaryButton?.href || '/contact'}>
-                      {industriesPageData?.cta?.primaryButton?.label || 'Schedule Consultation'}
+                      {industriesPageData?.cta?.primaryButton?.label}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
@@ -372,7 +362,7 @@ export default async function IndustriesPage() {
                 {industriesPageData?.cta?.secondaryButton?.enabled !== false && (
                   <Button size="lg" variant="outline" asChild>
                     <Link href={industriesPageData?.cta?.secondaryButton?.href || '/services'}>
-                      {industriesPageData?.cta?.secondaryButton?.label || 'View Our Services'}
+                      {industriesPageData?.cta?.secondaryButton?.label}
                     </Link>
                   </Button>
                 )}

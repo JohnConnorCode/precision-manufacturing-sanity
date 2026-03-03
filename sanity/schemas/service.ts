@@ -333,6 +333,21 @@ export default {
       ],
     },
     {
+      name: 'capabilitiesSectionHeading',
+      type: 'string',
+      title: 'Capabilities Section Heading',
+      description: 'Optional heading above the capabilities cards',
+      group: 'details',
+    },
+    {
+      name: 'capabilitiesSectionDescription',
+      type: 'text',
+      title: 'Capabilities Section Description',
+      description: 'Optional description below the capabilities section heading',
+      rows: 3,
+      group: 'details',
+    },
+    {
       name: 'servicesHeading',
       type: 'string',
       title: 'Services Section Heading',

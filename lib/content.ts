@@ -113,8 +113,8 @@ export function searchArticles(query: string): Article[] {
 // Category information
 export const categoryInfo = {
   'manufacturing-processes': {
-    title: 'Manufacturing Processes',
-    description: 'Comprehensive guides on CNC machining, 5-axis capabilities, and precision manufacturing techniques.',
+    title: 'Machining Processes',
+    description: 'Comprehensive guides on CNC machining, 5-axis capabilities, and precision machining techniques.',
     slug: 'manufacturing-processes'
   },
   'material-science': {

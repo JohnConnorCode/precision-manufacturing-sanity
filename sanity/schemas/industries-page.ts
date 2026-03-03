@@ -48,7 +48,7 @@ export default {
           type: 'text',
           title: 'Subheading',
           rows: 2,
-          initialValue: 'Trusted partner for aerospace, defense, and energy sectors, delivering mission-critical components with uncompromising quality and precision.',
+          initialValue: 'Trusted partner for aerospace, defense, and energy sectors, delivering precision components with uncompromising quality.',
           validation: (Rule: any) => Rule.required()
         },
         {

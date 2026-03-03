@@ -1,59 +1,30 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowRight, BookOpen } from 'lucide-react';
-import { getResourcesByCategory } from '@/sanity/lib/queries';
+import { draftMode } from 'next/headers';
+import { getResourcesByCategory, getResourceCategory, getAllResourceCategories } from '@/sanity/lib/queries';
 import HeroSection from '@/components/ui/hero-section';
 import AnimatedSection from '@/components/ui/animated-section';
 import ResourceCard from '@/components/ui/resource-card';
 import SectionHeader from '@/components/ui/section-header';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { spacing } from '@/lib/design-system';
+import type { ResourceItem, ResourceCategoryInfo } from '@/lib/types/cms';
 
-// Enable ISR with 1 hour revalidation
+// ISR for automatic updates when Sanity content changes (supports draft mode preview)
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  return [
-    { category: 'manufacturing-processes' },
-    { category: 'industry-applications' },
-    { category: 'quality-compliance' },
-    { category: 'material-science' },
-    { category: 'calculators-tools' },
-  ];
+  const categories = await getAllResourceCategories();
+  return categories.map((cat: ResourceCategoryInfo & Record<string, unknown>) => ({
+    category: cat.slug,
+  }));
 }
-
-// Static category definitions with images - using actual manufacturing images from Sanity
-const categoryDefinitions: Record<string, { title: string; description: string; image?: string }> = {
-  'manufacturing-processes': {
-    title: 'Manufacturing Processes',
-    description: 'Comprehensive guides on precision manufacturing processes, CNC machining, and advanced production techniques.',
-    image: 'https://cdn.sanity.io/images/vgacjlhu/production/514525a24860527cf951fd9f65acac15e7d8fb10-1024x1536.png' // 5-axis machining
-  },
-  'industry-applications': {
-    title: 'Industry Applications',
-    description: 'Industry-specific manufacturing applications and solutions for aerospace, defense, medical, and energy sectors.',
-    image: 'https://cdn.sanity.io/images/vgacjlhu/production/e59c2ca9901e61dce18c6c4d20b38cf807c3a31b-1536x1024.png' // Adaptive machining
-  },
-  'quality-compliance': {
-    title: 'Quality & Compliance',
-    description: 'Quality control, inspection standards, and regulatory compliance for precision manufacturing.',
-    image: 'https://cdn.sanity.io/images/vgacjlhu/production/a1e0b8424e0f5bfe09ed65269b8745649b0578cf-800x533.jpg' // Metrology
-  },
-  'material-science': {
-    title: 'Material Science',
-    description: 'Advanced materials, material properties, and selection guides for precision manufacturing applications.',
-    image: 'https://cdn.sanity.io/images/vgacjlhu/production/825642bea34fd176d1b91ff2e8ca5b0ce5870e84-4864x2736.jpg' // Machining
-  },
-  'calculators-tools': {
-    title: 'Calculators & Tools',
-    description: 'Useful calculators, estimation tools, and resources for manufacturing professionals.',
-    image: 'https://cdn.sanity.io/images/vgacjlhu/production/21a64aa81eb06febd7a23492b477b60edf92cdd3-1536x1024.png' // Engineering
-  },
-};
 
 export async function generateMetadata({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params;
-  const categoryData = categoryDefinitions[category];
+  const { isEnabled: isDraft } = await draftMode();
+  const categoryData = await getResourceCategory(category, isDraft);
 
   if (!categoryData) {
     return {
@@ -61,26 +32,53 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
     };
   }
 
+  const baseUrl = 'https://iismet.com';
+  const title = `${categoryData.title} | Technical Resources | IIS`;
+  const description = categoryData.description;
+
   return {
-    title: `${categoryData.title} | Technical Resources | IIS`,
-    description: categoryData.description,
+    title,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/resources/${category}`,
+    },
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      url: `${baseUrl}/resources/${category}`,
+      siteName: 'IIS - Integrated Inspection Systems',
+      title,
+      description,
+      ...(categoryData.image && { images: [{ url: categoryData.image, width: 1200, height: 630, alt: categoryData.title }] }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      ...(categoryData.image && { images: [categoryData.image] }),
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 
 export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params;
-  const categoryData = categoryDefinitions[category];
+  const { isEnabled: isDraft } = await draftMode();
+  const categoryData = await getResourceCategory(category, isDraft);
 
   if (!categoryData) {
     notFound();
   }
 
-  const resources = await getResourcesByCategory(category) || [];
+  const resources = await getResourcesByCategory(category, isDraft) || [];
 
   // Map Sanity slug structure (slug.current) to simple slug
-  const formattedResources = resources.map((resource: any) => ({
+  const formattedResources = resources.map((resource: ResourceItem & Record<string, unknown>) => ({
     ...resource,
-    slug: resource.slug?.current || resource.slug,
+    slug: (typeof resource.slug === 'object' ? resource.slug?.current : resource.slug) || '',
   }));
 
   return (
@@ -88,7 +86,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
       {/* Hero Section with proper dark hero mode */}
       <HeroSection
         backgroundImage={categoryData.image || ''}
-        imageAlt={categoryData.title}
+        imageAlt={categoryData.imageAlt || categoryData.title}
         height="medium"
         alignment="center"
         darkHero={true}
@@ -159,9 +157,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
           ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                {formattedResources.map((resource: any, index: number) => (
+                {formattedResources.map((resource: ResourceItem & { slug: string } & Record<string, unknown>, index: number) => (
                   <AnimatedSection key={resource._id} delay={Math.min(index * 0.05, 0.3)}>
-                    <ResourceCard resource={resource} />
+                    <ResourceCard resource={resource as unknown as { _id: string; title: string; slug: string; category: string; excerpt?: string; difficulty?: 'beginner' | 'intermediate' | 'advanced'; readTime?: string; featuredImage?: { asset?: { url: string; _id: string }; alt?: string; attribution?: string } }} />
                   </AnimatedSection>
                 ))}
               </div>

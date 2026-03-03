@@ -36,7 +36,7 @@ interface HeroButton {
   enabled?: boolean;
   label?: string;
   href?: string;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'ghost';
 }
 
 interface CompanyStat {
@@ -280,7 +280,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                   transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : index * 0.1 }}
                   className="text-center"
                 >
-                  <div className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-tone-inverse mb-2">
+                  <div className="text-3xl md:text-4xl font-bold mb-2" style={{ background: 'linear-gradient(to right, #3b82f6, #4f46e5)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                     {stat?.value}
                   </div>
                   <div className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide mb-2">
@@ -357,7 +357,8 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               )}
             </motion.div>
 
-            <div ref={timelineGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div ref={timelineGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
+              <div className="hidden lg:block absolute top-16 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
               {timelineMilestones
                 .filter((milestone: Milestone) => milestone?.enabled !== false)
                 .map((milestone: Milestone, index: number) => (
@@ -453,7 +454,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
             >
               <h2 className={cn(typography.h2, "mb-4")}>Capabilities & Certifications</h2>
               <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                Advanced manufacturing capabilities backed by rigorous quality certifications
+                Advanced machining capabilities backed by rigorous quality certifications
               </p>
             </motion.div>
 
@@ -573,7 +574,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                       animate={leadershipGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                       transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                     >
-                      <Card className="overflow-hidden border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 hover:shadow-xl h-full group">
+                      <Card className="overflow-hidden border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 hover:shadow-xl h-full group border-t-4 border-t-blue-600">
                         {/* Large Photo Header */}
                         <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
                           {photoUrl ? (
@@ -618,7 +619,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
       )}
 
       {(data.cta?.title || data.cta?.description || ctaButtons.length > 0) && (
-        <section className={spacing.section}>
+        <section className={styles.sectionDark}>
           <div className={spacing.container}>
             <motion.div
               ref={ctaAnim.ref}
@@ -628,10 +629,10 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               className="text-center max-w-4xl mx-auto"
             >
               {data.cta?.title && (
-                <h2 className={cn(typography.h2, "mb-6")}>{data.cta.title}</h2>
+                <h2 className={cn(typography.h2, "mb-6 text-white")}>{data.cta.title}</h2>
               )}
               {data.cta?.description && (
-                <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
+                <p className="text-xl text-slate-300 mb-8">
                   {data.cta.description}
                 </p>
               )}

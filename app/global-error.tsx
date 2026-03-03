@@ -41,9 +41,8 @@ export default function GlobalError({
             }))
           }
         }
-      } catch (err) {
+      } catch {
         // Fail silently and use default content
-        console.error('Failed to fetch error page content:', err)
       }
     }
 
@@ -53,35 +52,71 @@ export default function GlobalError({
   return (
     <html>
       <body>
+        <style dangerouslySetInnerHTML={{ __html: `
+          :root {
+            --ge-bg-from: #f8fafc;
+            --ge-bg-to: #e2e8f0;
+            --ge-card-bg: #ffffff;
+            --ge-card-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --ge-heading: #0f172a;
+            --ge-body: #64748b;
+            --ge-btn-bg: #2563eb;
+            --ge-btn-text: #ffffff;
+            --ge-btn-secondary-bg: #ffffff;
+            --ge-btn-secondary-text: #2563eb;
+            --ge-btn-secondary-border: #e2e8f0;
+            --ge-divider: #e2e8f0;
+            --ge-muted: #94a3b8;
+            --ge-link: #2563eb;
+          }
+          @media (prefers-color-scheme: dark) {
+            :root {
+              --ge-bg-from: #0f172a;
+              --ge-bg-to: #1e293b;
+              --ge-card-bg: #1e293b;
+              --ge-card-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.4);
+              --ge-heading: #f1f5f9;
+              --ge-body: #94a3b8;
+              --ge-btn-bg: #2563eb;
+              --ge-btn-text: #ffffff;
+              --ge-btn-secondary-bg: #1e293b;
+              --ge-btn-secondary-text: #60a5fa;
+              --ge-btn-secondary-border: #334155;
+              --ge-divider: #334155;
+              --ge-muted: #64748b;
+              --ge-link: #60a5fa;
+            }
+          }
+        `}} />
         <div style={{
           minHeight: '100vh',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(to bottom right, #f8fafc, #e2e8f0)',
+          background: 'linear-gradient(to bottom right, var(--ge-bg-from), var(--ge-bg-to))',
           fontFamily: 'system-ui, -apple-system, sans-serif',
           padding: '1rem'
         }}>
           <div style={{
             maxWidth: '32rem',
             width: '100%',
-            background: 'white',
-            borderRadius: '0.5rem',
-            boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)',
+            background: 'var(--ge-card-bg)',
+            borderRadius: '0.75rem',
+            boxShadow: 'var(--ge-card-shadow)',
             padding: '2rem',
             textAlign: 'center'
           }}>
             <h1 style={{
               fontSize: '2rem',
               fontWeight: 'bold',
-              color: '#0f172a',
+              color: 'var(--ge-heading)',
               marginBottom: '1rem'
             }}>
               {content.heading}
             </h1>
 
             <p style={{
-              color: '#64748b',
+              color: 'var(--ge-body)',
               marginBottom: '2rem'
             }}>
               {content.description}
@@ -97,8 +132,8 @@ export default function GlobalError({
                 onClick={() => reset()}
                 style={{
                   padding: '0.5rem 1.5rem',
-                  background: '#2563eb',
-                  color: 'white',
+                  background: 'var(--ge-btn-bg)',
+                  color: 'var(--ge-btn-text)',
                   border: 'none',
                   borderRadius: '0.375rem',
                   fontWeight: '500',
@@ -111,9 +146,9 @@ export default function GlobalError({
                 onClick={() => window.location.href = '/'}
                 style={{
                   padding: '0.5rem 1.5rem',
-                  background: 'white',
-                  color: '#2563eb',
-                  border: '1px solid #e2e8f0',
+                  background: 'var(--ge-btn-secondary-bg)',
+                  color: 'var(--ge-btn-secondary-text)',
+                  border: '1px solid var(--ge-btn-secondary-border)',
                   borderRadius: '0.375rem',
                   fontWeight: '500',
                   cursor: 'pointer'
@@ -126,13 +161,13 @@ export default function GlobalError({
             <div style={{
               marginTop: '2rem',
               paddingTop: '2rem',
-              borderTop: '1px solid #e2e8f0'
+              borderTop: '1px solid var(--ge-divider)'
             }}>
-              <p style={{ fontSize: '0.875rem', color: '#94a3b8' }}>
+              <p style={{ fontSize: '0.875rem', color: 'var(--ge-muted)' }}>
                 {content.supportMessagePrefix}{' '}
                 <a
                   href={`mailto:${content.supportEmail}`}
-                  style={{ color: '#2563eb', textDecoration: 'none' }}
+                  style={{ color: 'var(--ge-link)', textDecoration: 'none' }}
                 >
                   {content.supportLinkText}
                 </a>

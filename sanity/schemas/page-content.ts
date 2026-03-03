@@ -44,7 +44,7 @@ export default {
               name: 'backgroundImage',
               type: 'image',
               title: 'Background Image',
-              options: { hotspot: true },
+              options: { hotspot: true, metadata: ['blurhash', 'lqip', 'palette'] },
               fields: [
                 {
                   name: 'alt',
@@ -101,7 +101,7 @@ export default {
             name: 'backgroundImage',
             type: 'image',
             title: 'Background Image',
-            options: { hotspot: true },
+            options: { hotspot: true, metadata: ['blurhash', 'lqip', 'palette'] },
             fields: [
               {
                 name: 'alt',
@@ -190,7 +190,7 @@ export default {
           name: 'backgroundImage',
           type: 'image',
           title: 'Background Image',
-          options: { hotspot: true },
+          options: { hotspot: true, metadata: ['blurhash', 'lqip', 'palette'] },
           fields: [
             {
               name: 'alt',
@@ -270,7 +270,7 @@ export default {
               name: 'backgroundImage',
               type: 'image',
               title: 'Background Image',
-              options: { hotspot: true },
+              options: { hotspot: true, metadata: ['blurhash', 'lqip', 'palette'] },
               fields: [
                 {
                   name: 'alt',
@@ -317,7 +317,7 @@ export default {
           name: 'qualityImage',
           type: 'image',
           title: 'Quality Image',
-          options: { hotspot: true },
+          options: { hotspot: true, metadata: ['blurhash', 'lqip', 'palette'] },
           fields: [
             {
               name: 'alt',
@@ -405,7 +405,7 @@ export default {
           type: 'image',
           title: 'Social Share Image',
           description: 'Image shown when shared on social media (1200x630px recommended)',
-          options: { hotspot: true },
+          options: { hotspot: true, metadata: ['blurhash', 'lqip', 'palette'] },
           fields: [
             {
               name: 'alt',

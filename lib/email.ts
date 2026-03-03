@@ -31,6 +31,16 @@ const createTransporter = () => {
   });
 };
 
+// Escape HTML special characters to prevent injection in email templates
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
 export interface ContactFormData {
   name: string;
   email: string;
@@ -45,12 +55,24 @@ export interface ContactFormData {
 export async function sendContactEmail(data: ContactFormData) {
   const transporter = createTransporter();
 
+  // Sanitize all user input before embedding in HTML
+  const safe = {
+    name: escapeHtml(data.name),
+    email: escapeHtml(data.email),
+    company: escapeHtml(data.company),
+    phone: data.phone ? escapeHtml(data.phone) : '',
+    interest: escapeHtml(data.interest),
+    projectType: data.projectType ? escapeHtml(data.projectType) : '',
+    timeline: data.timeline ? escapeHtml(data.timeline) : '',
+    message: escapeHtml(data.message),
+  };
+
   // Email to company
   const companyEmailHtml = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background: linear-gradient(135deg, #1e40af 0%, #4f46e5 100%); color: white; padding: 30px; border-radius: 10px 10px 0 0;">
         <h1 style="margin: 0; font-size: 24px;">New Contact Form Submission</h1>
-        <p style="margin: 10px 0 0 0; opacity: 0.9;">Precision Manufacturing Inquiry</p>
+        <p style="margin: 10px 0 0 0; opacity: 0.9;">Precision Machining Inquiry</p>
       </div>
 
       <div style="background: #ffffff; padding: 30px; border: 1px solid #e5e7eb; border-radius: 0 0 10px 10px;">
@@ -59,47 +81,47 @@ export async function sendContactEmail(data: ContactFormData) {
         <table style="width: 100%; border-collapse: collapse;">
           <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #6b7280; width: 140px;"><strong>Name:</strong></td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${data.name}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${safe.name}</td>
           </tr>
           <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Email:</strong></td>
             <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">
-              <a href="mailto:${data.email}" style="color: #2563eb; text-decoration: none;">${data.email}</a>
+              <a href="mailto:${safe.email}" style="color: #2563eb; text-decoration: none;">${safe.email}</a>
             </td>
           </tr>
           <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Company:</strong></td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${data.company}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${safe.company}</td>
           </tr>
           ${data.phone ? `
           <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Phone:</strong></td>
             <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">
-              <a href="tel:${data.phone}" style="color: #2563eb; text-decoration: none;">${data.phone}</a>
+              <a href="tel:${safe.phone}" style="color: #2563eb; text-decoration: none;">${safe.phone}</a>
             </td>
           </tr>
           ` : ''}
           <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Interest:</strong></td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${data.interest.charAt(0).toUpperCase() + data.interest.slice(1)}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${safe.interest.charAt(0).toUpperCase() + safe.interest.slice(1)}</td>
           </tr>
           ${data.projectType ? `
           <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Project Type:</strong></td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${data.projectType.charAt(0).toUpperCase() + data.projectType.slice(1)}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${safe.projectType.charAt(0).toUpperCase() + safe.projectType.slice(1)}</td>
           </tr>
           ` : ''}
           ${data.timeline ? `
           <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Timeline:</strong></td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${data.timeline}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #1f2937;">${safe.timeline}</td>
           </tr>
           ` : ''}
         </table>
 
         <div style="margin-top: 25px; padding: 20px; background-color: #f9fafb; border-radius: 8px; border-left: 4px solid #2563eb;">
           <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 10px 0;">Message</h3>
-          <p style="color: #4b5563; line-height: 1.6; white-space: pre-wrap; margin: 0;">${data.message}</p>
+          <p style="color: #4b5563; line-height: 1.6; white-space: pre-wrap; margin: 0;">${safe.message}</p>
         </div>
 
         <div style="margin-top: 30px; padding: 15px; background-color: #fef3c7; border-radius: 8px; border: 1px solid #fcd34d;">
@@ -110,7 +132,7 @@ export async function sendContactEmail(data: ContactFormData) {
       </div>
 
       <div style="text-align: center; margin-top: 20px; color: #6b7280; font-size: 12px;">
-        <p>This email was sent from the IIS Precision Manufacturing website contact form.</p>
+        <p>This email was sent from the IIS - Integrated Inspection Systems website contact form.</p>
         <p>© ${new Date().getFullYear()} Integrated Inspection Systems. All rights reserved.</p>
       </div>
     </div>
@@ -125,7 +147,7 @@ export async function sendContactEmail(data: ContactFormData) {
       </div>
 
       <div style="background: #ffffff; padding: 30px; border: 1px solid #e5e7eb; border-radius: 0 0 10px 10px;">
-        <p style="color: #1f2937; font-size: 16px; line-height: 1.6;">Dear ${data.name},</p>
+        <p style="color: #1f2937; font-size: 16px; line-height: 1.6;">Dear ${safe.name},</p>
 
         <p style="color: #4b5563; line-height: 1.6;">
           Thank you for reaching out to Integrated Inspection Systems. We've received your inquiry and our team will review it shortly.
@@ -142,8 +164,8 @@ export async function sendContactEmail(data: ContactFormData) {
 
         <div style="margin: 25px 0; padding: 20px; background-color: #f9fafb; border-radius: 8px;">
           <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 10px 0;">Your Submission Details</h3>
-          <p style="color: #6b7280; line-height: 1.6; margin: 10px 0;"><strong>Interest:</strong> ${data.interest.charAt(0).toUpperCase() + data.interest.slice(1)}</p>
-          <p style="color: #6b7280; line-height: 1.6; margin: 10px 0;"><strong>Message:</strong><br>${data.message}</p>
+          <p style="color: #6b7280; line-height: 1.6; margin: 10px 0;"><strong>Interest:</strong> ${safe.interest.charAt(0).toUpperCase() + safe.interest.slice(1)}</p>
+          <p style="color: #6b7280; line-height: 1.6; margin: 10px 0;"><strong>Message:</strong><br>${safe.message}</p>
         </div>
 
         <div style="border-top: 1px solid #e5e7eb; margin-top: 30px; padding-top: 20px;">
@@ -168,13 +190,13 @@ export async function sendContactEmail(data: ContactFormData) {
       from: `"IIS Website" <noreply@iismet.com>`,
       to: process.env.COMPANY_EMAIL || 'officemgr@iismet.com',
       replyTo: data.email,
-      subject: `New Contact Form Submission - ${data.interest} - ${data.company}`,
+      subject: `New Contact Form Submission - ${safe.interest} - ${safe.company}`,
       html: companyEmailHtml,
     });
 
     // Send confirmation email to customer
     await transporter.sendMail({
-      from: `"IIS Precision Manufacturing" <noreply@iismet.com>`,
+      from: `"IIS - Integrated Inspection Systems" <noreply@iismet.com>`,
       to: data.email,
       subject: 'Thank you for contacting IIS - We\'ve received your inquiry',
       html: customerEmailHtml,

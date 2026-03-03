@@ -8,7 +8,7 @@ export const AdminLogo = () => {
       </div>
       <div className="flex flex-col">
         <span className="text-sm font-bold text-gray-900 dark:text-tone-inverse">
-          IIS Manufacturing
+          IIS Machining
         </span>
         <span className="text-xs text-gray-500 dark:text-gray-400">
           Admin Panel

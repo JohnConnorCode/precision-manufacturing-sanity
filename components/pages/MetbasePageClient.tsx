@@ -278,7 +278,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                 <Database className="w-16 h-16 mb-6 opacity-80" />
                 <h3 className="text-2xl font-bold mb-4">Enterprise-Grade Solution</h3>
                 <p className="text-blue-100 leading-relaxed">
-                  Built from the ground up to handle the complex data management needs of precision manufacturing, with over 15 years of proven reliability.
+                  Built from the ground up to handle the complex data management needs of precision machining, with over 15 years of proven reliability.
                 </p>
                 <div className="mt-6 pt-6 border-t border-blue-500/30">
                   <div className="flex items-center gap-2 text-blue-200">

@@ -8,6 +8,7 @@ import { X, ChevronRight, Phone, Mail, ArrowRight } from 'lucide-react';
 import Logo from '@/components/ui/logo';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { cn } from '@/lib/utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface ChildMenuItem {
   name: string;
@@ -109,6 +110,7 @@ export default function MobileMenu({
   const menuRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const toggleExpanded = (name: string) => {
     setExpandedItem(expandedItem === name ? null : name);
@@ -192,7 +194,7 @@ export default function MobileMenu({
             animate="open"
             exit="closed"
             variants={overlayVariants}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
             className="fixed inset-0 z-[200] bg-slate-950/80 backdrop-blur-sm lg:hidden"
             onClick={onClose}
             aria-hidden="true"
@@ -201,10 +203,10 @@ export default function MobileMenu({
           {/* Menu Panel - Full Screen */}
           <motion.div
             ref={menuRef}
-            initial="closed"
+            initial={prefersReducedMotion ? "open" : "closed"}
             animate="open"
-            exit="exit"
-            variants={menuVariants}
+            exit={prefersReducedMotion ? "closed" : "exit"}
+            variants={prefersReducedMotion ? { closed: { x: 0 }, open: { x: 0 }, exit: { x: 0 } } : menuVariants}
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation menu"
@@ -251,9 +253,9 @@ export default function MobileMenu({
                     <motion.li
                       key={item.name}
                       custom={index}
-                      initial="closed"
+                      initial={prefersReducedMotion ? "open" : "closed"}
                       animate="open"
-                      variants={itemVariants}
+                      variants={prefersReducedMotion ? { closed: { opacity: 1, x: 0 }, open: { opacity: 1, x: 0 } } : itemVariants}
                     >
                       {hasChildren ? (
                         <div>
@@ -272,7 +274,7 @@ export default function MobileMenu({
                             <span className="text-lg font-semibold">{item.name}</span>
                             <motion.div
                               animate={{ rotate: isExpanded ? 90 : 0 }}
-                              transition={{ duration: 0.2 }}
+                              transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
                             >
                               <ChevronRight className="w-5 h-5 text-slate-400" aria-hidden="true" />
                             </motion.div>
@@ -283,10 +285,10 @@ export default function MobileMenu({
                             {isExpanded && (
                               <motion.div
                                 id={`submenu-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
-                                initial="closed"
+                                initial={prefersReducedMotion ? "open" : "closed"}
                                 animate="open"
                                 exit="closed"
-                                variants={childVariants}
+                                variants={prefersReducedMotion ? { closed: { height: 0, opacity: 0 }, open: { height: 'auto', opacity: 1 } } : childVariants}
                                 className="overflow-hidden"
                               >
                                 <ul className="pt-2 pb-3 pl-4 space-y-1" role="list">

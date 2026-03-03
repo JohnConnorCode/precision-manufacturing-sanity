@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { typography, spacing, cn } from '@/lib/design-system'
+import { usePrefersReducedMotion } from '@/lib/motion'
 
 interface HealthStatus {
   timestamp: string
@@ -32,6 +33,7 @@ interface TroubleshootingContentProps {
 }
 
 export default function TroubleshootingContent({ siteSettings }: TroubleshootingContentProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
   const [health, setHealth] = useState<HealthStatus | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -136,13 +138,11 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-16 px-4 dark-section">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-24 md:py-32 px-4 dark-section">
       <div className={spacing.containerWide}>
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6 } })}
           className="mb-12"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600/10 border border-blue-600/20 mb-4">
@@ -164,9 +164,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
 
         {/* Health Status Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.1 } })}
           className="mb-12"
         >
           <Card className="p-8 bg-slate-900/50 border-slate-800">
@@ -286,9 +284,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
 
         {/* Common Issues */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.2 } })}
           className="mb-12"
         >
           <Card className="p-8 bg-slate-900/50 border-slate-800">
@@ -303,9 +299,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
               {issues.map((issue, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
+                  {...(prefersReducedMotion ? {} : { initial: { opacity: 0, x: -20 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.4, delay: 0.3 + index * 0.1 } })}
                   className="border-l-4 border-blue-600 pl-6 py-2"
                 >
                   <h3 className="font-bold text-tone-inverse mb-3">{issue.title}</h3>
@@ -322,9 +316,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
 
         {/* FAQ Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.3 } })}
           className="mb-12"
         >
           <Card className="p-8 bg-slate-900/50 border-slate-800">
@@ -339,9 +331,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
               {faqs.map((faq, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
+                  {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4, delay: 0.4 + index * 0.1 } })}
                   className="p-4 bg-slate-800/50 rounded-xl border border-slate-700"
                 >
                   <h3 className="font-bold text-tone-inverse mb-2">{faq.question}</h3>
@@ -354,9 +344,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
 
         {/* Support Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          {...(prefersReducedMotion ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.4 } })}
         >
           <Card className="p-8 bg-gradient-to-br from-blue-600/10 to-indigo-600/10 border-blue-600/20">
             <h2 className={cn(typography.h4, 'text-blue-300 mb-4')}>Need More Help?</h2>

@@ -19,22 +19,14 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@payload-config": ["./payload.config.ts"]
+      "@/*": ["./*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": [
     "node_modules",
     "legacy-site",
-    "cleanup-untitled-industry.ts",
-    "seed-site-globals.ts",
-    "payload.config.minimal.ts",
-    "lib/direct-cms-access.ts",
-    "lib/get-cms-data-direct.ts",
-    "lib/get-cms-data-payload.ts",
     "lib/archive/**/*",
-    "scripts/cms-health.ts",
     "scripts/archive/**/*",
     "e2e/admin-collections-complete.spec.ts",
     "e2e/detail-pages-validation.spec.ts",

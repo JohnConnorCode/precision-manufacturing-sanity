@@ -70,6 +70,12 @@ interface ContactData {
     alt?: string;
   };
   locationDescription?: string;
+  trustBar?: Array<{
+    enabled?: boolean;
+    label?: string;
+    value?: string;
+    sublabel?: string;
+  }>;
   bottomStats?: BottomStat[];
 }
 
@@ -91,6 +97,9 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
   if (!contactData) {
     return null;
   }
+
+  const trustBarItems = (contactData.trustBar || [])
+    .filter((item) => item.enabled !== false && item.label && item.value);
 
   const heroBackgroundImage = (() => {
     const bg = contactData.hero?.backgroundImage;
@@ -337,7 +346,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                   {contactData.locationImage?.asset?.url && (
                     <ParallaxImagePro
                       src={contactData.locationImage.asset.url}
-                      alt={contactData.locationImage?.alt || "Precision manufacturing facility"}
+                      alt={contactData.locationImage?.alt || "Precision machining facility"}
                       className="w-full h-full object-cover"
                       speed={0.1}
                     />
@@ -362,6 +371,27 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                 </div>
               </Card>
             </motion.div>
+
+            {/* Trust Bar */}
+            {trustBarItems.length > 0 && (
+              <motion.div
+                initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                animate={mapAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
+                transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.2 }}
+                className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6"
+              >
+                {trustBarItems.map((item) => (
+                  <div
+                    key={item.label}
+                    className="text-center p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm"
+                  >
+                    <div className="text-lg font-bold text-slate-900 dark:text-white">{item.value}</div>
+                    <div className="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400 mt-1">{item.label}</div>
+                    {item.sublabel && <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{item.sublabel}</div>}
+                  </div>
+                ))}
+              </motion.div>
+            )}
           </div>
         </div>
       </section>
@@ -384,7 +414,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                   return (
                     <div key={`${stat?.text}-${index}`} className="flex items-center gap-3">
                       {stat?.animated ? (
-                        <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+                        <div className={cn("w-3 h-3 bg-green-400 rounded-full", !prefersReducedMotion && "animate-pulse")} />
                       ) : (
                         <IconComponent className="w-5 h-5 text-blue-400" />
                       )}

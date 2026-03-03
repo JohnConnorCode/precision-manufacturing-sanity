@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card'
 import { AlertTriangle, RefreshCw, Home, Mail } from 'lucide-react'
 import { typography, cn } from '@/lib/design-system'
 import Link from 'next/link'
+import { usePrefersReducedMotion } from '@/lib/motion'
 
 export default function Error({
   error,
@@ -15,6 +16,8 @@ export default function Error({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const prefersReducedMotion = usePrefersReducedMotion()
+
   useEffect(() => {
     // Log error in development only
     if (process.env.NODE_ENV === 'development') {
@@ -22,22 +25,30 @@ export default function Error({
     }
   }, [error])
 
+  const noMotion = { initial: undefined, animate: undefined, transition: undefined }
+  const fadeIn = (delay = 0) => prefersReducedMotion ? noMotion : {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, delay },
+  }
+  const scaleIn = (delay = 0) => prefersReducedMotion ? noMotion : {
+    initial: { scale: 0.8, opacity: 0 },
+    animate: { scale: 1, opacity: 1 },
+    transition: { duration: 0.5, delay },
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950 px-4">
       {/* Background pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.03)_0%,_transparent_50%)]" />
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        {...fadeIn()}
         className="relative z-10 max-w-md w-full"
       >
         <Card className="p-8 md:p-10 text-center">
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            {...scaleIn(0.2)}
             className="mb-6 flex justify-center"
           >
             <div className="w-20 h-20 bg-gradient-to-br from-red-500/10 to-orange-500/10 rounded-2xl flex items-center justify-center border border-red-500/20">

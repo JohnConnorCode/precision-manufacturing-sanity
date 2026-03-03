@@ -47,7 +47,7 @@ export default function Resources({ data }: ResourcesProps) {
   const showCta = Boolean(ctaData && (ctaData.title || ctaData.description));
 
   return (
-    <section className="relative py-24 md:py-32 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 overflow-hidden dark-section">
+    <section className="relative py-24 md:py-32 bg-gradient-to-b from-slate-950 via-indigo-950/5 to-slate-950 overflow-hidden dark-section">
       {/* Background Pattern */}
       <DotGridBackground color="rgb(59, 130, 246)" spacing={40} dotPosition={1} opacity={0.05} />
 
@@ -62,7 +62,7 @@ export default function Resources({ data }: ResourcesProps) {
 
         {/* Featured Series Grid */}
         <div ref={seriesAnim.ref} className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12">
-          {resourcesData.featuredSeries.filter((series: any) => series.enabled !== false).map((series: ResourceSeries, index: number) => {
+          {resourcesData.featuredSeries.filter((series: ResourceSeries & { enabled?: boolean }) => series.enabled !== false).map((series: ResourceSeries, index: number) => {
             const cardDelay = sectionHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
             const seriesSlug = series.slug;
             if (!seriesSlug) {
@@ -76,7 +76,7 @@ export default function Resources({ data }: ResourcesProps) {
                 animate={seriesAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                 transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : cardDelay }}
               >
-                <Link href={`/resources/series/${seriesSlug}`}>
+                <Link href={`/resources/${seriesSlug}`}>
                   <article
                     className="group h-full bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                     style={{

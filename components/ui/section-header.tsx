@@ -111,7 +111,7 @@ interface SectionHeaderProps {
  * <SectionHeader
  *   eyebrow="OUR SERVICES"
  *   word1="PRECISION"
- *   word2="MANUFACTURING"
+ *   word2="MACHINING"
  *   description="Industry-leading capabilities backed by decades of expertise"
  * />
  * ```
@@ -120,7 +120,7 @@ interface SectionHeaderProps {
  * ```tsx
  * <SectionHeader
  *   eyebrow="OUR SERVICES"
- *   heading="PRECISION MANUFACTURING"
+ *   heading="PRECISION MACHINING"
  *   gradientWordPosition="last"
  *   description="Industry-leading capabilities backed by decades of expertise"
  * />

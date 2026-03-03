@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 interface ParallaxImageProProps {
   src: string;
@@ -37,17 +38,18 @@ export default function ParallaxImagePro({
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   const isInView = useInView(containerRef, { once: true, margin: '100px' });
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Call hooks unconditionally BEFORE early return
   const y = useTransform(scrollY, (value) => {
-    if (!containerRef.current) return 0;
+    if (prefersReducedMotion || !containerRef.current) return 0;
     const rect = containerRef.current.getBoundingClientRect();
     const offset = rect.top + window.scrollY;
     return (value - offset) * speed;
   });
 
   const scaleValue = useTransform(scrollY, (value) => {
-    if (!containerRef.current || !scale) return 1;
+    if (prefersReducedMotion || !containerRef.current || !scale) return 1;
     const rect = containerRef.current.getBoundingClientRect();
     const offset = rect.top + window.scrollY;
     const progress = Math.min(Math.max((value - offset) / rect.height, 0), 1);
@@ -106,6 +108,7 @@ export default function ParallaxImagePro({
               )}
               priority={priority}
               quality={30}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
               loading={priority ? 'eager' : 'lazy'}
             />
           )}

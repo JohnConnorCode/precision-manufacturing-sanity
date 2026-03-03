@@ -165,8 +165,8 @@ export const PremiumButton = React.forwardRef<
           <>
             <motion.div
               className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              animate={prefersReducedMotion ? {} : { rotate: 360 }}
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 1, repeat: Infinity, ease: "linear" }}
             />
             <span>{loadingText}</span>
           </>

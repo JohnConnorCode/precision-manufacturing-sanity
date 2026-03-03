@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { draftMode } from 'next/headers'
 import { getNavigation } from '@/sanity/lib/queries'
+import type { RawNavItem, MappedNavItem } from '@/lib/types/cms'
 
 function normalizeHref(name: string, href?: string | null) {
   const n = (name || '').toLowerCase()
@@ -15,17 +16,17 @@ function normalizeHref(name: string, href?: string | null) {
   return '/'
 }
 
-function mapItem(item: any) {
+function mapItem(item: RawNavItem): MappedNavItem | null {
   if (!item) return null
   // Handle explicit group objects
   if (item?._type === 'navGroup') {
     const title = item?.groupTitle || 'Group'
-    const items = Array.isArray(item?.items) ? item.items.map(mapItem).filter(Boolean) : []
+    const items = Array.isArray(item?.items) ? item.items.map(mapItem).filter((x): x is MappedNavItem => x !== null) : []
     return { name: title, href: '', description: '', linkType: 'internal', openInNewTab: false, iconName: null, showInHeader: true, showInMobile: true, style: { variant: 'link', badgeText: null }, children: items }
   }
   const name = item?.name ?? ''
   const href = normalizeHref(name, item?.href ?? '')
-  const children = Array.isArray(item?.children) ? item.children.map(mapItem).filter(Boolean) : []
+  const children = Array.isArray(item?.children) ? item.children.map(mapItem).filter((x): x is MappedNavItem => x !== null) : []
   return {
     name,
     href,

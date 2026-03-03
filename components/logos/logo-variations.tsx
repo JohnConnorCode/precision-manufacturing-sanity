@@ -90,7 +90,7 @@ export const LogoGearTech = ({ variant = 'primary', size = 'md', animated = fals
         PRECISION
       </text>
       <text x="75" y="65" fill={color.text} fontSize="14" fontWeight="normal" fontFamily="sans-serif">
-        MANUFACTURING
+        MACHINING
       </text>
     </motion.svg>
   );
@@ -146,7 +146,7 @@ export const LogoPrecisionMark = ({ variant = 'primary', size = 'md', animated =
           PRECISION
         </text>
         <text x="0" y="20" fill={colors[variant]} fontSize="11" fontWeight="600" fontFamily="sans-serif" letterSpacing="4">
-          MANUFACTURING
+          MACHINING
         </text>
       </g>
     </motion.svg>
@@ -218,7 +218,7 @@ export const LogoHexIndustrial = ({ variant = 'primary', size = 'md', animated =
           PRECISION
         </text>
         <text x="0" y="15" fill={color.hex} fontSize="13" fontWeight="400" fontFamily="sans-serif" letterSpacing="2">
-          MANUFACTURING
+          MACHINING
         </text>
       </g>
     </motion.svg>
@@ -278,7 +278,7 @@ export const LogoWaveTech = ({ variant = 'primary', size = 'md', animated = fals
         PRECISION
       </text>
       <text x="95" y="55" fill="#06b6d4" fontSize="11" fontWeight="500" fontFamily="sans-serif" letterSpacing="1">
-        MANUFACTURING
+        MACHINING
       </text>
     </motion.svg>
   );
@@ -340,7 +340,7 @@ export const LogoCNCTool = ({ variant = 'primary', size = 'md', animated = false
           PRECISION
         </text>
         <text x="0" y="18" fill={color.tool} fontSize="10" fontWeight="500" fontFamily="sans-serif" letterSpacing="3.5">
-          MANUFACTURING
+          MACHINING
         </text>
       </g>
     </motion.svg>
@@ -405,7 +405,7 @@ export const LogoTechGrid = ({ variant = 'primary', size = 'md', animated = fals
         PRECISION
       </text>
       <text x="70" y="55" fill="#475569" fontSize="11" fontWeight="400" fontFamily="sans-serif" letterSpacing="2.5">
-        MANUFACTURING
+        MACHINING
       </text>
     </motion.svg>
   );
@@ -417,8 +417,8 @@ export const LogoShowcase = () => {
     { component: LogoGearTech, name: 'Gear & Circuit Tech', description: 'Modern technical design combining gear mechanics with circuit technology' },
     { component: LogoPrecisionMark, name: 'Precision Crosshair', description: 'Minimalist design emphasizing accuracy and precision targeting' },
     { component: LogoHexIndustrial, name: 'Industrial Hexagon', description: 'Strong geometric design representing stability and engineering excellence' },
-    { component: LogoWaveTech, name: 'Wave Technology', description: 'Flowing design symbolizing adaptive manufacturing and continual improvement' },
-    { component: LogoCNCTool, name: 'CNC Tool Icon', description: 'Direct representation of manufacturing tools and capabilities' },
+    { component: LogoWaveTech, name: 'Wave Technology', description: 'Flowing design symbolizing adaptive machining and continual improvement' },
+    { component: LogoCNCTool, name: 'CNC Tool Icon', description: 'Direct representation of machining tools and capabilities' },
     { component: LogoTechGrid, name: 'Tech Grid Pattern', description: 'Modern grid system representing systematic precision and organization' }
   ];
 
@@ -427,7 +427,7 @@ export const LogoShowcase = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Logo Design Variations</h1>
-          <p className="text-xl text-slate-600">Select your preferred design for Precision Manufacturing</p>
+          <p className="text-xl text-slate-600">Select your preferred design for Precision Machining</p>
         </div>
 
         <div className="grid gap-8">
