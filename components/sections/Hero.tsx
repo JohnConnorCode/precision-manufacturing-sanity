@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import HeroSliderFixed from '@/components/ui/hero-slider-fixed';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { colorStyleToCSS, getOverlayStyles, getButtonStyles, ColorStyle } from '@/lib/sanity-styles';
@@ -154,7 +155,7 @@ export default function Hero({ data }: HeroProps) {
       <HeroSliderFixed slides={finalSlides} />
 
       {finalSlides[0]?.src && (
-        <img src={finalSlides[0].src} alt={finalSlides[0].alt} className="sr-only" loading="eager" />
+        <Image src={finalSlides[0].src} alt={finalSlides[0].alt || ''} width={1} height={1} className="sr-only" priority />
       )}
 
       {/* Overlay if enabled */}
