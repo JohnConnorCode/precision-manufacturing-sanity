@@ -48,7 +48,7 @@ export const contentTemplates = {
     highlight: false,
     hero: {
       title: '[Industry Name]',
-      subtitle: 'Precision manufacturing solutions for [industry]',
+      subtitle: 'Precision machining solutions for [industry]',
       backgroundImage: null,
     },
     overview: {

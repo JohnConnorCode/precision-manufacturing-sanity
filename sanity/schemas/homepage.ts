@@ -927,7 +927,7 @@ export default {
           title: 'Section Subtitle',
           description: 'Description text below the heading',
           fieldset: 'content',
-          initialValue: 'Industry-leading capabilities backed by decades of aerospace and defense manufacturing expertise',
+          initialValue: 'Industry-leading capabilities backed by decades of aerospace and defense machining expertise',
         },
         {
           name: 'specs',
@@ -1405,12 +1405,12 @@ export default {
             {
               iconName: 'Workflow',
               title: 'Process Optimization',
-              description: 'Lean manufacturing principles and continuous improvement initiatives maximize efficiency without compromising quality.'
+              description: 'Lean machining principles and continuous improvement initiatives maximize efficiency without compromising quality.'
             },
             {
               iconName: 'Users',
               title: 'Expert Team',
-              description: 'Highly trained machinists, engineers, and quality professionals with decades of precision manufacturing experience.'
+              description: 'Highly trained machinists, engineers, and quality professionals with decades of precision machining experience.'
             }
           ],
         },

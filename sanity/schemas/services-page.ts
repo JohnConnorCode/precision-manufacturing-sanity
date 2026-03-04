@@ -6,7 +6,7 @@ export default {
     prepare() {
       return {
         title: 'Services Page',
-        subtitle: 'Overview of all manufacturing services and capabilities',
+        subtitle: 'Overview of all machining services and capabilities',
       }
     },
   },
@@ -48,7 +48,7 @@ export default {
           type: 'text',
           title: 'Description',
           rows: 3,
-          initialValue: 'Advanced manufacturing capabilities delivering precision components for aerospace, defense, and energy sectors with industry-leading quality standards.',
+          initialValue: 'Advanced machining capabilities delivering precision components for aerospace, defense, and energy sectors with industry-leading quality standards.',
           validation: (Rule: any) => Rule.required()
         },
         {
@@ -197,7 +197,7 @@ export default {
           initialValue: [
             { label: 'Materials Certified', value: '150+', description: 'Aerospace & defense grade materials' },
             { label: 'Precision Tolerance', value: '±0.0001"', description: 'Guaranteed dimensional accuracy' },
-            { label: 'Production Capacity', value: '24/7', description: 'Continuous manufacturing capability' },
+            { label: 'Production Capacity', value: '24/7', description: 'Continuous machining capability' },
             { label: 'Quality System', value: 'AS9100D', description: 'Full aerospace certification' }
           ]
         },
@@ -262,7 +262,7 @@ export default {
           type: 'text',
           title: 'CTA Description',
           rows: 2,
-          initialValue: 'Partner with us for precision manufacturing solutions that meet the highest industry standards.'
+          initialValue: 'Partner with us for precision machining solutions that meet the highest industry standards.'
         },
         {
           name: 'buttons',
@@ -322,7 +322,7 @@ export default {
           type: 'text',
           title: 'Meta Description',
           rows: 3,
-          initialValue: 'AS9100 & ISO 9001 certified precision machining and CMM inspection services. First article inspection, dimensional measurement, and proprietary MetBase® software for aerospace, defense & manufacturing industries.',
+          initialValue: 'AS9100 & ISO 9001 certified precision machining and CMM inspection services. First article inspection, dimensional measurement, and proprietary MetBase® software for aerospace, defense & machining industries.',
           validation: (Rule: any) => Rule.required().max(160).warning('Keep under 160 characters')
         },
         {
@@ -348,12 +348,12 @@ export default {
           title: 'Keywords',
           of: [{ type: 'string' }],
           initialValue: [
-            'precision manufacturing',
+            'precision machining',
             'CNC machining',
             'CMM inspection',
             'AS9100',
-            'aerospace manufacturing',
-            'defense manufacturing'
+            'aerospace machining',
+            'defense machining'
           ]
         }
       ]

@@ -339,7 +339,7 @@ export function generateFAQSchema() {
         "name": "What is your typical lead time?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Lead times vary by complexity, but we typically deliver prototype parts in 1-2 weeks and production quantities in 2-4 weeks."
+          "text": "Lead times vary by complexity, but we typically deliver initial parts in 1-2 weeks and production quantities in 2-4 weeks."
         }
       },
       {

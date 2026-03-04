@@ -151,7 +151,7 @@ export default {
           ],
           initialValue: [
             { label: 'Industry Experience', value: '30+', description: 'Years serving critical industries' },
-            { label: 'Active Programs', value: '200+', description: 'Ongoing manufacturing programs' },
+            { label: 'Active Programs', value: '200+', description: 'Ongoing machining programs' },
             { label: 'Quality Rating', value: '99.8%', description: 'On-time delivery performance' },
             { label: 'Certifications', value: '12+', description: 'Industry-specific certifications' }
           ]
@@ -339,7 +339,7 @@ export default {
               type: 'text',
               title: 'Section Description',
               rows: 2,
-              initialValue: 'Specialized manufacturing solutions for the most demanding industries, backed by decades of experience and industry-leading certifications.'
+              initialValue: 'Specialized machining solutions for the most demanding industries, backed by decades of experience and industry-leading certifications.'
             }
           ]
         },
@@ -360,7 +360,7 @@ export default {
               type: 'text',
               title: 'Section Description',
               rows: 2,
-              initialValue: 'Proven capabilities and unwavering commitment to quality make us the preferred manufacturing partner for critical applications.'
+              initialValue: 'Proven capabilities and unwavering commitment to quality make us the preferred machining partner for critical applications.'
             }
           ]
         },
@@ -439,7 +439,7 @@ export default {
             },
             {
               title: 'Technical Expertise',
-              description: 'Deep industry knowledge and advanced manufacturing capabilities',
+              description: 'Deep industry knowledge and advanced machining capabilities',
               icon: 'Factory',
               features: [
                 'Specialized material processing',
@@ -450,7 +450,7 @@ export default {
             },
             {
               title: 'Program Management',
-              description: 'Dedicated support for long-term manufacturing programs',
+              description: 'Dedicated support for long-term machining programs',
               icon: 'Users',
               features: [
                 'Dedicated program managers',
@@ -529,7 +529,7 @@ export default {
             {
               metric: 'Lead Time Reduction',
               value: '40%',
-              description: 'Typical improvement in manufacturing cycle time'
+              description: 'Typical improvement in machining cycle time'
             }
           ]
         }
@@ -554,7 +554,7 @@ export default {
           type: 'text',
           title: 'Description',
           rows: 2,
-          initialValue: "Join the industry leaders who trust us with their most critical manufacturing requirements. Let's discuss your specific needs."
+          initialValue: "Join the industry leaders who trust us with their most critical machining requirements. Let's discuss your specific needs."
         },
         {
           name: 'primaryButton',
@@ -610,7 +610,7 @@ export default {
           type: 'text',
           title: 'Meta Description',
           rows: 3,
-          initialValue: 'Specialized precision manufacturing for aerospace, defense & energy sectors. 30+ years serving critical industries with AS9100D, ITAR & NADCAP certifications.',
+          initialValue: 'Specialized precision machining for aerospace, defense & energy sectors. 30+ years serving critical industries with AS9100D, ITAR & NADCAP certifications.',
           validation: (Rule: any) => Rule.required().max(160).warning('Keep under 160 characters')
         },
         {
@@ -636,8 +636,8 @@ export default {
           title: 'Keywords',
           of: [{ type: 'string' }],
           initialValue: [
-            'aerospace manufacturing',
-            'defense manufacturing',
+            'aerospace machining',
+            'defense machining',
             'energy sector',
             'precision machining',
             'AS9100 certified',

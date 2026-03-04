@@ -5,7 +5,7 @@ import { StringInputProps, set, unset } from 'sanity';
 import { TextInput, Button, Card, Grid, Box, Text, Flex, Stack } from '@sanity/ui';
 import * as Icons from 'lucide-react';
 
-// List of commonly used icons for manufacturing/industrial sites
+// List of commonly used icons for machining/industrial sites
 const COMMON_ICONS = [
   'Cog', 'Settings', 'Wrench', 'Hammer', 'Factory',
   'Box', 'Package', 'Truck', 'Plane', 'Ship',

@@ -29,7 +29,7 @@ export default {
           type: 'text',
           title: 'Description',
           rows: 3,
-          initialValue: "The precision you're looking for seems to be off by a few thousandths. This page doesn't exist, but our manufacturing excellence does.",
+          initialValue: "The precision you're looking for seems to be off by a few thousandths. This page doesn't exist, but our machining excellence does.",
           validation: (Rule: any) => Rule.required(),
         },
         {

@@ -516,7 +516,7 @@ const aboutSchema = {
                   name: 'experience',
                   type: 'string',
                   title: 'Experience Summary',
-                  description: 'E.g., "30+ years in precision manufacturing"',
+                  description: 'E.g., "30+ years in precision machining"',
                 },
                 {
                   name: 'background',
