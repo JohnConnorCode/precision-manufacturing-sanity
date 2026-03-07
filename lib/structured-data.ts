@@ -141,8 +141,8 @@ export function generateLocalBusinessSchema(data: OrganizationData) {
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 45.5152,  // Update with actual coordinates
-      "longitude": -122.6784
+      "latitude": 45.4080,
+      "longitude": -122.5720
     },
     "openingHours": [
       "Mo-Fr 07:00-18:00",
@@ -205,7 +205,7 @@ export function generateArticleSchema(article: ArticleData) {
       "name": "IIS - Integrated Inspection Systems",
       "logo": {
         "@type": "ImageObject",
-        "url": "/logo.png"
+        "url": "/favicon.svg"
       }
     },
     "datePublished": article.datePublished,
@@ -248,7 +248,7 @@ export function generateMachiningProcessSchema() {
     "@type": "HowTo",
     "name": "Precision CNC Machining Process",
     "description": "Professional precision machining process for aerospace and defense components",
-    "image": "https://iismet.com/og-image.jpg",
+    "image": "/og-image.jpg",
     "totalTime": "PT24H", // 24 hours typical
     "supply": [
       {
@@ -336,14 +336,6 @@ export function generateFAQSchema() {
       },
       {
         "@type": "Question",
-        "name": "What is your typical lead time?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Lead times vary by complexity, but we typically deliver initial parts in 1-2 weeks and production quantities in 2-4 weeks."
-        }
-      },
-      {
-        "@type": "Question",
         "name": "Do you provide first article inspection reports?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -376,14 +368,6 @@ export function generateWebsiteSchema(url: string) {
     "url": url,
     "name": "IIS - Integrated Inspection Systems",
     "description": "Precision machining and inspection services for aerospace, defense, and energy industries. AS9100D certified with ITAR registration.",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": `${url}/search?q={search_term_string}`
-      },
-      "query-input": "required name=search_term_string"
-    },
     "publisher": {
       "@type": "Organization",
       "name": "IIS - Integrated Inspection Systems"

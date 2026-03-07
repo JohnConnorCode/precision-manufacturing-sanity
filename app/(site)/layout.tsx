@@ -268,7 +268,7 @@ export default async function SiteLayout({
               itemOffered: {
                 "@type": "Service",
                 name: "Engineering & Metrology Services",
-                description: "GD&T analysis, reverse engineering, process capability studies, and fixture design with MetBase® software integration for data management",
+                description: "GD&T analysis, process capability studies, and fixture design with MetBase® software integration for data management",
               },
             },
           ],

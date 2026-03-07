@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import MetbasePageClient from '@/components/pages/MetbasePageClient';
 import { getMetbase } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
@@ -15,7 +16,7 @@ export default async function MetbasePage() {
 export async function generateMetadata() {
   const { isEnabled } = await draftMode();
   const metbaseData = await getMetbase(isEnabled);
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
 
   const metadata = {
     title: metbaseData?.seo?.metaTitle || 'Metbase - Proprietary Database Software | IIS - Integrated Inspection Systems',

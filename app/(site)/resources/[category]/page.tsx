@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowRight, BookOpen } from 'lucide-react';
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
     };
   }
 
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
   const title = `${categoryData.title} | Technical Resources | IIS`;
   const description = categoryData.description;
 

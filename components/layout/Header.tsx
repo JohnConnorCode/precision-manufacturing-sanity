@@ -417,12 +417,6 @@ export default function Header({ data }: HeaderProps) {
                 const target = item?.openInNewTab ? '_blank' : undefined
                 const rel = item?.openInNewTab ? 'noopener noreferrer' : undefined
 
-                // Progressive collapse: hide less important items at smaller breakpoints
-                // Priority 1 (always show on lg+): Services, Industries, Contact (indexes 0, 1, 5)
-                // Priority 2 (show on xl+): Resources, About, Compliance (indexes 2, 3, 4)
-                const isPriority1 = index === 0 || index === 1 || index === 5 // Services, Industries, Contact
-                const itemClasses = isPriority1 ? '' : 'hidden xl:flex'
-
                 const hasRealHref = isValidHref(href)
 
                 return (
@@ -431,7 +425,7 @@ export default function Header({ data }: HeaderProps) {
                     initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
                     animate={mounted ? { opacity: 1, y: 0 } : prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
                     transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.4, delay: mounted ? 0.1 + index * 0.05 : 0, ease: "easeOut" }}
-                    className={itemClasses}
+                    className=""
                   >
                     {hasChildren ? (
                       /* Click-based dropdown - entire item opens dropdown */

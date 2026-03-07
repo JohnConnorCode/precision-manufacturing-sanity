@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { notFound } from 'next/navigation';
 import { draftMode } from 'next/headers';
 import { getJobPostingBySlug, getAllJobPostings, getSiteSettings } from '@/sanity/lib/queries';
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
 
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
   const title = `${job.title} - Careers at IIS`;
   const description = job.overview || `Join our team as a ${job.title} in ${job.department}`;
 

@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -43,7 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   }
 
   const { category } = await params;
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
   const title = resource.seo?.metaTitle || `${resource.title} | IIS`;
   const description = resource.seo?.metaDescription || resource.excerpt;
   const ogImage = resource.featuredImage?.asset?.url;

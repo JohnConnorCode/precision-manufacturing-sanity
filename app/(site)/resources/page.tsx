@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import HeroSection from '@/components/ui/hero-section';
 import ResourceCard from '@/components/ui/resource-card';
 import { getAllResources, getPageContent } from '@/sanity/lib/queries';
@@ -38,7 +39,7 @@ export const revalidate = 60;
 
 // Comprehensive SEO metadata with social sharing optimization
 export async function generateMetadata(): Promise<Metadata> {
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/resources`;
   const ogImage: string | null = null;
 

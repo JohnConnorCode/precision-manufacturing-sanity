@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { Button } from '@/components/ui/button';
 import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight } from 'lucide-react';
@@ -27,7 +28,7 @@ export const revalidate = 60;
 export async function generateMetadata(): Promise<Metadata> {
   const { isEnabled: isDraft } = await draftMode();
   const industriesPage = await getIndustriesPage(isDraft);
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/industries`;
 
   // Pull SEO data from Sanity with fallbacks

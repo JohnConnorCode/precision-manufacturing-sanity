@@ -142,6 +142,7 @@ export default function Logo({
           height={height}
           quality={95}
           className={`object-contain ${className}`}
+          style={effectiveVariant === 'light' ? { filter: 'brightness(0) invert(1)' } : undefined}
           priority
         />
         {showLogoText && (

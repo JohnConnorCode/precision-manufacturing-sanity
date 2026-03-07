@@ -1,7 +1,8 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
 
   return {
     rules: [

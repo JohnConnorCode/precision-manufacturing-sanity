@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { getServiceBySlug, getAllServices } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 import { ServiceContent } from '../service-content';
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: ServicePageProps) {
     };
   }
 
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
   const title = serviceData.seo?.metaTitle || serviceData.title;
   const description = serviceData.seo?.metaDescription || serviceData.description;
   const ogImage = serviceData.seo?.ogImage?.asset?.url || serviceData.heroImage?.asset?.url;

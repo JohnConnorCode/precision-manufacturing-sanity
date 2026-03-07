@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import ContactPageClient from './page-client';
 import { getContact } from '@/sanity/lib/queries';
 
@@ -13,7 +14,7 @@ export default async function ContactPageWrapper() {
 
 // Generate metadata for SEO
 export async function generateMetadata() {
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
 
   const metadata = {
     title: 'Contact IIS - Precision Machining Quote & Consultation',

@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -83,7 +84,7 @@ export async function generateMetadata({
     };
   }
 
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
   const title = caseStudy.seo?.metaTitle || `${caseStudy.title} | Case Study | IIS`;
   const description = caseStudy.seo?.metaDescription || caseStudy.challenge?.slice(0, 160);
 

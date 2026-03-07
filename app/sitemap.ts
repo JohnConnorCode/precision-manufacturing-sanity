@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { MetadataRoute } from 'next';
 import { client } from '@/sanity/lib/client';
 
@@ -51,7 +52,7 @@ async function getResourceCategories() {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
 
   const [services, industries, resources, jobPostings, caseStudies, resourceCategories] = await Promise.all([
     getServices(),

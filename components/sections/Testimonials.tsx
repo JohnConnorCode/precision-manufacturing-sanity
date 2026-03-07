@@ -17,9 +17,10 @@ interface Testimonial {
 
 interface TestimonialsProps {
   data?: Testimonial[];
+  sectionLabel?: string;
 }
 
-export default function Testimonials({ data }: TestimonialsProps) {
+export default function Testimonials({ data, sectionLabel }: TestimonialsProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const sectionAnim = useAnimateInView<HTMLDivElement>();
   const [current, setCurrent] = useState(0);
@@ -75,7 +76,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
             transition={prefersReducedMotion ? { duration: 0 } : ANIM_TRANSITION}
             className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em] mb-12"
           >
-            Client Testimonials
+            {sectionLabel || 'Client Testimonials'}
           </motion.p>
 
           {/* Large Decorative Quotation Marks */}

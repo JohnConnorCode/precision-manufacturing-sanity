@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { notFound } from 'next/navigation'
 import { draftMode } from 'next/headers'
 import { Metadata } from 'next'
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return { title: 'Page Not Found' }
   }
 
-  const baseUrl = 'https://iismet.com'
+  const baseUrl = getSiteUrl()
   const title = page.seo?.metaTitle || page.title || 'IIS - Integrated Inspection Systems'
   const description = page.seo?.metaDescription || ''
   const ogImage = page.seo?.ogImage?.asset?.url

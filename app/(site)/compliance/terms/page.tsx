@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import TermsPageClient from './page-client';
 import { getTerms } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
@@ -14,7 +15,7 @@ export default async function TermsPage() {
 
 // Generate metadata for SEO
 export async function generateMetadata() {
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
 
   const metadata = {
     title: 'Terms & Conditions | Purchase Order Terms - IIS - Integrated Inspection Systems',

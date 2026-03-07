@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { notFound } from 'next/navigation';
 import { draftMode } from 'next/headers';
 import IndustryDetailPage from '@/components/industries/industry-detail-page';
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: IndustryPageProps) {
     };
   }
 
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
   const title = industry.seo?.metaTitle || `${industry.title} | Precision Machining`;
   const description = industry.seo?.metaDescription || industry.shortDescription;
   const ogImage = industry.seo?.ogImage?.asset?.url || industry.image?.asset?.url;

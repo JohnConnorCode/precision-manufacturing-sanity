@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { draftMode } from 'next/headers';
 import { Metadata } from 'next';
 import HeroSection from '@/components/ui/hero-section';
@@ -8,7 +9,7 @@ export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageData = await getCertificationsPage();
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/certifications`;
 
   const seoTitle = pageData?.seo?.metaTitle || 'Certifications | AS9100D, ISO 9001, ITAR | IIS';

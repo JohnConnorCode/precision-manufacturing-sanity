@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import ContactPageClient from './page-client';
 import { getContact } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
@@ -17,7 +18,7 @@ export default async function ContactPage() {
 export async function generateMetadata() {
   const { isEnabled } = await draftMode();
   const contactData = await getContact(isEnabled);
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
 
   // Pull SEO data from Sanity with fallbacks
   const metadata = {

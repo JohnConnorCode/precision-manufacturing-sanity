@@ -1,8 +1,9 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { getSiteSettings } from '@/sanity/lib/queries'
 import { draftMode } from 'next/headers'
 import TroubleshootingContent from './troubleshooting-content'
 
-const baseUrl = 'https://iismet.com'
+const baseUrl = getSiteUrl()
 
 export const metadata = {
   title: 'Troubleshooting & System Status - IIS',

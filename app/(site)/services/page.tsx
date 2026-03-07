@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { Button } from '@/components/ui/button';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { Card } from '@/components/ui/card';
@@ -32,7 +33,7 @@ export const revalidate = 60;
 // Comprehensive SEO metadata with social sharing optimization - pulls from Sanity CMS
 export async function generateMetadata(): Promise<Metadata> {
   const servicesPage = await getServicesPage();
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/services`;
 
   // Pull SEO data from Sanity with fallbacks

@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { notFound } from 'next/navigation';
 import SupplierRequirementsPageClient from './page-client';
 import { getSupplierRequirements } from '@/sanity/lib/queries';
@@ -21,7 +22,7 @@ export default async function SupplierRequirementsPage() {
 
 // Generate metadata for SEO
 export async function generateMetadata() {
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
 
   const metadata = {
     title: 'Supplier Quality Requirements | AS9100 Standards - IIS - Integrated Inspection Systems',

@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { draftMode } from 'next/headers';
 import { Metadata } from 'next';
 import HeroSection from '@/components/ui/hero-section';
@@ -8,7 +9,7 @@ export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageData = await getCaseStudiesPage();
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/case-studies`;
 
   const seoTitle = pageData?.seo?.metaTitle || 'Case Studies | Precision Machining Results | IIS';

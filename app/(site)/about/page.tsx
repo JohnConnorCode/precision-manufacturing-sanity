@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import AboutPageClient from '@/components/pages/AboutPageClient';
 import { getAbout } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
@@ -18,7 +19,7 @@ export default async function AboutPage() {
 export async function generateMetadata() {
   const { isEnabled } = await draftMode();
   const aboutData = await getAbout(isEnabled);
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
 
   // Pull SEO data from Sanity with fallbacks
   const metadata = {

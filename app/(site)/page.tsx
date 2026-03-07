@@ -1,3 +1,4 @@
+import { getSiteUrl } from '@/lib/site-url';
 import { draftMode } from 'next/headers';
 import Hero from '@/components/sections/Hero';
 import ClientLogos from '@/components/sections/ClientLogos';
@@ -50,7 +51,7 @@ export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function Home() {
   const { isEnabled: isDraft } = await draftMode();
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
 
   // Parallel data fetching - 5x faster than sequential
   const [servicesData, industriesData, homepageData, siteSettings, testimonials] = await Promise.all([
@@ -157,7 +158,7 @@ export default async function Home() {
 
 // Generate metadata for SEO - pulls from Sanity CMS with fallbacks
 export async function generateMetadata() {
-  const baseUrl = 'https://iismet.com';
+  const baseUrl = getSiteUrl();
   const [homepageData, siteSettings] = await Promise.all([
     getHomepage(),
     getSiteSettings()
