@@ -122,6 +122,28 @@ export default {
           { name: 'title', type: 'string' },
           { name: 'description', type: 'text', rows: 3 },
           { name: 'eyebrow', type: 'string' }
+        ]},
+        { name: 'cta', type: 'object', title: 'CTA Section', fields: [
+          { name: 'eyebrow', type: 'string', title: 'Eyebrow Text' },
+          { name: 'heading', type: 'string', title: 'Heading' },
+          { name: 'description', type: 'text', title: 'Description', rows: 3 },
+          { name: 'buttons', type: 'array', title: 'Buttons', of: [{ type: 'object', fields: [
+            { name: 'label', type: 'string', title: 'Label' },
+            { name: 'href', type: 'string', title: 'URL' },
+            { name: 'variant', type: 'string', title: 'Variant', options: { list: ['default', 'secondary', 'ghost'] } },
+            { name: 'enabled', type: 'boolean', title: 'Enabled', initialValue: true }
+          ]}]}
+        ]},
+        { name: 'articleCta', type: 'object', title: 'Article Detail CTA Section', description: 'CTA shown on individual resource article pages', fields: [
+          { name: 'eyebrow', type: 'string', title: 'Eyebrow Text' },
+          { name: 'heading', type: 'string', title: 'Heading' },
+          { name: 'description', type: 'text', title: 'Description', rows: 3 },
+          { name: 'buttons', type: 'array', title: 'Buttons', of: [{ type: 'object', fields: [
+            { name: 'label', type: 'string', title: 'Label' },
+            { name: 'href', type: 'string', title: 'URL' },
+            { name: 'variant', type: 'string', title: 'Variant', options: { list: ['default', 'secondary', 'ghost'] } },
+            { name: 'enabled', type: 'boolean', title: 'Enabled', initialValue: true }
+          ]}]}
         ]}
       ]
     },

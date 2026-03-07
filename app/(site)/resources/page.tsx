@@ -332,37 +332,27 @@ export default async function ResourcesPage({
 
         <div className="max-w-4xl mx-auto px-6 md:px-8 text-center relative z-10">
           <AnimatedSection>
-            <p className="text-sm font-semibold text-blue-400 uppercase tracking-[0.15em] mb-6">
-              Need Expert Help?
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tone-inverse mb-6 leading-tight">
-              Ready to Apply These{' '}
-              <span
-                style={{
-                  background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                Insights?
-              </span>
-            </h2>
-            <p className="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">
-              Our team of precision machining experts is ready to help you implement best practices for your next project.
-            </p>
+            <SectionHeader
+              eyebrow={pageContent?.resourcesPage?.cta?.eyebrow || 'Need Expert Help?'}
+              heading={pageContent?.resourcesPage?.cta?.heading || 'Ready to Apply These Insights?'}
+              gradientWordPosition="last"
+              description={pageContent?.resourcesPage?.cta?.description || 'Our team of precision machining experts is ready to help you implement best practices for your next project.'}
+              className="[&_h2]:text-tone-inverse [&_p]:text-slate-300 mb-10"
+            />
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact">
-                <PremiumButton size="lg" variant="default">
-                  Get a Quote
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </PremiumButton>
-              </Link>
-              <Link href="/services">
-                <PremiumButton size="lg" variant="secondary">
-                  View Our Services
-                </PremiumButton>
-              </Link>
+              {(pageContent?.resourcesPage?.cta?.buttons || [
+                { label: 'Get a Quote', href: '/contact', variant: 'default' },
+                { label: 'View Our Services', href: '/services', variant: 'secondary' },
+              ])
+                .filter((btn: { enabled?: boolean }) => btn.enabled !== false)
+                .map((btn: { label?: string; href?: string; variant?: string }, i: number) => (
+                  <Link key={i} href={btn.href || '/contact'}>
+                    <PremiumButton size="lg" variant={(btn.variant as 'default' | 'secondary') || 'default'}>
+                      {btn.label}
+                      {btn.variant !== 'secondary' && <ArrowRight className="ml-2 h-5 w-5" />}
+                    </PremiumButton>
+                  </Link>
+                ))}
             </div>
           </AnimatedSection>
         </div>

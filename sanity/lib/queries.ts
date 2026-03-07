@@ -861,11 +861,16 @@ export async function getFooter(preview = false) {
   const query = `*[_type == "footer"][0] {
     company,
     social,
+    servicesHeading,
     servicesLinks,
+    resourcesHeading,
     resourcesLinks,
+    quickLinksHeading,
     quickLinks,
+    contactHeading,
     contact,
-    copyright
+    copyright,
+    certificationBadges
   }`
 
   return await getClient(preview).fetch(query)
@@ -1219,7 +1224,9 @@ export async function getPageContent(preview = false) {
     },
     resourcesPage{
       hero{ backgroundImage{asset->{url,_id}}, backgroundImageUrl, badge, title, subtitle, description, descriptionRich, titleSize, descriptionSize, buttons[]{ _key, label, href, variant, enabled } },
-      header{ title, description, eyebrow }
+      header{ title, description, eyebrow },
+      cta{ eyebrow, heading, description, buttons[]{ _key, label, href, variant, enabled } },
+      articleCta{ eyebrow, heading, description, buttons[]{ _key, label, href, variant, enabled } }
     },
     sections
   }`

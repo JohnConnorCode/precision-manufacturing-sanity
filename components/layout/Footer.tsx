@@ -137,10 +137,13 @@ const Footer = ({ data }: FooterProps) => {
   // Stagger delay for each column (0.1s apart)
   const colDelay = (index: number) => index * 0.1;
 
+  const hasResources = footerData.resourcesLinks.length > 0;
+  const gridCols = hasResources ? 'lg:grid-cols-5' : 'lg:grid-cols-4';
+
   return (
     <footer ref={footerRef} key="site-footer" className={cn(colors.footer.bg, colors.footer.text.primary, 'border-t', colors.footer.border)} suppressHydrationWarning>
       <div className="container py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className={cn('grid grid-cols-1 md:grid-cols-2 gap-8', gridCols)}>
           {/* Column 1: Logo & Company Info */}
           <motion.div
             className="space-y-4"
@@ -217,28 +220,30 @@ const Footer = ({ data }: FooterProps) => {
             </ul>
           </motion.div>
 
-          {/* Column 3: Resources Links */}
-          <motion.div
-            initial={prefersReducedMotion ? false : ANIM_STATES.fadeUp.initial}
-            animate={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : (shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial)}
-            transition={{ ...ANIM_TRANSITION, delay: colDelay(2) }}
-          >
-            <h4 className="font-semibold mb-3" style={{
-              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>{footerData.resourcesHeading}</h4>
-            <ul className="space-y-2 text-sm">
-              {footerData.resourcesLinks.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className={cn(colors.footer.linkAnimated, 'inline-block')}>
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+          {/* Column 3: Resources Links (hidden if empty) */}
+          {footerData.resourcesLinks.length > 0 && (
+            <motion.div
+              initial={prefersReducedMotion ? false : ANIM_STATES.fadeUp.initial}
+              animate={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : (shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial)}
+              transition={{ ...ANIM_TRANSITION, delay: colDelay(2) }}
+            >
+              <h4 className="font-semibold mb-3" style={{
+                background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>{footerData.resourcesHeading}</h4>
+              <ul className="space-y-2 text-sm">
+                {footerData.resourcesLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link href={link.href} className={cn(colors.footer.linkAnimated, 'inline-block')}>
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
 
           {/* Column 4: Quick Links */}
           <motion.div

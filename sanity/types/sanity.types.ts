@@ -193,6 +193,30 @@ export type PageContent = {
       description?: string;
       eyebrow?: string;
     };
+    cta?: {
+      eyebrow?: string;
+      heading?: string;
+      description?: string;
+      buttons?: Array<{
+        label?: string;
+        href?: string;
+        variant?: "default" | "secondary" | "ghost";
+        enabled?: boolean;
+        _key: string;
+      }>;
+    };
+    articleCta?: {
+      eyebrow?: string;
+      heading?: string;
+      description?: string;
+      buttons?: Array<{
+        label?: string;
+        href?: string;
+        variant?: "default" | "secondary" | "ghost";
+        enabled?: boolean;
+        _key: string;
+      }>;
+    };
   };
   capabilities?: Array<{
     label?: string;

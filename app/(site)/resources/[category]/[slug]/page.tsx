@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Clock, ArrowLeft, Calendar, Tag, ArrowRight, User, BookOpen } from 'lucide-react';
-import { getResourceBySlug, getAllResources } from '@/sanity/lib/queries';
+import { getResourceBySlug, getAllResources, getPageContent } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 import { PortableTextContent } from '@/components/portable-text-components';
 import { PremiumButton } from '@/components/ui/premium-button';
@@ -79,11 +79,16 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
 export default async function ResourcePage({ params }: { params: Promise<{ category: string; slug: string }> }) {
   const { category, slug } = await params;
   const { isEnabled } = await draftMode();
-  const resource = await getResourceBySlug(slug, isEnabled);
+  const [resource, pageContent] = await Promise.all([
+    getResourceBySlug(slug, isEnabled),
+    getPageContent(isEnabled),
+  ]);
 
   if (!resource) {
     notFound();
   }
+
+  const articleCta = pageContent?.resourcesPage?.articleCta;
 
   // Fetch related resources (same category, excluding current)
   const allResources = await getAllResources(isEnabled);
@@ -318,24 +323,26 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
           <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 dark-section">
             <div className="max-w-4xl mx-auto text-center">
               <SectionHeader
-                eyebrow="Ready to Start?"
-                heading="Apply What You've Learned"
+                eyebrow={articleCta?.eyebrow || 'Ready to Start?'}
+                heading={articleCta?.heading || "Apply What You've Learned"}
                 gradientWordPosition="last"
-                description="Contact us to discuss your precision machining needs and learn how we can help bring your project to life."
+                description={articleCta?.description || 'Contact us to discuss your precision machining needs and learn how we can help bring your project to life.'}
                 className="[&_h2]:text-tone-inverse [&_p]:text-slate-300 mb-8"
               />
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/contact">
-                  <PremiumButton size="lg">
-                    Get a Quote
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </PremiumButton>
-                </Link>
-                <Link href="/services">
-                  <PremiumButton size="lg" variant="secondary">
-                    Explore Services
-                  </PremiumButton>
-                </Link>
+                {(articleCta?.buttons || [
+                  { label: 'Get a Quote', href: '/contact', variant: 'default' },
+                  { label: 'Explore Services', href: '/services', variant: 'secondary' },
+                ])
+                  .filter((btn: { enabled?: boolean }) => btn.enabled !== false)
+                  .map((btn: { label?: string; href?: string; variant?: string }, i: number) => (
+                    <Link key={i} href={btn.href || '/contact'}>
+                      <PremiumButton size="lg" variant={(btn.variant as 'default' | 'secondary') || 'default'}>
+                        {btn.label}
+                        {btn.variant !== 'secondary' && <ArrowRight className="ml-2 h-4 w-4" />}
+                      </PremiumButton>
+                    </Link>
+                  ))}
               </div>
             </div>
           </section>
