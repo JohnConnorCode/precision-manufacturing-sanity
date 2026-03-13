@@ -30,13 +30,14 @@ const logQueryError = (scope: string, error: unknown) => {
 // SERVICES
 // ============================================================================
 
+/** @see ServiceDetail in query.types.ts for strict typing */
 export async function getAllServices(preview = false): Promise<any[]> {
   try {
     const pub = preview ? '' : ' && published == true'
     const query = `*[_type == "service"${pub}] | order(order asc) {
       _id,
       title,
-      slug,
+      "slug": slug.current,
       shortDescription,
       description,
       order,
@@ -80,7 +81,6 @@ export async function getAllServices(preview = false): Promise<any[]> {
         featuresLabel,
         features,
         capabilitiesLabel,
-        capabilitiesList,
         label,
         value
       },
@@ -135,13 +135,14 @@ export async function getAllServices(preview = false): Promise<any[]> {
   }
 }
 
+/** @see ServiceDetail in query.types.ts for strict typing */
 export async function getServiceBySlug(slug: string, preview = false): Promise<any> {
   try {
     const pub = preview ? '' : ' && published == true'
     const query = `*[_type == "service" && slug.current == $slug${pub}][0] {
       _id,
       title,
-      slug,
+      "slug": slug.current,
       shortDescription,
       description,
       order,
@@ -178,7 +179,6 @@ export async function getServiceBySlug(slug: string, preview = false): Promise<a
         featuresLabel,
         features,
         capabilitiesLabel,
-        capabilitiesList,
         label,
         value
       },
@@ -253,13 +253,14 @@ export async function getServiceBySlug(slug: string, preview = false): Promise<a
 // INDUSTRIES
 // ============================================================================
 
+/** @see IndustryDetail in query.types.ts for strict typing */
 export async function getAllIndustries(preview = false): Promise<any[]> {
   try {
     const pub = preview ? '' : ' && published == true'
     const query = `*[_type == "industry"${pub}] | order(order asc) {
       _id,
       title,
-      slug,
+      "slug": slug.current,
       shortDescription,
       description,
       order,
@@ -282,7 +283,6 @@ export async function getAllIndustries(preview = false): Promise<any[]> {
           enabled
         }
       },
-      statistics,
       overview,
       capabilities,
       regulatory,
@@ -318,13 +318,14 @@ export async function getAllIndustries(preview = false): Promise<any[]> {
   }
 }
 
+/** @see IndustryDetail in query.types.ts for strict typing */
 export async function getIndustryBySlug(slug: string, preview = false): Promise<any> {
   try {
     const pub = preview ? '' : ' && published == true'
     const query = `*[_type == "industry" && slug.current == $slug${pub}][0] {
       _id,
       title,
-      slug,
+      "slug": slug.current,
       shortDescription,
       description,
       order,
@@ -350,7 +351,6 @@ export async function getIndustryBySlug(slug: string, preview = false): Promise<
         }
       },
       stats,
-      statistics,
       overview,
       marketOverview,
       expertise,
@@ -399,13 +399,14 @@ export async function getIndustryBySlug(slug: string, preview = false): Promise<
 // RESOURCES
 // ============================================================================
 
+/** @see ResourceCard in query.types.ts for strict typing */
 export async function getAllResources(preview = false): Promise<any[]> {
   try {
   const pub = preview ? '' : ' && published == true'
   const query = `*[_type == "resource"${pub}] | order(publishDate desc) {
     _id,
     title,
-    slug,
+    "slug": slug.current,
     excerpt,
     content,
     category,
@@ -437,7 +438,7 @@ export async function getResourceBySlug(slug: string, preview = false): Promise<
   const query = `*[_type == "resource" && slug.current == $slug${pub}][0] {
     _id,
     title,
-    slug,
+    "slug": slug.current,
     excerpt,
     content,
     category,
@@ -506,7 +507,7 @@ export async function getResourcesByCategory(category: string, preview = false) 
   const query = `*[_type == "resource" && category == $category${pub}] | order(publishDate desc) {
     _id,
     title,
-    slug,
+    "slug": slug.current,
     excerpt,
     category,
     difficulty,
@@ -611,6 +612,7 @@ export async function getNavigation(preview = false) {
   }
 }
 
+/** @see HomepageQueryResult in query.types.ts for strict typing */
 export async function getHomepage(preview = false): Promise<any> {
   try {
   const query = `*[_type == "homepage"][0] {
@@ -937,6 +939,10 @@ export async function getAbout(preview = false): Promise<AboutPage | null> {
         enabled
       }
     },
+    capabilitiesSection {
+      title,
+      description
+    },
     capabilities[]{
       _key,
       title,
@@ -948,6 +954,9 @@ export async function getAbout(preview = false): Promise<AboutPage | null> {
       _key,
       certification,
       enabled
+    },
+    certificationsDisplay {
+      subtitle
     },
     leadership{
       title,
@@ -1062,7 +1071,8 @@ export async function getCareers(preview = false): Promise<CareersPage | null> {
     },
     opportunities{
       title,
-      description
+      description,
+      noPositionsMessage
     },
     cta{
       title,
@@ -1808,6 +1818,12 @@ export async function getErrorPages(preview = false) {
       notFound {
         heading,
         description,
+        actionButtons[] {
+          label,
+          href,
+          variant,
+          iconName
+        },
         popularLinksHeading,
         popularLinks[] {
           label,
@@ -1820,13 +1836,46 @@ export async function getErrorPages(preview = false) {
         description,
         tryAgainButtonText,
         supportMessagePrefix,
-        supportLinkText
+        supportLinkText,
+        homeButtonText
       }
     }`
 
     return await getClient(preview).fetch(query)
   } catch (error) {
     logQueryError('getErrorPages', error);
+    return null
+  }
+}
+
+// ============================================================================
+// COMPLIANCE PAGE
+// ============================================================================
+
+export async function getCompliancePage(preview = false) {
+  try {
+    const query = `*[_type == "compliancePage"][0] {
+      hero {
+        eyebrow,
+        title,
+        titleHighlight,
+        description
+      },
+      cards[] {
+        enabled,
+        title,
+        description,
+        href,
+        iconName,
+        iconGradient,
+        ctaText
+      },
+      seo
+    }`
+
+    return await getClient(preview).fetch(query)
+  } catch (error) {
+    logQueryError('getCompliancePage', error);
     return null
   }
 }
