@@ -80,7 +80,7 @@ export default {
       name: 'shortDescription',
       type: 'text',
       title: 'Short Description',
-      description: 'Brief description for cards and previews (150-200 characters)',
+      description: 'Brief description for cards and previews (100-200 characters)',
       group: 'general',
       rows: 3,
       validation: (Rule: any) => Rule.min(100).max(200).warning('Should be between 100-200 characters for optimal display'),
@@ -92,14 +92,6 @@ export default {
       description: 'Lucide icon name (e.g., "Cog", "Cpu", "Ruler", "Wrench")',
       group: 'general',
       validation: (Rule: any) => Rule.required().error('Icon is required for service cards'),
-    },
-    {
-      name: 'fullDescription',
-      type: 'text',
-      title: 'Full Description',
-      description: 'Detailed description of the service',
-      group: 'general',
-      rows: 5,
     },
     {
       name: 'description',
@@ -237,6 +229,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'label', subtitle: 'value' },
+            prepare({ title, subtitle }: any) {
+              return { title: title || 'Untitled capability', subtitle }
+            },
+          },
           fields: [
             {name: 'label', type: 'string', title: 'Label'},
             {name: 'value', type: 'string', title: 'Value'},
@@ -257,6 +255,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'title', media: 'image' },
+            prepare({ title, media }: any) {
+              return { title: title || 'Untitled offering', media }
+            },
+          },
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
@@ -399,6 +403,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'title', media: 'image' },
+            prepare({ title, media }: any) {
+              return { title: title || 'Untitled application', media }
+            },
+          },
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
@@ -443,6 +453,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'spec', subtitle: 'value' },
+            prepare({ title, subtitle }: any) {
+              return { title: title || 'Untitled spec', subtitle }
+            },
+          },
           fields: [
             {name: 'spec', type: 'string', title: 'Specification'},
             {name: 'value', type: 'string', title: 'Value'},
@@ -463,6 +479,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'title' },
+            prepare({ title }: any) {
+              return { title: title || 'Untitled process step' }
+            },
+          },
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
@@ -494,6 +516,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'name', subtitle: 'details' },
+            prepare({ title, subtitle }: any) {
+              return { title: title || 'Untitled equipment', subtitle }
+            },
+          },
           fields: [
             {name: 'name', type: 'string', title: 'Name'},
             {name: 'details', type: 'string', title: 'Details'},
@@ -526,6 +554,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'category' },
+            prepare({ title }: any) {
+              return { title: title || 'Untitled material category' }
+            },
+          },
           fields: [
             {name: 'category', type: 'string', title: 'Category'},
             {
@@ -569,6 +603,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'title' },
+            prepare({ title }: any) {
+              return { title: title || 'Untitled standard' }
+            },
+          },
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
@@ -640,6 +680,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'title' },
+            prepare({ title }: any) {
+              return { title: title || 'Untitled process' }
+            },
+          },
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},

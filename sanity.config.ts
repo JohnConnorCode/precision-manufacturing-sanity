@@ -7,12 +7,7 @@ import { media } from 'sanity-plugin-media'
 import { schemaTypes } from './sanity/schemas'
 import { structure } from './sanity/structure'
 import { resolveDocumentActions } from './sanity/actions'
-import { resolveBadges } from './sanity/badges'
 import { previewPane } from './sanity/plugins/previewPane'
-import { assetManager } from './sanity/plugins/assetManager'
-import { contentRelationships } from './sanity/plugins/contentRelationships'
-import { collaboration } from './sanity/plugins/collaboration'
-import { analytics } from './sanity/plugins/analytics'
 import { presentationTool } from 'sanity/presentation'
 import { locate } from './sanity/locate'
 import StudioLogo from './sanity/components/StudioLogo'
@@ -68,10 +63,13 @@ const singletonTypes = new Set([
   'supplierRequirements',
   'servicesPage',
   'industriesPage',
+  'caseStudiesPage',
+  'certificationsPage',
   'uiText',
   'pageContent',
   'metbase',
   'errorPages',
+  'compliancePage',
 ])
 
 // Define allowed actions for singleton documents
@@ -113,10 +111,6 @@ export default defineConfig({
     visionTool(),
     media(),
     previewPane(),
-    assetManager(),
-    contentRelationships(),
-    collaboration(),
-    analytics(),
   ],
 
   schema: {
@@ -140,6 +134,5 @@ export default defineConfig({
         ? withCustomActions.filter(({ action }) => action && singletonActions.has(action))
         : withCustomActions
     },
-    badges: resolveBadges,
   },
 })

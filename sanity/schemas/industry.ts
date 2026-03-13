@@ -80,7 +80,7 @@ export default {
       name: 'shortDescription',
       type: 'text',
       title: 'Short Description',
-      description: 'Brief description for cards and previews (150-200 characters)',
+      description: 'Brief description for cards and previews (100-200 characters)',
       group: 'general',
       rows: 3,
       validation: (Rule: any) => Rule.min(100).max(200).warning('Should be between 100-200 characters for optimal display'),
@@ -142,10 +142,32 @@ export default {
           fieldset: 'titles',
         },
         {
+          name: 'title',
+          type: 'string',
+          title: 'Title',
+          description: 'Hero heading text (defaults to industry title if empty)',
+          fieldset: 'titles',
+        },
+        {
+          name: 'titleHighlight',
+          type: 'string',
+          title: 'Gradient Highlight',
+          description: 'Words from the title to render with the gradient effect',
+          fieldset: 'titles',
+        },
+        {
           name: 'subtitle',
           type: 'string',
           title: 'Subtitle',
           fieldset: 'titles',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Description',
+          description: 'Plain text description shown in the hero section',
+          fieldset: 'description',
+          rows: 3,
         },
         { name: 'descriptionRich', type: 'array', title: 'Description (Rich Text)', fieldset: 'description', of: [{ type: 'block' }] },
         { name: 'titleSize', type: 'string', title: 'Title Size', fieldset: 'sizing', options: { list: [
@@ -156,52 +178,6 @@ export default {
           { title: 'XS', value: 'xs' }, { title: 'SM', value: 'sm' }, { title: 'Base', value: 'base' }, { title: 'LG', value: 'lg' }, { title: 'XL', value: 'xl' }
         ] } },
       ],
-    },
-    {
-      name: 'statistics',
-      type: 'array',
-      title: 'Key Statistics',
-      description: 'Important metrics displayed prominently below the hero (e.g., "85% Aerospace Volume", "150+ Active Programs")',
-      group: 'overview',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {
-              name: 'value',
-              type: 'string',
-              title: 'Value',
-              description: 'The statistic value (e.g., "85%", "150+", "±0.0001")',
-              validation: (Rule: any) => Rule.required()
-            },
-            {
-              name: 'label',
-              type: 'string',
-              title: 'Label',
-              description: 'The statistic label (e.g., "Aerospace Volume", "Active Programs")',
-              validation: (Rule: any) => Rule.required()
-            },
-            {
-              name: 'description',
-              type: 'text',
-              title: 'Description',
-              description: 'Optional longer description of this statistic',
-              rows: 2
-            }
-          ],
-          preview: {
-            select: {
-              value: 'value',
-              label: 'label'
-            },
-            prepare(selection: any) {
-              return {
-                title: `${selection.value} - ${selection.label}`
-              }
-            }
-          }
-        }
-      ]
     },
     {
       name: 'stats',
@@ -463,6 +439,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'title', subtitle: 'label' },
+            prepare({ title, subtitle }: any) {
+              return { title: title || subtitle || 'Untitled capability' }
+            },
+          },
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'label', type: 'string', title: 'Label'},
@@ -547,6 +529,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'title' },
+            prepare({ title }: any) {
+              return { title: title || 'Untitled application' }
+            },
+          },
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
@@ -577,6 +565,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'category', media: 'image' },
+            prepare({ title, media }: any) {
+              return { title: title || 'Untitled component', media }
+            },
+          },
           fields: [
             {name: 'category', type: 'string', title: 'Category'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
@@ -660,6 +654,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'title' },
+            prepare({ title }: any) {
+              return { title: title || 'Untitled standard' }
+            },
+          },
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
@@ -682,7 +682,7 @@ export default {
       name: 'processBenefitsSectionHeading',
       type: 'string',
       title: 'Process Benefits Section Heading',
-      description: 'Main heading for the process benefits section (e.g., "Aerospace Manufacturing Advantages", "Specialized Capabilities")',
+      description: 'Main heading for the process benefits section (e.g., "Aerospace Machining Advantages", "Specialized Capabilities")',
       group: 'details',
     },
     {
@@ -696,7 +696,7 @@ export default {
     {
       name: 'processBenefits',
       type: 'array',
-      title: 'Process Benefits / Manufacturing Advantages',
+      title: 'Process Benefits / Machining Advantages',
       group: 'details',
       options: {
         collapsible: true,
@@ -705,6 +705,12 @@ export default {
       of: [
         {
           type: 'object',
+          preview: {
+            select: { title: 'title' },
+            prepare({ title }: any) {
+              return { title: title || 'Untitled benefit' }
+            },
+          },
           fields: [
             {name: 'title', type: 'string', title: 'Title'},
             {name: 'description', type: 'text', title: 'Description', rows: 3},
@@ -738,6 +744,13 @@ export default {
           of: [
             {
               type: 'object',
+              preview: {
+                select: { text: 'text', href: 'href', enabled: 'enabled' },
+                prepare({ text, href, enabled }: any) {
+                  const status = enabled === false ? ' (HIDDEN)' : ''
+                  return { title: `${text || 'Button'}${status}`, subtitle: href }
+                },
+              },
               fields: [
                 { name: 'text', type: 'string', title: 'Text', validation: (Rule: any) => Rule.required() },
                 { name: 'href', type: 'string', title: 'URL', validation: (Rule: any) => Rule.required() },
