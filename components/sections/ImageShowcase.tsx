@@ -13,6 +13,7 @@ import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS } from '@/lib/animation-config';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { ImageShowcaseData, ShowcaseImage, ShowcaseStat } from '@/lib/types/cms';
+import { clean } from '@/lib/stega-clean';
 
 // Icon mapping for stats
 const iconMap: Record<string, LucideIcon> = {
@@ -146,7 +147,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         {stats.length > 0 && (
           <div ref={statsAnim.ref} className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">
             {stats.filter((stat: ShowcaseStat) => stat.enabled !== false).map((stat: ShowcaseStat, index: number) => {
-            const iconKey = stat.iconName || stat.icon;
+            const iconKey = clean(stat.iconName || stat.icon);
             const Icon = (iconKey && iconMap[iconKey]) || Award;
             const statsHeaderDelay = SECTION_CONFIGS.fourColumnGrid.headerCompletion;
             const statDelay = statsHeaderDelay + SECTION_CONFIGS.fourColumnGrid.getDelay(index);
@@ -194,13 +195,13 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                   .map((button, index: number) => (
                   <Link
                     key={button.text}
-                    href={button.href}
+                    href={clean(button.href)}
                     className={`inline-flex items-center px-8 py-4 font-semibold rounded-lg transition-all duration-300 ${
-                      button.variant === 'primary'
+                      clean(button.variant) === 'primary'
                         ? 'text-tone-inverse shadow-xl hover:shadow-2xl'
                         : 'bg-white/10 hover:bg-white/20 text-tone-inverse backdrop-blur-sm'
                     }`}
-                    style={button.variant === 'primary' ? getGradientStyle(theme.colors) : undefined}
+                    style={clean(button.variant) === 'primary' ? getGradientStyle(theme.colors) : undefined}
                   >
                     {button.text}
                     {index === 0 && <ArrowRight className="ml-2 h-5 w-5" />}

@@ -9,6 +9,7 @@ import { PortableTextContent } from '@/components/portable-text-components';
 import type { PortableTextProps } from '@portabletext/react';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { spacing } from '@/lib/design-system';
+import { clean } from '@/lib/stega-clean';
 
 interface ResourceData {
   title: string;
@@ -60,7 +61,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
   }, []);
 
   const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty?.toLowerCase()) {
+    switch (clean(difficulty)?.toLowerCase()) {
       case 'beginner': return 'text-green-400 bg-green-400/10 border-green-400/20';
       case 'intermediate': return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
       case 'advanced': return 'text-red-400 bg-red-400/10 border-red-400/20';

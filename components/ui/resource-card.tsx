@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Clock, ArrowRight, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { typography } from '@/lib/design-system';
+import { clean } from '@/lib/stega-clean';
 
 interface ResourceCardProps {
   resource: {
@@ -39,11 +40,11 @@ export default function ResourceCard({ resource, priority = false }: ResourceCar
   const imageUrl = resource.featuredImage?.asset?.url;
   const hasImage = Boolean(imageUrl);
   const imageAlt = resource.featuredImage?.alt || resource.title;
-  const difficulty = resource.difficulty || 'intermediate';
+  const difficulty = clean(resource.difficulty) || 'intermediate';
 
   return (
     <Link
-      href={`/resources/${resource.category}/${resource.slug}`}
+      href={`/resources/${clean(resource.category)}/${clean(resource.slug)}`}
       className="block h-full group"
     >
       <article

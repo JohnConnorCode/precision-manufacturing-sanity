@@ -12,6 +12,7 @@ import { usePrefersReducedMotion } from '@/lib/motion';
 import { colorStyleToCSS, getOverlayStyles, getButtonStyles, ColorStyle } from '@/lib/sanity-styles';
 import { spacing } from '@/lib/design-system';
 import { gradientTextStyle } from '@/lib/theme-utils';
+import { clean } from '@/lib/stega-clean';
 
 interface HeroData {
   // Three-word structure (new)
@@ -290,7 +291,7 @@ export default function Hero({ data }: HeroProps) {
                   }
                   asChild
                 >
-                  <Link href={primaryCta.href}>
+                  <Link href={clean(primaryCta.href)}>
                     {primaryCta.text}
                     <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>

@@ -19,6 +19,7 @@ import { motion } from 'framer-motion';
 import { typography, zIndex } from '@/lib/design-system';
 import { throttleRAF } from '@/lib/performance';
 import { usePrefersReducedMotion } from '@/lib/motion';
+import { clean } from '@/lib/stega-clean';
 
 // Child menu item type
 interface ChildMenuItem {
@@ -311,7 +312,7 @@ export default function Header({ data }: HeaderProps) {
 
   function IconFor(name?: string) {
     if (!name) return null
-    const Cmp = iconMap[(name || '').toLowerCase()]
+    const Cmp = iconMap[clean(name).toLowerCase()]
     return Cmp ? <Cmp className="h-4 w-4 mr-2" /> : null
   }
 
@@ -322,9 +323,9 @@ export default function Header({ data }: HeaderProps) {
         <aside
           className={cn(
             `fixed top-0 ${zIndex.announcement} w-full`,
-            announcement.variant === 'success' ? 'bg-green-600 text-tone-inverse' :
-            announcement.variant === 'warning' ? 'bg-amber-500 text-slate-900' :
-            announcement.variant === 'alert' ? 'bg-red-600 text-tone-inverse' :
+            clean(announcement.variant) === 'success' ? 'bg-green-600 text-tone-inverse' :
+            clean(announcement.variant) === 'warning' ? 'bg-amber-500 text-slate-900' :
+            clean(announcement.variant) === 'alert' ? 'bg-red-600 text-tone-inverse' :
             'bg-blue-600 text-tone-inverse'
           )}
           role="status"
@@ -333,7 +334,7 @@ export default function Header({ data }: HeaderProps) {
           <div className="container flex h-10 items-center justify-center text-sm gap-3">
             <span>{announcement.message}</span>
             {announcement.href && announcement.linkText && (
-              <Link href={announcement.href} className="underline font-semibold">
+              <Link href={clean(announcement.href)} className="underline font-semibold">
                 {announcement.linkText}
               </Link>
             )}
@@ -412,7 +413,7 @@ export default function Header({ data }: HeaderProps) {
                   : []
                 const hasChildren = children.length > 0
                 const href = isValidHref(item.href) ? item.href : '/'
-                const itemVariant = item?.style?.variant || 'link'
+                const itemVariant = clean(item?.style?.variant) || 'link'
                 const badgeText = item?.style?.badgeText
                 const target = item?.openInNewTab ? '_blank' : undefined
                 const rel = item?.openInNewTab ? 'noopener noreferrer' : undefined
@@ -559,7 +560,7 @@ export default function Header({ data }: HeaderProps) {
 
             {/* CTA Button - Inverted colors when over hero */}
             {cta && cta.text && (
-              <Link href={cta.href || '/contact'}>
+              <Link href={clean(cta.href) || '/contact'}>
                 <PremiumButton
                   className={inHeroMode ? 'border border-white/20' : ''}
                   style={inHeroMode ? {

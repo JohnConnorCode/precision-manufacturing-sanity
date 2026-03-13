@@ -10,6 +10,7 @@ import { STAGGER } from '@/lib/animation-config';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { spacing } from '@/lib/design-system';
 import { gradientTextStyle } from '@/lib/theme-utils';
+import { clean } from '@/lib/stega-clean';
 
 interface CTAData {
   title?: string;
@@ -169,13 +170,14 @@ export default function CTA({ data }: CTAProps) {
             className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
           >
             {buttons.map((button, index) => {
+              const cleanVariant = clean(button.variant);
               const mappedVariant: 'default' | 'secondary' =
-                button.variant === 'primary' ? 'default'
-                : button.variant === 'outline' ? 'secondary'
-                : (button.variant as 'default' | 'secondary');
+                cleanVariant === 'primary' ? 'default'
+                : cleanVariant === 'outline' ? 'secondary'
+                : (cleanVariant as 'default' | 'secondary');
 
               return (
-                <Link key={index} href={button.href}>
+                <Link key={index} href={clean(button.href)}>
                   <PremiumButton size="lg" variant={mappedVariant}>
                     {index === 1 && <FileText className="mr-2 h-5 w-5" />}
                     {button.text}
@@ -190,8 +192,9 @@ export default function CTA({ data }: CTAProps) {
           {certifications.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
               {certifications.filter(cert => cert.enabled !== false).map((cert, index) => {
-                const Icon = iconMap[cert.icon] || Activity;
-                const isFirstBadge = index === 0 && cert.icon === 'Clock';
+                const cleanIcon = clean(cert.icon);
+                const Icon = iconMap[cleanIcon] || Activity;
+                const isFirstBadge = index === 0 && cleanIcon === 'Clock';
 
                 return (
                   <motion.div

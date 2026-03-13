@@ -29,6 +29,7 @@ import { getHeroImageUrl } from '@/lib/hero-images';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { gradientTextStyle } from '@/lib/theme-utils';
+import { clean } from '@/lib/stega-clean';
 
 const iconMap: Record<string, LucideIcon> = {
   Database,
@@ -169,10 +170,10 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
     .filter((btn) => btn?.enabled !== false && btn?.label && btn?.href)
     .map((btn) => ({
       label: btn.label || '',
-      href: btn.href || '',
-      variant: btn.variant,
+      href: clean(btn.href) || '',
+      variant: clean(btn.variant),
     }));
-  const BadgeIcon = iconMap[data.hero?.badgeIconName || 'Database'] || Database;
+  const BadgeIcon = iconMap[clean(data.hero?.badgeIconName) || 'Database'] || Database;
 
   const overviewHighlights = (data.overview?.highlights || [])
     .filter((h) => h?.enabled !== false);
@@ -242,7 +243,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
 
               <div ref={overviewHighlightsAnim.ref} className="grid grid-cols-2 gap-4">
                 {overviewHighlights.map((highlight, index) => {
-                  const Icon = iconMap[highlight?.iconName || ''] || CheckCircle2;
+                  const Icon = iconMap[clean(highlight?.iconName) || ''] || CheckCircle2;
                   return (
                     <motion.div
                       key={highlight?._key || index}
@@ -304,7 +305,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
 
           <div ref={featuresGridAnim.ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featureItems.map((feature, index) => {
-              const Icon = iconMap[feature?.iconName || ''] || Database;
+              const Icon = iconMap[clean(feature?.iconName) || ''] || Database;
               const gradients = [
                 'from-blue-600 to-indigo-600',
                 'from-indigo-600 to-purple-600',
@@ -426,7 +427,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
 
           <div ref={integrationGridAnim.ref} className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {integrationBenefits.map((benefit, index) => {
-              const Icon = iconMap[benefit?.iconName || ''] || Zap;
+              const Icon = iconMap[clean(benefit?.iconName) || ''] || Zap;
               return (
                 <motion.div
                   key={benefit?._key || index}
@@ -540,11 +541,11 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                   <Button
                     key={button._key || index}
                     size="lg"
-                    className={button.variant === 'secondary' ? styles.ctaSecondary : styles.ctaPrimary}
-                    variant={button.variant === 'secondary' ? 'outline' : 'default'}
+                    className={clean(button.variant) === 'secondary' ? styles.ctaSecondary : styles.ctaPrimary}
+                    variant={clean(button.variant) === 'secondary' ? 'outline' : 'default'}
                     asChild
                   >
-                    <Link href={button.href || '#'}>
+                    <Link href={clean(button.href) || '#'}>
                       {button.label}
                       {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
                     </Link>

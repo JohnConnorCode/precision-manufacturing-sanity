@@ -13,6 +13,7 @@ import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animat
 import { ResourcesData, ResourceSeries, ResourceBenefit } from '@/lib/types/cms';
 import { DotGridBackground } from '@/lib/background-patterns';
 import { spacing } from '@/lib/design-system';
+import { clean } from '@/lib/stega-clean';
 
 // Icon mapping for CMS data
 const iconMap: Record<string, LucideIcon> = {
@@ -176,8 +177,8 @@ export default function Resources({ data }: ResourcesProps) {
                 {(Array.isArray(ctaData?.buttons) ? ctaData.buttons : [])
                   .filter(button => button.enabled !== false && button.text && button.href)
                   .map((button, index: number) => (
-                  <Link key={button.text} href={button.href}>
-                    <PremiumButton size="lg" variant={button.variant === 'primary' ? 'default' : 'secondary'}>
+                  <Link key={button.text} href={clean(button.href)}>
+                    <PremiumButton size="lg" variant={clean(button.variant) === 'primary' ? 'default' : 'secondary'}>
                       {index === 0 && <BookOpen className="w-5 h-5" />}
                       {button.text}
                     </PremiumButton>
@@ -192,7 +193,7 @@ export default function Resources({ data }: ResourcesProps) {
         {Array.isArray(resourcesData.benefits) && resourcesData.benefits.length > 0 && (
           <div ref={benefitsAnim.ref} className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {resourcesData.benefits.filter(benefit => benefit.enabled !== false).map((benefit: ResourceBenefit, index: number) => {
-              const IconComponent = (benefit.iconName && iconMap[benefit.iconName]) || BookOpen;
+              const IconComponent = (benefit.iconName && iconMap[clean(benefit.iconName)]) || BookOpen;
               const benefitDelay = sectionHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
 
               return (

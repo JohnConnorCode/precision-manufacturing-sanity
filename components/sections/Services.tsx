@@ -15,6 +15,7 @@ import { SECTION_CONFIGS } from '@/lib/animation-config';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { Service, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
 import { DotGridBackground } from '@/lib/background-patterns';
+import { clean } from '@/lib/stega-clean';
 
 // Icon mapping for CMS data
 const iconMap: Record<string, LucideIcon> = {
@@ -110,7 +111,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
         <div ref={cardsAnim.ref} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ${spacing.grid}`}>
           {displayServices.map((service: Service, index: number) => {
             // Handle both CMS data (iconName) and hardcoded data (icon)
-            const Icon = service.iconName ? (iconMap[service.iconName] || Cog) : (service.icon || Cog);
+            const Icon = service.iconName ? (iconMap[clean(service.iconName)] || Cog) : (service.icon || Cog);
             const baseDelay = SECTION_CONFIGS.fourColumnGrid.headerCompletion;
             const cardDelay = baseDelay + SECTION_CONFIGS.fourColumnGrid.getDelay(index);
 
@@ -213,7 +214,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
             transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.5 }}
             className="text-center mt-16 md:mt-20"
           >
-            <Link href={ctaLink.href}>
+            <Link href={clean(ctaLink.href)}>
               <PremiumButton size="lg">
                 {ctaLink.text}
                 <ArrowRight className="ml-2 h-5 w-5" />

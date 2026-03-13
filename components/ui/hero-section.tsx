@@ -10,6 +10,7 @@ import { ReactNode, useState, useEffect } from 'react';
 import { colorStyleToCSS, getOverlayStyles, ColorStyle } from '@/lib/sanity-styles';
 import { getHeroTheme, resolveHeroTone } from '@/lib/hero-theme';
 import { usePrefersReducedMotion } from '@/lib/motion';
+import { clean } from '@/lib/stega-clean';
 
 interface HeroButton {
   label: string;
@@ -316,7 +317,7 @@ export default function HeroSection({
             >
               {buttons.map((button, index) => {
                 const ButtonIcon = button.icon || ArrowRight;
-                const isPrimary = button.variant === 'primary' || index === 0;
+                const isPrimary = clean(button.variant) === 'primary' || index === 0;
 
                 const secondaryToneClass = heroTone === 'dark'
                   ? 'backdrop-blur-sm hover:bg-white/10 hover:scale-105 active:scale-[0.98]'
@@ -352,7 +353,7 @@ export default function HeroSection({
                     style={buttonStyle}
                     asChild
                   >
-                    <Link href={button.href}>
+                    <Link href={clean(button.href)}>
                       {button.label}
                       <ButtonIcon className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </Link>

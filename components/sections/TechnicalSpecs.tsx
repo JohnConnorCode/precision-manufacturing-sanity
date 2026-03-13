@@ -9,6 +9,7 @@ import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS } from '@/lib/animation-config';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { spacing } from '@/lib/design-system';
+import { clean } from '@/lib/stega-clean';
 
 interface TechnicalSpecsData {
   title?: string;
@@ -56,7 +57,7 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
   const metrics = data.specs
     .filter(spec => spec.enabled !== false)
     .map((spec) => {
-      const iconKey = spec.iconName || spec.label;
+      const iconKey = clean(spec.iconName || spec.label);
       const IconComponent = iconKey && iconMap[iconKey] ? iconMap[iconKey] : Gauge;
       return {
         icon: IconComponent,

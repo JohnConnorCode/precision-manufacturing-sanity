@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react';
 import { AlertCircle, Info, CheckCircle, XCircle, Lightbulb } from 'lucide-react';
+import { clean } from '@/lib/stega-clean';
 
 interface CalloutBoxProps {
   type: 'info' | 'warning' | 'success' | 'error' | 'tip';
@@ -26,8 +27,9 @@ const colorMap = {
 };
 
 export function CalloutBox({ type, title, children }: CalloutBoxProps) {
-  const Icon = iconMap[type];
-  const colorClass = colorMap[type];
+  const cleanType = clean(type);
+  const Icon = iconMap[cleanType];
+  const colorClass = colorMap[cleanType];
 
   return (
     <div className={`rounded-lg border p-4 ${colorClass}`}>

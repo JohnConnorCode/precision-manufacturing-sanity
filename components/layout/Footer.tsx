@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { gradientTextStyle } from '@/lib/theme-utils';
+import { clean } from '@/lib/stega-clean';
 
 interface FooterProps {
   data?: {
@@ -76,7 +77,7 @@ const Footer = ({ data }: FooterProps) => {
       .filter(link => link?.enabled !== false)
       .map(link => ({
         label: link.label || '',
-        href: link.href || '#'
+        href: clean(link.href) || '#'
       }));
   };
 
@@ -87,9 +88,9 @@ const Footer = ({ data }: FooterProps) => {
     contactHeading: data?.contactHeading,
     company: data?.company,
     social: {
-      linkedin: data?.social?.linkedin || '',
-      twitter: data?.social?.twitter || '',
-      facebook: data?.social?.facebook || ''
+      linkedin: clean(data?.social?.linkedin) || '',
+      twitter: clean(data?.social?.twitter) || '',
+      facebook: clean(data?.social?.facebook) || ''
     },
     servicesLinks: mapLinks(data?.servicesLinks),
     resourcesLinks: mapLinks(data?.resourcesLinks),

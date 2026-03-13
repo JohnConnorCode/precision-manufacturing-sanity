@@ -13,6 +13,7 @@ import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { shadows, spacing } from '@/lib/design-system';
 import { gradientTextStyle } from '@/lib/theme-utils';
+import { clean } from '@/lib/stega-clean';
 
 interface SanityImage {
   asset?: { _ref?: string; url?: string }
@@ -431,10 +432,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   key={index}
                   size="lg"
                   asChild
-                  className={button.variant === 'primary' ? 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' : 'border-blue-500/50 text-blue-400 hover:bg-blue-500/10 hover:text-blue-300 hover:border-blue-400'}
-                  variant={button.variant === 'primary' ? 'default' : 'outline'}
+                  className={clean(button.variant) === 'primary' ? 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' : 'border-blue-500/50 text-blue-400 hover:bg-blue-500/10 hover:text-blue-300 hover:border-blue-400'}
+                  variant={clean(button.variant) === 'primary' ? 'default' : 'outline'}
                 >
-                  <Link href={button.href || '#'}>
+                  <Link href={clean(button.href) || '#'}>
                     {button.text} <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>

@@ -5,6 +5,7 @@ import { createPortableTextComponents } from '@/components/portable-text-compone
 import { PortableText } from '@portabletext/react'
 import CTA from '@/components/sections/CTA'
 import { getBackgroundColor, paddingToClass } from '@/lib/sanity-styles'
+import { clean } from '@/lib/stega-clean'
 
 export default function PageSections({ sections }: { sections: Record<string, any>[] }) {
   if (!Array.isArray(sections) || sections.length === 0) return null
@@ -12,7 +13,7 @@ export default function PageSections({ sections }: { sections: Record<string, an
   return (
     <>
       {sections.map((section, idx) => {
-        switch (section?._type) {
+        switch (clean(section?._type)) {
           case 'heroSection': {
             const _badgeIconName = section?.badgeIconName
             // Pass ALL data from Sanity including style fields

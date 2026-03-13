@@ -14,6 +14,7 @@ import { getHeroImageUrl } from '@/lib/hero-images';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { gradientTextStyle } from '@/lib/theme-utils';
+import { clean } from '@/lib/stega-clean';
 
 const iconMap: Record<string, LucideIcon> = {
   Award,
@@ -202,10 +203,10 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
     .filter((btn: HeroButton) => btn?.enabled !== false && btn?.label && btn?.href)
     .map((btn: HeroButton) => ({
       label: btn.label!,
-      href: btn.href!,
-      variant: btn.variant as 'primary' | 'secondary' | undefined,
+      href: clean(btn.href!),
+      variant: clean(btn.variant) as 'primary' | 'secondary' | undefined,
     }));
-  const BadgeIcon = iconMap[data.hero?.badgeIconName || ''] || Factory;
+  const BadgeIcon = iconMap[clean(data.hero?.badgeIconName) || ''] || Factory;
 
   const storyParagraphs = Array.isArray(data.story?.paragraphs) && data.story.paragraphs.length > 0
     ? data.story.paragraphs
@@ -408,7 +409,7 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
               {valuesItems
                 .filter((value: ValueItem) => value?.enabled !== false)
                 .map((value: ValueItem, index: number) => {
-                  const Icon = iconMap[value?.iconName || ''] || Award;
+                  const Icon = iconMap[clean(value?.iconName) || ''] || Award;
                   const gradients = [
                     'from-blue-600 to-indigo-600',
                     'from-indigo-600 to-purple-600',
@@ -642,11 +643,11 @@ export default function AboutPageClient({ data }: AboutPageClientProps) {
                     <Button
                       key={`${button.label}-${index}`}
                       size="lg"
-                      className={button.variant === 'secondary' ? styles.ctaSecondary : styles.ctaPrimary}
-                      variant={button.variant === 'secondary' ? 'outline' : 'default'}
+                      className={clean(button.variant) === 'secondary' ? styles.ctaSecondary : styles.ctaPrimary}
+                      variant={clean(button.variant) === 'secondary' ? 'outline' : 'default'}
                       asChild
                     >
-                      <Link href={button.href!}>
+                      <Link href={clean(button.href!)}>
                         {button.label}
                         {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
                       </Link>
