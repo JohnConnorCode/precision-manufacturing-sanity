@@ -55,6 +55,13 @@ export async function GET(request: NextRequest) {
       careers: '/careers',
       terms: '/compliance/terms',
       'supplier-requirements': '/compliance/supplier-requirements',
+      'case-studies-page': '/case-studies',
+      'certifications-page': '/certifications',
+      'services-page': '/services',
+      'industries-page': '/industries',
+      metbase: '/about/metbase',
+      'compliance-page': '/compliance',
+      'error-pages': '/',
     }
     path = globalPaths[globalSlug] || '/'
   } else if (collection && slug) {
@@ -67,6 +74,10 @@ export async function GET(request: NextRequest) {
       // Resources need category - default to manufacturing-processes
       const category = searchParams.get('category') || 'manufacturing-processes'
       path = `/resources/${category}/${slug}`
+    } else if (collection === 'case-studies') {
+      path = `/case-studies/${slug}`
+    } else if (collection === 'careers' || collection === 'job-postings') {
+      path = `/careers/${slug}`
     }
   } else {
     return new Response('Missing required parameters', { status: 400 })
