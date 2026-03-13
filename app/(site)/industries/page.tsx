@@ -1,5 +1,6 @@
 import { getSiteUrl } from '@/lib/site-url';
 import { Button } from '@/components/ui/button';
+import { PremiumButton } from '@/components/ui/premium-button';
 import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
@@ -9,17 +10,12 @@ import AnimatedSection from '@/components/ui/animated-section';
 import { NoIndustriesState } from '@/components/ui/empty-state';
 import type { Metadata } from 'next';
 import { draftMode } from 'next/headers';
-import * as Icons from 'lucide-react';
-import { colors, spacing, cardStyles } from '@/lib/design-system';
+import { spacing, cardStyles, typography, styles } from '@/lib/design-system';
 import { cn } from '@/lib/utils';
 import { getToneTypography } from '@/lib/typography';
+import { gradientTextStyle } from '@/lib/theme-utils';
+import { DynamicIcon } from '@/components/ui/dynamic-icon';
 import type { CMSButton, IndustryStat, IndustryItem, WhyChooseItem, ProvenResultMetric } from '@/lib/types/cms';
-
-// Dynamic icon component
-function DynamicIcon({ name, className }: { name: string; className?: string }) {
-  const Icon = (Icons as unknown as Record<string, React.ComponentType<{ className?: string }>>)[name] || Icons.Circle;
-  return <Icon className={className} />;
-}
 
 // ISR for automatic updates when Sanity content changes (supports draft mode preview)
 export const revalidate = 60;
@@ -32,11 +28,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const pageUrl = `${baseUrl}/industries`;
 
   // Pull SEO data from Sanity with fallbacks
-  const seoTitle = industriesPage?.seo?.metaTitle || 'Industries We Serve | Aerospace, Defense & Energy Machining | IIS';
-  const seoDescription = industriesPage?.seo?.metaDescription || 'Precision machining for aerospace, defense, and energy industries. AS9100D certified, ITAR registered. Components with full traceability, first article inspection, and comprehensive quality documentation.';
-  const seoKeywords = industriesPage?.seo?.keywords?.join(', ') || 'aerospace machining, defense machining, energy sector machining, AS9100D certified, ITAR registered, military components, aircraft parts, turbine components, precision machining';
+  const seoTitle = industriesPage?.seo?.metaTitle;
+  const seoDescription = industriesPage?.seo?.metaDescription;
+  const seoKeywords = industriesPage?.seo?.keywords?.join(', ');
   const ogImage = industriesPage?.seo?.ogImage?.asset?.url || null;
-  const ogImageAlt = industriesPage?.seo?.ogImage?.alt || 'IIS Industries - Aerospace, Defense and Energy Machining';
+  const ogImageAlt = industriesPage?.seo?.ogImage?.alt || '';
 
   return {
     title: seoTitle,
@@ -94,15 +90,8 @@ export default async function IndustriesPage() {
     <div className="min-h-screen bg-background">
       <HeroSection
         backgroundImage={industriesPageData?.hero?.backgroundImage?.asset?.url || industriesPageData?.hero?.backgroundImageUrl || ''}
-        imageAlt={industriesPageData?.hero?.backgroundImage?.alt || 'Industries hero background'}
+        imageAlt={industriesPageData?.hero?.backgroundImage?.alt || ''}
         title={(() => {
-          const gradientStyle = {
-            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          } as React.CSSProperties;
-
           const heading = industriesPageData?.hero?.heading || industriesPageData?.hero?.title || '';
           const highlight = industriesPageData?.hero?.headingHighlight || '';
           const beforeHighlight = heading.replace(highlight, '').trim();
@@ -110,7 +99,7 @@ export default async function IndustriesPage() {
           return (
             <span>
               {beforeHighlight && <span className="text-inherit">{beforeHighlight} </span>}
-              <span style={gradientStyle}>{highlight}</span>
+              <span style={gradientTextStyle}>{highlight}</span>
             </span>
           );
         })()}
@@ -123,11 +112,14 @@ export default async function IndustriesPage() {
       {/* Key Statistics */}
       {industriesPageData?.content?.overviewStats && industriesPageData.content.overviewStats.length > 0 && (
         <section className={`${spacing.section} bg-slate-50 dark:bg-slate-900`}>
-          <div className="container">
+          <div className={spacing.container}>
             <AnimatedSection>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {industriesPageData.content.overviewStats
-                  .filter((stat: IndustryStat) => stat?.enabled !== false)
+              {(() => {
+                const enabledStats = industriesPageData.content.overviewStats.filter((stat: IndustryStat) => stat?.enabled !== false);
+                const colClass = enabledStats.length === 3 ? 'lg:grid-cols-3' : enabledStats.length === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-4';
+                return (
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${colClass} gap-8`}>
+                {enabledStats
                   .map((stat: IndustryStat, index: number) => (
                   <div key={index} className="text-center">
                     <div className="text-4xl md:text-5xl font-black text-blue-600 dark:text-blue-400 mb-2">
@@ -142,6 +134,8 @@ export default async function IndustriesPage() {
                   </div>
                 ))}
               </div>
+                );
+              })()}
             </AnimatedSection>
           </div>
         </section>
@@ -149,13 +143,13 @@ export default async function IndustriesPage() {
 
       {/* Industries Grid */}
       <section id="industries" className={spacing.section}>
-        <div className="container">
+        <div className={spacing.container}>
           <AnimatedSection>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              <h2 className={cn(styles.heading.section, 'mb-6')}>
                 {industriesPageData?.content?.industriesSection?.title}
               </h2>
-              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+              <p className={cn(typography.description, 'max-w-3xl mx-auto')}>
                 {industriesPageData?.content?.industriesSection?.description}
               </p>
             </div>
@@ -176,7 +170,7 @@ export default async function IndustriesPage() {
                       <div className="relative h-64 md:h-auto">
                         <Image
                           src={industry.image.asset.url}
-                          alt={industry.image.alt || industry.name || 'Industry illustration'}
+                          alt={industry.image.alt || industry.name || ''}
                           fill
                           className="object-cover"
                           sizes="(min-width: 768px) 50vw, 100vw"
@@ -228,8 +222,8 @@ export default async function IndustriesPage() {
                       </div>
 
                       <Button asChild variant="outline" size="lg">
-                        <Link href={`/industries/${(typeof industry.slug === 'object' ? industry.slug?.current : industry.slug) || (industry.name ?? '').toLowerCase().replace(/\s+/g, '-')}`}>
-                          {industry.cardCtaText || 'Learn More About'} {industry.name}
+                        <Link href={`/industries/${industry.slug || (industry.name ?? '').toLowerCase().replace(/\s+/g, '-')}`}>
+                          {industry.cardCtaText ? `${industry.cardCtaText} ` : ''}{industry.name}
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>
@@ -246,13 +240,13 @@ export default async function IndustriesPage() {
       {/* Why Choose IIS */}
       {industriesPageData?.content?.whyChooseUs && industriesPageData.content.whyChooseUs.length > 0 && (
         <section className={`${spacing.section} bg-white dark:bg-slate-950`}>
-          <div className="container">
+          <div className={spacing.container}>
             <AnimatedSection>
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                <h2 className={cn(styles.heading.section, 'mb-6')}>
                   {industriesPageData?.content?.whyChooseSection?.title}
                 </h2>
-                <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+                <p className={cn(typography.description, 'max-w-3xl mx-auto')}>
                   {industriesPageData?.content?.whyChooseSection?.description}
                 </p>
               </div>
@@ -292,7 +286,7 @@ export default async function IndustriesPage() {
       {/* Proven Results */}
       {industriesPageData?.content?.provenResults && industriesPageData.content.provenResults.length > 0 && (
         <section className={`${spacing.section} bg-slate-950 dark-section`}>
-          <div className="container">
+          <div className={spacing.container}>
             <AnimatedSection>
               <div className="text-center mb-16">
                 <h2
@@ -337,35 +331,28 @@ export default async function IndustriesPage() {
 
       {/* Call to Action */}
       <section className={`${spacing.section} bg-slate-50 dark:bg-slate-900`}>
-        <div className="container">
+        <div className={spacing.container}>
           <AnimatedSection>
             <div className="text-center max-w-4xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">{industriesPageData?.cta?.heading}</h2>
-              <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
+              <h2 className={cn(styles.heading.section, 'mb-6')}>{industriesPageData?.cta?.heading}</h2>
+              <p className={cn(typography.description, 'mb-8')}>
                 {industriesPageData?.cta?.description}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 {industriesPageData?.cta?.primaryButton?.enabled !== false && (
-                  <Button
-                    size="lg"
-                    className={cn(
-                      `bg-gradient-to-r ${colors.primaryGradient} hover:${colors.primaryGradientHover} font-semibold`,
-                      darkTone.heading
-                    )}
-                    asChild
-                  >
-                    <Link href={industriesPageData?.cta?.primaryButton?.href || '/contact'}>
+                  <Link href={industriesPageData?.cta?.primaryButton?.href || '/contact'}>
+                    <PremiumButton size="lg" variant="default">
                       {industriesPageData?.cta?.primaryButton?.label}
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </PremiumButton>
+                  </Link>
                 )}
                 {industriesPageData?.cta?.secondaryButton?.enabled !== false && (
-                  <Button size="lg" variant="outline" asChild>
-                    <Link href={industriesPageData?.cta?.secondaryButton?.href || '/services'}>
+                  <Link href={industriesPageData?.cta?.secondaryButton?.href || '/services'}>
+                    <PremiumButton size="lg" variant="secondary">
                       {industriesPageData?.cta?.secondaryButton?.label}
-                    </Link>
-                  </Button>
+                    </PremiumButton>
+                  </Link>
                 )}
               </div>
             </div>

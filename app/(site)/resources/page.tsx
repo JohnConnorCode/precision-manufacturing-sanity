@@ -14,6 +14,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, BookOpen, Clock } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 // Extended type with fields from the GROQ query that aren't on the base ResourceItem
 interface FormattedResource {
@@ -41,14 +42,16 @@ export const revalidate = 60;
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/resources`;
-  const ogImage: string | null = null;
 
-  let resources = [];
+  let resources: FormattedResource[] = [];
   try {
-    resources = await getAllResources() || [];
+    resources = (await getAllResources() || []) as FormattedResource[];
   } catch {
     // Silently fail and use empty array
   }
+
+  // Use the first featured resource image as OG image, or null
+  const ogImage: string | null = resources.find(r => r.featuredImage?.asset?.url)?.featuredImage?.asset?.url || null;
 
   return {
     title: 'Technical Resources & Machining Guides | CNC, Metrology & Quality | IIS',
@@ -110,13 +113,12 @@ export default async function ResourcesPage({
     getPageContent(isDraft),
   ]);
 
-  // Map Sanity slug structure (slug.current) to simple slug
   const formattedResources: FormattedResource[] = resources.map((resource: ResourceItem & Record<string, unknown>) => ({
     ...resource,
     _id: resource._id || '',
     title: resource.title || '',
     category: resource.category || '',
-    slug: (typeof resource.slug === 'object' ? resource.slug?.current : resource.slug) || '',
+    slug: resource.slug || '',
   })) as FormattedResource[];
 
   // Extract unique categories
@@ -144,34 +146,21 @@ export default async function ResourcesPage({
         imageAlt={pageContent?.resourcesPage?.hero?.backgroundImage?.alt || ''}
         darkHero={true}
         title={(() => {
-          // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
-          const gradientStyle = {
-            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          } as React.CSSProperties;
-
           if (!pageContent?.resourcesPage?.hero?.title) {
-            return (
-              <>
-                <span className="text-inherit">Master</span>{' '}
-                <span style={gradientStyle}>Precision Machining</span>
-              </>
-            );
+            return '';
           }
           // Split title to highlight last word in blue gradient
           const title = pageContent.resourcesPage.hero.title;
           const words = title.split(' ');
           if (words.length <= 1) {
-            return <span style={gradientStyle}>{title}</span>;
+            return <span style={gradientTextStyle}>{title}</span>;
           }
           const firstPart = words.slice(0, -1).join(' ');
           const lastWord = words[words.length - 1];
           return (
             <span>
               <span className="text-inherit">{firstPart} </span>
-              <span style={gradientStyle}>{lastWord}</span>
+              <span style={gradientTextStyle}>{lastWord}</span>
             </span>
           );
         })()}
@@ -185,7 +174,7 @@ export default async function ResourcesPage({
       />
 
       {/* Articles Section */}
-      <section className="relative py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <section className={`relative ${spacing.section} bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950`}>
         <div className={spacing.containerWide}>
           <AnimatedSection>
             <SectionHeader
@@ -320,7 +309,7 @@ export default async function ResourcesPage({
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-24 md:py-32 overflow-hidden dark-section">
+      <section className={`relative ${spacing.section} overflow-hidden dark-section`}>
         <div className="absolute inset-0 bg-slate-950">
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900" />
           <div className="absolute inset-0 bg-gradient-to-tr from-blue-950/50 via-transparent to-indigo-950/50" />
@@ -334,17 +323,14 @@ export default async function ResourcesPage({
         <div className="max-w-4xl mx-auto px-6 md:px-8 text-center relative z-10">
           <AnimatedSection>
             <SectionHeader
-              eyebrow={pageContent?.resourcesPage?.cta?.eyebrow || 'Need Expert Help?'}
-              heading={pageContent?.resourcesPage?.cta?.heading || 'Ready to Apply These Insights?'}
+              eyebrow={pageContent?.resourcesPage?.cta?.eyebrow}
+              heading={pageContent?.resourcesPage?.cta?.heading}
               gradientWordPosition="last"
-              description={pageContent?.resourcesPage?.cta?.description || 'Our team of precision machining experts is ready to help you implement best practices for your next project.'}
+              description={pageContent?.resourcesPage?.cta?.description}
               className="[&_h2]:text-tone-inverse [&_p]:text-slate-300 mb-10"
             />
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {(pageContent?.resourcesPage?.cta?.buttons || [
-                { label: 'Get a Quote', href: '/contact', variant: 'default' },
-                { label: 'View Our Services', href: '/services', variant: 'secondary' },
-              ])
+              {(pageContent?.resourcesPage?.cta?.buttons || [])
                 .filter((btn: { enabled?: boolean }) => btn.enabled !== false)
                 .map((btn: { label?: string; href?: string; variant?: string }, i: number) => (
                   <Link key={i} href={btn.href || '/contact'}>

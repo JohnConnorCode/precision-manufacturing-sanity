@@ -4,18 +4,13 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Calendar, Building2 } from 'lucide-react';
-import * as Icons from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
+import { DynamicIcon } from '@/components/ui/dynamic-icon';
 import AnimatedSection from '@/components/ui/animated-section';
-import { spacing } from '@/lib/design-system';
+import { spacing, shadows, typography } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
-
-function DynamicIcon({ name, className }: { name: string; className?: string }) {
-  const iconExport = name ? (Icons as Record<string, unknown>)[name] : null;
-  const Icon = (typeof iconExport === 'function' ? iconExport : Icons.Shield) as React.ComponentType<{ className?: string }>;
-  return <Icon className={className} />;
-}
 
 interface Certification {
   _id: string;
@@ -30,7 +25,7 @@ interface Certification {
   issuingBody?: string;
   validFrom?: string;
   validUntil?: string;
-  body?: any[];
+  body?: Array<Record<string, unknown>>;
 }
 
 interface CMSButton {
@@ -90,14 +85,14 @@ export default function CertificationsContent({
                   transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   className="group"
                 >
-                  <div className="h-full bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-8 shadow-sm hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300">
+                  <div className={`h-full bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-8 ${shadows.card} hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300`}>
                     {/* Icon */}
                     <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 mb-6 ring-4 ring-blue-500/10">
                       <DynamicIcon name={cert.iconName || 'Shield'} className="w-8 h-8 text-white" />
                     </div>
 
                     {/* Name */}
-                    <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-tone-inverse mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {cert.name}
                     </h3>
 
@@ -170,12 +165,12 @@ export default function CertificationsContent({
               <AnimatedSection>
                 <div>
                   {qualityCommitment?.title && (
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                    <h2 className={cn(typography.h2, "mb-6 text-tone-inverse")}>
                       {qualityCommitment.title}
                     </h2>
                   )}
                   {qualityCommitment?.description && (
-                    <p className="text-lg text-slate-300 leading-relaxed">
+                    <p className={cn(typography.lead, "text-slate-300 leading-relaxed")}>
                       {qualityCommitment.description}
                     </p>
                   )}
@@ -186,7 +181,7 @@ export default function CertificationsContent({
                   <div className="relative h-[400px] rounded-2xl overflow-hidden">
                     <Image
                       src={qualityCommitment.image.asset.url}
-                      alt={qualityCommitment.image.alt || 'Quality commitment'}
+                      alt={qualityCommitment.image.alt || ''}
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -207,12 +202,12 @@ export default function CertificationsContent({
             <AnimatedSection>
               <div className="text-center max-w-4xl mx-auto">
                 {cta?.title && (
-                  <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">
+                  <h2 className={cn(typography.h2, "mb-6")}>
                     {cta.title}
                   </h2>
                 )}
                 {cta?.description && (
-                  <p className="text-lg text-slate-600 dark:text-slate-400 mb-8">
+                  <p className={cn(typography.lead, "text-slate-600 dark:text-slate-400 mb-8")}>
                     {cta.description}
                   </p>
                 )}

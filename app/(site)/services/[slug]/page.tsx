@@ -1,10 +1,9 @@
 import { getSiteUrl } from '@/lib/site-url';
 import { getServiceBySlug, getAllServices } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
+import { notFound } from 'next/navigation';
 import { ServiceContent } from '../service-content';
-import { Button } from '@/components/ui/button';
-import { typography, cn } from '@/lib/design-system';
-import Link from 'next/link';
+import { generateBreadcrumbSchema } from '@/lib/structured-data';
 
 interface ServicePageProps {
   params: Promise<{
@@ -66,8 +65,8 @@ export async function generateStaticParams() {
   try {
     const services = await getAllServices();
     if (!services || services.length === 0) return [];
-    return services.map((service: any) => ({
-      slug: service.slug?.current || service.slug,
+    return services.map((service: { slug?: string }) => ({
+      slug: service.slug,
     }));
   } catch (error) {
     console.warn('Failed to generate static params for services:', error);
@@ -81,20 +80,23 @@ export default async function ServicePage({ params }: ServicePageProps) {
   const serviceData = await getServiceBySlug(slug, isEnabled);
 
   if (!serviceData) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <h1 className={cn(typography.h1, 'mb-4')}>Service Not Found</h1>
-          <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300 mb-8')}>
-            The service you&apos;re looking for could not be found.
-          </p>
-          <Button asChild>
-            <Link href="/services">View All Services</Link>
-          </Button>
-        </div>
-      </div>
-    );
+    notFound();
   }
 
-  return <ServiceContent serviceData={serviceData} slug={slug} />;
+  const baseUrl = getSiteUrl();
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: baseUrl },
+    { name: 'Services', url: `${baseUrl}/services` },
+    { name: serviceData.title, url: `${baseUrl}/services/${slug}` },
+  ]);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <ServiceContent serviceData={serviceData} slug={slug} />
+    </>
+  );
 }

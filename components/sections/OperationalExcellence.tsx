@@ -1,18 +1,13 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import * as Icons from 'lucide-react';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { STAGGER } from '@/lib/animation-config';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { cn } from '@/lib/utils';
-
-function DynamicIcon({ name, className }: { name: string; className?: string }) {
-  // Get the icon from lucide-react, fallback to Circle
-  const iconExport = name ? (Icons as Record<string, unknown>)[name] : null;
-  const Icon = (typeof iconExport === 'function' ? iconExport : Icons.Circle) as React.ComponentType<{ className?: string }>;
-  return <Icon className={className} />;
-}
+import SectionHeader from '@/components/ui/section-header';
+import { spacing } from '@/lib/design-system';
+import { DynamicIcon } from '@/components/ui/dynamic-icon';
 
 interface Benefit {
   iconName?: string;
@@ -43,7 +38,6 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
   const prefersReducedMotion = usePrefersReducedMotion();
 
   // Animation hooks for scroll-triggered animations that work on refresh
-  const headerAnim = useAnimateInView<HTMLDivElement>();
   const benefitsAnim = useAnimateInView<HTMLDivElement>();
   const certsAnim = useAnimateInView<HTMLDivElement>();
 
@@ -56,7 +50,7 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
   const benefits = data.benefits.filter((b: Benefit) => b.enabled !== false);
 
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden">
+    <section className={`relative ${spacing.section} overflow-hidden`}>
       {/* Dramatic Dark Background with Gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-blue-950/5 to-slate-950">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-950/30 via-slate-950 to-indigo-950/30" />
@@ -68,46 +62,18 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
       {/* Grid Pattern Overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:64px_64px]" />
 
-      <div className="container relative z-10">
+      <div className={`${spacing.container} relative z-10`}>
         {/* Header */}
-        <motion.div
-          ref={headerAnim.ref}
-          initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-          animate={headerAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-          transition={prefersReducedMotion ? { duration: 0 } : ANIM_TRANSITION}
-          className="text-center mb-8 md:mb-12"
-        >
-          {/* Using inline styles for WebKit compatibility (Tailwind bg-clip-text doesn't work in Safari) */}
-          {heading && (
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-tone-inverse mb-6">
-              {heading.split(' ').map((word, i, arr) => (
-                i === arr.length - 1 ? (
-                  <span
-                    key={i}
-                    style={{
-                      background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                    }}
-                  >
-                    {word}
-                  </span>
-                ) : (
-                  <span key={i}>{word} </span>
-                )
-              ))}
-            </h2>
-          )}
-          {description && (
-            <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto">
-              {description}
-            </p>
-          )}
-        </motion.div>
+        <SectionHeader
+          heading={heading}
+          gradientWordPosition="last"
+          description={description}
+          centered={true}
+          className="[&_h2]:text-tone-inverse [&_p]:text-slate-300"
+        />
 
         {/* Benefits - Horizontal Cards with Dramatic Design */}
-        <div ref={benefitsAnim.ref} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div ref={benefitsAnim.ref} className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid}`}>
           {benefits.map((benefit, index) => (
             <motion.div
               key={index}
@@ -119,9 +85,9 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
               }}
               className="group"
             >
-              <div className="relative h-full p-8 rounded-3xl bg-gradient-to-br from-slate-900/80 to-slate-900/40 border border-slate-800/50 backdrop-blur-sm hover:border-blue-500/30 transition-all duration-500">
+              <div className="relative h-full p-8 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-900/40 border border-slate-800/50 backdrop-blur-sm hover:border-blue-500/30 transition-all duration-500">
                 {/* Glow Effect on Hover */}
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 {/* Icon with Gradient Background */}
                 <div className="relative mb-6">
@@ -136,7 +102,7 @@ export default function OperationalExcellence({ data }: OperationalExcellencePro
                 </h3>
 
                 {/* Description */}
-                <p className="relative text-slate-400 leading-relaxed">
+                <p className="relative text-slate-300 leading-relaxed">
                   {benefit.description}
                 </p>
 

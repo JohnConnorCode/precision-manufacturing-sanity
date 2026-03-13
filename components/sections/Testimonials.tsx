@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import { spacing } from '@/lib/design-system';
+import SectionHeader from '@/components/ui/section-header';
 
 interface Testimonial {
   _id: string;
@@ -53,11 +55,9 @@ export default function Testimonials({ data, sectionLabel }: TestimonialsProps) 
 
   const testimonial = testimonials[current];
 
-  // Get author initial for avatar
-  const authorInitial = testimonial.author?.charAt(0)?.toUpperCase() || '?';
 
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
+    <section className={`relative ${spacing.section} overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950`}>
       {/* Top gradient divider */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
 
@@ -67,17 +67,13 @@ export default function Testimonials({ data, sectionLabel }: TestimonialsProps) 
       {/* Subtle accent glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-600/5 dark:bg-blue-600/5 rounded-full blur-[100px]" />
 
-      <div className="container relative z-10">
+      <div className={`${spacing.container} relative z-10`}>
         <div ref={sectionAnim.ref} className="max-w-4xl mx-auto text-center">
           {/* Section Label */}
-          <motion.p
-            initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-            animate={sectionAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-            transition={prefersReducedMotion ? { duration: 0 } : ANIM_TRANSITION}
-            className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em] mb-12"
-          >
-            {sectionLabel || 'Client Testimonials'}
-          </motion.p>
+          <SectionHeader
+            eyebrow={sectionLabel}
+            className="mb-12 [&]:mb-12"
+          />
 
           {/* Large Decorative Quotation Marks */}
           <motion.div
@@ -123,13 +119,9 @@ export default function Testimonials({ data, sectionLabel }: TestimonialsProps) 
                 {/* Gradient accent line */}
                 <div className="w-16 h-0.5 mx-auto mb-8 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600" />
 
-                {/* Author with initial avatar */}
+                {/* Author */}
                 <div className="flex flex-col items-center">
-                  {/* Avatar circle with gradient */}
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center mb-3 shadow-lg shadow-blue-600/20">
-                    <span className="text-lg font-bold text-white">{authorInitial}</span>
-                  </div>
-                  <p className="text-lg font-semibold text-slate-900 dark:text-white">
+                  <p className="text-lg font-semibold text-slate-900 dark:text-tone-inverse">
                     {testimonial.author}
                   </p>
                   {(testimonial.role || testimonial.company) && (
@@ -152,7 +144,7 @@ export default function Testimonials({ data, sectionLabel }: TestimonialsProps) 
             >
               <button
                 onClick={() => handleUserNav(prev)}
-                className="p-2 rounded-full border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="p-2 rounded-full border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 transition-colors"
                 aria-label="Previous testimonial"
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -164,19 +156,20 @@ export default function Testimonials({ data, sectionLabel }: TestimonialsProps) 
                   <button
                     key={index}
                     onClick={() => handleUserNav(() => setCurrent(index))}
-                    className={`w-2 h-2 rounded-full transition-all ${
+                    className={`w-2 h-2 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 ${
                       index === current
                         ? 'bg-blue-600 dark:bg-blue-500 w-6'
                         : 'bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600'
                     }`}
                     aria-label={`Go to testimonial ${index + 1}`}
+                    aria-current={index === current ? 'true' : undefined}
                   />
                 ))}
               </div>
 
               <button
                 onClick={() => handleUserNav(next)}
-                className="p-2 rounded-full border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="p-2 rounded-full border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 transition-colors"
                 aria-label="Next testimonial"
               >
                 <ChevronRight className="w-5 h-5" />
