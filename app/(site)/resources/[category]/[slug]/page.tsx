@@ -12,7 +12,9 @@ import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
 import AnimatedSection from '@/components/ui/animated-section';
 import ResourceCard from '@/components/ui/resource-card';
-import { typography, spacing, cn } from '@/lib/design-system';
+import { typography, spacing } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 // Enable ISR with 1 hour revalidation
 export const revalidate = 3600;
@@ -21,9 +23,9 @@ export async function generateStaticParams() {
   try {
     const resources = await getAllResources();
     if (!resources || resources.length === 0) return [];
-    return resources.map((resource: any) => ({
+    return resources.map((resource: { category?: string | { name?: string }; slug?: string }) => ({
       category: typeof resource.category === 'string' ? resource.category : (resource.category?.name || 'general'),
-      slug: resource.slug?.current || resource.slug,
+      slug: resource.slug,
     }));
   } catch (error) {
     console.warn('Failed to generate static params for resources:', error);
@@ -94,16 +96,8 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
   // Fetch related resources (same category, excluding current)
   const allResources = await getAllResources(isEnabled);
   const relatedResources = allResources
-    .filter((r: any) => {
-      const rCategory = typeof r.category === 'string' ? r.category : r.category?.name;
-      const rSlug = r.slug?.current || r.slug;
-      return rCategory === category && rSlug !== slug;
-    })
-    .slice(0, 3)
-    .map((r: any) => ({
-      ...r,
-      slug: r.slug?.current || r.slug,
-    }));
+    .filter((r: { category?: string; slug?: string; _id?: string }) => r.category === category && r.slug !== slug)
+    .slice(0, 3);
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -132,25 +126,17 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
         alignment="center"
         darkHero={true}
         title={(() => {
-          // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
-          const gradientStyle = {
-            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          } as React.CSSProperties;
-
           const title = resource.title || '';
           const words = title.split(' ');
           if (words.length <= 1) {
-            return <span style={gradientStyle}>{title}</span>;
+            return <span style={gradientTextStyle}>{title}</span>;
           }
           const firstPart = words.slice(0, -1).join(' ');
           const lastWord = words[words.length - 1];
           return (
             <span>
               <span className="text-inherit">{firstPart} </span>
-              <span style={gradientStyle}>{lastWord}</span>
+              <span style={gradientTextStyle}>{lastWord}</span>
             </span>
           );
         })()}
@@ -207,7 +193,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
       <article>
         {/* Excerpt & Tags */}
         <AnimatedSection delay={0.1}>
-          <section className="py-12 px-4 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
+          <section className={`${spacing.sectionCompact} px-4 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950`}>
             <div className="max-w-4xl mx-auto">
               <p className={cn(typography.lead, 'text-slate-600 dark:text-slate-300 mb-6 text-center')}>
                 {resource.excerpt}
@@ -215,7 +201,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
 
               {resource.tags && resource.tags.length > 0 && (
                 <div className="flex flex-wrap justify-center gap-2">
-                  {resource.tags.map((tagObj: any) => {
+                  {resource.tags.map((tagObj: string | { tag?: string }) => {
                     const tagText = typeof tagObj === 'string' ? tagObj : tagObj.tag;
                     if (!tagText) return null;
                     return (
@@ -255,9 +241,9 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
 
         {/* Main Content */}
         <AnimatedSection delay={0.2}>
-          <section className="py-12 md:py-16 px-4">
+          <section className={`${spacing.sectionCompact} px-4`}>
             <div className="max-w-4xl mx-auto">
-              <Card className="p-8 md:p-12 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 shadow-lg">
+              <Card className="p-8 md:p-12 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_6px_rgba(0,0,0,0.04),0_12px_24px_-4px_rgba(0,0,0,0.08)]">
                 {resource.content ? (
                   <div className="prose prose-slate prose-lg max-w-none dark:prose-invert
                     prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-slate-900 dark:prose-headings:text-tone-inverse
@@ -288,7 +274,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
         {/* Related Resources */}
         {relatedResources.length > 0 && (
           <AnimatedSection delay={0.3}>
-            <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
+            <section className={`${spacing.section} px-4 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950`}>
               <div className={spacing.container}>
                 <SectionHeader
                   eyebrow="Continue Learning"
@@ -299,7 +285,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
                 />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                  {relatedResources.map((related: any, index: number) => (
+                  {relatedResources.map((related, index: number) => (
                     <AnimatedSection key={related._id} delay={0.1 * index}>
                       <ResourceCard resource={related} />
                     </AnimatedSection>
@@ -321,20 +307,17 @@ export default async function ResourcePage({ params }: { params: Promise<{ categ
 
         {/* CTA Section */}
         <AnimatedSection delay={0.4}>
-          <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 dark-section">
+          <section className={`${spacing.section} px-4 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 dark-section`}>
             <div className="max-w-4xl mx-auto text-center">
               <SectionHeader
-                eyebrow={articleCta?.eyebrow || 'Ready to Start?'}
-                heading={articleCta?.heading || "Apply What You've Learned"}
+                eyebrow={articleCta?.eyebrow}
+                heading={articleCta?.heading}
                 gradientWordPosition="last"
-                description={articleCta?.description || 'Contact us to discuss your precision machining needs and learn how we can help bring your project to life.'}
+                description={articleCta?.description}
                 className="[&_h2]:text-tone-inverse [&_p]:text-slate-300 mb-8"
               />
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                {(articleCta?.buttons || [
-                  { label: 'Get a Quote', href: '/contact', variant: 'default' },
-                  { label: 'Explore Services', href: '/services', variant: 'secondary' },
-                ])
+                {(articleCta?.buttons || [])
                   .filter((btn: { enabled?: boolean }) => btn.enabled !== false)
                   .map((btn: { label?: string; href?: string; variant?: string }, i: number) => (
                     <Link key={i} href={btn.href || '/contact'}>

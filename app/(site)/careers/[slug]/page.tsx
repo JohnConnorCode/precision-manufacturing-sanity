@@ -9,8 +9,8 @@ export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const jobs = await getAllJobPostings();
-  return jobs.map((job: any) => ({
-    slug: job.slug?.current || job.slug,
+  return jobs.map((job: { slug?: string }) => ({
+    slug: job.slug,
   }));
 }
 

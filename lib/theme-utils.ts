@@ -116,3 +116,15 @@ export function getThemedStyles(colors: ThemeColors) {
     primaryShadow: getPrimaryShadowStyle(colors),
   };
 }
+
+/**
+ * Standard gradient text style (blue-600 to indigo-600)
+ * Use this for gradient text that doesn't need theme-awareness.
+ * Prefer this constant over inline style objects to keep things DRY.
+ */
+export const gradientTextStyle: React.CSSProperties = {
+  background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text',
+};

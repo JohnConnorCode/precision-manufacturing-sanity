@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { PortableText } from '@portabletext/react'
+import { PortableText, type PortableTextProps } from '@portabletext/react'
 import { CalloutBox } from '@/components/ui/callout-box'
 import { TechnicalSpecs } from '@/components/ui/technical-specs'
 import { CTAButton } from '@/components/ui/cta-button'
@@ -79,7 +79,7 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
         <div className="my-8">
           <Image
             src={imageUrl}
-            alt={value.alt || 'Resource image'}
+            alt={value.alt || ''}
             width={1200}
             height={800}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 85vw"
@@ -230,7 +230,7 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
     // Use CSS classes for light/dark mode, only use inline style if CMS override exists
     h1: ({ children }: any) => (
       <h1
-        className={`text-4xl font-bold mt-8 mb-4 text-slate-900 dark:text-white ${h1Classes}`}
+        className={`text-4xl font-bold mt-8 mb-4 text-slate-900 dark:text-tone-inverse ${h1Classes}`}
         style={h1Color ? { color: h1Color } : undefined}
       >
         {children}
@@ -238,7 +238,7 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
     ),
     h2: ({ children }: any) => (
       <h2
-        className={`text-3xl font-bold mt-8 mb-4 text-slate-900 dark:text-white ${h2Classes}`}
+        className={`text-3xl font-bold mt-8 mb-4 text-slate-900 dark:text-tone-inverse ${h2Classes}`}
         style={h2Color ? { color: h2Color } : undefined}
       >
         {children}
@@ -246,7 +246,7 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
     ),
     h3: ({ children }: any) => (
       <h3
-        className={`text-2xl font-bold mt-6 mb-3 text-slate-900 dark:text-white ${h3Classes}`}
+        className={`text-2xl font-bold mt-6 mb-3 text-slate-900 dark:text-tone-inverse ${h3Classes}`}
         style={h3Color ? { color: h3Color } : undefined}
       >
         {children}
@@ -254,7 +254,7 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
     ),
     h4: ({ children }: any) => (
       <h4
-        className={`text-xl font-bold mt-6 mb-3 text-slate-900 dark:text-white ${h4Classes}`}
+        className={`text-xl font-bold mt-6 mb-3 text-slate-900 dark:text-tone-inverse ${h4Classes}`}
         style={h4Color ? { color: h4Color } : undefined}
       >
         {children}
@@ -285,7 +285,7 @@ export function createPortableTextComponents(styles?: RichTextStyles) {
   marks: {
     // Custom styles for inline elements
     strong: ({ children }: any) => (
-      <strong className="font-bold text-slate-900 dark:text-white">{children}</strong>
+      <strong className="font-bold text-slate-900 dark:text-tone-inverse">{children}</strong>
     ),
     em: ({ children }: any) => (
       <em className="italic">{children}</em>
@@ -352,7 +352,7 @@ export const PortableTextContent = React.memo(function PortableTextContent({
   value,
   styles
 }: {
-  value: any;
+  value: PortableTextProps['value'];
   styles?: RichTextStyles
 }) {
   // Memoize components to avoid recreating them on every render

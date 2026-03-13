@@ -1,5 +1,5 @@
 import { getSiteUrl } from '@/lib/site-url';
-import TermsPageClient from './page-client';
+import TermsPageClient, { type TermsData } from './page-client';
 import { getTerms } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 
@@ -10,7 +10,7 @@ export default async function TermsPage() {
   const { isEnabled: isDraft } = await draftMode();
   const termsData = await getTerms(isDraft);
 
-  return <TermsPageClient data={termsData as any} />;
+  return <TermsPageClient data={termsData as TermsData} />;
 }
 
 // Generate metadata for SEO

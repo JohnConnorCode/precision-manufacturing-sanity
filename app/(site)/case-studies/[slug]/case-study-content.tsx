@@ -6,10 +6,12 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Quote, Award, Clock, Building2 } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { useTheme } from '@/lib/contexts/ThemeContext';
+import { spacing } from '@/lib/design-system';
 import { cn } from '@/lib/utils';
 import { getToneTypography } from '@/lib/typography';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 interface CaseStudyData {
   title: string;
@@ -195,7 +197,7 @@ export default function CaseStudyContent({ data, relatedCaseStudies = [] }: { da
       )}
 
       {/* Challenge & Solution */}
-      <section className="py-20 md:py-28">
+      <section className={spacing.sectionCompact}>
         <div className="max-w-7xl mx-auto px-6 md:px-8">
           <div className="grid md:grid-cols-2 gap-12 md:gap-20">
             {/* The Challenge */}
@@ -237,7 +239,7 @@ export default function CaseStudyContent({ data, relatedCaseStudies = [] }: { da
 
       {/* Gallery */}
       {data.galleryImages && data.galleryImages.length > 0 && (
-        <section className="py-24 md:py-32 bg-slate-50 dark:bg-slate-900">
+        <section className={`${spacing.section} bg-slate-50 dark:bg-slate-900`}>
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <motion.h2
               ref={galleryHeaderAnim.ref}
@@ -288,7 +290,7 @@ export default function CaseStudyContent({ data, relatedCaseStudies = [] }: { da
 
       {/* Testimonial */}
       {data.testimonial?.quote && (
-        <section className="py-20 md:py-28 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark-section">
+        <section className={`${spacing.sectionCompact} bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark-section`}>
           <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
             <motion.div
               ref={testimonialAnim.ref}
@@ -318,7 +320,7 @@ export default function CaseStudyContent({ data, relatedCaseStudies = [] }: { da
 
       {/* Technologies & Certifications */}
       {((data.technologies && data.technologies.length > 0) || (data.certifications && data.certifications.length > 0)) && (
-        <section className="py-16 md:py-24">
+        <section className={spacing.sectionCompact}>
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <div className="grid md:grid-cols-2 gap-12">
               {/* Technologies */}
@@ -373,7 +375,7 @@ export default function CaseStudyContent({ data, relatedCaseStudies = [] }: { da
 
       {/* Related Case Studies */}
       {relatedCaseStudies.length > 0 && (
-        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
+        <section className={`${spacing.section} bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950`}>
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <motion.div
               ref={relatedAnim.ref}
@@ -446,7 +448,7 @@ export default function CaseStudyContent({ data, relatedCaseStudies = [] }: { da
       )}
 
       {/* CTA Section - Premium Dark */}
-      <section className="relative py-24 md:py-32 overflow-hidden dark-section">
+      <section className={`relative ${spacing.section} overflow-hidden dark-section`}>
         {/* Premium dark background with decorative elements */}
         <div className="absolute inset-0 bg-slate-950">
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900" />
@@ -486,14 +488,7 @@ export default function CaseStudyContent({ data, relatedCaseStudies = [] }: { da
             </p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tone-inverse mb-6 leading-tight">
               Ready to Achieve{' '}
-              <span
-                style={{
-                  background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
+              <span style={gradientTextStyle}>
                 Similar&nbsp;Results?
               </span>
             </h2>

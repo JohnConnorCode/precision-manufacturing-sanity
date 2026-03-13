@@ -183,11 +183,6 @@ function sendMetric(name: string, value: number, pathname: string) {
     });
   }
 
-  // Console logging for development
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`${name}: ${Math.round(value)}ms (${getMetricRating(name, value)}) - ${pathname}`);
-  }
-
   sendToMetricsEndpoint({
     type: 'core-web-vital',
     name,

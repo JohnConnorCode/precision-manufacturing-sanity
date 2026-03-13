@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
-import { typography, spacing, styles, cn } from '@/lib/design-system';
+import { typography, spacing, styles, sections } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 import { ArrowRight, Award } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -14,6 +15,7 @@ import type { Metadata } from 'next';
 import type { ServiceItem, ServiceCapability, QualityAssuranceItem, CMSButton, ServiceSpec, PortableTextBlock } from '@/lib/types/cms';
 import { draftMode } from 'next/headers';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 // Defensive converter: accepts strings, PT arrays, or simple objects
 function toPlainText(value: string | PortableTextBlock[] | { text?: string; spec?: string; label?: string } | null | undefined): string {
@@ -37,11 +39,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const pageUrl = `${baseUrl}/services`;
 
   // Pull SEO data from Sanity with fallbacks
-  const seoTitle = servicesPage?.seo?.metaTitle || 'Precision Machining Services | 5-Axis CNC, Metrology, Engineering | IIS';
-  const seoDescription = servicesPage?.seo?.metaDescription || 'Advanced machining services: 5-axis CNC machining, precision metrology, adaptive machining, engineering support. AS9100D certified, ±0.0001" tolerances, 150+ materials. ITAR registered for aerospace & defense.';
-  const seoKeywords = servicesPage?.seo?.keywords?.join(', ') || 'precision machining, 5-axis CNC machining, metrology services, CMM inspection, adaptive machining, engineering services, AS9100D, ITAR, aerospace machining, defense machining, tight tolerance machining';
+  const seoTitle = servicesPage?.seo?.metaTitle;
+  const seoDescription = servicesPage?.seo?.metaDescription;
+  const seoKeywords = servicesPage?.seo?.keywords?.join(', ');
   const ogImage = servicesPage?.seo?.ogImage?.asset?.url || null;
-  const ogImageAlt = servicesPage?.seo?.ogImage?.alt || 'IIS - Integrated Inspection Systems Services - CNC Machining and Metrology';
+  const ogImageAlt = servicesPage?.seo?.ogImage?.alt || '';
 
   return {
     title: seoTitle,
@@ -102,12 +104,10 @@ export default async function ServicesPage() {
 
   // Format services with slug and plain text description
   const formattedServices = services?.map((service: ServiceItem, _slug: number) => {
-    const slugStr = typeof service.slug === 'string' ? service.slug : service.slug?.current || '';
     return {
       ...service,
-      slug: slugStr,
       description: toPlainText(service.shortDescription) || portableTextToPlainText(service.description),
-      href: `/services/${slugStr}`,
+      href: `/services/${service.slug}`,
     };
   }) || [];
 
@@ -184,26 +184,18 @@ export default async function ServicesPage() {
           backgroundImage={heroBackgroundImage || ''}
           imageAlt={heroImageAlt}
           title={(() => {
-            // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
-            const gradientStyle = {
-              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            } as React.CSSProperties;
-
             if (!heroHeading) return '';
             // Split title to highlight last word in gradient (matches detail pages)
             const words = heroHeading.split(' ');
             if (words.length === 1) {
-              return <span style={gradientStyle}>{heroHeading}</span>;
+              return <span style={gradientTextStyle}>{heroHeading}</span>;
             }
             const firstPart = words.slice(0, -1).join(' ');
             const lastWord = words[words.length - 1];
             return (
               <span>
                 <span className="text-inherit">{firstPart} </span>
-                <span style={gradientStyle}>{lastWord}</span>
+                <span style={gradientTextStyle}>{lastWord}</span>
               </span>
             );
           })()}
@@ -217,7 +209,7 @@ export default async function ServicesPage() {
 
       {/* Capabilities Overview - only show if there are enabled capabilities */}
       {capabilities.filter((c: ServiceCapability) => c?.enabled !== false).length > 0 && (
-        <section id="capabilities" className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
+        <section id="capabilities" className={sections.light}>
           <div className={spacing.container}>
             <AnimatedSection>
               {(() => {
@@ -239,12 +231,7 @@ export default async function ServicesPage() {
                         key={capability.label}
                         className="text-center"
                       >
-                        <div className="text-3xl md:text-4xl font-bold" style={{
-                          background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                          WebkitBackgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                          backgroundClip: 'text',
-                        }}>
+                        <div className="text-3xl md:text-4xl font-bold" style={gradientTextStyle}>
                           {capability.value}
                         </div>
                         <div className={cn(typography.badge, "text-slate-700 dark:text-slate-300 mb-2")}>
@@ -264,7 +251,7 @@ export default async function ServicesPage() {
       )}
 
       {/* Services Grid */}
-      <section id="services" className="py-24 md:py-32 lg:py-20">
+      <section id="services" className={spacing.section}>
         <div className={spacing.container}>
           {(servicesPageData?.content?.sectionTitle || servicesPageData?.content?.sectionDescription) && (
             <AnimatedSection>
@@ -348,7 +335,7 @@ export default async function ServicesPage() {
       </section>
 
       {(qualityIntro || qualityAssurance.length > 0) && (
-        <section className="py-24 md:py-32 lg:py-20 bg-slate-900 dark-section">
+        <section className={`${spacing.section} bg-slate-900 dark-section`}>
           <div className={spacing.container}>
             <AnimatedSection>
               <div className="text-center mb-12">
@@ -416,26 +403,12 @@ export default async function ServicesPage() {
                 )}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   {ctaButtons.map((button: CMSButton, index: number) => (
-                    button.variant === 'secondary' ? (
-                      <Button
-                        key={`${button.label}-${index}`}
-                        size="lg"
-                        className={styles.ctaSecondary}
-                        variant="outline"
-                        asChild
-                      >
-                        <Link href={button.href || '#'}>
-                          {button.label || button.text}
-                        </Link>
-                      </Button>
-                    ) : (
-                      <Link key={`${button.label}-${index}`} href={button.href || '#'}>
-                        <PremiumButton size="lg">
-                          {button.label || button.text}
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </PremiumButton>
-                      </Link>
-                    )
+                    <Link key={`${button.label}-${index}`} href={button.href || '#'}>
+                      <PremiumButton size="lg" variant={button.variant === 'secondary' ? 'secondary' : 'default'}>
+                        {button.label || button.text}
+                        {button.variant !== 'secondary' && <ArrowRight className="ml-2 h-4 w-4" />}
+                      </PremiumButton>
+                    </Link>
                   ))}
                 </div>
               </div>

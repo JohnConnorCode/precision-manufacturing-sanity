@@ -5,9 +5,11 @@ import { motion } from 'framer-motion';
 import { Linkedin, Twitter, Facebook, Mail, Phone, MapPin, Zap } from 'lucide-react';
 import Logo from '@/components/ui/logo';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
-import { typography, colors, cn } from '@/lib/design-system';
+import { typography, colors } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { usePrefersReducedMotion } from '@/lib/motion';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 interface FooterProps {
   data?: {
@@ -27,19 +29,16 @@ interface FooterProps {
     };
     servicesLinks?: Array<{
       label?: string;
-      text?: string;
       href?: string;
       enabled?: boolean;
     }>;
     resourcesLinks?: Array<{
       label?: string;
-      text?: string;
       href?: string;
       enabled?: boolean;
     }>;
     quickLinks?: Array<{
       label?: string;
-      text?: string;
       href?: string;
       enabled?: boolean;
     }>;
@@ -65,9 +64,7 @@ interface FooterProps {
 
 const Footer = ({ data }: FooterProps) => {
   // 100% CMS controlled - no hardcoded fallbacks
-  // Map Sanity field names (text) to expected field names (label)
   interface FooterLink {
-    text?: string;
     label?: string;
     href?: string;
     enabled?: boolean;
@@ -78,7 +75,7 @@ const Footer = ({ data }: FooterProps) => {
     return links
       .filter(link => link?.enabled !== false)
       .map(link => ({
-        label: link.text || link.label || '',
+        label: link.label || '',
         href: link.href || '#'
       }));
   };
@@ -166,12 +163,7 @@ const Footer = ({ data }: FooterProps) => {
             animate={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : (shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial)}
             transition={{ ...ANIM_TRANSITION, delay: colDelay(1) }}
           >
-            <h4 className="font-semibold mb-3" style={{
-              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>{footerData.servicesHeading}</h4>
+            <h4 className="font-semibold mb-3" style={gradientTextStyle}>{footerData.servicesHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.servicesLinks.map((link) => (
                 <li key={link.label}>
@@ -190,12 +182,7 @@ const Footer = ({ data }: FooterProps) => {
               animate={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : (shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial)}
               transition={{ ...ANIM_TRANSITION, delay: colDelay(2) }}
             >
-              <h4 className="font-semibold mb-3" style={{
-                background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}>{footerData.resourcesHeading}</h4>
+              <h4 className="font-semibold mb-3" style={gradientTextStyle}>{footerData.resourcesHeading}</h4>
               <ul className="space-y-2 text-sm">
                 {footerData.resourcesLinks.map((link) => (
                   <li key={link.label}>
@@ -214,12 +201,7 @@ const Footer = ({ data }: FooterProps) => {
             animate={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : (shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial)}
             transition={{ ...ANIM_TRANSITION, delay: colDelay(3) }}
           >
-            <h4 className="font-semibold mb-3" style={{
-              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>{footerData.quickLinksHeading}</h4>
+            <h4 className="font-semibold mb-3" style={gradientTextStyle}>{footerData.quickLinksHeading}</h4>
             <ul className="space-y-2 text-sm">
               {footerData.quickLinks.map((link) => (
                 <li key={link.label}>
@@ -237,12 +219,7 @@ const Footer = ({ data }: FooterProps) => {
             animate={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : (shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial)}
             transition={{ ...ANIM_TRANSITION, delay: colDelay(4) }}
           >
-            <h4 className="font-semibold mb-3" style={{
-              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>{footerData.contactHeading}</h4>
+            <h4 className="font-semibold mb-3" style={gradientTextStyle}>{footerData.contactHeading}</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start space-x-2">
                 <Mail className={cn('h-4 w-4 mt-0.5', colors.footer.icon)} />

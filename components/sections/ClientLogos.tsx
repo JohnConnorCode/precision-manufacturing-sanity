@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { usePrefersReducedMotion } from '@/lib/motion';
+import { spacing } from '@/lib/design-system';
 import { cn } from '@/lib/utils';
 import { useAnimateInView, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 
@@ -53,15 +54,15 @@ export default function ClientLogos({ data }: ClientLogosProps) {
   const duplicatedLogos = [...logos, ...logos];
 
   return (
-    <section className="py-12 md:py-16 bg-slate-50 dark:bg-slate-900 overflow-hidden">
-      <div className="container mb-8">
+    <section className={`${spacing.sectionCompact} bg-slate-50 dark:bg-slate-900 overflow-hidden`}>
+      <div className={`${spacing.container} mb-8`}>
         {data.eyebrow && (
           <motion.p
             ref={eyebrowAnim.ref}
             initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             animate={eyebrowAnim.shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={prefersReducedMotion ? { duration: 0 } : ANIM_TRANSITION}
-            className="text-center text-xs md:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]"
+            className="text-center text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em]"
           >
             {data.eyebrow}
           </motion.p>
@@ -72,7 +73,7 @@ export default function ClientLogos({ data }: ClientLogosProps) {
       <div className="relative">
         {prefersReducedMotion ? (
           /* Static Grid for Reduced Motion Users */
-          <div className="container">
+          <div className={spacing.container}>
             <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
               {logos.map((logo) => {
                 const logoUrl = logo.logo?.asset?.url;

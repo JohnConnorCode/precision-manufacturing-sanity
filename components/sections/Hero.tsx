@@ -10,6 +10,8 @@ import Image from 'next/image';
 import HeroSliderFixed from '@/components/ui/hero-slider-fixed';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { colorStyleToCSS, getOverlayStyles, getButtonStyles, ColorStyle } from '@/lib/sanity-styles';
+import { spacing } from '@/lib/design-system';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 interface HeroData {
   // Three-word structure (new)
@@ -21,7 +23,7 @@ interface HeroData {
   mainTitle?: string;
   subTitle?: string;
   tagline?: string;
-  badges?: Array<{ text: string; enabled?: boolean } | string>;
+  badges?: Array<{ text?: string; badge?: string; enabled?: boolean } | string>;
   ctaPrimary?: { text: string; href: string };
   ctaSecondary?: { text: string; href: string };
   ctaTertiary?: { text: string; href: string };
@@ -112,20 +114,20 @@ export default function Hero({ data }: HeroProps) {
   const word2 = data?.word2?.trim() || '';
   const word3 = data?.word3?.trim() || '';
 
-  // Hero font size - optimized for professional B2B appearance
-  const heroFontSize = data?.heroFontSize || 'text-[2.25rem] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[3.75rem] xl:text-[4.25rem]';
+  // Hero font size - scaled to keep "PRECISION MACHINING AND" on one line at lg+
+  const heroFontSize = data?.heroFontSize || 'text-[1.75rem] sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3.25rem] xl:text-[3.75rem]';
   const tagline = data?.tagline?.trim() || '';
 
   // Handle both string badges and object badges from Sanity
   const badges = Array.isArray(data?.badges)
-    ? (data?.badges as Array<any>)
-        .filter((badge: any) => {
+    ? (data?.badges as Array<{ text?: string; badge?: string; enabled?: boolean } | string>)
+        .filter((badge) => {
           if (typeof badge === 'string') {
             return badge.trim().length > 0;
           }
           return badge?.enabled !== false && Boolean(badge?.text || badge?.badge);
         })
-        .map((badge: any) =>
+        .map((badge) =>
           typeof badge === 'string' ? badge : (badge.text || badge.badge || '')
         )
     : [];
@@ -147,10 +149,9 @@ export default function Hero({ data }: HeroProps) {
 
   const overlayStyle = getOverlayStyles(data?.overlay);
   const primaryButtonStyles = getButtonStyles(data?.buttonStyles?.primaryButton);
-  const _secondaryButtonStyles = getButtonStyles(data?.buttonStyles?.secondaryButton);
 
   return (
-    <section data-hero-section="dark" className="relative min-h-screen flex items-center justify-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px] bg-slate-950 text-white">
+    <section data-hero-section="dark" className="relative min-h-screen flex items-center justify-center overflow-hidden -mt-20 lg:-mt-[120px] pt-20 lg:pt-[120px] bg-slate-950 text-tone-inverse">
       {/* Premium Background Slider */}
       <HeroSliderFixed slides={finalSlides} />
 
@@ -164,7 +165,7 @@ export default function Hero({ data }: HeroProps) {
       {/* Content Container - Parallax only applies AFTER initial animations */}
       <motion.div
         style={{ y: textY, opacity: textOpacity }}
-        className="container relative z-10 px-6 md:px-8 -mt-8 lg:mt-0"
+        className={`${spacing.container} relative z-10 -mt-8 lg:mt-0`}
       >
         <div className="max-w-5xl mx-auto">
           <div className="text-center">
@@ -215,10 +216,7 @@ export default function Hero({ data }: HeroProps) {
                           filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
                         }
                       : {
-                          background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                          WebkitBackgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                          backgroundClip: 'text',
+                          ...gradientTextStyle,
                           filter: 'drop-shadow(0 2px 8px rgba(37, 99, 235, 0.25))'
                         }
                   }
@@ -286,7 +284,7 @@ export default function Hero({ data }: HeroProps) {
                       ? primaryButtonStyles.style
                       : {
                           backgroundImage: 'linear-gradient(to right, #2563eb, #3b82f6, #4f46e5)',
-                          color: '#ffffff',
+                          color: 'white',
                           boxShadow: 'rgba(37, 99, 235, 0.25) 0px 0px 20px, rgba(37, 99, 235, 0.15) 0px 8px 16px'
                         }
                   }

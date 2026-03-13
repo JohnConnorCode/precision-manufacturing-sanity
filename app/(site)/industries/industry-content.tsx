@@ -1,18 +1,20 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
+import { PremiumButton } from '@/components/ui/premium-button';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, CheckCircle, Award, TrendingUp, Target } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { typography, spacing, styles, cn } from '@/lib/design-system';
+import { typography, spacing, styles, shadows } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 import HeroSection from '@/components/ui/hero-section';
 import React from 'react';
 import { getHeroImageAlt, getHeroImageUrl } from '@/lib/hero-images';
 import type { SanityImageSource } from '@/lib/image-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 const hasText = (value?: string | null): value is string =>
   typeof value === 'string' && value.trim().length > 0;
@@ -214,24 +216,16 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
         alignment="center"
         showScrollIndicator={true}
         title={(() => {
-          // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
-          const gradientStyle = {
-            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          } as React.CSSProperties;
-
           const words = industry.title.split(' ');
           if (words.length === 1) {
-            return <span style={gradientStyle}>{industry.title}</span>;
+            return <span style={gradientTextStyle}>{industry.title}</span>;
           }
           const firstPart = words.slice(0, -1).join(' ');
           const lastWord = words[words.length - 1];
           return (
             <span>
               <span className="text-inherit">{firstPart} </span>
-              <span style={gradientStyle}>{lastWord}</span>
+              <span style={gradientTextStyle}>{lastWord}</span>
             </span>
           );
         })()}
@@ -351,7 +345,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                     transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
                     <Card className={cn(styles.featureCard, 'h-full')}>
-                      <h3 className={cn(typography.h4, 'mb-4')}>{capabilityTitle || 'Capability'}</h3>
+                      <h3 className={cn(typography.h4, 'mb-4')}>{capabilityTitle}</h3>
                       {capabilityDescription && (
                         <p className={cn(typography.body, 'mb-6')}>{capabilityDescription}</p>
                       )}
@@ -426,7 +420,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                   >
                     {/* Content */}
                     <div className={index % 2 === 0 ? '' : 'lg:col-start-2'}>
-                      <h3 className={cn(typography.h3, 'mb-4')}>{componentTitle || 'Component'}</h3>
+                      <h3 className={cn(typography.h3, 'mb-4')}>{componentTitle}</h3>
                       {componentDescription && (
                         <p className={cn(typography.lead, 'mb-8 text-slate-600 dark:text-slate-400')}>
                           {componentDescription}
@@ -492,10 +486,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
 
                     <div className={index % 2 === 0 ? '' : 'lg:col-start-1 lg:row-start-1'}>
                       {componentImageUrl && (
-                        <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl">
+                        <div className={`relative h-[400px] rounded-2xl overflow-hidden ${shadows.elevated}`}>
                           <Image
                             src={componentImageUrl}
-                            alt={componentTitle || 'Component'}
+                            alt={componentTitle}
                             fill
                             className="object-cover"
                             sizes="(max-width: 768px) 100vw, 50vw"
@@ -554,7 +548,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                   >
                     {/* Content */}
                     <div className={index % 2 === 0 ? '' : 'lg:col-start-2'}>
-                      <h3 className={cn(typography.h3, 'mb-6')}>{expertiseTitle || 'Expertise'}</h3>
+                      <h3 className={cn(typography.h3, 'mb-6')}>{expertiseTitle}</h3>
                       {expertiseDescription && (
                         <p className={cn(typography.body, 'mb-8 text-slate-600 dark:text-slate-400')}>
                           {expertiseDescription}
@@ -620,10 +614,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
 
                     <div className={index % 2 === 0 ? '' : 'lg:col-start-1 lg:row-start-1'}>
                       {expertiseImageUrl && (
-                        <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                        <div className={`relative h-[500px] rounded-2xl overflow-hidden ${shadows.elevated}`}>
                           <Image
                             src={expertiseImageUrl}
-                            alt={expertiseTitle || 'Application'}
+                            alt={expertiseTitle || ''}
                             fill
                             className="object-cover"
                             sizes="(max-width: 768px) 100vw, 50vw"
@@ -754,7 +748,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                     transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
                     <Card className={cn(styles.featureCard, 'h-full')}>
-                      <h3 className={cn(typography.h5, 'mb-3')}>{applicationName || 'Application'}</h3>
+                      <h3 className={cn(typography.h5, 'mb-3')}>{applicationName}</h3>
                       {applicationDescription && (
                         <p className={cn(typography.small, 'mb-4')}>{applicationDescription}</p>
                       )}
@@ -859,7 +853,7 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                   >
                     <Card className={cn(styles.featureCard, 'h-full')}>
                       <TrendingUp className="w-10 h-10 text-blue-600 mb-4" />
-                      <h3 className={cn(typography.h4, 'mb-4')}>{benefitTitle || 'Process Benefit'}</h3>
+                      <h3 className={cn(typography.h4, 'mb-4')}>{benefitTitle}</h3>
                       {benefitDescription && (
                         <p className={cn(typography.body, 'mb-6')}>{benefitDescription}</p>
                       )}
@@ -904,10 +898,10 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
             className="text-center max-w-4xl mx-auto"
           >
             <h2 className={cn(typography.h2, 'mb-6 text-tone-inverse')}>
-              {toDisplayText(industry.cta?.title) || 'Ready to Get Started?'}
+              {toDisplayText(industry.cta?.title)}
             </h2>
             <p className={cn(typography.lead, 'text-slate-300 mb-8')}>
-              {toDisplayText(industry.cta?.description) || `Partner with IIS for ${industry.title.toLowerCase()} solutions that meet the most demanding requirements.`}
+              {toDisplayText(industry.cta?.description)}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {(industry.cta?.buttons || [])
@@ -918,28 +912,13 @@ export function IndustryContent({ industryData }: IndustryContentProps) {
                   if (!label || !href) return null;
                   const isSecondary = button.variant === 'secondary' || index > 0;
                   const buttonKey = button._key || href || label;
-                  return isSecondary ? (
-                    <Button
-                      key={keyFor('cta-button', index, buttonKey)}
-                      size="lg"
-                      variant="outline"
-                      asChild
-                      className={cn(styles.ctaSecondary, 'border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-tone-inverse')}
-                    >
-                      <Link href={href}>{label}</Link>
-                    </Button>
-                  ) : (
-                    <Button
-                      key={keyFor('cta-button', index, buttonKey)}
-                      size="lg"
-                      className={styles.ctaPrimary}
-                      asChild
-                    >
-                      <Link href={href}>
+                  return (
+                    <Link key={keyFor('cta-button', index, buttonKey)} href={href}>
+                      <PremiumButton size="lg" variant={isSecondary ? 'secondary' : 'default'}>
                         {label}
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
+                        {!isSecondary && <ArrowRight className="ml-2 h-5 w-5" />}
+                      </PremiumButton>
+                    </Link>
                   );
                 })}
             </div>

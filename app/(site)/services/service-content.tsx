@@ -10,10 +10,12 @@ import Image from 'next/image';
 import SectionHeader from '@/components/ui/section-header';
 import HeroSection from '@/components/ui/hero-section';
 import { PortableTextContent } from '@/components/portable-text-components';
-import { typography, spacing, styles, cn } from '@/lib/design-system';
+import { typography, spacing, styles, shadows } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { ArrowRight, CheckCircle, Settings, Shield, Zap, Cog, Target, FileText, Award, Activity, TrendingDown, Wrench, LucideIcon } from 'lucide-react';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 /**
  * Returns the optimal grid class based on item count
@@ -358,23 +360,16 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         showScrollIndicator
         title={(() => {
           // Split title to highlight last word in blue gradient
-          // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
-          const gradientStyle = {
-            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          } as React.CSSProperties;
           const words = heroTitle.split(' ');
           if (words.length === 1) {
-            return <span style={gradientStyle}>{heroTitle}</span>;
+            return <span style={gradientTextStyle}>{heroTitle}</span>;
           }
           const firstPart = words.slice(0, -1).join(' ');
           const lastWord = words[words.length - 1];
           return (
             <span>
               <span className="text-inherit">{firstPart} </span>
-              <span style={gradientStyle}>{lastWord}</span>
+              <span style={gradientTextStyle}>{lastWord}</span>
             </span>
           );
         })()}
@@ -385,7 +380,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       />
 
       {capabilityStats.length > 0 && (
-        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
+        <section className={`${spacing.section} bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950`}>
           <div className={spacing.container}>
             <div
               ref={capabilityStatsAnim.ref}
@@ -400,12 +395,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                     className="text-center"
                   >
-                    <div className="text-3xl md:text-4xl font-bold" style={{
-                      background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                    }}>{capability.value}</div>
+                    <div className="text-3xl md:text-4xl font-bold" style={gradientTextStyle}>{capability.value}</div>
                     <div className={cn(typography.badge, 'text-slate-700 dark:text-slate-300 mb-2')}>
                       {capability.label}
                     </div>
@@ -420,7 +410,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
       {/* Capability Cards Section - for services with rich capability data */}
       {capabilityCards.length > 0 && (
-        <section className="py-24 md:py-32">
+        <section className={spacing.section}>
           <div className={spacing.container}>
             {(capabilitiesHeading || capabilitiesDescription) && (
               <motion.div
@@ -445,7 +435,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               {capabilityCards.map((capability: CapabilityCard, index: number) => {
                 const CapIcon = capability.iconName ? (iconMap[capability.iconName] || Settings) : Settings;
                 const capImage = capability.image?.asset?.url || capability.imageUrl;
-                const capAlt = capability.image?.alt || capability.title || 'Capability';
+                const capAlt = capability.image?.alt || capability.title || '';
 
                 return (
                   <motion.div
@@ -482,7 +472,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         {capability.features && capability.features.length > 0 && (
                           <div className="mb-4">
                             <h4 className={cn(typography.label, 'mb-2')}>
-                              {capability.featuresLabel || 'Features'}
+                              {capability.featuresLabel}
                             </h4>
                             <div className="grid grid-cols-2 gap-1">
                               {capability.features.map((f: FeatureItem) => (
@@ -498,7 +488,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         {capability.capabilitiesList && capability.capabilitiesList.length > 0 && (
                           <div>
                             <h4 className={cn(typography.label, 'mb-2')}>
-                              {capability.capabilitiesLabel || 'Benefits'}
+                              {capability.capabilitiesLabel}
                             </h4>
                             <div className="space-y-1">
                               {capability.capabilitiesList.map((c: CapabilityListItem) => (
@@ -542,12 +532,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               className="text-center px-6"
             >
               {capabilityStats.length > 0 && capabilityStats[0]?.value && (
-                <div className="text-4xl md:text-5xl font-bold text-tone-inverse mb-2" style={{
-                  background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}>
+                <div className="text-4xl md:text-5xl font-bold text-tone-inverse mb-2" style={gradientTextStyle}>
                   {capabilityStats[0].value}
                 </div>
               )}
@@ -563,7 +548,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
 
       {/* Benefits Section */}
       {benefits.length > 0 && (
-        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
+        <section className={`${spacing.section} bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950`}>
           <div className={spacing.container}>
             <motion.div
               ref={benefitsHeaderAnim.ref}
@@ -653,7 +638,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {serviceOfferings.length > 0 && (
-        <section className="py-24 md:py-32">
+        <section className={spacing.section}>
           <div className={spacing.container}>
             <motion.div
               ref={servicesHeaderAnim.ref}
@@ -672,7 +657,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
               {serviceOfferings.map((offering: ServiceOffering, index: number) => {
                 const OfferingIcon = offering.iconName ? (iconMap[offering.iconName] || Settings) : Settings;
                 const offeringImage = offering.image?.asset?.url || offering.imageUrl;
-                const offeringAlt = offering.image?.alt || offering.title || 'Service offering';
+                const offeringAlt = offering.image?.alt || offering.title || '';
 
                 return (
                   <motion.div
@@ -715,7 +700,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         {offering.features && offering.features.length > 0 && (
                           <div className="mb-6">
                             <h4 className={cn(typography.label, 'mb-3')}>
-                              {offering.featuresLabel || 'Key Features'}
+                              {offering.featuresLabel}
                             </h4>
                             <div className="grid grid-cols-1 gap-2">
                               {offering.features.map((feature: FeatureItem) => (
@@ -731,7 +716,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         {offering.capabilities && offering.capabilities.length > 0 && (
                           <div className="mb-6">
                             <h4 className={cn(typography.label, 'mb-3')}>
-                              {offering.capabilitiesLabel || 'Capabilities'}
+                              {offering.capabilitiesLabel}
                             </h4>
                             <div className="space-y-1">
                               {offering.capabilities.map((capability: CapabilityListItem) => (
@@ -765,7 +750,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
         ];
 
         return (
-          <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
+          <section className={`${spacing.section} bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950`}>
             <div className={spacing.container}>
               <motion.div
                 ref={materialsHeaderAnim.ref}
@@ -826,7 +811,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       })()}
 
       {applications.length > 0 && (
-        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
+        <section className={`${spacing.section} bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950`}>
           <div className={spacing.container}>
             <motion.div
               ref={applicationsHeaderAnim.ref}
@@ -844,8 +829,8 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
             <div ref={applicationsGridAnim.ref} className={getAdaptiveGridClass(applications.length)}>
               {applications.map((app: ApplicationItem, index: number) => {
                 const appImage = app.image?.asset?.url || app.imageUrl;
-                const appAlt = app.image?.alt || app.title || 'Application';
-                const listLabel = app.listLabel || applicationsListLabel || 'Deliverables';
+                const appAlt = app.image?.alt || app.title || '';
+                const listLabel = app.listLabel || applicationsListLabel;
 
                 return (
                   <motion.div
@@ -854,7 +839,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     animate={applicationsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                     transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
-                    <Card className="h-full bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-lg hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 overflow-hidden">
+                    <Card className={`h-full bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-2xl ${shadows.card} hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 overflow-hidden`}>
                       {appImage && (
                         <div className="relative h-48 overflow-hidden">
                           <Image
@@ -872,7 +857,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         <p className={cn(typography.body, 'mb-5 text-slate-600 dark:text-slate-400')}>{app.description}</p>
                         {app.timeline && (
                           <div className="mb-5">
-                            <p className={cn(typography.label, 'text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 mb-1')}>
+                            <p className={cn(typography.label, 'text-xs uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400 mb-1')}>
                               Timeline
                             </p>
                             <p className={cn(typography.body, 'text-slate-700 dark:text-slate-300 font-medium')}>{app.timeline}</p>
@@ -880,7 +865,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                         )}
                         {app.challenges && app.challenges.length > 0 && (
                           <div>
-                            <h4 className={cn(typography.label, 'mb-3 text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400')}>{listLabel}</h4>
+                            <h4 className={cn(typography.label, 'mb-3 text-xs uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400')}>{listLabel}</h4>
                             <div className="space-y-2">
                               {app.challenges.map((item: ApplicationChallenge) => (
                                 <div key={item.challenge} className="flex items-start text-sm text-slate-700 dark:text-slate-300">
@@ -902,7 +887,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {qualityStandards.length > 0 && (
-        <section className="py-24 md:py-32 bg-slate-900 dark-section">
+        <section className={`${spacing.section} bg-slate-900 dark-section`}>
           <div className={spacing.container}>
             <motion.div
               ref={qualityHeaderAnim.ref}
@@ -957,7 +942,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
       )}
 
       {processes.length > 0 && (
-        <section className="py-24 md:py-32">
+        <section className={spacing.section}>
           <div className={spacing.container}>
             <motion.div
               ref={processHeaderAnim.ref}
@@ -989,7 +974,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
                     animate={processGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                     transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   >
-                    <Card className="h-full bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-lg hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 p-8">
+                    <Card className={`h-full bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700 rounded-2xl ${shadows.card} hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 p-8`}>
                       {/* Step number badge */}
                       <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 flex items-center justify-center text-lg font-bold text-tone-inverse shadow-md shadow-blue-600/20 mb-5">
                         {String(index + 1).padStart(2, '0')}
@@ -1018,7 +1003,7 @@ export function ServiceContent({ serviceData, slug: _slug }: ServiceContentProps
           <div className="text-center max-w-4xl mx-auto">
             <SectionHeader
               eyebrow={ctaData?.badge}
-              heading={ctaData?.title || 'Ready to Get Started?'}
+              heading={ctaData?.title}
               gradientWordPosition="last"
               description={ctaData?.description}
               className="[&_h2]:text-tone-inverse [&_p]:text-slate-300 mb-8"

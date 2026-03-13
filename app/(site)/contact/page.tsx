@@ -11,7 +11,7 @@ export default async function ContactPage() {
   // Fetch data from CMS
   const contactData = await getContact(isEnabled);
 
-  return <ContactPageClient data={contactData as any} />;
+  return <ContactPageClient data={contactData} />;
 }
 
 // Generate metadata for SEO - pulls from Sanity CMS with fallbacks
@@ -22,11 +22,11 @@ export async function generateMetadata() {
 
   // Pull SEO data from Sanity with fallbacks
   const metadata = {
-    title: contactData?.seo?.metaTitle || 'Contact IIS - Precision Machining Quote & Consultation',
-    description: contactData?.seo?.metaDescription || 'Contact Integrated Inspection Systems for precision machining quotes, technical consultations, and project inquiries. AS9100, ISO 9001 certified, ITAR registered facility.',
-    keywords: contactData?.seo?.metaKeywords || 'contact IIS, precision machining quote, CNC machining quote, CMM inspection quote, aerospace machining inquiry, technical consultation, metrology services quote, Oregon machining',
+    title: contactData?.seo?.metaTitle,
+    description: contactData?.seo?.metaDescription,
+    keywords: contactData?.seo?.metaKeywords,
     ogImage: contactData?.seo?.ogImage?.asset?.url || null,
-    ogImageAlt: contactData?.seo?.ogImage?.alt || 'Contact IIS - Integrated Inspection Systems',
+    ogImageAlt: contactData?.seo?.ogImage?.alt || '',
   };
 
   return {

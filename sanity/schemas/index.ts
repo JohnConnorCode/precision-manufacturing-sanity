@@ -25,6 +25,7 @@ import errorPages from './error-pages'
 import metbasePage from './metbase'
 import caseStudiesPage from './case-studies-page'
 import certificationsPage from './certifications-page'
+import compliancePage from './compliance-page'
 import uiText from './ui-text'
 import pageContent from './page-content'
 import page from './page'
@@ -93,6 +94,7 @@ export const schemaTypes = [
   metbasePage,
   caseStudiesPage,
   certificationsPage,
+  compliancePage,
   uiText,
   pageContent,
   page,

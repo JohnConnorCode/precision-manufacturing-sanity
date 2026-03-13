@@ -6,13 +6,41 @@ import Link from 'next/link';
 import { Clock, ArrowLeft, Share2, Download, Eye, Calendar, Tag } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { PortableTextContent } from '@/components/portable-text-components';
+import type { PortableTextProps } from '@portabletext/react';
 import { usePrefersReducedMotion } from '@/lib/motion';
+import { spacing } from '@/lib/design-system';
+
+interface ResourceData {
+  title: string;
+  slug: { current: string };
+  excerpt?: string;
+  content?: PortableTextProps['value'];
+  difficulty?: string;
+  readTime?: string;
+  publishDate?: string;
+  author?: string;
+  tags?: Array<{ tag: string }>;
+}
+
+interface CategoryInfoData {
+  title: string;
+  slug?: string;
+}
+
+interface RelatedResourceData {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  excerpt?: string;
+  readTime?: string;
+  difficulty?: string;
+}
 
 interface ArticleContentProps {
-  resource: Record<string, any>;
+  resource: ResourceData;
   category: string;
-  categoryInfo: Record<string, any>;
-  relatedResources: Record<string, any>[];
+  categoryInfo: CategoryInfoData;
+  relatedResources: RelatedResourceData[];
 }
 
 export function ArticleContent({ resource, category, categoryInfo, relatedResources }: ArticleContentProps) {
@@ -41,7 +69,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
   };
 
   const handleShare = () => {
-    const url = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://iismet.com'}/resources/${category}/${resource.slug.current}`;
+    const url = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://precision-manufacturing-sanity.vercel.app'}/resources/${category}/${resource.slug.current}`;
     if (typeof navigator !== 'undefined') {
       if (navigator.share) {
         navigator.share({
@@ -100,7 +128,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
             transition={prefersReducedMotion ? { duration: 0 } : { delay: 0.2, duration: 0.6 }}
           >
             <div className="flex flex-wrap items-center gap-4 mb-6">
-              <span className={`px-3 py-1 rounded-full text-sm border ${getDifficultyColor(resource.difficulty)}`}>
+              <span className={`px-3 py-1 rounded-full text-sm border ${getDifficultyColor(resource.difficulty || '')}`}>
                 {resource.difficulty}
               </span>
               <div className="flex items-center gap-4 text-slate-400 text-sm">
@@ -110,7 +138,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
                 </span>
                 <span className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
-                  {new Date(resource.publishDate).toLocaleDateString()}
+                  {resource.publishDate ? new Date(resource.publishDate).toLocaleDateString() : ''}
                 </span>
                 <span className="flex items-center gap-1">
                   <Eye className="w-4 h-4" />
@@ -129,7 +157,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
 
             <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
               <div className="flex flex-wrap gap-2">
-                {resource.tags.map((tag: { tag: string }) => (
+                {(resource.tags || []).map((tag: { tag: string }) => (
                   <span key={tag.tag} className="bg-slate-800 text-slate-300 px-3 py-1 rounded-full text-sm flex items-center gap-1">
                     <Tag className="w-3 h-3" />
                     {tag.tag}
@@ -175,7 +203,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
             transition={prefersReducedMotion ? { duration: 0 } : { delay: 0.4, duration: 0.6 }}
           >
             <div className="bg-slate-900/30 border border-slate-800 rounded-2xl p-8 md:p-12 article-prose">
-              <PortableTextContent value={resource.content} />
+              <PortableTextContent value={resource.content || []} />
             </div>
           </motion.div>
         </div>
@@ -185,7 +213,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
       {/* Related Articles */}
       {relatedResources.length > 0 && (
         <motion.section
-          className="py-16 px-4 bg-slate-900/30"
+          className={`${spacing.sectionCompact} px-4 bg-slate-900/30`}
           initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={prefersReducedMotion ? { duration: 0 } : { delay: 0.5, duration: 0.6 }}
@@ -215,7 +243,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
                           <Clock className="w-4 h-4 mr-1" />
                           {related.readTime}
                         </div>
-                        <span className={`px-2 py-1 rounded-full text-xs ${getDifficultyColor(related.difficulty)}`}>
+                        <span className={`px-2 py-1 rounded-full text-xs ${getDifficultyColor(related.difficulty || '')}`}>
                           {related.difficulty}
                         </span>
                       </div>
@@ -230,7 +258,7 @@ export function ArticleContent({ resource, category, categoryInfo, relatedResour
 
       {/* CTA Section */}
       <motion.section
-        className="py-16 px-4"
+        className={`${spacing.sectionCompact} px-4`}
         initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { delay: 1.0, duration: 0.6 }}

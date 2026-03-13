@@ -101,8 +101,23 @@ export default {
         {name: 'social', title: 'Social Sharing', options: {collapsible: true, collapsed: false}},
       ],
       fields: [
-        { name: 'metaTitle', type: 'string', title: 'Meta Title', fieldset: 'meta' },
-        { name: 'metaDescription', type: 'text', rows: 3, title: 'Meta Description', fieldset: 'meta' },
+        {
+          name: 'metaTitle',
+          type: 'string',
+          title: 'Meta Title',
+          description: 'Title shown in search results (50-60 characters recommended)',
+          fieldset: 'meta',
+          validation: (Rule: any) => Rule.max(60).warning('Meta title should be 60 characters or less'),
+        },
+        {
+          name: 'metaDescription',
+          type: 'text',
+          rows: 3,
+          title: 'Meta Description',
+          description: 'Description shown in search results (150-160 characters recommended)',
+          fieldset: 'meta',
+          validation: (Rule: any) => Rule.max(160).warning('Meta description should be 160 characters or less'),
+        },
         {
           name: 'ogImage',
           type: 'image',

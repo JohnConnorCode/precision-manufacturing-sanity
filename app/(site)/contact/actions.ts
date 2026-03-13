@@ -1,8 +1,48 @@
 'use server';
 
 import { z } from 'zod';
+import { headers } from 'next/headers';
 import { sendContactEmail, ContactFormData } from '@/lib/email';
 import { logContactSubmission } from '@/lib/contact-logger';
+
+// --- In-memory rate limiter ---
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const RATE_LIMIT_MAX = 5; // max submissions per window
+const rateLimitMap = new Map<string, number[]>();
+let requestCount = 0;
+
+function cleanupOldEntries() {
+  const now = Date.now();
+  for (const [ip, timestamps] of rateLimitMap) {
+    const valid = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+    if (valid.length === 0) {
+      rateLimitMap.delete(ip);
+    } else {
+      rateLimitMap.set(ip, valid);
+    }
+  }
+}
+
+function checkRateLimit(ip: string): { allowed: boolean; retryAfterSeconds?: number } {
+  requestCount++;
+  if (requestCount % 100 === 0) {
+    cleanupOldEntries();
+  }
+
+  const now = Date.now();
+  const timestamps = rateLimitMap.get(ip) || [];
+  const recentTimestamps = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+
+  if (recentTimestamps.length >= RATE_LIMIT_MAX) {
+    const oldestInWindow = recentTimestamps[0];
+    const retryAfterSeconds = Math.ceil((oldestInWindow + RATE_LIMIT_WINDOW_MS - now) / 1000);
+    return { allowed: false, retryAfterSeconds };
+  }
+
+  recentTimestamps.push(now);
+  rateLimitMap.set(ip, recentTimestamps);
+  return { allowed: true };
+}
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -16,6 +56,21 @@ const contactSchema = z.object({
 });
 
 export async function submitContactForm(formData: FormData) {
+  // Rate limit check
+  const headersList = await headers();
+  const forwarded = headersList.get('x-forwarded-for');
+  const realIp = headersList.get('x-real-ip');
+  const ip = forwarded?.split(',')[0]?.trim() || realIp || 'unknown';
+
+  const rateCheck = checkRateLimit(ip);
+  if (!rateCheck.allowed) {
+    const minutes = Math.ceil((rateCheck.retryAfterSeconds || 60) / 60);
+    return {
+      success: false,
+      message: `Too many submissions. Please try again in ${minutes} minute${minutes === 1 ? '' : 's'}, or call us at (503) 231-9093.`,
+    };
+  }
+
   const rawData = {
     name: formData.get('name'),
     email: formData.get('email'),

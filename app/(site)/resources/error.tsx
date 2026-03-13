@@ -3,10 +3,12 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
+import { PremiumButton } from '@/components/ui/premium-button'
 import { Card } from '@/components/ui/card'
 import { AlertTriangle, RefreshCw, BookOpen, Home } from 'lucide-react'
 import Link from 'next/link'
-import { typography, cn } from '@/lib/design-system'
+import { typography } from '@/lib/design-system'
+import { cn } from '@/lib/utils'
 import { usePrefersReducedMotion } from '@/lib/motion'
 
 export default function Error({
@@ -87,13 +89,10 @@ export default function Error({
             {...fadeIn(0.5)}
             className="flex flex-col sm:flex-row gap-3 justify-center"
           >
-            <Button
-              onClick={() => reset()}
-              className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-tone-inverse shadow-lg shadow-blue-600/25"
-            >
+            <PremiumButton onClick={() => reset()}>
               <RefreshCw className="w-4 h-4 mr-2" />
               Try again
-            </Button>
+            </PremiumButton>
             <Link href="/resources">
               <Button variant="outline" className="w-full border-slate-700 text-slate-300 hover:bg-slate-800">
                 <BookOpen className="w-4 h-4 mr-2" />

@@ -1,9 +1,11 @@
 'use client';
 
+import { useActionState } from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import HeroSection from '@/components/ui/hero-section';
-import { typography, spacing, styles, cn } from '@/lib/design-system';
+import { typography, spacing, styles, shadows } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import {
@@ -15,11 +17,16 @@ import {
   Award,
   Activity,
   Building2,
-  MessageCircle,
-  FileText,
+  Send,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
   LucideIcon,
 } from 'lucide-react';
 import ParallaxImagePro from '@/components/ui/parallax-image-pro';
+import { gradientTextStyle } from '@/lib/theme-utils';
+import { submitContactForm } from './actions';
+import type { ContactPage } from '@/sanity/types/query.types';
 
 // Icon mapping for stats
 const iconMap: Record<string, LucideIcon> = {
@@ -36,51 +43,183 @@ interface BottomStat {
   animated?: boolean;
 }
 
-interface ContactData {
-  hero?: {
-    backgroundImage?: { asset?: { url?: string }; alt?: string } | string;
-    backgroundImageUrl?: string;
-    imageAlt?: string;
-    buttonLabel?: string;
-    buttonHref?: string;
-    badgeIconName?: string;
-    badge?: string;
-    title?: string;
-    titleHighlight?: string;
-    description?: string;
-  };
-  contactInfo: {
-    heading?: string;
-    description?: string;
-    addressLine1?: string;
-    addressLine2?: string;
-    addressLine3?: string;
-    phone?: string;
-    phoneLink?: string;
-    phoneDescription?: string;
-    email?: string;
-    emailDescription?: string;
-    hoursLine1?: string;
-    hoursLine2?: string;
-    submitButtonText?: string;
-    consultationHeading?: string;
-  };
-  locationImage?: {
-    asset?: { url?: string };
-    alt?: string;
-  };
-  locationDescription?: string;
-  trustBar?: Array<{
-    enabled?: boolean;
-    label?: string;
-    value?: string;
-    sublabel?: string;
-  }>;
-  bottomStats?: BottomStat[];
+interface ContactPageClientProps {
+  data?: ContactPage | null;
 }
 
-interface ContactPageClientProps {
-  data?: ContactData | null;
+interface FormState {
+  success?: boolean;
+  message?: string;
+  warning?: string;
+  errors?: Record<string, string[]>;
+}
+
+const inputStyles = cn(
+  'w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700',
+  'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100',
+  'placeholder:text-slate-400 dark:placeholder:text-slate-500',
+  'focus:outline-none focus:ring-2 focus:ring-blue-600/50 focus:border-blue-500',
+  'transition-colors text-base'
+);
+
+const labelStyles = cn(typography.small, 'font-medium text-slate-700 dark:text-slate-300 mb-1.5 block');
+
+interface SelectOption {
+  _key?: string;
+  value: string;
+  label: string;
+}
+
+interface ContactFormProps {
+  submitButtonText?: string;
+  formHeading?: string;
+  successHeading?: string;
+  sendingText?: string;
+  interestOptions?: SelectOption[];
+  timelineOptions?: SelectOption[];
+}
+
+const defaultInterestOptions: SelectOption[] = [
+  { value: 'quote', label: 'Request a Quote' },
+  { value: 'technical', label: 'Technical Consultation' },
+  { value: 'general', label: 'General Inquiry' },
+  { value: 'partnership', label: 'Partnership' },
+  { value: 'supplier', label: 'Supplier Inquiry' },
+  { value: 'career', label: 'Career Inquiry' },
+];
+
+const defaultTimelineOptions: SelectOption[] = [
+  { value: 'urgent', label: 'Urgent (1-2 weeks)' },
+  { value: 'standard', label: 'Standard (2-6 weeks)' },
+  { value: 'flexible', label: 'Flexible (6+ weeks)' },
+  { value: 'quoting', label: 'Just quoting' },
+];
+
+function ContactForm({ submitButtonText, formHeading, successHeading, sendingText, interestOptions, timelineOptions }: ContactFormProps) {
+  const [state, formAction, isPending] = useActionState<FormState, FormData>(
+    async (_prev: FormState, formData: FormData) => {
+      const result = await submitContactForm(formData);
+      return result as FormState;
+    },
+    {}
+  );
+
+  if (state.success && !state.errors) {
+    return (
+      <Card className={cn(styles.featureCard, 'p-10 h-full')}>
+        <div className="flex flex-col items-center justify-center text-center py-8">
+          <CheckCircle2 className="w-16 h-16 text-green-500 mb-6" />
+          <h3 className={cn(typography.h3, 'mb-4')}>{successHeading || 'Thank You!'}</h3>
+          <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300 max-w-md')}>
+            {state.message}
+          </p>
+          {state.warning && (
+            <p className={cn(typography.small, 'text-amber-600 dark:text-amber-400 mt-4')}>
+              {state.warning}
+            </p>
+          )}
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className={cn(styles.featureCard, 'p-10 h-full')}>
+      <h3 className={cn(typography.h3, 'mb-6')}>{formHeading || 'Request a Quote'}</h3>
+
+      {state.success === false && state.message && (
+        <div className="flex items-start gap-3 p-4 mb-6 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800">
+          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <p className={cn(typography.small, 'text-red-700 dark:text-red-400')}>{state.message}</p>
+        </div>
+      )}
+
+      <form action={formAction} className="space-y-5">
+        <div className="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label htmlFor="name" className={labelStyles}>Name *</label>
+            <input type="text" id="name" name="name" required minLength={2} className={inputStyles} placeholder="Your name" />
+            {state.errors?.name && <p className="text-red-500 text-xs mt-1">{state.errors.name[0]}</p>}
+          </div>
+          <div>
+            <label htmlFor="email" className={labelStyles}>Email *</label>
+            <input type="email" id="email" name="email" required className={inputStyles} placeholder="you@company.com" />
+            {state.errors?.email && <p className="text-red-500 text-xs mt-1">{state.errors.email[0]}</p>}
+          </div>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label htmlFor="company" className={labelStyles}>Company *</label>
+            <input type="text" id="company" name="company" required minLength={2} className={inputStyles} placeholder="Company name" />
+            {state.errors?.company && <p className="text-red-500 text-xs mt-1">{state.errors.company[0]}</p>}
+          </div>
+          <div>
+            <label htmlFor="phone" className={labelStyles}>Phone</label>
+            <input type="tel" id="phone" name="phone" className={inputStyles} placeholder="(555) 000-0000" />
+          </div>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label htmlFor="interest" className={labelStyles}>Interest *</label>
+            <select id="interest" name="interest" required className={inputStyles}>
+              {(interestOptions && interestOptions.length > 0 ? interestOptions : defaultInterestOptions).map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="timeline" className={labelStyles}>Timeline</label>
+            <select id="timeline" name="timeline" className={inputStyles}>
+              <option value="">Select timeline</option>
+              {(timelineOptions && timelineOptions.length > 0 ? timelineOptions : defaultTimelineOptions).map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="message" className={labelStyles}>Message *</label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            minLength={10}
+            rows={4}
+            className={cn(inputStyles, 'resize-none')}
+            placeholder="Describe your project requirements, materials, tolerances, quantities..."
+          />
+          {state.errors?.message && <p className="text-red-500 text-xs mt-1">{state.errors.message[0]}</p>}
+        </div>
+
+        <button
+          type="submit"
+          disabled={isPending}
+          className={cn(
+            'w-full py-3.5 px-6 rounded-lg font-semibold text-base',
+            'bg-blue-600 text-white hover:bg-blue-700',
+            'focus:outline-none focus:ring-2 focus:ring-blue-600/50 focus:ring-offset-2',
+            'disabled:opacity-60 disabled:cursor-not-allowed',
+            'transition-colors inline-flex items-center justify-center gap-2'
+          )}
+        >
+          {isPending ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              {sendingText || 'Sending...'}
+            </>
+          ) : (
+            <>
+              <Send className="w-5 h-5" />
+              {submitButtonText || 'Submit'}
+            </>
+          )}
+        </button>
+      </form>
+    </Card>
+  );
 }
 
 export default function ContactPageClient({ data }: ContactPageClientProps) {
@@ -94,9 +233,11 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
   const mapAnim = useAnimateInView<HTMLDivElement>();
   const statsAnim = useAnimateInView<HTMLDivElement>();
 
-  if (!contactData) {
+  if (!contactData || !contactData.contactInfo) {
     return null;
   }
+
+  const contactInfo = contactData.contactInfo;
 
   const trustBarItems = (contactData.trustBar || [])
     .filter((item) => item.enabled !== false && item.label && item.value);
@@ -126,20 +267,12 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
           backgroundImage={heroBackgroundImage}
           imageAlt={heroImageAlt}
           title={(() => {
-            // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
-            const gradientStyle = {
-              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            } as React.CSSProperties;
-
             if (!contactData.hero.title) return '';
             if (contactData.hero.titleHighlight) {
               return (
                 <span className="text-inherit">
                   {contactData.hero.title}{' '}
-                  <span style={gradientStyle}>
+                  <span style={gradientTextStyle}>
                     {contactData.hero.titleHighlight}
                   </span>
                 </span>
@@ -149,14 +282,14 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
             const title = contactData.hero.title || '';
             const words = title.split(' ');
             if (words.length <= 1) {
-              return <span style={gradientStyle}>{title}</span>;
+              return <span style={gradientTextStyle}>{title}</span>;
             }
             const firstPart = words.slice(0, -1).join(' ');
             const lastWord = words[words.length - 1];
             return (
               <span>
                 <span className="text-inherit">{firstPart} </span>
-                <span style={gradientStyle}>{lastWord}</span>
+                <span style={gradientTextStyle}>{lastWord}</span>
               </span>
             );
           })()}
@@ -168,7 +301,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
       )}
 
       {/* Main Contact Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <section className={`${spacing.sectionCompact} bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950`}>
         <div className={spacing.container}>
             <div className="max-w-6xl mx-auto">
               <motion.div
@@ -178,9 +311,9 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                 transition={ANIM_TRANSITION}
                 className="text-center mb-16"
               >
-                <h2 className={cn(typography.h2, 'mb-6')}>{contactData.contactInfo.heading}</h2>
+                <h2 className={cn(typography.h2, 'mb-6')}>{contactInfo.heading}</h2>
                 <p className={cn(typography.lead, 'max-w-3xl mx-auto text-slate-600 dark:text-slate-300')}>
-                  {contactData.contactInfo.description}
+                  {contactInfo.description}
                 </p>
             </motion.div>
 
@@ -193,18 +326,18 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                 transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.1 }}
               >
                 <Card className={cn(styles.featureCard, 'p-10 h-full')}>
-                  <h3 className={cn(typography.h3, 'mb-8')}>Contact Information</h3>
+                  <h3 className={cn(typography.h3, 'mb-8')}>{contactInfo?.cardHeading || 'Contact Information'}</h3>
 
                   <div className="space-y-8">
                     {/* Address */}
                     <div className="flex items-start gap-5">
                       <MapPin className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
                       <div>
-                        <h4 className={cn(typography.h5, 'mb-2')}>Headquarters</h4>
+                        <h4 className={cn(typography.h5, 'mb-2')}>{contactInfo?.addressLabel || 'Headquarters'}</h4>
                         <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300 leading-relaxed')}>
-                          {contactData.contactInfo.addressLine1}<br />
-                          {contactData.contactInfo.addressLine2}<br />
-                          {contactData.contactInfo.addressLine3}
+                          {contactInfo.addressLine1}<br />
+                          {contactInfo.addressLine2}<br />
+                          {contactInfo.addressLine3}
                         </p>
                       </div>
                     </div>
@@ -213,15 +346,15 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     <div className="flex items-start gap-5">
                       <Phone className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
                       <div>
-                        <h4 className={cn(typography.h5, 'mb-2')}>Phone</h4>
+                        <h4 className={cn(typography.h5, 'mb-2')}>{contactInfo?.phoneLabel || 'Phone'}</h4>
                         <a
-                          href={contactData.contactInfo.phoneLink}
+                          href={contactInfo.phoneLink}
                           className={cn(typography.body, 'text-blue-600 hover:text-blue-700 transition-colors font-semibold text-lg')}
                         >
-                          {contactData.contactInfo.phone}
+                          {contactInfo.phone}
                         </a>
                         <p className={cn(typography.small, 'text-slate-500 mt-1')}>
-                          {contactData.contactInfo?.phoneDescription || 'Direct line for quotes and inquiries'}
+                          {contactInfo?.phoneDescription}
                         </p>
                       </div>
                     </div>
@@ -230,15 +363,15 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     <div className="flex items-start gap-5">
                       <Mail className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
                       <div>
-                        <h4 className={cn(typography.h5, 'mb-2')}>Email</h4>
+                        <h4 className={cn(typography.h5, 'mb-2')}>{contactInfo?.emailLabel || 'Email'}</h4>
                         <a
-                          href={`mailto:${contactData.contactInfo.email}`}
+                          href={`mailto:${contactInfo.email}`}
                           className={cn(typography.body, 'text-blue-600 hover:text-blue-700 transition-colors font-semibold')}
                         >
-                          {contactData.contactInfo.email}
+                          {contactInfo.email}
                         </a>
                         <p className={cn(typography.small, 'text-slate-500 mt-1')}>
-                          {contactData.contactInfo?.emailDescription || 'Send us your project details'}
+                          {contactInfo?.emailDescription}
                         </p>
                       </div>
                     </div>
@@ -247,10 +380,10 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     <div className="flex items-start gap-5">
                       <Clock className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
                       <div>
-                        <h4 className={cn(typography.h5, 'mb-2')}>Business Hours</h4>
+                        <h4 className={cn(typography.h5, 'mb-2')}>{contactInfo?.hoursLabel || 'Business Hours'}</h4>
                         <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300')}>
-                          {contactData.contactInfo.hoursLine1}<br />
-                          {contactData.contactInfo.hoursLine2}
+                          {contactInfo.hoursLine1}<br />
+                          {contactInfo.hoursLine2}
                         </p>
                       </div>
                     </div>
@@ -258,79 +391,21 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                 </Card>
               </motion.div>
 
-              {/* Quick Actions / Additional Info */}
+              {/* Contact Form */}
               <motion.div
                 ref={rightCardAnim.ref}
                 initial={prefersReducedMotion ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
                 animate={rightCardAnim.shouldAnimate ? ANIM_STATES.slideRight.animate : ANIM_STATES.slideRight.initial}
                 transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.2 }}
-                className="space-y-6"
               >
-                {/* Quick Actions */}
-                <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                      <MessageCircle className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <h4 className={cn(typography.h5, 'mb-2')}>Request a Quote</h4>
-                      <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300 mb-4')}>
-                        Email us your specifications, drawings, or project details for a comprehensive quote.
-                      </p>
-                      <a
-                        href={`mailto:${contactData.contactInfo.email}?subject=Quote Request`}
-                        className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center gap-2 text-sm"
-                      >
-                        <Mail className="w-4 h-4" />
-                        {contactData.contactInfo?.submitButtonText || 'Send Quote Request'}
-                      </a>
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <h4 className={cn(typography.h5, 'mb-2')}>{contactData.contactInfo?.consultationHeading || 'Technical Consultation'}</h4>
-                      <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300 mb-4')}>
-                        Call us directly to discuss your technical requirements with our engineering team.
-                      </p>
-                      <a
-                        href={contactData.contactInfo.phoneLink}
-                        className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center gap-2 text-sm"
-                      >
-                        <Phone className="w-4 h-4" />
-                        {contactData.contactInfo.phone}
-                      </a>
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className={cn(styles.featureCard, 'p-8 group hover:shadow-xl transition-all duration-300')}>
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                      <FileText className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <h4 className={cn(typography.h5, 'mb-2')}>General Inquiries</h4>
-                      <p className={cn(typography.body, 'text-slate-600 dark:text-slate-300 mb-4')}>
-                        Have questions about our capabilities or services? Reach out via email or phone.
-                      </p>
-                      <div className="flex flex-col gap-2">
-                        <a
-                          href={`mailto:${contactData.contactInfo.email}`}
-                          className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center gap-2 text-sm"
-                        >
-                          <Mail className="w-4 h-4" />
-                          {contactData.contactInfo.email}
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
+                <ContactForm
+                  submitButtonText={contactInfo?.submitButtonText}
+                  formHeading={contactInfo?.formHeading}
+                  successHeading={contactInfo?.successHeading}
+                  sendingText={contactInfo?.sendingText}
+                  interestOptions={contactInfo?.interestOptions}
+                  timelineOptions={contactInfo?.timelineOptions}
+                />
               </motion.div>
             </div>
 
@@ -341,7 +416,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
               animate={mapAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
               transition={ANIM_TRANSITION}
             >
-              <Card className="overflow-hidden shadow-2xl">
+              <Card className={`overflow-hidden ${shadows.elevated}`}>
                 <div className="relative h-[500px]">
                   {contactData.locationImage?.asset?.url && (
                     <ParallaxImagePro
@@ -358,13 +433,13 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                         <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
                           <Building2 className="w-4 h-4 text-tone-inverse" />
                         </div>
-                        <h3 className={cn(typography.h4, 'text-tone-inverse drop-shadow-lg')}>Visit Our Facility</h3>
+                        <h3 className={cn(typography.h4, 'text-tone-inverse drop-shadow-lg')}>{contactInfo?.mapHeading || 'Visit Our Facility'}</h3>
                       </div>
                       <p className={cn(typography.body, 'mb-4 text-tone-inverse drop-shadow-md')}>
-                        {contactData.locationDescription || 'Located in Clackamas, Oregon, our state-of-the-art facility features advanced CNC machining, metrology, and inspection capabilities.'}
+                        {contactData.locationDescription}
                       </p>
                       <p className={cn(typography.small, 'text-tone-inverse font-semibold drop-shadow-md')}>
-                        {contactData.contactInfo.addressLine1}, {contactData.contactInfo.addressLine2}
+                        {contactInfo.addressLine1}, {contactInfo.addressLine2}
                       </p>
                     </div>
                   </div>
@@ -385,7 +460,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                     key={item.label}
                     className="text-center p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm"
                   >
-                    <div className="text-lg font-bold text-slate-900 dark:text-white">{item.value}</div>
+                    <div className="text-lg font-bold text-slate-900 dark:text-tone-inverse">{item.value}</div>
                     <div className="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400 mt-1">{item.label}</div>
                     {item.sublabel && <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{item.sublabel}</div>}
                   </div>

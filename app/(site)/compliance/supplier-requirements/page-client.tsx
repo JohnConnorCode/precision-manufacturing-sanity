@@ -5,8 +5,9 @@ import HeroSection from '@/components/ui/hero-section';
 import AnimatedSection from '@/components/ui/animated-section';
 import SectionHeader from '@/components/ui/section-header';
 import { Card } from '@/components/ui/card';
-import { typography } from '@/lib/design-system';
+import { typography, spacing } from '@/lib/design-system';
 import { cn } from '@/lib/utils';
+import { gradientTextStyle } from '@/lib/theme-utils';
 import { PortableText, PortableTextComponents } from '@portabletext/react';
 
 const LucideRecord = LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string }>>;
@@ -51,8 +52,54 @@ function renderPortableContent(content?: unknown) {
   );
 }
 
+interface HeroBadge {
+  _key?: string
+  iconName?: string
+  text?: string
+}
+
+interface SupplierSection {
+  _key?: string
+  number?: string
+  title?: string
+  iconName?: string
+  content?: unknown
+  id?: string
+  list?: Array<string | { item?: string }>
+}
+
+interface SupplierRequirement {
+  _key?: string
+  number?: string
+  title?: string
+  iconName?: string
+  content?: unknown
+  additional?: unknown
+  list?: Array<string | { item?: string }>
+}
+
+export interface SupplierRequirementsData {
+  hero: {
+    title?: string
+    titleHighlight?: string
+    description?: string
+    badges?: HeroBadge[]
+    versionStatus?: string
+    effectiveDate?: string
+    reviewPeriod?: string
+  }
+  sections?: SupplierSection[]
+  requirements?: SupplierRequirement[]
+  additionalSections?: SupplierSection[]
+  footerNote?: {
+    heading?: string
+    iconName?: string
+    content?: unknown
+  }
+}
+
 interface SupplierRequirementsPageClientProps {
-  data: Record<string, any>;
+  data: SupplierRequirementsData;
 }
 
 export default function SupplierRequirementsPageClient({ data }: SupplierRequirementsPageClientProps) {
@@ -70,19 +117,11 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
         alignment="left"
         darkHero={true}
         title={(() => {
-          // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
-          const gradientStyle = {
-            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          } as React.CSSProperties;
-
           if (pageData.hero.titleHighlight) {
             return (
               <span>
                 <span className="text-inherit">{pageData.hero.title} </span>
-                <span style={gradientStyle}>
+                <span style={gradientTextStyle}>
                   {pageData.hero.titleHighlight}
                 </span>
               </span>
@@ -92,14 +131,14 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
           const title = pageData.hero.title || '';
           const words = title.split(' ');
           if (words.length <= 1) {
-            return <span style={gradientStyle}>{title}</span>;
+            return <span style={gradientTextStyle}>{title}</span>;
           }
           const firstPart = words.slice(0, -1).join(' ');
           const lastWord = words[words.length - 1];
           return (
             <span>
               <span className="text-inherit">{firstPart} </span>
-              <span style={gradientStyle}>{lastWord}</span>
+              <span style={gradientTextStyle}>{lastWord}</span>
             </span>
           );
         })()}
@@ -107,7 +146,7 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
           <div className="text-slate-300">
             <p className="mb-6">{pageData.hero.description}</p>
             <div className="flex flex-wrap gap-3 mb-6">
-              {(pageData.hero?.badges || []).map((badge: any, idx: number) => {
+              {(pageData.hero?.badges || []).map((badge: HeroBadge, idx: number) => {
                 const BadgeIcon = resolveIcon(badge?.iconName);
                 return (
                   <span key={idx} className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-600/20 text-blue-400 border border-blue-600/30">
@@ -131,15 +170,15 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
       />
 
       {/* Purpose and Scope Sections */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
-        <div className="container max-w-6xl mx-auto px-4">
+      <section className={`${spacing.section} bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950`}>
+        <div className={`${spacing.container} max-w-6xl`}>
           <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8">
             {/* Sticky TOC Sidebar */}
             <aside className="hidden lg:block">
               <div className="sticky-toc">
                 <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">Sections</h3>
                 <nav className="space-y-1">
-                  {(pageData.sections || []).map((section: any, index: number) => (
+                  {(pageData.sections || []).map((section: SupplierSection, index: number) => (
                     <a
                       key={section._key || index}
                       href={`#section-${section.number || index}`}
@@ -149,7 +188,7 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
                       {section.title}
                     </a>
                   ))}
-                  {(pageData.requirements || []).map((req: any, index: number) => (
+                  {(pageData.requirements || []).map((req: SupplierRequirement, index: number) => (
                     <a
                       key={req._key || req.number || index}
                       href={`#req-${req.number || index}`}
@@ -166,11 +205,11 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
             {/* Content Column */}
             <div>
           <div className="grid md:grid-cols-2 gap-6 mb-16">
-            {(pageData.sections || []).map((section: any, index: number) => {
+            {(pageData.sections || []).map((section: SupplierSection, index: number) => {
               const SectionIcon = resolveIcon(section?.iconName);
               return (
                 <AnimatedSection key={section._key || section.id || index} delay={index * 0.1}>
-                  <Card id={`section-${section.number || index}`} className="scroll-mt-24 p-6 md:p-8 h-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 hover:shadow-lg dark:hover:shadow-slate-950/50 transition-all duration-300">
+                  <Card id={`section-${section.number || index}`} className="scroll-mt-24 p-6 md:p-8 h-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 transition-all duration-300">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-lg bg-blue-600/10 flex items-center justify-center flex-shrink-0">
                         <SectionIcon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -202,11 +241,11 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
 
           {/* Requirements Cards */}
           <div className="space-y-4">
-            {(pageData.requirements || []).map((req: any, index: number) => {
+            {(pageData.requirements || []).map((req: SupplierRequirement, index: number) => {
               const ReqIcon = resolveIcon(req.iconName);
               return (
                 <AnimatedSection key={req._key || req.number || index} delay={Math.min(index * 0.05, 0.3)}>
-                  <Card id={`req-${req.number || index}`} className="scroll-mt-24 p-6 bg-white dark:bg-slate-900 border-l-4 border-l-blue-600 border border-slate-200/80 dark:border-slate-700 hover:shadow-lg dark:hover:shadow-slate-950/50 transition-all duration-300">
+                  <Card id={`req-${req.number || index}`} className="scroll-mt-24 p-6 bg-white dark:bg-slate-900 border-l-4 border-l-blue-600 border border-slate-200/80 dark:border-slate-700 transition-all duration-300">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 rounded-lg bg-blue-600/10 flex items-center justify-center flex-shrink-0">
                         <ReqIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -216,20 +255,20 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
                           <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{req.number}</span>
                           {req.title && <h3 className={cn(typography.h5, 'text-slate-900 dark:text-tone-inverse')}>{req.title}</h3>}
                         </div>
-                        {req.content && (
+                        {req.content ? (
                           <div className="mb-4">{renderPortableContent(req.content)}</div>
-                        )}
-                        {req.additional && (
+                        ) : null}
+                        {req.additional ? (
                           <div className="mb-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 p-4">
                             {renderPortableContent(req.additional)}
                           </div>
-                        )}
+                        ) : null}
                         {req.list && (
                           <ul className="space-y-2">
-                            {(req.list || []).map((item: any, idx: number) => (
+                            {(req.list || []).map((item: string | { item?: string }, idx: number) => (
                               <li key={idx} className="flex items-start gap-3">
                                 <div className="w-1.5 h-1.5 bg-blue-600 dark:bg-blue-400 rounded-full mt-2 flex-shrink-0" />
-                                <span className="text-slate-600 dark:text-slate-400">{typeof item === 'string' ? item : (item as any).item}</span>
+                                <span className="text-slate-600 dark:text-slate-400">{typeof item === 'string' ? item : item.item}</span>
                               </li>
                             ))}
                           </ul>
@@ -248,10 +287,10 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
 
       {/* Additional Sections */}
       {(pageData.additionalSections || []).length > 0 && (
-        <section className="py-16 md:py-24 bg-white dark:bg-slate-950">
-          <div className="container max-w-5xl mx-auto px-4">
+        <section className={`${spacing.section} bg-white dark:bg-slate-950`}>
+          <div className={`${spacing.container} max-w-5xl`}>
             <div className="space-y-6">
-              {(pageData.additionalSections || []).map((section: any, index: number) => {
+              {(pageData.additionalSections || []).map((section: SupplierSection, index: number) => {
                 const AddSectionIcon = resolveIcon(section?.iconName);
                 return (
                   <AnimatedSection key={section.number} delay={Math.min(index * 0.1, 0.3)}>
@@ -265,15 +304,15 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
                             <span className="text-2xl font-black text-blue-600 dark:text-blue-400">{section.number}</span>
                             <h2 className={cn(typography.h4, 'text-slate-900 dark:text-tone-inverse')}>{section.title}</h2>
                           </div>
-                          {section.content && (
+                          {section.content ? (
                             <div className="mb-4">{renderPortableContent(section.content)}</div>
-                          )}
+                          ) : null}
                           {section.list && (
                             <ul className="space-y-2">
-                              {(section.list || []).map((item: any, idx: number) => (
+                              {(section.list || []).map((item: string | { item?: string }, idx: number) => (
                                 <li key={idx} className="flex items-start gap-3">
                                   <div className="w-1.5 h-1.5 bg-blue-600 dark:bg-blue-400 rounded-full mt-2 flex-shrink-0" />
-                                  <span className="text-slate-600 dark:text-slate-400">{typeof item === 'string' ? item : (item as any).item}</span>
+                                  <span className="text-slate-600 dark:text-slate-400">{typeof item === 'string' ? item : item.item}</span>
                                 </li>
                               ))}
                             </ul>
@@ -292,7 +331,7 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
       {/* Footer Note */}
       {pageData.footerNote && (
         <AnimatedSection>
-          <section className="py-16 md:py-24 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 dark-section">
+          <section className={`${spacing.section} bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 dark-section`}>
             <div className="container max-w-4xl mx-auto px-4">
               <div className="p-8 md:p-10 bg-gradient-to-r from-blue-600/10 to-indigo-600/10 rounded-2xl border border-blue-600/20">
                 <div className="flex items-center gap-4 mb-4">
@@ -304,7 +343,7 @@ export default function SupplierRequirementsPageClient({ data }: SupplierRequire
                 </div>
                 <div className="text-slate-300 leading-relaxed">
                   {renderPortableContent(pageData.footerNote.content) || (
-                    <p className="text-slate-300">{pageData.footerNote.content}</p>
+                    <p className="text-slate-300">{String(pageData.footerNote.content || '')}</p>
                   )}
                 </div>
               </div>

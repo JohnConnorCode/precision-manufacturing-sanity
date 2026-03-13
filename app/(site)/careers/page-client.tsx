@@ -7,12 +7,14 @@ import HeroSection from '@/components/ui/hero-section';
 import { ArrowRight, Users, Briefcase, Award, Heart, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { typography, spacing, styles, cn } from '@/lib/design-system';
+import { typography, spacing, styles } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 import { getHeroImageUrl } from '@/lib/hero-images';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import type { JobPosting, CMSButton, CareerBenefit, CareerValue } from '@/lib/types/cms';
 import type { LucideIcon } from 'lucide-react';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 const urlFor = getHeroImageUrl;
 
@@ -25,8 +27,49 @@ const iconMap: Record<string, LucideIcon> = {
   CheckCircle,
 };
 
+interface CareersPageData {
+  hero?: {
+    backgroundImage?: { asset?: { _ref?: string; url?: string }; alt?: string };
+    backgroundImageUrl?: string;
+    imageAlt?: string;
+    title?: string;
+    titleHighlight?: string;
+    description?: string;
+    buttons?: CMSButton[];
+  };
+  whyWorkHere?: {
+    heading?: string;
+    paragraph1?: string;
+    paragraph2?: string;
+    paragraph3?: string;
+    image?: { asset?: { _ref?: string; url?: string }; alt?: string };
+    imageUrl?: string;
+    imageAlt?: string;
+  };
+  benefits?: {
+    title?: string;
+    description?: string;
+    items?: CareerBenefit[];
+  };
+  values?: {
+    title?: string;
+    description?: string;
+    items?: CareerValue[];
+  };
+  opportunities?: {
+    title?: string;
+    description?: string;
+    noPositionsMessage?: string;
+  };
+  cta?: {
+    title?: string;
+    description?: string;
+    buttons?: CMSButton[];
+  };
+}
+
 interface CareersPageClientProps {
-  data?: Record<string, any> | null;
+  data?: CareersPageData | null;
   jobPostings?: JobPosting[];
 }
 
@@ -47,22 +90,14 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
   return (
     <div className="min-h-screen bg-background">
       <HeroSection
-        backgroundImage={urlFor(data?.hero?.backgroundImage) || (data as Record<string, any>)?.hero?.backgroundImageUrl}
+        backgroundImage={urlFor(data?.hero?.backgroundImage) || data?.hero?.backgroundImageUrl}
         imageAlt={data?.hero?.imageAlt || data?.hero?.backgroundImage?.alt}
         title={(() => {
-          // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
-          const gradientStyle = {
-            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          } as React.CSSProperties;
-
           if (data?.hero?.titleHighlight) {
             return (
               <span className="text-inherit">
                 {data?.hero?.title}{' '}
-                <span style={gradientStyle}>{data?.hero?.titleHighlight}</span>
+                <span style={gradientTextStyle}>{data?.hero?.titleHighlight}</span>
               </span>
             );
           }
@@ -70,14 +105,14 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
           const title = data?.hero?.title || '';
           const words = title.split(' ');
           if (words.length <= 1) {
-            return <span style={gradientStyle}>{title}</span>;
+            return <span style={gradientTextStyle}>{title}</span>;
           }
           const firstPart = words.slice(0, -1).join(' ');
           const lastWord = words[words.length - 1];
           return (
             <span>
               <span className="text-inherit">{firstPart} </span>
-              <span style={gradientStyle}>{lastWord}</span>
+              <span style={gradientTextStyle}>{lastWord}</span>
             </span>
           );
         })()}
@@ -85,9 +120,9 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
         buttons={(data?.hero?.buttons || [])
           .filter((btn: CMSButton) => btn?.enabled !== false)
           .map((btn: CMSButton) => ({
-            label: btn.label,
-            href: btn.href,
-            variant: btn.variant as 'primary' | 'secondary'
+            label: btn.label || '',
+            href: btn.href || '',
+            variant: (btn.variant || 'primary') as 'primary' | 'secondary'
           }))}
         height="large"
         alignment="center"
@@ -103,16 +138,22 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               animate={whyWorkLeftAnim.shouldAnimate ? ANIM_STATES.slideLeft.animate : ANIM_STATES.slideLeft.initial}
               transition={ANIM_TRANSITION}
             >
-              <h2 className={cn(typography.h2, "mb-6")}>{data?.whyWorkHere?.heading || 'Why Work at IIS?'}</h2>
-              <p className={cn(typography.lead, "mb-6")}>
-                {data?.whyWorkHere?.paragraph1 || 'Join a team committed to excellence in precision machining.'}
-              </p>
-              <p className={cn(typography.body, "text-slate-600 dark:text-slate-300 mb-8")}>
-                {data?.whyWorkHere?.paragraph2 || 'We offer competitive compensation and comprehensive benefits.'}
-              </p>
-              <p className={cn(typography.body, "text-slate-600 dark:text-slate-300")}>
-                {data?.whyWorkHere?.paragraph3 || 'Grow your career with ongoing training and development opportunities.'}
-              </p>
+              <h2 className={cn(typography.h2, "mb-6")}>{data?.whyWorkHere?.heading}</h2>
+              {data?.whyWorkHere?.paragraph1 && (
+                <p className={cn(typography.lead, "mb-6")}>
+                  {data.whyWorkHere.paragraph1}
+                </p>
+              )}
+              {data?.whyWorkHere?.paragraph2 && (
+                <p className={cn(typography.body, "text-slate-600 dark:text-slate-300 mb-8")}>
+                  {data.whyWorkHere.paragraph2}
+                </p>
+              )}
+              {data?.whyWorkHere?.paragraph3 && (
+                <p className={cn(typography.body, "text-slate-600 dark:text-slate-300")}>
+                  {data.whyWorkHere.paragraph3}
+                </p>
+              )}
             </motion.div>
 
             <motion.div
@@ -123,13 +164,13 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
               className="relative"
             >
               {(() => {
-                const imageUrl = urlFor(data?.whyWorkHere?.image) || (data as Record<string, any>)?.whyWorkHere?.imageUrl;
+                const imageUrl = urlFor(data?.whyWorkHere?.image) || data?.whyWorkHere?.imageUrl;
                 if (!imageUrl) return null;
                 return (
                   <div className="relative w-full h-96 rounded-lg overflow-hidden shadow-lg">
                     <Image
                       src={imageUrl}
-                      alt={data?.whyWorkHere?.imageAlt || 'Team collaboration'}
+                      alt={data?.whyWorkHere?.imageAlt || ''}
                       fill
                       className="object-cover"
                       sizes="(min-width: 1024px) 50vw, 100vw"
@@ -153,9 +194,9 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             transition={ANIM_TRANSITION}
             className="text-center mb-16"
           >
-            <h2 className={cn(typography.h2, "mb-6")}>{data?.benefits?.title || 'Comprehensive Benefits Package'}</h2>
+            <h2 className={cn(typography.h2, "mb-6")}>{data?.benefits?.title}</h2>
             <p className={cn(typography.lead, "max-w-3xl mx-auto")}>
-              {data?.benefits?.description || 'We take care of our team members with industry-leading benefits and perks.'}
+              {data?.benefits?.description}
             </p>
           </motion.div>
 
@@ -201,9 +242,9 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             transition={ANIM_TRANSITION}
             className="text-center mb-16"
           >
-            <h2 className={cn(typography.h2, "mb-6")}>{data?.values?.title || 'Our Values'}</h2>
+            <h2 className={cn(typography.h2, "mb-6")}>{data?.values?.title}</h2>
             <p className={cn(typography.lead, "max-w-3xl mx-auto")}>
-              {data?.values?.description || 'The principles that guide everything we do.'}
+              {data?.values?.description}
             </p>
           </motion.div>
 
@@ -237,9 +278,9 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             transition={ANIM_TRANSITION}
             className="text-center mb-16"
           >
-            <h2 className={cn(typography.h2, "mb-6")}>{data?.opportunities?.title || 'Current Opportunities'}</h2>
+            <h2 className={cn(typography.h2, "mb-6")}>{data?.opportunities?.title}</h2>
             <p className={cn(typography.lead, "max-w-3xl mx-auto")}>
-              {data?.opportunities?.description || 'Explore open positions and join our team.'}
+              {data?.opportunities?.description}
             </p>
           </motion.div>
 
@@ -252,8 +293,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                   animate={opportunitiesGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                   transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
-                  <Link href={`/careers/${typeof position.slug === 'object' ? position.slug?.current : position.slug}`} className="block">
-                    <Card className={cn(styles.featureCard, "group hover:shadow-xl transition-shadow cursor-pointer border-l-4 border-l-blue-600")}>
+                  <Link href={`/careers/${position.slug}`} className="block">
+                    <Card className={cn(styles.featureCard, "group transition-shadow cursor-pointer border-l-4 border-l-blue-600")}>
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
@@ -300,10 +341,7 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
           ) : (
             <Card className="p-16 text-center bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-950 border-2 border-dashed border-slate-200 dark:border-slate-700">
               <p className={cn(typography.lead, "text-slate-600 dark:text-slate-300 mb-4")}>
-                No open positions at this time.
-              </p>
-              <p className={cn(typography.body, "text-slate-500")}>
-                Check back soon or contact us to express your interest in future opportunities.
+                {data?.opportunities?.noPositionsMessage || 'No open positions at this time.'}
               </p>
             </Card>
           )}
@@ -320,12 +358,12 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
             transition={ANIM_TRANSITION}
             className="text-center max-w-4xl mx-auto"
           >
-            <h2 className={cn(typography.h2, "mb-6 text-white")}>{data?.cta?.title || 'Ready to Join Us?'}</h2>
+            <h2 className={cn(typography.h2, "mb-6 text-tone-inverse")}>{data?.cta?.title}</h2>
             <p className={cn(typography.lead, "mb-8 text-slate-300")}>
-              {data?.cta?.description || 'Take the next step in your career. We look forward to hearing from you.'}
+              {data?.cta?.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {((data?.cta?.buttons && data.cta.buttons.length > 0) ? data.cta.buttons : [{ label: 'View Openings', href: '#opportunities', variant: 'primary' }])
+              {(data?.cta?.buttons || [])
                 .filter((button: CMSButton) => button?.enabled !== false)
                 .map((button: CMSButton, index: number) => (
                 <Button
@@ -335,8 +373,8 @@ export default function CareersPageClient({ data, jobPostings = [] }: CareersPag
                   variant={button.variant === 'outline' ? 'outline' : 'default'}
                   asChild
                 >
-                  <Link href={button.href || '/contact'}>
-                    {button.label || 'Learn More'} {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
+                  <Link href={button.href || '#'}>
+                    {button.label} {index === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
                   </Link>
                 </Button>
               ))}

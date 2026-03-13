@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import HeroSection from '@/components/ui/hero-section';
 import { getAllCertifications, getCertificationsPage } from '@/sanity/lib/queries';
 import CertificationsContent from './certifications-content';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 export const revalidate = 60;
 
@@ -12,8 +13,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/certifications`;
 
-  const seoTitle = pageData?.seo?.metaTitle || 'Certifications | AS9100D, ISO 9001, ITAR | IIS';
-  const seoDescription = pageData?.seo?.metaDescription || 'IIS holds AS9100D, ISO 9001:2015, and ITAR certifications. Learn about our quality management system and compliance standards for aerospace, defense, and precision machining.';
+  const seoTitle = pageData?.seo?.metaTitle;
+  const seoDescription = pageData?.seo?.metaDescription;
   const ogImage = pageData?.seo?.ogImage?.asset?.url || null;
 
   return {
@@ -53,12 +54,7 @@ export default async function CertificationsPage() {
   const heroImageAlt = pageData?.hero?.backgroundImage?.alt || '';
   const heroBadge = pageData?.hero?.badge;
 
-  const gradientStyle = {
-    background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text',
-  } as React.CSSProperties;
+  const gradientStyle = gradientTextStyle;
 
   const showHero = Boolean(heroTitle || heroDescription);
 

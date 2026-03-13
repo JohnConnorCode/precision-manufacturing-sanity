@@ -16,7 +16,7 @@ import {
 import MobileMenu from '@/components/layout/MobileMenu';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { typography } from '@/lib/design-system';
+import { typography, zIndex } from '@/lib/design-system';
 import { throttleRAF } from '@/lib/performance';
 import { usePrefersReducedMotion } from '@/lib/motion';
 
@@ -280,7 +280,7 @@ export default function Header({ data }: HeaderProps) {
     : `bg-transparent text-slate-700 dark:text-slate-100 ${gradientBorder}`;
 
   const headerClass = cn(
-    'fixed z-[140] w-full transition-all duration-500 top-0',
+    `fixed ${zIndex.header} w-full transition-all duration-500 top-0`,
     inHeroMode
       ? 'bg-slate-950/20 backdrop-blur-sm border-b border-white/10'
       : isScrolled
@@ -321,7 +321,7 @@ export default function Header({ data }: HeaderProps) {
       {showAnnouncement && announcement?.enabled && (
         <aside
           className={cn(
-            'fixed top-0 z-[160] w-full',
+            `fixed top-0 ${zIndex.announcement} w-full`,
             announcement.variant === 'success' ? 'bg-green-600 text-tone-inverse' :
             announcement.variant === 'warning' ? 'bg-amber-500 text-slate-900' :
             announcement.variant === 'alert' ? 'bg-red-600 text-tone-inverse' :
@@ -346,7 +346,7 @@ export default function Header({ data }: HeaderProps) {
       <aside
         className={cn(
           "hidden lg:block w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50",
-          "fixed z-[150]", // Fixed position, between announcement (z-160) and header (z-140)
+          `fixed ${zIndex.topBar}`, // Fixed position, between announcement (z-160) and header (z-140)
           showAnnouncement && announcement?.enabled ? "top-10" : "top-0"
         )}
         role="complementary"
@@ -406,7 +406,7 @@ export default function Header({ data }: HeaderProps) {
           {/* Desktop Navigation - Click-based Dropdowns */}
           <nav className="hidden lg:flex items-center justify-center flex-1">
             <ul className={cn('flex list-none items-center space-x-2', listJustify)}>
-              {navigation.map((item: MenuItem, index: number) => {
+              {navigation.map((item: MenuItem, _index: number) => {
                 const children = Array.isArray(item.children)
                   ? item.children.filter((c: ChildMenuItem) => c && (c.href || c.name))
                   : []
@@ -420,11 +420,8 @@ export default function Header({ data }: HeaderProps) {
                 const hasRealHref = isValidHref(href)
 
                 return (
-                  <motion.li
+                  <li
                     key={item.name}
-                    initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-                    animate={mounted ? { opacity: 1, y: 0 } : prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-                    transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.4, delay: mounted ? 0.1 + index * 0.05 : 0, ease: "easeOut" }}
                     className=""
                   >
                     {hasChildren ? (
@@ -435,7 +432,7 @@ export default function Header({ data }: HeaderProps) {
                             'group inline-flex items-center justify-center rounded-lg bg-transparent text-sm font-medium transition-all duration-200',
                             sizeClasses,
                             triggerTone,
-                            'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50',
+                            'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50',
                             inHeroMode
                               ? 'hover:bg-white/10 data-[state=open]:bg-white/15'
                               : 'hover:bg-slate-100/60 dark:hover:bg-slate-800/60 data-[state=open]:bg-slate-100/80 dark:data-[state=open]:bg-slate-800/80'
@@ -549,19 +546,14 @@ export default function Header({ data }: HeaderProps) {
                           </Link>
                       )
                     )}
-                  </motion.li>
+                  </li>
                 )
               })}
             </ul>
           </nav>
 
           {/* Desktop CTA + Theme Toggle */}
-          <motion.div
-            className="hidden lg:flex items-center space-x-2"
-            initial={prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-            animate={mounted ? { opacity: 1, x: 0 } : prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: mounted ? 0.4 : 0, ease: "easeOut" }}
-          >
+          <div className="hidden lg:flex items-center space-x-2">
             {/* Theme Toggle */}
             {mounted && <ThemeToggle />}
 
@@ -572,7 +564,7 @@ export default function Header({ data }: HeaderProps) {
                   className={inHeroMode ? 'border border-white/20' : ''}
                   style={inHeroMode ? {
                     background: 'white',
-                    color: '#0f172a',
+                    color: '#0f172a', // slate-900
                     boxShadow: '0 10px 25px -5px rgba(255, 255, 255, 0.2)',
                   } : undefined}
                   shimmer={!inHeroMode}
@@ -582,7 +574,7 @@ export default function Header({ data }: HeaderProps) {
                 </PremiumButton>
               </Link>
             )}
-          </motion.div>
+          </div>
 
           {/* Mobile hamburger button */}
           <button

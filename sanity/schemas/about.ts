@@ -126,6 +126,7 @@ const aboutSchema = {
       name: 'companyStats',
       type: 'array',
       title: 'Company Statistics',
+      group: 'statsStory',
       of: [
         {
           type: 'object',
@@ -229,6 +230,7 @@ const aboutSchema = {
       name: 'timeline',
       type: 'object',
       title: 'Company Timeline',
+      group: 'timeline',
       fields: [
         {
           name: 'title',
@@ -282,6 +284,7 @@ const aboutSchema = {
       name: 'values',
       type: 'object',
       title: 'Company Values',
+      group: 'values',
       fields: [
         {
           name: 'title',
@@ -341,9 +344,32 @@ const aboutSchema = {
       ],
     },
     {
+      name: 'capabilitiesSection',
+      type: 'object',
+      title: 'Capabilities Section Header',
+      group: 'capabilities',
+      description: 'Heading and description for the combined capabilities & certifications section',
+      fields: [
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Section Title',
+          initialValue: 'Capabilities & Certifications',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          title: 'Section Description',
+          rows: 2,
+          initialValue: 'Advanced machining capabilities backed by rigorous quality certifications',
+        },
+      ],
+    },
+    {
       name: 'capabilities',
       type: 'array',
       title: 'Capabilities',
+      group: 'capabilities',
       of: [
         {
           type: 'object',
@@ -388,6 +414,7 @@ const aboutSchema = {
       name: 'certifications',
       type: 'array',
       title: 'Certifications',
+      group: 'certifications',
       of: [
         {
           type: 'object',
@@ -413,6 +440,21 @@ const aboutSchema = {
             },
             {name: 'certification', type: 'string', title: 'Certification'}
           ],
+        },
+      ],
+    },
+    {
+      name: 'certificationsDisplay',
+      type: 'object',
+      title: 'Certifications Display',
+      group: 'certifications',
+      description: 'Controls how certifications appear on the page',
+      fields: [
+        {
+          name: 'subtitle',
+          type: 'string',
+          title: 'Certifications Subtitle',
+          initialValue: 'Industry-recognized quality standards',
         },
       ],
     },
@@ -491,6 +533,7 @@ const aboutSchema = {
                       type: 'string',
                       title: 'Alternative Text',
                       description: 'Describe the photo for accessibility',
+                      validation: (Rule: any) => Rule.required().error('Alt text is required for accessibility'),
                     }
                   ]
                 },

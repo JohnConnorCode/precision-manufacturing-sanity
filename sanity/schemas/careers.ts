@@ -290,6 +290,13 @@ export default {
           title: 'Section Description',
           rows: 2,
         },
+        {
+          name: 'noPositionsMessage',
+          type: 'string',
+          title: 'No Positions Message',
+          description: 'Message shown when there are no open positions',
+          initialValue: 'No open positions at this time. Check back soon or send us your resume.',
+        },
       ],
     },
     {

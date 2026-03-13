@@ -6,6 +6,11 @@ export default defineType({
   title: 'Case Studies',
   type: 'document',
   icon: FileText,
+  groups: [
+    {name: 'general', title: 'General', default: true},
+    {name: 'content', title: 'Content'},
+    {name: 'meta', title: 'Meta & Settings'},
+  ],
   orderings: [
     {
       title: 'Title A-Z',
@@ -28,12 +33,14 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
+      group: 'general',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
+      group: 'general',
       options: { source: 'title' },
       validation: (Rule) => Rule.required(),
     }),
@@ -41,12 +48,14 @@ export default defineType({
       name: 'industry',
       title: 'Related Industry',
       type: 'reference',
+      group: 'general',
       to: [{ type: 'industry' }],
     }),
     defineField({
       name: 'heroImage',
       title: 'Hero Image',
       type: 'image',
+      group: 'general',
       options: { hotspot: true, metadata: ['blurhash', 'lqip', 'palette'] },
       fields: [
         {
@@ -61,18 +70,21 @@ export default defineType({
       name: 'subtitle',
       title: 'Subtitle',
       type: 'string',
+      group: 'general',
       description: 'Short tagline under the title',
     }),
     defineField({
       name: 'client',
       title: 'Client Name',
       type: 'string',
+      group: 'general',
       description: 'Can be anonymous like "Major Defense Contractor"',
     }),
     defineField({
       name: 'duration',
       title: 'Project Duration',
       type: 'string',
+      group: 'general',
       description: 'e.g., "6 months", "Ongoing partnership since 2018"',
     }),
     defineField({
@@ -80,6 +92,7 @@ export default defineType({
       title: 'The Challenge',
       type: 'text',
       rows: 4,
+      group: 'content',
       description: 'What problem did the client face?',
     }),
     defineField({
@@ -87,12 +100,14 @@ export default defineType({
       title: 'Our Solution',
       type: 'text',
       rows: 4,
+      group: 'content',
       description: 'How did we solve it?',
     }),
     defineField({
       name: 'results',
       title: 'Results',
       type: 'array',
+      group: 'content',
       of: [
         {
           type: 'object',
@@ -108,6 +123,7 @@ export default defineType({
       name: 'testimonial',
       title: 'Client Testimonial',
       type: 'object',
+      group: 'content',
       fields: [
         { name: 'quote', type: 'text', title: 'Quote' },
         { name: 'author', type: 'string', title: 'Author Name' },
@@ -118,6 +134,7 @@ export default defineType({
       name: 'galleryImages',
       title: 'Gallery Images',
       type: 'array',
+      group: 'content',
       of: [
         {
           type: 'image',
@@ -133,6 +150,7 @@ export default defineType({
       name: 'technologies',
       title: 'Technologies Used',
       type: 'array',
+      group: 'meta',
       of: [{ type: 'string' }],
       options: {
         layout: 'tags',
@@ -142,6 +160,7 @@ export default defineType({
       name: 'certifications',
       title: 'Relevant Certifications',
       type: 'array',
+      group: 'meta',
       of: [{ type: 'string' }],
       options: {
         layout: 'tags',
@@ -151,12 +170,14 @@ export default defineType({
       name: 'published',
       title: 'Published',
       type: 'boolean',
+      group: 'meta',
       initialValue: true,
     }),
     defineField({
       name: 'seo',
       title: 'SEO',
       type: 'object',
+      group: 'meta',
       options: {
         collapsible: true,
         collapsed: true,
@@ -191,6 +212,7 @@ export default defineType({
               name: 'alt',
               type: 'string',
               title: 'Alternative Text',
+              validation: (Rule: any) => Rule.required().error('Alt text is required for social sharing'),
             },
           ],
         },

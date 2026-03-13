@@ -6,7 +6,9 @@ import Image from 'next/image';
 import { ArrowRight, Building2, Clock } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
 import AnimatedSection from '@/components/ui/animated-section';
-import { spacing, cn } from '@/lib/design-system';
+import { spacing, shadows, typography } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 interface CaseStudy {
   _id: string;
@@ -111,7 +113,7 @@ export default function CaseStudiesContent({
       )}
 
       {/* Case Studies Grid */}
-      <section className="py-24 md:py-32">
+      <section className={spacing.section}>
         <div className={spacing.container}>
           {filtered.length === 0 ? (
             <div className="text-center py-20">
@@ -125,7 +127,7 @@ export default function CaseStudiesContent({
               {filtered.length > 0 && (
                 <AnimatedSection>
                   <Link href={`/case-studies/${filtered[0].slug}`} className="block group">
-                    <div className="relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300">
+                    <div className={`relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 ${shadows.card} hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300`}>
                       <div className="grid md:grid-cols-2">
                         {/* Featured Image */}
                         {filtered[0].heroImage && (
@@ -134,7 +136,7 @@ export default function CaseStudiesContent({
                               src={filtered[0].heroImage}
                               alt={filtered[0].heroImageAlt || filtered[0].title}
                               fill
-                              className="object-cover group-hover:scale-105 transition-transform duration-700"
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
                               sizes="(max-width: 768px) 100vw, 50vw"
                               priority
                             />
@@ -150,8 +152,8 @@ export default function CaseStudiesContent({
                         )}
                         {/* Featured Content */}
                         <div className="p-8 md:p-10 flex flex-col justify-center">
-                          <div className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 mb-4">
-                            {featuredLabel || 'Featured Case Study'}
+                          <div className="text-xs font-bold uppercase tracking-[0.15em] text-blue-600 dark:text-blue-400 mb-4">
+                            {featuredLabel}
                           </div>
                           <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-4">
                             {filtered[0].client && (
@@ -167,7 +169,7 @@ export default function CaseStudiesContent({
                               </div>
                             )}
                           </div>
-                          <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                          <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-tone-inverse mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                             {filtered[0].title}
                           </h3>
                           {filtered[0].challenge && (
@@ -180,12 +182,7 @@ export default function CaseStudiesContent({
                             <div className="flex flex-wrap gap-6 mb-6">
                               {filtered[0].results.slice(0, 3).map((result, idx) => (
                                 <div key={idx}>
-                                  <div className="text-2xl font-bold" style={{
-                                    background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                                    WebkitBackgroundClip: 'text',
-                                    WebkitTextFillColor: 'transparent',
-                                    backgroundClip: 'text',
-                                  }}>{result.value}</div>
+                                  <div className="text-2xl font-bold" style={gradientTextStyle}>{result.value}</div>
                                   <div className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">{result.metric}</div>
                                 </div>
                               ))}
@@ -208,7 +205,7 @@ export default function CaseStudiesContent({
                   {filtered.slice(1).map((caseStudy, index) => (
                     <AnimatedSection key={caseStudy._id} delay={index * 0.1}>
                       <Link href={`/case-studies/${caseStudy.slug}`} className="block group h-full">
-                        <div className="h-full bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300">
+                        <div className={`h-full bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 ${shadows.card} hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300`}>
                           {/* Image */}
                           {caseStudy.heroImage && (
                             <div className="relative h-56 overflow-hidden">
@@ -261,7 +258,7 @@ export default function CaseStudiesContent({
                             </div>
 
                             {/* Title */}
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-tone-inverse mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
                               {caseStudy.title}
                             </h3>
 
@@ -310,17 +307,17 @@ export default function CaseStudiesContent({
 
       {/* CTA Section */}
       {showCta && (
-        <section className="py-24 md:py-32 bg-slate-50 dark:bg-slate-900">
+        <section className={`${spacing.section} bg-slate-50 dark:bg-slate-900`}>
           <div className={spacing.container}>
             <AnimatedSection>
               <div className="text-center max-w-4xl mx-auto">
                 {cta?.title && (
-                  <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">
+                  <h2 className={cn(typography.h2, "mb-6")}>
                     {cta.title}
                   </h2>
                 )}
                 {cta?.description && (
-                  <p className="text-lg text-slate-600 dark:text-slate-400 mb-8">
+                  <p className={cn(typography.lead, "text-slate-600 dark:text-slate-400 mb-8")}>
                     {cta.description}
                   </p>
                 )}

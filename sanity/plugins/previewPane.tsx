@@ -73,6 +73,16 @@ export const previewPane = definePlugin({
           return buildPreview({ global: 'terms' });
         case 'supplierRequirements':
           return buildPreview({ global: 'supplier-requirements' });
+        case 'caseStudiesPage':
+          return buildPreview({ global: 'case-studies-page' });
+        case 'certificationsPage':
+          return buildPreview({ global: 'certifications-page' });
+        case 'servicesPage':
+          return buildPreview({ global: 'services-page' });
+        case 'industriesPage':
+          return buildPreview({ global: 'industries-page' });
+        case 'errorPages':
+          return buildPreview({ global: 'error-pages' });
         default:
           return prev;
       }

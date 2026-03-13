@@ -5,6 +5,7 @@ import { motion, HTMLMotionProps } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { cva, type VariantProps } from "class-variance-authority"
 import { usePrefersReducedMotion } from "@/lib/motion"
+import { gradientTextStyle } from "@/lib/theme-utils"
 
 const premiumButtonVariants = cva(
   "relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 disabled:pointer-events-none disabled:opacity-50 overflow-hidden group",
@@ -83,12 +84,7 @@ export const PremiumButton = React.forwardRef<
   }
 
   // Ghost variant uses inline styles for WebKit gradient text compatibility
-  const ghostStyles: React.CSSProperties | undefined = variant === 'ghost' ? {
-    background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text',
-  } : undefined;
+  const ghostStyles: React.CSSProperties | undefined = variant === 'ghost' ? gradientTextStyle : undefined;
 
   return (
     <motion.button

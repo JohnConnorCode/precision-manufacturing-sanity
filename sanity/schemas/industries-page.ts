@@ -602,7 +602,7 @@ export default {
           name: 'metaTitle',
           type: 'string',
           title: 'Meta Title',
-          initialValue: 'IIS Industries | Aerospace, Defense & Energy | Precision Manufacturing',
+          initialValue: 'IIS Industries | Aerospace, Defense & Energy | Precision Machining',
           validation: (Rule: any) => Rule.required().max(60).warning('Keep under 60 characters')
         },
         {

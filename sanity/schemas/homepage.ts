@@ -136,8 +136,8 @@ export default {
           name: 'word2',
           type: 'string',
           title: 'Word 2',
-          initialValue: 'MANUFACTURING',
-          description: 'Second word of hero heading (e.g., "MANUFACTURING")',
+          initialValue: 'MACHINING',
+          description: 'Second word of hero heading (e.g., "MACHINING")',
           fieldset: 'copy',
         },
         {
@@ -170,7 +170,7 @@ export default {
           type: 'text',
           title: 'Tagline',
           rows: 2,
-          initialValue: 'Innovative Precision Machining & Manufacturing Excellence Since 1995',
+          initialValue: 'Innovative Precision Machining Excellence Since 1995',
           fieldset: 'copy',
         },
         {
@@ -1038,7 +1038,7 @@ export default {
               name: 'eyebrow',
               type: 'string',
               title: 'Eyebrow',
-              description: 'Small text above title (e.g., "Manufacturing Excellence")',
+              description: 'Small text above title (e.g., "Machining Excellence")',
             },
             {
               name: 'title',

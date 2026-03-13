@@ -82,6 +82,22 @@ export default function LogoSVG({
     }
   } as const;
 
+  const labelVariants = {
+    hidden: {
+      opacity: 0,
+      y: 10
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 1.5,
+        duration: 0.5,
+        ease: "easeOut" as const
+      }
+    }
+  } as const;
+
 
   return (
     <div className={`flex items-center ${logoTextGap} ${colorClass}`}>
@@ -89,7 +105,7 @@ export default function LogoSVG({
       <motion.svg
         width={width}
         height={height}
-        viewBox="0 0 800 600"
+        viewBox="0 0 800 680"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className={`flex-shrink-0 ${className}`}
@@ -131,6 +147,47 @@ export default function LogoSVG({
           variants={animated ? textVariants : undefined}
         >
           IIS
+        </motion.text>
+
+        {/* Statistical labels below baseline */}
+        <motion.text
+          x="100"
+          y="640"
+          textAnchor="middle"
+          fontSize="90"
+          fontWeight="700"
+          fontFamily="Georgia, serif"
+          fontStyle="italic"
+          fill="currentColor"
+          variants={animated ? labelVariants : undefined}
+        >
+          {'-3\u03C3'}
+        </motion.text>
+        <motion.text
+          x="400"
+          y="640"
+          textAnchor="middle"
+          fontSize="90"
+          fontWeight="700"
+          fontFamily="Georgia, serif"
+          fontStyle="italic"
+          fill="currentColor"
+          variants={animated ? labelVariants : undefined}
+        >
+          {'\u03BC'}
+        </motion.text>
+        <motion.text
+          x="700"
+          y="640"
+          textAnchor="middle"
+          fontSize="90"
+          fontWeight="700"
+          fontFamily="Georgia, serif"
+          fontStyle="italic"
+          fill="currentColor"
+          variants={animated ? labelVariants : undefined}
+        >
+          {'+3\u03C3'}
         </motion.text>
       </motion.svg>
 

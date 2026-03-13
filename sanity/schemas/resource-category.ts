@@ -27,12 +27,17 @@ export default {
       }
     },
   },
+  groups: [
+    {name: 'general', title: 'General', default: true},
+    {name: 'settings', title: 'Settings'},
+  ],
   fields: [
     {
       name: 'title',
       type: 'string',
       title: 'Title',
-      description: 'Category display name (e.g., "Manufacturing Processes")',
+      description: 'Category display name (e.g., "Machining Processes")',
+      group: 'general',
       validation: (Rule: any) => Rule.required().error('Title is required'),
     },
     {
@@ -40,6 +45,7 @@ export default {
       type: 'slug',
       title: 'Slug',
       description: 'URL-friendly identifier (must match the category value used in resources)',
+      group: 'general',
       options: {
         source: 'title',
         maxLength: 96,
@@ -52,6 +58,7 @@ export default {
       type: 'text',
       title: 'Description',
       description: 'Category description shown on the category landing page and in metadata',
+      group: 'general',
       rows: 3,
       validation: (Rule: any) => Rule.required().error('Description is required'),
     },
@@ -60,6 +67,7 @@ export default {
       type: 'image',
       title: 'Hero Image',
       description: 'Background image for the category landing page hero section',
+      group: 'general',
       options: {
         hotspot: true,
         metadata: ['blurhash', 'lqip', 'palette'],
@@ -78,6 +86,7 @@ export default {
       type: 'boolean',
       title: 'Published',
       description: 'Controls whether this category appears on the website. Toggle off to hide without deleting.',
+      group: 'settings',
       initialValue: true,
     },
     {
@@ -85,6 +94,7 @@ export default {
       type: 'number',
       title: 'Display Order',
       description: 'Order in which categories appear (lower numbers first)',
+      group: 'settings',
       initialValue: 0,
     },
   ],

@@ -1,6 +1,5 @@
 import { defineType, defineField } from 'sanity'
 import { Users } from 'lucide-react'
-import { publishedField, orderField } from './fields'
 
 /**
  * Team Member Schema
@@ -106,8 +105,23 @@ export default defineType({
     }),
 
     // Display Options
-    publishedField({ group: 'display' }),
-    orderField({ group: 'display' }),
+    defineField({
+      name: 'published',
+      type: 'boolean',
+      title: 'Published',
+      description: 'Controls whether this item appears on the website. Toggle off to hide without deleting.',
+      group: 'display',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'order',
+      type: 'number',
+      title: 'Display Order',
+      description: 'Lower numbers appear first',
+      group: 'display',
+      initialValue: 0,
+      validation: (rule) => rule.integer().min(0),
+    }),
 
     // Contact Info
     defineField({

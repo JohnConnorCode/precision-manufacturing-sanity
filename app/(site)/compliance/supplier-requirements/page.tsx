@@ -1,6 +1,6 @@
 import { getSiteUrl } from '@/lib/site-url';
 import { notFound } from 'next/navigation';
-import SupplierRequirementsPageClient from './page-client';
+import SupplierRequirementsPageClient, { type SupplierRequirementsData } from './page-client';
 import { getSupplierRequirements } from '@/sanity/lib/queries';
 import { draftMode } from 'next/headers';
 
@@ -16,8 +16,7 @@ export default async function SupplierRequirementsPage() {
     notFound();
   }
 
-  // Cast: query return type and client component prop type represent the same CMS document
-  return <SupplierRequirementsPageClient data={supplierRequirementsData as any} />;
+  return <SupplierRequirementsPageClient data={supplierRequirementsData as SupplierRequirementsData} />;
 }
 
 // Generate metadata for SEO

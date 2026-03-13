@@ -8,7 +8,7 @@ export const resolveDocumentActions = (
   const { schemaType } = context;
 
   // Add duplicate action to specific document types
-  if (['service', 'industry', 'resource', 'teamMember'].includes(schemaType)) {
+  if (['service', 'industry', 'resource', 'teamMember', 'caseStudy', 'testimonial', 'certification'].includes(schemaType)) {
     return [...prev, DuplicateAction];
   }
 

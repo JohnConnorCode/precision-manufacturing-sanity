@@ -8,6 +8,7 @@ import { getGradientStyle, hexToRgba } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS } from '@/lib/animation-config';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import { spacing } from '@/lib/design-system';
 
 interface TechnicalSpecsData {
   title?: string;
@@ -69,7 +70,7 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
   const subtitle = data?.subtitle;
 
   return (
-    <section className="py-24 md:py-32 relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 dark-section">
+    <section className={`${spacing.section} relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 dark-section`}>
       {/* Premium Background Pattern */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] bg-[size:50px_50px] opacity-20" />
@@ -81,19 +82,20 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
+      <div className={`${spacing.containerWide} relative z-10`}>
         <div className="max-w-4xl mx-auto">
           <SectionHeader
             heading={title}
             gradientWordPosition="last"
             description={subtitle}
             centered={true}
-            className="[&_h2]:text-tone-inverse [&_p]:text-slate-400"
+            className="[&_h2]:text-tone-inverse [&_p]:text-slate-300"
           />
         </div>
 
         {/* Metrics Grid - Premium Card Design */}
-        <div ref={metricsAnim.ref} className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        {/* Dynamic grid: 4 cols for even counts, 3 cols for counts divisible by 3 (like 9), else 4 */}
+        <div ref={metricsAnim.ref} className={`grid grid-cols-2 ${metrics.length % 3 === 0 && metrics.length % 4 !== 0 ? 'md:grid-cols-3' : 'md:grid-cols-4'} ${spacing.grid}`}>
           {metrics.map((metric, index) => {
             const Icon = metric.icon || Gauge;
             const headerDelay = SECTION_CONFIGS.metricsGrid.headerCompletion;
@@ -108,7 +110,7 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
                 className="group relative"
               >
                 <div
-                  className="relative bg-slate-900/50 backdrop-blur-sm border border-slate-800/50 rounded-2xl p-6 transition-all duration-300 hover:bg-slate-900/70"
+                  className="relative bg-slate-900/50 backdrop-blur-sm border border-slate-800/50 rounded-xl p-4 transition-all duration-300 hover:bg-slate-900/70"
                   style={{
                     '--hover-border-color': hexToRgba(theme.colors.primary, 0.3),
                     '--hover-shadow': `0 0 50px ${hexToRgba(theme.colors.primary, 0.15)}`,
@@ -128,25 +130,25 @@ export default function TechnicalSpecs({ data }: TechnicalSpecsProps) {
                     style={getGradientStyle(theme.colors)}
                   />
 
-                  {/* Icon */}
-                  <div className="relative w-12 h-12 rounded-xl p-[1px] mb-4" style={getGradientStyle(theme.colors)}>
-                    <div className="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center">
-                      <Icon className="w-6 h-6 text-tone-inverse" />
+                  {/* Icon + Value Row */}
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="relative w-10 h-10 rounded-lg p-[1px] flex-shrink-0" style={getGradientStyle(theme.colors)}>
+                      <div className="w-full h-full bg-slate-900 rounded-lg flex items-center justify-center">
+                        <Icon className="w-5 h-5 text-tone-inverse" />
+                      </div>
+                    </div>
+                    <div className="text-2xl md:text-3xl font-black text-tone-inverse tracking-tight">
+                      {metric.value}
                     </div>
                   </div>
 
-                  {/* Metric Value */}
-                  <div className="text-3xl md:text-4xl font-black text-tone-inverse mb-1 tracking-tight">
-                    {metric.value}
-                  </div>
-
                   {/* Label */}
-                  <div className="text-xs font-bold uppercase tracking-[0.15em] mb-2" style={{ color: theme.colors.primary }}>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.15em] mb-1" style={{ color: theme.colors.primary }}>
                     {metric.label}
                   </div>
 
                   {/* Description */}
-                  <div className="text-xs text-slate-500 leading-relaxed">
+                  <div className="text-xs text-slate-400 leading-relaxed">
                     {metric.description}
                   </div>
 

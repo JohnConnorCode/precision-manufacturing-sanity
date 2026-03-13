@@ -23,10 +23,12 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { typography, spacing, styles, cn } from '@/lib/design-system';
+import { typography, spacing, styles, shadows } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 import { getHeroImageUrl } from '@/lib/hero-images';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 const iconMap: Record<string, LucideIcon> = {
   Database,
@@ -162,7 +164,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
   }
 
   const heroImage = urlFor(data.hero?.backgroundImage) || '';
-  const heroAlt = data.hero?.backgroundImage?.alt || 'Metbase Database Software';
+  const heroAlt = data.hero?.backgroundImage?.alt || '';
   const heroButtons = (data.hero?.buttons || [])
     .filter((btn) => btn?.enabled !== false && btn?.label && btn?.href)
     .map((btn) => ({
@@ -200,27 +202,19 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
         imageAlt={heroAlt}
         badge={data.hero?.badge ? { text: data.hero.badge, icon: BadgeIcon } : undefined}
         title={(() => {
-          // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
-          const gradientStyle = {
-            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          } as React.CSSProperties;
-
           if (!data.hero?.title) return '';
           if (data.hero?.titleHighlight) {
             return (
               <span className="text-tone-inverse">
                 {data.hero.title}{' '}
-                <span style={gradientStyle}>
+                <span style={gradientTextStyle}>
                   {data.hero.titleHighlight}
                 </span>
               </span>
             );
           }
           return (
-            <span style={gradientStyle}>
+            <span style={gradientTextStyle}>
               {data.hero.title}
             </span>
           );
@@ -274,7 +268,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
               transition={ANIM_TRANSITION}
               className="relative"
             >
-              <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 text-tone-inverse shadow-2xl">
+              <div className={`bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 text-tone-inverse ${shadows.elevated}`}>
                 <Database className="w-16 h-16 mb-6 opacity-80" />
                 <h3 className="text-2xl font-bold mb-4">Enterprise-Grade Solution</h3>
                 <p className="text-blue-100 leading-relaxed">
@@ -328,7 +322,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                   animate={featuresGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                   transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
-                  <Card className="p-6 h-full border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 hover:shadow-xl group">
+                  <Card className="p-6 h-full border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 group">
                     <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                       <Icon className="w-7 h-7 text-tone-inverse" />
                     </div>
@@ -387,10 +381,10 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
               className="relative"
             >
               {analysisImage ? (
-                <div className="rounded-xl overflow-hidden shadow-2xl">
+                <div className={`rounded-xl overflow-hidden ${shadows.elevated}`}>
                   <Image
                     src={analysisImage}
-                    alt={data.analysisTool?.image?.alt || 'Metbase Analysis Chart'}
+                    alt={data.analysisTool?.image?.alt || ''}
                     width={600}
                     height={400}
                     className="w-full h-auto"
@@ -440,7 +434,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
                   animate={integrationGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                   transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
-                  <Card className="p-6 text-center h-full border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 hover:shadow-lg">
+                  <Card className="p-6 text-center h-full border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300">
                     <div className="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mx-auto mb-4">
                       <Icon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                     </div>
@@ -463,7 +457,7 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
               <div className="rounded-xl overflow-hidden shadow-xl">
                 <Image
                   src={integrationImage}
-                  alt={data.systemIntegration?.image?.alt || 'System Integration Diagram'}
+                  alt={data.systemIntegration?.image?.alt || ''}
                   width={900}
                   height={500}
                   className="w-full h-auto"
@@ -486,17 +480,17 @@ export default function MetbasePageClient({ data }: MetbasePageClientProps) {
               className="order-2 lg:order-1"
             >
               {closedLoopImage ? (
-                <div className="rounded-xl overflow-hidden shadow-2xl">
+                <div className={`rounded-xl overflow-hidden ${shadows.elevated}`}>
                   <Image
                     src={closedLoopImage}
-                    alt={data.closedLoop?.image?.alt || 'Closed-Loop System Diagram'}
+                    alt={data.closedLoop?.image?.alt || ''}
                     width={600}
                     height={400}
                     className="w-full h-auto"
                   />
                 </div>
               ) : (
-                <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-8 text-tone-inverse shadow-2xl">
+                <div className={`bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-8 text-tone-inverse ${shadows.elevated}`}>
                   <RefreshCw className="w-16 h-16 mb-6 opacity-80" />
                   <h3 className="text-2xl font-bold mb-4">Continuous Improvement</h3>
                   <p className="text-indigo-100 leading-relaxed">

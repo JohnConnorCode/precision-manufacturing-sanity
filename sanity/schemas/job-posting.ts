@@ -34,11 +34,11 @@ export default {
       name: 'department',
       type: 'string',
       title: 'Department',
-      description: 'e.g., "Manufacturing", "Quality Assurance", "Engineering"',
+      description: 'e.g., "Machining", "Quality Assurance", "Engineering"',
       group: 'basic',
       options: {
         list: [
-          { title: 'Manufacturing', value: 'Manufacturing' },
+          { title: 'Machining', value: 'Machining' },
           { title: 'Quality Assurance', value: 'Quality Assurance' },
           { title: 'Engineering', value: 'Engineering' },
           { title: 'Operations', value: 'Operations' },
@@ -184,7 +184,7 @@ export default {
       name: 'applicationLink',
       type: 'string',
       title: 'Application Link (Advanced)',
-      description: 'Optional - External application URL (e.g., ADP, Indeed)',
+      description: 'Hidden — reserved for future ATS integration. Use Application Email above for now.',
       group: 'application',
       hidden: true,
       placeholder: 'https://...'
@@ -267,7 +267,7 @@ export default {
     {
       title: 'Newest First',
       name: 'newestFirst',
-      by: [{ field: 'postedDate', direction: 'desc' }]
+      by: [{ field: 'datePosted', direction: 'desc' }]
     },
     {
       title: 'Department A-Z',

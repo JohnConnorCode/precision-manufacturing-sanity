@@ -12,6 +12,7 @@ import { SECTION_CONFIGS } from '@/lib/animation-config';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import { ResourcesData, ResourceSeries, ResourceBenefit } from '@/lib/types/cms';
 import { DotGridBackground } from '@/lib/background-patterns';
+import { spacing } from '@/lib/design-system';
 
 // Icon mapping for CMS data
 const iconMap: Record<string, LucideIcon> = {
@@ -42,16 +43,16 @@ export default function Resources({ data }: ResourcesProps) {
   }
 
   const resourcesData = data;
-  const additionalSeriesText = (resourcesData as any)?.additionalSeriesText;
+  const additionalSeriesText = (resourcesData as ResourcesData & { additionalSeriesText?: string })?.additionalSeriesText;
   const ctaData = resourcesData.cta;
   const showCta = Boolean(ctaData && (ctaData.title || ctaData.description));
 
   return (
-    <section className="relative py-24 md:py-32 bg-gradient-to-b from-slate-950 via-indigo-950/5 to-slate-950 overflow-hidden dark-section">
+    <section className={`relative ${spacing.section} bg-gradient-to-b from-slate-950 via-indigo-950/5 to-slate-950 overflow-hidden dark-section`}>
       {/* Background Pattern */}
       <DotGridBackground color="rgb(59, 130, 246)" spacing={40} dotPosition={1} opacity={0.05} />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
+      <div className={`${spacing.containerWide} relative z-10`}>
         <SectionHeader
             eyebrow={resourcesData.header.badge}
             heading={resourcesData.header.title}
@@ -78,7 +79,7 @@ export default function Resources({ data }: ResourcesProps) {
               >
                 <Link href={`/resources/${seriesSlug}`}>
                   <article
-                    className="group h-full bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+                    className="group h-full bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02]"
                     style={{
                       borderColor: 'rgb(var(--slate-800))',
                     }}
@@ -118,7 +119,7 @@ export default function Resources({ data }: ResourcesProps) {
                     </p>
 
                     <div className="flex items-center justify-between pt-4 border-t border-slate-800">
-                      <div className="flex items-center gap-4 text-sm text-slate-400">
+                      <div className="flex items-center gap-4 text-sm text-slate-300">
                         <div className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
                           <span>{series.readTime}</span>
@@ -213,7 +214,7 @@ export default function Resources({ data }: ResourcesProps) {
                     <IconComponent className="w-6 h-6" />
                   </div>
                   <h4 className="text-lg font-bold text-tone-inverse mb-2">{benefit.title}</h4>
-                  <p className="text-slate-400 text-sm">{benefit.description}</p>
+                  <p className="text-slate-300 text-sm">{benefit.description}</p>
                 </motion.div>
               );
             })}

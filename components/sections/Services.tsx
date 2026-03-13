@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import SectionHeader from '@/components/ui/section-header';
 import { PremiumButton } from '@/components/ui/premium-button';
-import { spacing, colors } from '@/lib/design-system';
+import { spacing, colors, shadows, typography } from '@/lib/design-system';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getPrimaryColorStyle } from '@/lib/theme-utils';
@@ -76,7 +76,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
     ? { href: sectionData.cta.href, text: sectionData.cta.text }
     : null;
   const subdescription = sectionData?.subdescription;
-  const cardCtaText = sectionData?.cardCtaText || 'View Details';
+  const cardCtaText = sectionData?.cardCtaText;
 
   return (
     <section className={`relative ${spacing.section} overflow-hidden ${colors.bgLight} dark:bg-slate-950`}>
@@ -101,7 +101,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
             initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
             animate={subdescAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
             transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.2 }}
-            className="text-base md:text-lg text-slate-600 dark:text-slate-400 text-center max-w-4xl mx-auto mb-8 md:mb-12"
+            className={`text-base md:text-lg text-slate-600 dark:text-slate-400 text-center max-w-4xl mx-auto ${spacing.headingBottom}`}
           >
             {subdescription}
           </motion.p>
@@ -129,7 +129,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                   >
                     <Card
-                      className="h-full min-h-[480px] overflow-hidden transition-all duration-300 hover:shadow-2xl border-0 bg-white dark:bg-slate-900 relative shadow-lg dark:shadow-slate-950/50"
+                      className={`h-full min-h-[480px] overflow-hidden transition-all duration-300 border-0 bg-white dark:bg-slate-900 relative dark:shadow-slate-950/50 ${shadows.card}`}
                     >
                     {/* Image Header */}
                     <div className="relative h-52 overflow-hidden">
@@ -139,7 +139,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
                             src={service.image}
                             alt={service.title}
                             fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/30 to-transparent" />
@@ -163,7 +163,7 @@ export default function Services({ data, sectionData }: ServicesProps) {
                     {/* Content */}
                     <div className="p-6 flex flex-col flex-1">
                       <h3
-                        className="text-lg font-bold mb-3 text-slate-900 dark:text-tone-inverse group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 line-clamp-2"
+                        className={`${typography.cardTitle} mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 line-clamp-2`}
                       >
                         {service.title}
                       </h3>

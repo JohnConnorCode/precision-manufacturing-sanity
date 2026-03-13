@@ -5,8 +5,10 @@ import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { FileQuestion, Home, ArrowLeft, ArrowRight } from 'lucide-react'
-import { typography, cn } from '@/lib/design-system'
+import { typography } from '@/lib/design-system'
+import { cn } from '@/lib/utils'
 import { usePrefersReducedMotion } from '@/lib/motion'
+import { gradientTextStyle } from '@/lib/theme-utils'
 
 export default function NotFound() {
   const prefersReducedMotion = usePrefersReducedMotion()
@@ -57,12 +59,7 @@ export default function NotFound() {
           <motion.div
             {...fadeOnly(0.3)}
           >
-            <h1 className="text-7xl font-black mb-2" style={{
-              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
+            <h1 className="text-7xl font-black mb-2" style={gradientTextStyle}>
               404
             </h1>
 

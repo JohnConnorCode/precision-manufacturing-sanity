@@ -87,7 +87,7 @@ export interface PortableTextBlock {
 export interface ServiceCard {
   _id: string
   title: string
-  slug: SanitySlug
+  slug: string
   shortDescription?: string
   iconName?: string
   image?: SanityImage
@@ -152,7 +152,7 @@ export interface ServiceDetail extends ServiceCard {
 export interface IndustryCard {
   _id: string
   title: string
-  slug: SanitySlug
+  slug: string
   shortDescription?: string
   iconName?: string
   image?: SanityImage
@@ -202,7 +202,7 @@ export interface IndustryDetail extends IndustryCard {
 export interface ResourceCard {
   _id: string
   title: string
-  slug: SanitySlug
+  slug: string
   excerpt?: string
   category?: string
   difficulty?: 'beginner' | 'intermediate' | 'advanced' | string
@@ -246,7 +246,7 @@ export interface TeamMemberQueryResult {
 export interface JobPostingQueryResult {
   _id: string
   title: string
-  slug: SanitySlug
+  slug: string
   department?: string
   location?: string
   employmentType?: string
@@ -568,6 +568,7 @@ export interface ContactPage {
   hero?: {
     backgroundImage?: SanityImage
     backgroundImageUrl?: string
+    imageAlt?: string
     badge?: string
     badgeIconName?: string
     title?: string
@@ -591,12 +592,37 @@ export interface ContactPage {
     hoursLine2?: string
     submitButtonText?: string
     consultationHeading?: string
+    cardHeading?: string
+    addressLabel?: string
+    phoneLabel?: string
+    emailLabel?: string
+    hoursLabel?: string
+    formHeading?: string
+    successHeading?: string
+    sendingText?: string
+    mapHeading?: string
+    interestOptions?: Array<{
+      _key?: string
+      value: string
+      label: string
+    }>
+    timelineOptions?: Array<{
+      _key?: string
+      value: string
+      label: string
+    }>
   }
   locationImage?: SanityImage
   locationDescription?: string
   certifications?: Array<{
     enabled?: boolean
     certification?: string
+  }>
+  trustBar?: Array<{
+    enabled?: boolean
+    label?: string
+    value?: string
+    sublabel?: string
   }>
   bottomStats?: Array<{
     enabled?: boolean
@@ -726,10 +752,23 @@ export interface PageSection {
   [key: string]: unknown
 }
 
+// ============================================================================
+// ERROR PAGES
+// ============================================================================
+
+export interface GlobalErrorData {
+  heading?: string
+  description?: string
+  tryAgainButtonText?: string
+  supportMessagePrefix?: string
+  supportLinkText?: string
+  homeButtonText?: string
+}
+
 export interface GenericPage {
   _id: string
   title: string
-  slug: SanitySlug
+  slug: string
   published?: boolean
   sections?: PageSection[]
   seo?: SEO

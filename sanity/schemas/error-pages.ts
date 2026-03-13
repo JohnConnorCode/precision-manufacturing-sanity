@@ -75,7 +75,62 @@ export default {
             {label: 'Precision Metrology', href: '/services/metrology'},
             {label: 'Request Quote', href: '/contact'},
             {label: 'About IIS', href: '/about'},
-            {label: 'Defense Manufacturing', href: '/industries/defense'},
+            {label: 'Defense Machining', href: '/industries/defense'},
+          ],
+        },
+        {
+          name: 'actionButtons',
+          type: 'array',
+          title: 'Action Buttons',
+          description: 'Primary action buttons shown on the 404 page',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {
+                  name: 'label',
+                  type: 'string',
+                  title: 'Button Label',
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: 'href',
+                  type: 'string',
+                  title: 'Link URL',
+                  description: 'Relative URL (e.g., /services) or tel: link',
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: 'variant',
+                  type: 'string',
+                  title: 'Button Variant',
+                  options: {
+                    list: [
+                      {title: 'Primary', value: 'primary'},
+                      {title: 'Secondary', value: 'secondary'},
+                    ],
+                  },
+                  initialValue: 'secondary',
+                },
+                {
+                  name: 'iconName',
+                  type: 'string',
+                  title: 'Icon Name',
+                  description: 'Lucide icon name (e.g., Home, Search, Phone)',
+                },
+              ],
+              preview: {
+                select: {
+                  title: 'label',
+                  subtitle: 'href',
+                },
+              },
+            },
+          ],
+          initialValue: [
+            {label: 'Return Home', href: '/', variant: 'primary', iconName: 'Home'},
+            {label: 'Browse Services', href: '/services', variant: 'secondary', iconName: 'Search'},
+            {label: 'Call Support', href: 'tel:', variant: 'secondary', iconName: 'Phone'},
           ],
         },
         {
@@ -131,6 +186,12 @@ export default {
           type: 'string',
           title: 'Support Link Text',
           initialValue: 'Contact support',
+        },
+        {
+          name: 'homeButtonText',
+          type: 'string',
+          title: 'Home Button Text',
+          initialValue: 'Back to Homepage',
         },
       ],
     },

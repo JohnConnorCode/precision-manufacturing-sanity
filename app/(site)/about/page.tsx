@@ -12,7 +12,8 @@ export default async function AboutPage() {
   const aboutData = await getAbout(isEnabled);
 
   // Cast: AboutPage query type and AboutPageData client type represent the same CMS document
-  return <AboutPageClient data={aboutData as any} />;
+  // AboutPage query type and AboutPageData client type represent the same CMS document
+  return <AboutPageClient data={aboutData as React.ComponentProps<typeof AboutPageClient>['data']} />;
 }
 
 // Generate metadata for SEO - pulls from Sanity CMS with fallbacks
@@ -23,11 +24,11 @@ export async function generateMetadata() {
 
   // Pull SEO data from Sanity with fallbacks
   const metadata = {
-    title: aboutData?.seo?.metaTitle || 'About IIS - Integrated Inspection Systems | 30 Years of Precision Machining Excellence',
-    description: aboutData?.seo?.metaDescription || 'Founded in 1995, Integrated Inspection Systems (IIS) has grown from a basement startup to an industry-leading provider of precision machining, metrology, and engineering services. ISO 9001, AS9100 certified, ITAR registered. Serving aerospace, defense, and advanced industries.',
-    keywords: aboutData?.seo?.metaKeywords || 'IIS history, precision machining company, aerospace machining, ISO 9001 certified, AS9100 certified, ITAR registered, MetBase software, CMM inspection company, CNC machining services, Oregon machining, Clackamas Oregon',
+    title: aboutData?.seo?.metaTitle,
+    description: aboutData?.seo?.metaDescription,
+    keywords: aboutData?.seo?.metaKeywords,
     ogImage: aboutData?.seo?.ogImage?.asset?.url || null,
-    ogImageAlt: aboutData?.seo?.ogImage?.alt || 'IIS - Integrated Inspection Systems - About Our Company',
+    ogImageAlt: aboutData?.seo?.ogImage?.alt || '',
   };
 
   return {

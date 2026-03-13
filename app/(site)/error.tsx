@@ -3,11 +3,14 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
+import { PremiumButton } from '@/components/ui/premium-button'
 import { Card } from '@/components/ui/card'
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
 import Link from 'next/link'
-import { typography, cn } from '@/lib/design-system'
+import { typography } from '@/lib/design-system'
+import { cn } from '@/lib/utils'
 import { usePrefersReducedMotion } from '@/lib/motion'
+import { useErrorPageData } from '@/components/layout/SiteChrome'
 
 export default function Error({
   error,
@@ -17,6 +20,7 @@ export default function Error({
   reset: () => void
 }) {
   const prefersReducedMotion = usePrefersReducedMotion()
+  const errorData = useErrorPageData()
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
@@ -63,11 +67,11 @@ export default function Error({
             {...fadeOnly(0.3)}
           >
             <h1 className={cn(typography.h3, 'text-tone-inverse mb-3')}>
-              Something went wrong
+              {errorData?.heading || 'Something went wrong'}
             </h1>
 
             <p className={cn(typography.body, 'text-slate-400 mb-6')}>
-              We encountered an unexpected error. Please try again or return to the homepage.
+              {errorData?.description || 'We encountered an unexpected error. Please try again or return to the homepage.'}
             </p>
           </motion.div>
 
@@ -86,17 +90,14 @@ export default function Error({
             {...fadeIn(0.5)}
             className="flex flex-col sm:flex-row gap-3 justify-center"
           >
-            <Button
-              onClick={() => reset()}
-              className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-tone-inverse shadow-lg shadow-blue-600/25"
-            >
+            <PremiumButton onClick={() => reset()}>
               <RefreshCw className="w-4 h-4 mr-2" />
-              Try again
-            </Button>
+              {errorData?.tryAgainButtonText || 'Try again'}
+            </PremiumButton>
             <Link href="/">
               <Button variant="outline" className="w-full border-slate-700 text-slate-300 hover:bg-slate-800">
                 <Home className="w-4 h-4 mr-2" />
-                Back to Homepage
+                {errorData?.homeButtonText || 'Back to Homepage'}
               </Button>
             </Link>
           </motion.div>

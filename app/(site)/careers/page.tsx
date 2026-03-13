@@ -25,11 +25,11 @@ export async function generateMetadata() {
 
   // Pull SEO data from Sanity with fallbacks
   const metadata = {
-    title: careersData?.seo?.metaTitle || 'Careers at IIS | Join Our Precision Machining Team',
-    description: careersData?.seo?.metaDescription || 'Build your career with Integrated Inspection Systems, a leader in precision machining for aerospace and defense. We\'re hiring engineers, technicians, machinists, and quality professionals. AS9100D, ISO 9001:2015 certified.',
-    keywords: 'precision machining careers, aerospace machining jobs, CNC machinist jobs, quality engineer jobs, machining engineer jobs, Oregon machining careers, AS9100 jobs, ITAR careers, CMM inspector jobs',
+    title: careersData?.seo?.metaTitle,
+    description: careersData?.seo?.metaDescription,
+    keywords: careersData?.seo?.metaKeywords,
     ogImage: careersData?.seo?.ogImage?.asset?.url || null,
-    ogImageAlt: careersData?.seo?.ogImage?.alt || 'Careers at IIS - Integrated Inspection Systems',
+    ogImageAlt: careersData?.seo?.ogImage?.alt || '',
   };
 
   return {

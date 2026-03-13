@@ -42,7 +42,7 @@ export function ThemeToggle({ variant = 'icon', className }: ThemeToggleProps) {
           'w-10 h-10 rounded-lg flex items-center justify-center',
           'hover:bg-slate-100 dark:hover:bg-slate-800',
           'transition-colors duration-200',
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
+          'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 focus-visible:ring-offset-2',
           'dark:focus-visible:ring-offset-slate-950',
           className
         )}
@@ -84,7 +84,7 @@ export function ThemeToggle({ variant = 'icon', className }: ThemeToggleProps) {
           onClick={() => setTheme(value)}
           className={cn(
             'p-2 rounded-md transition-all duration-200',
-            'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
+            'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50',
             theme === value
               ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400'
               : 'hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400'

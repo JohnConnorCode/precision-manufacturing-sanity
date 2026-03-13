@@ -1,8 +1,9 @@
-import { DocumentActionComponent } from 'sanity';
+import { DocumentActionComponent, useClient } from 'sanity';
 import { CopyIcon } from '@sanity/icons';
 
 export const DuplicateAction: DocumentActionComponent = (props) => {
-  const { id, draft, published, onComplete } = props;
+  const { draft, published, onComplete } = props;
+  const client = useClient({ apiVersion: '2024-01-01' });
 
   return {
     label: 'Duplicate',
@@ -11,20 +12,13 @@ export const DuplicateAction: DocumentActionComponent = (props) => {
       const doc = draft || published;
       if (!doc) return;
 
-      const newId = `${id}-copy-${Date.now()}`;
-      const { _id, _type, _rev, _createdAt, _updatedAt, ...docData } = doc as any;
+      const { _id, _rev, _createdAt, _updatedAt, ...rest } = doc as Record<string, unknown>;
 
-      // Create duplicate with new ID
-      const duplicateDoc = {
-        ...docData,
-        _id: `drafts.${newId}`,
-        _type,
-        title: `${docData.title} (Copy)`,
-      };
-
-      // Note: You'll need to implement the actual duplication logic
-      // This requires access to the Sanity client
-      console.log('Duplicate document:', duplicateDoc);
+      await client.create({
+        ...rest,
+        _type: rest._type as string,
+        title: `${(rest.title as string) || 'Untitled'} (Copy)`,
+      });
 
       onComplete();
     },

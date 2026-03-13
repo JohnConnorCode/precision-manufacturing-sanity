@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
 import { usePrefersReducedMotion } from '@/lib/motion'
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view'
+import { gradientTextStyle } from '@/lib/theme-utils'
 
 interface AnimatedCounterProps {
   value: number
@@ -95,12 +96,7 @@ export function StatsCounter({ stats, className = "" }: StatsCounterProps) {
               prefix={stat.prefix}
               suffix={stat.suffix}
               decimals={stat.decimals}
-              style={{
-                background: 'linear-gradient(to right, #3b82f6, #60a5fa)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
+              style={gradientTextStyle}
             />
           </div>
           <div className="text-sm text-slate-400 uppercase tracking-wider">

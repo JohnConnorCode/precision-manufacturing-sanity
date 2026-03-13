@@ -232,10 +232,10 @@ export default function MobileMenu({
               <button
                 ref={closeButtonRef}
                 onClick={onClose}
-                className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-950"
+                className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950"
                 aria-label="Close menu"
               >
-                <X className="w-6 h-6 text-slate-900 dark:text-white" />
+                <X className="w-6 h-6 text-slate-900 dark:text-tone-inverse" />
               </button>
             </div>
 
@@ -265,10 +265,10 @@ export default function MobileMenu({
                             aria-expanded={isExpanded}
                             aria-controls={`submenu-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
                             className={cn(
-                              "w-full flex items-center justify-between px-4 py-4 rounded-xl text-left transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset",
+                              "w-full flex items-center justify-between px-4 py-4 rounded-xl text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 focus-visible:ring-inset",
                               isActive
                                 ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400"
-                                : "text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50"
+                                : "text-slate-900 dark:text-tone-inverse hover:bg-slate-100 dark:hover:bg-slate-800/50"
                             )}
                           >
                             <span className="text-lg font-semibold">{item.name}</span>
@@ -298,7 +298,7 @@ export default function MobileMenu({
                                       <Link
                                         href={href}
                                         onClick={onClose}
-                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-600 dark:text-blue-400 font-medium hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-600 dark:text-blue-400 font-medium hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 focus-visible:ring-inset"
                                       >
                                         <span>View All {item.name}</span>
                                         <ArrowRight className="w-4 h-4" aria-hidden="true" />
@@ -312,9 +312,9 @@ export default function MobileMenu({
                                         href={isValidHref(child.href) ? child.href : href}
                                         onClick={onClose}
                                         className={cn(
-                                          "block px-4 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset",
+                                          "block px-4 py-3 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 focus-visible:ring-inset",
                                           pathname === child.href
-                                            ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white"
+                                            ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-tone-inverse"
                                             : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white"
                                         )}
                                       >
@@ -338,10 +338,10 @@ export default function MobileMenu({
                           href={href}
                           onClick={onClose}
                           className={cn(
-                            "flex items-center px-4 py-4 rounded-xl text-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset",
+                            "flex items-center px-4 py-4 rounded-xl text-lg font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 focus-visible:ring-inset",
                             isActive
                               ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400"
-                              : "text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50"
+                              : "text-slate-900 dark:text-tone-inverse hover:bg-slate-100 dark:hover:bg-slate-800/50"
                           )}
                         >
                           {item.name}

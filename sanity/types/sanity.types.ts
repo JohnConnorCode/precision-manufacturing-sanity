@@ -393,6 +393,34 @@ export type UiText = {
   };
 };
 
+export type CompliancePage = {
+  _id: string;
+  _type: "compliancePage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  hero?: {
+    eyebrow?: string;
+    title?: string;
+    titleHighlight?: string;
+    description?: string;
+  };
+  cards?: Array<{
+    enabled?: boolean;
+    title?: string;
+    description?: string;
+    href?: string;
+    iconName?: string;
+    iconGradient?: string;
+    ctaText?: string;
+    _key: string;
+  }>;
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+  };
+};
+
 export type CertificationsPage = {
   _id: string;
   _type: "certificationsPage";
@@ -689,6 +717,13 @@ export type ErrorPages = {
       href?: string;
       _key: string;
     }>;
+    actionButtons?: Array<{
+      label?: string;
+      href?: string;
+      variant?: "primary" | "secondary";
+      iconName?: string;
+      _key: string;
+    }>;
     errorCode?: string;
   };
   globalError?: {
@@ -697,6 +732,7 @@ export type ErrorPages = {
     tryAgainButtonText?: string;
     supportMessagePrefix?: string;
     supportLinkText?: string;
+    homeButtonText?: string;
   };
 };
 
@@ -918,6 +954,7 @@ export type Careers = {
   opportunities?: {
     title?: string;
     description?: string;
+    noPositionsMessage?: string;
   };
   whyWorkHere?: {
     heading?: string;
@@ -1013,6 +1050,25 @@ export type Contact = {
     emailDescription?: string;
     submitButtonText?: string;
     consultationHeading?: string;
+    cardHeading?: string;
+    addressLabel?: string;
+    phoneLabel?: string;
+    emailLabel?: string;
+    hoursLabel?: string;
+    formHeading?: string;
+    successHeading?: string;
+    sendingText?: string;
+    mapHeading?: string;
+    interestOptions?: Array<{
+      value?: string;
+      label?: string;
+      _key: string;
+    }>;
+    timelineOptions?: Array<{
+      value?: string;
+      label?: string;
+      _key: string;
+    }>;
   };
   locationImage?: {
     asset?: {
@@ -1154,6 +1210,10 @@ export type About = {
       _key: string;
     }>;
   };
+  capabilitiesSection?: {
+    title?: string;
+    description?: string;
+  };
   capabilities?: Array<{
     enabled?: boolean;
     title?: string;
@@ -1169,6 +1229,9 @@ export type About = {
     certification?: string;
     _key: string;
   }>;
+  certificationsDisplay?: {
+    subtitle?: string;
+  };
   leadership?: {
     title?: string;
     description?: string;
@@ -1944,10 +2007,6 @@ export type Certification = {
   iconName?: string;
   scope?: string;
   whyItMatters?: string;
-  certNumber?: string;
-  issuingBody?: string;
-  validFrom?: string;
-  validUntil?: string;
   body?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -1966,6 +2025,10 @@ export type Certification = {
     _type: "block";
     _key: string;
   }>;
+  certNumber?: string;
+  issuingBody?: string;
+  validFrom?: string;
+  validUntil?: string;
   order?: number;
   published?: boolean;
 };
@@ -2131,7 +2194,7 @@ export type JobPosting = {
   _rev: string;
   title?: string;
   slug?: Slug;
-  department?: "Manufacturing" | "Quality Assurance" | "Engineering" | "Operations" | "Sales & Marketing" | "Administration";
+  department?: "Machining" | "Quality Assurance" | "Engineering" | "Operations" | "Sales & Marketing" | "Administration";
   employmentType?: "Full-time" | "Part-time" | "Contract" | "Temporary";
   location?: string;
   shortDescription?: string;
@@ -2330,7 +2393,10 @@ export type Industry = {
     };
     backgroundImageUrl?: string;
     badge?: string;
+    title?: string;
+    titleHighlight?: string;
     subtitle?: string;
+    description?: string;
     descriptionRich?: Array<{
       children?: Array<{
         marks?: Array<string>;
@@ -2352,12 +2418,6 @@ export type Industry = {
     titleSize?: "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl";
     descriptionSize?: "xs" | "sm" | "base" | "lg" | "xl";
   };
-  statistics?: Array<{
-    value?: string;
-    label?: string;
-    description?: string;
-    _key: string;
-  }>;
   stats?: Array<{
     value?: string;
     label?: string;
@@ -2599,7 +2659,6 @@ export type Service = {
   published?: boolean;
   shortDescription?: string;
   icon?: string;
-  fullDescription?: string;
   description?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -3303,5 +3362,5 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = Page | SanityImageCrop | SanityImageHotspot | Slug | PageContent | UiText | CertificationsPage | CaseStudiesPage | Metbase | ErrorPages | SupplierRequirements | Terms | Careers | Contact | About | Footer | IndustriesPage | ServicesPage | Homepage | Navigation | SiteSettings | ColorStyle | Certification | Testimonial | ResourceCategory | CaseStudy | JobPosting | TeamMember | Resource | Industry | Service | CtaSection | SectionTheme | RichTextSection | TypographyStyle | HeroSection | NavGroup | NavItem | CtaButton | EquipmentSpec | MaterialData | ProcessFlow | ToleranceTable | CalloutBox | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = Page | SanityImageCrop | SanityImageHotspot | Slug | PageContent | UiText | CompliancePage | CertificationsPage | CaseStudiesPage | Metbase | ErrorPages | SupplierRequirements | Terms | Careers | Contact | About | Footer | IndustriesPage | ServicesPage | Homepage | Navigation | SiteSettings | ColorStyle | Certification | Testimonial | ResourceCategory | CaseStudy | JobPosting | TeamMember | Resource | Industry | Service | CtaSection | SectionTheme | RichTextSection | TypographyStyle | HeroSection | NavGroup | NavItem | CtaButton | EquipmentSpec | MaterialData | ProcessFlow | ToleranceTable | CalloutBox | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;

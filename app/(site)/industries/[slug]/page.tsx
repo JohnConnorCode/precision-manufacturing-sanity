@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { draftMode } from 'next/headers';
 import IndustryDetailPage from '@/components/industries/industry-detail-page';
 import { getIndustryBySlug } from '@/sanity/lib/queries';
+import { generateBreadcrumbSchema } from '@/lib/structured-data';
 
 interface IndustryPageProps {
   params: Promise<{
@@ -67,5 +68,20 @@ export default async function IndustryPage({ params }: IndustryPageProps) {
     notFound();
   }
 
-  return <IndustryDetailPage industry={industry} />;
+  const baseUrl = getSiteUrl();
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: baseUrl },
+    { name: 'Industries', url: `${baseUrl}/industries` },
+    { name: industry.title, url: `${baseUrl}/industries/${slug}` },
+  ]);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <IndustryDetailPage industry={industry} />
+    </>
+  );
 }

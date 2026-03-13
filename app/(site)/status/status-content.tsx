@@ -6,9 +6,12 @@ import { AlertCircle, CheckCircle2, XCircle, RefreshCw, Copy, Check, Eye, EyeOff
 import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { typography, spacing, cn } from '@/lib/design-system'
+import { PremiumButton } from '@/components/ui/premium-button'
+import { typography, spacing } from '@/lib/design-system'
+import { cn } from '@/lib/utils'
 import { getToneTypography } from '@/lib/typography'
 import { usePrefersReducedMotion } from '@/lib/motion'
+import { gradientTextStyle } from '@/lib/theme-utils'
 import type { ServerLogEntry } from '@/lib/server-logger'
 
 interface HealthStatus {
@@ -31,8 +34,16 @@ interface HealthStatus {
   logs?: ServerLogEntry[]
 }
 
+interface SiteSettingsData {
+  contact?: {
+    supportEmail?: string
+    phone?: string
+  }
+  [key: string]: unknown
+}
+
 interface StatusContentProps {
-  siteSettings: any
+  siteSettings: SiteSettingsData | null
 }
 
 export default function StatusContent({ siteSettings }: StatusContentProps) {
@@ -100,28 +111,16 @@ export default function StatusContent({ siteSettings }: StatusContentProps) {
                 <span className="text-sm font-medium text-blue-400">Admin Dashboard</span>
               </div>
               <h1 className={cn(typography.heroHeading, darkTone.heading, 'mb-3 uppercase')}>
-                System <span style={{
-                  background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}>Status</span>
+                System <span style={gradientTextStyle}>Status</span>
               </h1>
               <p className={cn(typography.descriptionLight)}>
                 Real-time monitoring for IIS precision machining website
               </p>
             </div>
-            <Button
-              onClick={refreshHealth}
-              disabled={loading}
-              className={cn(
-                'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-600/25',
-                darkTone.heading
-              )}
-            >
+            <PremiumButton onClick={refreshHealth} disabled={loading}>
               <RefreshCw className={cn('w-4 h-4 mr-2', loading && 'animate-spin')} />
               {loading ? 'Checking...' : 'Refresh Status'}
-            </Button>
+            </PremiumButton>
           </div>
           {lastRefresh && (
             <p className="text-xs text-slate-500">

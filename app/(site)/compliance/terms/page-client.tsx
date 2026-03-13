@@ -9,8 +9,9 @@ import {
 import HeroSection from '@/components/ui/hero-section';
 import AnimatedSection from '@/components/ui/animated-section';
 import { Card } from '@/components/ui/card';
-import { typography } from '@/lib/design-system';
+import { typography, spacing } from '@/lib/design-system';
 import { cn } from '@/lib/utils';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 // Icon mapping
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -35,15 +36,46 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Users,
 };
 
+interface TermsSection {
+  icon?: string
+  title?: string
+  content?: string
+  iconName?: string
+}
+
+interface MappedTermsSection {
+  icon: React.ComponentType<{ className?: string }>
+  iconName?: string
+  title?: string
+  content?: string
+}
+
+export interface TermsData {
+  header: {
+    title?: string
+    subtitle?: string
+    effectiveDate?: string
+    version?: string
+  }
+  sections?: TermsSection[]
+  contact: {
+    heading?: string
+    description?: string
+    email?: string
+    phone?: string
+    department?: string
+  }
+}
+
 interface TermsPageClientProps {
-  data: Record<string, any>;
+  data: TermsData;
 }
 
 export default function TermsPageClient({ data }: TermsPageClientProps) {
   const termsData = data ? {
     header: data.header,
-    sections: data.sections?.map((section: any) => ({
-      icon: iconMap[section.icon] || FileText,
+    sections: data.sections?.map((section: TermsSection) => ({
+      icon: (section.icon ? iconMap[section.icon] : undefined) || FileText,
       iconName: section.icon,
       title: section.title,
       content: section.content
@@ -51,7 +83,7 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
     contact: data.contact
   } : null;
 
-  if (!termsData) {
+  if (!termsData || !termsData.sections) {
     return null;
   }
 
@@ -63,25 +95,17 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
         alignment="center"
         darkHero={true}
         title={(() => {
-          // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
-          const gradientStyle = {
-            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          } as React.CSSProperties;
-
           const title = termsData.header.title || '';
           const words = title.split(' ');
           if (words.length <= 1) {
-            return <span style={gradientStyle}>{title}</span>;
+            return <span style={gradientTextStyle}>{title}</span>;
           }
           const firstPart = words.slice(0, -1).join(' ');
           const lastWord = words[words.length - 1];
           return (
             <span>
               <span className="text-inherit">{firstPart} </span>
-              <span style={gradientStyle}>{lastWord}</span>
+              <span style={gradientTextStyle}>{lastWord}</span>
             </span>
           );
         })()}
@@ -102,15 +126,15 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
       />
 
       {/* Terms Sections */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
-        <div className="container max-w-6xl mx-auto px-4">
+      <section className={`${spacing.section} bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950`}>
+        <div className={`${spacing.container} max-w-6xl`}>
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
             {/* Sticky TOC Sidebar */}
             <aside className="hidden lg:block">
               <div className="sticky-toc">
                 <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">Table of Contents</h3>
                 <nav className="space-y-1">
-                  {termsData.sections.map((section: any, index: number) => (
+                  {termsData.sections.map((section: MappedTermsSection, index: number) => (
                     <a
                       key={index}
                       href={`#section-${index}`}
@@ -125,11 +149,11 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
 
             {/* Content */}
             <div className="space-y-4">
-            {termsData.sections.map((section: any, index: number) => {
-              const Icon = iconMap[section.iconName] || FileText;
+            {termsData.sections.map((section: MappedTermsSection, index: number) => {
+              const Icon = (section.iconName ? iconMap[section.iconName] : undefined) || FileText;
               return (
                 <AnimatedSection key={index} delay={Math.min(index * 0.05, 0.3)}>
-                  <Card id={`section-${index}`} className="scroll-mt-24 p-6 md:p-8 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 hover:shadow-lg dark:hover:shadow-slate-950/50 transition-all duration-300">
+                  <Card id={`section-${index}`} className="scroll-mt-24 p-6 md:p-8 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 transition-all duration-300">
                     <div className="flex items-start gap-4 md:gap-6">
                       <div className="flex-shrink-0">
                         <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-blue-600/10 flex items-center justify-center">
@@ -156,7 +180,7 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
 
       {/* Contact Section */}
       <AnimatedSection>
-        <section className="py-16 md:py-24 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 dark-section">
+        <section className={`${spacing.section} bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 dark-section`}>
           <div className="container max-w-4xl mx-auto px-4 text-center">
             <h3 className={cn(typography.subsectionTitle, 'text-tone-inverse mb-4')}>
               {termsData.contact.heading}
@@ -174,7 +198,7 @@ export default function TermsPageClient({ data }: TermsPageClientProps) {
               </a>
               <span className="hidden sm:block text-slate-600 dark:text-slate-400">|</span>
               <a
-                href={`tel:+1${termsData.contact.phone.replace(/\D/g, '')}`}
+                href={`tel:+1${(termsData.contact.phone || '').replace(/\D/g, '')}`}
                 className={cn(typography.body, 'flex items-center gap-3 text-tone-inverse hover:text-blue-400 transition-colors')}
               >
                 <Phone className="w-5 h-5 text-blue-400" />

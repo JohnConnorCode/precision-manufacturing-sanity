@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { typography, spacing, styles, cn } from '@/lib/design-system';
+import { typography, spacing, styles } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
 import {
@@ -22,9 +23,33 @@ import {
 import Link from 'next/link';
 import { PortableText } from '@portabletext/react';
 
+interface JobPostingData {
+  title?: string;
+  department?: string;
+  employmentType?: string;
+  location?: string;
+  salaryRange?: string;
+  datePosted?: string;
+  overview?: Array<{ _type: string; [key: string]: unknown }>;
+  responsibilities?: Array<{ _key?: string; responsibility?: string } | string>;
+  qualifications?: Array<{ _key?: string; qualification?: string } | string>;
+  preferredQualifications?: Array<{ _key?: string; qualification?: string } | string>;
+  benefits?: Array<{ _key?: string; benefit?: string } | string>;
+  applicationEmail?: string;
+  applicationInstructions?: string;
+}
+
+interface SiteSettingsData {
+  hrEmail?: string;
+  contact?: {
+    email?: string;
+    phone?: string;
+  };
+}
+
 interface JobContentProps {
-  job: Record<string, any>;
-  siteSettings: Record<string, any>;
+  job: JobPostingData;
+  siteSettings: SiteSettingsData;
 }
 
 export default function JobContent({ job, siteSettings }: JobContentProps) {
@@ -51,7 +76,7 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 py-20 dark-section">
+      <section className={`bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 ${spacing.sectionCompact} dark-section`}>
         <div className={spacing.container}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -153,13 +178,13 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                 >
                   <h2 className={cn(typography.h3, 'mb-6')}>Key Responsibilities</h2>
                   <div className="space-y-4">
-                    {job.responsibilities.map((item: any, index: number) => (
+                    {job.responsibilities.map((item: { _key?: string; responsibility?: string } | string, index: number) => (
                       <div key={index} className="flex items-start gap-4">
                         <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <CheckCircle className="w-4 h-4 text-blue-600" />
                         </div>
                         <p className={cn(typography.body, 'text-slate-700 dark:text-slate-300')}>
-                          {item.responsibility || item}
+                          {typeof item === 'string' ? item : item.responsibility}
                         </p>
                       </div>
                     ))}
@@ -178,11 +203,11 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                   <Card className={cn(styles.featureCard, 'p-8 border-l-4 border-blue-600')}>
                     <h2 className={cn(typography.h3, 'mb-6')}>Required Qualifications</h2>
                     <div className="space-y-3">
-                      {job.qualifications.map((item: any, index: number) => (
+                      {job.qualifications.map((item: { _key?: string; qualification?: string } | string, index: number) => (
                         <div key={index} className="flex items-start gap-3">
                           <Award className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                           <p className={cn(typography.body, 'text-slate-700 dark:text-slate-300')}>
-                            {item.qualification || item}
+                            {typeof item === 'string' ? item : item.qualification}
                           </p>
                         </div>
                       ))}
@@ -201,11 +226,11 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                 >
                   <h2 className={cn(typography.h3, 'mb-6')}>Preferred Qualifications</h2>
                   <div className="space-y-3">
-                    {job.preferredQualifications.map((item: any, index: number) => (
+                    {job.preferredQualifications.map((item: { _key?: string; qualification?: string } | string, index: number) => (
                       <div key={index} className="flex items-start gap-3">
                         <div className="w-2 h-2 rounded-full bg-blue-600 mt-2 flex-shrink-0" />
                         <p className={cn(typography.body, 'text-slate-600 dark:text-slate-400')}>
-                          {item.qualification || item}
+                          {typeof item === 'string' ? item : item.qualification}
                         </p>
                       </div>
                     ))}
@@ -223,12 +248,12 @@ export default function JobContent({ job, siteSettings }: JobContentProps) {
                 >
                   <h2 className={cn(typography.h3, 'mb-6')}>Benefits & Perks</h2>
                   <div className="grid md:grid-cols-2 gap-4">
-                    {job.benefits.map((item: any, index: number) => (
+                    {job.benefits.map((item: { _key?: string; benefit?: string } | string, index: number) => (
                       <Card key={index} className={cn(styles.featureCard, 'p-6')}>
                         <div className="flex items-center gap-3">
                           <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
                           <p className={cn(typography.body, 'font-medium text-slate-800 dark:text-slate-200')}>
-                            {item.benefit || item}
+                            {typeof item === 'string' ? item : item.benefit}
                           </p>
                         </div>
                       </Card>

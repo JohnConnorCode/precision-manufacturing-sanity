@@ -11,12 +11,12 @@ export async function GET() {
       durationMs: duration,
       hasMenu: !!nav?.menuItems?.length,
     })
-  } catch (e: any) {
+  } catch (e: unknown) {
     const duration = Date.now() - started
     return NextResponse.json({
       ok: false,
       durationMs: duration,
-      error: e?.message || 'unknown',
+      error: e instanceof Error ? e.message : 'unknown',
     }, { status: 503 })
   }
 }

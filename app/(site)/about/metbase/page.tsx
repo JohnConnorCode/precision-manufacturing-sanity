@@ -19,10 +19,10 @@ export async function generateMetadata() {
   const baseUrl = getSiteUrl();
 
   const metadata = {
-    title: metbaseData?.seo?.metaTitle || 'Metbase - Proprietary Database Software | IIS - Integrated Inspection Systems',
-    description: metbaseData?.seo?.metaDescription || 'Metbase is IIS\'s proprietary database software providing ISO 9001 & AS9100 compliance for traceability, inspection data management, and robotic programming with over 15 years of historical data access.',
+    title: metbaseData?.seo?.metaTitle,
+    description: metbaseData?.seo?.metaDescription,
     ogImage: metbaseData?.seo?.ogImage?.asset?.url || null,
-    ogImageAlt: metbaseData?.seo?.ogImage?.alt || 'Metbase Database Software by IIS',
+    ogImageAlt: metbaseData?.seo?.ogImage?.alt || '',
   };
 
   return {

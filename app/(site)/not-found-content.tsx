@@ -2,13 +2,28 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Home, ArrowLeft, Search, Phone } from 'lucide-react';
+import { Home, ArrowLeft, Search, Phone, LucideIcon } from 'lucide-react';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { usePrefersReducedMotion } from '@/lib/motion';
+import { gradientTextStyle } from '@/lib/theme-utils';
+
+// Icon mapping for CMS-driven action buttons
+const iconMap: Record<string, LucideIcon> = {
+  Home,
+  Search,
+  Phone,
+};
 
 interface PopularLink {
   href: string;
   label: string;
+}
+
+interface ActionButton {
+  label: string;
+  href: string;
+  variant?: 'primary' | 'secondary';
+  iconName?: string;
 }
 
 interface SiteSettings {
@@ -21,6 +36,7 @@ interface ErrorPages {
   notFound?: {
     heading?: string;
     description?: string;
+    actionButtons?: ActionButton[];
     popularLinksHeading?: string;
     popularLinks?: PopularLink[];
     errorCode?: string;
@@ -34,6 +50,15 @@ interface NotFoundContentProps {
 
 export default function NotFoundContent({ siteSettings, errorPages }: NotFoundContentProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Use CMS action buttons, fall back to defaults if not configured yet
+  const actionButtons: ActionButton[] = errorPages?.notFound?.actionButtons?.length
+    ? errorPages.notFound.actionButtons
+    : [
+        { label: 'Return Home', href: '/', variant: 'primary', iconName: 'Home' },
+        { label: 'Browse Services', href: '/services', variant: 'secondary', iconName: 'Search' },
+        { label: 'Call Support', href: `tel:${siteSettings?.contact?.phone?.replace(/\D/g, '') || ''}`, variant: 'secondary', iconName: 'Phone' },
+      ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center px-4">
@@ -74,12 +99,7 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
         >
           {/* 404 Text with gradient */}
           <h1 className="text-[150px] md:text-[200px] font-black leading-none">
-            <span className={prefersReducedMotion ? '' : 'animate-pulse'} style={{
-              background: 'linear-gradient(to right, #3b82f6, #4f46e5, #3b82f6)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
+            <span className={prefersReducedMotion ? '' : 'animate-pulse'} style={gradientTextStyle}>
               404
             </span>
           </h1>
@@ -92,40 +112,41 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
             className="mt-8 space-y-4"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-tone-inverse">
-              {errorPages?.notFound?.heading || 'Page Not Found'}
+              {errorPages?.notFound?.heading}
             </h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-              {errorPages?.notFound?.description || "The precision you're looking for seems to be off by a few thousandths. This page doesn't exist, but our machining excellence does."}
+              {errorPages?.notFound?.description}
             </p>
           </motion.div>
 
-          {/* Action buttons */}
+          {/* Action buttons — labels, links, and icons from CMS */}
           <motion.div
             initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: prefersReducedMotion ? 0 : 0.4, duration: prefersReducedMotion ? 0 : 0.5 }}
             className="mt-12 flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Link href="/">
-              <PremiumButton size="lg">
-                <Home className="mr-2 h-5 w-5" />
-                Return Home
-              </PremiumButton>
-            </Link>
+            {actionButtons.map((button) => {
+              const Icon = button.iconName ? iconMap[button.iconName] : undefined;
+              const isPrimary = button.variant === 'primary';
+              const href = button.href?.startsWith('tel:') && button.href === 'tel:'
+                ? `tel:${siteSettings?.contact?.phone?.replace(/\D/g, '') || ''}`
+                : button.href;
+              const isExternal = href.startsWith('tel:') || href.startsWith('mailto:');
 
-            <Link href="/services">
-              <PremiumButton size="lg" variant="secondary">
-                <Search className="mr-2 h-5 w-5" />
-                Browse Services
-              </PremiumButton>
-            </Link>
+              const btn = (
+                <PremiumButton size="lg" variant={isPrimary ? 'default' : 'secondary'}>
+                  {Icon && <Icon className="mr-2 h-5 w-5" />}
+                  {button.label}
+                </PremiumButton>
+              );
 
-            <a href={`tel:${siteSettings?.contact?.phone?.replace(/\D/g, '')}`}>
-              <PremiumButton size="lg" variant="secondary">
-                <Phone className="mr-2 h-5 w-5" />
-                Call Support
-              </PremiumButton>
-            </a>
+              return isExternal ? (
+                <a key={button.label} href={href}>{btn}</a>
+              ) : (
+                <Link key={button.label} href={href}>{btn}</Link>
+              );
+            })}
           </motion.div>
 
           {/* Helpful links */}
@@ -136,17 +157,10 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
             className="mt-16 p-8 bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-800"
           >
             <h3 className="text-lg font-semibold text-tone-inverse mb-6">
-              {errorPages?.notFound?.popularLinksHeading || 'Popular Pages'}
+              {errorPages?.notFound?.popularLinksHeading}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {(errorPages?.notFound?.popularLinks || [
-                { href: '/services/5-axis-machining', label: '5-Axis CNC Machining' },
-                { href: '/industries/aerospace', label: 'Aerospace Solutions' },
-                { href: '/services/metrology', label: 'Precision Metrology' },
-                { href: '/contact', label: 'Request Quote' },
-                { href: '/about', label: 'About IIS' },
-                { href: '/industries/defense', label: 'Defense Machining' },
-              ]).map((link: PopularLink) => (
+              {(errorPages?.notFound?.popularLinks || []).map((link: PopularLink) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -166,7 +180,7 @@ export default function NotFoundContent({ siteSettings, errorPages }: NotFoundCo
             transition={{ delay: prefersReducedMotion ? 0 : 0.8, duration: prefersReducedMotion ? 0 : 0.5 }}
             className="mt-8 text-xs text-slate-600 dark:text-slate-300 font-mono"
           >
-            {errorPages?.notFound?.errorCode || 'ERROR: TOLERANCE_EXCEEDED | ROUTE_NOT_FOUND | PRECISION_MISMATCH'}
+            {errorPages?.notFound?.errorCode}
           </motion.div>
         </motion.div>
       </div>

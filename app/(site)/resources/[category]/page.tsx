@@ -10,6 +10,7 @@ import ResourceCard from '@/components/ui/resource-card';
 import SectionHeader from '@/components/ui/section-header';
 import { PremiumButton } from '@/components/ui/premium-button';
 import { spacing } from '@/lib/design-system';
+import { gradientTextStyle } from '@/lib/theme-utils';
 import type { ResourceItem, ResourceCategoryInfo } from '@/lib/types/cms';
 
 // ISR for automatic updates when Sanity content changes (supports draft mode preview)
@@ -76,11 +77,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
 
   const resources = await getResourcesByCategory(category, isDraft) || [];
 
-  // Map Sanity slug structure (slug.current) to simple slug
-  const formattedResources = resources.map((resource: ResourceItem & Record<string, unknown>) => ({
-    ...resource,
-    slug: (typeof resource.slug === 'object' ? resource.slug?.current : resource.slug) || '',
-  }));
+  const formattedResources = resources;
 
   return (
     <div className="min-h-screen bg-background">
@@ -92,25 +89,17 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         alignment="center"
         darkHero={true}
         title={(() => {
-          // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
-          const gradientStyle = {
-            background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          } as React.CSSProperties;
-
           const title = categoryData.title || '';
           const words = title.split(' ');
           if (words.length <= 1) {
-            return <span style={gradientStyle}>{title}</span>;
+            return <span style={gradientTextStyle}>{title}</span>;
           }
           const firstPart = words.slice(0, -1).join(' ');
           const lastWord = words[words.length - 1];
           return (
             <span>
               <span className="text-inherit">{firstPart} </span>
-              <span style={gradientStyle}>{lastWord}</span>
+              <span style={gradientTextStyle}>{lastWord}</span>
             </span>
           );
         })()}
@@ -125,7 +114,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
       />
 
       {/* Resources Grid */}
-      <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
+      <section className={`${spacing.section} bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950`}>
         <div className={spacing.containerWide}>
           <AnimatedSection>
             <SectionHeader

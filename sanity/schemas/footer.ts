@@ -25,6 +25,7 @@ export default {
       name: 'company',
       type: 'object',
       title: 'Company Information',
+      group: 'company',
       fields: [
         {
           name: 'description',
@@ -36,11 +37,13 @@ export default {
           name: 'foundedYear',
           type: 'string',
           title: 'Founded Year',
+          description: 'Year the company was founded (displayed in footer tagline)',
         },
         {
           name: 'certifications',
           type: 'string',
           title: 'Certifications',
+          description: 'Comma-separated certification names shown in the footer subtitle',
         },
       ],
     },
@@ -48,6 +51,7 @@ export default {
       name: 'social',
       type: 'object',
       title: 'Social Media Links',
+      group: 'company',
       fields: [
         {
           name: 'linkedin',

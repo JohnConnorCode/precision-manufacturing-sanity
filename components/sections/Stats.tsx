@@ -8,6 +8,8 @@ import { getGradientStyle, getGradientTextStyle } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { SECTION_CONFIGS } from '@/lib/animation-config';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import { shadows, spacing } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 import { StatsData, StatItem } from '@/lib/types/cms';
 import { DotGridBackground } from '@/lib/background-patterns';
 
@@ -52,11 +54,11 @@ export default function Stats({ data }: StatsProps) {
   }
 
   return (
-    <section className="py-20 md:py-24 bg-gradient-to-b from-slate-100 to-white dark:from-slate-900 dark:to-slate-950 relative overflow-hidden">
+    <section className={`${spacing.sectionCompact} bg-gradient-to-b from-slate-100 to-white dark:from-slate-900 dark:to-slate-950 relative overflow-hidden`}>
       {/* Background Pattern */}
       <DotGridBackground />
 
-      <div className="container relative z-10">
+      <div className={`${spacing.container} relative z-10`}>
         {/* Section Header */}
         <SectionHeader
           eyebrow={subtitle}
@@ -66,7 +68,7 @@ export default function Stats({ data }: StatsProps) {
         />
 
         {/* Stats Grid */}
-        <div ref={statsAnim.ref} className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div ref={statsAnim.ref} className={`grid grid-cols-2 md:grid-cols-4 ${spacing.grid}`}>
           {stats.map((stat, index: number) => {
             const headerDelay = SECTION_CONFIGS.fourColumnGrid.headerCompletion;
             const statDelay = headerDelay + SECTION_CONFIGS.fourColumnGrid.getDelay(index);
@@ -81,7 +83,7 @@ export default function Stats({ data }: StatsProps) {
               >
               <div className="relative inline-block mb-3">
                 <div className="absolute inset-0 rounded-full blur-xl opacity-20" style={getGradientStyle(theme.colors)} />
-                <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg dark:shadow-slate-950/50">
+                <div className={cn('relative bg-white dark:bg-slate-800 rounded-xl p-6', shadows.card)}>
                   <AnimatedCounter
                     value={stat.value}
                     decimals={stat.decimals}

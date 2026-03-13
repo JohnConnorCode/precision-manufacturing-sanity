@@ -11,9 +11,88 @@ import HeroSection from '@/components/ui/hero-section';
 import { getHeroImageUrl } from '@/lib/hero-images';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import { shadows, spacing } from '@/lib/design-system';
+import { gradientTextStyle } from '@/lib/theme-utils';
+
+interface SanityImage {
+  asset?: { _ref?: string; url?: string }
+  alt?: string
+}
+
+interface IndustryStat {
+  _key?: string
+  value?: string
+  label?: string
+  description?: string
+}
+
+interface ExpertiseSection {
+  _key?: string
+  title?: string
+  description?: string
+  image?: SanityImage
+  components?: string[]
+  componentsLabel?: string
+  materials?: string[]
+  requirements?: string[]
+  requirementsLabel?: string
+}
+
+interface Certification {
+  _key?: string
+  title?: string
+  description?: string
+}
+
+interface ProcessBenefitFeature {
+  _key?: string
+  feature?: string
+}
+
+interface ProcessBenefit {
+  _key?: string
+  title?: string
+  description?: string
+  features?: ProcessBenefitFeature[]
+}
+
+interface CTAButton {
+  text?: string
+  href?: string
+  variant?: string
+  enabled?: boolean
+}
+
+interface IndustryData {
+  title?: string
+  hero?: {
+    title?: string
+    titleHighlight?: string
+    badge?: string
+    description?: string
+    descriptionRich?: Array<{ _type: string; [key: string]: unknown }>
+    backgroundImage?: SanityImage
+  }
+  image?: SanityImage
+  stats?: IndustryStat[]
+  expertise?: ExpertiseSection[]
+  expertiseSectionHeading?: string
+  expertiseSectionDescription?: string
+  certifications?: Certification[]
+  certificationsSectionHeading?: string
+  certificationsSectionDescription?: string
+  processBenefits?: ProcessBenefit[]
+  processBenefitsSectionHeading?: string
+  processBenefitsSectionDescription?: string
+  cta?: {
+    heading?: string
+    description?: string
+    buttons?: CTAButton[]
+  }
+}
 
 interface IndustryDetailPageProps {
-  industry: any;
+  industry: IndustryData;
 }
 
 export default function IndustryDetailPage({ industry }: IndustryDetailPageProps) {
@@ -36,16 +115,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
   // Build the title with gradient highlight on last word
   // If titleHighlight is set, use it. Otherwise, split title and highlight last word.
-  // Using inline styles for WebKit compatibility (Tailwind text-transparent doesn't work)
-  const gradientStyle = {
-    background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text',
-  } as React.CSSProperties;
+  const gradientStyle = gradientTextStyle;
 
   const heroTitle = (() => {
-    const title = industry.hero?.title || industry.title;
+    const title = industry.hero?.title || industry.title || '';
 
     // If titleHighlight is explicitly set, use that pattern
     if (industry.hero?.titleHighlight) {
@@ -104,10 +177,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
       {/* Key Metrics Banner */}
       {industry.stats && industry.stats.length > 0 && (
-        <section className="py-16 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900">
-          <div className="container mx-auto px-6 md:px-8">
+        <section className="py-24 md:py-32 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900">
+          <div className={spacing.container}>
             <div ref={statsAnim.ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {industry.stats.map((stat: any, index: number) => (
+              {industry.stats.map((stat: IndustryStat, index: number) => (
                 <motion.div
                   key={stat._key || index}
                   initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
@@ -115,12 +188,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                   className="text-center"
                 >
-                  <div className="text-4xl font-bold mb-2" style={{
-                    background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}>{stat.value}</div>
+                  <div className="text-4xl font-bold mb-2" style={gradientTextStyle}>{stat.value}</div>
                   <div className="text-lg font-semibold text-tone-inverse mb-1">{stat.label}</div>
                   {stat.description && (
                     <div className="text-sm text-slate-400">{stat.description}</div>
@@ -135,7 +203,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
       {/* Component Expertise / Sector Expertise */}
       {industry.expertise && industry.expertise.length > 0 && (
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
-          <div className="container mx-auto px-6 md:px-8">
+          <div className={spacing.container}>
             <motion.div
               ref={expertiseHeaderAnim.ref}
               initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
@@ -147,12 +215,12 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                 {industry.expertiseSectionHeading || `${industry.title} Expertise`}
               </h2>
               <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                {industry.expertiseSectionDescription || 'Specialized machining capabilities for critical applications.'}
+                {industry.expertiseSectionDescription}
               </p>
             </motion.div>
 
             <div ref={expertiseGridAnim.ref} className="space-y-20">
-              {industry.expertise.map((section: any, index: number) => {
+              {industry.expertise.map((section: ExpertiseSection, index: number) => {
                 const isEven = index % 2 === 0;
                 return (
                   <motion.div
@@ -166,16 +234,16 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                       {/* Image Side - only show Sanity CDN images, not external stock photos */}
                       <div className={`relative ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                         {section.image && (
-                          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
+                          <div className={`relative aspect-[4/3] rounded-2xl overflow-hidden ${shadows.elevated}`}>
                             {(() => {
                               const sectionImageUrl = getHeroImageUrl(section.image, 800, 600);
                               if (!sectionImageUrl) return null;
                               return (
                                 <Image
                                   src={sectionImageUrl}
-                                  alt={section.image?.alt || section.title}
+                                  alt={section.image?.alt || section.title || ''}
                                   fill
-                                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
                               );
                             })()}
@@ -196,7 +264,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                             <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-700">
                               <h4 className="text-sm font-bold text-slate-900 dark:text-tone-inverse uppercase tracking-wide mb-3 flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                                {section.componentsLabel || 'Typical Components'}
+                                {section.componentsLabel}
                               </h4>
                               <ul className="space-y-2">
                                 {section.components.map((component: string, idx: number) => (
@@ -230,7 +298,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                             <div className={`bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 ${!section.components || !section.materials ? '' : 'sm:col-span-2'}`}>
                               <h4 className="text-sm font-bold text-slate-900 dark:text-tone-inverse uppercase tracking-wide mb-3 flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-cyan-500"></span>
-                                {section.requirementsLabel || 'Key Requirements'}
+                                {section.requirementsLabel}
                               </h4>
                               <ul className={`space-y-2 ${section.requirements.length > 4 ? 'grid sm:grid-cols-2 gap-x-6 gap-y-2 space-y-0' : ''}`}>
                                 {section.requirements.map((requirement: string, idx: number) => (
@@ -256,7 +324,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
       {/* Certifications */}
       {industry.certifications && industry.certifications.length > 0 && (
         <section className="py-24 md:py-32">
-          <div className="container mx-auto px-6 md:px-8">
+          <div className={spacing.container}>
             <motion.div
               ref={certificationsHeaderAnim.ref}
               initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
@@ -265,22 +333,22 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-tone-inverse mb-4">
-                {industry.certificationsSectionHeading || 'Industry Certifications'}
+                {industry.certificationsSectionHeading}
               </h2>
               <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                {industry.certificationsSectionDescription || 'Industry-leading certifications ensuring the highest quality standards.'}
+                {industry.certificationsSectionDescription}
               </p>
             </motion.div>
 
             <div ref={certificationsGridAnim.ref} className={`grid md:grid-cols-2 ${industry.certifications.length >= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-8`}>
-              {industry.certifications.map((cert: any, index: number) => (
+              {industry.certifications.map((cert: Certification, index: number) => (
                 <motion.div
                   key={cert._key || index}
                   initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                   animate={certificationsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                   transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
-                  <Card className="p-6 h-full hover:shadow-lg transition-shadow duration-300">
+                  <Card className="p-6 h-full transition-all duration-300">
                     <Award className="w-12 h-12 text-blue-500 mb-4" />
                     <h3 className="text-xl font-bold text-slate-900 dark:text-tone-inverse mb-3">{cert.title}</h3>
                     <p className="text-sm text-slate-600 dark:text-slate-400 whitespace-pre-line">{cert.description}</p>
@@ -295,7 +363,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
       {/* Process Benefits / Machining Advantages / Specialized Capabilities */}
       {industry.processBenefits && industry.processBenefits.length > 0 && (
         <section className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
-          <div className="container mx-auto px-6 md:px-8">
+          <div className={spacing.container}>
             <motion.div
               ref={processBenefitsHeaderAnim.ref}
               initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
@@ -304,28 +372,28 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-tone-inverse mb-4">
-                {industry.processBenefitsSectionHeading || 'Machining Capabilities'}
+                {industry.processBenefitsSectionHeading}
               </h2>
               <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                {industry.processBenefitsSectionDescription || 'Advanced capabilities delivering superior results for critical applications.'}
+                {industry.processBenefitsSectionDescription}
               </p>
             </motion.div>
 
             <div ref={processBenefitsGridAnim.ref} className={`grid ${industry.processBenefits.length >= 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'} gap-8`}>
-              {industry.processBenefits.map((benefit: any, index: number) => (
+              {industry.processBenefits.map((benefit: ProcessBenefit, index: number) => (
                 <motion.div
                   key={benefit._key || index}
                   initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                   animate={processBenefitsGridAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
                   transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : Math.min(index * 0.1, 0.3) }}
                 >
-                  <Card className="p-8 h-full hover:shadow-lg transition-shadow duration-300">
+                  <Card className="p-8 h-full transition-all duration-300">
                     <h3 className="text-2xl font-bold text-slate-900 dark:text-tone-inverse mb-4">{benefit.title}</h3>
                     <p className="text-slate-600 dark:text-slate-400 mb-6">{benefit.description}</p>
 
                     {benefit.features && benefit.features.length > 0 && (
                       <ul className="space-y-2">
-                        {benefit.features.map((feature: any) => (
+                        {benefit.features.map((feature: ProcessBenefitFeature) => (
                           <li key={feature._key} className="flex items-start text-sm text-slate-600 dark:text-slate-400">
                             <CheckCircle className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
                             {feature.feature}
@@ -343,7 +411,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
 
       {/* CTA Section */}
       <section className="py-24 md:py-32 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 dark-section">
-        <div className="container mx-auto px-6 md:px-8">
+        <div className={spacing.container}>
           <motion.div
             ref={ctaAnim.ref}
             initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
@@ -355,10 +423,10 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
               {industry.cta?.heading || `Partner with ${industry.title} Experts`}
             </h2>
             <p className="text-lg text-slate-300 mb-8">
-              {industry.cta?.description || `Trust your critical ${industry.title.toLowerCase()} components to a proven machining partner.`}
+              {industry.cta?.description || `Trust your critical ${(industry.title || '').toLowerCase()} components to a proven machining partner.`}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {industry.cta?.buttons?.filter((btn: any) => btn.enabled !== false).map((button: any, index: number) => (
+              {industry.cta?.buttons?.filter((btn: CTAButton) => btn.enabled !== false).map((button: CTAButton, index: number) => (
                 <Button
                   key={index}
                   size="lg"
@@ -366,7 +434,7 @@ export default function IndustryDetailPage({ industry }: IndustryDetailPageProps
                   className={button.variant === 'primary' ? 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' : 'border-blue-500/50 text-blue-400 hover:bg-blue-500/10 hover:text-blue-300 hover:border-blue-400'}
                   variant={button.variant === 'primary' ? 'default' : 'outline'}
                 >
-                  <Link href={button.href}>
+                  <Link href={button.href || '#'}>
                     {button.text} <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>

@@ -21,7 +21,7 @@ export default function PageSections({ sections }: { sections: Record<string, an
                 key={idx}
                 backgroundImage={section?.backgroundImageUrl || ''}
                 imageAlt={section?.imageAlt || ''}
-                badge={{ text: section?.badge || '', icon: undefined as any }}
+                badge={{ text: section?.badge || '' }}
                 title={
                   <span style={{ color: section?.titleColor?.color?.hex || '#ffffff' }}>
                     {section?.title}{' '}
@@ -33,10 +33,10 @@ export default function PageSections({ sections }: { sections: Record<string, an
                   </span>
                 }
                 description={section?.description}
-                buttons={(section?.buttons || []).map((b: any) => ({
-                  label: b?.label,
-                  href: b?.href,
-                  variant: b?.variant || 'primary',
+                buttons={(section?.buttons || []).map((b: { label?: string; href?: string; variant?: string; enabled?: boolean }) => ({
+                  label: b?.label || '',
+                  href: b?.href || '',
+                  variant: (b?.variant || 'primary') as 'primary' | 'secondary',
                 }))}
                 height={section?.height || 'large'}
                 alignment={section?.alignment || 'center'}

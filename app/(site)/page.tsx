@@ -67,7 +67,7 @@ export default async function Home() {
   const formattedServices = servicesData?.map((service: SanityServiceData & Record<string, any>) => ({
     ...service,
     description: service.shortDescription || portableTextToPlainText(service.description),
-    href: `/services/${typeof service.slug === 'string' ? service.slug : service.slug?.current}`,
+    href: `/services/${service.slug}`,
     image: service.hero?.backgroundImage?.asset?.url || service.image?.asset?.url || service.imageUrl,
   }));
 
@@ -75,7 +75,7 @@ export default async function Home() {
   const formattedIndustries = industriesData?.map((industry: SanityIndustryData & Record<string, any>) => ({
     ...industry,
     description: industry.shortDescription || portableTextToPlainText(industry.description),
-    href: `/industries/${typeof industry.slug === 'string' ? industry.slug : industry.slug?.current}`,
+    href: `/industries/${industry.slug}`,
     image: industry.hero?.backgroundImage?.asset?.url || industry.image?.asset?.url || industry.imageUrl,
   }));
 
@@ -166,11 +166,11 @@ export async function generateMetadata() {
 
   // Pull SEO data from Sanity with fallbacks (fallbacks allowed for SEO resilience)
   const metadata = {
-    title: homepageData?.seo?.metaTitle || 'IIS - Integrated Inspection Systems | Engineering, Metrology, Machining & Database Services',
-    description: homepageData?.seo?.metaDescription || 'Integrated Inspection Systems (IIS): Engineering, Metrology, Machining & Database Services since 1995. Proprietary MetBase® software links CMM, CNC & vision systems. AS9100, ISO 9001 certified, ITAR registered. Serving aerospace & government.',
-    keywords: homepageData?.seo?.metaKeywords || 'IIS, Integrated Inspection Systems, engineering services, metrology, machining, database services, MetBase software, CMM inspection, CNC machining, AS9100, ISO 9001, ITAR, aerospace, precision machining, Oregon',
+    title: homepageData?.seo?.metaTitle,
+    description: homepageData?.seo?.metaDescription,
+    keywords: homepageData?.seo?.metaKeywords,
     ogImage: homepageData?.seo?.ogImage?.asset?.url || null,
-    ogImageAlt: homepageData?.seo?.ogImage?.alt || 'IIS - Integrated Inspection Systems - Advanced CNC Machining Services',
+    ogImageAlt: homepageData?.seo?.ogImage?.alt || '',
   };
 
   return {

@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import HeroSection from '@/components/ui/hero-section';
 import { getAllCaseStudies, getCaseStudiesPage } from '@/sanity/lib/queries';
 import CaseStudiesContent from './case-studies-content';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 export const revalidate = 60;
 
@@ -12,8 +13,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/case-studies`;
 
-  const seoTitle = pageData?.seo?.metaTitle || 'Case Studies | Precision Machining Results | IIS';
-  const seoDescription = pageData?.seo?.metaDescription || 'Explore real-world precision machining case studies. See how IIS delivers results for aerospace, defense, medical, and industrial clients with AS9100D certified processes.';
+  const seoTitle = pageData?.seo?.metaTitle;
+  const seoDescription = pageData?.seo?.metaDescription;
   const ogImage = pageData?.seo?.ogImage?.asset?.url || null;
 
   return {
@@ -53,12 +54,7 @@ export default async function CaseStudiesPage() {
   const heroImageAlt = pageData?.hero?.backgroundImage?.alt || '';
   const heroBadge = pageData?.hero?.badge;
 
-  const gradientStyle = {
-    background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text',
-  } as React.CSSProperties;
+  const gradientStyle = gradientTextStyle;
 
   const showHero = Boolean(heroTitle || heroDescription);
 
@@ -66,8 +62,8 @@ export default async function CaseStudiesPage() {
   const industries = Array.from(
     new Map(
       caseStudies
-        .filter((cs: any) => cs.industry?.title && cs.industry?.slug)
-        .map((cs: any) => [cs.industry.slug, cs.industry.title])
+        .filter((cs: { industry?: { title?: string; slug?: string } }) => cs.industry?.title && cs.industry?.slug)
+        .map((cs: { industry?: { title?: string; slug?: string } }) => [cs.industry!.slug, cs.industry!.title])
     ).entries()
   ).map(([slug, title]) => ({ slug: slug as string, title: title as string }));
 

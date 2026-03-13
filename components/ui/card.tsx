@@ -11,8 +11,10 @@ const Card = React.forwardRef<
     className={cn(
       // Base styling - clean, professional with dark mode
       "rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-tone-inverse",
-      // Premium shadow system - subtle at rest, elevated on hover
-      "shadow-sm hover:shadow-xl dark:shadow-slate-950/50",
+      // Premium shadow system — design-system: shadows.card / shadows.cardHover
+      "shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_6px_rgba(0,0,0,0.04),0_12px_24px_-4px_rgba(0,0,0,0.08)]",
+      "hover:shadow-[0_4px_8px_rgba(0,0,0,0.04),0_12px_24px_rgba(0,0,0,0.06),0_24px_48px_-8px_rgba(37,99,235,0.12)]",
+      "dark:shadow-slate-950/50",
       // Smooth transition for all states
       "transition-all duration-300 ease-out",
       // Subtle border that refines on hover
@@ -98,7 +100,10 @@ const CardInteractive = React.forwardRef<
     ref={ref}
     className={cn(
       "rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-tone-inverse",
-      "shadow-sm hover:shadow-2xl dark:shadow-slate-950/50",
+      // design-system: shadows.card / shadows.elevated
+      "shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_6px_rgba(0,0,0,0.04),0_12px_24px_-4px_rgba(0,0,0,0.08)]",
+      "hover:shadow-[0_4px_6px_rgba(0,0,0,0.05),0_16px_32px_rgba(0,0,0,0.1),0_32px_64px_-16px_rgba(0,0,0,0.15)]",
+      "dark:shadow-slate-950/50",
       "transition-all duration-300 ease-out",
       "border-slate-200/60 dark:border-slate-800 hover:border-blue-500/30 dark:hover:border-blue-500/30",
       "hover:-translate-y-1 hover:scale-[1.01]",
@@ -123,8 +128,11 @@ const CardFeature = React.forwardRef<
     ref={ref}
     className={cn(
       "rounded-2xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-tone-inverse",
-      "shadow-md hover:shadow-2xl dark:shadow-slate-950/50",
-      "transition-all duration-400 ease-out",
+      // design-system: shadows.cardHover (base) / shadows.elevated (hover)
+      "shadow-[0_4px_8px_rgba(0,0,0,0.04),0_12px_24px_rgba(0,0,0,0.06),0_24px_48px_-8px_rgba(37,99,235,0.12)]",
+      "hover:shadow-[0_4px_6px_rgba(0,0,0,0.05),0_16px_32px_rgba(0,0,0,0.1),0_32px_64px_-16px_rgba(0,0,0,0.15)]",
+      "dark:shadow-slate-950/50",
+      "transition-all duration-300 ease-out",
       "border-slate-200/50 dark:border-slate-800 hover:border-blue-500/20",
       "hover:-translate-y-1.5",
       // Premium inner glow
@@ -171,7 +179,9 @@ const CardHighlight = React.forwardRef<
     ref={ref}
     className={cn(
       "rounded-xl border-2 bg-white dark:bg-slate-900 text-slate-900 dark:text-tone-inverse",
-      "shadow-lg hover:shadow-2xl dark:shadow-slate-950/50",
+      // design-system: shadows.elevated / shadows.elevated (hover kept same)
+      "shadow-[0_4px_6px_rgba(0,0,0,0.05),0_16px_32px_rgba(0,0,0,0.1),0_32px_64px_-16px_rgba(0,0,0,0.15)]",
+      "dark:shadow-slate-950/50",
       "transition-all duration-300 ease-out",
       "hover:-translate-y-1",
       // Dynamic accent border

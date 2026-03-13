@@ -98,6 +98,7 @@ export const colors = {
     primary: 'text-slate-900 dark:text-tone-inverse',
     secondary: 'text-slate-600 dark:text-slate-300',
     muted: 'text-slate-400 dark:text-slate-400', // slate-400 provides better contrast (~7:1 on dark backgrounds)
+    mutedDark: 'text-slate-300', // Body text on dark section backgrounds (WCAG AA compliant)
     inverse: 'text-tone-inverse dark:text-slate-900',
   },
 
@@ -401,14 +402,21 @@ export const forms = {
   },
 } as const;
 
-// ==================== HELPER FUNCTIONS ====================
+// ==================== FOCUS RING ====================
+export const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50' as const;
 
-/**
- * Combine multiple design system classes
- */
-export function cn(...classes: (string | undefined | false | null)[]): string {
-  return classes.filter(Boolean).join(' ');
-}
+// ==================== Z-INDEX SCALE ====================
+export const zIndex = {
+  dropdown: 'z-50',
+  skipLink: 'z-[100]',
+  mobileMenu: 'z-[130]',
+  header: 'z-[140]',
+  topBar: 'z-[150]',
+  announcement: 'z-[160]',
+  modal: 'z-[200]',
+} as const;
+
+// ==================== HELPER FUNCTIONS ====================
 
 /**
  * Get section background class based on theme

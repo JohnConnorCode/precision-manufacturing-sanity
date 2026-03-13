@@ -142,7 +142,7 @@ export const locate: DocumentLocationResolver = (params, context) => {
     )
   }
 
-  // Case Studies - appear on their own detail page
+  // Case Studies - appear on case studies index and their own detail page
   if (params.type === 'caseStudy') {
     return context.documentStore.listenQuery(
       `*[_type == "caseStudy" && _id == $id][0]{ slug }`,
@@ -150,16 +150,48 @@ export const locate: DocumentLocationResolver = (params, context) => {
       { perspective: 'drafts' }
     ).pipe(
       map((doc: any) => ({
-        message: 'This case study has its own detail page',
+        message: 'This case study appears on the case studies page and has its own detail page',
         tone: 'positive' as const,
         locations: [
+          {
+            title: 'Case Studies Overview',
+            href: '/case-studies',
+          },
           ...(doc?.slug?.current ? [{
-            title: 'Case Study Page',
+            title: 'Case Study Detail',
             href: `/case-studies/${doc.slug.current}`,
           }] : []),
         ],
       }))
     )
+  }
+
+  // Testimonials - appear on the homepage testimonials section
+  if (params.type === 'testimonial') {
+    return {
+      message: 'This testimonial appears on the homepage',
+      tone: 'positive',
+      locations: [
+        {
+          title: 'Homepage (Testimonials)',
+          href: '/',
+        },
+      ],
+    }
+  }
+
+  // Certifications - appear on the certifications page
+  if (params.type === 'certification') {
+    return {
+      message: 'This certification appears on the certifications page',
+      tone: 'positive',
+      locations: [
+        {
+          title: 'Certifications Page',
+          href: '/certifications',
+        },
+      ],
+    }
   }
 
   // Team Members - appear on about page
@@ -200,18 +232,24 @@ export const locate: DocumentLocationResolver = (params, context) => {
     )
   }
 
-  // Custom Pages
+  // Custom Pages - resolve to actual slug
   if (params.type === 'page') {
-    return {
-      message: 'This custom page is live on the website',
-      tone: 'positive',
-      locations: [
-        {
-          title: 'Homepage',
-          href: '/',
-        },
-      ],
-    }
+    return context.documentStore.listenQuery(
+      `*[_type == "page" && _id == $id][0]{ title, slug }`,
+      { id: params.id },
+      { perspective: 'drafts' }
+    ).pipe(
+      map((doc: any) => ({
+        message: 'This custom page is live on the website',
+        tone: 'positive' as const,
+        locations: doc?.slug?.current
+          ? [{
+              title: doc.title || 'Custom Page',
+              href: `/${doc.slug.current}`,
+            }]
+          : [],
+      }))
+    )
   }
 
   // Singleton pages
@@ -221,6 +259,8 @@ export const locate: DocumentLocationResolver = (params, context) => {
     careers: { href: '/careers', title: 'Careers Page' },
     terms: { href: '/compliance/terms', title: 'Terms & Conditions' },
     supplierRequirements: { href: '/compliance/supplier-requirements', title: 'Supplier Requirements' },
+    caseStudiesPage: { href: '/case-studies', title: 'Case Studies Page' },
+    certificationsPage: { href: '/certifications', title: 'Certifications Page' },
     metbase: { href: '/about/metbase', title: 'Metbase Page' },
     errorPages: { href: '/', title: 'Error Pages' },
   }

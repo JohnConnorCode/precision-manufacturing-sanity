@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   const baseUrl = getSiteUrl()
-  const title = page.seo?.metaTitle || page.title || 'IIS - Integrated Inspection Systems'
+  const title = page.seo?.metaTitle || page.title
   const description = page.seo?.metaDescription || ''
   const ogImage = page.seo?.ogImage?.asset?.url
 

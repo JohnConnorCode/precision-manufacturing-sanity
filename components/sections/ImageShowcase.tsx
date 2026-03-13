@@ -5,7 +5,8 @@ import Image from 'next/image';
 import { ArrowRight, Award, Shield, Clock, Target, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import SectionHeader from '@/components/ui/section-header';
-import { spacing, colors, borderRadius } from '@/lib/design-system';
+import { spacing, colors, borderRadius, shadows } from '@/lib/design-system';
+import { cn } from '@/lib/utils';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { getGradientStyle } from '@/lib/theme-utils';
 import { usePrefersReducedMotion } from '@/lib/motion';
@@ -69,7 +70,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
         )}
 
         {/* Large Feature Images */}
-        <div ref={imagesAnim.ref} className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} mb-12`}>
+        <div ref={imagesAnim.ref} className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid} ${spacing.headingBottom}`}>
           {showcaseImages.filter((item: ShowcaseImage) => item.enabled !== false).map((item: ShowcaseImage, index: number) => {
             const imageHeaderDelay = SECTION_CONFIGS.threeColumnGrid.headerCompletion;
             const imageDelay = imageHeaderDelay + SECTION_CONFIGS.threeColumnGrid.getDelay(index);
@@ -81,12 +82,12 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
               return null;
             }
 
-            const altText = item.alt || item.image?.alt || item.title || 'Showcase image';
+            const altText = item.alt || item.image?.alt || item.title || '';
             const card = (
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
-                className={`relative overflow-hidden ${borderRadius.card} bg-slate-100 dark:bg-slate-900 shadow-lg dark:shadow-slate-950/50 hover:shadow-xl transition-all duration-300`}
+                className={cn('relative overflow-hidden bg-slate-100 dark:bg-slate-900 transition-all duration-300', borderRadius.card, shadows.card)}
               >
                 <div className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
                   {imageSrc && (
@@ -94,7 +95,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                       src={imageSrc}
                       alt={altText}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       priority={index < 3}
                     />
@@ -106,7 +107,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                   {/* Content */}
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     {item.category && (
-                      <p className="text-xs font-bold uppercase tracking-[0.2em] mb-2" style={{ color: theme.colors.primary }}>
+                      <p className="text-xs font-bold uppercase tracking-[0.15em] mb-2" style={{ color: theme.colors.primary }}>
                         {item.category}
                       </p>
                     )}
@@ -156,7 +157,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
                 initial={prefersReducedMotion ? ANIM_STATES.scaleIn.animate : ANIM_STATES.scaleIn.initial}
                 animate={statsAnim.shouldAnimate ? ANIM_STATES.scaleIn.animate : ANIM_STATES.scaleIn.initial}
                 transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : statDelay }}
-                className="text-center p-6 bg-white dark:bg-slate-900 rounded-2xl shadow-lg dark:shadow-slate-950/50 hover:shadow-xl transition-all duration-300"
+                className={cn('text-center p-6 bg-white dark:bg-slate-900 rounded-xl transition-all duration-300', shadows.card)}
               >
                 <Icon className="h-8 w-8 mx-auto mb-3" style={{ color: theme.colors.primary }} />
                 <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-tone-inverse mb-1">
@@ -180,7 +181,7 @@ export default function ImageShowcase({ data }: ImageShowcaseProps) {
             transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : 0.4 }}
             className="text-center"
           >
-            <div className="inline-flex flex-col items-center p-8 md:p-12 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-2xl">
+            <div className={cn('inline-flex flex-col items-center p-8 md:p-12 bg-gradient-to-br from-slate-900 to-slate-800', borderRadius.lg, shadows.elevated)}>
               <h3 className="text-2xl md:text-3xl font-bold text-tone-inverse mb-4">
                 {data.cta.title}
               </h3>

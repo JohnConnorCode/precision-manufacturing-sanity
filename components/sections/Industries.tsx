@@ -7,7 +7,9 @@ import Image from 'next/image';
 import { usePrefersReducedMotion } from '@/lib/motion';
 import { Industry, SectionHeader as SectionHeaderData } from '@/lib/types/cms';
 import { STAGGER } from '@/lib/animation-config';
-import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import { useAnimateInView, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import SectionHeader from '@/components/ui/section-header';
+import { spacing } from '@/lib/design-system';
 
 interface IndustriesProps {
   data?: Industry[];
@@ -26,7 +28,6 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   // Animation hooks for scroll-triggered animations that work on refresh
-  const headerAnim = useAnimateInView<HTMLDivElement>();
   const cardsAnim = useAnimateInView<HTMLDivElement>();
 
   const industriesData = (Array.isArray(data) ? data : (data ? [data] : [])).filter(Boolean);
@@ -39,51 +40,22 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
     ? `${headerTitle} ${headerTitleHighlight}`
     : sectionData?.heading;
   const description = sectionData?.header?.description || sectionData?.description;
-  const cardCtaText = sectionData?.cardCtaText || 'Explore Solutions';
+  const cardCtaText = sectionData?.cardCtaText;
 
   return (
-    <section className="py-24 md:py-32 bg-slate-50 dark:bg-slate-950">
-      <div className="container">
+    <section className={`${spacing.section} bg-slate-50 dark:bg-slate-950`}>
+      <div className={spacing.container}>
         {/* Header */}
-        <motion.div
-          ref={headerAnim.ref}
-          initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-          animate={headerAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
-          transition={prefersReducedMotion ? { duration: 0 } : ANIM_TRANSITION}
-          className="text-center mb-8 md:mb-12"
-        >
-          {eyebrow && (
-            <p className="text-sm font-semibold text-blue-600 uppercase tracking-[0.2em] mb-4">
-              {eyebrow}
-            </p>
-          )}
-          {heading && (
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-tone-inverse mb-6">
-              {heading.split(' ').map((word, i, arr) => (
-                i === arr.length - 1 ? (
-                  <span key={i} style={{
-                    background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}>
-                    {word}
-                  </span>
-                ) : (
-                  <span key={i}>{word} </span>
-                )
-              ))}
-            </h2>
-          )}
-          {description && (
-            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-              {description}
-            </p>
-          )}
-        </motion.div>
+        <SectionHeader
+          eyebrow={eyebrow}
+          heading={heading}
+          gradientWordPosition="last"
+          description={description}
+          centered={true}
+        />
 
         {/* Industries Grid - Dramatic Full-Height Cards */}
-        <div ref={cardsAnim.ref} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div ref={cardsAnim.ref} className={`grid grid-cols-1 md:grid-cols-3 ${spacing.grid}`}>
           {industriesData.slice(0, 3).map((industry, index) => {
             const imageUrl = typeof industry.image === 'string'
               ? industry.image
@@ -108,7 +80,7 @@ export default function Industries({ data, sectionData }: IndustriesProps) {
                         src={imageUrl}
                         alt={industry.title}
                         fill
-                        className="object-cover transition-all duration-700 ease-out group-hover:scale-110"
+                        className="object-cover transition-all duration-500 ease-out group-hover:scale-105"
                         sizes="(max-width: 768px) 100vw, 33vw"
                       />
                     )}

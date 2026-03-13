@@ -8,6 +8,8 @@ import { usePrefersReducedMotion } from '@/lib/motion';
 import { portableTextToPlainTextMemoized as portableTextToPlainText } from '@/lib/performance';
 import { STAGGER } from '@/lib/animation-config';
 import { useAnimateInView, ANIM_STATES, ANIM_TRANSITION } from '@/lib/use-animate-in-view';
+import { spacing } from '@/lib/design-system';
+import { gradientTextStyle } from '@/lib/theme-utils';
 
 interface CTAData {
   title?: string;
@@ -73,7 +75,7 @@ export default function CTA({ data }: CTAProps) {
   const lastPart = words.slice(-2).join('\u00A0'); // Non-breaking space
 
   return (
-    <section className="relative py-32 md:py-40 overflow-hidden dark-section">
+    <section className="relative py-32 md:py-40 overflow-hidden dark-section"> {/* Intentionally larger padding for CTA emphasis */}
       {/* Premium Dark Background with Dynamic Elements */}
       <div className="absolute inset-0 bg-slate-950">
         {/* Rich gradient base */}
@@ -115,7 +117,7 @@ export default function CTA({ data }: CTAProps) {
         </div>
       </div>
 
-      <div className="container relative z-10">
+      <div className={`${spacing.container} relative z-10`}>
         <div ref={sectionAnim.ref} className="max-w-4xl mx-auto text-center">
           {/* Eyebrow Badge */}
           {badge && (
@@ -141,12 +143,7 @@ export default function CTA({ data }: CTAProps) {
           >
             {firstPart && <span>{firstPart} </span>}
             <span
-              style={{
-                background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
+              style={gradientTextStyle}
             >
               {lastPart}
             </span>
@@ -158,7 +155,7 @@ export default function CTA({ data }: CTAProps) {
               initial={prefersReducedMotion ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
               animate={sectionAnim.shouldAnimate ? ANIM_STATES.fadeUp.animate : ANIM_STATES.fadeUp.initial}
               transition={{ ...ANIM_TRANSITION, delay: prefersReducedMotion ? 0 : STAGGER.cards * 2 }}
-              className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto"
+              className="text-lg md:text-xl text-slate-300 mb-12 max-w-2xl mx-auto"
             >
               {subtitleString}
             </motion.p>

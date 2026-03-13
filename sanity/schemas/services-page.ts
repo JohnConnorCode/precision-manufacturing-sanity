@@ -27,7 +27,7 @@ export default {
           name: 'badge',
           type: 'string',
           title: 'Badge Text',
-          initialValue: 'PRECISION MANUFACTURING SERVICES'
+          initialValue: 'PRECISION MACHINING SERVICES'
         },
         {
           name: 'heading',
@@ -137,7 +137,7 @@ export default {
           name: 'sectionTitle',
           type: 'string',
           title: 'Section Title',
-          initialValue: 'Manufacturing Core Competencies',
+          initialValue: 'Machining Core Competencies',
           validation: (Rule: any) => Rule.required()
         },
         {

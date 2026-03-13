@@ -53,7 +53,7 @@ export default function ResourceCard({ resource, priority = false }: ResourceCar
           "bg-white dark:bg-slate-900",
           "border-slate-200/80 dark:border-slate-800",
           // Hover effects
-          "shadow-sm hover:shadow-xl dark:shadow-slate-950/50",
+          "shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_6px_rgba(0,0,0,0.04),0_12px_24px_-4px_rgba(0,0,0,0.08)] dark:shadow-slate-950/50",
           "transition-all duration-300 ease-out",
           "hover:-translate-y-1 hover:border-blue-500/30 dark:hover:border-blue-500/30"
         )}

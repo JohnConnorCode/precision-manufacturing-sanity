@@ -11,8 +11,9 @@ import { AdminToolbar } from "@/components/admin-toolbar";
 import { Analytics } from "@vercel/analytics/react";
 import PreviewBanner from "@/components/preview-banner";
 import { Toaster } from 'sonner';
-import { getNavigation, getFooter, getSiteSettings } from '@/sanity/lib/queries';
+import { getNavigation, getFooter, getSiteSettings, getErrorPages } from '@/sanity/lib/queries';
 import type { RawNavItem, MappedNavItem } from '@/lib/types/cms';
+import { getSiteUrl } from '@/lib/site-url';
 
 // Load Inter font
 const inter = Inter({
@@ -27,16 +28,16 @@ export async function generateMetadata(): Promise<Metadata> {
   const { isEnabled } = await draftMode()
   const settings = await getSiteSettings(isEnabled).catch(() => null)
   const ogImageUrl = settings?.seo?.defaultOgImageUrl
-  const ogImageAlt = settings?.seo?.defaultOgImageAlt || 'IIS - Integrated Inspection Systems'
+  const ogImageAlt = settings?.seo?.defaultOgImageAlt || ''
   const ogImages = ogImageUrl
     ? [{ url: ogImageUrl, width: 1200, height: 630, alt: ogImageAlt }]
     : []
 
   return {
-    title: settings?.seo?.defaultTitle || "IIS - Precision Machining & CMM Inspection Services | AS9100 Certified | Oregon",
-    description: settings?.seo?.defaultDescription || "Integrated Inspection Systems (IIS) - AS9100 & ISO 9001 certified precision machining, CMM inspection, and first article inspection services. Proprietary MetBase® software for closed-loop data integration. ITAR registered. Serving aerospace and defense since 1995.",
-    keywords: settings?.seo?.defaultKeywords || "CMM inspection services, AS9100 certified, ISO 9001, ITAR registered, first article inspection, precision machining Oregon, dimensional inspection, coordinate measuring, MetBase software, aerospace machining, defense machining, GD&T, statistical process control, Clackamas Oregon",
-    authors: [{ name: settings?.company?.name || "Integrated Inspection Systems (IIS)" }],
+    title: settings?.seo?.defaultTitle,
+    description: settings?.seo?.defaultDescription,
+    keywords: settings?.seo?.defaultKeywords,
+    authors: [{ name: settings?.company?.name }],
     creator: settings?.company?.name || "Integrated Inspection Systems",
     publisher: settings?.company?.name || "Integrated Inspection Systems",
     formatDetection: {
@@ -44,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
       address: false,
       telephone: false,
     },
-    metadataBase: new URL(settings?.company?.websiteUrl || "https://iismet.com"),
+    metadataBase: new URL(getSiteUrl()),
     alternates: {
       canonical: "/",
     },
@@ -59,7 +60,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: settings?.seo?.defaultTitle || "IIS - AS9100 Certified Precision Machining & CMM Inspection | Oregon",
       description: settings?.seo?.defaultDescription || "AS9100 & ISO 9001 certified precision machining and CMM inspection services. First article inspection, dimensional measurement, and proprietary MetBase® software for aerospace and defense industries. ITAR registered since 1995.",
-      url: settings?.company?.websiteUrl || "https://iismet.com",
+      url: settings?.company?.websiteUrl || getSiteUrl(),
       siteName: settings?.company?.name || "Integrated Inspection Systems (IIS)",
       images: ogImages,
       locale: "en_US",
@@ -106,7 +107,7 @@ function normalizeHref(name: string, href?: string | null) {
 function mapNavigationItem(item: RawNavItem): MappedNavItem | null {
   if (!item) return null
   if (item?._type === 'navGroup') {
-    const title = item?.groupTitle || 'Group'
+    const title = item?.groupTitle || ''
     const items = Array.isArray(item?.items) ? item.items.map(mapNavigationItem).filter((x): x is MappedNavItem => x !== null) : []
     return { name: title, href: '', description: '', linkType: 'internal', openInNewTab: false, iconName: null, showInHeader: true, showInMobile: true, style: { variant: 'link', badgeText: null }, children: items }
   }
@@ -138,10 +139,11 @@ export default async function SiteLayout({
   const { isEnabled: isDraft } = await draftMode()
 
   // Fetch navigation, footer, and site settings server-side
-  const [navData, footerData, siteSettingsData] = await Promise.all([
+  const [navData, footerData, siteSettingsData, errorPagesData] = await Promise.all([
     getNavigation(isDraft).catch(() => null),
     getFooter(isDraft).catch(() => null),
     getSiteSettings(isDraft).catch(() => null),
+    getErrorPages(isDraft).catch(() => null),
   ])
 
   // Normalize navigation data
@@ -153,7 +155,7 @@ export default async function SiteLayout({
   } : null
 
   // Build structured data from Sanity CMS - 100% from siteSettings
-  const baseUrl = siteSettingsData?.company?.websiteUrl || 'https://iismet.com';
+  const baseUrl = siteSettingsData?.company?.websiteUrl || getSiteUrl();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -294,6 +296,7 @@ export default async function SiteLayout({
           navigationData={navigationData}
           footerData={footerData}
           siteSettings={siteSettingsData}
+          errorPageData={errorPagesData}
         >
           {children}
         </SiteChrome>

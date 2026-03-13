@@ -3,11 +3,14 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
+import { PremiumButton } from '@/components/ui/premium-button'
 import { Card } from '@/components/ui/card'
 import { FileQuestion, BookOpen, ArrowRight, Home, ArrowLeft } from 'lucide-react'
-import { typography, cn } from '@/lib/design-system'
+import { typography } from '@/lib/design-system'
+import { cn } from '@/lib/utils'
 import { getToneTypography } from '@/lib/typography'
 import { usePrefersReducedMotion } from '@/lib/motion'
+import { gradientTextStyle } from '@/lib/theme-utils'
 
 export default function NotFound() {
   const prefersReducedMotion = usePrefersReducedMotion()
@@ -57,12 +60,7 @@ export default function NotFound() {
           <motion.div
             {...fadeOnly(0.3)}
           >
-            <h1 className="text-7xl font-black mb-2" style={{
-              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
+            <h1 className="text-7xl font-black mb-2" style={gradientTextStyle}>
               404
             </h1>
 
@@ -80,15 +78,10 @@ export default function NotFound() {
             className="flex flex-col sm:flex-row gap-3 justify-center mb-8"
           >
             <Link href="/resources">
-              <Button
-                className={cn(
-                  'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-600/25 w-full sm:w-auto',
-                  darkTone.heading
-                )}
-              >
+              <PremiumButton className="w-full sm:w-auto">
                 <BookOpen className="w-4 h-4 mr-2" />
                 Browse All Resources
-              </Button>
+              </PremiumButton>
             </Link>
             <Button
               onClick={() => window.history.back()}

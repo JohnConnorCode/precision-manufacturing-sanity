@@ -215,7 +215,7 @@ export default {
           type: 'string',
           title: 'Legal Name',
           fieldset: 'identity',
-          initialValue: 'IIS Precision Manufacturing',
+          initialValue: 'IIS Precision Machining',
         },
         {
           name: 'alternateName',

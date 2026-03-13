@@ -133,7 +133,7 @@
   }
 
   .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 
   .btn {
@@ -295,10 +295,7 @@
     background-clip: text;
   }
 
-  /* Focus ring enhancement */
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:ring-offset-2 focus:ring-offset-background;
-  }
+  /* Focus ring enhancement - uses .focus-ring from @layer components */
 
   @keyframes fadeIn {
     from {
@@ -339,23 +336,6 @@
     transition: width 50ms linear;
   }
 
-  /* Section divider - subtle angled cut */
-  .section-divider {
-    position: relative;
-  }
-
-  .section-divider::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    right: 0;
-    height: 80px;
-    background: inherit;
-    clip-path: polygon(0 0, 100% 60%, 100% 100%, 0 100%);
-    z-index: 1;
-  }
-
   /* Staggered card entrance animation delays */
   .stagger-1 { --stagger-delay: 0ms; }
   .stagger-2 { --stagger-delay: 80ms; }
@@ -363,23 +343,6 @@
   .stagger-4 { --stagger-delay: 240ms; }
   .stagger-5 { --stagger-delay: 320ms; }
   .stagger-6 { --stagger-delay: 400ms; }
-
-  /* Pull quote style */
-  .pull-quote {
-    font-size: 1.5rem;
-    line-height: 1.4;
-    font-weight: 500;
-    font-style: italic;
-    color: #2563eb;
-    border-left: 4px solid #2563eb;
-    padding-left: 1.5rem;
-    margin: 2.5rem 0;
-  }
-
-  .dark .pull-quote {
-    color: #60a5fa;
-    border-left-color: #3b82f6;
-  }
 
   /* Enhanced article prose styling */
   .article-prose h2 {

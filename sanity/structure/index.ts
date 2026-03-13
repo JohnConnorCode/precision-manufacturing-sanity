@@ -14,14 +14,21 @@ import {
   Layout,
   Type,
   File,
-  Globe
+  Globe,
+  Quote,
+  Shield,
+  FolderOpen,
+  BookOpen,
+  AlertTriangle,
+  BarChart3,
+  Award,
 } from 'lucide-react';
 
 export const structure = (S: StructureBuilder) =>
   S.list()
     .title('Content')
     .items([
-      // Main Content Section
+      // Homepage
       S.listItem()
         .title('Homepage')
         .icon(Home)
@@ -33,7 +40,7 @@ export const structure = (S: StructureBuilder) =>
 
       S.divider(),
 
-      // Services & Industries
+      // Collections
       S.listItem()
         .title('Services')
         .icon(Cog)
@@ -52,6 +59,36 @@ export const structure = (S: StructureBuilder) =>
             .title('Industries')
             .filter('_type == "industry"')
             .defaultOrdering([{field: 'order', direction: 'asc'}])
+        ),
+
+      S.listItem()
+        .title('Case Studies')
+        .icon(BookOpen)
+        .child(
+          S.documentTypeList('caseStudy')
+            .title('Case Studies')
+            .filter('_type == "caseStudy"')
+            .defaultOrdering([{field: '_createdAt', direction: 'desc'}])
+        ),
+
+      S.listItem()
+        .title('Testimonials')
+        .icon(Quote)
+        .child(
+          S.documentTypeList('testimonial')
+            .title('Testimonials')
+            .filter('_type == "testimonial"')
+            .defaultOrdering([{field: '_createdAt', direction: 'desc'}])
+        ),
+
+      S.listItem()
+        .title('Certifications')
+        .icon(Award)
+        .child(
+          S.documentTypeList('certification')
+            .title('Certifications')
+            .filter('_type == "certification"')
+            .defaultOrdering([{field: '_createdAt', direction: 'desc'}])
         ),
 
       S.divider(),
@@ -74,19 +111,31 @@ export const structure = (S: StructureBuilder) =>
                     .defaultOrdering([{field: 'publishDate', direction: 'desc'}])
                 ),
 
+              S.listItem()
+                .title('Resource Categories')
+                .icon(FolderOpen)
+                .child(
+                  S.documentTypeList('resourceCategory')
+                    .title('Resource Categories')
+                    .filter('_type == "resourceCategory"')
+                    .defaultOrdering([{field: 'title', direction: 'asc'}])
+                ),
+
               S.divider(),
 
               S.listItem()
-                .title('Manufacturing Processes')
+                .title('Machining Processes')
+                .icon(Cog)
                 .child(
                   S.documentTypeList('resource')
-                    .title('Manufacturing Processes')
+                    .title('Machining Processes')
                     .filter('_type == "resource" && category == "manufacturing-processes"')
                     .defaultOrdering([{field: 'publishDate', direction: 'desc'}])
                 ),
 
               S.listItem()
                 .title('Material Science')
+                .icon(Shield)
                 .child(
                   S.documentTypeList('resource')
                     .title('Material Science')
@@ -96,6 +145,7 @@ export const structure = (S: StructureBuilder) =>
 
               S.listItem()
                 .title('Quality & Compliance')
+                .icon(FileCheck)
                 .child(
                   S.documentTypeList('resource')
                     .title('Quality & Compliance')
@@ -105,6 +155,7 @@ export const structure = (S: StructureBuilder) =>
 
               S.listItem()
                 .title('Industry Applications')
+                .icon(Plane)
                 .child(
                   S.documentTypeList('resource')
                     .title('Industry Applications')
@@ -114,6 +165,7 @@ export const structure = (S: StructureBuilder) =>
 
               S.listItem()
                 .title('Calculators & Tools')
+                .icon(BarChart3)
                 .child(
                   S.documentTypeList('resource')
                     .title('Calculators & Tools')
@@ -125,7 +177,7 @@ export const structure = (S: StructureBuilder) =>
 
       S.divider(),
 
-      // Team & About
+      // Team & Jobs
       S.listItem()
         .title('Team Members')
         .icon(Users)
@@ -134,36 +186,6 @@ export const structure = (S: StructureBuilder) =>
             .title('Team Members')
             .filter('_type == "teamMember"')
             .defaultOrdering([{field: 'order', direction: 'asc'}])
-        ),
-
-      S.listItem()
-        .title('About Page')
-        .icon(Info)
-        .child(
-          S.document()
-            .schemaType('about')
-            .documentId('about')
-        ),
-
-      S.divider(),
-
-      // Other Pages
-      S.listItem()
-        .title('Contact Page')
-        .icon(Mail)
-        .child(
-          S.document()
-            .schemaType('contact')
-            .documentId('contact')
-        ),
-
-      S.listItem()
-        .title('Careers Page')
-        .icon(Briefcase)
-        .child(
-          S.document()
-            .schemaType('careers')
-            .documentId('careers')
         ),
 
       S.listItem()
@@ -178,6 +200,97 @@ export const structure = (S: StructureBuilder) =>
 
       S.divider(),
 
+      // Pages group
+      S.listItem()
+        .title('Pages')
+        .icon(File)
+        .child(
+          S.list()
+            .title('Pages')
+            .items([
+              S.listItem()
+                .title('About Page')
+                .icon(Info)
+                .child(
+                  S.document()
+                    .schemaType('about')
+                    .documentId('about')
+                ),
+              S.listItem()
+                .title('Contact Page')
+                .icon(Mail)
+                .child(
+                  S.document()
+                    .schemaType('contact')
+                    .documentId('contact')
+                ),
+              S.listItem()
+                .title('Careers Page')
+                .icon(Briefcase)
+                .child(
+                  S.document()
+                    .schemaType('careers')
+                    .documentId('careers')
+                ),
+
+              S.divider(),
+
+              S.listItem()
+                .title('Services Page')
+                .icon(Cog)
+                .child(
+                  S.document()
+                    .schemaType('servicesPage')
+                    .documentId('servicesPage')
+                ),
+              S.listItem()
+                .title('Industries Page')
+                .icon(Plane)
+                .child(
+                  S.document()
+                    .schemaType('industriesPage')
+                    .documentId('industriesPage')
+                ),
+              S.listItem()
+                .title('Case Studies Page')
+                .icon(BookOpen)
+                .child(
+                  S.document()
+                    .schemaType('caseStudiesPage')
+                    .documentId('caseStudiesPage')
+                ),
+              S.listItem()
+                .title('Certifications Page')
+                .icon(Award)
+                .child(
+                  S.document()
+                    .schemaType('certificationsPage')
+                    .documentId('certificationsPage')
+                ),
+              S.listItem()
+                .title('Metbase Page')
+                .icon(BarChart3)
+                .child(
+                  S.document()
+                    .schemaType('metbase')
+                    .documentId('metbase')
+                ),
+
+              S.divider(),
+
+              S.listItem()
+                .title('Error Pages')
+                .icon(AlertTriangle)
+                .child(
+                  S.document()
+                    .schemaType('errorPages')
+                    .documentId('errorPages')
+                ),
+            ])
+        ),
+
+      S.divider(),
+
       // Compliance & Legal
       S.listItem()
         .title('Compliance & Legal')
@@ -186,6 +299,14 @@ export const structure = (S: StructureBuilder) =>
           S.list()
             .title('Compliance & Legal')
             .items([
+              S.listItem()
+                .title('Compliance Page')
+                .icon(FileCheck)
+                .child(
+                  S.document()
+                    .schemaType('compliancePage')
+                    .documentId('compliancePage')
+                ),
               S.listItem()
                 .title('Terms & Conditions')
                 .child(
@@ -205,7 +326,7 @@ export const structure = (S: StructureBuilder) =>
 
       S.divider(),
 
-      // Site Configuration
+      // Site Configuration (config only)
       S.listItem()
         .title('Site Configuration')
         .icon(Settings)
@@ -236,22 +357,6 @@ export const structure = (S: StructureBuilder) =>
                   S.document()
                     .schemaType('footer')
                     .documentId('footer')
-                ),
-              S.listItem()
-                .title('Services Page')
-                .icon(Cog)
-                .child(
-                  S.document()
-                    .schemaType('servicesPage')
-                    .documentId('servicesPage')
-                ),
-              S.listItem()
-                .title('Industries Page')
-                .icon(Plane)
-                .child(
-                  S.document()
-                    .schemaType('industriesPage')
-                    .documentId('industriesPage')
                 ),
               S.listItem()
                 .title('UI Text')

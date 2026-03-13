@@ -6,8 +6,11 @@ import { AlertCircle, CheckCircle2, XCircle, RefreshCw, HelpCircle, BookOpen, Me
 import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { typography, spacing, cn } from '@/lib/design-system'
+import { PremiumButton } from '@/components/ui/premium-button'
+import { typography, spacing } from '@/lib/design-system'
+import { cn } from '@/lib/utils'
 import { usePrefersReducedMotion } from '@/lib/motion'
+import { gradientTextStyle } from '@/lib/theme-utils'
 
 interface HealthStatus {
   timestamp: string
@@ -28,8 +31,16 @@ interface HealthStatus {
   healthy: boolean
 }
 
+interface SiteSettingsData {
+  contact?: {
+    supportEmail?: string
+    phone?: string
+  }
+  [key: string]: unknown
+}
+
 interface TroubleshootingContentProps {
-  siteSettings: any
+  siteSettings: SiteSettingsData | null
 }
 
 export default function TroubleshootingContent({ siteSettings }: TroubleshootingContentProps) {
@@ -138,7 +149,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-24 md:py-32 px-4 dark-section">
+    <div className={`min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 ${spacing.section} px-4 dark-section`}>
       <div className={spacing.containerWide}>
         {/* Header */}
         <motion.div
@@ -150,12 +161,7 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
             <span className="text-sm font-medium text-blue-400">Help Center</span>
           </div>
           <h1 className={cn(typography.heroHeading, 'text-tone-inverse mb-3 uppercase')}>
-            Troubleshooting <span style={{
-              background: 'linear-gradient(to right, #3b82f6, #4f46e5)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>Guide</span>
+            Troubleshooting <span style={gradientTextStyle}>Guide</span>
           </h1>
           <p className={cn(typography.descriptionLight)}>
             Self-service solutions for common issues and system status monitoring
@@ -170,14 +176,10 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
           <Card className="p-8 bg-slate-900/50 border-slate-800">
             <div className="flex items-center justify-between mb-6">
               <h2 className={cn(typography.h4, 'text-tone-inverse')}>System Health Check</h2>
-              <Button
-                onClick={refreshHealth}
-                disabled={loading}
-                className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-tone-inverse shadow-lg shadow-blue-600/25"
-              >
+              <PremiumButton onClick={refreshHealth} disabled={loading}>
                 <RefreshCw className={cn('w-4 h-4 mr-2', loading && 'animate-spin')} />
                 {loading ? 'Checking...' : 'Refresh'}
-              </Button>
+              </PremiumButton>
             </div>
 
             {error && (
@@ -380,10 +382,10 @@ export default function TroubleshootingContent({ siteSettings }: Troubleshooting
 
             <div className="flex flex-wrap gap-4 mt-6">
               <Link href="/">
-                <Button className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-tone-inverse shadow-lg shadow-blue-600/25">
+                <PremiumButton>
                   <Home className="w-4 h-4 mr-2" />
                   Back to Website
-                </Button>
+                </PremiumButton>
               </Link>
               <Link href="/status">
                 <Button variant="outline" className="border-blue-600/30 text-blue-400 hover:bg-blue-600/10">
