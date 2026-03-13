@@ -30,11 +30,12 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/api/draft-mode')) {
     const origin = request.headers.get('origin')
 
-    // Only allow whitelisted origins or Sanity Studio domains
+    // Allow whitelisted origins, Sanity Studio domains, and Vercel preview URLs
     const isAllowed = origin && (
       ALLOWED_ORIGINS.includes(origin) ||
       origin.endsWith('.sanity.studio') ||
       origin.endsWith('.sanity.io') ||
+      origin.endsWith('.vercel.app') ||
       origin === 'http://localhost:3000'
     )
 

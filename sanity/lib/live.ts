@@ -30,10 +30,11 @@ const getStudioUrl = () => {
 }
 
 // Get the token - required for draft content
-const token = process.env.SANITY_API_WRITE_TOKEN
+// Must match the token used in defineEnableDraftMode (SANITY_API_READ_TOKEN)
+const token = process.env.SANITY_API_READ_TOKEN
 
 if (!token) {
-  console.warn('Missing SANITY_API_WRITE_TOKEN - draft mode will not work')
+  console.warn('Missing SANITY_API_READ_TOKEN - draft mode will not work')
 }
 
 export const { sanityFetch, SanityLive } = defineLive({

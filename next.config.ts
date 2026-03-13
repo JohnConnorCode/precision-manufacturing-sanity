@@ -46,22 +46,17 @@ const nextConfig: NextConfig = {
 
   /* Security headers */
   async headers() {
-    // Strict frame-ancestors for Sanity Studio integration
-    // Only allows embedding from trusted Sanity and Vercel domains
+    // Allow framing from Sanity Studio and Vercel for Presentation Tool
     const frameAncestors = "frame-ancestors 'self' https://*.sanity.studio https://*.sanity.io https://sanity.io https://www.sanity.io https://*.vercel.app https://vercel.live";
 
     return [
       {
-        // Studio routes - allow all iframe embedding for Sanity Studio
+        // Studio routes - no restrictive security headers (Studio is a full SPA)
         source: '/studio/:path*',
         headers: [
           {
             key: 'Content-Security-Policy',
             value: frameAncestors
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'ALLOWALL'
           },
         ],
       },
@@ -76,7 +71,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // All other routes - allow iframe from Sanity for Presentation Tool
+        // All site routes - frameable by Sanity Presentation Tool
         source: '/:path*',
         headers: [
           {
@@ -86,10 +81,6 @@ const nextConfig: NextConfig = {
           {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload'
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
           },
           {
             key: 'Referrer-Policy',
